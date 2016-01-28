@@ -450,6 +450,7 @@ p
 
   }
   if ( "jitter" %in% add ){
+    set.seed(123)
     ngrps <- length(intersect(names(data), c(.mapping["x"], fill, color)))
     if(ngrps > 1) .jitter <- position_dodge(0.8) else .jitter <- position_jitter(0.4)
     if(!is.null(add.params$jitter)) .jitter = position_jitter(0.4)
