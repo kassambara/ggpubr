@@ -1,0 +1,27 @@
+Package: ggpubr
+Type: Package
+Title: 'ggplot2' Publication Ready Plots
+Version: 0.1.1
+Date: 2016-01-18
+Authors@R: c(
+    person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"))
+Description: Create a publication ready plots using ggplot2.
+License: GPL-2
+LazyData: TRUE
+Depends:
+    ggplot2
+Imports:
+    plyr
+Suggests:
+    knitr,
+    scales
+URL: http://www.sthda.com/english/wiki/ggpubr
+BugReports: https://github.com/kassambara/ggpubr/issues
+RoxygenNote: 5.0.1
+Collate:
+    'utilities.R'
+    'ggpar.R'
+    'ggboxplot.R'
+    'ggstripchart.R'
+    'ggviolin.R'
+    'theme_pubr.R'
