@@ -381,36 +381,6 @@ p
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Add stat
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-.add_dot <- function (p, add = c("none", "dotplot", "jitter"),
-                      add.params = list(color = "black", shape = 19, size = 1) )
-{
-   data <- p$data
-   add  <-  match.arg(add)
-   color <- ifelse(is.null(add.params$color), "black", add.params$color)
-   fill <- ifelse(is.null(add.params$fill), color, add.params$fill)
-   shape <- ifelse(is.null(add.params$shape), 19, add.params$shape)
-   .jitter <- ifelse(is.null(add.params$jitter), 0.3, add.params$jitter)
-   if(is.null(add.params$size)){
-     if(add == "dotplot") size = 0.8
-     else if(add == "jitter") size = 4
-   }
-   size <- ifelse(is.null(add.params$size), 1, add.params$size)
-
-   if ( add == "dotplot") {
-     p <- p + .geom_exec(geom_dotplot, data = data, binaxis = 'y', stackdir = 'center',
-                         color = color, fill = fill, dotsize = size,
-                         position = position_dodge(0.8), stackratio = 1.2, binwidth = add.params$binwidth)
-
-   }
-   if (add == "jitter") {
-     p <- p + .geom_exec(geom_jitter, data = data,
-                         color = color, fill = fill, shape = shape, size = size,
-                         position = position_jitter(.jitter) )
-
-   }
-   p
-
-}
 
 
 .add <- function(p,
@@ -439,9 +409,10 @@ p
 
   # stat summary
   .mapping <- as.character(p$mapping)
-  if( any( c("pointrange", "crossbar") %in% add))
+  if( any( c("pointrange", "crossbar") %in% add)){
     stat_sum <- .mean_sd(data, varname = .mapping["y"],
                          grps = intersect(names(data), c(.mapping["x"], color, fill)))
+  }
 
   if ( "dotplot" %in% add ) {
     p <- p + .geom_exec(geom_dotplot, data = data, binaxis = 'y', stackdir = 'center',
@@ -477,10 +448,15 @@ p
                         color = color, ymin = "ymin", ymax = "ymax",
                         position = position, width = width, size = size)
   }
+
   if("pointrange" %in% add){
     p <- p + .geom_exec(geom_pointrange, data = stat_sum,
                         color = color, ymin = "ymin", ymax = "ymax",
-                        position = position, size = size)
+                        position = position, size = 1.5)
+  }
+
+  if("mean" %in% add){
+
   }
 
   p
@@ -505,6 +481,8 @@ p
   # data_sum <- plyr::rename(data_sum, c("mean" = varname))
   return(data_sum)
 }
+
+
 
 
 
