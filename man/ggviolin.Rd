@@ -5,7 +5,7 @@
 \title{Violin plot}
 \usage{
 ggviolin(data, x, y, color = "black", fill = "white", palette = NULL,
-  linetype = "solid", trim = FALSE, size = 0.5, width = 1,
+  linetype = "solid", trim = FALSE, size = 1, width = 1,
   select = NULL, order = NULL, add = c("none", "boxplot", "dotplot",
   "jitter", "pointrange", "crossbar"), add.params = list(), ...)
 }
@@ -28,7 +28,7 @@ to the range of the data. If \code{FALSE}, don't trim the tails.}
 
 \item{size}{line size.}
 
-\item{width}{box plot width.}
+\item{width}{violin width.}
 
 \item{select}{character vector specifying which items to display.}
 
@@ -70,22 +70,31 @@ ggviolin(df, "dose", "len", orientation = "horiz")
 # Add summary statistics
 # ++++++++++++++++++++++++++
 # Add box plot
-ggstripchart(df, x = "dose", y = "len",
-add = "boxplot")
 ggviolin(df, x = "dose", y = "len",
-add = "dotplot")
+ add = "boxplot")
+
+ggviolin(df, x = "dose", y = "len",
+ add = "dotplot")
+
 # Add jitter
 ggviolin(df, x = "dose", y = "len",
 add = "jitter")
+
+# Change shape by groups: "dose"
+ggviolin(df, x = "dose", y = "len",
+add = "jitter", shape = "dose")
+
 # Add pointrange
 ggviolin(df, x = "dose", y = "len",
-add = "pointrange")
+ add = "pointrange")
+
 # Add crossbar
 ggviolin(df, x = "dose", y = "len",
-add = "crossbar")
+ add = "crossbar")
+
 # Combine jitter + pointrange
 ggviolin(df, x = "dose", y = "len",
-add = c("jitter", "pointrange"))
+ add = c("jitter", "pointrange"))
 
 
 

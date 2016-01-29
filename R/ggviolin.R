@@ -6,8 +6,7 @@ NULL
 #' @param x,y x and y variables for drawing.
 #' @param color,fill outline and fill colors.
 #' @param linetype line types.
-#' @param size line size.
-#' @param width box plot width.
+#' @param width violin width.
 #' @param add character vector for adding another plot element. Allowed
 #'   values are one of c("none", "dotplot", "jitter).
 #' @param add.params parameters (color, shape, size, fill, jitter) for the
@@ -38,22 +37,31 @@ NULL
 #' # Add summary statistics
 #' # ++++++++++++++++++++++++++
 #' # Add box plot
-#' ggstripchart(df, x = "dose", y = "len",
-#' add = "boxplot")
+#' ggviolin(df, x = "dose", y = "len",
+#'  add = "boxplot")
+#'
 #'ggviolin(df, x = "dose", y = "len",
-#' add = "dotplot")
+#'  add = "dotplot")
+#'
 #' # Add jitter
 #'ggviolin(df, x = "dose", y = "len",
 #' add = "jitter")
+#'
+#'# Change shape by groups: "dose"
+#'ggviolin(df, x = "dose", y = "len",
+#' add = "jitter", shape = "dose")
+#'
 #' # Add pointrange
 #' ggviolin(df, x = "dose", y = "len",
-#' add = "pointrange")
+#'  add = "pointrange")
+#'
 #' # Add crossbar
 #' ggviolin(df, x = "dose", y = "len",
-#' add = "crossbar")
+#'  add = "crossbar")
+#'
 #' # Combine jitter + pointrange
 #' ggviolin(df, x = "dose", y = "len",
-#' add = c("jitter", "pointrange"))
+#'  add = c("jitter", "pointrange"))
 #'
 #'
 #'
@@ -106,7 +114,7 @@ NULL
 #' @export
 ggviolin <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
-                      linetype = "solid", trim = FALSE, size = 0.5, width = 1,
+                      linetype = "solid", trim = FALSE, size = 1, width = 1,
                       select = NULL, order = NULL,
                       add = c("none", "boxplot", "dotplot", "jitter", "pointrange", "crossbar"),
                       add.params = list(), ...)
@@ -127,6 +135,7 @@ ggviolin <- function(data, x, y,
   if(is.null(add.params$color)) add.params$color <- color
   if(is.null(add.params$fill) & any(c("boxplot", "crossbar") %in% add)) add.params$fill <- fill
   else add.params$fill <- add.params$color
+  if(!is.null(list(...)$shape) & is.null(add.params$shape)) add.params$shape <- list(...)$shape
 
   add.params$width = 0.2
   p <- .add(p, add = add, add.params = add.params)
