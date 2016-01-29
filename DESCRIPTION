@@ -19,6 +19,7 @@ URL: http://www.sthda.com/english/wiki/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 5.0.1
 Collate:
+    'desc_statby.R'
     'utilities.R'
     'ggpar.R'
     'ggboxplot.R'
