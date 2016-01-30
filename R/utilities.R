@@ -1,3 +1,5 @@
+#' @include desc_statby.R
+NULL
 #' @import ggplot2
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -409,10 +411,17 @@ p
 
   # stat summary
   .mapping <- as.character(p$mapping)
+  x <- .mapping["x"]
+  y <- .mapping["y"]
   if( any( c("pointrange", "crossbar") %in% add)){
     stat_sum <- .mean_sd(data, varname = .mapping["y"],
-                         grps = intersect(names(data), c(.mapping["x"], color, fill)))
+                         grps = intersect(c(.mapping["x"], color, fill), names(data)))
   }
+
+  errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "med", "med_iqr", "med_mad", "med_range")
+  if(any(errors %in% add)) stat_sum <- desc_statby(data, measure.var = .mapping["y"],
+                                                   grps = intersect(c(.mapping["x"], color, fill), names(data)))
+
 
   if ( "dotplot" %in% add ) {
     p <- p + .geom_exec(geom_dotplot, data = data, binaxis = 'y', stackdir = 'center',
@@ -456,7 +465,10 @@ p
   }
 
   if("mean" %in% add){
-
+    names(stat_sum)[which(names(stat_sum) == "mean")] <- y
+    p <- p + .geom_exec(geom_point, data = stat_sum, x = x, y = y,
+                        color = color,  shape = shape,
+                        position = position, size = size)
   }
 
   p
@@ -481,6 +493,10 @@ p
   # data_sum <- plyr::rename(data_sum, c("mean" = varname))
   return(data_sum)
 }
+
+
+
+
 
 
 
