@@ -30,8 +30,8 @@
 #'data("ToothGrowth")
 #'
 #'# Descriptive statistics
-#'desc_stat(ToothGrowth, measur.var = "len",
-#'    grps = c("dose", "len"))
+#'desc_statby(ToothGrowth, measure.var = "len",
+#'    grps = c("dose", "supp"))
 #'
 #' @export
 desc_statby <- function(data, measure.var, grps, ci = 0.95){
