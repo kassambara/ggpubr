@@ -36,6 +36,10 @@ NULL
 #'
 #' # Add summary statistics
 #' # ++++++++++++++++++++++++++
+#' # Draw quantiles
+#' ggviolin(df, "dose", "len", add = "none",
+#'    draw_quantiles = 0.5)
+#'
 #' # Add box plot
 #' ggviolin(df, x = "dose", y = "len",
 #'  add = "boxplot")
@@ -115,19 +119,22 @@ NULL
 ggviolin <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", trim = FALSE, size = 1, width = 1,
+                      draw_quantiles = NULL,
                       select = NULL, order = NULL,
                       add = c("none", "boxplot", "dotplot", "jitter", "pointrange", "crossbar"),
                       add.params = list(), ...)
 {
 
   data[, x] <- factor(data[, x])
+  pms <- .violin_params(...)
   # add <- match.arg(add)
 
   p <- ggplot(data, aes_string(x, y)) +
       .geom_exec(geom_violin, data = data,
                 color = color, fill = fill, linetype = linetype,
                 trim = trim, size = size, width = width,
-                position = position_dodge(0.8), ...)
+                position = position_dodge(0.8), draw_quantiles = draw_quantiles,
+                stat = pms$stat, scale = pms$scale)
 
   # Add dot
   if(color %in% names(data) & is.null(add.params$color))  add.params$color <- color
