@@ -41,8 +41,8 @@ Computes descriptive statistics by groups for a measure variable.
 data("ToothGrowth")
 
 # Descriptive statistics
-desc_stat(ToothGrowth, measur.var = "len",
-   grps = c("dose", "len"))
+desc_statby(ToothGrowth, measure.var = "len",
+   grps = c("dose", "supp"))
 
 }
 
