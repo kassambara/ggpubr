@@ -51,9 +51,7 @@ desc_statby <- function(data, measure.var, grps, ci = 0.95){
       sd = stats::sd(x[[col]], na.rm=TRUE)
     )
   }
-
-  if(!is.null(measure.var) & !is.null(grps))
-    data_sum <- .desc_statby(data, measure.var, grps, ci)
+  data_sum <- plyr::ddply(data, grps, .fun=summary_func, measure.var)
 
   data_sum$se <- data_sum$sd / sqrt(data_sum$length) # standard error
   # Confidence interval from t-distribution
