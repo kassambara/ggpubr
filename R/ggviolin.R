@@ -7,10 +7,6 @@ NULL
 #' @param color,fill outline and fill colors.
 #' @param linetype line types.
 #' @param width violin width.
-#' @param add character vector for adding another plot element. Allowed
-#'   values are one of c("none", "dotplot", "jitter).
-#' @param add.params parameters (color, shape, size, fill, jitter) for the
-#'   argument 'add'; e.g.: add.params = list(color = "red").
 #' @inheritParams ggplot2::geom_violin
 #' @param ... other arguments to be passed to geom_violin.
 #' @details The plot can be easily customized using the function ggpar(). Read

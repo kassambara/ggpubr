@@ -6,8 +6,9 @@
 \usage{
 ggviolin(data, x, y, color = "black", fill = "white", palette = NULL,
   linetype = "solid", trim = FALSE, size = 1, width = 1,
-  select = NULL, order = NULL, add = c("none", "boxplot", "dotplot",
-  "jitter", "pointrange", "crossbar"), add.params = list(), ...)
+  draw_quantiles = NULL, select = NULL, order = NULL, add = c("none",
+  "boxplot", "dotplot", "jitter", "pointrange", "crossbar"),
+  add.params = list(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -30,14 +31,19 @@ to the range of the data. If \code{FALSE}, don't trim the tails.}
 
 \item{width}{violin width.}
 
+\item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
+at the given quantiles of the density estimate.}
+
 \item{select}{character vector specifying which items to display.}
 
 \item{order}{character vector specifying the order of items.}
 
-\item{add}{character vector for adding another plot element. Allowed
-values are one of c("none", "dotplot", "jitter).}
+\item{add}{character vector for adding another plot element (e.g.: dot plot
+or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
+"mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
+"median_iqr", "median_mad", "median_range".}
 
-\item{add.params}{parameters (color, shape, size, fill, jitter) for the
+\item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
 \item{...}{other arguments to be passed to geom_violin.}
@@ -69,6 +75,10 @@ ggviolin(df, "dose", "len", orientation = "horiz")
 
 # Add summary statistics
 # ++++++++++++++++++++++++++
+# Draw quantiles
+ggviolin(df, "dose", "len", add = "none",
+   draw_quantiles = 0.5)
+
 # Add box plot
 ggviolin(df, x = "dose", y = "len",
  add = "boxplot")
