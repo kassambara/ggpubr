@@ -15,9 +15,11 @@ NULL
 #' @inheritParams ggplot2::geom_boxplot
 #' @param select character vector specifying which items to display.
 #' @param order character vector specifying the order of items.
-#' @param add character vector for adding another plot element. Allowed values
-#'   are one of c("none", "dotplot", "jitter).
-#' @param add.params parameters (color, shape, size, fill, jitter) for the
+#' @param add character vector for adding another plot element (e.g.: dot plot
+#'   or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
+#'   "mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
+#'   "median_iqr", "median_mad", "median_range".
+#' @param add.params parameters (color, shape, size, fill, linetype) for the
 #'   argument 'add'; e.g.: add.params = list(color = "red").
 #' @param ... other arguments to be passed to geom_boxplot including linetype,
 #'   size, etc. (See ?geom_boxplot).
@@ -28,6 +30,10 @@ NULL
 #'   palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
+#'
+#' @section Suggestions for the argument "add":
+#' Suggested values are one of c("dotplot", "jitter").
+#'
 #' @seealso \code{\link{ggpar}}
 #' @examples
 #' # Load data
@@ -116,12 +122,10 @@ ggboxplot <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", size = 1, width = 1,  notch = FALSE,
                       select = NULL, order = NULL,
-                      add = c("none", "dotplot", "jitter"),
-                      add.params = list(), ...)
+                      add = "none", add.params = list(), ...)
 {
 
   data[, x] <- factor(data[, x])
-  add <- match.arg(add)
 
   p <- ggplot(data, aes_string(x, y)) +
       .geom_exec(geom_boxplot, data = data,

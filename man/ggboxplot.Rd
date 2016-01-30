@@ -6,8 +6,7 @@
 \usage{
 ggboxplot(data, x, y, color = "black", fill = "white", palette = NULL,
   linetype = "solid", size = 1, width = 1, notch = FALSE,
-  select = NULL, order = NULL, add = c("none", "dotplot", "jitter"),
-  add.params = list(), ...)
+  select = NULL, order = NULL, add = "none", add.params = list(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -36,10 +35,12 @@ are significantly different.}
 
 \item{order}{character vector specifying the order of items.}
 
-\item{add}{character vector for adding another plot element. Allowed values
-are one of c("none", "dotplot", "jitter).}
+\item{add}{character vector for adding another plot element (e.g.: dot plot
+or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
+"mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
+"median_iqr", "median_mad", "median_range".}
 
-\item{add.params}{parameters (color, shape, size, fill, jitter) for the
+\item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
 \item{...}{other arguments to be passed to geom_boxplot including linetype,
@@ -56,6 +57,10 @@ The plot can be easily customized using the function ggpar(). Read
   palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
   labels and position: legend = "right" \item plot orientation : orientation
   = c("vertical", "horizontal", "reverse") }
+}
+\section{Suggestions for the argument "add"}{
+
+Suggested values are one of c("dotplot", "jitter").
 }
 \examples{
 # Load data
