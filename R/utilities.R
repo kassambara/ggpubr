@@ -28,7 +28,7 @@ NULL
     "binwidth", "binaxis", "method", "binpositions",
     "stackdir", "stackratio", "dotsize",
     # Violin
-    "trim",
+    "trim", "draw_quantiles", "scale",
     # error
     "ymin", "ymax", "xmin", "xmax"
   )
@@ -92,6 +92,16 @@ NULL
   res <- list()
   res$stackratio  <- ifelse(!is.null(x$stackratio ), x$stackratio, 1)
   res$width <- ifelse(!is.null(x$width), x$width, 0.9)
+  return(res)
+}
+
+.violin_params <- function(...){
+  x <- list(...)
+  res <- list()
+  res$stat  <- ifelse(!is.null(x$stat ), x$stat, "ydensity")
+  res$draw_quantiles  <- x$draw_quantiles
+  res$scale <- ifelse(!is.null(x$scale), x$scale, "area")
+  res$trim <- ifelse(!is.null(x$trim), x$trim, TRUE)
   return(res)
 }
 
@@ -405,6 +415,7 @@ p
   if(is.null(add.params$size)){
     if("dotplot" %in% add) add.params$size = 0.9
     else if("jitter" %in% add) add.params$size = 3
+    else if(any(c("mean", "median") %in% add)) add.params$size = 6
   }
   size <- ifelse(is.null(add.params$size), 1, add.params$size)
 
@@ -418,7 +429,7 @@ p
                          grps = intersect(c(.mapping["x"], color, fill), names(data)))
   }
 
-  errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "med", "med_iqr", "med_mad", "med_range")
+  errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
   if(any(errors %in% add)) stat_sum <- desc_statby(data, measure.var = .mapping["y"],
                                                    grps = intersect(c(.mapping["x"], color, fill), names(data)))
 
@@ -464,11 +475,32 @@ p
                         position = position, size = 1.5)
   }
 
-  if("mean" %in% add){
-    names(stat_sum)[which(names(stat_sum) == "mean")] <- y
-    p <- p + .geom_exec(geom_point, data = stat_sum, x = x, y = y,
-                        color = color,  shape = shape,
-                        position = position, size = size)
+  # Add mean or median
+  center <- intersect(c("mean", "median"), add)
+  if(length(center) == 2)
+    stop("Use mean or mdedian, but not both at the same time.")
+    if(length(center) == 1){
+      names(stat_sum)[which(names(stat_sum) == center)] <- y
+      p <- p + .geom_exec(geom_point, data = stat_sum, x = x, y = y,
+                          color = color,  shape = shape,
+                          position = position, size = size)
+    }
+
+  # Add errors
+  errors <- c("mean_se", "mean_sd", "mean_ci", "mean_range",  "median_iqr", "median_mad", "median_range")
+  errors <- intersect(errors, add)
+  if(length(errors) >= 2)
+    stop("Choose one these: ", paste(erros, collapse =", "))
+  if(length(errors) == 1){
+    errors <- strsplit(errors, "_", fixed = TRUE)[[1]]
+   .center <- errors[1]
+   .errors <- errors[2]
+    stat_sum$ymin <- stat_sum[, .center] - stat_sum[, .errors]
+    stat_sum$ymax <- stat_sum[, .center] + stat_sum[, .errors]
+    names(stat_sum)[which(names(stat_sum) == .center)] <- y
+    p <- p + .geom_exec(geom_pointrange, data = stat_sum,
+                        color = color, shape = shape, ymin = "ymin", ymax = "ymax",
+                        position = position, size = 1.5)
   }
 
   p
