@@ -27,10 +27,12 @@ color palette e.g. c("blue", "red").}
 
 \item{order}{character vector specifying the order of items.}
 
-\item{add}{character vector for adding another plot element. Allowed
-values are one of c("boxplot", "violin", "pointrange", "crossbar").}
+\item{add}{character vector for adding another plot element (e.g.: dot plot
+or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
+"mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
+"median_iqr", "median_mad", "median_range".}
 
-\item{add.params}{parameters (color, shape, size, fill, jitter) for the
+\item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
 \item{position}{position adjustment, either as a string, or the result of a

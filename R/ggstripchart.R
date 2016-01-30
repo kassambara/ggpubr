@@ -5,10 +5,6 @@ NULL
 #' @param x,y x and y variables for drawing.
 #' @param color,fill outline and fill colors.
 #' @param shape point shape
-#' @param add character vector for adding another plot element. Allowed
-#'   values are one of c("boxplot", "violin", "pointrange", "crossbar").
-#' @param add.params parameters (color, shape, size, fill, jitter) for the
-#'   argument 'add'; e.g.: add.params = list(color = "red").
 #' @param position position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function. Used to adjust position
 #'   for multiple groups.
