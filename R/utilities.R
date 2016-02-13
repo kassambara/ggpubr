@@ -8,8 +8,9 @@ NULL
 # geomfunc : gem_*() functions
 # data data for mapping
 # ... argument accepeted by the function
-.geom_exec <- function (geomfunc, data = NULL,
-                        position = NULL,  ...) {
+# return a plot if geomfunc!=Null or a list(option, mapping) if  geomfunc = NULL
+.geom_exec <- function (geomfunc = NULL, data = NULL,
+                        position = NULL, ...) {
   params <- list(...)
 
   mapping <-
@@ -30,7 +31,9 @@ NULL
     # Violin
     "trim", "draw_quantiles", "scale",
     # error
-    "ymin", "ymax", "xmin", "xmax"
+    "ymin", "ymax", "xmin", "xmax",
+    # text
+    "label", "hjust", "vjust", "fontface"
   )
 
   columns <- colnames(data)
@@ -49,10 +52,15 @@ NULL
     # else warnings("Don't know '", key, "'")
   }
   if (!is.null(position))
-    option[["position"]] <- position
+  option[["position"]] <- position
   option[["data"]] <- data
+  if(is.null(geomfunc)){
+    return(list(option = option, mapping = mapping))
+  }
+  else{
   option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
   return(do.call(geomfunc, option))
+  }
 }
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -152,7 +160,7 @@ NULL
     if (palette %in% brewerpal)
       ggplot2::scale_color_brewer(palette = palette)
     else if (palette == "grey")
-       ggplot2::scale_color_grey()
+       ggplot2::scale_color_grey(start = 0.8, end = 0.2)
     else if (palette == "hue")
       ggplot2::scale_color_hue(...)
   }
@@ -181,7 +189,7 @@ NULL
     if (palette %in% brewerpal)
       ggplot2::scale_fill_brewer(palette = palette)
     else if (palette == "grey")
-      ggplot2::scale_fill_grey()
+      ggplot2::scale_fill_grey(start = 0.8, end = 0.2)
     else if (palette == "hue")
       ggplot2::scale_fill_hue(...)
   }
@@ -202,16 +210,6 @@ NULL
     else p
   }
 
-
-# Add mean point to a plot
-# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-.add_mean <- function(shape = 18, size = 5, color = "red") {
-  stat_summary(
-    fun.y = base::mean,
-    geom = 'point', shape = shape,
-    size = size, colour = color
-  )
-}
 
 # Change title and labels
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -394,17 +392,37 @@ p
 # Add stat
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+.check_add.params <- function(add, add.params, error.plot, data, color, fill,  ...){
+  if(color %in% names(data) & is.null(add.params$color))  add.params$color <- color
+  if(fill %in% names(data) & is.null(add.params$fill))  add.params$fill <- fill
+  if(is.null(add.params$color)) add.params$color <- color
+  if(is.null(add.params$fill) & ("crossbar" %in% error.plot | "boxplot" %in% add | "violin" %in% add)) add.params$fill <- fill
+  if(is.null(add.params$fill)) add.params$fill <- add.params$color
+  #else add.params$fill <- add.params$color
+  if(!is.null(list(...)$shape) & is.null(add.params$shape)) add.params$shape <- list(...)$shape
+  add.params
+}
 
+# Allowed values for add are one or the combination of: "none",
+#   "dotplot", "jitter", "boxplot", "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
+#  "median", "median_iqr", "median_mad", "median_range"
+# p_geom character, e.g "geom_line"
 .add <- function(p,
-                 add = c("none", "pointrange", "crossbar", "boxplot", "dotplot"),
+                 add = NULL,
                  add.params = list(color = "black", fill = "white", shape = 19, width = 1),
-                 data = NULL, position = position_dodge(0.8)
+                 data = NULL, position = position_dodge(0.8),
+                 error.plot = c("pointrange", "linerange", "crossbar", "errorbar",
+                                "upper_errorbar", "lower_errorbar", "upper_pointrange", "lower_pointrange",
+                                "upper_linerange", "lower_linerange"),
+                 p_geom = ""
                  )
 {
 
   if(is.null(data)) data <- p$data
   pms <- add.params
   if("none" %in% add) add <- "none"
+  error.plot = match.arg(error.plot)
+
 
   color <- ifelse(is.null(pms$color), "black",pms$color)
   fill <-  ifelse(is.null(pms$fill), "white", pms$fill)
@@ -412,85 +430,74 @@ p
   width <- ifelse(is.null(pms$width), 1, pms$width)
   shape <- ifelse(is.null(add.params$shape), 19, add.params$shape)
 
-  if(is.null(add.params$size)){
-    if("dotplot" %in% add) add.params$size = 0.9
-    else if("jitter" %in% add) add.params$size = 3
-    else if(any(c("mean", "median") %in% add)) add.params$size = 6
-  }
-  size <- ifelse(is.null(add.params$size), 1, add.params$size)
+ # size <- ifelse(is.null(add.params$size), 1, add.params$size)
 
 
   # stat summary
   .mapping <- as.character(p$mapping)
   x <- .mapping["x"]
   y <- .mapping["y"]
-  if( any( c("pointrange", "crossbar") %in% add)){
-    stat_sum <- .mean_sd(data, varname = .mapping["y"],
-                         grps = intersect(c(.mapping["x"], color, fill), names(data)))
-  }
 
   errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
   if(any(errors %in% add)) stat_sum <- desc_statby(data, measure.var = .mapping["y"],
                                                    grps = intersect(c(.mapping["x"], color, fill), names(data)))
 
 
-  if ( "dotplot" %in% add ) {
-    p <- p + .geom_exec(geom_dotplot, data = data, binaxis = 'y', stackdir = 'center',
-                        color = color, fill = fill, dotsize = size,
-                        position = position_dodge(0.8), stackratio = 1.2, binwidth = add.params$binwidth)
-
-  }
-  if ( "jitter" %in% add ){
-    set.seed(123)
-    ngrps <- length(intersect(names(data), c(.mapping["x"], fill, color)))
-    if(ngrps > 1) .jitter <- position_dodge(0.8) else .jitter <- position_jitter(0.4)
-    if(!is.null(add.params$jitter)) .jitter = position_jitter(0.4)
-    p <- p + .geom_exec(geom_jitter, data = data,
-                        color = color, fill = fill, shape = shape, size = size,
-                        position = .jitter )
-
-  }
 
   if ("boxplot" %in% add) {
+    size <- ifelse(is.null(add.params$size), 1, add.params$size)
     p <- p + .geom_exec(geom_boxplot, data = data,
                         color = color, fill = fill,
-                        position = position_dodge(0.8), width = width, size = size)
+                        position = position, width = width, size = size)
   }
 
   if ("violin" %in% add) {
+    size <- ifelse(is.null(add.params$size), 1, add.params$size)
     p <- p + .geom_exec(geom_violin, data = data, trim = FALSE,
                         color = color, fill = fill,
                         position = position, width = width, size = size)
   }
 
-  if("crossbar" %in% add){
-    p <- p + .geom_exec(geom_crossbar, data = stat_sum, fill = fill,
-                        color = color, ymin = "ymin", ymax = "ymax",
-                        position = position, width = width, size = size)
+
+  if ( "dotplot" %in% add ) {
+    dotsize <- ifelse(is.null(add.params$size), 0.9, add.params$size)
+    p <- p + .geom_exec(geom_dotplot, data = data, binaxis = 'y', stackdir = 'center',
+                        color = color, fill = fill, dotsize = dotsize,
+                        position = position, stackratio = 1.2, binwidth = add.params$binwidth)
+
+  }
+  if ( "jitter" %in% add ){
+    set.seed(123)
+    jitter.size <- ifelse(is.null(add.params$size), 3, add.params$size)
+    ngrps <- length(intersect(names(data), c(.mapping["x"], fill, color)))
+    if(p_geom == "geom_line" | ngrps == 1) .jitter = position_jitter(0.4)
+    else if(ngrps > 1) .jitter <- position_dodge(0.8)
+
+    if(!is.null(add.params$jitter)) .jitter = position_jitter(0.4)
+    p <- p + .geom_exec(geom_jitter, data = data,
+                        color = color, fill = fill, shape = shape, size = jitter.size,
+                        position = .jitter )
+
   }
 
-  if("pointrange" %in% add){
-    p <- p + .geom_exec(geom_pointrange, data = stat_sum,
-                        color = color, ymin = "ymin", ymax = "ymax",
-                        position = position, size = 1.5)
-  }
 
   # Add mean or median
   center <- intersect(c("mean", "median"), add)
   if(length(center) == 2)
     stop("Use mean or mdedian, but not both at the same time.")
     if(length(center) == 1){
+      center.size <- ifelse(is.null(add.params$size), 6, add.params$size)
       names(stat_sum)[which(names(stat_sum) == center)] <- y
       p <- p + .geom_exec(geom_point, data = stat_sum, x = x, y = y,
                           color = color,  shape = shape,
-                          position = position, size = size)
+                          position = position, size = center.size)
     }
 
   # Add errors
   errors <- c("mean_se", "mean_sd", "mean_ci", "mean_range",  "median_iqr", "median_mad", "median_range")
   errors <- intersect(errors, add)
   if(length(errors) >= 2)
-    stop("Choose one these: ", paste(erros, collapse =", "))
+    stop("Choose one these: ", paste(errors, collapse =", "))
   if(length(errors) == 1){
     errors <- strsplit(errors, "_", fixed = TRUE)[[1]]
    .center <- errors[1]
@@ -498,9 +505,39 @@ p
     stat_sum$ymin <- stat_sum[, .center] - stat_sum[, .errors]
     stat_sum$ymax <- stat_sum[, .center] + stat_sum[, .errors]
     names(stat_sum)[which(names(stat_sum) == .center)] <- y
-    p <- p + .geom_exec(geom_pointrange, data = stat_sum,
-                        color = color, shape = shape, ymin = "ymin", ymax = "ymax",
-                        position = position, size = 1.5)
+    size <- ifelse(is.null(add.params$size), 1, add.params$size)
+
+
+    if(error.plot %in% c("upper_errorbar", "upper_pointrange", "upper_linerange")) {
+      ymin <- y
+      ymax <- "ymax"
+    }
+    else if(error.plot %in% c("lower_errorbar", "lower_pointrange", "lower_linerange")){
+      ymin <- "ymin"
+      ymax <- y
+    }
+    else {
+      ymin <- "ymin"
+      ymax <- "ymax"
+    }
+
+    if(error.plot %in% c("pointrange", "lower_pointrange", "upper_pointrange"))
+      p <- p + .geom_exec(geom_pointrange, data = stat_sum,
+                        color = color, shape = shape, ymin = ymin, ymax = ymax,
+                        position = position, size = size)
+   else if(error.plot %in% c("linerange", "lower_linerange", "upper_linerange"))
+      p <- p + .geom_exec(geom_linerange, data = stat_sum,
+                          color = color,  ymin = ymin, ymax = ymax,
+                          position = position, size = size)
+    else if(error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar"))
+      p <- p + .geom_exec(geom_errorbar, data = stat_sum,
+                          color = color,  ymin = ymin, ymax = ymax,
+                          position = position, size = size, width = 0.2)
+
+    else if(error.plot == "crossbar")
+      p <- p + .geom_exec(geom_crossbar, data = stat_sum, fill = fill,
+                          color = color, ymin = "ymin", ymax = "ymax",
+                          position = position, width = width, size = size)
   }
 
   p

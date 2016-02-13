@@ -12,7 +12,7 @@ ggpar(p, palette = NULL, main = NULL, xlab = NULL, ylab = NULL,
   font.legend = NULL, ticks = TRUE, tickslab = TRUE,
   font.tickslab = NULL, xtickslab.rt = 0, ytickslab.rt = 0,
   xticks.by = NULL, yticks.by = NULL, orientation = c("vertical",
-  "horizontal", "reverse"), ...)
+  "horizontal", "reverse"), ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{p}{an object of class ggplot}
@@ -68,6 +68,10 @@ yticks.by = 5, a tick mark is shown on every 5. Default value is NULL.}
 
 \item{orientation}{change the orientation of the plot. Allowed values are one
 of c( "vertical", "horizontal", "reverse"). Partial match is allowed.}
+
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
+Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+theme_minimal(), theme_classic(), theme_void(), ....}
 
 \item{...}{not used}
 }

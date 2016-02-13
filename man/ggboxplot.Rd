@@ -6,7 +6,8 @@
 \usage{
 ggboxplot(data, x, y, color = "black", fill = "white", palette = NULL,
   linetype = "solid", size = 1, width = 1, notch = FALSE,
-  select = NULL, order = NULL, add = "none", add.params = list(), ...)
+  select = NULL, order = NULL, add = "none", add.params = list(),
+  error.plot = "pointrange", ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -22,9 +23,9 @@ color palette e.g. c("blue", "red").}
 
 \item{linetype}{line types.}
 
-\item{size}{line size.}
+\item{size}{change the size of points and outlines.}
 
-\item{width}{box plot width.}
+\item{width}{plot width.}
 
 \item{notch}{if \code{FALSE} (default) make a standard box plot. If
 \code{TRUE}, make a notched box plot. Notches are used to compare groups;
@@ -36,18 +37,31 @@ are significantly different.}
 \item{order}{character vector specifying the order of items.}
 
 \item{add}{character vector for adding another plot element (e.g.: dot plot
-or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
-"mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
-"median_iqr", "median_mad", "median_range".}
+or error bars). Allowed values are one or the combination of: "none",
+"dotplot", "jitter", "boxplot", "mean", "mean_se", "mean_sd", "mean_ci",
+"mean_range", "median", "median_iqr", "median_mad", "median_range"; see
+?desc_statby for more details.}
 
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
+
+\item{error.plot}{plot type used to visualize error. Allowed values are one
+of c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
+"lower_errorbar", "upper_pointrange", "lower_pointrange",
+"upper_linerange", "lower_linerange"). Default value is "pointrange" or "errorbar". Used
+only when add != "none" and add contains one "mean_*" or "med_*" where "*"
+= sd, se, ....}
+
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
+Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+theme_minimal(), theme_classic(), theme_void(), ....}
 
 \item{...}{other arguments to be passed to geom_boxplot including linetype,
 size, etc. (See ?geom_boxplot).}
 }
 \description{
-Box plot
+Create a box plot with points. Box plots display a group of
+  numerical data through their quartiles.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -59,8 +73,8 @@ The plot can be easily customized using the function ggpar(). Read
   = c("vertical", "horizontal", "reverse") }
 }
 \section{Suggestions for the argument "add"}{
-
-Suggested values are one of c("dotplot", "jitter").
+ Suggested values are one of
+  c("dotplot", "jitter").
 }
 \examples{
 # Load data
@@ -146,6 +160,6 @@ ggboxplot(df, "dose", "len", color = "supp",
 
 }
 \seealso{
-\code{\link{ggpar}}
+\code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}} and \code{\link{ggstripchart}}.
 }
 

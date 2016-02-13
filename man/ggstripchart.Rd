@@ -5,9 +5,9 @@
 \title{Stripcharts}
 \usage{
 ggstripchart(data, x, y, color = "black", fill = "white", palette = NULL,
-  shape = 19, select = NULL, order = NULL, add = c("none", "boxplot",
-  "violin", "pointrange", "crossbar"), add.params = list(),
-  position = position_jitter(0.4), ...)
+  shape = 19, size = 2, select = NULL, order = NULL, add = "mean_se",
+  add.params = list(), error.plot = "pointrange",
+  position = position_jitter(0.4), ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -23,26 +23,42 @@ color palette e.g. c("blue", "red").}
 
 \item{shape}{point shape}
 
+\item{size}{change the size of points and outlines.}
+
 \item{select}{character vector specifying which items to display.}
 
 \item{order}{character vector specifying the order of items.}
 
 \item{add}{character vector for adding another plot element (e.g.: dot plot
-or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
-"mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
-"median_iqr", "median_mad", "median_range".}
+or error bars). Allowed values are one or the combination of: "none",
+"dotplot", "jitter", "boxplot", "mean", "mean_se", "mean_sd", "mean_ci",
+"mean_range", "median", "median_iqr", "median_mad", "median_range"; see
+?desc_statby for more details.}
 
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
+\item{error.plot}{plot type used to visualize error. Allowed values are one
+of c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
+"lower_errorbar", "upper_pointrange", "lower_pointrange",
+"upper_linerange", "lower_linerange"). Default value is "pointrange" or "errorbar". Used
+only when add != "none" and add contains one "mean_*" or "med_*" where "*"
+= sd, se, ....}
+
 \item{position}{position adjustment, either as a string, or the result of a
-call to a position adjustment function. Used to adjust position
-for multiple groups.}
+call to a position adjustment function. Used to adjust position for
+multiple groups.}
+
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
+Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+theme_minimal(), theme_classic(), theme_void(), ....}
 
 \item{...}{other arguments to be passed to geom_jitter.}
 }
 \description{
-Stripcharts
+Create a stripchart, also known as one dimensional scatter
+  plots. These plots are suitable compared to box plots when sample sizes are
+  small.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -58,11 +74,18 @@ The plot can be easily customized using the function ggpar(). Read
 data("ToothGrowth")
 df <- ToothGrowth
 
-# Basic box plot
+# Basic plot
 # +++++++++++++++++++++++++++
 ggstripchart(df, x = "dose", y = "len")
+
 # Change point shapes and size
-ggstripchart(df, "dose", "len", shape = 17, size = 2)
+ggstripchart(df, "dose", "len", shape = 17, size = 3)
+
+# Change point shapes by groups: "dose"
+ggstripchart(df, "dose", "len", shape = "dose")
+
+# Change the plot orientation: horizontal
+ggstripchart(df, "dose", "len", orientation = "horiz")
 
 
 # Select and order items
@@ -76,21 +99,27 @@ ggstripchart(df, "dose", "len",
 
 # Add summary statistics
 # ++++++++++++++++++++++++++
+
 # Add box plot
 ggstripchart(df, x = "dose", y = "len",
-add = "boxplot")
+ add = "boxplot")
+
 # Add violin
 ggstripchart(df, x = "dose", y = "len",
-add = "violin")
-# Add pointrange
+ add = "violin")
+
+# Add mean_sd
 ggstripchart(df, x = "dose", y = "len",
-add = "pointrange")
-# Add crossbar
+ add = "mean_sd")
+
+# Change error.plot to "crossbar"
 ggstripchart(df, x = "dose", y = "len",
-add = "crossbar", add.params = list(width = 0.5))
-# Add violin + pointrange
+ add = "mean_sd", add.params = list(width = 0.5),
+ error.plot = "crossbar")
+
+# Add violin + mean_sd
 ggstripchart(df, x = "dose", y = "len", color = "dose",
-add = c("violin", "pointrange"))
+ add = c("violin", "mean_sd"))
 
 
 
@@ -120,17 +149,20 @@ palette = "grey" )
 # Plot with multiple groups
 # +++++++++++++++++++++
 # Change shape and color by a second group : "supp"
+ggstripchart(df, "dose", "len", color = "supp")
+
+# Adjust point position
 ggstripchart(df, "dose", "len", color = "supp",
-  shape = "supp" )
+  shape = "supp", position = position_dodge(0.8) )
+
+# You can also use position_jitterdodge()
+# but fill aesthetic is required
+ggstripchart(df, "dose", "len", color = "supp", fill = "supp",
+  shape = "supp", position = position_jitterdodge() )
 
 # Add boxplot
 ggstripchart(df, "dose", "len", color = "supp", shape = "supp",
  add = "boxplot", add.params = list(color = "black") )
-
-# Change point position
-ggstripchart(df, "dose", "len", color = "supp",
-  shape = "supp", add = "boxplot", position = position_dodge(0.8) )
-
 
 }
 \seealso{
