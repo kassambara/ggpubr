@@ -6,9 +6,9 @@
 \usage{
 ggviolin(data, x, y, color = "black", fill = "white", palette = NULL,
   linetype = "solid", trim = FALSE, size = 1, width = 1,
-  draw_quantiles = NULL, select = NULL, order = NULL, add = c("none",
-  "boxplot", "dotplot", "jitter", "pointrange", "crossbar"),
-  add.params = list(), ...)
+  draw_quantiles = NULL, select = NULL, order = NULL, add = "mean_se",
+  add.params = list(), error.plot = "pointrange", ggtheme = theme_pubr(),
+  ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -27,7 +27,7 @@ color palette e.g. c("blue", "red").}
 \item{trim}{If \code{TRUE} (default), trim the tails of the violins
 to the range of the data. If \code{FALSE}, don't trim the tails.}
 
-\item{size}{line size.}
+\item{size}{change the size of points and outlines.}
 
 \item{width}{violin width.}
 
@@ -39,26 +39,40 @@ at the given quantiles of the density estimate.}
 \item{order}{character vector specifying the order of items.}
 
 \item{add}{character vector for adding another plot element (e.g.: dot plot
-or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
-"mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
-"median_iqr", "median_mad", "median_range".}
+or error bars). Allowed values are one or the combination of: "none",
+"dotplot", "jitter", "boxplot", "mean", "mean_se", "mean_sd", "mean_ci",
+"mean_range", "median", "median_iqr", "median_mad", "median_range"; see
+?desc_statby for more details.}
 
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
+\item{error.plot}{plot type used to visualize error. Allowed values are one
+of c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
+"lower_errorbar", "upper_pointrange", "lower_pointrange",
+"upper_linerange", "lower_linerange"). Default value is "pointrange" or "errorbar". Used
+only when add != "none" and add contains one "mean_*" or "med_*" where "*"
+= sd, se, ....}
+
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
+Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+theme_minimal(), theme_classic(), theme_void(), ....}
+
 \item{...}{other arguments to be passed to geom_violin.}
 }
 \description{
-Violin plot
+Create a violin plot with error bars. Violin plots are similar to
+box plots, except that they also show the kernel probability density of the
+data at different values.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
-  ?ggpar for changing: \itemize{ \item main title and axis labels: main,
-  xlab, ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
-  scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes:
-  palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
-  labels and position: legend = "right" \item plot orientation : orientation
-  = c("vertical", "horizontal", "reverse") }
+ ?ggpar for changing: \itemize{ \item main title and axis labels: main, xlab,
+ ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
+ scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes: palette
+ = "Dark2" or palette = c("gray", "blue", "red") \item legend title, labels
+ and position: legend = "right" \item plot orientation : orientation =
+ c("vertical", "horizontal", "reverse") }
 }
 \examples{
 # Load data
@@ -94,17 +108,17 @@ add = "jitter")
 ggviolin(df, x = "dose", y = "len",
 add = "jitter", shape = "dose")
 
-# Add pointrange
+# Add mean_sd
 ggviolin(df, x = "dose", y = "len",
- add = "pointrange")
+ add = "mean_sd")
 
-# Add crossbar
+# Change error.plot to "crossbar"
 ggviolin(df, x = "dose", y = "len",
- add = "crossbar")
+ add = "mean_sd", error.plot = "crossbar")
 
-# Combine jitter + pointrange
+# Combine jitter + mean_sd
 ggviolin(df, x = "dose", y = "len",
- add = c("jitter", "pointrange"))
+ add = c("jitter", "mean_sd"))
 
 
 
@@ -123,7 +137,7 @@ ggviolin(df, "dose", "len",
 # Change outline and fill colors
 # Change line size
 ggviolin(df, "dose", "len",
-   color = "#2E9FDF", fill = "#6D9EC1", size = 1.2)
+   color = "black", fill = "#6D9EC1", size = 1.2)
 
 # Change outline colors by groups: dose
 ggviolin(df, "dose", "len", color = "dose")

@@ -1,7 +1,8 @@
 #' @include utilities.R ggpar.R
 NULL
 #' Box plot
-#'
+#' @description Create a box plot with points. Box plots display a group of
+#'   numerical data through their quartiles.
 #' @param data a data frame
 #' @param x,y x and y variables for drawing.
 #' @param color,fill outline and fill colors.
@@ -10,17 +11,27 @@ NULL
 #'   palettes e.g. "RdBu", "Blues", ...; or a character vector containing custom
 #'   color palette e.g. c("blue", "red").
 #' @param linetype line types.
-#' @param size line size.
-#' @param width box plot width.
+#' @param size change the size of points and outlines.
+#' @param width plot width.
 #' @inheritParams ggplot2::geom_boxplot
 #' @param select character vector specifying which items to display.
 #' @param order character vector specifying the order of items.
 #' @param add character vector for adding another plot element (e.g.: dot plot
-#'   or error bars). Allowed values are one or the combination of: "none", "dotplot", "jitter",
-#'   "mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median",
-#'   "median_iqr", "median_mad", "median_range".
+#'   or error bars). Allowed values are one or the combination of: "none",
+#'   "dotplot", "jitter", "boxplot", "mean", "mean_se", "mean_sd", "mean_ci",
+#'   "mean_range", "median", "median_iqr", "median_mad", "median_range"; see
+#'   ?desc_statby for more details.
 #' @param add.params parameters (color, shape, size, fill, linetype) for the
 #'   argument 'add'; e.g.: add.params = list(color = "red").
+#' @param error.plot plot type used to visualize error. Allowed values are one
+#'   of c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
+#'   "lower_errorbar", "upper_pointrange", "lower_pointrange",
+#'   "upper_linerange", "lower_linerange"). Default value is "pointrange" or "errorbar". Used
+#'   only when add != "none" and add contains one "mean_*" or "med_*" where "*"
+#'   = sd, se, ....
+#' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
+#'   Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+#'   theme_minimal(), theme_classic(), theme_void(), ....
 #' @param ... other arguments to be passed to geom_boxplot including linetype,
 #'   size, etc. (See ?geom_boxplot).
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -31,10 +42,10 @@ NULL
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
 #'
-#' @section Suggestions for the argument "add":
-#' Suggested values are one of c("dotplot", "jitter").
+#' @section Suggestions for the argument "add": Suggested values are one of
+#'   c("dotplot", "jitter").
 #'
-#' @seealso \code{\link{ggpar}}
+#' @seealso \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}} and \code{\link{ggstripchart}}.
 #' @examples
 #' # Load data
 #' data("ToothGrowth")
@@ -122,7 +133,10 @@ ggboxplot <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", size = 1, width = 1,  notch = FALSE,
                       select = NULL, order = NULL,
-                      add = "none", add.params = list(), ...)
+                      add = "none", add.params = list(),
+                      error.plot = "pointrange",
+                      ggtheme = theme_pubr(),
+                      ...)
 {
 
   data[, x] <- factor(data[, x])
@@ -133,19 +147,15 @@ ggboxplot <- function(data, x, y,
                 size = size, width = width, notch = notch,
                 position = position_dodge(0.8), size = size,...)
 
-  # Add dot
-  if(color %in% names(data) & is.null(add.params$color))  add.params$color <- color
-  if(fill %in% names(data) & is.null(add.params$fill))  add.params$fill <- fill
-  if(is.null(add.params$color)) add.params$color <- color
-  if(is.null(add.params$fill)) add.params$fill <- add.params$color
-  if(!is.null(list(...)$shape) & is.null(add.params$shape)) add.params$shape <- list(...)$shape
-  p <- .add(p, add = add, add.params = add.params)
+  # Add
+  add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
+  p <- .add(p, add = add, add.params = add.params, error.plot = error.plot)
 
   # Select and order
   if(is.null(select)) select <- order
   if (!is.null(select) | !is.null(order))
     p <- p + scale_x_discrete(limits = as.character(select))
-   p <- ggpar(p, palette = palette, ...)
+   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
 
   p
 }

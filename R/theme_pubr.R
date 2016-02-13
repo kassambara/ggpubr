@@ -63,7 +63,7 @@ labs_pubr <- function(base_size = 14, base_family = ""){
                         hjust = 0.5, vjust = 0.5, angle = 0, margin = margin(),
                         debug = FALSE),
     # Tick labels
-    axis.text = element_text(size = rel(0.86), colour = "black",face = "bold"),
+    axis.text = element_text(size = rel(0.86), colour = "black", face = "bold"),
 
     # Axis labels
     axis.title = element_text(size = rel(1), colour = "black", face = "bold"),

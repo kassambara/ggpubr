@@ -1,13 +1,16 @@
 #' @include utilities.R ggpar.R
 NULL
 #' Stripcharts
+#' @description Create a stripchart, also known as one dimensional scatter
+#'   plots. These plots are suitable compared to box plots when sample sizes are
+#'   small.
 #' @inheritParams ggboxplot
 #' @param x,y x and y variables for drawing.
 #' @param color,fill outline and fill colors.
 #' @param shape point shape
 #' @param position position adjustment, either as a string, or the result of a
-#'   call to a position adjustment function. Used to adjust position
-#'   for multiple groups.
+#'   call to a position adjustment function. Used to adjust position for
+#'   multiple groups.
 #' @param ... other arguments to be passed to geom_jitter.
 #' @details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
@@ -22,11 +25,18 @@ NULL
 #' data("ToothGrowth")
 #' df <- ToothGrowth
 #'
-#' # Basic box plot
+#' # Basic plot
 #' # +++++++++++++++++++++++++++
 #' ggstripchart(df, x = "dose", y = "len")
+#'
 #' # Change point shapes and size
-#' ggstripchart(df, "dose", "len", shape = 17, size = 2)
+#' ggstripchart(df, "dose", "len", shape = 17, size = 3)
+#'
+#' # Change point shapes by groups: "dose"
+#' ggstripchart(df, "dose", "len", shape = "dose")
+#'
+#' # Change the plot orientation: horizontal
+#' ggstripchart(df, "dose", "len", orientation = "horiz")
 #'
 #'
 #' # Select and order items
@@ -40,21 +50,27 @@ NULL
 #'
 #' # Add summary statistics
 #' # ++++++++++++++++++++++++++
+#'
 #' # Add box plot
 #' ggstripchart(df, x = "dose", y = "len",
-#' add = "boxplot")
+#'  add = "boxplot")
+#'
 #' # Add violin
 #' ggstripchart(df, x = "dose", y = "len",
-#' add = "violin")
-#' # Add pointrange
+#'  add = "violin")
+#'
+#' # Add mean_sd
 #' ggstripchart(df, x = "dose", y = "len",
-#' add = "pointrange")
-#' # Add crossbar
+#'  add = "mean_sd")
+#'
+#' # Change error.plot to "crossbar"
 #' ggstripchart(df, x = "dose", y = "len",
-#' add = "crossbar", add.params = list(width = 0.5))
-#' # Add violin + pointrange
+#'  add = "mean_sd", add.params = list(width = 0.5),
+#'  error.plot = "crossbar")
+#'
+#' # Add violin + mean_sd
 #' ggstripchart(df, x = "dose", y = "len", color = "dose",
-#' add = c("violin", "pointrange"))
+#'  add = c("violin", "mean_sd"))
 #'
 #'
 #'
@@ -84,55 +100,64 @@ NULL
 #' # Plot with multiple groups
 #' # +++++++++++++++++++++
 #' # Change shape and color by a second group : "supp"
+#' ggstripchart(df, "dose", "len", color = "supp")
+#'
+#' # Adjust point position
 #' ggstripchart(df, "dose", "len", color = "supp",
-#'   shape = "supp" )
+#'   shape = "supp", position = position_dodge(0.8) )
+#'
+#' # You can also use position_jitterdodge()
+#' # but fill aesthetic is required
+#' ggstripchart(df, "dose", "len", color = "supp", fill = "supp",
+#'   shape = "supp", position = position_jitterdodge() )
 #'
 #' # Add boxplot
 #' ggstripchart(df, "dose", "len", color = "supp", shape = "supp",
 #'  add = "boxplot", add.params = list(color = "black") )
 #'
-#' # Change point position
-#' ggstripchart(df, "dose", "len", color = "supp",
-#'   shape = "supp", add = "boxplot", position = position_dodge(0.8) )
-#'
-#'
 #' @export
 ggstripchart <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
-                      shape = 19,
+                      shape = 19, size = 2,
                       select = NULL, order = NULL,
-                      add = c("none", "boxplot", "violin", "pointrange", "crossbar"),
+                      add = "mean_se",
                       add.params = list(),
+                      error.plot = "pointrange",
                       position = position_jitter(0.4),
+                      ggtheme = theme_pubr(),
                       ...)
 {
 
   data[, x] <- factor(data[, x])
+
   p <- ggplot(data, aes_string(x, y))
   if("none" %in% add) add <- "none"
 
-  # if Add = c("boxplot", "violin"), we first plot add then stripchart
-  if(is.null(add.params$color)) add.params$color <- color
-  if(is.null(add.params$fill)) add.params$fill <- fill
-
-  if( any( c("boxplot", "violin", "crossbar") %in% add))
-    p <- .add(p, add = intersect(add, c("boxplot", "violin", "crossbar")),
+  add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
+  # plot boxplot | violin | crossbar before jitter
+  if( any( c("boxplot", "violin") %in% add)){
+    p <- .add(p, add = intersect(add, c("boxplot", "violin")),
               add.params = add.params, data = data)
-
+  }
+  if(error.plot == "crossbar"){
+    p <- .add(p, add = setdiff(add, c("boxplot", "violin", "jitter")),
+              add.params = add.params, data = data, error.plot = error.plot)
+  }
+  # Plot jitter
   p <- p +
       .geom_exec(geom_jitter, data = data,
                 color = color, fill = fill, shape = shape,
-                position = position, ...)
-
-  if("pointrange" %in% add) p <- .add(p, add = "pointrange", add.params = add.params, data = data,
-                                      position = position_dodge(0.3))
-
+                position = position, size = size, ...)
+  # Add errors
+  if(error.plot == "crossbar"){}
+  else p <- .add(p, add = setdiff(add, c("boxplot", "violin", "jitter")),
+            add.params = add.params, error.plot = error.plot)
 
   # Select and order
   if(is.null(select)) select <- order
   if (!is.null(select) | !is.null(order))
     p <- p + scale_x_discrete(limits = as.character(select))
-   p <- ggpar(p, palette = palette, ...)
+   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
 
   p
 }
