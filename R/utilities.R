@@ -364,7 +364,7 @@ p
   font <- .parse_font(font.legend)
 
    p <- p + theme(legend.position = legend) +
-     labs(color = legend.title, fill = legend.title, linetype = legend.title)
+     labs(color = legend.title, fill = legend.title, linetype = legend.title, shape = legend.title)
 
    if(!is.null(font)){
      p <- p + theme(
