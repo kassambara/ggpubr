@@ -277,19 +277,19 @@ NULL
     else
       ticks <- element_blank()
     if (is.null(font.tickslab))
-      font <- c(12, "bold", "black")
+      font <- list(size = 12, face = "bold", color = "black")
     else
-      font <- font.tickslab
+      font <- .parse_font(font.tickslab)
     if (tickslab) {
       xtickslab <-
         element_text(
-          size = as.numeric(font[1]), face = font[2],
-          colour = font[3], angle = xtickslab.rt
+          size = font$size, face = font$face,
+          colour = font$color
         )
       ytickslab <-
         element_text(
-          size = as.numeric(font[1]), face = font[2],
-          colour = font[3], angle = ytickslab.rt
+          size = font$size, face = font$face,
+          colour = font$color
         )
     }
     else {
