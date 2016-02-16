@@ -361,12 +361,19 @@ p
 {
   if(!inherits(legend, "numeric")) legend <- match.arg(legend)
   if(is.null(legend.title)) legend.title = waiver()
+  font <- .parse_font(font.legend)
 
    p <- p + theme(legend.position = legend) +
      labs(color = legend.title, fill = legend.title, linetype = legend.title)
-   if(!is.null(font.legend))
-     p <- p + theme(legend.text=element_text(size = as.numeric(font.legend[1]),
-                                             face = font.legend[2], colour = font.legend[3]))
+
+   if(!is.null(font)){
+     p <- p + theme(
+       legend.text = element_text(size = font$size,
+                                  face = font$face, colour = font$color),
+       legend.title = element_text(size = font$size,
+                                   face = font$face, colour = font$color)
+     )
+   }
 
    p
 }
