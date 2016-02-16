@@ -21,7 +21,7 @@ NULL
     # general
     "color", "colour", "linetype", "fill", "size", "shape", "width",
     "alpha", "na.rm", "lwd", "pch", "cex", "position", "stat", "geom",
-    "show.legend", "inherit.aes", "fun.args",
+    "show.legend", "inherit.aes", "fun.args", "fontface",
     # boxplot
     "outlier.colour", "outlier.shape", "outlier.size",
     "outlier.stroke", "notch", "notchwidth", "varwidth",
@@ -42,7 +42,7 @@ NULL
     if (is.null(value)) {
 
     }
-    else if (value %in% columns) {
+    else if (value[1] %in% columns) {
       mapping[[key]] <- value
 
     }
@@ -583,7 +583,7 @@ p
   if(is.null(font)) res <- NULL
   else{
     # matching size and face
-    size <- grep("[0-9]+", font, perl = TRUE)
+    size <- grep("^[0-9]+$", font, perl = TRUE)
     face <- grep("plain|bold|italic|bold.italic", font, perl = TRUE)
     if(length(size) == 0) size <- NULL else size <- as.numeric(font[size])
     if(length(face) == 0) face <- NULL else face <- font[face]
