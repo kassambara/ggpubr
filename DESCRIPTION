@@ -27,6 +27,7 @@ Collate:
     'ggdotplot.R'
     'ggerrorplot.R'
     'ggline.R'
+    'ggpie.R'
     'ggstripchart.R'
     'ggviolin.R'
     'theme_pubr.R'
