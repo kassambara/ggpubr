@@ -216,6 +216,12 @@ NULL
 .labs <- function(p, main = NULL, xlab = NULL, ylab = NULL,
                   font.main = NULL, font.x = NULL, font.y = NULL)
 {
+
+  font.main <- .parse_font(font.main)
+  font.x <- .parse_font(font.x)
+  font.y <- .parse_font(font.y)
+
+
   if (!is.null(main)) {
     if (main != FALSE)
       p <- p + labs(title = main)
@@ -237,24 +243,24 @@ NULL
 
   if (!is.null(font.main))
     p <-
-      p + theme(
-        plot.title = element_text(
-          size = as.numeric(font.main[1]),
-          lineheight = 1.0, face = font.main[2], colour = font.main[3]
-        )
+    p + theme(
+      plot.title = element_text(
+        size = font.main$size,
+        lineheight = 1.0, face = font.main$face, colour = font.main$color
       )
+    )
   if (!is.null(font.x))
     p <-
-      p + theme(axis.title.x = element_text(
-        size = as.numeric(font.x[1]),
-        face = font.x[2], colour = font.x[3]
-      ))
+    p + theme(axis.title.x = element_text(
+      size = font.x$size,
+      face = font.x$face, colour = font.x$color
+    ))
   if (!is.null(font.y))
     p <-
-      p + theme(axis.title.y = element_text(
-        size = as.numeric(font.y[1]),
-        face = font.y[2], colour = font.y[3]
-      ))
+    p + theme(axis.title.y = element_text(
+      size = font.y$size,
+      face = font.y$face, colour = font.y$color
+    ))
   p
 }
 
