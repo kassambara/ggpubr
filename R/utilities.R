@@ -284,12 +284,12 @@ NULL
       xtickslab <-
         element_text(
           size = font$size, face = font$face,
-          colour = font$color
+          colour = font$color, angle = xtickslab.rt
         )
       ytickslab <-
         element_text(
           size = font$size, face = font$face,
-          colour = font$color
+          colour = font$color, angle = ytickslab.rt
         )
     }
     else {
