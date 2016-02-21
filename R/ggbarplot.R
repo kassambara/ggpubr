@@ -179,6 +179,7 @@ ggbarplot <- function(data, x, y,
   data[, x] <- factor(data[, x])
   error.plot = error.plot[1]
   lab.pos <- match.arg(lab.pos)
+  label <- as.vector(label)
   if("none" %in% add) add <- "none"
 
   # static summaries for computing mean/median and adding errors
@@ -213,7 +214,16 @@ ggbarplot <- function(data, x, y,
             add.params = add.params, error.plot = error.plot)
 
    # Add labels
-   if(label) {
+   add.label <- FALSE
+   if(is.logical(label)){
+     .lab <- y
+     add.label <- label
+   } else {
+     .lab <- label
+     add.label <- TRUE
+   }
+
+   if(add.label) {
      if(is.null(lab.vjust)) lab.vjust <- ifelse(lab.pos == "out", -0.4, 2 )
       # pos <- "identity"
       # if color or fill by groups
@@ -221,12 +231,12 @@ ggbarplot <- function(data, x, y,
      if(any(.cols %in% names(data))){
        .in <- which(.cols %in% names(data))
        lab.fill <- .cols[.in]
-       p <- p + .geom_exec(geom_text, data = data_sum, label = y,  fill = lab.fill,
+       p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,  fill = lab.fill,
                            vjust = lab.vjust, size = lab.size, color = lab.col,
                            fontface = "bold", position = position)
      }
      else{
-     p <- p + .geom_exec(geom_text, data = data_sum, label = y,
+     p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,
                          vjust = lab.vjust, size = lab.size, color = lab.col,
                          fontface = "bold", position = position)
      }
