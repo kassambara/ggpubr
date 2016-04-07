@@ -41,7 +41,8 @@ theme_pubr <-
 
         # Axis
         axis.title = element_text(size = rel(1), colour = "black", face = "bold"),
-        axis.line = element_line(colour = "black", size = 1),
+        axis.line.x = element_line(colour = "black", size = 1),
+        axis.line.y = element_line(colour = "black", size = 1),
         axis.ticks = element_line(colour = "black", size = 1),
 
         # Main title
