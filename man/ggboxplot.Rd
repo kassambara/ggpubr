@@ -83,10 +83,8 @@ df <- ToothGrowth
 
 # Basic plot
 # +++++++++++++++++++++++++++
-ggboxplot(df, x = "dose", y = "len")
-
-# Change width
-ggboxplot(df, "dose", "len", width = 0.2)
+# width: change box plots width
+ggboxplot(df, x = "dose", y = "len", width = 0.8)
 
 # Change orientation: horizontal
 ggboxplot(df, "dose", "len", orientation = "horizontal")
@@ -95,18 +93,14 @@ ggboxplot(df, "dose", "len", orientation = "horizontal")
 ggboxplot(df, x = "dose", y = "len",
    notch = TRUE)
 
-# Add dot
+# Add dots
 # ++++++++++++++++++++++++++
 ggboxplot(df, x = "dose", y = "len",
    add = "dotplot")
 
-# Add jitter
+# Add jitter points and change the shape by groups
 ggboxplot(df, x = "dose", y = "len",
-   add = "jitter")
-
-# Change jitter shape by groups: "dose"
-ggboxplot(df, x = "dose", y = "len",
-  add = "jitter", shape = "dose")
+   add = "jitter", shape = "dose")
 
 
 # Select and order items
