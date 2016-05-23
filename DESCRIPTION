@@ -30,4 +30,6 @@ Collate:
     'ggpie.R'
     'ggstripchart.R'
     'ggviolin.R'
+    'show_line_types.R'
+    'show_point_shapes.R'
     'theme_pubr.R'
