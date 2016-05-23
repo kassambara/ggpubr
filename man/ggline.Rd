@@ -4,15 +4,20 @@
 \alias{ggline}
 \title{Line plot}
 \usage{
-ggline(data, x, y, color = "black", palette = NULL, linetype = "solid",
-  plot_type = c("b", "l", "p"), size = 1, shape = 19, select = NULL,
-  order = NULL, add = "none", add.params = list(),
-  error.plot = "errorbar", ggtheme = theme_pubr(), ...)
+ggline(data, x, y, group = 1, color = "black", palette = NULL,
+  linetype = "solid", plot_type = c("b", "l", "p"), size = 1,
+  shape = 19, select = NULL, order = NULL, add = "none",
+  add.params = list(), error.plot = "errorbar", ggtheme = theme_pubr(),
+  ...)
 }
 \arguments{
 \item{data}{a data frame}
 
 \item{x, y}{x and y variables for drawing.}
+
+\item{group}{grouping variable to connect points by line.
+Allowed values are 1 (for one line, one group) or a character vector specifying
+the name of the grouping variable (case of multiple lines).}
 
 \item{color}{line colors.}
 

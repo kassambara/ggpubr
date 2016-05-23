@@ -5,6 +5,9 @@ NULL
 #' @inheritParams ggboxplot
 #' @inheritParams ggplot2::geom_line
 #' @param x,y x and y variables for drawing.
+#' @param group grouping variable to connect points by line.
+#' Allowed values are 1 (for one line, one group) or a character vector specifying
+#' the name of the grouping variable (case of multiple lines).
 #' @param color line colors.
 #' @param linetype line type.
 #' @param plot_type plot type. Allowed values are one of "b" for both line and point;
@@ -136,7 +139,7 @@ NULL
 #'
 #'
 #' @export
-ggline <- function(data, x, y,
+ggline <- function(data, x, y, group = 1,
                       color = "black", palette = NULL,
                       linetype = "solid",
                       plot_type = c("b", "l", "p"),
@@ -162,7 +165,7 @@ ggline <- function(data, x, y,
   errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
   if(any(errors %in% add)) {
     data_sum <- desc_statby(data, measure.var = y,
-                        grps = intersect(c(x, color, linetype), names(data)))
+                        grps = intersect(c(x, color, linetype, group), names(data)))
     .center <- intersect(c("mean", "median"), add)
     errors <- c("mean_se", "mean_sd", "mean_ci", "mean_range", "median_iqr", "median_mad", "median_range")
     if(length(.center) == 2) stop("Use mean or mdedian, but not both at the same time.")
@@ -173,7 +176,7 @@ ggline <- function(data, x, y,
   }
   else data_sum <- data
 
-  group = 1
+  group = group
   .cols <- unique(c(color, linetype))
   if(any(.cols %in% names(data))){
     .in <- which(.cols %in% names(data))
