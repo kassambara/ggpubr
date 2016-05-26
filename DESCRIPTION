@@ -11,6 +11,7 @@ LazyData: TRUE
 Depends:
     ggplot2
 Imports:
+    ggsci,
     plyr
 Suggests:
     knitr,
@@ -28,6 +29,9 @@ Collate:
     'ggerrorplot.R'
     'ggline.R'
     'ggpie.R'
+    'stat_conf_ellipse.R'
+    'stat_chull.R'
+    'ggscatter.R'
     'ggstripchart.R'
     'ggviolin.R'
     'show_line_types.R'
