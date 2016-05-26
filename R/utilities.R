@@ -33,7 +33,10 @@ NULL
     # error
     "ymin", "ymax", "xmin", "xmax",
     # text
-    "label", "hjust", "vjust", "fontface"
+    "label", "hjust", "vjust", "fontface",
+    # smooth
+    "se", "level", "fullrange"
+
   )
 
   columns <- colnames(data)
@@ -153,12 +156,19 @@ NULL
     'Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
   )
 
+  # Scientific Journal and Sci-Fi Themed Color Palettes for ggplot2
+  # ggsci package: https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html
+  ggscipal <- c("npg", "aaas", "lancet", "jco",
+                "ucscgb", "uchicago", "simpsons", "rickandmorty")
+
   res <- NULL
   if (is.null(palette))
     palette <- ""
   if (length(palette) == 1) {
     if (palette %in% brewerpal)
       ggplot2::scale_color_brewer(..., palette = palette)
+    else if (palette %in% ggscipal)
+      .scale_color_ggsci(palette = palette)
     else if (palette == "grey")
        ggplot2::scale_color_grey(..., start = 0.8, end = 0.2)
     else if (palette == "hue")
@@ -182,12 +192,19 @@ NULL
     'Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3'
   )
 
+  # Scientific Journal and Sci-Fi Themed Color Palettes for ggplot2
+  # ggsci package: https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html
+  ggscipal <- c("npg", "aaas", "lancet", "jco",
+                "ucscgb", "uchicago", "simpsons", "rickandmorty")
+
   res <- NULL
   if (is.null(palette))
     palette <- ""
   if (length(palette) == 1) {
     if (palette %in% brewerpal)
       ggplot2::scale_fill_brewer(..., palette = palette)
+    else if (palette %in% ggscipal)
+      .scale_fill_ggsci(palette = palette)
     else if (palette == "grey")
       ggplot2::scale_fill_grey(..., start = 0.8, end = 0.2)
     else if (palette == "hue")
@@ -197,6 +214,47 @@ NULL
     ggplot2::scale_fill_manual(..., values = palette)
 }
 
+
+
+# Helper function to use palette from ggsci package
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+.scale_color_ggsci <- function(palette = c("npg", "aaas", "lancet", "jco",
+                                           "ucscgb", "uchicago", "simpsons", "rickandmorty"))
+{
+
+ pal <- match.arg(palette)
+
+  functs <- list(
+    npg = ggsci::scale_color_npg(),
+    aaas = ggsci::scale_color_aaas(),
+    lancet = ggsci::scale_color_lancet(),
+    jco = ggsci::scale_color_jco(),
+    ucscgb = ggsci::scale_color_ucscgb(),
+    uchicago = ggsci::scale_color_uchicago(),
+    simpsons = ggsci::scale_color_simpsons(),
+    rickandmorty = ggsci::scale_color_rickandmorty()
+  )
+  functs[[pal]]
+}
+
+.scale_fill_ggsci <- function(palette = c("npg", "aaas", "lancet", "jco",
+                                           "ucscgb", "uchicago", "simpsons", "rickandmorty"))
+{
+
+  pal <- match.arg(palette)
+
+  functs <- list(
+    npg = ggsci::scale_fill_npg(),
+    aaas = ggsci::scale_fill_aaas(),
+    lancet = ggsci::scale_fill_lancet(),
+    jco = ggsci::scale_fill_jco(),
+    ucscgb = ggsci::scale_fill_ucscgb(),
+    uchicago = ggsci::scale_fill_uchicago(),
+    simpsons = ggsci::scale_fill_simpsons(),
+    rickandmorty = ggsci::scale_fill_rickandmorty()
+  )
+  functs[[pal]]
+}
 
 
 # Set plot orientation

@@ -7,7 +7,8 @@ NULL
 #' @param palette the color palette to be used for coloring or filling by
 #'   groups. Allowed values include "grey" for grey color palettes; brewer
 #'   palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-#'   "red").
+#'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
+#'   "ucscgb", "uchicago", "simpsons" and "rickandmorty".
 #' @param main plot main title.
 #' @param xlab,ylab character vector specifying x and y axis labels,
 #'   respectively. Use xlab = FALSE and ylab = FALSE to hide xlab and ylab,

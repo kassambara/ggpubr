@@ -20,7 +20,8 @@ ggpar(p, palette = NULL, main = NULL, xlab = NULL, ylab = NULL,
 \item{palette}{the color palette to be used for coloring or filling by
 groups. Allowed values include "grey" for grey color palettes; brewer
 palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-"red").}
+"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
+"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{main}{plot main title.}
 
