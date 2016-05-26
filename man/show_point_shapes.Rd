@@ -2,7 +2,7 @@
 % Please edit documentation in R/show_point_shapes.R
 \name{show_point_shapes}
 \alias{show_point_shapes}
-\title{Point shapes in R}
+\title{Point shapes available in R}
 \usage{
 show_point_shapes()
 }

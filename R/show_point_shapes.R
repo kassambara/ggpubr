@@ -1,6 +1,6 @@
 #' @include utilities.R
 NULL
-#' Point shapes in R
+#' Point shapes available in R
 #' @description Show point shapes available in R.
 #' @return a ggplot.
 #'
