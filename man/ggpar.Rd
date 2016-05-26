@@ -127,6 +127,8 @@ ggpar(p2, palette = "Dark2" )
 # Use grey palette
 ggpar(p2, palette = "grey")
 
+# Use scientific journal palette from ggsci package
+ggpar(p2, palette = "npg") # nature
 
 # Axis ticks, limits, scales
 # +++++++++++++++++++++++++
