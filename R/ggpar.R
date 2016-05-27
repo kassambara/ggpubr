@@ -93,6 +93,8 @@ NULL
 #' # Use grey palette
 #' ggpar(p2, palette = "grey")
 #'
+#' # Use scientific journal palette from ggsci package
+#' ggpar(p2, palette = "npg") # nature
 #'
 #' # Axis ticks, limits, scales
 #' # +++++++++++++++++++++++++
@@ -136,7 +138,7 @@ ggpar <- function(p, palette = NULL,
   {
   p <- p + .ggcolor(palette)+
     .ggfill(palette)+
-     ggtheme + labs_pubr() +
+     ggtheme + # labs_pubr() +
     .set_ticks(ticks, tickslab, font.tickslab,
                xtickslab.rt, ytickslab.rt)
   p <- .set_ticksby(p, xticks.by, yticks.by)
