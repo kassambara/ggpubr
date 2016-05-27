@@ -6,7 +6,7 @@
 \usage{
 stat_conf_ellipse(mapping = NULL, data = NULL, geom = "path",
   position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, level.conf = 0.95, npoint = 100, bary = TRUE, ...)
+  inherit.aes = TRUE, level = 0.95, npoint = 100, bary = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -45,7 +45,7 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link{borders}}.}
 
-\item{level.conf}{confidence level used to construct the ellipses. By
+\item{level}{confidence level used to construct the ellipses. By
 default, 0.95.}
 
 \item{npoint}{number of points used to draw the ellipses.}

@@ -6,7 +6,7 @@ NULL
 #'   \code{\link[FactoMineR]{coord.ellipse}}.
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::stat_ellipse
-#' @param level.conf confidence level used to construct the ellipses. By
+#' @param level confidence level used to construct the ellipses. By
 #'   default, 0.95.
 #' @param npoint number of points used to draw the ellipses.
 #' @param bary logical value. If TRUE, the coordinates of the ellipse around the
@@ -28,12 +28,12 @@ NULL
 #' @export
 stat_conf_ellipse <- function(mapping = NULL, data = NULL, geom = "path",
                     position = "identity", na.rm = FALSE, show.legend = NA,
-                    inherit.aes = TRUE, level.conf = 0.95, npoint = 100, bary = TRUE,
+                    inherit.aes = TRUE, level = 0.95, npoint = 100, bary = TRUE,
                     ...) {
   layer(
     stat = StatConfEllipse, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm,  level.conf = level.conf, npoint = npoint, bary = bary, ...)
+    params = list(na.rm = na.rm,  level = level, npoint = npoint, bary = bary, ...)
   )
 }
 
@@ -41,22 +41,22 @@ stat_conf_ellipse <- function(mapping = NULL, data = NULL, geom = "path",
 StatConfEllipse <- ggproto("StatConfEllipse", Stat,
                    required_aes = c("x", "y"),
 
-                  compute_group = function(data, scales, params, level.conf = 0.95,
+                  compute_group = function(data, scales, params, level = 0.95,
                                            npoint = 100, bary = TRUE) {
 
-                    .coord_ellipse (data$x, data$y, level.conf = level.conf,
+                    .coord_ellipse (data$x, data$y, level = level,
                                                 npoint = npoint, bary = bary)
                   }
 )
 
 # Compute confidence ellipses.
 #  x,y x and y variables for drawing.
-#  level.conf confidence level used to construct the ellipses. By
+#  level confidence level used to construct the ellipses. By
 #   default, 0.95.
 #  npoint number of points used to draw the ellipses.
 #  bary logical value. If TRUE, the coordinates of the ellipse around the
 #   barycentre of individuals are calculated.
-.coord_ellipse <- function ( x, y, level.conf = 0.95,
+.coord_ellipse <- function ( x, y, level = 0.95,
           npoint = 100, bary = FALSE)
 {
 
@@ -93,6 +93,6 @@ StatConfEllipse <- ggproto("StatConfEllipse", Stat,
   mat.cov <- stats::cov(tab)
   if (bary)
   mat.cov = mat.cov/nrow(tab)
-  res <- .ellipse(mat.cov, centre = center, level = level.conf, npoints = npoint)
+  res <- .ellipse(mat.cov, centre = center, level = level, npoints = npoint)
   return(res)
 }
