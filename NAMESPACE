@@ -3,6 +3,7 @@
 export(desc_statby)
 export(ggbarplot)
 export(ggboxplot)
+export(ggdensity)
 export(ggdotplot)
 export(ggerrorplot)
 export(ggline)

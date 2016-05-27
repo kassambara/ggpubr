@@ -12,6 +12,7 @@ Depends:
     ggplot2
 Imports:
     ggrepel,
+    grid,
     ggsci,
     plyr
 Suggests:
@@ -26,6 +27,7 @@ Collate:
     'ggpar.R'
     'ggbarplot.R'
     'ggboxplot.R'
+    'ggdensity.R'
     'ggdotplot.R'
     'ggerrorplot.R'
     'ggline.R'
