@@ -5,10 +5,13 @@
 \title{Scatter plot}
 \usage{
 ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
-  shape = 19, size = 2, rug = FALSE, add = c("none", "reg.line",
-  "loess"), add.params = list(), conf.int = FALSE, conf.int.level = 0.95,
-  fullrange = FALSE, ellipse = FALSE, ellipse.level = 0.95,
-  ellipse.type = "norm", ellipse.alpha = 0.1, ggtheme = theme_pubr(), ...)
+  shape = 19, size = 2, point = TRUE, rug = FALSE, add = c("none",
+  "reg.line", "loess"), add.params = list(), conf.int = FALSE,
+  conf.int.level = 0.95, fullrange = FALSE, ellipse = FALSE,
+  ellipse.level = 0.95, ellipse.type = "norm", ellipse.alpha = 0.1,
+  mean.point = FALSE, mean.point.size = 2 * size, label = NULL,
+  label.size = 5, label.select = NULL, repel = FALSE,
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -25,6 +28,8 @@ color palette e.g. c("blue", "red").}
 \item{shape}{point shape. See \code{\link{show_point_shapes}}.}
 
 \item{size}{change the size of points and outlines.}
+
+\item{point}{logical value. If TRUE, show points.}
 
 \item{rug}{logical value. If TRUE, add marginal rug.}
 
@@ -48,11 +53,26 @@ data. Used only when add != "none".}
 probability.}
 
 \item{ellipse.type}{Character specifying frame type. Possible values are
-'convex', 'confidence' or types supporeted by \code{\link[ggplot2]{stat_ellipse}}
-including one of c("t", "norm", "euclid").}
+'convex', 'confidence' or types supporeted by
+\code{\link[ggplot2]{stat_ellipse}} including one of c("t", "norm",
+"euclid").}
 
 \item{ellipse.alpha}{Alpha for ellipse specifying the transparency level of
 fill color. Use alpha = 0 for no fill color.}
+
+\item{mean.point}{logical value. If TRUE, group mean points are added to the
+plot.}
+
+\item{mean.point.size}{numeric value specifying the size of mean points.}
+
+\item{label}{the name of the column containing point labels.}
+
+\item{label.size}{text size for point labels.}
+
+\item{label.select}{character vector specifying some labels to show.}
+
+\item{repel}{a logical value, whether to use ggrepel to avoid overplotting text
+labels or not.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -117,12 +137,13 @@ ggscatter(df, x = "wt", y = "mpg", color = "cyl",
    palette = "grey" )
 
 
-# Add ellipse
+# Add group ellipses and mean points
 # +++++++++++++++++++
 
-ggscatter(df, x = "wt", y = "mpg", color = "cyl",
+ggscatter(df, x = "wt", y = "mpg",
+   color = "cyl", shape = "cyl",
    palette = c('#999999','#E69F00','#56B4E9'),
-   ellipse = TRUE)
+   ellipse = TRUE, mean.point = TRUE)
 
 
 # Textual annotation
