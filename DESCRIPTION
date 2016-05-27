@@ -11,6 +11,7 @@ LazyData: TRUE
 Depends:
     ggplot2
 Imports:
+    ggrepel,
     ggsci,
     plyr
 Suggests:
@@ -36,4 +37,5 @@ Collate:
     'ggviolin.R'
     'show_line_types.R'
     'show_point_shapes.R'
+    'stat_mean.R'
     'theme_pubr.R'
