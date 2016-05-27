@@ -10,8 +10,9 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   conf.int.level = 0.95, fullrange = FALSE, ellipse = FALSE,
   ellipse.level = 0.95, ellipse.type = "norm", ellipse.alpha = 0.1,
   mean.point = FALSE, mean.point.size = 2 * size, label = NULL,
-  label.size = 5, label.select = NULL, repel = FALSE,
-  ggtheme = theme_pubr(), ...)
+  label.size = 5, label.select = NULL, repel = FALSE, cor.coef = FALSE,
+  cor.method = "pearson", cor.coef.coord = c(NULL, NULL),
+  cor.coef.size = 12, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -71,8 +72,19 @@ plot.}
 
 \item{label.select}{character vector specifying some labels to show.}
 
-\item{repel}{a logical value, whether to use ggrepel to avoid overplotting text
-labels or not.}
+\item{repel}{a logical value, whether to use ggrepel to avoid overplotting
+text labels or not.}
+
+\item{cor.coef}{logical value. If TRUE, correlation coefficient with the
+p-value will be added to the plot.}
+
+\item{cor.method}{method for computing correlation coefficient. Allowed
+values are one of "pearson", "kendall", or "spearman".}
+
+\item{cor.coef.coord}{numeric vector, of length 2, specifying the x and y
+coordinates of the correlation coefficient. Default values are NULL.}
+
+\item{cor.coef.size}{correlation coefficient text font size.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -103,9 +115,12 @@ head(df[, c("wt", "mpg", "cyl")], 3)
 # Basic plot
 # +++++++++++++++++++++++++++
 ggscatter(df, x = "wt", y = "mpg",
-   color = "black", shape = 21, size = 3, # point color, shape and size
-   add = "reg.line", add.params = list(color = "blue", fill = "lightgray"),
-   conf.int = TRUE)
+   color = "black", shape = 21, size = 3, # Points color, shape and size
+   add = "reg.line",  # Add regressin line
+   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE, # Add confidence interval
+   cor.coef = TRUE # Add correlation coefficient
+   )
 
 # loess method: local regression fitting
 ggscatter(df, x = "wt", y = "mpg",

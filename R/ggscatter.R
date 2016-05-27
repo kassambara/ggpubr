@@ -32,8 +32,15 @@ NULL
 #' @param label the name of the column containing point labels.
 #' @param label.size text size for point labels.
 #' @param label.select character vector specifying some labels to show.
-#' @param repel a logical value, whether to use ggrepel to avoid overplotting text
-#'   labels or not.
+#' @param repel a logical value, whether to use ggrepel to avoid overplotting
+#'   text labels or not.
+#' @param cor.coef logical value. If TRUE, correlation coefficient with the
+#'   p-value will be added to the plot.
+#' @param cor.method method for computing correlation coefficient. Allowed
+#'   values are one of "pearson", "kendall", or "spearman".
+#' @param cor.coef.coord numeric vector, of length 2, specifying the x and y
+#'  coordinates of the correlation coefficient. Default values are NULL.
+#' @param cor.coef.size correlation coefficient text font size.
 #' @param ... other arguments to be passed to \code{\link[ggplot2]{geom_point}}
 #'   and \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -54,9 +61,12 @@ NULL
 #' # Basic plot
 #' # +++++++++++++++++++++++++++
 #' ggscatter(df, x = "wt", y = "mpg",
-#'    color = "black", shape = 21, size = 3, # point color, shape and size
-#'    add = "reg.line", add.params = list(color = "blue", fill = "lightgray"),
-#'    conf.int = TRUE)
+#'    color = "black", shape = 21, size = 3, # Points color, shape and size
+#'    add = "reg.line",  # Add regressin line
+#'    add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+#'    conf.int = TRUE, # Add confidence interval
+#'    cor.coef = TRUE # Add correlation coefficient
+#'    )
 #'
 #' # loess method: local regression fitting
 #' ggscatter(df, x = "wt", y = "mpg",
@@ -111,6 +121,7 @@ ggscatter <- function(data, x, y,
                       ellipse.type = "norm", ellipse.alpha = 0.1,
                       mean.point = FALSE, mean.point.size = 2*size,
                       label = NULL, label.size = 5, label.select = NULL, repel = FALSE,
+                      cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
                       ggtheme = theme_pubr(),
                       ...)
 {
@@ -202,6 +213,19 @@ ggscatter <- function(data, x, y,
                           label = label, size = label.size, vjust = -0.7)
   }
 
+  # Add correlation coefficient
+  if(cor.coef){
+
+    coeff <- stats::cor.test(data[, x, drop = TRUE], data[, y, drop = TRUE],
+                             method = cor.method)
+    pval <- coeff$p.value
+    pvaltxt <- ifelse(pval < 1e-04, "p < 0.0001",
+                      paste("p =", signif(pval, 2)))
+     cortxt <- paste0("r = ", signif(coeff$estimate, 2),
+                     "\n",  pvaltxt)
+    p <- p + .ggannotate(cortxt, size = cor.coef.size, coord = cor.coef.coord)
+  }
+
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
   p
@@ -265,22 +289,6 @@ ggscatter <- function(data, x, y,
 }
 
 
-
-
-# Return the coordinates of groups levels
-# x : coordinate of individuals on x axis
-# y : coordinate of indiviuals on y axis
-# .get_coord_groups<-function(data, x, y, groups){
-#
-#   data %>% group_by_(groups) %>%
-#     summa
-#   x_val <- data[, x]
-#   y_val <- data[, y]
-#   data.frame(
-#     x= tapply(x_val, groups, mean),
-#     y = tapply(y_val, groups, mean)
-#   )
-# }
 
 
 
