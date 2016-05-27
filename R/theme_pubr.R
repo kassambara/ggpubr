@@ -27,7 +27,7 @@ NULL
 #' @rdname theme_pubr
 #' @export
 theme_pubr <-
-  function (base_size = 16, base_family = "")
+  function (base_size = 14, base_family = "")
   {
     theme_bw(base_size = base_size, base_family = base_family) %+replace%
       theme(

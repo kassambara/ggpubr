@@ -5,7 +5,7 @@
 \alias{theme_pubr}
 \title{Publication ready theme}
 \usage{
-theme_pubr(base_size = 16, base_family = "")
+theme_pubr(base_size = 14, base_family = "")
 
 labs_pubr(base_size = 14, base_family = "")
 }
