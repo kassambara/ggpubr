@@ -7,7 +7,7 @@
 ggdensity(data, x, y = "..density..", color = "black", fill = NA,
   palette = NULL, size = 1, linetype = "solid", alpha = 0.5,
   add = c("none", "mean", "median"), add.params = list(linetype = "dashed"),
-  ggtheme = theme_pubr(), ...)
+  rug = FALSE, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -35,6 +35,8 @@ median line, respectively).}
 
 \item{add.params}{parameters (color, size, linetype) for the argument 'add';
 e.g.: add.params = list(color = "red").}
+
+\item{rug}{logical value. If TRUE, add marginal rug.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -70,16 +72,17 @@ ggdensity(wdata, x = "weight", fill = "lightgray",
 
 # Change outline and fill colors by groups ("sex")
 ggdensity(wdata, x = "weight",
-   color = "sex", fill = "sex", add = "mean")
+   color = "sex", fill = "sex",
+   add = "mean", rug = TRUE)
 
 # Change color palette: custom palette
 ggdensity(wdata, x = "weight",
-   color = "sex",  add = "mean",
+   color = "sex",  add = "mean", rug = TRUE,
    palette = c("#999999", "#E69F00"))
 
 # Use brewer palette
 ggdensity(wdata, x = "weight",
-   color = "sex", add = "mean",
+   color = "sex", add = "mean", rug = TRUE,
    palette = "Paired")
 
 }

@@ -13,6 +13,7 @@ NULL
 #'   median line, respectively).
 #' @param add.params parameters (color, size, linetype) for the argument 'add';
 #'   e.g.: add.params = list(color = "red").
+#' @param rug logical value. If TRUE, add marginal rug.
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_density}} and \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -39,16 +40,17 @@ NULL
 #'
 #' # Change outline and fill colors by groups ("sex")
 #' ggdensity(wdata, x = "weight",
-#'    color = "sex", fill = "sex", add = "mean")
+#'    color = "sex", fill = "sex",
+#'    add = "mean", rug = TRUE)
 #'
 #' # Change color palette: custom palette
 #' ggdensity(wdata, x = "weight",
-#'    color = "sex",  add = "mean",
+#'    color = "sex",  add = "mean", rug = TRUE,
 #'    palette = c("#999999", "#E69F00"))
 #'
 #' # Use brewer palette
 #' ggdensity(wdata, x = "weight",
-#'    color = "sex", add = "mean",
+#'    color = "sex", add = "mean", rug = TRUE,
 #'    palette = "Paired")
 #'
 #' @export
@@ -57,6 +59,7 @@ ggdensity <- function(data, x, y = "..density..",
                       size = 1, linetype = "solid", alpha = 0.5,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
+                      rug = FALSE,
                       ggtheme = theme_pubr(),
                       ...)
 {
@@ -99,6 +102,18 @@ ggdensity <- function(data, x, y = "..density..",
                           xintercept = "x.mean", color = add.params$color,
                           linetype = add.params$linetype, size = add.params$size)
     }
+  }
+
+  # Add marginal rug
+  # +++++++++++
+  if(rug) {
+    .args <- .geom_exec(NULL, data = data,
+                              color = color, sides = "b")
+    mapping <- .args$mapping
+    mapping[["y"]] <- 0
+    option <- .args$option
+    option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
+    p <- p + do.call(geom_rug, option)
   }
 
 
