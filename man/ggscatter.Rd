@@ -10,9 +10,10 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   conf.int.level = 0.95, fullrange = FALSE, ellipse = FALSE,
   ellipse.level = 0.95, ellipse.type = "norm", ellipse.alpha = 0.1,
   mean.point = FALSE, mean.point.size = 2 * size, label = NULL,
-  label.size = 5, label.select = NULL, repel = FALSE, cor.coef = FALSE,
-  cor.method = "pearson", cor.coef.coord = c(NULL, NULL),
-  cor.coef.size = 12, ggtheme = theme_pubr(), ...)
+  font.label = c(12, "plain"), label.select = NULL, repel = FALSE,
+  label.rectangle = FALSE, cor.coef = FALSE, cor.method = "pearson",
+  cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -68,12 +69,18 @@ plot.}
 
 \item{label}{the name of the column containing point labels.}
 
-\item{label.size}{text size for point labels.}
+\item{font.label}{a vector of length 3 indicating respectively the size
+(e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
+the color (e.g.: "red") of point labels. For example \emph{font.label =
+c(14, "bold", "red")}. To specify only the size and the style, use font.label = c(14, "plain").}
 
 \item{label.select}{character vector specifying some labels to show.}
 
 \item{repel}{a logical value, whether to use ggrepel to avoid overplotting
 text labels or not.}
+
+\item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
+text, making it easier to read.}
 
 \item{cor.coef}{logical value. If TRUE, correlation coefficient with the
 p-value will be added to the plot.}
@@ -162,7 +169,9 @@ ggscatter(df, x = "wt", y = "mpg",
 
 
 # Textual annotation
-
+df$name <- rownames(df)
+ggscatter(df, x = "wt", y = "mpg", color = "cyl",
+   label = "name", repel = TRUE)
 
 
 }

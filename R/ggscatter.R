@@ -30,10 +30,15 @@ NULL
 #'   plot.
 #' @param mean.point.size numeric value specifying the size of mean points.
 #' @param label the name of the column containing point labels.
-#' @param label.size text size for point labels.
+#' @param font.label a vector of length 3 indicating respectively the size
+#'   (e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
+#'   the color (e.g.: "red") of point labels. For example \emph{font.label =
+#'   c(14, "bold", "red")}. To specify only the size and the style, use font.label = c(14, "plain").
 #' @param label.select character vector specifying some labels to show.
 #' @param repel a logical value, whether to use ggrepel to avoid overplotting
 #'   text labels or not.
+#' @param label.rectangle logical value. If TRUE, add rectangle underneath the
+#'   text, making it easier to read.
 #' @param cor.coef logical value. If TRUE, correlation coefficient with the
 #'   p-value will be added to the plot.
 #' @param cor.method method for computing correlation coefficient. Allowed
@@ -108,7 +113,9 @@ NULL
 #'
 #'
 #' # Textual annotation
-#'
+#' df$name <- rownames(df)
+#' ggscatter(df, x = "wt", y = "mpg", color = "cyl",
+#'    label = "name", repel = TRUE)
 #'
 #'
 #' @export
@@ -120,7 +127,8 @@ ggscatter <- function(data, x, y,
                       ellipse = FALSE, ellipse.level = 0.95,
                       ellipse.type = "norm", ellipse.alpha = 0.1,
                       mean.point = FALSE, mean.point.size = 2*size,
-                      label = NULL, label.size = 5, label.select = NULL, repel = FALSE,
+                      label = NULL,  font.label = c(12, "plain"),
+                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
                       ggtheme = theme_pubr(),
                       ...)
@@ -128,6 +136,11 @@ ggscatter <- function(data, x, y,
 
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
+  # label font
+  font.label <- .parse_font(font.label)
+  font.label$size <- ifelse(is.null(font.label$size), 12, font.label$size)
+  font.label$color <- ifelse(is.null(font.label$color), color, font.label$color)
+  font.label$face <- ifelse(is.null(font.label$face), "plain", font.label$face)
 
   p <- ggplot(data, aes_string(x, y))
 
@@ -205,12 +218,28 @@ ggscatter <- function(data, x, y,
       lab_data  <- subset(lab_data, lab_data[, label, drop = TRUE] %in% label.select,
                           drop = FALSE)
 
-    if(repel)
-      p <- p + .geom_exec(ggrepel::geom_text_repel, data = lab_data,
-                          color = color, label = label, size = label.size)
-    else
-      p <- p + .geom_exec(geom_text, data = lab_data, color = color,
-                          label = label, size = label.size, vjust = -0.7)
+    if(repel){
+      ggfunc <- ggrepel::geom_text_repel
+      if(label.rectangle) ggfunc <- ggrepel::geom_label_repel
+        p <- p + .geom_exec(ggfunc, data = lab_data,
+                          label = label, fontface = font.label$face,
+                          size = font.label$size/3, color = font.label$color,
+                          box.padding = unit(0.35, "lines"),
+                          point.padding = unit(0.3, "lines"),
+                          force = 1)
+    }
+    else{
+      ggfunc <- geom_text
+      vjust  <- -0.7
+      if(label.rectangle) {
+        ggfunc <- geom_label
+        vjust <- -0.4
+        }
+      p <- p + .geom_exec(ggfunc, data = lab_data, color = color,
+                          label = label, fontface = font.label$face,
+                          size = font.label$size/3, color = font.label$color,
+                          vjust = vjust)
+    }
   }
 
   # Add correlation coefficient
