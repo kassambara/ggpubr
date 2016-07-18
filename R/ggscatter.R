@@ -105,7 +105,6 @@ NULL
 #'
 #' # Add group ellipses and mean points
 #' # +++++++++++++++++++
-#'
 #' ggscatter(df, x = "wt", y = "mpg",
 #'    color = "cyl", shape = "cyl",
 #'    palette = c('#999999','#E69F00','#56B4E9'),
@@ -113,6 +112,7 @@ NULL
 #'
 #'
 #' # Textual annotation
+#' # +++++++++++++++++
 #' df$name <- rownames(df)
 #' ggscatter(df, x = "wt", y = "mpg", color = "cyl",
 #'    label = "name", repel = TRUE)
