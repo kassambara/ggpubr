@@ -35,7 +35,13 @@ NULL
     # text
     "label", "hjust", "vjust", "fontface",
     # smooth
-    "se", "level", "fullrange"
+    "se", "level", "fullrange",
+    # straightline
+    "xintercept", "yintercept",
+    # histograms
+    "bins",
+    # rug
+    "sides"
 
   )
 
@@ -338,7 +344,7 @@ NULL
     else
       ticks <- element_blank()
     if (is.null(font.tickslab))
-      font <- list(size = 12, face = "bold", color = "black")
+      font <- list(size = 12, face = "plain", color = "black")
     else
       font <- .parse_font(font.tickslab)
     if (tickslab) {
@@ -655,6 +661,22 @@ p
   res
 }
 
+
+# Add annotation to a plot
+# label: text to be added to a plot
+# size: text size
+# coord: x and coordinates
+.ggannotate <- function (label, size = 12, coord = c(NULL, NULL)){
+  if(is.null(unique(coord))){
+    grob <- grid::grobTree(grid::textGrob(label, x = 0.3,  y = 0.80, hjust=0,
+                                    gp = grid::gpar(col = "black", fontsize = size, fontface = "plain")))
+    ggplot2::annotation_custom(grob)
+  }
+  else{
+    ggplot2::annotate("text", x = coord[1], y = coord[2],
+                      label = label, size = size/3)
+  }
+}
 
 
 
