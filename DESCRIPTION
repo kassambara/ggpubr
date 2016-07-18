@@ -23,6 +23,7 @@ BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 5.0.1
 Collate:
     'desc_statby.R'
+    'diff_express.R'
     'utilities.R'
     'ggpar.R'
     'ggbarplot.R'
@@ -30,7 +31,9 @@ Collate:
     'ggdensity.R'
     'ggdotplot.R'
     'ggerrorplot.R'
+    'gghistogram.R'
     'ggline.R'
+    'ggmaplot.R'
     'ggpie.R'
     'stat_conf_ellipse.R'
     'stat_chull.R'
