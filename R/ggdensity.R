@@ -53,6 +53,12 @@ NULL
 #'    color = "sex", add = "mean", rug = TRUE,
 #'    palette = "Paired")
 #'
+#' # Use scientific journal palette from ggsci R package
+#' ggdensity(wdata, x = "weight",
+#'    color = "sex", add = "mean", rug = TRUE,
+#'    palette = "jco")
+#'
+#'
 #' @export
 ggdensity <- function(data, x, y = "..density..",
                       color = "black", fill = NA, palette = NULL,
