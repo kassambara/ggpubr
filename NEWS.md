@@ -1,18 +1,28 @@
 
 # ggpubr 0.1.1
 
-* ggboxplot(): Box plot
-* ggviolin(): Violin plot
-* ggdotplot(): Dot plot
-* ggstripchart(): Stripchart (jitter)
-* ggbarplot(): Bar plot
-* ggline(): Line plot
-* ggerrorplot(): Error plot
-* ggpar(): Change graphical parameters
-* theme_pubr(): Create a publication ready theme
-* labs_pubr(): Format only plot labels to a publication ready style
+## Plot two variables - X & Y: Discrete X and Continuous Y
+
+- ggboxplot(): Box plot
+- ggviolin(): Violin plot
+- ggdotplot(): Dot plot
+- ggstripchart(): Stripchart (jitter)
+- ggbarplot(): Bar plot
+- ggline(): Line plot
+- ggerrorplot(): Error plot
+
+## Graphical paramters
+   
+- ggpar(): Change graphical parameters
+- show_line_type(): Line types available in R
+- show_point_shapes(): Point shapes available in R
+- theme_pubr(): Create a publication ready theme
+- labs_pubr(): Format only plot labels to a publication ready style
+
 
 
 ## TO DO
 
 see position_jitterdodge()
+- gghighlight() : for adding rectangle or polygone to any plot for selecting a region
+- qqplot: http://stackoverflow.com/questions/4357031/qqnorm-and-qqline-in-ggplot2
