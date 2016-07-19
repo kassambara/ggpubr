@@ -23,6 +23,6 @@
 
 ## TO DO
 
-see position_jitterdodge()
+- see position_jitterdodge()
 - gghighlight() : for adding rectangle or polygone to any plot for selecting a region
-- qqplot: http://stackoverflow.com/questions/4357031/qqnorm-and-qqline-in-ggplot2
+
