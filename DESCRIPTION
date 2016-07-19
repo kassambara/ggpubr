@@ -1,6 +1,6 @@
 Package: ggpubr
 Type: Package
-Title: 'ggplot2' Publication Ready Plots
+Title: 'ggplot2' Based Publication Ready Plots
 Version: 0.1.1
 Date: 2016-01-18
 Authors@R: c(
@@ -18,7 +18,7 @@ Imports:
 Suggests:
     knitr,
     scales
-URL: http://www.sthda.com/english/wiki/ggpubr
+URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 5.0.1
 Collate:
@@ -29,14 +29,17 @@ Collate:
     'ggbarplot.R'
     'ggboxplot.R'
     'ggdensity.R'
+    'stat_conf_ellipse.R'
+    'stat_chull.R'
+    'ggdotchart.R'
     'ggdotplot.R'
+    'ggecdf.R'
     'ggerrorplot.R'
     'gghistogram.R'
     'ggline.R'
     'ggmaplot.R'
     'ggpie.R'
-    'stat_conf_ellipse.R'
-    'stat_chull.R'
+    'ggqqplot.R'
     'ggscatter.R'
     'ggstripchart.R'
     'ggviolin.R'
