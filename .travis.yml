@@ -1,0 +1,11 @@
+language: r
+r_packages:
+ - ggplot2
+ - ggrepel
+ - grid
+ - ggsci
+ - plyr
+ - knitr
+ - scales
+ - devtools
+sudo: required
