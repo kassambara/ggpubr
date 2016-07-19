@@ -37,7 +37,8 @@ theme_pubr <-
                                         size = 0.5),
         legend.key = element_blank(),
         # Tick labels
-        axis.text = element_text(size = rel(0.86), colour = "black",face = "bold"),
+        axis.text.x = element_text(size = rel(0.86), colour = "black",face = "bold"),
+        axis.text.y = element_text(size = rel(0.86), colour = "black",face = "bold"),
 
         # Axis
         axis.title = element_text(size = rel(1), colour = "black", face = "bold"),
@@ -64,7 +65,8 @@ labs_pubr <- function(base_size = 14, base_family = ""){
                         hjust = 0.5, vjust = 0.5, angle = 0, margin = margin(),
                         debug = FALSE),
     # Tick labels
-    axis.text = element_text(size = rel(0.86), colour = "black", face = "bold"),
+    axis.text.x = element_text(size = rel(0.86), colour = "black", face = "bold"),
+    axis.text.y = element_text(size = rel(0.86), colour = "black", face = "bold"),
 
     # Axis labels
     axis.title = element_text(size = rel(1), colour = "black", face = "bold"),
