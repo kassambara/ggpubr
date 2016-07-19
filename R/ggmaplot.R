@@ -118,7 +118,7 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
 
   # Plot
   set.seed(42)
-  mean <- lfc <- sig <- NULL
+  mean <- lfc <- sig <- name <- padj <-  NULL
   p <- ggplot(data, aes(x = log2(mean+1), y = lfc)) +
     geom_point(aes(color = sig), size = size)
 
