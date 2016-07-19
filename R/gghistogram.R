@@ -36,35 +36,31 @@ NULL
 #'
 #' head(wdata, 4)
 #'
-#' # Basic density plot with mean line
+#' # Basic density plot
+#' # Add mean line and marginal rug
 #' gghistogram(wdata, x = "weight", fill = "lightgray",
-#'    add = "mean")
-#'
-#' # Change outline and fill colors by groups ("sex")
-#' gghistogram(wdata, x = "weight",
-#'    color = "sex", fill = "sex",
 #'    add = "mean", rug = TRUE)
 #'
-#' # Change color palette: custom palette
+#' # Change outline colors by groups ("sex")
+#' # Use custom color palette
 #' gghistogram(wdata, x = "weight",
-#'    color = "sex",  add = "mean", rug = TRUE,
-#'    palette = c("#999999", "#E69F00"))
+#'    add = "mean", rug = TRUE,
+#'    color = "sex", palette = c("#00AFBB", "#E7B800"))
 #'
-#' # Use brewer palette
+#' # Change outline and fill colors by groups ("sex")
+#' # Use custom color palette
 #' gghistogram(wdata, x = "weight",
-#'    color = "sex", add = "mean", rug = TRUE,
-#'    palette = "Paired")
+#'    add = "mean", rug = TRUE,
+#'    color = "sex", fill = "sex",
+#'    palette = c("#00AFBB", "#E7B800"))
 #'
-#' # Use scientific journal palette from ggsci R package
-#' gghistogram(wdata, x = "weight",
-#'    color = "sex", add = "mean", rug = TRUE,
-#'    palette = "jco")
 #'
 #'
 #' # Combine histogram and density plots
 #' gghistogram(wdata, x = "weight",
-#'    fill = "sex", add = "mean", rug = TRUE,
-#'    palette = "jco", add_density = TRUE)
+#'    add = "mean", rug = TRUE,
+#'    fill = "sex", palette = c("#00AFBB", "#E7B800"),
+#'    add_density = TRUE)
 #'
 #'
 #' @export

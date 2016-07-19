@@ -17,9 +17,10 @@ ggboxplot(data, x, y, color = "black", fill = "white", palette = NULL,
 \item{color, fill}{outline and fill colors.}
 
 \item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; RColorBrewer
-palettes e.g. "RdBu", "Blues", ...; or a character vector containing custom
-color palette e.g. c("blue", "red").}
+groups. Allowed values include "grey" for grey color palettes; brewer
+palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
+"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
+"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{linetype}{line types.}
 
@@ -118,39 +119,26 @@ ggboxplot(df, "dose", "len",
 # Change colors
 # +++++++++++++++++++++++++++
 # Change outline and fill colors
-# Change line size
-
  ggboxplot(df, "dose", "len",
-   color = "#BFD5E3", fill = "#6D9EC1", size = 1.2)
+   color = "black", fill = "gray")
 
 # Change outline colors by groups: dose
- ggboxplot(df, "dose", "len", color = "dose")
+# Use custom color palette
+# Add jitter points and change the shape by groups
+ ggboxplot(df, "dose", "len",
+    color = "dose", palette =c("#00AFBB", "#E7B800", "#FC4E07"),
+    add = "jitter", shape = "dose")
 
 # Change fill color by groups: dose
- ggboxplot(df, "dose", "len", fill = "dose")
-
-# Use custom color palette
- ggboxplot(df, "dose", "len", color = "dose",
-  palette = c('#999999','#E69F00','#56B4E9') )
-
-# Use brewer palette
-ggboxplot(df, "dose", "len", color = "dose",
- palette = "Dark2", add = "jitter" )
-
-# Use grey palette
-ggboxplot(df, "dose", "len", color = "dose",
-palette = "grey" )
+ ggboxplot(df, "dose", "len",
+     fill = "dose", palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 
 
 # Box plot with multiple groups
 # +++++++++++++++++++++
 # fill or color box plot by a second group : "supp"
 ggboxplot(df, "dose", "len", color = "supp",
- palette = c('#999999','#E69F00') )
-
-# Add dot
-ggboxplot(df, "dose", "len", color = "supp",
- palette = c('#999999','#E69F00'), add = "dotplot")
+ palette = c("#00AFBB", "#E7B800"))
 
 }
 \seealso{

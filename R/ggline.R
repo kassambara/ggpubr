@@ -32,21 +32,6 @@ NULL
 #' # +++++++++++++++++++++++++++
 #' ggline(df, x = "dose", y = "len")
 #'
-#' # Change line type, point shape and color
-#' ggline(df, "dose", "len", linetype = "dashed",
-#'    shape = 18, color = "steelblue")
-#'
-#'
-#' # Select and order items
-#' # ++++++++++++++++++++++++++++++
-#' # Select which items to display: "0.5" and "2"
-#' ggline(df, "dose", "len",
-#'    select = c("D0.5", "D2"))
-#' # Change the default order of items
-#' ggline(df, "dose", "len",
-#'    order = c("D2", "D1", "D0.5"))
-#'
-#'
 #'
 #' # Plot with multiple groups
 #' # +++++++++++++++++++++
@@ -67,24 +52,11 @@ NULL
 #' # +++++++++++++++++++++
 #'
 #' # Change color by group: "supp"
+#' # Use custom color palette
 #' ggline(df2, "dose", "len",
 #'    linetype = "supp", shape = "supp",
-#'    color = "supp")
+#'    color = "supp", palette = c("#00AFBB", "#E7B800"))
 #'
-#' # Use custom colors
-#' ggline(df2, "dose", "len",
-#'    linetype = "supp", shape = "supp",
-#'    color = "supp", palette = c("#999999", "#E69F00"))
-#'
-#' # Use brewer palette
-#' ggline(df2, "dose", "len",
-#'    linetype = "supp", shape = "supp",
-#'    color = "supp", palette = "Paired")
-#'
-#' # Use grey palette
-#' ggline(df2, "dose", "len",
-#'    linetype = "supp", shape = "supp",
-#'    color = "supp", palette = "grey")
 #'
 #' # Add points and errors
 #' # ++++++++++++++++++++++++++
@@ -126,15 +98,15 @@ NULL
 #' # ++++++++++++++++++++++
 #'
 #' ggline(df3, x = "dose", y = "len", color = "supp",
-#'  add = "mean_se", palette = "Dark2")
+#'  add = "mean_se", palette = c("#00AFBB", "#E7B800"))
 #'
 #' # Add jitter
 #' ggline(df3, x = "dose", y = "len", color = "supp",
-#'  add = c("mean_se", "jitter"), palette = "Dark2")
+#'  add = c("mean_se", "jitter"), palette = c("#00AFBB", "#E7B800"))
 #'
 #' # Add dot plot
 #' ggline(df3, x = "dose", y = "len", color = "supp",
-#'  add = c("mean_se", "dotplot"), palette = "Dark2")
+#'  add = c("mean_se", "dotplot"), palette = c("#00AFBB", "#E7B800"))
 #
 #'
 #'

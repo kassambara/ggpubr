@@ -32,17 +32,10 @@ NULL
 #'    len=c(4.2, 10, 29.5))
 #' print(df)
 #'
-#' # Basic plot
+#' # Basic plot with label outsite
 #' # +++++++++++++++++++++++++++
-#' ggbarplot(df, x = "dose", y = "len")
-#'
-#' # Add labels outside bars
 #' ggbarplot(df, x = "dose", y = "len",
-#'  label = TRUE)
-#'
-#' # Add labels inside bars
-#' ggbarplot(df, x = "dose", y = "len",
-#'  label = TRUE, lab.pos = "in")
+#'   label = TRUE, label.pos = "out")
 #'
 #' # Change width
 #' ggbarplot(df, x = "dose", y = "len", width = 0.5)
@@ -50,12 +43,6 @@ NULL
 #' # Change the plot orientation: horizontal
 #' ggbarplot(df, "dose", "len", orientation = "horiz")
 #'
-#'
-#' # Select and order items
-#' # ++++++++++++++++++++++++++++++
-#' # Select which items to display: "0.5" and "2"
-#' ggbarplot(df, "dose", "len",
-#'    select = c("D0.5", "D2"))
 #' # Change the default order of items
 #' ggbarplot(df, "dose", "len",
 #'    order = c("D2", "D1", "D0.5"))
@@ -65,35 +52,20 @@ NULL
 #' # +++++++++++++++++++++++++++
 #'
 #' # Change fill and outline color
-#' # add labels
+#' # add labels inside bars
 #' ggbarplot(df, "dose", "len",
 #'  fill = "steelblue", color = "steelblue",
 #'  label = TRUE, lab.pos = "in", lab.col = "white")
 #'
 #' # Change colors by groups: dose
-#'  ggbarplot(df, "dose", "len", color = "dose")
+#' # Use custom color palette
+#'  ggbarplot(df, "dose", "len", color = "dose",
+#'    palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 #'
 #' # Change fill and outline colors by groups
 #'  ggbarplot(df, "dose", "len",
-#'    fill = "dose", color = "dose")
-#'
-#' # Use custom color palette
-#'  ggbarplot(df, "dose", "len",
-#'   color = "dose",
-#'   palette = c('#999999','#E69F00','#56B4E9') )
-#'
-#' # Change fill and outline colors using custom palette
-#'  ggbarplot(df, "dose", "len",
-#'   fill = "dose", color = "dose",
-#'   palette = c('#999999','#E69F00','#56B4E9') )
-#'
-#' # Use brewer palette
-#' ggbarplot(df, "dose", "len",
-#'  fill = "dose", color = "dose", palette = "Dark2")
-#'
-#' # Use grey palette
-#' ggbarplot(df, "dose", "len",
-#' fill = "dose", color = "dose", palette = "grey")
+#'    fill = "dose", color = "dose",
+#'    palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 #'
 #'
 #' # Plot with multiple groups
@@ -156,7 +128,7 @@ NULL
 #'
 #' # Multiple groups with error bars and jitter point
 #' ggbarplot(df3, x = "dose", y = "len", color = "supp",
-#'  add = "mean_se", palette = "Paired",
+#'  add = "mean_se", palette = c("#00AFBB", "#E7B800"),
 #'  position = position_dodge())
 #
 #'

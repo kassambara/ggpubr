@@ -23,9 +23,10 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
 \item{color, fill}{point colors.}
 
 \item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; RColorBrewer
-palettes e.g. "RdBu", "Blues", ...; or a character vector containing custom
-color palette e.g. c("blue", "red").}
+groups. Allowed values include "grey" for grey color palettes; brewer
+palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
+"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
+"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{shape}{point shape. See \code{\link{show_point_shapes}}.}
 
@@ -138,39 +139,30 @@ ggscatter(df, x = "wt", y = "mpg",
 ggscatter(df, x = "wt", y = "mpg",
    color = "#00AFBB", size = "qsec")
 
-# Add marginal rug
-# +++++++++++++++++++++++++++++
-ggscatter(df, x = "wt", y = "mpg",
-   color = "cyl", rug = TRUE)
-
 
 # Change colors
 # +++++++++++++++++++++++++++
 # Use custom color palette
+# Add marginal rug
 ggscatter(df, x = "wt", y = "mpg", color = "cyl",
-   palette = c('#999999','#E69F00','#56B4E9') )
+   palette = c("#00AFBB", "#E7B800", "#FC4E07") )
 
-# Use brewer palette
-ggscatter(df, x = "wt", y = "mpg", color = "cyl",
-   palette = "Dark2" )
 
-# Use grey palette
-ggscatter(df, x = "wt", y = "mpg", color = "cyl",
-   palette = "grey" )
 
 
 # Add group ellipses and mean points
 # +++++++++++++++++++
 ggscatter(df, x = "wt", y = "mpg",
    color = "cyl", shape = "cyl",
-   palette = c('#999999','#E69F00','#56B4E9'),
+   palette = c("#00AFBB", "#E7B800", "#FC4E07"),
    ellipse = TRUE, mean.point = TRUE)
 
 
 # Textual annotation
 # +++++++++++++++++
 df$name <- rownames(df)
-ggscatter(df, x = "wt", y = "mpg", color = "cyl",
+ggscatter(df, x = "wt", y = "mpg",
+   color = "cyl", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
    label = "name", repel = TRUE)
 
 

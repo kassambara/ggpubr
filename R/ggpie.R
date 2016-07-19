@@ -44,40 +44,26 @@ NULL
 #'
 #' # Change fill color by group
 #' # set line color to white
-#' ggpie(df, "value", label = "group",
-#'    fill = "group", color = "white")
-#'
 #' # Use custom color palette
 #'  ggpie(df, "value", label = "group",
 #'       fill = "group", color = "white",
-#'        palette = c('#999999','#E69F00','#56B4E9') )
+#'        palette = c("#00AFBB", "#E7B800", "#FC4E07") )
 #'
-#' # Use brewer palette
-#' ggpie(df, "value", label = "group",
-#'     fill = "group", color = "white", palette = "Paired")
-#'
-#' # Use grey palette
-#' ggpie(df, "value", label = "group",
-#'    fill = "group", color = "white", palette = "grey" )
 #'
 #' # Change label
 #' # ++++++++++++++++++++++++++++++++
 #'
-#' # Show values as labels
-#' ggpie(df, "value", label = df$value,
-#'    fill = "group", color = "white", palette = "Dark2")
-#'
 #' # Show group names and value as labels
 #' labs <- paste0(df$group, " (", df$value, "%)")
 #' ggpie(df, "value", label = labs,
-#'    fill = "group", color = "white", palette = "Dark2")
+#'    fill = "group", color = "white",
+#'    palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 #'
 #' # Change the position and font color of labels
-#' # change theme
 #' ggpie(df, "value", label = labs,
 #'    lab.pos = "in", lab.font = "white",
-#'    fill = "group", color = "white", palette = "Dark2",
-#'    ggtheme = theme_gray())
+#'    fill = "group", color = "white",
+#'    palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 #'
 #'
 #'

@@ -25,94 +25,64 @@ NULL
 #' data("ToothGrowth")
 #' df <- ToothGrowth
 #'
-#' # Basic plot
+#' # Basic plot with summary statistics: mean_se
 #' # +++++++++++++++++++++++++++
-#' ggstripchart(df, x = "dose", y = "len")
-#'
-#' # Change point shapes and size
-#' ggstripchart(df, "dose", "len", shape = 17, size = 3)
-#'
 #' # Change point shapes by groups: "dose"
-#' ggstripchart(df, "dose", "len", shape = "dose")
+#' ggstripchart(df, x = "dose", y = "len",
+#'    shape = "dose", size = 3,
+#'    add = "mean_se")
 #'
-#' # Change the plot orientation: horizontal
-#' ggstripchart(df, "dose", "len", orientation = "horiz")
+#' # Use mean_sd
+#' # Change error.plot to "crossbar"
+#' ggstripchart(df, x = "dose", y = "len",
+#'    shape = "dose", size = 3,
+#'    add = "mean_sd", add.params = list(width = 0.5),
+#'    error.plot = "crossbar")
 #'
 #'
-#' # Select and order items
-#' # ++++++++++++++++++++++++++++++
-#' # Select which items to display: "0.5" and "2"
-#' ggstripchart(df, "dose", "len",
-#'    select = c("0.5", "2"))
-#' # Change the default order of items
-#' ggstripchart(df, "dose", "len",
-#'    order = c("2", "1", "0.5"))
 #'
 #' # Add summary statistics
 #' # ++++++++++++++++++++++++++
 #'
 #' # Add box plot
 #' ggstripchart(df, x = "dose", y = "len",
-#'  add = "boxplot")
-#'
-#' # Add violin
-#' ggstripchart(df, x = "dose", y = "len",
-#'  add = "violin")
-#'
-#' # Add mean_sd
-#' ggstripchart(df, x = "dose", y = "len",
-#'  add = "mean_sd")
-#'
-#' # Change error.plot to "crossbar"
-#' ggstripchart(df, x = "dose", y = "len",
-#'  add = "mean_sd", add.params = list(width = 0.5),
-#'  error.plot = "crossbar")
+#'  shape = "dose", add = "boxplot")
 #'
 #' # Add violin + mean_sd
-#' ggstripchart(df, x = "dose", y = "len", color = "dose",
-#'  add = c("violin", "mean_sd"))
-#'
+#' ggstripchart(df, x = "dose", y = "len",
+#'  shape = "dose", add = c("violin", "mean_sd"))
 #'
 #'
 #' # Change colors
 #' # +++++++++++++++++++++++++++
-#' # Change colors
-#'  ggstripchart(df, "dose", "len", color = "#2E9FDF",
-#'   add = "pointrange", add.params = list(color = "red"))
-#'
 #' # Change colors by groups: dose
-#'  ggstripchart(df, "dose", "len", color = "dose",
-#'    add = "boxplot")
-#'
 #' # Use custom color palette
-#'  ggstripchart(df, "dose", "len", color = "dose",
-#'   palette = c('#999999','#E69F00','#56B4E9') )
+#'  ggstripchart(df, "dose", "len",  shape = "dose",
+#'    color = "dose", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+#'    add = "mean_sd")
 #'
-#' # Use brewer palette
-#' ggstripchart(df, "dose", "len", color = "dose",
-#'  palette = "Dark2")
-#'
-#' # Use grey palette
-#' ggstripchart(df, "dose", "len", color = "dose",
-#' palette = "grey" )
 #'
 #'
 #' # Plot with multiple groups
 #' # +++++++++++++++++++++
 #' # Change shape and color by a second group : "supp"
-#' ggstripchart(df, "dose", "len", color = "supp")
+#' ggstripchart(df, "dose", "len", shape = "supp",
+#'   color = "supp", palette = c("#00AFBB", "#E7B800"))
 #'
 #' # Adjust point position
-#' ggstripchart(df, "dose", "len", color = "supp",
-#'   shape = "supp", position = position_dodge(0.8) )
+#' ggstripchart(df, "dose", "len", shape = "supp",
+#'   color = "supp", palette = c("#00AFBB", "#E7B800"),
+#'   position = position_dodge(0.8) )
 #'
 #' # You can also use position_jitterdodge()
 #' # but fill aesthetic is required
-#' ggstripchart(df, "dose", "len", color = "supp", fill = "supp",
-#'   shape = "supp", position = position_jitterdodge() )
+#' ggstripchart(df, "dose", "len",  shape = "supp",
+#'    color = "supp", palette = c("#00AFBB", "#E7B800"),
+#'    position = position_jitterdodge() )
 #'
 #' # Add boxplot
-#' ggstripchart(df, "dose", "len", color = "supp", shape = "supp",
+#' ggstripchart(df, "dose", "len", shape = "supp",
+#'  color = "supp", palette = c("#00AFBB", "#E7B800"),
 #'  add = "boxplot", add.params = list(color = "black") )
 #'
 #' @export

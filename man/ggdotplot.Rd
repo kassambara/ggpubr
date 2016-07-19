@@ -17,9 +17,10 @@ ggdotplot(data, x, y, color = "black", fill = "lightgray", palette = NULL,
 \item{color, fill}{outline and fill colors.}
 
 \item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; RColorBrewer
-palettes e.g. "RdBu", "Blues", ...; or a character vector containing custom
-color palette e.g. c("blue", "red").}
+groups. Allowed values include "grey" for grey color palettes; brewer
+palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
+"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
+"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{size}{change the size of points and outlines.}
 
@@ -66,87 +67,42 @@ The plot can be easily customized using the function ggpar(). Read
 data("ToothGrowth")
 df <- ToothGrowth
 
-# Basic plot
+# Basic plot with summary statistics : mean_sd
 # +++++++++++++++++++++++++++
-ggdotplot(df, x = "dose", y = "len")
-
-# Change the plot orientation: horizontal
-ggdotplot(df, "dose", "len", orientation = "horiz")
-
-
-# Select and order items
-# ++++++++++++++++++++++++++++++
-# Select which items to display: "0.5" and "2"
-ggdotplot(df, "dose", "len",
-   select = c("0.5", "2"))
-# Change the default order of items
-ggdotplot(df, "dose", "len",
-   order = c("2", "1", "0.5"))
-
-# Add summary statistics
-# ++++++++++++++++++++++++++
-
-# Add box plot
 ggdotplot(df, x = "dose", y = "len",
- add = "boxplot")
-
-# Add violin
-ggdotplot(df, x = "dose", y = "len",
- add = "violin")
-
-# Add mean_sd
-ggdotplot(df, x = "dose", y = "len",
- add = "mean_sd")
+   add = "mean_sd")
 
 # Change error.plot to "crossbar"
 ggdotplot(df, x = "dose", y = "len",
  add = "mean_sd", add.params = list(width = 0.5),
  error.plot = "crossbar")
 
+
+# Add box plot
+ggdotplot(df, x = "dose", y = "len",
+ add = "boxplot")
+
 # Add violin + mean_sd
 ggdotplot(df, x = "dose", y = "len",
  add = c("violin", "mean_sd"))
 
 
-
 # Change colors
 # +++++++++++++++++++++++++++
-# Change colors
- ggdotplot(df, "dose", "len", fill = "#2E9FDF",
-  add = "pointrange", add.params = list(color = "red"))
-
-# Change fill colors by groups: dose
- ggdotplot(df, "dose", "len", fill = "dose",
-   add = "boxplot")
-
-# Change fill and outline colors by groups
- ggdotplot(df, "dose", "len", fill = "dose", color = "dose",
-   add = "boxplot")
-
+# Change fill and outline colors by groups: dose
 # Use custom color palette
- ggdotplot(df, "dose", "len", fill = "dose", color = "dose",
-  palette = c('#999999','#E69F00','#56B4E9') )
-
-# Use brewer palette
-ggdotplot(df, "dose", "len", fill = "dose", color = "dose",
- palette = "Dark2")
-
-# Use grey palette
-ggdotplot(df, "dose", "len", fill = "dose", color = "dose",
-palette = "grey", add.params = list(color = "red"))
+ ggdotplot(df, "dose", "len",
+     add = "boxplot",
+      color = "dose", fill = "dose",
+      palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 
 
 # Plot with multiple groups
 # +++++++++++++++++++++
 # Change color by a second group : "supp"
-# Change the transparency alpha = 0.5
 ggdotplot(df, "dose", "len", fill = "supp", color = "supp",
-   alpha = 0.5)
+    palette = c("#00AFBB", "#E7B800"))
 
-
-# Add boxplot
-ggdotplot(df, "dose", "len", color = "supp", fill = "supp",
- add = "boxplot")
 
 }
 \seealso{

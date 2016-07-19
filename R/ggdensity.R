@@ -34,29 +34,24 @@ NULL
 #'
 #' head(wdata, 4)
 #'
-#' # Basic density plot with mean line
+#' # Basic density plot
+#'  # Add mean line and marginal rug
 #' ggdensity(wdata, x = "weight", fill = "lightgray",
-#'    add = "mean")
-#'
-#' # Change outline and fill colors by groups ("sex")
-#' ggdensity(wdata, x = "weight",
-#'    color = "sex", fill = "sex",
 #'    add = "mean", rug = TRUE)
 #'
-#' # Change color palette: custom palette
+#' # Change outline colors by groups ("sex")
+#' # Use custom palette
 #' ggdensity(wdata, x = "weight",
-#'    color = "sex",  add = "mean", rug = TRUE,
-#'    palette = c("#999999", "#E69F00"))
+#'    add = "mean", rug = TRUE,
+#'    color = "sex", palette = c("#00AFBB", "#E7B800"))
 #'
-#' # Use brewer palette
-#' ggdensity(wdata, x = "weight",
-#'    color = "sex", add = "mean", rug = TRUE,
-#'    palette = "Paired")
 #'
-#' # Use scientific journal palette from ggsci R package
+#' # Change outline and fill colors by groups ("sex")
+#' # Use custom palette
 #' ggdensity(wdata, x = "weight",
-#'    color = "sex", add = "mean", rug = TRUE,
-#'    palette = "jco")
+#'    add = "mean", rug = TRUE,
+#'    color = "sex", fill = "sex",
+#'    palette = c("#00AFBB", "#E7B800"))
 #'
 #'
 #' @export

@@ -18,9 +18,10 @@ ggviolin(data, x, y, color = "black", fill = "white", palette = NULL,
 \item{color, fill}{outline and fill colors.}
 
 \item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; RColorBrewer
-palettes e.g. "RdBu", "Blues", ...; or a character vector containing custom
-color palette e.g. c("blue", "red").}
+groups. Allowed values include "grey" for grey color palettes; brewer
+palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
+"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
+"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{linetype}{line types.}
 
@@ -82,8 +83,6 @@ df <- ToothGrowth
 # Basic plot
 # +++++++++++++++++++++++++++
 ggviolin(df, x = "dose", y = "len")
-# Change width
-ggviolin(df, "dose", "len", width = 0.2)
 # Change the plot orientation: horizontal
 ggviolin(df, "dose", "len", orientation = "horiz")
 
@@ -100,13 +99,11 @@ ggviolin(df, x = "dose", y = "len",
 ggviolin(df, x = "dose", y = "len",
  add = "dotplot")
 
-# Add jitter
-ggviolin(df, x = "dose", y = "len",
-add = "jitter")
-
-# Change shape by groups: "dose"
+# Add jitter points and
+# change point shape by groups ("dose")
 ggviolin(df, x = "dose", y = "len",
 add = "jitter", shape = "dose")
+
 
 # Add mean_sd
 ggviolin(df, x = "dose", y = "len",
@@ -135,38 +132,27 @@ ggviolin(df, "dose", "len",
 # Change colors
 # +++++++++++++++++++++++++++
 # Change outline and fill colors
-# Change line size
 ggviolin(df, "dose", "len",
-   color = "black", fill = "#6D9EC1", size = 1.2)
+   color = "black", fill = "gray")
 
 # Change outline colors by groups: dose
-ggviolin(df, "dose", "len", color = "dose")
+# Use custom color palette and add boxplot
+ggviolin(df, "dose", "len",  color = "dose",
+   palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+   add = "boxplot")
 
 # Change fill color by groups: dose
-ggviolin(df, "dose", "len", fill = "dose")
-
-# Use custom color palette
-ggviolin(df, "dose", "len", color = "dose",
-  palette = c('#999999','#E69F00','#56B4E9') )
-
-# Use brewer palette
-ggviolin(df, "dose", "len", color = "dose",
- palette = "Dark2", add = "boxplot" )
-
-# Use grey palette
-ggviolin(df, "dose", "len", color = "dose",
-palette = "grey" )
+# add boxplot with white fill color
+ggviolin(df, "dose", "len", fill = "dose",
+   palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+   add = "boxplot", add.params = list(fill = "white"))
 
 
 # Plot with multiple groups
 # +++++++++++++++++++++
 # fill or color box plot by a second group : "supp"
 ggviolin(df, "dose", "len", color = "supp",
- palette = c('#999999','#E69F00') )
-
-# Add dot
-ggviolin(df, "dose", "len", color = "supp",
- palette = c('#999999','#E69F00'), add = "dotplot")
+ palette = c("#00AFBB", "#E7B800"), add = "boxplot")
 
 }
 \seealso{
