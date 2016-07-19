@@ -85,7 +85,7 @@ NULL
 #'  p2
 #'
 #' # Use custom color palette
-#' ggpar(p2, palette = c('#999999','#E69F00','#56B4E9'))
+#' ggpar(p2, palette = c("#00AFBB", "#E7B800", "#FC4E07"))
 #'
 #' # Use brewer palette
 #' ggpar(p2, palette = "Dark2" )
@@ -110,6 +110,9 @@ NULL
 #' ggpar(p, ylim = c(0, 50))
 #'
 #' # Axis scale
+#' ggpar(p, yscale = "log2")
+#'
+#' # Format axis scale
 #' ggpar(p, yscale = "log2", format.scale = TRUE)
 #'
 #' # Legends
