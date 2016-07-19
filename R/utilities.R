@@ -36,6 +36,7 @@ NULL
     "label", "hjust", "vjust", "fontface",
     # smooth
     "se", "level", "fullrange",
+    "conf.int.level",
     # straightline
     "xintercept", "yintercept",
     # histograms
@@ -344,7 +345,7 @@ NULL
     else
       ticks <- element_blank()
     if (is.null(font.tickslab))
-      font <- list(size = 12, face = "plain", color = "black")
+      font <- list(size = 12, face = "bold", color = "black")
     else
       font <- .parse_font(font.tickslab)
     if (tickslab) {
