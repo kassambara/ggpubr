@@ -5,7 +5,11 @@ Version: 0.1.0
 Date: 2016-07-28
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"))
-Description: Provides functions for creating and customizing easily 'ggplot2' based publication ready plots.
+Description: 'ggplot2' is an excellent and flexible package for elegant data visualization in R.
+ However the default generated plots requires some formatting before we can send them for publication.
+ Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the level of difficulty
+ for researchers with no advanced R programming skills.
+ 'ggpubr' provides some easy-to-use functions for creating and customizing 'ggplot2'- based publication ready plots.
 License: GPL-2
 LazyData: TRUE
 Depends:
