@@ -105,28 +105,13 @@ ggviolin(df, x = "dose", y = "len",
 add = "jitter", shape = "dose")
 
 
-# Add mean_sd
+# Add mean_sd + jittered points
 ggviolin(df, x = "dose", y = "len",
- add = "mean_sd")
+ add = c("jitter", "mean_sd"))
 
 # Change error.plot to "crossbar"
 ggviolin(df, x = "dose", y = "len",
  add = "mean_sd", error.plot = "crossbar")
-
-# Combine jitter + mean_sd
-ggviolin(df, x = "dose", y = "len",
- add = c("jitter", "mean_sd"))
-
-
-
-# Select and order items
-# ++++++++++++++++++++++++++++++
-# Select which items to display: "0.5" and "2"
-ggviolin(df, "dose", "len",
-   select = c("0.5", "2"))
-# Change the default order of items
-ggviolin(df, "dose", "len",
-   order = c("2", "1", "0.5"))
 
 
 # Change colors
