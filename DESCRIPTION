@@ -14,7 +14,9 @@ Imports:
     ggrepel,
     grid,
     ggsci,
-    plyr
+    plyr,
+    stats,
+    utils
 Suggests:
     knitr,
     scales

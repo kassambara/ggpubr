@@ -7,5 +7,7 @@ r_packages:
  - plyr
  - knitr
  - scales
+ - stats
+ - utils
  - devtools
 sudo: required
