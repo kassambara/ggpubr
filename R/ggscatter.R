@@ -148,7 +148,7 @@ ggscatter <- function(data, x, y,
   # Add reg line or loess
   # ++++++++++++
   if(add %in% c("reg.line", "loess")){
-    add <- ifelse(add == "reg.line", lm, loess)
+    add <- ifelse(add == "reg.line", stats::lm, stats::loess)
     if(is.null(add.params$linetype)) add.params$linetype <- "solid"
 
     .args <- .geom_exec(geom_smooth=NULL, data = data,
