@@ -86,7 +86,7 @@ ggdensity <- function(data, x, y = "..density..",
     if(is.na(grp)) {
       m <- ifelse(add == "mean",
                   mean(data[, x], na.rm = TRUE),
-                  median(data[, x], na.rm = TRUE))
+                  stats::median(data[, x], na.rm = TRUE))
       p <- p + .geom_exec(geom_vline, data = data,
                           xintercept = m, color = add.params$color,
                           linetype = add.params$linetype, size = add.params$size)
