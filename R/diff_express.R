@@ -1,4 +1,4 @@
-#' Differential Gene Expression Analysis Results
+#' Differential gene expression analysis results
 #'
 #' @description Differential gene expression analysis results obtained from
 #'   comparing the RNAseq data of two different cell populations using DESeq2

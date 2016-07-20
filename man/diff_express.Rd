@@ -3,7 +3,7 @@
 \docType{data}
 \name{diff_express}
 \alias{diff_express}
-\title{Differential Gene Expression Analysis Results}
+\title{Differential gene expression analysis results}
 \format{A data frame with 36028 rows and 5 columns. \describe{
   \item{\code{name}}{gene names} \item{\code{baseMean}}{mean expression
   signal accross all samples} \item{\code{log2FoldChange}}{log2 fold change}
