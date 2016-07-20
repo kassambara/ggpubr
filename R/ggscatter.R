@@ -151,7 +151,7 @@ ggscatter <- function(data, x, y,
     add <- ifelse(add == "reg.line", stats::lm, stats::loess)
     if(is.null(add.params$linetype)) add.params$linetype <- "solid"
 
-    .args <- .geom_exec(geom_smooth=NULL, data = data,
+    .args <- .geom_exec(NULL, data = data,
                         se = conf.int, level = conf.int.level,
                         color = add.params$color, fill = add.params$fill,
                         linetype = add.params$linetype,
