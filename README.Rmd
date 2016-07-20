@@ -38,12 +38,12 @@ Here, we provide ggpubr package to create and customize easily ggplot2-based pub
 - Install from [CRAN](https://cran.r-project.org/package=ggpubr) as follow:
   
   
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval = FALSE}
 install.packages("ggpubr")
 ```
     
     
-Or, install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow: 
+- Or, install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow: 
     
    
 ```{r, eval = FALSE}

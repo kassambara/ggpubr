@@ -13,7 +13,11 @@ Installation and loading
 
 -   Install from [CRAN](https://cran.r-project.org/package=ggpubr) as follow:
 
-Or, install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow:
+``` r
+install.packages("ggpubr")
+```
+
+-   Or, install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow:
 
 ``` r
 # Install
