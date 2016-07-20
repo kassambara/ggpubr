@@ -9,6 +9,7 @@ Description: Create a publication ready plots using ggplot2.
 License: GPL-2
 LazyData: TRUE
 Depends:
+    R (>= 3.1.0),
     ggplot2
 Imports:
     ggrepel,
