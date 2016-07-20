@@ -61,7 +61,7 @@ StatConfEllipse <- ggproto("StatConfEllipse", Stat,
 {
 
   .ellipse <- function(x, scale = c(1, 1), centre = c(0, 0),
-                      level = 0.95, t = sqrt(qchisq(level, 2)), which = c(1,
+                      level = 0.95, t = sqrt(stats::qchisq(level, 2)), which = c(1,
                                                                           2), npoints = 100) {
     names <- c("x", "y")
     if (is.matrix(x)) {
