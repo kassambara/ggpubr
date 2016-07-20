@@ -4,14 +4,16 @@
 ggpubr: 'ggplot2' Based Publication Ready Plots
 ===============================================
 
-The idea behind ggplot2 is seductively simple but the detail is, yes, difficult. To customize a plot, the syntax is sometimes a tiny bit opaque and this raises the level of difficulty.
+ggplot2 by [Hadley Wickham](http://docs.ggplot2.org/current/) is an excellent and flexible package for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a ggplot, the syntax is sometimes a tiny bit opaque and this raises the level of difficulty.
 
-Here, we provide ggpubr package to create, as well as to customize, quickly and easily ggplot2-base publication ready plots.
+Here, we provide ggpubr package to create and customize easily ggplot2-based publication ready plots.
 
-Installation
-------------
+Installation and loading
+------------------------
 
-CRAN version is not published yet. Meanwhile, it's possible to install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow:
+-   Install from [CRAN](https://cran.r-project.org/package=ggpubr) as follow:
+
+Or, install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow:
 
 ``` r
 # Install
