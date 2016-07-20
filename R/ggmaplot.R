@@ -109,7 +109,7 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   # select data for top genes
   labs_data <- stats::na.omit(data)
   labs_data <- subset(labs_data, padj <= 0.05 & name!="")
-  labs_data <- head(labs_data, top)
+  labs_data <- utils::head(labs_data, top)
 
   font.label <- .parse_font(font.label)
   font.label$size <- ifelse(is.null(font.label$size), 12, font.label$size)
