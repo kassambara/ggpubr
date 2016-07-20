@@ -107,7 +107,7 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   if(select.top.method == "padj") data <- data[order(data$padj), ]
   else if(select.top.method == "fc") data <- data[order(abs(data$lfc), decreasing = TRUE), ]
   # select data for top genes
-  labs_data <- na.omit(data)
+  labs_data <- stats::na.omit(data)
   labs_data <- subset(labs_data, padj <= 0.05 & name!="")
   labs_data <- head(labs_data, top)
 
