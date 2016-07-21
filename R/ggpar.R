@@ -7,8 +7,9 @@ NULL
 #' @param palette the color palette to be used for coloring or filling by
 #'   groups. Allowed values include "grey" for grey color palettes; brewer
 #'   palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-#'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
-#'   "ucscgb", "uchicago", "simpsons" and "rickandmorty".
+#'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
+#'   "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
+#'   "rickandmorty".
 #' @param main plot main title.
 #' @param xlab,ylab character vector specifying x and y axis labels,
 #'   respectively. Use xlab = FALSE and ylab = FALSE to hide xlab and ylab,
@@ -16,11 +17,13 @@ NULL
 #' @param font.main,font.x,font.y a vector of length 3 indicating respectively
 #'   the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
 #'   "bold.italic") and the color (e.g.: "red") of main title, xlab and ylab,
-#'   respectively. For example \emph{font.x = c(14, "bold", "red")}.
-#' @param xlim,ylim a numeric vector of length 2, specifying  x and y axis limits (minimum
-#'   and maximum), respectively. e.g.: ylim = c(0, 50).
-#' @param xscale,yscale x and y axis scale, respectively. Allowed values are one of c("none", "log2",
-#'   "log10", "sqrt"); e.g.: yscale="log2".
+#'   respectively. For example \emph{font.x = c(14, "bold", "red")}. Use font.x
+#'   = 14, to change only font size; or use font.x = "bold", to change only font
+#'   face.
+#' @param xlim,ylim a numeric vector of length 2, specifying  x and y axis
+#'   limits (minimum and maximum), respectively. e.g.: ylim = c(0, 50).
+#' @param xscale,yscale x and y axis scale, respectively. Allowed values are one
+#'   of c("none", "log2", "log10", "sqrt"); e.g.: yscale="log2".
 #' @param format.scale logical value. If TRUE, axis tick mark labels will be
 #'   formatted when xscale or yscale = "log2" or "log10".
 #' @param legend character specifying legend position. Allowed values are one of
@@ -37,13 +40,14 @@ NULL
 #'   c(14, "bold", "red").
 #' @param xtickslab.rt,ytickslab.rt Rotation angle of x and y axis tick labels,
 #'   respectively. Default value is 0.
-#' @param xticks.by,yticks.by numeric value controlling x and y axis breaks, respectively. For example, if
-#'   yticks.by = 5, a tick mark is shown on every 5. Default value is NULL.
+#' @param xticks.by,yticks.by numeric value controlling x and y axis breaks,
+#'   respectively. For example, if yticks.by = 5, a tick mark is shown on every
+#'   5. Default value is NULL.
 #' @param orientation change the orientation of the plot. Allowed values are one
 #'   of c( "vertical", "horizontal", "reverse"). Partial match is allowed.
 #' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
-#'  Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
-#'  theme_minimal(), theme_classic(), theme_void(), ....
+#'   Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+#'   theme_minimal(), theme_classic(), theme_void(), ....
 #' @param ... not used
 #' @examples
 #' # Load data
