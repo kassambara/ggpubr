@@ -56,7 +56,7 @@ data. Used only when add != "none".}
 probability.}
 
 \item{ellipse.type}{Character specifying frame type. Possible values are
-'convex', 'confidence' or types supporeted by
+'convex', 'confidence' or types supported by
 \code{\link[ggplot2]{stat_ellipse}} including one of c("t", "norm",
 "euclid").}
 

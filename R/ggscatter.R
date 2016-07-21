@@ -21,7 +21,7 @@ NULL
 #' @param ellipse.level the size of the concentration ellipse in normal
 #'   probability.
 #' @param ellipse.type Character specifying frame type. Possible values are
-#'   'convex', 'confidence' or types supporeted by
+#'   'convex', 'confidence' or types supported by
 #'   \code{\link[ggplot2]{stat_ellipse}} including one of c("t", "norm",
 #'   "euclid").
 #' @param ellipse.alpha Alpha for ellipse specifying the transparency level of
