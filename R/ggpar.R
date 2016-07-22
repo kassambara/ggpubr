@@ -145,7 +145,7 @@ ggpar <- function(p, palette = NULL,
   {
   p <- p + .ggcolor(palette)+
     .ggfill(palette)
-  if(!is.null(ggtheme)) p <- p + ggtheme + # labs_pubr() +
+  if(!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +
 
   p <- p +.set_ticks(ticks, tickslab, font.tickslab,
                xtickslab.rt, ytickslab.rt)
