@@ -27,7 +27,7 @@ NULL
 #' @param format.scale logical value. If TRUE, axis tick mark labels will be
 #'   formatted when xscale or yscale = "log2" or "log10".
 #' @param legend character specifying legend position. Allowed values are one of
-#'   c("top", "bottom", "left", "right", "none"). Default is "top" side
+#'   c("top", "bottom", "left", "right", "none"). Default is "bottom" side
 #'   position. to remove the legend use legend = "none". Legend position can be
 #'   also specified using a numeric vector c(x, y); see details section.
 #' @param legend.title legend title.
