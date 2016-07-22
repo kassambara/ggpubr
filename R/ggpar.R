@@ -45,8 +45,8 @@ NULL
 #'   5. Default value is NULL.
 #' @param orientation change the orientation of the plot. Allowed values are one
 #'   of c( "vertical", "horizontal", "reverse"). Partial match is allowed.
-#' @param ggtheme function, ggplot2 theme name.
-#'   Allowed values include theme_pubr() and ggplot2 official themes: theme_gray(), theme_bw(),
+#' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
+#'   Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'   theme_minimal(), theme_classic(), theme_void(), ....
 #' @param ... not used
 #' @examples

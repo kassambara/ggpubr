@@ -74,8 +74,8 @@ respectively. For example, if yticks.by = 5, a tick mark is shown on every
 \item{orientation}{change the orientation of the plot. Allowed values are one
 of c( "vertical", "horizontal", "reverse"). Partial match is allowed.}
 
-\item{ggtheme}{function, ggplot2 theme name.
-Allowed values include theme_pubr() and ggplot2 official themes: theme_gray(), theme_bw(),
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
+Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....}
 
 \item{...}{not used}
