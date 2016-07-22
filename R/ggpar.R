@@ -45,8 +45,8 @@ NULL
 #'   5. Default value is NULL.
 #' @param orientation change the orientation of the plot. Allowed values are one
 #'   of c( "vertical", "horizontal", "reverse"). Partial match is allowed.
-#' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
-#'   Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+#' @param ggtheme function, ggplot2 theme name.
+#'   Allowed values include theme_pubr() and ggplot2 official themes: theme_gray(), theme_bw(),
 #'   theme_minimal(), theme_classic(), theme_void(), ....
 #' @param ... not used
 #' @examples
@@ -140,13 +140,14 @@ ggpar <- function(p, palette = NULL,
                   xtickslab.rt = 0, ytickslab.rt = 0,
                   xticks.by = NULL, yticks.by = NULL,
                   orientation = c("vertical", "horizontal", "reverse"),
-                  ggtheme = theme_pubr(),
+                  ggtheme = NULL,
                   ...)
   {
   p <- p + .ggcolor(palette)+
-    .ggfill(palette)+
-     ggtheme + # labs_pubr() +
-    .set_ticks(ticks, tickslab, font.tickslab,
+    .ggfill(palette)
+  if(!is.null(ggtheme)) p <- p + ggtheme + # labs_pubr() +
+
+  p <- p +.set_ticks(ticks, tickslab, font.tickslab,
                xtickslab.rt, ytickslab.rt)
   p <- .set_ticksby(p, xticks.by, yticks.by)
   p <- p + .set_axis_limits(xlim, ylim)
