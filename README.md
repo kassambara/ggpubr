@@ -114,3 +114,8 @@ ggviolin(df, x = "dose", y = "len", fill = "dose",
 ### More
 
 Find out more at <http://www.sthda.com/english/rpkgs/ggpubr>.
+
+Blog posts
+----------
+
+-   A. Kassambara. STHDA Jully 2016. [ggpubr R Package: ggplot2-Based Publication Ready Plots](http://www.sthda.com/english/wiki/ggpubr-r-package-ggplot2-based-publication-ready-plots)
