@@ -48,7 +48,7 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 "red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
 "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
-\item{top}{the number of top genes to be shown on the plot.}
+\item{top}{the number of top genes to be shown on the plot. Use top = 0 to hide to gene labels.}
 
 \item{select.top.method}{methods to be used for selecting top genes. Allowed
 values include "padj" and "fc" for selecting by adjusted p values or fold

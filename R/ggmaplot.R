@@ -27,7 +27,7 @@ NULL
 #'   c(14, "bold", "red")}.
 #' @param label.rectangle logical value. If TRUE, add rectangle underneath the
 #'   text, making it easier to read.
-#' @param top the number of top genes to be shown on the plot.
+#' @param top the number of top genes to be shown on the plot. Use top = 0 to hide to gene labels.
 #' @param select.top.method methods to be used for selecting top genes. Allowed
 #'   values include "padj" and "fc" for selecting by adjusted p values or fold
 #'   changes, respectively.
