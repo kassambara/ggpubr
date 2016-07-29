@@ -108,7 +108,7 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   else if(select.top.method == "fc") data <- data[order(abs(data$lfc), decreasing = TRUE), ]
   # select data for top genes
   labs_data <- stats::na.omit(data)
-  labs_data <- subset(labs_data, padj <= 0.05 & name!="")
+  labs_data <- subset(labs_data, padj <= 0.05 & name!="" & abs(lfc) >= log2(fc))
   labs_data <- utils::head(labs_data, top)
 
   font.label <- .parse_font(font.label)
