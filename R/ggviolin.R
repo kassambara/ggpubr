@@ -95,20 +95,11 @@ ggviolin <- function(data, x, y,
                      ...)
 {
 
-
-  if(is.numeric(data)){
-    data <- data.frame(y = data, x = rep(1, length(data)))
-    x <- "x"
-    y <- "y"
-  }
-  # if y is missing, data should be a numeric vector
-  else if(missing(y) & !is.numeric(data))
-    stop("y is missing. In this case data should be a numeric vector.")
-  # single box plot
-  else if(missing(x)) {
-    x <- "x"
-    data$x <- rep("1", nrow(data))
-  }
+  # Check data
+  .dd <- .check_data(data, x, y)
+  data <- .dd$data
+  x <- .dd$x
+  y <- .dd$y
 
 
   data[, x] <- factor(data[, x])

@@ -679,7 +679,25 @@ p
   }
 }
 
+# Check th data provided by user
+# return a list(data, x, y)
+.check_data <- function(data, x, y){
 
+  if(missing(x) & missing(y)){
+    if(!is.numeric(data))
+      stop("x and y are missing. In this case data should be a numeric vector.")
+    else{
+      data <- data.frame(y = data, x = rep(1, length(data)))
+      x <- "x"
+      y <- "y"
+    }
+  }
+  else if(missing(x)) {
+    x <- "x"
+    data$x <- rep("1", nrow(data))
+  }
+  list(data = data, x =x, y = y)
+}
 
 
 
