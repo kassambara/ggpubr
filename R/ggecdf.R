@@ -44,6 +44,11 @@ ggecdf <- function(data, x,
                       ...)
 {
 
+  # Check data
+  .dd <- .check_data(data, x, y=NULL)
+  data <- .dd$data
+  x <- .dd$x
+  y <- .dd$y
 
   p <- ggplot(data, aes_string(x))
 

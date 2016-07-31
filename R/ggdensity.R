@@ -66,6 +66,12 @@ ggdensity <- function(data, x, y = "..density..",
 {
 
 
+  # Check data
+  .dd <- .check_data(data, x, y)
+  data <- .dd$data
+  x <- .dd$x
+  y <- .dd$y
+
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
