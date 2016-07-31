@@ -694,7 +694,8 @@ p
   }
   else if(missing(x)) {
     x <- "x"
-    data$x <- rep("1", nrow(data))
+    if(is.numeric(data)) data <- data.frame(x = data)
+    else data$x <- rep("1", nrow(data))
   }
   list(data = data, x =x, y = y)
 }
