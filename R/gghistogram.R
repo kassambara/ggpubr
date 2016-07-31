@@ -83,7 +83,7 @@ gghistogram <- function(data, x, y = "..count..",
   # Check bins
   if(is.null(bins)){
     bins <- 30
-    warnings("Using `bins = 30` by default. Pick better value with the argument `bins`.")
+    warning("Using `bins = 30` by default. Pick better value with the argument `bins`.")
   }
 
   add <- match.arg(add)
