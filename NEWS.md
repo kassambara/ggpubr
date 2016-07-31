@@ -6,12 +6,13 @@
    
 ## Minor changes
 
-- `ggboxplot()`, `ggviolin()`, `ggdotplot()` and `ggstripchart()` can now handle one single numeric vector.
+- `ggboxplot()`, `ggviolin()`, `ggdotplot()`, `ggstripchart()`, `gghistogram()`, `ggdensity()`, `ggecdf()` and `ggqqplot()` can now handle one single numeric vector.
 
 ```
 # Example
 ggboxplot(iris$Sepal.Length)
 ```
+
    
 ## Bug fixes
     
