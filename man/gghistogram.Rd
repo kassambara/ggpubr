@@ -6,9 +6,9 @@
 \usage{
 gghistogram(data, x, y = "..count..", color = "black", fill = NA,
   palette = NULL, size = 1, linetype = "solid", alpha = 0.5,
-  bins = 30, add = c("none", "mean", "median"), add.params = list(linetype
-  = "dashed"), rug = FALSE, add_density = FALSE, ggtheme = theme_pubr(),
-  ...)
+  bins = NULL, add = c("none", "mean", "median"),
+  add.params = list(linetype = "dashed"), rug = FALSE,
+  add_density = FALSE, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
