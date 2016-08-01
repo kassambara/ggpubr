@@ -13,6 +13,8 @@
 ggboxplot(iris$Sepal.Length)
 ```
 
+- Now, in `gghistogram()`, when add_density = TRUE, y scale remains = "..count..".
+
    
 ## Bug fixes
     
