@@ -90,7 +90,7 @@ gghistogram <- function(data, x, y = "..count..",
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
-  if(add_density) y <- "..density.."
+  # if(add_density) y <- "..density.."
 
   p <- ggplot(data, aes_string(x, y))
 
