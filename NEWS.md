@@ -14,7 +14,6 @@ ggboxplot(iris$Sepal.Length)
 ```
 
 - Now, in `gghistogram()`, when add_density = TRUE, y scale remains = "..count..".
-- In `ggline()`, x is no longer treated automatically as factor variable.
 
    
 ## Bug fixes
