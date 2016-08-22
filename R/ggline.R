@@ -124,7 +124,7 @@ ggline <- function(data, x, y, group = 1,
                       ...)
 {
 
-  data[, x] <- factor(data[, x])
+  data[, x] <- data[, x]
   error.plot = error.plot[1]
   plot_type <- match.arg(plot_type)
   if("none" %in% add) add <- "none"
@@ -182,6 +182,7 @@ ggline <- function(data, x, y, group = 1,
                color = color, shape = shape,
                size = 2+size)
   }
+
 
   # Select and order
   if(is.null(select)) select <- order
