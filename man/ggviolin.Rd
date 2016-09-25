@@ -28,7 +28,7 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 \item{trim}{If \code{TRUE} (default), trim the tails of the violins
 to the range of the data. If \code{FALSE}, don't trim the tails.}
 
-\item{size}{change the size of points and outlines.}
+\item{size}{Numeric value (e.g.: size = 1). change the size of points and outlines.}
 
 \item{width}{violin width.}
 

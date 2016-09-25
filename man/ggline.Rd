@@ -32,7 +32,7 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 \item{plot_type}{plot type. Allowed values are one of "b" for both line and point;
 "l" for line only; and "p" for point only. Default is "b".}
 
-\item{size}{change the size of points and outlines.}
+\item{size}{Numeric value (e.g.: size = 1). change the size of points and outlines.}
 
 \item{shape}{point shapes.}
 

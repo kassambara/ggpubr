@@ -12,7 +12,7 @@ NULL
 #'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
 #'   "ucscgb", "uchicago", "simpsons" and "rickandmorty".
 #' @param linetype line types.
-#' @param size change the size of points and outlines.
+#' @param size Numeric value (e.g.: size = 1). change the size of points and outlines.
 #' @param width plot width.
 #' @inheritParams ggplot2::geom_boxplot
 #' @param select character vector specifying which items to display.

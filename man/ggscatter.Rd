@@ -30,7 +30,7 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 
 \item{shape}{point shape. See \code{\link{show_point_shapes}}.}
 
-\item{size}{change the size of points and outlines.}
+\item{size}{Numeric value (e.g.: size = 1). change the size of points and outlines.}
 
 \item{point}{logical value. If TRUE, show points.}
 
