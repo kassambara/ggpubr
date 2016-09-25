@@ -7,6 +7,7 @@ NULL
 #' \itemize{
 #'  \item \strong{theme_pubr()}: Create a publication ready theme
 #'  \item \strong{labs_pubr()}: Format only plot labels to a publication ready style
+#'  \item \strong{theme_classic()}: Create a classic theme with axis lines
 #' }
 #' @param base_size base font size
 #' @param base_family base font family
@@ -78,3 +79,15 @@ labs_pubr <- function(base_size = 14, base_family = ""){
     legend.text = element_text(size = rel(0.7), face = "plain", colour = "black")
   )
 }
+
+#' @rdname theme_pubr
+#' @export
+theme_classic2 <-
+  function (base_size = 12, base_family = "")
+  {
+    theme_classic(base_size = base_size, base_family = base_family) %+replace%
+      theme(
+        axis.line.x = element_line(),
+        axis.line.y = element_line()
+      )
+  }

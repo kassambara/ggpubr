@@ -2,12 +2,15 @@
 % Please edit documentation in R/theme_pubr.R
 \name{theme_pubr}
 \alias{labs_pubr}
+\alias{theme_classic2}
 \alias{theme_pubr}
 \title{Publication ready theme}
 \usage{
 theme_pubr(base_size = 14, base_family = "")
 
 labs_pubr(base_size = 14, base_family = "")
+
+theme_classic2(base_size = 12, base_family = "")
 }
 \arguments{
 \item{base_size}{base font size}
@@ -18,6 +21,7 @@ labs_pubr(base_size = 14, base_family = "")
 \itemize{
  \item \strong{theme_pubr()}: Create a publication ready theme
  \item \strong{labs_pubr()}: Format only plot labels to a publication ready style
+ \item \strong{theme_classic()}: Create a classic theme with axis lines
 }
 }
 \examples{
