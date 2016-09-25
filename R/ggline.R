@@ -180,7 +180,7 @@ ggline <- function(data, x, y, group = 1,
     p <- p +
     .geom_exec(geom_point, data = data_sum,
                color = color, shape = shape,
-               size = 2+size)
+               size = 2+ifelse(is.null(size), 0.5, 2+size))
   }
 
 
