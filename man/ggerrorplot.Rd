@@ -8,7 +8,7 @@ ggerrorplot(data, x, y, desc_stat = "mean_se", color = "black",
   fill = "white", palette = NULL, size = 1, width = NULL,
   select = NULL, order = NULL, add = "none", add.params = list(),
   error.plot = "pointrange", position = position_dodge(),
-  ggtheme = theme_pubr(), ...)
+  ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}

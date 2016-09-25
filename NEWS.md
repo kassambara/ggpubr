@@ -4,6 +4,9 @@
   
 ## New features
    
+- New function `theme_classic2()` added. Classic theme with axis lines.
+
+
 ## Minor changes
 
 - `ggboxplot()`, `ggviolin()`, `ggdotplot()`, `ggstripchart()`, `gghistogram()`, `ggdensity()`, `ggecdf()` and `ggqqplot()` can now handle one single numeric vector.
@@ -14,6 +17,7 @@ ggboxplot(iris$Sepal.Length)
 ```
 
 - Now, in `gghistogram()`, when add_density = TRUE, y scale remains = "..count..".
+- Now, default theme changed to theme_classic2()
 
    
 ## Bug fixes

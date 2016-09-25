@@ -121,7 +121,7 @@ ggscatter <- function(data, x, y,
                       label = NULL,  font.label = c(12, "plain"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 

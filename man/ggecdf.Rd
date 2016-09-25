@@ -5,7 +5,7 @@
 \title{Empirical cumulative density function}
 \usage{
 ggecdf(data, x, color = "black", palette = NULL, size = 1,
-  linetype = "solid", ggtheme = theme_pubr(), ...)
+  linetype = "solid", ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}

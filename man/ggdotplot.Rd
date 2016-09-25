@@ -6,8 +6,8 @@
 \usage{
 ggdotplot(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   size = 1, select = NULL, order = NULL, add = "mean_se",
-  add.params = list(), error.plot = "pointrange", ggtheme = theme_pubr(),
-  ...)
+  add.params = list(), error.plot = "pointrange",
+  ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}

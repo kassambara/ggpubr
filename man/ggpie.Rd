@@ -6,7 +6,7 @@
 \usage{
 ggpie(data, x, label = NULL, lab.pos = c("out", "in"), lab.font = c(4,
   "bold", "black"), color = "black", fill = "white", palette = NULL,
-  size = 1, ggtheme = theme_pubr(), ...)
+  size = 1, ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}

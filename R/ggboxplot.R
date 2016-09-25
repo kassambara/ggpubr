@@ -117,7 +117,7 @@ ggboxplot <- function(data, x, y,
                       select = NULL, order = NULL,
                       add = "none", add.params = list(),
                       error.plot = "pointrange",
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 

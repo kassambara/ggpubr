@@ -47,7 +47,7 @@ ggqqplot <- function(data, x,
                       add = c( "qqline", "none"),
                       add.params = list(linetype = "solid"),
                       conf.int = TRUE, conf.int.level = 0.95,
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 

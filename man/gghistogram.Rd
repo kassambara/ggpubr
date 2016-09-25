@@ -8,7 +8,7 @@ gghistogram(data, x, y = "..count..", color = "black", fill = NA,
   palette = NULL, size = 1, linetype = "solid", alpha = 0.5,
   bins = NULL, add = c("none", "mean", "median"),
   add.params = list(linetype = "dashed"), rug = FALSE,
-  add_density = FALSE, ggtheme = theme_pubr(), ...)
+  add_density = FALSE, ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}

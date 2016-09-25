@@ -94,7 +94,7 @@ ggstripchart <- function(data, x, y,
                       add.params = list(),
                       error.plot = "pointrange",
                       position = position_jitter(0.4),
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 

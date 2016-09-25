@@ -144,7 +144,7 @@ ggbarplot <- function(data, x, y,
                       add.params = list(),
                       error.plot = "errorbar",
                       position = position_stack(),
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 

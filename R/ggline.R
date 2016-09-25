@@ -120,7 +120,7 @@ ggline <- function(data, x, y, group = 1,
                       add = "none",
                       add.params = list(),
                       error.plot = "errorbar",
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 

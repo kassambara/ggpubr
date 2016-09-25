@@ -9,7 +9,7 @@ ggbarplot(data, x, y, color = "black", fill = "white", palette = NULL,
   lab.size = 5, lab.pos = c("out", "in"), lab.vjust = NULL,
   select = NULL, order = NULL, add = "none", add.params = list(),
   error.plot = "errorbar", position = position_stack(),
-  ggtheme = theme_pubr(), ...)
+  ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}

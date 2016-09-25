@@ -9,7 +9,7 @@ ggmaplot(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   label.rectangle = FALSE, palette = c("#B31B21", "#1465AC", "darkgray"),
   top = 15, select.top.method = c("padj", "fc"), main = NULL,
   xlab = "Log2 mean expression", ylab = "Log2 fold change",
-  ggtheme = theme_pubr(), ...)
+  ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{an object of class DESeqResults, get_diff, DE_Results, matrix or

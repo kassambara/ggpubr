@@ -61,7 +61,7 @@ ggdensity <- function(data, x, y = "..density..",
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
                       rug = FALSE,
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 

@@ -75,7 +75,7 @@ ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
                       add.params = list(),
                       error.plot = "pointrange",
                       position = position_dodge(),
-                      ggtheme = theme_pubr(),
+                      ggtheme = theme_classic2(),
                       ...)
 {
 
