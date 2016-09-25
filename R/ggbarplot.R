@@ -136,7 +136,7 @@ NULL
 #' @export
 ggbarplot <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
-                      size = 1, width = NULL,
+                      size = NULL, width = NULL,
                       label = FALSE, lab.col = "black", lab.size = 5,
                       lab.pos = c("out", "in"), lab.vjust = NULL,
                       select = NULL, order = NULL,

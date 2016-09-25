@@ -5,7 +5,7 @@
 \title{Bar plot}
 \usage{
 ggbarplot(data, x, y, color = "black", fill = "white", palette = NULL,
-  size = 1, width = NULL, label = FALSE, lab.col = "black",
+  size = NULL, width = NULL, label = FALSE, lab.col = "black",
   lab.size = 5, lab.pos = c("out", "in"), lab.vjust = NULL,
   select = NULL, order = NULL, add = "none", add.params = list(),
   error.plot = "errorbar", position = position_stack(),
