@@ -69,7 +69,7 @@ NULL
 #' @export
 ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
                       color = "black", fill = "white", palette = NULL,
-                      size = 1, width = NULL,
+                      size = NULL, width = NULL,
                       select = NULL, order = NULL,
                       add = "none",
                       add.params = list(),

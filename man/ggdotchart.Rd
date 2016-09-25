@@ -5,7 +5,7 @@
 \title{Cleveland's Dot Plots}
 \usage{
 ggdotchart(data, x, label, group = NULL, color = "black", palette = NULL,
-  shape = 19, size = 1, sorting = c("descending", "ascending"),
+  shape = 19, size = NULL, sorting = c("descending", "ascending"),
   orientation = c("vertical", "horizontal"), ggtheme = theme_bw(), ...)
 }
 \arguments{

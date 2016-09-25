@@ -18,6 +18,7 @@ ggboxplot(iris$Sepal.Length)
 
 - Now, in `gghistogram()`, when add_density = TRUE, y scale remains = "..count..".
 - Now, default theme changed to theme_classic2()
+- Default point size and line size set to NULL
 
    
 ## Bug fixes

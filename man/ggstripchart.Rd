@@ -5,8 +5,8 @@
 \title{Stripcharts}
 \usage{
 ggstripchart(data, x, y, color = "black", fill = "white", palette = NULL,
-  shape = 19, size = 2, select = NULL, order = NULL, add = "mean_se",
-  add.params = list(), error.plot = "pointrange",
+  shape = 19, size = NULL, select = NULL, order = NULL,
+  add = "mean_se", add.params = list(), error.plot = "pointrange",
   position = position_jitter(0.4), ggtheme = theme_classic2(), ...)
 }
 \arguments{

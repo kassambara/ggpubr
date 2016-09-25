@@ -88,7 +88,7 @@ NULL
 #' @export
 ggstripchart <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
-                      shape = 19, size = 2,
+                      shape = 19, size = NULL,
                       select = NULL, order = NULL,
                       add = "mean_se",
                       add.params = list(),

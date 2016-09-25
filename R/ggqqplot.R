@@ -43,7 +43,7 @@ NULL
 #' @export
 ggqqplot <- function(data, x,
                       color = "black",  palette = NULL,
-                      size = 1,
+                      size = NULL,
                       add = c( "qqline", "none"),
                       add.params = list(linetype = "solid"),
                       conf.int = TRUE, conf.int.level = 0.95,

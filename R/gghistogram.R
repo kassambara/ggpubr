@@ -66,7 +66,7 @@ NULL
 #' @export
 gghistogram <- function(data, x, y = "..count..",
                       color = "black", fill = NA, palette = NULL,
-                      size = 1, linetype = "solid", alpha = 0.5,
+                      size = NULL, linetype = "solid", alpha = 0.5,
                       bins = NULL,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),

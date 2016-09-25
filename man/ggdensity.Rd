@@ -5,7 +5,7 @@
 \title{Density plot}
 \usage{
 ggdensity(data, x, y = "..density..", color = "black", fill = NA,
-  palette = NULL, size = 1, linetype = "solid", alpha = 0.5,
+  palette = NULL, size = NULL, linetype = "solid", alpha = 0.5,
   add = c("none", "mean", "median"), add.params = list(linetype = "dashed"),
   rug = FALSE, ggtheme = theme_classic2(), ...)
 }

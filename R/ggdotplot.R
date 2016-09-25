@@ -59,7 +59,7 @@ NULL
 #' @export
 ggdotplot <- function(data, x, y,
                       color = "black", fill = "lightgray", palette = NULL,
-                      size = 1,
+                      size = NULL,
                       select = NULL, order = NULL,
                       add = "mean_se",
                       add.params = list(),

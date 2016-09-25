@@ -5,9 +5,9 @@
 \title{MA-plot from means and log fold changes}
 \usage{
 ggmaplot(data, fdr = 0.05, fc = 1.5, genenames = NULL,
-  detection_call = NULL, size = 0.9, font.label = c(12, "plain", "black"),
-  label.rectangle = FALSE, palette = c("#B31B21", "#1465AC", "darkgray"),
-  top = 15, select.top.method = c("padj", "fc"), main = NULL,
+  detection_call = NULL, size = NULL, font.label = c(12, "plain",
+  "black"), label.rectangle = FALSE, palette = c("#B31B21", "#1465AC",
+  "darkgray"), top = 15, select.top.method = c("padj", "fc"), main = NULL,
   xlab = "Log2 mean expression", ylab = "Log2 fold change",
   ggtheme = theme_classic2(), ...)
 }

@@ -86,7 +86,7 @@ NULL
 #'@export
 ggviolin <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
-                      linetype = "solid", trim = FALSE, size = 1, width = 1,
+                      linetype = "solid", trim = FALSE, size = NULL, width = 1,
                       draw_quantiles = NULL,
                       select = NULL, order = NULL,
                       add = "mean_se", add.params = list(),

@@ -5,7 +5,7 @@
 \title{Histogram plot}
 \usage{
 gghistogram(data, x, y = "..count..", color = "black", fill = NA,
-  palette = NULL, size = 1, linetype = "solid", alpha = 0.5,
+  palette = NULL, size = NULL, linetype = "solid", alpha = 0.5,
   bins = NULL, add = c("none", "mean", "median"),
   add.params = list(linetype = "dashed"), rug = FALSE,
   add_density = FALSE, ggtheme = theme_classic2(), ...)

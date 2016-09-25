@@ -57,7 +57,7 @@ NULL
 #' @export
 ggdensity <- function(data, x, y = "..density..",
                       color = "black", fill = NA, palette = NULL,
-                      size = 1, linetype = "solid", alpha = 0.5,
+                      size = NULL, linetype = "solid", alpha = 0.5,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
                       rug = FALSE,

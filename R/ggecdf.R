@@ -39,7 +39,7 @@ NULL
 #' @export
 ggecdf <- function(data, x,
                       color = "black",  palette = NULL,
-                      size = 1, linetype = "solid",
+                      size = NULL, linetype = "solid",
                       ggtheme = theme_classic2(),
                       ...)
 {

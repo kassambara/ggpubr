@@ -5,7 +5,7 @@
 \title{Box plot}
 \usage{
 ggboxplot(data, x, y, color = "black", fill = "white", palette = NULL,
-  linetype = "solid", size = 1, width = 1, notch = FALSE,
+  linetype = "solid", size = NULL, width = 1, notch = FALSE,
   select = NULL, order = NULL, add = "none", add.params = list(),
   error.plot = "pointrange", ggtheme = theme_classic2(), ...)
 }
