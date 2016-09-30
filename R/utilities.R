@@ -526,17 +526,17 @@ p
 
 
   if ("boxplot" %in% add) {
-    size <- ifelse(is.null(add.params$size), 1, add.params$size)
+    # size <- ifelse(is.null(add.params$size), 1, add.params$size)
     p <- p + .geom_exec(geom_boxplot, data = data,
                         color = color, fill = fill,
-                        position = position, width = width, size = size)
+                        position = position, width = width, size = add.params$size)
   }
 
   if ("violin" %in% add) {
-    size <- ifelse(is.null(add.params$size), 1, add.params$size)
+    # size <- ifelse(is.null(add.params$size), 1, add.params$size)
     p <- p + .geom_exec(geom_violin, data = data, trim = FALSE,
                         color = color, fill = fill,
-                        position = position, width = width, size = size)
+                        position = position, width = width, size = add.params$size)
   }
 
 
@@ -549,14 +549,14 @@ p
   }
   if ( "jitter" %in% add ){
     set.seed(123)
-    jitter.size <- ifelse(is.null(add.params$size), 3, add.params$size)
+    # jitter.size <- ifelse(is.null(add.params$size), 2, add.params$size)
     ngrps <- length(intersect(names(data), c(.mapping["x"], fill, color)))
     if(p_geom == "geom_line" | ngrps == 1) .jitter = position_jitter(0.4)
     else if(ngrps > 1) .jitter <- position_dodge(0.8)
 
     if(!is.null(add.params$jitter)) .jitter = position_jitter(0.4)
     p <- p + .geom_exec(geom_jitter, data = data,
-                        color = color, fill = fill, shape = shape, size = jitter.size,
+                        color = color, fill = fill, shape = shape, size = add.params$size,
                         position = .jitter )
 
   }
