@@ -152,7 +152,7 @@ ggpar <- function(p, palette = NULL,
   p <- .set_ticksby(p, xticks.by, yticks.by)
   p <- p + .set_axis_limits(xlim, ylim)
   p <-.set_legend(p, legend, legend.title, font.legend)
-  p <- .set_scale(p, yscale = yscale, format.scale = format.scale)
+  p <- .set_scale(p, xscale = xscale, yscale = yscale, format.scale = format.scale)
   p <- .labs(p, main, xlab, ylab,
                font.main, font.x, font.y)
   p <- .set_orientation(p, orientation)
