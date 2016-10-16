@@ -417,7 +417,7 @@ NULL
 
   else{
     if(xscale != "none")  p <- p + scale_x_continuous(trans = xscale)
-    else if(yscale != "none") p <- p + scale_y_continuous(trans = yscale)
+    if(yscale != "none") p <- p + scale_y_continuous(trans = yscale)
   }
 p
 }
