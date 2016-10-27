@@ -179,7 +179,7 @@ ggbarplot <- function(data, x, y,
                 stat = "identity",
                 color = color, fill = fill,
                 position = position,
-                size = size, width = width)
+                size = size, width = width, ...)
 
   # Add errors
    p <- .add(p, add = add,
