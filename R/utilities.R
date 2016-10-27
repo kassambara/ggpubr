@@ -561,6 +561,13 @@ p
 
   }
 
+  if ( "point" %in% add ) {
+    p <- p + .geom_exec(geom_point, data = data,
+                        color = color,  size = add.params$size,
+                        position = position)
+
+  }
+
 
   # Add mean or median
   center <- intersect(c("mean", "median"), add)

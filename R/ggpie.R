@@ -77,6 +77,7 @@ ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"),
 
   lab.pos <- match.arg(lab.pos)
   lab.font <- .parse_font(lab.font)
+  data <- data[order(data[, x]), , drop = FALSE]
 
   if(is.null(lab.font)) lab.font <- list(size = 5, face = "bold", color = "black")
 
