@@ -5,7 +5,7 @@
 ## New features
    
 - New function `theme_classic2()` added. Classic theme with axis lines.
-
+- New argument star.plot in ggscatter(). A logical value. If TRUE, a star plot is generated.
 
 ## Minor changes
 

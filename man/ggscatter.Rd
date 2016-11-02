@@ -9,11 +9,11 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   "reg.line", "loess"), add.params = list(), conf.int = FALSE,
   conf.int.level = 0.95, fullrange = FALSE, ellipse = FALSE,
   ellipse.level = 0.95, ellipse.type = "norm", ellipse.alpha = 0.1,
-  mean.point = FALSE, mean.point.size = 2 * size, label = NULL,
-  font.label = c(12, "plain"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, cor.coef = FALSE, cor.method = "pearson",
-  cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
-  ggtheme = theme_classic2(), ...)
+  mean.point = FALSE, mean.point.size = 2 * size, star.plot = FALSE,
+  star.plot.lty = 1, label = NULL, font.label = c(12, "plain"),
+  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+  cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL,
+  NULL), cor.coef.size = 12, ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -67,6 +67,10 @@ fill color. Use alpha = 0 for no fill color.}
 plot.}
 
 \item{mean.point.size}{numeric value specifying the size of mean points.}
+
+\item{star.plot}{logical value. If TRUE, a star plot is generated.}
+
+\item{star.plot.lty, star.plot.lwd}{line type and line width (size) for star plot, respectively.}
 
 \item{label}{the name of the column containing point labels.}
 
@@ -151,11 +155,13 @@ ggscatter(df, x = "wt", y = "mpg", color = "cyl",
 
 
 # Add group ellipses and mean points
+# Add stars
 # +++++++++++++++++++
 ggscatter(df, x = "wt", y = "mpg",
    color = "cyl", shape = "cyl",
    palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-   ellipse = TRUE, mean.point = TRUE)
+   ellipse = TRUE, mean.point = TRUE,
+   star.plot = TRUE)
 
 
 # Textual annotation

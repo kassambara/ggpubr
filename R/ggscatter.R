@@ -29,6 +29,8 @@ NULL
 #' @param mean.point logical value. If TRUE, group mean points are added to the
 #'   plot.
 #' @param mean.point.size numeric value specifying the size of mean points.
+#' @param star.plot logical value. If TRUE, a star plot is generated.
+#' @param star.plot.lty,star.plot.lwd line type and line width (size) for star plot, respectively.
 #' @param label the name of the column containing point labels.
 #' @param font.label a vector of length 3 indicating respectively the size
 #'   (e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
@@ -94,11 +96,13 @@ NULL
 #'
 #'
 #' # Add group ellipses and mean points
+#' # Add stars
 #' # +++++++++++++++++++
 #' ggscatter(df, x = "wt", y = "mpg",
 #'    color = "cyl", shape = "cyl",
 #'    palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-#'    ellipse = TRUE, mean.point = TRUE)
+#'    ellipse = TRUE, mean.point = TRUE,
+#'    star.plot = TRUE)
 #'
 #'
 #' # Textual annotation
@@ -118,6 +122,7 @@ ggscatter <- function(data, x, y,
                       ellipse = FALSE, ellipse.level = 0.95,
                       ellipse.type = "norm", ellipse.alpha = 0.1,
                       mean.point = FALSE, mean.point.size = 2*size,
+                      star.plot = FALSE, star.plot.lty = 1,
                       label = NULL,  font.label = c(12, "plain"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
@@ -199,6 +204,15 @@ ggscatter <- function(data, x, y,
                         color = color, shape = shape,
                         size = mean.point.size)
   }
+
+  # Star plots
+  # ++++++++++++
+  if(star.plot){
+    p <-.add_stars(p, data, x, y, color, fill, shape,
+                   star.plot.lty = star.plot.lty, star.plot.lwd = star.plot.lwd)
+  }
+
+  #/ star plots
 
   # Add textual annotation
   # ++++++
@@ -309,6 +323,37 @@ ggscatter <- function(data, x, y,
 }
 
 
+# Add stars to a plot
+# +++++++++++++++++++++
+.add_stars <- function(p, data, x, y, color, fill, shape, star.plot.lty, star.plot.lwd){
 
+  grp <- intersect(unique(c(color, fill, shape, star.plot.lty)), colnames(data))[1]
+  data <- stats::na.omit(data)
+  # NO grouping variable
+  if(is.na(grp)) {
+    grp <- factor(rep(1, nrow(data)))
+    grp_name <- "group"
+    data$group <- grp
+  }
+  # Case of grouping variable
+  else {
+    grp_name <- grp
+    grp <- data[, grp_name]
+    if(!inherits(data[, grp_name], "factor")) data[, grp_name] <- as.factor(data[, grp_name])
+  }
+  dd <- cbind.data.frame(grp = grp, data[, c(x, y)])
+  # calculate group centroid locations
+  centroids <- stats::aggregate(data[, c(x, y)], by = list(grp = grp), mean)
+  # merge centroid locations into ggplot dataframe
+  dd <- merge(dd, centroids, by="grp", suffixes = c("",".centroid"))
+  colnames(dd)[1] <- grp_name
+
+  .coord <- paste0(c(x, y), ".centroid")
+
+  # Star plot
+  p + .geom_exec(geom_segment, data = dd, x = .coord[1], y = .coord[2],
+                 xend = x, yend = y, color = color, linetype = star.plot.lty,
+                 size = star.plot.lwd)
+}
 
 
