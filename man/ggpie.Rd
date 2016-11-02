@@ -4,9 +4,9 @@
 \alias{ggpie}
 \title{Pie chart}
 \usage{
-ggpie(data, x, label = NULL, lab.pos = c("out", "in"), lab.font = c(4,
-  "bold", "black"), color = "black", fill = "white", palette = NULL,
-  size = NULL, ggtheme = theme_classic2(), ...)
+ggpie(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 0,
+  lab.font = c(4, "bold", "black"), color = "black", fill = "white",
+  palette = NULL, size = NULL, ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -18,9 +18,13 @@ ggpie(data, x, label = NULL, lab.pos = c("out", "in"), lab.font = c(4,
 \item{lab.pos}{character specifying the position for labels. Allowed values
 are "out" (for outside) or "in" (for inside).}
 
-\item{lab.font}{a vector of length 3 indicating respectively
-the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
-"bold.italic") and the color (e.g.: "red") of label font. For example \emph{lab.font= c(4, "bold", "red")}.}
+\item{lab.adjust}{numeric value, used to adjust label position when lab.pos =
+"in". Increase or decrease this value to see the effect.}
+
+\item{lab.font}{a vector of length 3 indicating respectively the size (e.g.:
+14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
+color (e.g.: "red") of label font. For example \emph{lab.font= c(4, "bold",
+"red")}.}
 
 \item{color, fill}{outline and fill colors.}
 
@@ -43,12 +47,12 @@ Create a pie chart.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
-  ?ggpar for changing: \itemize{ \item main title and axis labels: main,
-  xlab, ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
-  scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes:
-  palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
-  labels and position: legend = "right" \item plot orientation : orientation
-  = c("vertical", "horizontal", "reverse") }
+ ?ggpar for changing: \itemize{ \item main title and axis labels: main, xlab,
+ ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
+ scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes: palette
+ = "Dark2" or palette = c("gray", "blue", "red") \item legend title, labels
+ and position: legend = "right" \item plot orientation : orientation =
+ c("vertical", "horizontal", "reverse") }
 }
 \examples{
 

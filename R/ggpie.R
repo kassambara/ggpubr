@@ -7,20 +7,23 @@ NULL
 #'@param x variable containing values for drawing.
 #'@param label variable specifying the label of each slice.
 #'@param lab.pos character specifying the position for labels. Allowed values
-#'   are "out" (for outside) or "in" (for inside).
-#' @param lab.font a vector of length 3 indicating respectively
-#'   the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
-#'   "bold.italic") and the color (e.g.: "red") of label font. For example \emph{lab.font= c(4, "bold", "red")}.
+#'  are "out" (for outside) or "in" (for inside).
+#'@param lab.adjust numeric value, used to adjust label position when lab.pos =
+#'  "in". Increase or decrease this value to see the effect.
+#'@param lab.font a vector of length 3 indicating respectively the size (e.g.:
+#'  14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
+#'  color (e.g.: "red") of label font. For example \emph{lab.font= c(4, "bold",
+#'  "red")}.
 #'@param color,fill outline and fill colors.
 #'@param ... other arguments to be passed to be passed to ggpar().
 #'@details The plot can be easily customized using the function ggpar(). Read
-#'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
-#'   xlab, ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
-#'   scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes:
-#'   palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
-#'   labels and position: legend = "right" \item plot orientation : orientation
-#'   = c("vertical", "horizontal", "reverse") }
-#' @seealso \code{\link{ggpar}}, \code{\link{ggline}}
+#'  ?ggpar for changing: \itemize{ \item main title and axis labels: main, xlab,
+#'  ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
+#'  scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes: palette
+#'  = "Dark2" or palette = c("gray", "blue", "red") \item legend title, labels
+#'  and position: legend = "right" \item plot orientation : orientation =
+#'  c("vertical", "horizontal", "reverse") }
+#'@seealso \code{\link{ggpar}}, \code{\link{ggline}}
 #' @examples
 #'
 #' # Data: Create some data
@@ -67,8 +70,8 @@ NULL
 #'
 #'
 #'
-#' @export
-ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"),
+#'@export
+ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 0,
                   lab.font = c(4, "bold", "black"),
                       color = "black", fill = "white", palette = NULL,
                       size = NULL, ggtheme = theme_classic2(),
@@ -77,7 +80,11 @@ ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"),
 
   lab.pos <- match.arg(lab.pos)
   lab.font <- .parse_font(lab.font)
-  data <- data[order(data[, x]), , drop = FALSE]
+#   data <- data[order(data[, x]), , drop = FALSE]
+#   if(fill %in% colnames(data)) {
+#     fill_d <- as.vector(data[, fill])
+#     data[, fill] <- factor(fill_d, levels = rev(fill_d))
+#   }
 
   if(is.null(lab.font)) lab.font <- list(size = 5, face = "bold", color = "black")
 
@@ -109,7 +116,7 @@ ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"),
     if(lab.pos == "in"){
       df <- data
       y <- df[, x]
-      df[, x] <- (y/length(y)) + c(0, cumsum(y)[-length(y)])
+      df[, x] <- (y/(length(y)-lab.adjust)) + c(0, cumsum(y)[-length(y)])
       lab.font$size <- ifelse(is.null(lab.font$size), 5, lab.font$size)
       lab.font$color <- ifelse(is.null(lab.font$color), "black", lab.font$color)
       lab.font$face <- ifelse(is.null(lab.font$ace), "bold", lab.font$face)
