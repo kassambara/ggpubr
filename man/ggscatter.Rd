@@ -10,10 +10,11 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   conf.int.level = 0.95, fullrange = FALSE, ellipse = FALSE,
   ellipse.level = 0.95, ellipse.type = "norm", ellipse.alpha = 0.1,
   mean.point = FALSE, mean.point.size = 2 * size, star.plot = FALSE,
-  star.plot.lty = 1, label = NULL, font.label = c(12, "plain"),
-  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL,
-  NULL), cor.coef.size = 12, ggtheme = theme_classic2(), ...)
+  star.plot.lty = 1, star.plot.lwd = NULL, label = NULL,
+  font.label = c(12, "plain"), label.select = NULL, repel = FALSE,
+  label.rectangle = FALSE, cor.coef = FALSE, cor.method = "pearson",
+  cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
+  ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}
