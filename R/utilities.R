@@ -19,7 +19,7 @@ NULL
 
   allowed_options <- c(
     # general
-    "color", "colour", "linetype", "fill", "size", "shape", "width",
+    "x", "y", "color", "colour", "linetype", "fill", "size", "shape", "width",
     "alpha", "na.rm", "lwd", "pch", "cex", "position", "stat", "geom",
     "show.legend", "inherit.aes", "fun.args", "fontface",
     # boxplot
