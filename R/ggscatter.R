@@ -145,6 +145,12 @@ ggscatter <- function(data, x, y,
                  color = color, fill = fill, size = size,
                  shape = shape, ...)
 
+  # Adjust shape when ngroups > 6, to avoid ggplot warnings
+  if(shape %in% colnames(data)){
+    ngroups <- length(levels(data[, shape]))
+    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[, shape]))
+  }
+
   # Add marginal rug
   # +++++++++++
   if(rug) p <- p + .geom_exec(geom_rug, data = data,
