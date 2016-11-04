@@ -42,7 +42,9 @@ NULL
     # histograms
     "bins",
     # rug
-    "sides"
+    "sides",
+    # segment
+    "arrow", "xend", "yend"
 
   )
 
@@ -52,7 +54,7 @@ NULL
     if (is.null(value)) {
 
     }
-    else if (value[1] %in% columns) {
+    else if (unlist(value)[1] %in% columns) {
       mapping[[key]] <- value
 
     }
