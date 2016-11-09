@@ -13,7 +13,7 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   star.plot.lty = 1, star.plot.lwd = NULL, label = NULL,
   font.label = c(12, "plain"), label.select = NULL, repel = FALSE,
   label.rectangle = FALSE, cor.coef = FALSE, cor.method = "pearson",
-  cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
+  cor.coef.coord = c(NULL, NULL), cor.coef.size = 12, ggp = NULL,
   ggtheme = theme_classic2(), ...)
 }
 \arguments{
@@ -98,6 +98,8 @@ values are one of "pearson", "kendall", or "spearman".}
 coordinates of the correlation coefficient. Default values are NULL.}
 
 \item{cor.coef.size}{correlation coefficient text font size.}
+
+\item{ggp}{a ggplot. If not NULL, points are added to an existing plot.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

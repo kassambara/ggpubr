@@ -48,6 +48,7 @@ NULL
 #' @param cor.coef.coord numeric vector, of length 2, specifying the x and y
 #'  coordinates of the correlation coefficient. Default values are NULL.
 #' @param cor.coef.size correlation coefficient text font size.
+#' @param ggp a ggplot. If not NULL, points are added to an existing plot.
 #' @param ... other arguments to be passed to \code{\link[ggplot2]{geom_point}}
 #'   and \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -126,6 +127,7 @@ ggscatter <- function(data, x, y,
                       label = NULL,  font.label = c(12, "plain"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
+                      ggp = NULL,
                       ggtheme = theme_classic2(),
                       ...)
 {
@@ -138,10 +140,11 @@ ggscatter <- function(data, x, y,
   font.label$color <- ifelse(is.null(font.label$color), color, font.label$color)
   font.label$face <- ifelse(is.null(font.label$face), "plain", font.label$face)
 
-  p <- ggplot(data, aes_string(x, y))
+  if(is.null(ggp)) p <- ggplot(data, aes_string(x, y))
+  else p <- ggp
 
   if(point) p <- p +
-      .geom_exec(geom_point, data = data,
+      .geom_exec(geom_point, data = data, x = x, y = y,
                  color = color, fill = fill, size = size,
                  shape = shape, ...)
 
@@ -232,7 +235,7 @@ ggscatter <- function(data, x, y,
     if(repel){
       ggfunc <- ggrepel::geom_text_repel
       if(label.rectangle) ggfunc <- ggrepel::geom_label_repel
-        p <- p + .geom_exec(ggfunc, data = lab_data,
+        p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y,
                           label = label, fontface = font.label$face,
                           size = font.label$size/3, color = font.label$color,
                           box.padding = unit(0.35, "lines"),
@@ -246,7 +249,7 @@ ggscatter <- function(data, x, y,
         ggfunc <- geom_label
         vjust <- -0.4
         }
-      p <- p + .geom_exec(ggfunc, data = lab_data, color = color,
+      p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
                           label = label, fontface = font.label$face,
                           size = font.label$size/3, color = font.label$color,
                           vjust = vjust)
