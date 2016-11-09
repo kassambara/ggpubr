@@ -5,8 +5,11 @@
 #'   don't need this function.
 #' @param geomfunc a ggplot2 function (e.g.: geom_point)
 #' @param data a data frame to be used for mapping
+#' @param position Position adjustment, either as a string, or the result of a
+#'   call to a position adjustment function.
 #' @param ... arguments accepeted by the function
-#' @return return a plot if geomfunc!=Null or a list(option, mapping) if geomfunc = NULL.
+#' @return return a plot if geomfunc!=Null or a list(option, mapping) if
+#'   geomfunc = NULL.
 #' @examples
 #' \dontrun{
 #' ggplot() + geom_exec(geom_point, data = mtcars,

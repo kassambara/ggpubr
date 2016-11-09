@@ -11,10 +11,14 @@ geom_exec(geomfunc = NULL, data = NULL, position = NULL, ...)
 
 \item{data}{a data frame to be used for mapping}
 
+\item{position}{Position adjustment, either as a string, or the result of a
+call to a position adjustment function.}
+
 \item{...}{arguments accepeted by the function}
 }
 \value{
-return a plot if geomfunc!=Null or a list(option, mapping) if geomfunc = NULL.
+return a plot if geomfunc!=Null or a list(option, mapping) if
+  geomfunc = NULL.
 }
 \description{
 A helper function used by ggpubr functions to execute any geom_*
