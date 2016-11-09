@@ -24,7 +24,9 @@ Imports:
     stats,
     utils
 Suggests:
+    grDevices,
     knitr,
+    RColorBrewer,
     scales
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
