@@ -205,9 +205,14 @@ NULL
 
 # Generate color palette from ggsci or Rcolorbrewer
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-.get_pal <- function(pal, k){
+# pal could be a brewer or ggsci palette
+.get_pal <- function(pal = "default", k){
  if(pal %in% .brewerpal()) .get_brewer_pal(pal, k)
   else if(pal %in% .ggscipal()) .get_ggsci_pal(pal, k)
+  else if(pal == "default"){
+    hues <- seq(15, 375, length = k + 1)
+    grDevices::hcl(h = hues, l = 65, c = 100, alpha = 1)[1:k]
+  }
 }
 
 # Generate color palette from ggsci
