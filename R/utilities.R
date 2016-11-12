@@ -109,10 +109,10 @@ NULL
                 "ucscgb", "uchicago", "simpsons", "rickandmorty")
 }
 
-# Check if color palette
+# Check if color palette or default hue
 .is_col_palette <- function(pal){
   if(is.null(pal)) return(FALSE)
-  else return(length(pal)==1 & pal[1] %in% c(.brewerpal(), .ggscipal()))
+  else return(length(pal)==1 & pal[1] %in% c(.brewerpal(), .ggscipal(), "default"))
 }
 
 # Change color manually
