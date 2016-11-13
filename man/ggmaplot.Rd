@@ -56,13 +56,10 @@ changes, respectively.}
 
 \item{main}{plot main title.}
 
-\item{xlab}{character vector specifying x and y axis labels,
-respectively. Use xlab = FALSE and ylab = FALSE to hide xlab and ylab,
-respectively.}
+\item{xlab}{character vector specifying x axis labels,
+respectively. Use xlab = FALSE to hide xlab.}
 
-\item{ylab}{character vector specifying x and y axis labels,
-respectively. Use xlab = FALSE and ylab = FALSE to hide xlab and ylab,
-respectively.}
+\item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to hide ylab.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
