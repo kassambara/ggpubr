@@ -181,6 +181,8 @@ ggline <- function(data, x, y, group = 1,
     .geom_exec(geom_point, data = data_sum,
                color = color, shape = shape,
                size = 1.5+size)
+    # Adjust shape when ngroups > 6, to avoid ggplot warnings
+    p <-.scale_point_shape(p, data_sum, shape)
   }
 
 
