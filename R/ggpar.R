@@ -11,9 +11,9 @@ NULL
 #'   "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 #'   "rickandmorty".
 #' @param main plot main title.
-#' @param xlab,ylab character vector specifying x and y axis labels,
-#'   respectively. Use xlab = FALSE and ylab = FALSE to hide xlab and ylab,
-#'   respectively.
+#' @param xlab character vector specifying x axis labels,
+#'   respectively. Use xlab = FALSE to hide xlab.
+#' @param ylab character vector specifying y axis labels. Use ylab = FALSE to hide ylab.
 #' @param font.main,font.x,font.y a vector of length 3 indicating respectively
 #'   the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
 #'   "bold.italic") and the color (e.g.: "red") of main title, xlab and ylab,

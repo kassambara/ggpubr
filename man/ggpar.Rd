@@ -26,9 +26,10 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 
 \item{main}{plot main title.}
 
-\item{xlab, ylab}{character vector specifying x and y axis labels,
-respectively. Use xlab = FALSE and ylab = FALSE to hide xlab and ylab,
-respectively.}
+\item{xlab}{character vector specifying x axis labels,
+respectively. Use xlab = FALSE to hide xlab.}
+
+\item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to hide ylab.}
 
 \item{font.main, font.x, font.y}{a vector of length 3 indicating respectively
 the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
