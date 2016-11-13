@@ -223,6 +223,13 @@ NULL
 
   pal <- match.arg(palette)
 
+  if(pal %in% c("npg", "aaas", "jco")) max_k <- 10
+  else if (pal %in% c("lancet", "uchicago")) max_k <- 9
+  else if (pal %in% c("ucscgb")) max_k <- 26
+  else if (pal %in% c("simpsons")) max_k <- 16
+  else if (pal %in% c("rickandmorty")) max_k <- 12
+  else stop("Don't support palette name: ", pal)
+
   functs <- list(
     npg = ggsci::pal_npg(),
     aaas = ggsci::pal_aaas(),
@@ -233,7 +240,9 @@ NULL
     simpsons = ggsci::pal_simpsons(),
     rickandmorty = ggsci::pal_rickandmorty()
   )
-  functs[[pal]](k)
+
+  if(k <= max_k) functs[[pal]](k)
+  else grDevices::colorRampPalette(functs[[pal]](max_k))(k)
 }
 
 # Generate a color palette from brewer
@@ -699,6 +708,19 @@ p
   }
   list(data = data, x =x, y = y)
 }
+
+
+# Adjust shape when ngroups > 6, to avoid ggplot warnings
+.scale_point_shape <- function(p, data, shape){
+  if(shape %in% colnames(data)){
+    grp <- data[, shape]
+    if(!inherits(grp, "factor")) grp <- as.factor(grp)
+    ngroups <- length(levels(data[, shape]))
+    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[, shape]))
+  }
+  p
+}
+
 
 
 
