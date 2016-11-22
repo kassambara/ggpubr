@@ -10,7 +10,7 @@ NULL
 #'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
 #'   "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 #'   "rickandmorty".
-#'  @param gradient.cols vector of colors to use for n-colour gradient.
+#' @param gradient.cols vector of colors to use for n-colour gradient.
 #' @param main plot main title.
 #' @param xlab character vector specifying x axis labels,
 #'   respectively. Use xlab = FALSE to hide xlab.

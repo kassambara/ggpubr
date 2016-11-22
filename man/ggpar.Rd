@@ -18,12 +18,13 @@ ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL, xlab = NULL,
 \item{p}{an object of class ggplot}
 
 \item{palette}{the color palette to be used for coloring or filling by
- groups. Allowed values include "grey" for grey color palettes; brewer
- palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
- "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
- "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
- "rickandmorty".
-@param gradient.cols vector of colors to use for n-colour gradient.}
+groups. Allowed values include "grey" for grey color palettes; brewer
+palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
+"red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
+"aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
+"rickandmorty".}
+
+\item{gradient.cols}{vector of colors to use for n-colour gradient.}
 
 \item{main}{plot main title.}
 
