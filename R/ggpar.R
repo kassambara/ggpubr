@@ -10,6 +10,7 @@ NULL
 #'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
 #'   "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 #'   "rickandmorty".
+#'  @param gradient.cols vector of colors to use for n-colour gradient.
 #' @param main plot main title.
 #' @param xlab character vector specifying x axis labels,
 #'   respectively. Use xlab = FALSE to hide xlab.
@@ -127,7 +128,7 @@ NULL
 #'  font.legend = c(10, "bold", "red"))
 #'
 #' @export
-ggpar <- function(p, palette = NULL,
+ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   main = NULL, xlab = NULL, ylab = NULL,
                   font.main = NULL, font.x = NULL, font.y = NULL,
                   xlim = NULL, ylim = NULL,
@@ -146,6 +147,7 @@ ggpar <- function(p, palette = NULL,
   p <- p + .ggcolor(palette)+
     .ggfill(palette)
   if(!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +
+  if(!is.null(gradient.cols)) p <- p + .gradient_col(gradient.cols)
 
   p <- p +.set_ticks(ticks, tickslab, font.tickslab,
                xtickslab.rt, ytickslab.rt)

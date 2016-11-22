@@ -4,9 +4,9 @@
 \alias{ggpar}
 \title{Graphical parameters}
 \usage{
-ggpar(p, palette = NULL, main = NULL, xlab = NULL, ylab = NULL,
-  font.main = NULL, font.x = NULL, font.y = NULL, xlim = NULL,
-  ylim = NULL, xscale = c("none", "log2", "log10", "sqrt"),
+ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL, xlab = NULL,
+  ylab = NULL, font.main = NULL, font.x = NULL, font.y = NULL,
+  xlim = NULL, ylim = NULL, xscale = c("none", "log2", "log10", "sqrt"),
   yscale = c("none", "log2", "log10", "sqrt"), format.scale = FALSE,
   legend = c("bottom", "top", "left", "right", "none"), legend.title = NULL,
   font.legend = NULL, ticks = TRUE, tickslab = TRUE,
@@ -18,11 +18,12 @@ ggpar(p, palette = NULL, main = NULL, xlab = NULL, ylab = NULL,
 \item{p}{an object of class ggplot}
 
 \item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; brewer
-palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-"red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
-"aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
-"rickandmorty".}
+ groups. Allowed values include "grey" for grey color palettes; brewer
+ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
+ "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
+ "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
+ "rickandmorty".
+@param gradient.cols vector of colors to use for n-colour gradient.}
 
 \item{main}{plot main title.}
 
