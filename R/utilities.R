@@ -266,6 +266,19 @@ NULL
   else grDevices::colorRampPalette(RColorBrewer::brewer.pal(max_k, palette))(k)
 }
 
+# Set gradient colors
+# cols a vector of colors
+.gradient_col <- function (cols){
+  n_cols <- length(cols)
+
+  if(n_cols == 1) {
+    cols <- grDevices::colorRampPalette(c("white", cols))(10)
+    cols <- cols[c(1, 10)]
+    n_cols <- 2
+  }
+  ggplot2::scale_color_gradientn(colours = cols)
+}
+
 # Set plot orientation
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_orientation <-
@@ -565,6 +578,12 @@ p
 
   if ( "point" %in% add ) {
     p <- p + .geom_exec(geom_point, data = data,
+                        color = color,  size = add.params$size,
+                        position = position)
+
+  }
+  if ( "line" %in% add ) {
+    p <- p + .geom_exec(geom_line, data = data, group = 1,
                         color = color,  size = add.params$size,
                         position = position)
 
