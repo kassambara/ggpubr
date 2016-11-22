@@ -68,6 +68,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     else if (key %in% allowed_options) {
       option[[key]] <- value
     }
+    else if (key =="group")  mapping[[key]] <- value # for line plot
     # else warnings("Don't know '", key, "'")
   }
   if (!is.null(position))
