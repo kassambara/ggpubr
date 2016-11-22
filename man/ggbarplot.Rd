@@ -6,10 +6,10 @@
 \usage{
 ggbarplot(data, x, y, color = "black", fill = "white", palette = NULL,
   size = NULL, width = NULL, label = FALSE, lab.col = "black",
-  lab.size = 5, lab.pos = c("out", "in"), lab.vjust = NULL,
-  select = NULL, order = NULL, add = "none", add.params = list(),
-  error.plot = "errorbar", position = position_stack(),
-  ggtheme = theme_classic2(), ...)
+  lab.size = 4, lab.pos = c("out", "in"), lab.vjust = NULL,
+  lab.hjust = NULL, select = NULL, order = NULL, add = "none",
+  add.params = list(), error.plot = "errorbar",
+  position = position_stack(), ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -42,6 +42,8 @@ NULL.}
 \item{lab.vjust}{numeric, vertical justification of labels. Provide negative
 value (e.g.: -0.4) to put labels outside the bars or positive value to put
 labels inside (e.g.: 2).}
+
+\item{lab.hjust}{numeric, horizontal justification of labels.}
 
 \item{select}{character vector specifying which items to display.}
 

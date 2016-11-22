@@ -17,6 +17,7 @@ NULL
 #' @param lab.vjust numeric, vertical justification of labels. Provide negative
 #'   value (e.g.: -0.4) to put labels outside the bars or positive value to put
 #'   labels inside (e.g.: 2).
+#' @param lab.hjust numeric, horizontal justification of labels.
 #' @param ... other arguments to be passed to be passed to ggpar().
 #' @details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
@@ -137,8 +138,8 @@ NULL
 ggbarplot <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       size = NULL, width = NULL,
-                      label = FALSE, lab.col = "black", lab.size = 5,
-                      lab.pos = c("out", "in"), lab.vjust = NULL,
+                      label = FALSE, lab.col = "black", lab.size = 4,
+                      lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
                       select = NULL, order = NULL,
                       add = "none",
                       add.params = list(),
@@ -197,6 +198,7 @@ ggbarplot <- function(data, x, y,
 
    if(add.label) {
      if(is.null(lab.vjust)) lab.vjust <- ifelse(lab.pos == "out", -0.4, 2 )
+     if(is.null(lab.hjust)) lab.hjust <- 0.5
       # pos <- "identity"
       # if color or fill by groups
      .cols <- unique(c(color, fill))
@@ -204,13 +206,13 @@ ggbarplot <- function(data, x, y,
        .in <- which(.cols %in% names(data))
        lab.fill <- .cols[.in]
        p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,  fill = lab.fill,
-                           vjust = lab.vjust, size = lab.size, color = lab.col,
-                           fontface = "bold", position = position)
+                           vjust = lab.vjust, hjust = lab.hjust, size = lab.size, color = lab.col,
+                           fontface = "plain", position = position)
      }
      else{
      p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,
-                         vjust = lab.vjust, size = lab.size, color = lab.col,
-                         fontface = "bold", position = position)
+                         vjust = lab.vjust,  hjust = lab.hjust, size = lab.size, color = lab.col,
+                         fontface = "plain", position = position)
      }
    }
 
