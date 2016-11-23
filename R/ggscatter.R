@@ -30,12 +30,15 @@ NULL
 #'   plot.
 #' @param mean.point.size numeric value specifying the size of mean points.
 #' @param star.plot logical value. If TRUE, a star plot is generated.
-#' @param star.plot.lty,star.plot.lwd line type and line width (size) for star plot, respectively.
-#' @param label the name of the column containing point labels.
+#' @param star.plot.lty,star.plot.lwd line type and line width (size) for star
+#'   plot, respectively.
+#' @param label the name of the column containing point labels. Can be also a
+#'   character vector with length = nrow(data).
 #' @param font.label a vector of length 3 indicating respectively the size
 #'   (e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
 #'   the color (e.g.: "red") of point labels. For example \emph{font.label =
-#'   c(14, "bold", "red")}. To specify only the size and the style, use font.label = c(14, "plain").
+#'   c(14, "bold", "red")}. To specify only the size and the style, use
+#'   font.label = c(14, "plain").
 #' @param label.select character vector specifying some labels to show.
 #' @param repel a logical value, whether to use ggrepel to avoid overplotting
 #'   text labels or not.
@@ -46,7 +49,7 @@ NULL
 #' @param cor.method method for computing correlation coefficient. Allowed
 #'   values are one of "pearson", "kendall", or "spearman".
 #' @param cor.coef.coord numeric vector, of length 2, specifying the x and y
-#'  coordinates of the correlation coefficient. Default values are NULL.
+#'   coordinates of the correlation coefficient. Default values are NULL.
 #' @param cor.coef.size correlation coefficient text font size.
 #' @param ggp a ggplot. If not NULL, points are added to an existing plot.
 #' @param ... other arguments to be passed to \code{\link[ggplot2]{geom_point}}
@@ -134,6 +137,15 @@ ggscatter <- function(data, x, y,
 
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
+
+  if(length(label) >1){
+    if(length(label) != nrow(data))
+      stop("The argument label should be a column name or a vector of length = nrow(data). ",
+           "It seems that length(label) != nrow(data)")
+    else data$label.xx <- label
+    label <- "label.xx"
+  }
+
   # label font
   font.label <- .parse_font(font.label)
   font.label$size <- ifelse(is.null(font.label$size), 12, font.label$size)
@@ -225,6 +237,9 @@ ggscatter <- function(data, x, y,
 
   # Add textual annotation
   # ++++++
+  alpha <- 1
+  if(!is.null(list(...)$alpha)) alpha <- list(...)$alpha
+
   if(!is.null(label)) {
     lab_data <- data
     # Select some labels to show
@@ -238,6 +253,7 @@ ggscatter <- function(data, x, y,
         p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y,
                           label = label, fontface = font.label$face,
                           size = font.label$size/3, color = font.label$color,
+                          alpha = alpha,
                           box.padding = unit(0.35, "lines"),
                           point.padding = unit(0.3, "lines"),
                           force = 1)
@@ -252,7 +268,7 @@ ggscatter <- function(data, x, y,
       p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
                           label = label, fontface = font.label$face,
                           size = font.label$size/3, color = font.label$color,
-                          vjust = vjust)
+                          vjust = vjust, alpha = alpha)
     }
   }
 

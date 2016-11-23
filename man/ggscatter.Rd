@@ -71,14 +71,17 @@ plot.}
 
 \item{star.plot}{logical value. If TRUE, a star plot is generated.}
 
-\item{star.plot.lty, star.plot.lwd}{line type and line width (size) for star plot, respectively.}
+\item{star.plot.lty, star.plot.lwd}{line type and line width (size) for star
+plot, respectively.}
 
-\item{label}{the name of the column containing point labels.}
+\item{label}{the name of the column containing point labels. Can be also a
+character vector with length = nrow(data).}
 
 \item{font.label}{a vector of length 3 indicating respectively the size
 (e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
 the color (e.g.: "red") of point labels. For example \emph{font.label =
-c(14, "bold", "red")}. To specify only the size and the style, use font.label = c(14, "plain").}
+c(14, "bold", "red")}. To specify only the size and the style, use
+font.label = c(14, "plain").}
 
 \item{label.select}{character vector specifying some labels to show.}
 
