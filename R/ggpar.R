@@ -10,11 +10,13 @@ NULL
 #'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
 #'   "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 #'   "rickandmorty".
-#' @param gradient.cols vector of colors to use for n-colour gradient.
+#' @param gradient.cols vector of colors to use for n-colour gradient. Allowed
+#'   values include brewer and ggsci color palettes.
 #' @param main plot main title.
-#' @param xlab character vector specifying x axis labels,
-#'   respectively. Use xlab = FALSE to hide xlab.
-#' @param ylab character vector specifying y axis labels. Use ylab = FALSE to hide ylab.
+#' @param xlab character vector specifying x axis labels, respectively. Use xlab
+#'   = FALSE to hide xlab.
+#' @param ylab character vector specifying y axis labels. Use ylab = FALSE to
+#'   hide ylab.
 #' @param font.main,font.x,font.y a vector of length 3 indicating respectively
 #'   the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
 #'   "bold.italic") and the color (e.g.: "red") of main title, xlab and ylab,

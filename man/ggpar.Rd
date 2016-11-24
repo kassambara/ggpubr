@@ -24,14 +24,16 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 "rickandmorty".}
 
-\item{gradient.cols}{vector of colors to use for n-colour gradient.}
+\item{gradient.cols}{vector of colors to use for n-colour gradient. Allowed
+values include brewer and ggsci color palettes.}
 
 \item{main}{plot main title.}
 
-\item{xlab}{character vector specifying x axis labels,
-respectively. Use xlab = FALSE to hide xlab.}
+\item{xlab}{character vector specifying x axis labels, respectively. Use xlab
+= FALSE to hide xlab.}
 
-\item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to hide ylab.}
+\item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.}
 
 \item{font.main, font.x, font.y}{a vector of length 3 indicating respectively
 the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",

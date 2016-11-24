@@ -269,6 +269,7 @@ NULL
 # Set gradient colors
 # cols a vector of colors
 .gradient_col <- function (cols){
+  if(.is_col_palette(cols)) cols <- .get_pal(cols, k = 3)
   n_cols <- length(cols)
 
   if(n_cols == 1) {
