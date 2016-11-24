@@ -355,6 +355,9 @@ NULL
   function(ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
            xtickslab.rt = 0, ytickslab.rt = 0)
   {
+
+    if(xtickslab.rt > 5) xhjust <- 1 else xhjust <- NULL
+
     if (ticks)
       ticks <-
         element_line(colour = "black")
@@ -368,7 +371,8 @@ NULL
       xtickslab <-
         element_text(
           size = font$size, face = font$face,
-          colour = font$color, angle = xtickslab.rt
+          colour = font$color, angle = xtickslab.rt,
+          hjust = xhjust
         )
       ytickslab <-
         element_text(
