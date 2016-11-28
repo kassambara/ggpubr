@@ -745,6 +745,14 @@ p
   p
 }
 
+# Get not numeric columns in a data.frame
+.get_not_numeric_vars <- function(data_frame){
+  is_numeric <- sapply(data_frame, is.numeric)
+  if(sum(!is_numeric) == 0) res = NULL
+  else res <- colnames(data_frame[, !is_numeric, drop = FALSE])
+  res
+}
+
 
 
 
