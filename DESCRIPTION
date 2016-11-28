@@ -53,6 +53,7 @@ Collate:
     'ggqqplot.R'
     'ggscatter.R'
     'ggstripchart.R'
+    'ggtext.R'
     'ggviolin.R'
     'show_line_types.R'
     'show_point_shapes.R'

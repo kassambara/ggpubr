@@ -5,8 +5,10 @@
 ## New features
    
 - New function `theme_classic2()` added. Classic theme with axis lines.
+- New function `ggtext()` for textual annotation.
 - New argument star.plot in ggscatter(). A logical value. If TRUE, a star plot is generated.
 - New helper function `geom_exec()`. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without carrying about the arguments to put in `ggplot2::aes()`.
+- New arguments sort.val and top in `ggbarplot()`.
 
 ## Minor changes
 
