@@ -7,9 +7,10 @@
 ggbarplot(data, x, y, color = "black", fill = "white", palette = NULL,
   size = NULL, width = NULL, label = FALSE, lab.col = "black",
   lab.size = 4, lab.pos = c("out", "in"), lab.vjust = NULL,
-  lab.hjust = NULL, select = NULL, order = NULL, add = "none",
-  add.params = list(), error.plot = "errorbar",
-  position = position_stack(), ggtheme = theme_classic2(), ...)
+  lab.hjust = NULL, select = NULL, order = NULL, sort.val = c("none",
+  "desc", "asc"), top = Inf, add = "none", add.params = list(),
+  error.plot = "errorbar", position = position_stack(),
+  ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -48,6 +49,11 @@ labels inside (e.g.: 2).}
 \item{select}{character vector specifying which items to display.}
 
 \item{order}{character vector specifying the order of items.}
+
+\item{sort.val}{a string specifying whether the value should be sorted.
+Allowed values are "none" (no sorting), "asc" (for ascending) or "desc" (for descending).}
+
+\item{top}{a numeric value specifying the number of top elements to be shown.}
 
 \item{add}{character vector for adding another plot element (e.g.: dot plot
 or error bars). Allowed values are one or the combination of: "none",

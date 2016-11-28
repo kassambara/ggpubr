@@ -6,6 +6,9 @@ NULL
 #' @inheritParams ggplot2::geom_bar
 #' @param x,y x and y variables for drawing.
 #' @param color,fill outline and fill colors.
+#' @param sort.val a string specifying whether the value should be sorted.
+#' Allowed values are "none" (no sorting), "asc" (for ascending) or "desc" (for descending).
+#' @param top a numeric value specifying the number of top elements to be shown.
 #' @param label specify whether to add labels on the bar plot. Allowed values
 #'   are: \itemize{ \item \strong{logical value}: If TRUE, y values is added as
 #'   labels on the bar plot \item \strong{character vector}: Used as text
@@ -141,6 +144,7 @@ ggbarplot <- function(data, x, y,
                       label = FALSE, lab.col = "black", lab.size = 4,
                       lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
                       select = NULL, order = NULL,
+                      sort.val = c("none", "desc", "asc"), top = Inf,
                       add = "none",
                       add.params = list(),
                       error.plot = "errorbar",
@@ -149,6 +153,7 @@ ggbarplot <- function(data, x, y,
                       ...)
 {
 
+  sort.val <- match.arg(sort.val)
   data[, x] <- factor(data[, x])
   error.plot = error.plot[1]
   lab.pos <- match.arg(lab.pos)
@@ -172,7 +177,30 @@ ggbarplot <- function(data, x, y,
   }
   else data_sum <- data
 
+  # Sorting
+  #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  if(top !=Inf & sort.val == "none") sort.val = "desc"
+  if(top !=Inf) {
+    data_sum <- data_sum[order(-data_sum[, y]), ]
+    data_sum <- head(data_sum, n = top)
+  }
+  grps <- unique(intersect(c(color, fill), names(data)))
+  if(length(grps) > 0) grps <- .get_not_numeric_vars(data[, grps, drop = FALSE])
+  ngrps <- length(grps)
+  # Variables for ordering
+  if(ngrps > 0) dd <- data_sum[, c(grps, y)]
+  else dd <- data_sum[, y, drop = FALSE]
+  if(sort.val == "desc") dd[, y] <- -dd[, y]
+  # Sorting
+  if(sort.val != "none") {
+    if(ngrps == 0) data_sum <- data_sum[order(dd[, y]),]
+    else if(ngrps == 1) data_sum <- data_sum[order(dd[, 1], dd[, y]),]
+    else if(ngrps == 2) data_sum <- data_sum[order(dd[, 1], dd[, 2], dd[, y]),]
+    data_sum[, x] <- factor(data_sum[, x], levels = data_sum[, x])
+  }
+
   # Main plot
+  #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.95
   p <- ggplot(data, aes_string(x, y))
   p <- p +
@@ -217,7 +245,7 @@ ggbarplot <- function(data, x, y,
    }
 
    # To do
-   # Sorting, top10, visualizing error
+   # top10, visualizing error
 
   # Select and order
   if(is.null(select)) select <- order
