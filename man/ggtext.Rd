@@ -77,6 +77,11 @@ ggtext(df, x = "wt", y = "mpg",
    color = "cyl", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
    label = "name", repel = TRUE)
 
+# Add rectangle around label
+ggtext(df, x = "wt", y = "mpg",
+   color = "cyl", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+   label = "name", repel = TRUE,  label.rectangle = TRUE)
+
 
 }
 \seealso{
