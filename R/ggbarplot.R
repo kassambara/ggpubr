@@ -8,6 +8,8 @@ NULL
 #' @param color,fill outline and fill colors.
 #' @param sort.val a string specifying whether the value should be sorted.
 #' Allowed values are "none" (no sorting), "asc" (for ascending) or "desc" (for descending).
+#' @param sort.by.groups logical value. If TRUE the data are sorted by groups.
+#' Used only when sort.val != "none".
 #' @param top a numeric value specifying the number of top elements to be shown.
 #' @param label specify whether to add labels on the bar plot. Allowed values
 #'   are: \itemize{ \item \strong{logical value}: If TRUE, y values is added as
@@ -144,7 +146,8 @@ ggbarplot <- function(data, x, y,
                       label = FALSE, lab.col = "black", lab.size = 4,
                       lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
                       select = NULL, order = NULL,
-                      sort.val = c("none", "desc", "asc"), top = Inf,
+                      sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
+                      top = Inf,
                       add = "none",
                       add.params = list(),
                       error.plot = "errorbar",
@@ -187,6 +190,7 @@ ggbarplot <- function(data, x, y,
   grps <- unique(intersect(c(color, fill), names(data)))
   if(length(grps) > 0) grps <- .get_not_numeric_vars(data[, grps, drop = FALSE])
   ngrps <- length(grps)
+  if(!sort.by.groups) ngrps <- 0
   # Variables for ordering
   if(ngrps > 0) dd <- data_sum[, c(grps, y)]
   else dd <- data_sum[, y, drop = FALSE]
