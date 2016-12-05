@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.2.4
+* local OS X install, R 3.3.1
 * win-builder 
 * Travis
 
@@ -9,13 +9,9 @@ There were no ERRORs, WARNINGs or NOTEs.
 ## Downstream dependencies
 There are currently no downstream dependencies for this package
 
-## New submission
-This is a new submission of ggpubr 0.1.0
+## Update
+This is an update version 0.1.1 (see NEWS.md)
 
-## Resubmission
-This is a resubmission 0.1.0. In this version I have:
-
-* changed the DESCRIPTION file to explain the advantages of ggpubr.
 
 
 
