@@ -185,7 +185,7 @@ ggbarplot <- function(data, x, y,
   if(top !=Inf & sort.val == "none") sort.val = "desc"
   if(top !=Inf) {
     data_sum <- data_sum[order(-data_sum[, y]), ]
-    data_sum <- head(data_sum, n = top)
+    data_sum <- utils::head(data_sum, n = top)
   }
   grps <- unique(intersect(c(color, fill), names(data)))
   if(length(grps) > 0) grps <- .get_not_numeric_vars(data[, grps, drop = FALSE])
