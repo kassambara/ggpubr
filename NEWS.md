@@ -1,15 +1,18 @@
 
-# ggpubr 0.1.0.999
+# ggpubr 0.1.1
    
   
 ## New features
    
-- New function `theme_classic2()` added. Classic theme with axis lines.
 - New function `ggtext()` for textual annotation.
-- New argument star.plot in ggscatter(). A logical value. If TRUE, a star plot is generated.
+- New argument star.plot in `ggscatter()`. A logical value. If TRUE, a star plot is generated.
 - New helper function `geom_exec()`. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without carrying about the arguments to put in `ggplot2::aes()`.
-- New arguments sort.val and top in `ggbarplot()`.
-
+- New arguments sort.val and top in `ggbarplot()`. 
+    - sort.val: a string specifying whether the value should be sorted. Allowed values are "none" (no sorting), "asc" (for ascending) or "desc" (for descending).
+    - top: a numeric value specifying the number of top elements to be shown.
+- New function `theme_classic2()` added. Classic theme with axis lines.
+    
+    
 ## Minor changes
 
 - `ggboxplot()`, `ggviolin()`, `ggdotplot()`, `ggstripchart()`, `gghistogram()`, `ggdensity()`, `ggecdf()` and `ggqqplot()` can now handle one single numeric vector.
@@ -24,8 +27,6 @@ ggboxplot(iris$Sepal.Length)
 - Default point size and line size set to NULL
 
    
-## Bug fixes
-    
 
 # ggpubr 0.1.0
 
