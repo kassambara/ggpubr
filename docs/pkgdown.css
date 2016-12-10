@@ -1,0 +1,113 @@
+/* Sticker footer */
+body > .container {
+  display: flex;
+  padding-top: 60px;
+  min-height: calc(100vh);
+  flex-direction: column;
+}
+
+body > .container .row {
+  flex: 1;
+}
+
+footer {
+  margin-top: 45px;
+  padding: 35px 0 36px;
+  border-top: 1px solid #e5e5e5;
+  color: #666;
+  display: flex;
+}
+footer p {
+  margin-bottom: 0;
+}
+footer div {
+  flex: 1;
+}
+footer .pkgdown {
+  text-align: right;
+}
+footer p {
+  margin-bottom: 0;
+}
+
+img.icon {
+  float: right;
+}
+
+/* Section anchors ---------------------------------*/
+
+.hasAnchor {
+  margin-left: -30px;
+}
+
+a.anchor {
+  display:inline-block;
+  width: 30px;
+  height: 30px;
+  visibility: hidden;
+
+  background-image: url(./link.svg);
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-position: center center;
+}
+
+.hasAnchor:hover a.anchor {
+  visibility: visible;
+}
+
+/* Fixes for fixed navbar --------------------------*/
+
+.contents h1, .contents h2, .contents h3, .contents h4 {
+  padding-top: 60px;
+  margin-top: -60px;
+}
+
+/* Sidebar --------------------------*/
+
+#sidebar {
+  margin-top: 30px;
+}
+#sidebar h2 {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+#sidebar h2:first-child {
+  margin-top: 0;
+}
+
+#sidebar .list-unstyled li {
+  margin-bottom: 0.5em;
+}
+
+/* Syntax highlighting ---------------------------------------------------- */
+
+code {
+  background-color: #f7f7f7;
+  color: #333;
+}
+code a {
+  color: #375f84;
+}
+
+.warning { color: red; }
+.message { font-weight: bolder; }
+.error   { color: red; font-weight: bolder; }
+
+.fl,.number {color:rgb(21,20,181);}
+.fu,.functioncall {color:#264D66 ;}
+.ch,.st,.string {color:#375D81 ;}
+.kw,.keyword {color:black;}
+.argument {color:#264D66 ;}
+.co,.comment {color: #777;}
+.formalargs {color: #264D66;}
+.eqformalargs {color:#264D66;}
+.slot {font-style:italic;}
+.symbol {color:black ;}
+.prompt {color:black ;}
+
+pre img {
+  background-color: #fff;
+  display: block;
+}

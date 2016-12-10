@@ -4,3 +4,5 @@
 ^README-.*\.png$
 ^\.travis\.yml$
 ^cran-comments\.md$
+^docs$
+^_pkgdown\.yml$

@@ -1,0 +1,50 @@
+templates:
+  params:
+    bootswatch: cerulean
+reference:
+  - title: Plot one variable - X, Continuous
+    desc:  Visualize distributions.
+    contents:
+      - ggdensity
+      - gghistogram
+      - ggecdf
+      - ggqqplot
+  - title: Plot two variables - X and Y, Discrete X and Continuous Y
+    desc: Visualize data distributions by groups.
+    contents:
+      - ggboxplot
+      - ggviolin
+      - ggdotplot
+      - ggstripchart
+      - ggbarplot
+      - ggline
+      - ggerrorplot
+      - ggpie
+      - ggdotchart
+  - title: Plot two continuous variables
+    desc: Scatter plots
+    contents:
+      - ggscatter
+  - title: Graphical parameters
+    desc: Change graphical parameters such as, titles, legend, colors, axis limits, scale transformation (log, sqrt), axis ticks and plot orientation (vertical, horizontal).
+    contents:
+      - ggpar
+      - theme_pubr
+      - show_line_types
+      - show_point_shapes
+  - title: Genomics
+    desc: Plotting data obtained from genomic data analyses.
+    contents:
+      - ggmaplot
+  - title: Data
+    contents: diff_express
+  - title: Others
+    contents:
+      - desc_statby
+      - stat_chull
+      - stat_conf_ellipse
+      - stat_mean
+
+
+
+
