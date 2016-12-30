@@ -237,7 +237,7 @@ ggbarplot <- function(data, x, y,
      if(any(.cols %in% names(data))){
        .in <- which(.cols %in% names(data))
        lab.fill <- .cols[.in]
-       p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,  fill = lab.fill,
+       p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,  #fill = lab.fill
                            vjust = lab.vjust, hjust = lab.hjust, size = lab.size, color = lab.col,
                            fontface = "plain", position = position)
      }
