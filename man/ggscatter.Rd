@@ -14,7 +14,8 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   label = NULL, font.label = c(12, "plain"), label.select = NULL,
   repel = FALSE, label.rectangle = FALSE, cor.coef = FALSE,
   cor.method = "pearson", cor.coef.coord = c(NULL, NULL),
-  cor.coef.size = 12, ggp = NULL, ggtheme = theme_classic2(), ...)
+  cor.coef.size = 12, ggp = NULL, show.legend.text = NA,
+  ggtheme = theme_classic2(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -103,6 +104,10 @@ coordinates of the correlation coefficient. Default values are NULL.}
 \item{cor.coef.size}{correlation coefficient text font size.}
 
 \item{ggp}{a ggplot. If not NULL, points are added to an existing plot.}
+
+\item{show.legend.text}{logical. Should text be included in the
+legends? NA, the default, includes if any aesthetics are mapped. FALSE
+never includes, and TRUE always includes.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

@@ -6,7 +6,9 @@
    
     
 ## Minor changes
-
+   
+- New argument `show.legend.text` in the `ggscatter()` function. Use show.legend.text = FALSE to hide text in the legend.
+   
 ## Bug fixed
 
    

@@ -52,6 +52,9 @@ NULL
 #'   coordinates of the correlation coefficient. Default values are NULL.
 #' @param cor.coef.size correlation coefficient text font size.
 #' @param ggp a ggplot. If not NULL, points are added to an existing plot.
+#' @param show.legend.text logical. Should text be included in the
+#'   legends? NA, the default, includes if any aesthetics are mapped. FALSE
+#'   never includes, and TRUE always includes.
 #' @param ... other arguments to be passed to \code{\link[ggplot2]{geom_point}}
 #'   and \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -130,7 +133,7 @@ ggscatter <- function(data, x, y,
                       label = NULL,  font.label = c(12, "plain"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
-                      ggp = NULL,
+                      ggp = NULL, show.legend.text = NA,
                       ggtheme = theme_classic2(),
                       ...)
 {
@@ -256,7 +259,7 @@ ggscatter <- function(data, x, y,
                           alpha = alpha,
                           box.padding = unit(0.35, "lines"),
                           point.padding = unit(0.3, "lines"),
-                          force = 1)
+                          force = 1, show.legend = show.legend.text)
     }
     else{
       ggfunc <- geom_text
@@ -268,7 +271,7 @@ ggscatter <- function(data, x, y,
       p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
                           label = label, fontface = font.label$face,
                           size = font.label$size/3, color = font.label$color,
-                          vjust = vjust, alpha = alpha)
+                          vjust = vjust, alpha = alpha, show.legend = show.legend.text)
     }
   }
 
