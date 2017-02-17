@@ -10,7 +10,8 @@
 - New argument `show.legend.text` in the `ggscatter()` function. Use show.legend.text = FALSE to hide text in the legend.
    
 ## Bug fixed
-
+   
+- The mean within group for `ggdensity` (`gghistogram`) are now shown if data have NA values [@chunkaowang, #1](https://github.com/kassambara/ggpubr/issues/1)
    
    
 # ggpubr 0.1.1
