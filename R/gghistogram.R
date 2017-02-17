@@ -120,8 +120,8 @@ gghistogram <- function(data, x, y = "..count..",
       grp_name <- grp
       if(!inherits(data[, grp_name], "factor")) data[, grp_name] <- as.factor(data[, grp_name])
       df <- data.frame(grp = data[, grp_name], x = data[, x])
-      if (add == "mean") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), mean)
-      else if (add == "median") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), stats::median)
+      if (add == "mean") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), mean, na.rm = TRUE)
+      else if (add == "median") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), stats::median, na.rm = TRUE)
       names(df.m) <- c(grp_name,'x.mean')
       p <- p + .geom_exec(geom_vline, data = df.m,
                           xintercept = "x.mean", color = add.params$color,
