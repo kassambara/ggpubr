@@ -108,4 +108,3 @@ ggdotplot(df, "dose", "len", fill = "supp", color = "supp",
 \seealso{
 \code{\link{ggpar}}
 }
-

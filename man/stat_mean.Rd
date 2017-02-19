@@ -65,4 +65,3 @@ ggscatter(df, x = "wt", y = "mpg", color = "cyl", ellipse = TRUE)+
 \code{\link{stat_conf_ellipse}}, \code{\link{stat_chull}} and
   \code{\link{ggscatter}}
 }
-

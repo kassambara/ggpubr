@@ -205,4 +205,3 @@ ggbarplot(df3, x = "dose", y = "len", color = "supp",
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggline}}
 }
-

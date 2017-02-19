@@ -42,4 +42,3 @@ ggmaplot(diff_express, main = expression("Group 1" \%->\% "Group 2"),
    ggtheme = ggplot2::theme_minimal())
 
 }
-

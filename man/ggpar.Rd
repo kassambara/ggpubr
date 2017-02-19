@@ -4,15 +4,16 @@
 \alias{ggpar}
 \title{Graphical parameters}
 \usage{
-ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL, xlab = NULL,
-  ylab = NULL, font.main = NULL, font.x = NULL, font.y = NULL,
-  xlim = NULL, ylim = NULL, xscale = c("none", "log2", "log10", "sqrt"),
-  yscale = c("none", "log2", "log10", "sqrt"), format.scale = FALSE,
-  legend = c("bottom", "top", "left", "right", "none"), legend.title = NULL,
-  font.legend = NULL, ticks = TRUE, tickslab = TRUE,
-  font.tickslab = NULL, xtickslab.rt = 0, ytickslab.rt = 0,
-  xticks.by = NULL, yticks.by = NULL, orientation = c("vertical",
-  "horizontal", "reverse"), ggtheme = NULL, ...)
+ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL,
+  submain = NULL, caption = NULL, xlab = NULL, ylab = NULL,
+  font.main = NULL, font.submain = NULL, font.x = NULL, font.y = NULL,
+  font.caption = NULL, xlim = NULL, ylim = NULL, xscale = c("none",
+  "log2", "log10", "sqrt"), yscale = c("none", "log2", "log10", "sqrt"),
+  format.scale = FALSE, legend = c("bottom", "top", "left", "right",
+  "none"), legend.title = NULL, font.legend = NULL, ticks = TRUE,
+  tickslab = TRUE, font.tickslab = NULL, xtickslab.rt = 0,
+  ytickslab.rt = 0, xticks.by = NULL, yticks.by = NULL,
+  orientation = c("vertical", "horizontal", "reverse"), ggtheme = NULL, ...)
 }
 \arguments{
 \item{p}{an object of class ggplot}
@@ -29,15 +30,19 @@ values include brewer and ggsci color palettes.}
 
 \item{main}{plot main title.}
 
+\item{submain}{plot subtitle.}
+
+\item{caption}{plot caption.}
+
 \item{xlab}{character vector specifying x axis labels, respectively. Use xlab
 = FALSE to hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}
 
-\item{font.main, font.x, font.y}{a vector of length 3 indicating respectively
+\item{font.main, font.submain, font.caption, font.x, font.y}{a vector of length 3 indicating respectively
 the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
-"bold.italic") and the color (e.g.: "red") of main title, xlab and ylab,
+"bold.italic") and the color (e.g.: "red") of main title, subtitle, caption, xlab and ylab,
 respectively. For example \emph{font.x = c(14, "bold", "red")}. Use font.x
 = 14, to change only font size; or use font.x = "bold", to change only font
 face.}
@@ -166,4 +171,3 @@ ggpar(p2,
  font.legend = c(10, "bold", "red"))
 
 }
-

@@ -104,4 +104,3 @@ ggpie(df, "value", label = labs,
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggline}}
 }
-

@@ -187,4 +187,3 @@ ggscatter(df, x = "wt", y = "mpg",
 \seealso{
 \code{\link{ggpar}}
 }
-

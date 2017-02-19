@@ -88,4 +88,3 @@ ggdotchart(df, x = "mpg", label = "name",
 \seealso{
 \code{\link{ggpar}}
 }
-

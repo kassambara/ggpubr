@@ -30,7 +30,7 @@ Suggests:
     scales
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Collate:
     'desc_statby.R'
     'diff_express.R'

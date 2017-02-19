@@ -32,4 +32,3 @@ ggplot() + geom_exec(geom_point, data = mtcars,
     x = "mpg", y = "wt", size = "cyl", color = "cyl")
 }
 }
-

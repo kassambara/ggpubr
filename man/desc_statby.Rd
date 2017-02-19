@@ -46,4 +46,3 @@ res <- desc_statby(ToothGrowth, measure.var = "len",
 head(res[, 1:10])
 
 }
-

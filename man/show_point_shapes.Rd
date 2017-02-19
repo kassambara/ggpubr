@@ -19,4 +19,3 @@ show_point_shapes()+
 \seealso{
 \code{\link{ggpar}} and \code{\link{ggline}}.
 }
-

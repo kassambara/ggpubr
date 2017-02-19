@@ -123,4 +123,3 @@ ggerrorplot(df, x = "dose", y = "len",
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggline}}
 }
-

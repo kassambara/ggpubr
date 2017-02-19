@@ -139,4 +139,3 @@ ggstripchart(df, "dose", "len", shape = "supp",
 \seealso{
 \code{\link{ggpar}}
 }
-

@@ -77,6 +77,7 @@ The plot can be easily customized using the function ggpar(). Read
  Suggested values are one of
   c("dotplot", "jitter").
 }
+
 \examples{
 # Load data
 data("ToothGrowth")
@@ -144,4 +145,3 @@ ggboxplot(df, "dose", "len", color = "supp",
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}} and \code{\link{ggstripchart}}.
 }
-

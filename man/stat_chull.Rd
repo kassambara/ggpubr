@@ -70,4 +70,3 @@ ggscatter(df, x = "wt", y = "mpg", color = "cyl")+
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggscatter}}
 }
-

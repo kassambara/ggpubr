@@ -19,4 +19,3 @@ show_line_types()+
 \seealso{
 \code{\link{ggpar}} and \code{\link{ggline}}.
 }
-

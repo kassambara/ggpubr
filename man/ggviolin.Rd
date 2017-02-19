@@ -143,4 +143,3 @@ ggviolin(df, "dose", "len", color = "supp",
 \seealso{
 \code{\link{ggpar}}
 }
-

@@ -73,4 +73,3 @@ ggqqplot(wdata, x = "weight",
 \seealso{
 \code{\link{ggpar}}
 }
-
