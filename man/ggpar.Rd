@@ -16,7 +16,7 @@ ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL,
   orientation = c("vertical", "horizontal", "reverse"), ggtheme = NULL, ...)
 }
 \arguments{
-\item{p}{an object of class ggplot}
+\item{p}{an object of class ggplot or a list of ggplots}
 
 \item{palette}{the color palette to be used for coloring or filling by
 groups. Allowed values include "grey" for grey color palettes; brewer

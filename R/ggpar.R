@@ -2,7 +2,7 @@
 NULL
 #' Graphical parameters
 #'
-#' @param p an object of class ggplot
+#' @param p an object of class ggplot or a list of ggplots
 #'
 #' @param palette the color palette to be used for coloring or filling by
 #'   groups. Allowed values include "grey" for grey color palettes; brewer
@@ -148,22 +148,37 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   ggtheme = NULL,
                   ...)
   {
-  p <- p + .ggcolor(palette)+
-    .ggfill(palette)
-  if(!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +
-  if(!is.null(gradient.cols)) p <- p + .gradient_col(gradient.cols)
 
-  p <- p +.set_ticks(ticks, tickslab, font.tickslab,
-               xtickslab.rt, ytickslab.rt)
-  p <- .set_ticksby(p, xticks.by, yticks.by)
-  p <- p + .set_axis_limits(xlim, ylim)
-  p <-.set_legend(p, legend, legend.title, font.legend)
-  p <- .set_scale(p, xscale = xscale, yscale = yscale, format.scale = format.scale)
-  p <- .labs(p, main, xlab, ylab,
-               font.main, font.x, font.y,
-             submain = submain, caption = caption, font.submain = font.submain, font.caption = font.caption)
-  p <- .set_orientation(p, orientation)
+  original.p <- p
 
-  p
+  if(is.ggplot(original.p)) list.plots <- list(original.p)
+  else if(is.list(original.p)) list.plots <- original.p
+  else stop("Can't handle an object of class ", class (original.p))
+
+  for(i in 1:length(list.plots)){
+    p <- list.plots[[i]]
+    if(is.ggplot(p)){
+        p <- p + .ggcolor(palette)+
+          .ggfill(palette)
+        if(!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +
+        if(!is.null(gradient.cols)) p <- p + .gradient_col(gradient.cols)
+
+        p <- p +.set_ticks(ticks, tickslab, font.tickslab,
+                     xtickslab.rt, ytickslab.rt)
+        p <- .set_ticksby(p, xticks.by, yticks.by)
+        p <- p + .set_axis_limits(xlim, ylim)
+        p <-.set_legend(p, legend, legend.title, font.legend)
+        p <- .set_scale(p, xscale = xscale, yscale = yscale, format.scale = format.scale)
+        p <- .labs(p, main, xlab, ylab,
+                     font.main, font.x, font.y,
+                   submain = submain, caption = caption, font.submain = font.submain, font.caption = font.caption)
+        p <- .set_orientation(p, orientation)
+        list.plots[[i]] <- p
+    }
+
+  }
+
+  if(is.ggplot(original.p)) list.plots[[1]]
+  else list.plots
 }
 
