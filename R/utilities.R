@@ -423,7 +423,7 @@ NULL
 # Change Axis limits
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_axis_limits <- function(xlim = NULL, ylim = NULL){
-  coord_cartesian(xlim, ylim)
+  if(!is.null(xlim) | !is.null(ylim)) coord_cartesian(xlim, ylim)
 }
 
 
