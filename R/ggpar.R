@@ -13,13 +13,15 @@ NULL
 #' @param gradient.cols vector of colors to use for n-colour gradient. Allowed
 #'   values include brewer and ggsci color palettes.
 #' @param main plot main title.
+#' @param submain plot subtitle.
+#' @param caption plot caption.
 #' @param xlab character vector specifying x axis labels, respectively. Use xlab
 #'   = FALSE to hide xlab.
 #' @param ylab character vector specifying y axis labels. Use ylab = FALSE to
 #'   hide ylab.
-#' @param font.main,font.x,font.y a vector of length 3 indicating respectively
+#' @param font.main,font.submain,font.caption,font.x,font.y a vector of length 3 indicating respectively
 #'   the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
-#'   "bold.italic") and the color (e.g.: "red") of main title, xlab and ylab,
+#'   "bold.italic") and the color (e.g.: "red") of main title, subtitle, caption, xlab and ylab,
 #'   respectively. For example \emph{font.x = c(14, "bold", "red")}. Use font.x
 #'   = 14, to change only font size; or use font.x = "bold", to change only font
 #'   face.
@@ -131,8 +133,8 @@ NULL
 #'
 #' @export
 ggpar <- function(p, palette = NULL, gradient.cols = NULL,
-                  main = NULL, xlab = NULL, ylab = NULL,
-                  font.main = NULL, font.x = NULL, font.y = NULL,
+                  main = NULL, submain = NULL, caption = NULL, xlab = NULL, ylab = NULL,
+                  font.main = NULL, font.submain = NULL, font.x = NULL, font.y = NULL, font.caption = NULL,
                   xlim = NULL, ylim = NULL,
                   xscale = c("none", "log2", "log10", "sqrt"),
                   yscale = c("none", "log2", "log10", "sqrt"),
@@ -158,7 +160,8 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
   p <-.set_legend(p, legend, legend.title, font.legend)
   p <- .set_scale(p, xscale = xscale, yscale = yscale, format.scale = format.scale)
   p <- .labs(p, main, xlab, ylab,
-               font.main, font.x, font.y)
+               font.main, font.x, font.y,
+             submain = submain, caption = caption, font.submain = font.submain, font.caption = font.caption)
   p <- .set_orientation(p, orientation)
 
   p
