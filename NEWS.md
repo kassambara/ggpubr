@@ -10,7 +10,7 @@
 - Now the `ggpar()` function can handle a list of ggplots.
 
 - New argument `show.legend.text` in the `ggscatter()` function. Use show.legend.text = FALSE to hide text in the legend.
-- New arguments `submain, caption, font.main, font.caption` in the `ggpar()` function.
+- New arguments `title, submain, subtitle, caption, font.submain, font.subtitle, font.caption` in the `ggpar()` function.
    
 ## Bug fixed
    

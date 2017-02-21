@@ -6,8 +6,9 @@
 \usage{
 ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL,
   submain = NULL, caption = NULL, xlab = NULL, ylab = NULL,
-  font.main = NULL, font.submain = NULL, font.x = NULL, font.y = NULL,
-  font.caption = NULL, xlim = NULL, ylim = NULL, xscale = c("none",
+  title = NULL, subtitle = NULL, font.main = NULL, font.submain = NULL,
+  font.x = NULL, font.y = NULL, font.caption = NULL, font.title = NULL,
+  font.subtitle = NULL, xlim = NULL, ylim = NULL, xscale = c("none",
   "log2", "log10", "sqrt"), yscale = c("none", "log2", "log10", "sqrt"),
   format.scale = FALSE, legend = c("bottom", "top", "left", "right",
   "none"), legend.title = NULL, font.legend = NULL, ticks = TRUE,
@@ -28,9 +29,9 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 \item{gradient.cols}{vector of colors to use for n-colour gradient. Allowed
 values include brewer and ggsci color palettes.}
 
-\item{main}{plot main title.}
+\item{main, title}{plot main title.}
 
-\item{submain}{plot subtitle.}
+\item{submain, subtitle}{plot subtitle.}
 
 \item{caption}{plot caption.}
 
@@ -46,6 +47,8 @@ the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
 respectively. For example \emph{font.x = c(14, "bold", "red")}. Use font.x
 = 14, to change only font size; or use font.x = "bold", to change only font
 face.}
+
+\item{font.title, font.subtitle}{alias of font.submain and font.submain, respectively.}
 
 \item{xlim, ylim}{a numeric vector of length 2, specifying  x and y axis
 limits (minimum and maximum), respectively. e.g.: ylim = c(0, 50).}
