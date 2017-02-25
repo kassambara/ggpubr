@@ -474,14 +474,14 @@ p
 
 # Legends
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-.set_legend <- function(p, legend = c("bottom", "top", "left", "right", "none"),
+.set_legend <- function(p, legend = NULL,
                         legend.title = NULL, font.legend = NULL)
 {
-  if(!inherits(legend, "numeric")) legend <- match.arg(legend)
   if(is.null(legend.title)) legend.title = waiver()
   font <- .parse_font(font.legend)
 
-   p <- p + theme(legend.position = legend) +
+  if(!is.null(legend)) p <- p + theme(legend.position = legend)
+   p <- p +
      labs(color = legend.title, fill = legend.title, linetype = legend.title, shape = legend.title)
 
    if(!is.null(font)){

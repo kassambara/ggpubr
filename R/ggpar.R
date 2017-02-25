@@ -19,13 +19,14 @@ NULL
 #'   = FALSE to hide xlab.
 #' @param ylab character vector specifying y axis labels. Use ylab = FALSE to
 #'   hide ylab.
-#' @param font.main,font.submain,font.caption,font.x,font.y a vector of length 3 indicating respectively
-#'   the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
-#'   "bold.italic") and the color (e.g.: "red") of main title, subtitle, caption, xlab and ylab,
-#'   respectively. For example \emph{font.x = c(14, "bold", "red")}. Use font.x
-#'   = 14, to change only font size; or use font.x = "bold", to change only font
-#'   face.
-#' @param font.title,font.subtitle alias of font.submain and font.submain, respectively.
+#' @param font.main,font.submain,font.caption,font.x,font.y a vector of length 3
+#'   indicating respectively the size (e.g.: 14), the style (e.g.: "plain",
+#'   "bold", "italic", "bold.italic") and the color (e.g.: "red") of main title,
+#'   subtitle, caption, xlab and ylab, respectively. For example \emph{font.x =
+#'   c(14, "bold", "red")}. Use font.x = 14, to change only font size; or use
+#'   font.x = "bold", to change only font face.
+#' @param font.title,font.subtitle alias of font.submain and font.submain,
+#'   respectively.
 #' @param xlim,ylim a numeric vector of length 2, specifying  x and y axis
 #'   limits (minimum and maximum), respectively. e.g.: ylim = c(0, 50).
 #' @param xscale,yscale x and y axis scale, respectively. Allowed values are one
@@ -33,9 +34,9 @@ NULL
 #' @param format.scale logical value. If TRUE, axis tick mark labels will be
 #'   formatted when xscale or yscale = "log2" or "log10".
 #' @param legend character specifying legend position. Allowed values are one of
-#'   c("top", "bottom", "left", "right", "none"). Default is "bottom" side
-#'   position. to remove the legend use legend = "none". Legend position can be
-#'   also specified using a numeric vector c(x, y); see details section.
+#'   c("top", "bottom", "left", "right", "none"). To remove the legend use
+#'   legend = "none". Legend position can be also specified using a numeric
+#'   vector c(x, y); see details section.
 #' @param legend.title legend title.
 #' @param font.legend legend text font style; e.g.: font.legend = c(10, "plain",
 #'   "black").
@@ -142,7 +143,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   xscale = c("none", "log2", "log10", "sqrt"),
                   yscale = c("none", "log2", "log10", "sqrt"),
                   format.scale = FALSE,
-                  legend = c("bottom", "top", "left", "right", "none"),
+                  legend = NULL,
                   legend.title = NULL, font.legend = NULL,
                   ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
                   xtickslab.rt = 0, ytickslab.rt = 0,
