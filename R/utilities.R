@@ -112,8 +112,9 @@ NULL
 # Check if color palette or default hue
 .is_col_palette <- function(pal){
   if(is.null(pal)) return(FALSE)
-  else return(length(pal)==1 & pal[1] %in% c(.brewerpal(), .ggscipal(), "default"))
+  else return(length(pal)==1 & pal[1] %in% c(.brewerpal(), .ggscipal(), "default", "hue"))
 }
+.is_color_palette <- .is_col_palette # alias
 
 # Change color manually
 # possible value for palette: brewer palette, "grey" or a vector of colors
@@ -209,11 +210,12 @@ NULL
 .get_pal <- function(pal = "default", k){
  if(pal %in% .brewerpal()) .get_brewer_pal(pal, k)
   else if(pal %in% .ggscipal()) .get_ggsci_pal(pal, k)
-  else if(pal == "default"){
+  else if(pal %in% c("default", "hue")){
     hues <- seq(15, 375, length = k + 1)
     grDevices::hcl(h = hues, l = 65, c = 100, alpha = 1)[1:k]
   }
 }
+.get_palette <- .get_pal # alias
 
 # Generate color palette from ggsci
 # k the number of color
