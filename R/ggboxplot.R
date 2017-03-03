@@ -129,7 +129,7 @@ ggboxplot <- function(data, x, y,
 
   data[, x] <- factor(data[, x])
   p <- ggplot(data, aes_string(x, y)) +
-      .geom_exec(geom_boxplot, data = data,
+      geom_exec(geom_boxplot, data = data,
                 color = color, fill = fill, linetype = linetype,
                 size = size, width = width, notch = notch,
                 position = position_dodge(0.8), size = size,...)

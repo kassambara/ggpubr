@@ -61,7 +61,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     if (is.null(value)) {
 
     }
-    else if (unlist(value)[1] %in% columns) {
+    else if (unlist(value)[1] %in% columns & key %in% allowed_options) {
       mapping[[key]] <- value
 
     }
