@@ -79,7 +79,8 @@ ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
                       ...)
 {
 
-  data[, x] <- factor(data[, x])
+  if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
+  else if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
   error.plot = error.plot[1]
   if("none" %in% add) add <- "none"
 

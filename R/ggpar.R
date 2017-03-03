@@ -163,9 +163,14 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
   if(!is.null(font.title)) font.main <- font.title
   if(!is.null(font.subtitle)) font.submain <- font.subtitle
 
+
   for(i in 1:length(list.plots)){
     p <- list.plots[[i]]
     if(is.ggplot(p)){
+      if(.is_color_palette(palette)) {
+        ncolors <- .get_ggplot_ncolors(p)
+        palette <- .get_pal(palette, k = ncolors)
+      }
         p <- p + .ggcolor(palette)+
           .ggfill(palette)
         if(!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +

@@ -157,7 +157,8 @@ ggbarplot <- function(data, x, y,
 {
 
   sort.val <- match.arg(sort.val)
-  data[, x] <- factor(data[, x])
+  if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
+  else data[, x] <- factor(data[, x])
   error.plot = error.plot[1]
   lab.pos <- match.arg(lab.pos)
   label <- as.vector(label)

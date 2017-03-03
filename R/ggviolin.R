@@ -102,7 +102,8 @@ ggviolin <- function(data, x, y,
   y <- .dd$y
 
 
-  data[, x] <- factor(data[, x])
+  if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
+  else if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
   pms <- .violin_params(...)
 
   p <- ggplot(data, aes_string(x, y)) +

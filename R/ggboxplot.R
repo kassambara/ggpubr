@@ -127,7 +127,9 @@ ggboxplot <- function(data, x, y,
   x <- .dd$x
   y <- .dd$y
 
-  data[, x] <- factor(data[, x])
+  if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
+  else if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+
   p <- ggplot(data, aes_string(x, y)) +
       geom_exec(geom_boxplot, data = data,
                 color = color, fill = fill, linetype = linetype,

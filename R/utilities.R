@@ -762,6 +762,9 @@ p
     if(is.numeric(data)) data <- data.frame(x = data)
     else data$x <- rep("1", nrow(data))
   }
+
+  if(inherits(data, c("tbl_df", "tbl")))
+    data <- as.data.frame(data)
   list(data = data, x =x, y = y)
 }
 
@@ -783,6 +786,15 @@ p
   if(sum(!is_numeric) == 0) res = NULL
   else res <- colnames(data_frame[, !is_numeric, drop = FALSE])
   res
+}
+
+
+# Get the current color used in ggplot
+.get_ggplot_ncolors <- function(p){
+  g <- ggplot_build(p)
+  cols <- unique(unlist(g$data[[1]]["colour"]))
+  fills <- unique(unlist(g$data[[1]]["fill"]))
+  max(length(cols), length(fills))
 }
 
 
