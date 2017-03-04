@@ -792,8 +792,10 @@ p
 # Get the current color used in ggplot
 .get_ggplot_ncolors <- function(p){
   g <- ggplot_build(p)
-  cols <- unique(unlist(g$data[[1]]["colour"]))
-  fills <- unique(unlist(g$data[[1]]["fill"]))
+  gdata <- g$data[[1]]
+  cols <- fills <- 1
+  if("colour" %in% names(gdata)) cols <- unique(unlist(gdata["colour"]))
+  if("fills" %in% names(gdata)) fills <- unique(unlist(gdata["fill"]))
   max(length(cols), length(fills))
 }
 
