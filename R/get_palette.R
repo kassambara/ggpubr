@@ -4,12 +4,13 @@
 #'  palettes and custom color palettes. Useful to extend RColorBrewer and ggsci to support more colors.
 #'@param palette Color palette. Allowed values include: \itemize{ \item
 #'  \strong{Grey color palettes}: "grey" or "gray"; \item \strong{RColorBrewer
-#'  palettes}, see \code{\link{RColorBrewer}(brewer.pal)} and details section.
+#'  palettes}, see \code{\link[RColorBrewer]{brewer.pal}} and details section.
 #'  Examples of palette names include: "RdBu", "Blues", "Dark2", "Set2", ...;
 #'  \item \strong{Custom color palettes}. For example, palette = c("#00AFBB",
 #'  "#E7B800", "#FC4E07"); \item \strong{ggsci scientific journal palettes},
 #'  e.g.: "npg", "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 #'  "rickandmorty". }
+#'@param k the number of colors to generate.
 #'@details
 #'\strong{RColorBrewer palettes}: To display all available color
 #'  palettes, type this in R:RColorBrewer::display.brewer.all(). Color palette
