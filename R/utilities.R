@@ -112,7 +112,8 @@ NULL
 # Check if color palette or default hue
 .is_col_palette <- function(pal){
   if(is.null(pal)) return(FALSE)
-  else return(length(pal)==1 & pal[1] %in% c(.brewerpal(), .ggscipal(), "default", "hue"))
+  else return(length(pal)==1 & pal[1] %in% c(.brewerpal(), .ggscipal(),
+                                             "default", "hue", "grey", "gray"))
 }
 .is_color_palette <- .is_col_palette # alias
 
@@ -252,6 +253,8 @@ NULL
   if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
     stop("RColorBrewer package needed. Please install it using install.packages('RColorBrewer').")
   }
+  initial.k <- k
+  k <- max(c(k, 3)) # Kshoud be at least 3
   pal <- palette[1]
   sequential <- c('Blues', 'BuGn', 'BuPu', 'GnBu', 'Greens', 'Greys', 'Oranges',
     'OrRd', 'PuBu', 'PuBuGn', 'PuRd', 'Purples', 'RdPu', 'Reds','YlGn', 'YlGnBu YlOrBr', 'YlOrRd')
@@ -264,7 +267,12 @@ NULL
   else if(pal %in% c('Paired', 'Set3')) max_k <- 12
   else stop("Don't support palette name: ", pal)
 
-  if(k <= max_k) RColorBrewer::brewer.pal(k, palette)
+  if(k <= max_k) {
+    cols <- RColorBrewer::brewer.pal(k, palette)
+    if(initial.k == 2) cols <- cols[c(1,3)]
+    else if(initial.k == 1) cols <- cols[1]
+    cols
+  }
   else grDevices::colorRampPalette(RColorBrewer::brewer.pal(max_k, palette))(k)
 }
 

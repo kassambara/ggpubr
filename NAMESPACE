@@ -2,6 +2,7 @@
 
 export(desc_statby)
 export(geom_exec)
+export(get_palette)
 export(ggbarplot)
 export(ggboxplot)
 export(ggdensity)
