@@ -58,7 +58,7 @@ ggdensity(wdata, x = "weight",
    palette = c("#00AFBB", "#E7B800"))
 ```
 
-![](README-ggpubr-1.png)
+![](tools/README-ggpubr-1.png)
 
 ``` r
 # Histogram plot with mean lines and marginal rug
@@ -71,7 +71,7 @@ gghistogram(wdata, x = "weight",
    palette = c("#00AFBB", "#E7B800"))
 ```
 
-![](README-ggpubr-2.png)
+![](tools/README-ggpubr-2.png)
 
 ### Box plots and violin plots
 
@@ -96,7 +96,7 @@ head(df, 4)
     add = "jitter", shape = "dose")
 ```
 
-![](README-ggpubr-box-plot-dot-plots-strip-charts-1.png)
+![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-1.png)
 
 ``` r
  
@@ -109,7 +109,7 @@ ggviolin(df, x = "dose", y = "len", fill = "dose",
    add = "boxplot", add.params = list(fill = "white"))
 ```
 
-![](README-ggpubr-box-plot-dot-plots-strip-charts-2.png)
+![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png)
 
 ### More
 
