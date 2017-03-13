@@ -30,6 +30,12 @@
 #'
 #'@examples
 #'data("iris")
+#' iris$Species2 <- factor(rep(c(1:10), each = 15))
+#'
+#'# Generate a gradient of 10 colors
+#'ggscatter(iris, x = "Sepal.Length", y = "Petal.Length",
+#'  color = "Species2",
+#'  palette = get_palette(c("#00AFBB", "#E7B800", "#FC4E07"), 10))
 #'
 #'# Scatter plot with default color palette
 #'ggscatter(iris, x = "Sepal.Length", y = "Petal.Length",
