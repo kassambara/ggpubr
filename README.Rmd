@@ -57,7 +57,7 @@ Find out more at http://www.sthda.com/english/rpkgs/ggpubr.
     
 ### Density and histogram plots
      
-```{r ggpubr, fig.width=5, fig.height=5, warning=FALSE}
+```{r ggpubr, fig.width=5.3, fig.height=5, warning=FALSE}
 library(ggpubr)
 # Create some data format
 # +++++++++++++++++++++++++++++++++++++++++++
@@ -89,7 +89,7 @@ gghistogram(wdata, x = "weight",
 ### Box plots and violin plots 
     
     
-```{r ggpubr-box-plot-dot-plots-strip-charts, fig.width=5, fig.height=5,}
+```{r ggpubr-box-plot-dot-plots-strip-charts, fig.width=5.3, fig.height=5,}
 # Load data
 data("ToothGrowth")
 df <- ToothGrowth
