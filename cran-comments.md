@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.3.1
+* local OS X install, R 3.3.2
 * win-builder 
 * Travis
 
@@ -7,10 +7,11 @@
 There were no ERRORs, WARNINGs or NOTEs. 
 
 ## Downstream dependencies
-There are currently no downstream dependencies for this package
+I have also run R CMD check on downstream dependencies of ggpubr. 
+All packages that I could install passed.
 
 ## Update
-This is an update version 0.1.1 (see NEWS.md)
+This is an update version 0.1.2 (see NEWS.md)
 
 
 
