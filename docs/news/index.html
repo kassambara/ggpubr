@@ -74,32 +74,69 @@
     </div>
 
     <div class="contents">
-    <div id="ggpubr-0-1-1" class="section level1">
+    <div id="ggpubr-0-1-2" class="section level1">
 <h1 class="hasAnchor">
-<a href="#ggpubr-0-1-1" class="anchor"> </a>ggpubr 0.1.1</h1>
+<a href="#ggpubr-0-1-2" class="anchor"> </a>ggpubr 0.1.2</h1>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features" class="anchor"> </a>New features</h2>
-<ul><li>New function <code><a href="../reference/ggtext.html">ggtext()</a></code> for textual annotation.</li>
-<li>New argument star.plot in <code><a href="../reference/ggscatter.html">ggscatter()</a></code>. A logical value. If TRUE, a star plot is generated.</li>
-<li>New helper function <code><a href="../reference/geom_exec.html">geom_exec()</a></code>. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without carrying about the arguments to put in <code>ggplot2::aes()</code>.</li>
-<li>New arguments sort.val and top in <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code>.
-<ul><li>sort.val: a string specifying whether the value should be sorted. Allowed values are “none” (no sorting), “asc” (for ascending) or “desc” (for descending).</li>
-<li>top: a numeric value specifying the number of top elements to be shown.</li>
-</ul></li>
-<li>New function <code><a href="../reference/theme_pubr.html">theme_classic2()</a></code> added. Classic theme with axis lines.</li>
-</ul></div>
+<ul>
+<li>New function <code><a href="../reference/get_palette.html">get_palette()</a></code> to generate a palette of k colors from ggsci palettes, RColorbrewer palettes and custom color palettes. Useful to extend RColorBrewer and ggsci to support more colors.</li>
+</ul>
+</div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor"> </a>Minor changes</h2>
-<ul><li>
+<ul>
+<li>Now the <code><a href="../reference/ggpar.html">ggpar()</a></code> function can handle a list of ggplots.</li>
+<li>Now the default legend position is <code>right</code>.</li>
+<li>New argument <code>show.legend.text</code> in the <code><a href="../reference/ggscatter.html">ggscatter()</a></code> function. Use show.legend.text = FALSE to hide text in the legend.</li>
+<li>New arguments <code>title, submain, subtitle, caption, font.submain, font.subtitle, font.caption</code> in the <code><a href="../reference/ggpar.html">ggpar()</a></code> function.</li>
+</ul>
+</div>
+<div id="bug-fixed" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixed" class="anchor"> </a>Bug fixed</h2>
+<ul>
+<li>The mean within group for <code>ggdensity</code> (<code>gghistogram</code>) are now shown if data have NA values <a href="https://github.com/kassambara/ggpubr/issues/1">@chunkaowang, #1</a>
+</li>
+</ul>
+</div>
+</div>
+    <div id="ggpubr-0-1-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#ggpubr-0-1-1" class="anchor"> </a>ggpubr 0.1.1</h1>
+<div id="new-features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-1" class="anchor"> </a>New features</h2>
+<ul>
+<li>New function <code><a href="../reference/ggtext.html">ggtext()</a></code> for textual annotation.</li>
+<li>New argument star.plot in <code><a href="../reference/ggscatter.html">ggscatter()</a></code>. A logical value. If TRUE, a star plot is generated.</li>
+<li>New helper function <code><a href="../reference/geom_exec.html">geom_exec()</a></code>. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without carrying about the arguments to put in <code>ggplot2::aes()</code>.</li>
+<li>New arguments sort.val and top in <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code>.
+<ul>
+<li>sort.val: a string specifying whether the value should be sorted. Allowed values are “none” (no sorting), “asc” (for ascending) or “desc” (for descending).</li>
+<li>top: a numeric value specifying the number of top elements to be shown.</li>
+</ul>
+</li>
+<li>New function <code><a href="../reference/theme_pubr.html">theme_classic2()</a></code> added. Classic theme with axis lines.</li>
+</ul>
+</div>
+<div id="minor-changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes-1" class="anchor"> </a>Minor changes</h2>
+<ul>
+<li>
 <code><a href="../reference/ggboxplot.html">ggboxplot()</a></code>, <code><a href="../reference/ggviolin.html">ggviolin()</a></code>, <code><a href="../reference/ggdotplot.html">ggdotplot()</a></code>, <code><a href="../reference/ggstripchart.html">ggstripchart()</a></code>, <code><a href="../reference/gghistogram.html">gghistogram()</a></code>, <code><a href="../reference/ggdensity.html">ggdensity()</a></code>, <code><a href="../reference/ggecdf.html">ggecdf()</a></code> and <code><a href="../reference/ggqqplot.html">ggqqplot()</a></code> can now handle one single numeric vector.</li>
-</ul><pre><code><a href="../reference/ggboxplot.html"># Example
+</ul>
+<pre><code><a href="../reference/ggboxplot.html"># Example
 ggboxplot(iris$Sepal.Length)</a></code></pre>
-<ul><li>Now, in <code><a href="../reference/gghistogram.html">gghistogram()</a></code>, when add_density = TRUE, y scale remains = “..count..”.</li>
+<ul>
+<li>Now, in <code><a href="../reference/gghistogram.html">gghistogram()</a></code>, when add_density = TRUE, y scale remains = “..count..”.</li>
 <li>Now, default theme changed to theme_classic2()</li>
 <li>Default point size and line size set to NULL</li>
-</ul></div>
+</ul>
+</div>
 </div>
     <div id="ggpubr-0-1-0" class="section level1">
 <h1 class="hasAnchor">
@@ -107,15 +144,18 @@ ggboxplot(iris$Sepal.Length)</a></code></pre>
 <div id="plot-one-variable---x-continuous" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot-one-variable---x-continuous" class="anchor"> </a>Plot one variable - X: Continuous</h2>
-<ul><li>ggdensity(): Density plot</li>
+<ul>
+<li>ggdensity(): Density plot</li>
 <li>gghistogram(): Histogram plot</li>
 <li>ggecdf(): Empirical cumulative density function</li>
 <li>ggqqplot(): QQ plots</li>
-</ul></div>
+</ul>
+</div>
 <div id="plot-two-variables---x-y-discrete-x-and-continuous-y" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot-two-variables---x-y-discrete-x-and-continuous-y" class="anchor"> </a>Plot two variables - X &amp; Y: Discrete X and Continuous Y</h2>
-<ul><li>ggboxplot(): Box plot</li>
+<ul>
+<li>ggboxplot(): Box plot</li>
 <li>ggviolin(): Violin plot</li>
 <li>ggdotplot(): Dot plot</li>
 <li>ggstripchart(): Stripchart (jitter)</li>
@@ -124,39 +164,50 @@ ggboxplot(iris$Sepal.Length)</a></code></pre>
 <li>ggerrorplot(): Error plot</li>
 <li>ggpie(): Pie chart</li>
 <li>ggdotchart(): Cleveland’s dot plots</li>
-</ul></div>
+</ul>
+</div>
 <div id="plot-two-continuous-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot-two-continuous-variables" class="anchor"> </a>Plot two continuous variables</h2>
-<ul><li>ggscatter(): Scatter plot</li>
-</ul></div>
+<ul>
+<li>ggscatter(): Scatter plot</li>
+</ul>
+</div>
 <div id="graphical-paramters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#graphical-paramters" class="anchor"> </a>Graphical paramters</h2>
-<ul><li>ggpar(): Change graphical parameters</li>
+<ul>
+<li>ggpar(): Change graphical parameters</li>
 <li>show_line_type(): Line types available in R</li>
 <li>show_point_shapes(): Point shapes available in R</li>
 <li>theme_pubr(): Create a publication ready theme</li>
 <li>labs_pubr(): Format only plot labels to a publication ready style</li>
-</ul></div>
+</ul>
+</div>
 <div id="genomics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#genomics" class="anchor"> </a>Genomics</h2>
-<ul><li>ggmaplot(): MA-plot from means and log fold changes</li>
-</ul></div>
+<ul>
+<li>ggmaplot(): MA-plot from means and log fold changes</li>
+</ul>
+</div>
 <div id="data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data" class="anchor"> </a>Data</h2>
-<ul><li>diff_express: Differential gene expression analysis results</li>
-</ul></div>
+<ul>
+<li>diff_express: Differential gene expression analysis results</li>
+</ul>
+</div>
 <div id="other" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other" class="anchor"> </a>Other</h2>
-<ul><li>desc_statby(): Descriptive statistics by groups</li>
+<ul>
+<li>desc_statby(): Descriptive statistics by groups</li>
 <li>stat_chull(): Plot convex hull of a set of points</li>
 <li>stat_conf_ellipse(): Plot confidence ellipses</li>
 <li>stat_mean(): Draw group mean points</li>
-</ul></div>
+</ul>
+</div>
 </div>
     </div>
   </div>
@@ -165,6 +216,7 @@ ggboxplot(iris$Sepal.Length)</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#ggpubr-0-1-2">0.1.2</a></li>
         <li><a href="#ggpubr-0-1-1">0.1.1</a></li>
         <li><a href="#ggpubr-0-1-0">0.1.0</a></li>
       </ul>

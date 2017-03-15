@@ -76,11 +76,13 @@
     <p>Graphical parameters</p>
     
 
-    <pre><span class='fu'>ggpar</span>(<span class='no'>p</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gradient.cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
-  <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"bottom"</span>, <span class='st'>"top"</span>, <span class='st'>"left"</span>, <span class='st'>"right"</span>, <span class='st'>"none"</span>), <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre><span class='fu'>ggpar</span>(<span class='no'>p</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gradient.cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>,
+  <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
+  <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"vertical"</span>,
@@ -89,7 +91,7 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>p</dt>
-      <dd>an object of class ggplot</dd>
+      <dd>an object of class ggplot or a list of ggplots</dd>
       <dt>palette</dt>
       <dd>the color palette to be used for coloring or filling by
 groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
@@ -100,21 +102,28 @@ palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette 
       <dt>gradient.cols</dt>
       <dd>vector of colors to use for n-colour gradient. Allowed
 values include brewer and ggsci color palettes.</dd>
-      <dt>main</dt>
+      <dt>main, title</dt>
       <dd>plot main title.</dd>
+      <dt>submain, subtitle</dt>
+      <dd>plot subtitle.</dd>
+      <dt>caption</dt>
+      <dd>plot caption.</dd>
       <dt>xlab</dt>
       <dd>character vector specifying x axis labels, respectively. Use xlab
 = FALSE to hide xlab.</dd>
       <dt>ylab</dt>
       <dd>character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.</dd>
-      <dt>font.main, font.x, font.y</dt>
-      <dd>a vector of length 3 indicating respectively
-the size (e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;,
-&quot;bold.italic&quot;) and the color (e.g.: &quot;red&quot;) of main title, xlab and ylab,
-respectively. For example <em>font.x = c(14, &quot;bold&quot;, &quot;red&quot;)</em>. Use font.x
-= 14, to change only font size; or use font.x = &quot;bold&quot;, to change only font
-face.</dd>
+      <dt>font.main, font.submain, font.caption, font.x, font.y</dt>
+      <dd>a vector of length 3
+indicating respectively the size (e.g.: 14), the style (e.g.: &quot;plain&quot;,
+&quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and the color (e.g.: &quot;red&quot;) of main title,
+subtitle, caption, xlab and ylab, respectively. For example <em>font.x =
+c(14, &quot;bold&quot;, &quot;red&quot;)</em>. Use font.x = 14, to change only font size; or use
+font.x = &quot;bold&quot;, to change only font face.</dd>
+      <dt>font.title, font.subtitle</dt>
+      <dd>alias of font.submain and font.submain,
+respectively.</dd>
       <dt>xlim, ylim</dt>
       <dd>a numeric vector of length 2, specifying  x and y axis
 limits (minimum and maximum), respectively. e.g.: ylim = c(0, 50).</dd>
@@ -126,9 +135,9 @@ of c(&quot;none&quot;, &quot;log2&quot;, &quot;log10&quot;, &quot;sqrt&quot;); e
 formatted when xscale or yscale = &quot;log2&quot; or &quot;log10&quot;.</dd>
       <dt>legend</dt>
       <dd>character specifying legend position. Allowed values are one of
-c(&quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;, &quot;none&quot;). Default is &quot;bottom&quot; side
-position. to remove the legend use legend = &quot;none&quot;. Legend position can be
-also specified using a numeric vector c(x, y); see details section.</dd>
+c(&quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;, &quot;none&quot;). To remove the legend use
+legend = &quot;none&quot;. Legend position can be also specified using a numeric
+vector c(x, y); see details section.</dd>
       <dt>legend.title</dt>
       <dd>legend title.</dd>
       <dt>font.legend</dt>

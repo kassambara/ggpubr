@@ -81,11 +81,12 @@
   <span class='st'>"reg.line"</span>, <span class='st'>"loess"</span>), <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>fullrange</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>ellipse.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ellipse.type</span> <span class='kw'>=</span> <span class='st'>"norm"</span>, <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mean.point.size</span> <span class='kw'>=</span> <span class='fl'>2</span> * <span class='no'>size</span>, <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>), <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-  <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>), <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mean.point.size</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>is.numeric</span>(<span class='no'>size</span>), <span class='fl'>2</span> * <span class='no'>size</span>,
+  <span class='no'>size</span>), <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>), <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>),
+  <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.legend.text</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_classic2</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -177,6 +178,10 @@ coordinates of the correlation coefficient. Default values are NULL.</dd>
       <dd>correlation coefficient text font size.</dd>
       <dt>ggp</dt>
       <dd>a ggplot. If not NULL, points are added to an existing plot.</dd>
+      <dt>show.legend.text</dt>
+      <dd>logical. Should text be included in the
+legends? NA, the default, includes if any aesthetics are mapped. FALSE
+never includes, and TRUE always includes.</dd>
       <dt>ggtheme</dt>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

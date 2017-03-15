@@ -239,12 +239,12 @@ theme_minimal(), theme_classic(), theme_void(), ....</dd>
 <span class='co'># Add labels inside bars</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df2</span>, <span class='st'>"dose"</span>, <span class='st'>"len"</span>,
   <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Paired"</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lab.col</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>lab.pos</span> <span class='kw'>=</span> <span class='st'>"in"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: fill</span></div><img src='ggbarplot-21.png' alt='' width='540' height='400' /><div class='input'>
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lab.col</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>lab.pos</span> <span class='kw'>=</span> <span class='st'>"in"</span>)</div><img src='ggbarplot-20.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Change position: Interleaved (dodged) bar plot</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df2</span>, <span class='st'>"dose"</span>, <span class='st'>"len"</span>,
   <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Paired"</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.9</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: fill</span></div><img src='ggbarplot-24.png' alt='' width='540' height='400' /><div class='input'>
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.9</span>))</div><img src='ggbarplot-22.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Add points and errors</span>
 <span class='co'># ++++++++++++++++++++++++++</span>
 
@@ -263,31 +263,31 @@ theme_minimal(), theme_classic(), theme_void(), ....</dd>
 #&gt; 10  7.0   VC  0.5</div><div class='input'>
 <span class='co'># It can be seen that for each group we have</span>
 <span class='co'># different values</span>
-<span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>)</div><img src='ggbarplot-28.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>)</div><img src='ggbarplot-26.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Visualize the mean of each group</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><img src='ggbarplot-30.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><img src='ggbarplot-28.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Add error bars: mean_se</span>
 <span class='co'># (other values include: mean_sd, mean_ci, median_iqr, ....)</span>
 <span class='co'># Add labels</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lab.vjust</span> <span class='kw'>=</span> -<span class='fl'>1.6</span>)</div><img src='ggbarplot-32.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lab.vjust</span> <span class='kw'>=</span> -<span class='fl'>1.6</span>)</div><img src='ggbarplot-30.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Use only "upper_errorbar"</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"upper_errorbar"</span>)</div><img src='ggbarplot-34.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"upper_errorbar"</span>)</div><img src='ggbarplot-32.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Change error.plot to "pointrange"</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>)</div><img src='ggbarplot-36.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>)</div><img src='ggbarplot-34.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Add jitter points and errors (mean_se)</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"mean_se"</span>, <span class='st'>"jitter"</span>))</div><img src='ggbarplot-38.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"mean_se"</span>, <span class='st'>"jitter"</span>))</div><img src='ggbarplot-36.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Add dot and errors (mean_se)</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"mean_se"</span>, <span class='st'>"dotplot"</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='ggbarplot-41.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"mean_se"</span>, <span class='st'>"dotplot"</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='ggbarplot-39.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Multiple groups with error bars and jitter point</span>
 <span class='fu'>ggbarplot</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>,
  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>),
- <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>())</div><img src='ggbarplot-43.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>())</div><img src='ggbarplot-41.png' alt='' width='540' height='400' /><div class='input'>
 
 </div></pre>
   </div>
