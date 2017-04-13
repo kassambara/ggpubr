@@ -11,10 +11,10 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   ellipse.level = 0.95, ellipse.type = "norm", ellipse.alpha = 0.1,
   mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2 * size,
   size), star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
-  label = NULL, font.label = c(12, "plain"), label.select = NULL,
-  repel = FALSE, label.rectangle = FALSE, cor.coef = FALSE,
-  cor.method = "pearson", cor.coef.coord = c(NULL, NULL),
-  cor.coef.size = 12, ggp = NULL, show.legend.text = NA,
+  label = NULL, font.label = c(12, "plain"), font.family = "",
+  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+  cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL,
+  NULL), cor.coef.size = 12, ggp = NULL, show.legend.text = NA,
   ggtheme = theme_classic2(), ...)
 }
 \arguments{
@@ -83,6 +83,8 @@ character vector with length = nrow(data).}
 the color (e.g.: "red") of point labels. For example \emph{font.label =
 c(14, "bold", "red")}. To specify only the size and the style, use
 font.label = c(14, "plain").}
+
+\item{font.family}{character vector specifying font family.}
 
 \item{label.select}{character vector specifying some labels to show.}
 

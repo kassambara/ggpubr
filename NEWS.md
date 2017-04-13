@@ -20,6 +20,7 @@
 - Now the default legend position is `right`.
 - New argument `show.legend.text` in the `ggscatter()` function. Use show.legend.text = FALSE to hide text in the legend.
 - New arguments `title, submain, subtitle, caption, font.submain, font.subtitle, font.caption` in the `ggpar()` function.
+- New argument `font.family` in `ggscatter()`.
    
 ## Bug fixed
    

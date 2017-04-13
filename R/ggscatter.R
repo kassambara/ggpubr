@@ -39,6 +39,7 @@ NULL
 #'   the color (e.g.: "red") of point labels. For example \emph{font.label =
 #'   c(14, "bold", "red")}. To specify only the size and the style, use
 #'   font.label = c(14, "plain").
+#' @param font.family character vector specifying font family.
 #' @param label.select character vector specifying some labels to show.
 #' @param repel a logical value, whether to use ggrepel to avoid overplotting
 #'   text labels or not.
@@ -130,7 +131,7 @@ ggscatter <- function(data, x, y,
                       ellipse.type = "norm", ellipse.alpha = 0.1,
                       mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2*size, size),
                       star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
-                      label = NULL,  font.label = c(12, "plain"),
+                      label = NULL,  font.label = c(12, "plain"), font.family = "",
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
                       ggp = NULL, show.legend.text = NA,
@@ -256,7 +257,7 @@ ggscatter <- function(data, x, y,
         p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y,
                           label = label, fontface = font.label$face,
                           size = font.label$size/3, color = font.label$color,
-                          alpha = alpha,
+                          alpha = alpha, family = font.family,
                           box.padding = unit(0.35, "lines"),
                           point.padding = unit(0.3, "lines"),
                           force = 1, show.legend = show.legend.text)
@@ -269,7 +270,7 @@ ggscatter <- function(data, x, y,
         vjust <- -0.4
         }
       p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
-                          label = label, fontface = font.label$face,
+                          label = label, fontface = font.label$face, family = font.family,
                           size = font.label$size/3, color = font.label$color,
                           vjust = vjust, alpha = alpha, show.legend = show.legend.text)
     }

@@ -40,7 +40,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # error
     "ymin", "ymax", "xmin", "xmax",
     # text
-    "label", "hjust", "vjust", "fontface", "angle",
+    "label", "hjust", "vjust", "fontface", "angle", "family",
     # smooth
     "se", "level", "fullrange",
     "conf.int.level",
