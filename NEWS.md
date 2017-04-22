@@ -6,6 +6,9 @@
    
 ## Minor changes
    
+# Bug fixes
+   
+- Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
    
 # ggpubr 0.1.2
    
