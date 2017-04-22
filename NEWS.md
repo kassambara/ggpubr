@@ -6,7 +6,7 @@
    
 ## Minor changes
 
-- Now, the argument `palette` Can be also a numeric vector of length(groups); in this case a basic color palette is created using the function `grDevices::palette().
+- Now, the argument `palette` Can be also a numeric vector of length(groups); in this case a basic color palette is created using the function `grDevices::palette()`.
    
 # Bug fixes
    
