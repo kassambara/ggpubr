@@ -160,6 +160,8 @@ NULL
       ggplot2::scale_fill_grey(..., start = 0.8, end = 0.2)
     else if (palette == "hue")
       ggplot2::scale_fill_hue(...)
+    else if(.is_color(palette))
+      ggplot2::scale_fill_manual(..., values = palette)
   }
   else if (palette[1] != "")
     ggplot2::scale_fill_manual(..., values = palette)
