@@ -135,6 +135,8 @@ NULL
        ggplot2::scale_color_grey(..., start = 0.8, end = 0.2)
     else if (palette == "hue")
       ggplot2::scale_color_hue(...)
+    else if(.is_color(palette))
+      ggplot2::scale_color_manual(..., values = palette)
   }
   else if (palette[1] != "")
     ggplot2::scale_color_manual(..., values = palette)
@@ -806,6 +808,15 @@ p
   if("fills" %in% names(gdata)) fills <- unique(unlist(gdata["fill"]))
   max(length(cols), length(fills))
 }
+
+# Check if character string is a valid color representation
+.is_color <- function(x) {
+  sapply(x, function(X) {
+    tryCatch(is.matrix(grDevices::col2rgb(X)),
+             error = function(e) FALSE)
+  })
+}
+
 
 
 
