@@ -289,7 +289,6 @@ ggscatter <- function(data, x, y,
     p <- p + .ggannotate(cortxt, size = cor.coef.size, coord = cor.coef.coord)
   }
 
-
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
   if(font.family != "")
     p <- p + theme(text = element_text(family = font.family))
