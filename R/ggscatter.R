@@ -291,6 +291,8 @@ ggscatter <- function(data, x, y,
 
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  if(font.family != "")
+    p <- p + theme(text = element_text(family = font.family))
   p
 }
 
