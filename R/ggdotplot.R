@@ -64,7 +64,7 @@ ggdotplot <- function(data, x, y,
                       add = "mean_se",
                       add.params = list(),
                       error.plot = "pointrange",
-                      ggtheme = theme_classic2(),
+                      ggtheme = theme_classic(),
                       ...)
 {
 

@@ -71,7 +71,7 @@ gghistogram <- function(data, x, y = "..count..",
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
                       rug = FALSE, add_density = FALSE,
-                      ggtheme = theme_classic2(),
+                      ggtheme = theme_classic(),
                       ...)
 {
 

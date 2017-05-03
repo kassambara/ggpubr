@@ -8,7 +8,7 @@ ggviolin(data, x, y, color = "black", fill = "white", palette = NULL,
   linetype = "solid", trim = FALSE, size = NULL, width = 1,
   draw_quantiles = NULL, select = NULL, order = NULL, add = "mean_se",
   add.params = list(), error.plot = "pointrange",
-  ggtheme = theme_classic2(), ...)
+  ggtheme = theme_classic(), ...)
 }
 \arguments{
 \item{data}{a data frame}

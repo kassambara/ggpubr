@@ -74,7 +74,7 @@ NULL
 ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 0,
                   lab.font = c(4, "bold", "black"),
                       color = "black", fill = "white", palette = NULL,
-                      size = NULL, ggtheme = theme_classic2(),
+                      size = NULL, ggtheme = theme_classic(),
                       ...)
 {
 

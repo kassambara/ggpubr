@@ -7,7 +7,7 @@
 ggtext(data, x, y, color = "black", palette = NULL, size = 2,
   point = TRUE, label = NULL, font.label = c(12, "plain"),
   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  ggp = NULL, ggtheme = theme_classic2(), ...)
+  ggp = NULL, ggtheme = theme_classic(), ...)
 }
 \arguments{
 \item{data}{a data frame}

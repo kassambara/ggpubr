@@ -6,7 +6,7 @@
 \usage{
 ggqqplot(data, x, color = "black", palette = NULL, size = NULL,
   add = c("qqline", "none"), add.params = list(linetype = "solid"),
-  conf.int = TRUE, conf.int.level = 0.95, ggtheme = theme_classic2(), ...)
+  conf.int = TRUE, conf.int.level = 0.95, ggtheme = theme_classic(), ...)
 }
 \arguments{
 \item{data}{a data frame}

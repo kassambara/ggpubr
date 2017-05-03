@@ -7,8 +7,8 @@
 ggline(data, x, y, group = 1, color = "black", palette = NULL,
   linetype = "solid", plot_type = c("b", "l", "p"), size = 0.5,
   shape = 19, select = NULL, order = NULL, add = "none",
-  add.params = list(), error.plot = "errorbar",
-  ggtheme = theme_classic2(), ...)
+  add.params = list(), error.plot = "errorbar", ggtheme = theme_classic(),
+  ...)
 }
 \arguments{
 \item{data}{a data frame}

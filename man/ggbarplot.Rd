@@ -10,7 +10,7 @@ ggbarplot(data, x, y, color = "black", fill = "white", palette = NULL,
   lab.hjust = NULL, select = NULL, order = NULL, sort.val = c("none",
   "desc", "asc"), sort.by.groups = TRUE, top = Inf, add = "none",
   add.params = list(), error.plot = "errorbar",
-  position = position_stack(), ggtheme = theme_classic2(), ...)
+  position = position_stack(), ggtheme = theme_classic(), ...)
 }
 \arguments{
 \item{data}{a data frame}

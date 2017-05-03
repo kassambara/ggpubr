@@ -40,7 +40,7 @@ NULL
 ggecdf <- function(data, x,
                       color = "black",  palette = NULL,
                       size = NULL, linetype = "solid",
-                      ggtheme = theme_classic2(),
+                      ggtheme = theme_classic(),
                       ...)
 {
 

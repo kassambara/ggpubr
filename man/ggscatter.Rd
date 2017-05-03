@@ -15,7 +15,7 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
   cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL,
   NULL), cor.coef.size = 12, ggp = NULL, show.legend.text = NA,
-  ggtheme = theme_classic2(), ...)
+  ggtheme = theme_classic(), ...)
 }
 \arguments{
 \item{data}{a data frame}

@@ -7,7 +7,7 @@
 ggdensity(data, x, y = "..density..", color = "black", fill = NA,
   palette = NULL, size = NULL, linetype = "solid", alpha = 0.5,
   add = c("none", "mean", "median"), add.params = list(linetype = "dashed"),
-  rug = FALSE, ggtheme = theme_classic2(), ...)
+  rug = FALSE, ggtheme = theme_classic(), ...)
 }
 \arguments{
 \item{data}{a data frame}
