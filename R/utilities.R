@@ -1,6 +1,7 @@
 #' @include desc_statby.R
 NULL
 #' @import ggplot2
+#' @importFrom magrittr %>%
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2
@@ -851,6 +852,10 @@ p
   length(x) == 0
 }
 
+# Remove NULL items in a vector or list
+#
+# x a vector or list
+.compact <- function(x){Filter(Negate(is.null), x)}
 
 
 

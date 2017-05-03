@@ -45,6 +45,7 @@ reference:
       - stat_conf_ellipse
       - stat_mean
       - get_palette
+      - facet
 
 
 

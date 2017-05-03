@@ -22,7 +22,8 @@ Imports:
     ggsci,
     plyr,
     stats,
-    utils
+    utils,
+    magrittr
 Suggests:
     grDevices,
     knitr,
@@ -31,12 +32,13 @@ Suggests:
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
-Collate: 
+Collate:
     'desc_statby.R'
     'diff_express.R'
+    'utilities.R'
+    'facet.R'
     'geom_exec.R'
     'get_palette.R'
-    'utilities.R'
     'ggpar.R'
     'ggbarplot.R'
     'ggboxplot.R'

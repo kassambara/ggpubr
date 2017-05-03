@@ -1,7 +1,9 @@
 # ggpubr 0.1.2.999
-    
+   
 ## New features
    
+- New function `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5))
+
 ## Major changes
    
 ## Minor changes
@@ -13,6 +15,9 @@
    
 - Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
    
+## To do
+https://cran.r-project.org/web/packages/ggsignif/vignettes/intro.html
+
 # ggpubr 0.1.2
    
     
