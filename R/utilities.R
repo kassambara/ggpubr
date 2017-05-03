@@ -774,6 +774,16 @@ p
     if(is.numeric(data)) data <- data.frame(x = data)
     else data$x <- rep("1", nrow(data))
   }
+  else if(length(y) > 1){
+    if(!all(y %in% colnames(data))){
+      not_found <- setdiff(y , colnames(data))
+      y <- intersect(y, colnames(data))
+      if(.is_empty(y))
+        stop("Can't found the y elements in the data.")
+      else warning("Can't found the following element in the data: ",
+              .collapse(not_found))
+    }
+  }
 
   if(inherits(data, c("tbl_df", "tbl")))
     data <- as.data.frame(data)
@@ -819,6 +829,27 @@ p
   })
 }
 
+
+# Collapse one or two vectors
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.collapse <- function(x, y = NULL, sep = "."){
+  if(missing(y))
+    paste(x, collapse = sep)
+  else if(is.null(x) & is.null(y))
+    return(NULL)
+  else if(is.null(x))
+    return (as.character(y))
+  else if(is.null(y))
+    return(as.character(x))
+  else
+    paste0(x, sep, y)
+}
+
+# Check if en object is empty
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.is_empty <- function(x){
+  length(x) == 0
+}
 
 
 
