@@ -16,7 +16,7 @@ NULL
 #' @param main,title plot main title.
 #' @param submain,subtitle plot subtitle.
 #' @param caption plot caption.
-#' @param xlab character vector specifying x axis labels, respectively. Use xlab
+#' @param xlab character vector specifying x axis labels. Use xlab
 #'   = FALSE to hide xlab.
 #' @param ylab character vector specifying y axis labels. Use ylab = FALSE to
 #'   hide ylab.

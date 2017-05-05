@@ -36,7 +36,7 @@ values include brewer and ggsci color palettes.}
 
 \item{caption}{plot caption.}
 
-\item{xlab}{character vector specifying x axis labels, respectively. Use xlab
+\item{xlab}{character vector specifying x axis labels. Use xlab
 = FALSE to hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
