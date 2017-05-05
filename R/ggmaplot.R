@@ -96,11 +96,19 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   data <- data.frame(name = genenames, mean = data$baseMean, lfc = data$log2FoldChange,
                   padj = data$padj, sig = sig)
 
-  data$sig <- factor(sig,
-                   labels = c( paste0("Up: ", sum(sig ==1)),
-                               paste0("Down: ", sum(sig==2)),
-                               "NS"
-                   ))
+  # Change level labels
+  . <- NULL
+  data$sig <- as.factor(data$sig)
+  .lev <- .levels(data$sig) %>% as.numeric()
+   palette <- palette[.lev]
+  new.levels <- c(
+    paste0("Up: ", sum(sig == 1)),
+    paste0("Down: ", sum(sig == 2)),
+    "NS"
+  ) %>% .[.lev]
+
+  data$sig <- factor(data$sig, labels = new.levels)
+
 
   # Ordering for selecting top gene
   select.top.method <- match.arg(select.top.method)
