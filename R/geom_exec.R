@@ -51,7 +51,9 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # rug
     "sides",
     # segment
-    "arrow", "xend", "yend"
+    "arrow", "xend", "yend",
+    # stat_summary,
+    "fun.data", "fun.y", "fun.ymin", "fun.ymax"
 
   )
 
@@ -75,10 +77,11 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     option[["position"]] <- position
   option[["data"]] <- data
   if(is.null(geomfunc)){
-    return(list(option = option, mapping = mapping))
+   res <- list(option = option, mapping = mapping)
   }
   else{
     option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
-    return(do.call(geomfunc, option))
+    res <- do.call(geomfunc, option)
   }
+  res
 }
