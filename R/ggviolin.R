@@ -5,12 +5,11 @@ NULL
 #'box plots, except that they also show the kernel probability density of the
 #'data at different values.
 #'@inheritParams ggboxplot
-#'@param x,y x and y variables for drawing.
-#'@param color,fill outline and fill colors.
-#'@param linetype line types.
 #'@param width violin width.
 #'@inheritParams ggplot2::geom_violin
-#'@param ... other arguments to be passed to geom_violin.
+#' @param ... other arguments to be passed to
+#'   \code{\link[ggplot2]{geom_violin}}, \code{\link{ggpar}} and
+#'   \code{\link{facet}}.
 #'@details The plot can be easily customized using the function ggpar(). Read
 #'  ?ggpar for changing: \itemize{ \item main title and axis labels: main, xlab,
 #'  ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
@@ -84,30 +83,53 @@ NULL
 #'  palette = c("#00AFBB", "#E7B800"), add = "boxplot")
 #'
 #'@export
-ggviolin <- function(data, x, y,
+ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
+                     color = "black", fill = "white", palette = NULL,
+                     title = NULL, xlab = NULL, ylab = NULL,
+                     facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                     linetype = "solid", trim = FALSE, size = NULL, width = 1,
+                     draw_quantiles = NULL,
+                     select = NULL, remove = NULL, order = NULL,
+                     add = "mean_se", add.params = list(),
+                     error.plot = "pointrange",
+                     label = NULL, font.label = list(size = 11, color = "black"),
+                     label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                     ggtheme = theme_pubr(),
+                     ...)
+{
+  .opts <- match.call(expand.dots = TRUE)
+  .opts <- as.list(.opts)
+  .opts[[1]] <- NULL
+  .opts$fun <- ggviolin_core
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  if(missing(ggtheme) & !is.null(facet.by))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+
+}
+
+
+ggviolin_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", trim = FALSE, size = NULL, width = 1,
                       draw_quantiles = NULL,
-                      select = NULL, order = NULL,
                       add = "mean_se", add.params = list(),
                       error.plot = "pointrange",
-                      ggtheme = theme_classic(),
+                      ggtheme = theme_pubr(),
                      ...)
 {
 
-  # Check data
-  .dd <- .check_data(data, x, y)
-  data <- .dd$data
-  x <- .dd$x
-  y <- .dd$y
+  if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
 
-
-  if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
-  else if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
   pms <- .violin_params(...)
 
   p <- ggplot(data, aes_string(x, y)) +
-      .geom_exec(geom_violin, data = data,
+      geom_exec(geom_violin, data = data,
                 color = color, fill = fill, linetype = linetype,
                 trim = trim, size = size, width = width,
                 position = position_dodge(0.8), draw_quantiles = draw_quantiles,
@@ -115,15 +137,10 @@ ggviolin <- function(data, x, y,
 
   # Add
   #+++++++++++++++++++
-  add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
-  add.params$width = 0.2
-  p <- .add(p, add = add, add.params = add.params, error.plot = error.plot)
-
-  # Select and order
-  if(is.null(select)) select <- order
-  if (!is.null(select) | !is.null(order))
-    p <- p + scale_x_discrete(limits = as.character(select))
-   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
+     .add_item(p = p, add = add, error.plot = error.plot)
+   p <- do.call(ggadd, add.params) %>%
+     ggpar(palette = palette, ggtheme = ggtheme, ...)
 
   p
 }

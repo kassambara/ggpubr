@@ -3,9 +3,11 @@ NULL
 #' Dot plot
 #' @description Create a dot plot.
 #' @inheritParams ggboxplot
-#' @param x,y x and y variables for drawing.
-#' @param color,fill outline and fill colors.
-#' @param ... other arguments to be passed to geom_dotplot.
+#' @param binwidth numeric value specifying bin width. use value between 0 and 1
+#'   when you have a strong dense dotplot. For example binwidth = 0.2 .
+#' @param ... other arguments to be passed to
+#'   \code{\link[ggplot2]{geom_dotplot}}, \code{\link{ggpar}} and
+#'   \code{\link{facet}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
 #'   xlab, ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
@@ -57,26 +59,44 @@ NULL
 #'
 #'
 #' @export
-ggdotplot <- function(data, x, y,
+ggdotplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       color = "black", fill = "lightgray", palette = NULL,
-                      size = NULL,
-                      select = NULL, order = NULL,
+                      title = NULL, xlab = NULL, ylab = NULL,
+                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                      size = NULL, binwidth = NULL,
+                      select = NULL, remove = NULL, order = NULL,
                       add = "mean_se",
                       add.params = list(),
                       error.plot = "pointrange",
-                      ggtheme = theme_classic(),
+                      label = NULL, font.label = list(size = 11, color = "black"),
+                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                      ggtheme = theme_pubr(),
                       ...)
 {
+  .opts <- match.call(expand.dots = TRUE)
+  .opts <- as.list(.opts)
+  .opts[[1]] <- NULL
+  .opts$fun <- ggdotplot_core
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  p <- do.call(.plotter, .opts)
 
-  # Check data
-  .dd <- .check_data(data, x, y)
-  data <- .dd$data
-  x <- .dd$x
-  y <- .dd$y
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+}
 
 
-  if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
-  else if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+ggdotplot_core <- function(data, x, y,
+                      color = "black", fill = "lightgray", palette = NULL,
+                      size = NULL,
+                      add = "mean_se",
+                      add.params = list(),
+                      error.plot = "pointrange",
+                      ggtheme = theme_pubr(),
+                      ...)
+{
+  if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+  . <- NULL
 
   p <- ggplot(data, aes_string(x, y))
   if("none" %in% add) add <- "none"
@@ -85,30 +105,31 @@ ggdotplot <- function(data, x, y,
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
   # plot boxplot | violin | crossbar before jitter
   if( any( c("boxplot", "violin") %in% add)){
-    p <- .add(p, add = intersect(add, c("boxplot", "violin")),
-              add.params = add.params, data = data)
+    p <- add.params %>%
+      .add_item(p = p, add = intersect(add, c("boxplot", "violin") )) %>%
+      do.call(ggadd, .)
   }
   if(error.plot == "crossbar"){
-    p <- .add(p, add = setdiff(add, c("boxplot", "violin", "jitter")),
-              add.params = add.params, data = data, error.plot = error.plot)
+    p <- add.params %>%
+      .add_item(p = p, error.plot = error.plot,
+                add = setdiff(add, c("boxplot", "violin", "jitter"))) %>%
+      do.call(ggadd, .)
   }
   # Plot jitter
   p <- p +
-      .geom_exec(geom_dotplot, data = data,
+      geom_exec(geom_dotplot, data = data,
                 binaxis = "y", stackdir = "center",
                 color = color, fill = fill,
-                position = position_dodge(0.8), stackratio = 1.2,
+                position = position_dodge(0.8), stackratio = 1,
                 dotsize = size, ...)
 
   # Add errors
   if(error.plot == "crossbar"){}
-  else p <- .add(p, add = setdiff(add, c("boxplot", "violin", "jitter")),
-            add.params = add.params, error.plot = error.plot)
+  else p <- add.params %>%
+    .add_item(p = p, error.plot = error.plot,
+              add = setdiff(add, c("boxplot", "violin", "jitter"))) %>%
+    do.call(ggadd, .)
 
-  # Select and order
-  if(is.null(select)) select <- order
-  if (!is.null(select) | !is.null(order))
-    p <- p + scale_x_discrete(limits = as.character(select))
    p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
 
   p
