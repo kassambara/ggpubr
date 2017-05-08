@@ -4,36 +4,33 @@
 \alias{ggtext}
 \title{Text}
 \usage{
-ggtext(data, x, y, color = "black", palette = NULL, size = 2,
-  point = TRUE, label = NULL, font.label = c(12, "plain"),
-  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  ggp = NULL, ggtheme = theme_classic(), ...)
+ggtext(data, x, y, label = NULL, color = "black", palette = NULL,
+  size = 12, face = "plain", family = "", label.select = NULL,
+  repel = FALSE, label.rectangle = FALSE, ggp = NULL,
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
 
 \item{x, y}{x and y variables for drawing.}
 
-\item{color}{point colors.}
-
-\item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; brewer
-palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
-"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
-
-\item{size}{Numeric value (e.g.: size = 1). change the size of points and outlines.}
-
-\item{point}{logical value. If TRUE, show points.}
-
 \item{label}{the name of the column containing point labels. Can be also a
 character vector with length = nrow(data).}
 
-\item{font.label}{a vector of length 3 indicating respectively the size
-(e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
-the color (e.g.: "red") of point labels. For example \emph{font.label =
-c(14, "bold", "red")}. To specify only the size and the style, use
-font.label = c(14, "plain").}
+\item{color}{text font color.}
+
+\item{palette}{the color palette to be used for coloring or filling by groups.
+Allowed values include "grey" for grey color palettes; brewer palettes e.g.
+"RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
+scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
+"lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
+
+\item{size}{text font size.}
+
+\item{face}{text font style. Allowed values are one of c("plain", "bold",
+"italic", "bold.italic").}
+
+\item{family}{character vector specifying font family.}
 
 \item{label.select}{character vector specifying some labels to show.}
 
@@ -49,8 +46,7 @@ text, making it easier to read.}
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....}
 
-\item{...}{other arguments to be passed to \code{\link[ggplot2]{geom_point}}
-and \code{\link{ggpar}}.}
+\item{...}{other arguments to be passed to \code{\link{ggpar}}.}
 }
 \description{
 Add text to a plot.
