@@ -47,14 +47,15 @@ NULL
 #'
 #'
 #' @export
-ggtext <- function(data, x, y, label = NULL,
+ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                   color = "black",  palette = NULL,
-                  size = 12,  face = "plain", family = "",
+                  size = 11,  face = "plain", family = "",
                   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                   ggp = NULL, ggtheme = theme_pubr(),
                       ...)
 {
 
+  data <- as.data.frame(data)
   if(length(label) >1){
     if(length(label) != nrow(data))
       stop("The argument label should be a column name or a vector of length = nrow(data). ",
@@ -79,6 +80,7 @@ ggtext <- function(data, x, y, label = NULL,
                           drop = FALSE)
 
     if(repel){
+      set.seed(123)
       ggfunc <- ggrepel::geom_text_repel
       if(label.rectangle) ggfunc <- ggrepel::geom_label_repel
         p <- p + geom_exec(ggfunc, data = lab_data, x = x, y = y,

@@ -4,10 +4,10 @@
 \alias{ggtext}
 \title{Text}
 \usage{
-ggtext(data, x, y, label = NULL, color = "black", palette = NULL,
-  size = 12, face = "plain", family = "", label.select = NULL,
-  repel = FALSE, label.rectangle = FALSE, ggp = NULL,
-  ggtheme = theme_pubr(), ...)
+ggtext(data, x = NULL, y = NULL, label = NULL, color = "black",
+  palette = NULL, size = 11, face = "plain", family = "",
+  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+  ggp = NULL, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
