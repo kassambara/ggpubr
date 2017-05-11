@@ -117,7 +117,7 @@ NULL
 .is_col_palette <- function(pal){
   if(is.null(pal)) return(FALSE)
   else return(length(pal)==1 & pal[1] %in% c(.brewerpal(), .ggscipal(),
-                                             "default", "hue", "grey", "gray"))
+                                             "default", "hue", "grey_pal", "gray_pal"))
 }
 .is_color_palette <- .is_col_palette # alias
 
@@ -822,11 +822,21 @@ p
 
   # Combining y variables
   #......................................................
+  if(is.null(y)) y <- ""
   if(combine & length(y) > 1){
     data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
                            gather_cols = y)
     data[, ".y."] <- factor(data[, ".y."], levels = unique(data[, ".y."]))
     y <- ".value."
+  }
+  # Combining x variables: Case of density plot or histograms
+  #......................................................
+  else if(combine & length(x) > 1 & y %in% c("..density..", "..count..")){
+
+    data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
+                           gather_cols = x)
+    data[, ".y."] <- factor(data[, ".y."], levels = unique(data[, ".y."]))
+    x <- ".value."
   }
 
   # If not factor, x elements on the plot should
@@ -836,8 +846,13 @@ p
 
   y <- unique(y)
   names(y) <- y
+  x <- unique(x)
+  names(x) <- x
 
-  list(y = y, data = data, x = x)
+  if(y %in% c("..density..", "..count.."))
+    list(x = x, data = data, y = y)    # The name of plots are x variables
+  else
+    list(y = y, data = data, x = x)   # The name of plots will be y variables
 }
 
 
@@ -989,10 +1004,9 @@ p
                      label = NULL, font.label = list(size = 11, color = "black"),
                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                      ggtheme = theme_pubr(),
-                     fun_name = "",
+                     fun_name = "", group = 1, # used only by ggline
                      ...)
   {
-
   if(is.logical(merge)){
     if(merge) merge = "asis"
     else merge = "none"
@@ -1000,7 +1014,7 @@ p
   if(combine & merge != "none")
     stop("You should use either combine = TRUE or merge = TRUE, but not both together.")
 
-  if(length(y) == 1){
+  if(length(y) == 1 & length(x) == 1){
     combine <- FALSE
     merge <- "none"
   }
@@ -1008,7 +1022,7 @@ p
   if(combine) facet.by <- ".y." # Faceting by y variables
   if(merge != "none"){
     facet.by <- NULL
-    if(missing(legend.title)) legend.title <- "" # remove .y. in the legend
+    if(is.null(legend.title)) legend.title <- "" # remove .y. in the legend
   }
 
   # Check data
@@ -1020,7 +1034,6 @@ p
   # Updating parameters after merging
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-  group = 1 # for line plot
   user.add.color <- add.params$color
 
   if(merge == "asis" ){
@@ -1029,7 +1042,7 @@ p
   else if(merge == "flip"){
     .grouping.var <- opts$x  # x variable becomes grouping variable
      opts$x <- ".y."  # y variables become x tick labels
-    if(missing(xlab)) xlab <- FALSE
+    if(is.null(xlab)) xlab <- FALSE
   }
 
   if(merge == "asis" | merge == "flip"){
@@ -1045,6 +1058,12 @@ p
 
   if(!combine & merge == "none" & length(opts$y) > 1 & is.null(title))
     title <- opts$y
+
+  if(!combine & merge == "none" & is.null(title)){
+    if(length(opts$y) > 1) title <- opts$y
+    else if (length(opts$x) > 1 & y %in% c("..density..", "..count.."))  # case of density plot
+      title <- opts$x
+  }
 
   # Item to display
   x <- opts$data[, opts$x] %>% as.vector()

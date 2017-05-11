@@ -55,7 +55,35 @@ NULL
 #'
 #'
 #' @export
-ggdensity <- function(data, x, y = "..density..",
+ggdensity <- function(data, x, y = "..density..", combine = FALSE, merge = FALSE,
+                      color = "black", fill = NA, palette = NULL,
+                      size = NULL, linetype = "solid", alpha = 0.5,
+                      title = NULL, xlab = NULL, ylab = NULL,
+                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                      select = NULL, remove = NULL, order = NULL,
+                      add = c("none", "mean", "median"),
+                      add.params = list(linetype = "dashed"),
+                      rug = FALSE,
+                      label = NULL, font.label = list(size = 11, color = "black"),
+                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                      ggtheme = theme_pubr(),
+                      ...){
+
+  .opts <- match.call(expand.dots = TRUE)
+  .opts <- as.list(.opts)
+  .opts[[1]] <- NULL
+  .opts$fun <- ggdensity_core
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  if(missing(y)) .opts$y <- y
+  if(missing(add.params)) .opts$add.params <- add.params
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+}
+
+ggdensity_core <- function(data, x, y = "..density..",
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
                       add = c("none", "mean", "median"),
