@@ -149,7 +149,6 @@ ggline<- function(data, x, y, group = 1,
     label = label, font.label = font.label, label.select = label.select,
     repel = repel, label.rectangle = label.rectangle,
     show.line.label = show.line.label, ggtheme = ggtheme, ...)
-
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
   if(!missing(y)) .opts$y <- y

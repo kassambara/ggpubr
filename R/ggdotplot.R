@@ -73,9 +73,32 @@ ggdotplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       ggtheme = theme_pubr(),
                       ...)
 {
-  .opts <- match.call(expand.dots = TRUE)
-  .opts <- as.list(.opts)
-  .opts[[1]] <- NULL
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    combine = combine, merge = merge,
+    color = color, fill = fill, palette = palette,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    size = size, binwidth = binwidth,
+    select = select , remove = remove, order = order,
+    add = add, add.params = add.params, error.plot = error.plot,
+    label = label, font.label = font.label, label.select = label.select,
+    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+
   .opts$fun <- ggdotplot_core
   if(missing(ggtheme) & (!is.null(facet.by) | combine))
     .opts$ggtheme <- theme_pubr(border = TRUE)

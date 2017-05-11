@@ -88,9 +88,9 @@ NULL
 #'
 #' @export
 ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
+                         color = "black", fill = "white", palette = NULL,
                          title = NULL, xlab = NULL, ylab = NULL,
                          facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-                         color = "black", fill = "white", palette = NULL,
                          shape = 19, size = NULL,
                          select = NULL, remove = NULL, order = NULL,
                          add = "mean_se",
@@ -104,9 +104,33 @@ ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
                          ...)
 {
 
-  .opts <- match.call(expand.dots = TRUE)
-  .opts <- as.list(.opts)
-  .opts[[1]] <- NULL
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    combine = combine, merge = merge,
+    color = color, fill = fill, palette = palette,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    shape = shape, size = size,
+    select = select , remove = remove, order = order,
+    add = add, add.params = add.params, error.plot = error.plot,
+    label = label, font.label = font.label, label.select = label.select,
+    repel = repel, label.rectangle = label.rectangle,
+    jitter = jitter, position = position, ggtheme = ggtheme, ...)
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+
   .opts$fun <- ggstripchart_core
   if(missing(ggtheme) & (!is.null(facet.by) | combine))
     .opts$ggtheme <- theme_pubr(border = TRUE)

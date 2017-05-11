@@ -4,10 +4,10 @@
 \alias{ggstripchart}
 \title{Stripcharts}
 \usage{
-ggstripchart(data, x, y, combine = FALSE, merge = FALSE, title = NULL,
-  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, color = "black", fill = "white",
-  palette = NULL, shape = 19, size = NULL, select = NULL,
+ggstripchart(data, x, y, combine = FALSE, merge = FALSE, color = "black",
+  fill = "white", palette = NULL, title = NULL, xlab = NULL,
+  ylab = NULL, facet.by = NULL, panel.labs = NULL,
+  short.panel.labs = TRUE, shape = 19, size = NULL, select = NULL,
   remove = NULL, order = NULL, add = "mean_se", add.params = list(),
   error.plot = "pointrange", label = NULL, font.label = list(size = 11,
   color = "black"), label.select = NULL, repel = FALSE,
@@ -31,6 +31,16 @@ variables in the same plotting area. Allowed values include also "asis"
 (TRUE) and "flip". If merge = "flip", then y variables are used as x tick
 labels and the x variable is used as grouping variable.}
 
+\item{color}{outline color.}
+
+\item{fill}{fill color.}
+
+\item{palette}{the color palette to be used for coloring or filling by groups.
+Allowed values include "grey" for grey color palettes; brewer palettes e.g.
+"RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
+scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
+"lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
+
 \item{title}{plot main title.}
 
 \item{xlab}{character vector specifying x axis labels. Use xlab
@@ -51,16 +61,6 @@ for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
 \item{short.panel.labs}{logical value. Default is TRUE. If TRUE, create short
 labels for panels by omitting variable names; in other words panels will be
 labelled only by variable grouping levels.}
-
-\item{color}{outline color.}
-
-\item{fill}{fill color.}
-
-\item{palette}{the color palette to be used for coloring or filling by groups.
-Allowed values include "grey" for grey color palettes; brewer palettes e.g.
-"RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
-scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
-"lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{shape}{point shape}
 
