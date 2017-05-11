@@ -36,6 +36,12 @@ reference:
     desc: Plotting data obtained from genomic data analyses.
     contents:
       - ggmaplot
+  - title: Helpers
+    contents:
+      - facet
+      - add_summary
+      - ggadd
+      - get_palette
   - title: Data
     contents: diff_express
   - title: Others
@@ -44,9 +50,6 @@ reference:
       - stat_chull
       - stat_conf_ellipse
       - stat_mean
-      - get_palette
-      - facet
-
 
 
 

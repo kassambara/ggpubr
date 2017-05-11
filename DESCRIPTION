@@ -15,15 +15,17 @@ License: GPL-2
 LazyData: TRUE
 Depends:
     R (>= 3.1.0),
-    ggplot2
+    ggplot2,
+    magrittr
 Imports:
     ggrepel,
     grid,
     ggsci,
-    plyr,
     stats,
     utils,
-    magrittr
+    tidyr,
+    purrr,
+    dplyr
 Suggests:
     grDevices,
     knitr,
@@ -34,11 +36,13 @@ BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
 Collate:
     'desc_statby.R'
-    'diff_express.R'
     'utilities.R'
+    'add_summary.R'
+    'diff_express.R'
     'facet.R'
     'geom_exec.R'
     'get_palette.R'
+    'ggadd.R'
     'ggpar.R'
     'ggbarplot.R'
     'ggboxplot.R'

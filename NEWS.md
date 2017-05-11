@@ -3,8 +3,38 @@
 ## New features
    
 - New function `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5))
+     
+- New arguments - `facet.by, panel.labs and short.panel.labs`,  added in many ggpubr functions for faceting. These functions include:  
+   - ggboxplot()
+   - ggdotplot()
+   - ggstripchart()
+   - ggviolin()
+   - ggline()
+   
+- Now, in some ggpubr functions, the argument `y` can be a character vector of multiple variables to plot at once. This might be useful in genomic fields to plot the gene expression levels of multiple genes at once. see ggboxplot(), ggdotplot(), ggstripchart() and ggviolin().
+    
+    
+- New arguments `combine` added to combine multiple y variables on the same graph
+- New argument `merge` to merge multiple y variables in the same ploting area.
+- New argument `remove` to remove a specific item from a plot
+- New arguments added to show point labels
+     
+     
+- New function `add_summary()` to add summary statistics.
+- New function `ggadd()` to Add summary statistics or a geometry onto a ggplot.
 
+- New arguments `grouping.vars`  in `ggtext()`. Grouping variables to sort the data by, when the user wants to display the top n up/down labels.
+
+- New arguments in `theme_pubr()`: 
+    - border,
+    - margin, 
+    - legend,
+    - x.text.angle
+      
+      
 ## Major changes
+   
+
    
 ## Minor changes
 
@@ -14,9 +44,19 @@
 # Bug fixes
    
 - Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
+
+- `ggmaplot()` now handles situations, wehre there is only upregulated, or downlegulated gnes.
    
-## To do
+## To check
+add labels on boxplot:
+  label = "name", 
+  label.show = c(nam1, name2), 
+  label.show = list(top_up = 10, top_down = 10)
+  label.font = list(size, color, family)
+  
 https://cran.r-project.org/web/packages/ggsignif/vignettes/intro.html
+https://cran.r-project.org/web/packages/ggpmisc/vignettes/user-guide.html
+http://techqa.info/programming/question/37536950/ggplot2:-add-p-values-to-the-plot
 
 # ggpubr 0.1.2
    
