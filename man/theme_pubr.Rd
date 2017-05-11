@@ -6,7 +6,9 @@
 \alias{theme_classic2}
 \title{Publication ready theme}
 \usage{
-theme_pubr(base_size = 14, base_family = "")
+theme_pubr(base_size = 12, base_family = "", border = FALSE,
+  margin = TRUE, legend = c("top", "bottom", "left", "right", "none"),
+  x.text.angle = 0)
 
 labs_pubr(base_size = 14, base_family = "")
 
@@ -16,13 +18,28 @@ theme_classic2(base_size = 12, base_family = "")
 \item{base_size}{base font size}
 
 \item{base_family}{base font family}
+
+\item{border}{logical value. Default is FALSE. If TRUE, add panel border.}
+
+\item{margin}{logical value. Default is TRUE. If FALSE, reduce plot margin.}
+
+\item{legend}{character specifying legend position. Allowed values are one of
+c("top", "bottom", "left", "right", "none"). Default is "top" side position.
+to remove the legend use legend = "none". Legend position can be also
+specified using a numeric vector c(x, y).  In this case it is possible to
+position the legend inside the plotting area. x and y are the coordinates of
+the legend box. Their values should be between 0 and 1. c(0,0) corresponds
+to the "bottom left" and c(1,1) corresponds to the "top right" position. For
+instance use legend = c(0.8, 0.2).}
+
+\item{x.text.angle}{Rotation angle of x axis tick labels.
+Default value is 0. Use 90 for vertical text.}
 }
 \description{
-\itemize{
- \item \strong{theme_pubr()}: Create a publication ready theme
- \item \strong{labs_pubr()}: Format only plot labels to a publication ready style
- \item \strong{theme_classic()}: Create a classic theme with axis lines
-}
+\itemize{ \item \strong{theme_pubr()}: Create a publication ready
+ theme \item \strong{labs_pubr()}: Format only plot labels to a publication
+ ready style \item \strong{theme_classic2()}: Create a classic theme with
+ axis lines }
 }
 \examples{
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
