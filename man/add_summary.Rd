@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_summary.R
 \name{add_summary}
 \alias{add_summary}
-\alias{mean_se}
+\alias{mean_se_}
 \alias{mean_sd}
 \alias{mean_ci}
 \alias{mean_range}
@@ -15,7 +15,7 @@ add_summary(p, fun = "mean_se", error.plot = "pointrange",
   color = "black", fill = "white", width = NULL, shape = 19, size = 1,
   data = NULL, position = position_dodge(0.8))
 
-mean_se(x, error.limit = "both")
+mean_se_(x, error.limit = "both")
 
 mean_sd(x, error.limit = "both")
 
@@ -77,8 +77,8 @@ add summary statistics onto a ggplot.
 \itemize{
 \item \code{add_summary}: add summary statistics onto a ggplot.
 
-\item \code{mean_se}: returns the \code{mean} and the error limits defined by the
-\code{standard error}.
+\item \code{mean_se_}: returns the \code{mean} and the error limits defined by the
+\code{standard error}. We used the name \code{mean_se_}() to avoid masking \code{\link[ggplot2]{mean_se}}().
 
 \item \code{mean_sd}: returns the \code{mean} and the error limits defined by the
 \code{standard deviation}.

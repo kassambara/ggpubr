@@ -48,8 +48,10 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
   {
 
   if(is.null(data)) data <- p$data
+  if(fun == "mean_se")
+    fun <- "mean_se_"
 
-  allowed.fun <- c("mean", "median", "mean_se", "mean_sd", "mean_ci", "mean_range",
+  allowed.fun <- c("mean", "median", "mean_se", "mean_se_", "mean_sd", "mean_ci", "mean_range",
                    "median_iqr", "median_mad", "median_range")
   if(!(fun %in% allowed.fun))
     stop("Don't support ", fun, ". Possibilities for the argument fun are: ",
@@ -114,8 +116,9 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
     .add_item(fill = fill, width = width)
 
   else if(geom == "errorbar"){
-    if(missing(width)) opts$width = 0.2
+    if(missing(width)) opts$width = 0.1
     else opts$width = width
+    opts$width <- 0.15
   }
 
   opts %>% .update_plot(p)
@@ -123,9 +126,9 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
 
 
 #' @describeIn add_summary returns the \code{mean} and the error limits defined by the
-#'   \code{standard error}.
+#'   \code{standard error}. We used the name \code{mean_se_}() to avoid masking \code{\link[ggplot2]{mean_se}}().
 #' @export
-mean_se <- function(x, error.limit = "both")
+mean_se_ <- function(x, error.limit = "both")
   {
   length <- base::sum(!is.na(x))
   sd = stats::sd(x, na.rm=TRUE)
@@ -238,29 +241,5 @@ median_range <- function(x, error.limit = "both"){
 }
 
 
-.summary <- function(x, ci = 0.95){
-
-  if(!is.numeric(x))
-    stop("x should be a numeric vector")
-  data_sum <- data.frame(
-    length = base::sum(!is.na(x)),
-    min = base::min(x, na.rm=TRUE),
-    max = base::max(x, na.rm=TRUE),
-    median = stats::median(x, na.rm=TRUE),
-    mean = base::mean(x, na.rm=TRUE),
-    iqr = stats::IQR(x, na.rm=TRUE),
-    mad = stats::mad(x, na.rm=TRUE),
-    sd = stats::sd(x, na.rm=TRUE)
-    )
-
-  data_sum$se <- data_sum$sd / sqrt(data_sum$length) # standard error
-  # Confidence interval from t-distribution
-  # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
-  data_sum$ci <- stats::qt(ci/2 + .5, data_sum$length-1)*data_sum$se
-  data_sum$range <- data_sum$max - data_sum$min
-  data_sum$cv <- data_sum$sd/data_sum$mean
-  data_sum$var <- data_sum$sd^2
-  return(data_sum)
-}
 
 
