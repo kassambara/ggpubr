@@ -7,7 +7,7 @@
 ggtext(data, x = NULL, y = NULL, label = NULL, color = "black",
   palette = NULL, size = 11, face = "plain", family = "",
   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  ggp = NULL, ggtheme = theme_pubr(), ...)
+  grouping.vars = NULL, ggp = NULL, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -32,13 +32,25 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 
 \item{family}{character vector specifying font family.}
 
-\item{label.select}{character vector specifying some labels to show.}
+\item{label.select}{can be of two formats: \itemize{
+\item a character vector specifying some labels to show.
+\item a list containting one or the combination of the following components:
+  \itemize{
+     \item \code{top.up} and \code{top.down}: to display the labels  of the top up/down points.
+     For example, \code{label.select = list(top.up = 10, top.down = 4)}.
+     \item \code{criteria}: to filter, for example, by x and y variabes values,
+     use this: \code{label.select = list(criteria = list("`y` > 2 & `y` < 5 & `x` \%in\% c('A', 'B')"))}.
+}
+}}
 
 \item{repel}{a logical value, whether to use ggrepel to avoid overplotting
 text labels or not.}
 
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
+
+\item{grouping.vars}{grouping variables to sort the data by, when the user
+wants to display the top n up/down labels.}
 
 \item{ggp}{a ggplot. If not NULL, points are added to an existing plot.}
 
