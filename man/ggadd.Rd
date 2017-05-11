@@ -5,9 +5,9 @@
 \title{Add Summary Statistics or a Geom onto a ggplot}
 \usage{
 ggadd(p, add = NULL, color = "black", fill = "white", width = 1,
-  shape = 19, size = NULL, jitter = 0.2, binwidth = NULL,
+  shape = 19, size = NULL, alpha = 1, jitter = 0.2, binwidth = NULL,
   dotsize = size, error.plot = "pointrange", data = NULL,
-  position = position_dodge(0.8))
+  position = position_dodge(0.8), p_geom = "")
 }
 \arguments{
 \item{p}{a ggplot}
@@ -30,6 +30,9 @@ c("crossbar", "errorbar").}
 
 \item{size}{numeric value in [0-1] specifying point and line size.}
 
+\item{alpha}{numeric value specifying fill color transparency. Value should be
+in [0, 1], where 0 is full transparency and 1 is no transparency.}
+
 \item{jitter}{a numeric value specifying the amount of jittering. Used only
 when \code{add} contains "jitter".}
 
@@ -50,6 +53,9 @@ data is inherited from the plot data as specified in the call to \link[ggplot2]{
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function. Used to adjust position for multiple
 groups.}
+
+\item{p_geom}{the geometry of the main plot. Ex: p_geom = "geom_line". If
+NULL, the geometry is extracted from p. Used only by \link{ggline}().}
 }
 \description{
 Add summary statistics or a geometry onto a ggplot.

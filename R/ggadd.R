@@ -1,9 +1,8 @@
 #' @include utilities.R
 NULL
 #'Add Summary Statistics or a Geom onto a ggplot
-#'@description
-#'Add summary statistics or a geometry onto a ggplot.
-#' @inheritParams add_summary
+#'@description Add summary statistics or a geometry onto a ggplot.
+#'@inheritParams add_summary
 #'@param p a ggplot
 #'@param add character vector specifying other plot elements to be added.
 #'  Allowed values are one or the combination of: "none", "dotplot", "jitter",
@@ -17,12 +16,16 @@ NULL
 #'@param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #'@param size numeric value in [0-1] specifying point and line size.
+#'@param alpha numeric value specifying fill color transparency. Value should be
+#'  in [0, 1], where 0 is full transparency and 1 is no transparency.
 #'@param jitter a numeric value specifying the amount of jittering. Used only
 #'  when \code{add} contains "jitter".
 #'@param binwidth numeric value specifying bin width. use value between 0 and 1
 #'  when you have a strong dense dotplot. For example binwidth = 0.2. Used only
 #'  when \code{add} contains "dotplot".
-#' @param dotsize as \code{size} but applied only to dotplot.
+#'@param dotsize as \code{size} but applied only to dotplot.
+#'@param p_geom the geometry of the main plot. Ex: p_geom = "geom_line". If
+#'  NULL, the geometry is extracted from p. Used only by \link{ggline}().
 #' @examples
 #'# Basic violin plot
 #'data("ToothGrowth")
@@ -36,10 +39,11 @@ NULL
 #'
 #'@export
 ggadd <- function(p, add = NULL, color = "black", fill = "white",
-                  width = 1, shape = 19, size = NULL,  jitter = 0.2,
+                  width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
                   binwidth = NULL, dotsize = size,
                   error.plot = "pointrange",
-                  data = NULL, position = position_dodge(0.8)
+                  data = NULL, position = position_dodge(0.8),
+                  p_geom = ""
 )
 {
 
@@ -57,8 +61,6 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white",
   errors <- intersect(errors, add)
   if(length(errors) > 1)
     stop("Choose only one of these: ", .collapse(errors, sep = ", "))
-  if(error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar"))
-    width <- 0.2
 
   if(is.null(dotsize)) dotsize =1
 
@@ -81,10 +83,11 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white",
   set.seed(123)
   .jitter <- jitter
   if(is.numeric(jitter)) jitter <- position_jitter(jitter)
-  if(ngrps > 1) jitter <- position_jitterdodge(jitter.width = .jitter, dodge.width = 0.8)
+  if(p_geom == "geom_line" & ngrps > 1){}
+  else if(ngrps > 1) jitter <- position_jitterdodge(jitter.width = .jitter, dodge.width = 0.8)
 
   common.opts <- opts <- list(data = data, color = color, fill = fill,
-                              size = size, position = position)
+                              size = size, position = position, alpha = alpha)
 
   if ("boxplot" %in% add) {
     if(.geom(p) == "violin" & missing(width)) width = 0.2
@@ -94,6 +97,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white",
       .update_plot(p)
   }
   if ("violin" %in% add) {
+    if(missing(width)) width = 1
     p <- common.opts %>%
       .add_item(geomfunc = geom_violin, width = width, trim = FALSE) %>%
       .update_plot(p)
@@ -129,9 +133,12 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white",
 
   # Add erors
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  if(!.is_empty(errors))
+  if(!.is_empty(errors)){
+    if(error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar"))
+      width <- 0.1
     p <- p %>% add_summary(errors, error.plot = error.plot, color = color, shape = shape,
                   position = position, size = size, width = width)
+  }
 
   p
 
