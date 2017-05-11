@@ -2,6 +2,9 @@
 NULL
 #' @import ggplot2
 #' @importFrom magrittr %>%
+#' @importFrom dplyr group_by_
+#' @importFrom dplyr arrange_
+#' @importFrom dplyr do
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2
@@ -321,19 +324,28 @@ NULL
   font.submain <- .parse_font(font.submain)
   font.caption <- .parse_font(font.caption)
 
+  if(is.logical(main)){
+    if(!main) main <- NULL
+  }
+
+  if(is.logical(submain)){
+    if(!submain) submain <- NULL
+  }
+
+  if(is.logical(caption)){
+    if(!caption) caption <- NULL
+  }
+
 
   if (!is.null(main)) {
-    if (main != FALSE)
       p <- p + labs(title = main)
   }
 
   if (!is.null(submain)) {
-    if (submain != FALSE)
       p <- p + labs(subtitle = submain)
   }
 
   if (!is.null(caption)) {
-    if (caption != FALSE)
       p <- p + labs(caption = caption)
   }
 
@@ -619,7 +631,10 @@ p
     if(p_geom == "geom_line" | ngrps == 1) .jitter = position_jitter(0.4)
     else if(ngrps > 1) .jitter <- position_dodge(0.8)
 
-    if(!is.null(add.params$jitter)) .jitter = position_jitter(0.4)
+    if(is.null(add.params$jitter)) .jitter = position_jitter(0.4)
+    else if(is.numeric(add.params$jitter))
+      .jitter <- position_jitter(add.params$jitter)
+    else .jitter <- add.params$jitter
     p <- p + .geom_exec(geom_jitter, data = data,
                         color = color, fill = fill, shape = shape, size = add.params$size,
                         position = .jitter )
@@ -645,11 +660,10 @@ p
   if(length(center) == 2)
     stop("Use mean or mdedian, but not both at the same time.")
     if(length(center) == 1){
-      center.size <- ifelse(is.null(add.params$size), 6, add.params$size)
-      names(stat_sum)[which(names(stat_sum) == center)] <- y
-      p <- p + .geom_exec(geom_point, data = stat_sum, x = x, y = y,
-                          color = color,  shape = shape,
-                          position = position, size = center.size)
+      center.size <- ifelse(is.null(add.params$size), 1, add.params$size)
+      p <- p %>%
+        add_summary(fun = center, color = color, shape = shape,
+                    position = position, size = center.size)
     }
 
   # Add errors
@@ -709,17 +723,25 @@ p
 # data : a data frame
 # varname : the name of the variable to be summariezed
 # grps : column names to be used as grouping variables
-.mean_sd <- function(data, varname, grps){
-  summary_func <- function(x, col){
-    c(mean = base::mean(x[[col]], na.rm=TRUE),
-      sd = stats::sd(x[[col]], na.rm=TRUE))
-  }
-  data_sum <- plyr::ddply(data, grps, .fun=summary_func, varname)
-  data_sum$ymin <- data_sum$mean-data_sum$sd
-  data_sum$ymax <- data_sum$mean+data_sum$sd
-  names(data_sum)[ncol(data_sum)-3] <- varname
-  # data_sum <- plyr::rename(data_sum, c("mean" = varname))
-  return(data_sum)
+# .mean_sd <- function(data, varname, grps){
+#   summary_func <- function(x, col){
+#     c(mean = base::mean(x[[col]], na.rm=TRUE),
+#       sd = stats::sd(x[[col]], na.rm=TRUE))
+#   }
+#   data_sum <- plyr::ddply(data, grps, .fun=summary_func, varname)
+#   data_sum$ymin <- data_sum$mean-data_sum$sd
+#   data_sum$ymax <- data_sum$mean+data_sum$sd
+#   names(data_sum)[ncol(data_sum)-3] <- varname
+#   # data_sum <- plyr::rename(data_sum, c("mean" = varname))
+#   return(data_sum)
+# }
+
+
+
+# Summary functions
+.summary_functions <- function(){
+  c("mean", "mean_se", "mean_sd", "mean_ci",
+    "mean_range", "median", "median_iqr", "median_mad", "median_range")
 }
 
 
@@ -727,6 +749,7 @@ p
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .parse_font <- function(font){
   if(is.null(font)) res <- NULL
+  else if(inherits(font, "list")) res <- font
   else{
     # matching size and face
     size <- grep("^[0-9]+$", font, perl = TRUE)
@@ -757,9 +780,13 @@ p
   }
 }
 
-# Check th data provided by user
+#:::::::::::::::::::::::::::::::::::::::::
+# Check the data provided by user
+#:::::::::::::::::::::::::::::::::::::::::
+# combine: if TRUE, gather y variables
 # return a list(data, x, y)
-.check_data <- function(data, x, y){
+.check_data <- function(data, x, y, combine = FALSE)
+  {
 
   if(missing(x) & missing(y)){
     if(!is.numeric(data))
@@ -775,20 +802,42 @@ p
     if(is.numeric(data)) data <- data.frame(x = data)
     else data$x <- rep("1", nrow(data))
   }
+  # A list of y elements to plot
   else if(length(y) > 1){
     if(!all(y %in% colnames(data))){
       not_found <- setdiff(y , colnames(data))
       y <- intersect(y, colnames(data))
+
       if(.is_empty(y))
         stop("Can't found the y elements in the data.")
-      else warning("Can't found the following element in the data: ",
+
+      else if(!.is_empty(not_found))
+        warning("Can't found the following element in the data: ",
               .collapse(not_found))
     }
   }
 
   if(inherits(data, c("tbl_df", "tbl")))
     data <- as.data.frame(data)
-  list(data = data, x =x, y = y)
+
+  # Combining y variables
+  #......................................................
+  if(combine & length(y) > 1){
+    data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
+                           gather_cols = y)
+    data[, ".y."] <- factor(data[, ".y."], levels = unique(data[, ".y."]))
+    y <- ".value."
+  }
+
+  # If not factor, x elements on the plot should
+  # appear in the same order as in the data
+  if(is.character(data[, x]))
+    data[, x] <- factor(data[, x], levels = unique(data[, x]))
+
+  y <- unique(y)
+  names(y) <- y
+
+  list(y = y, data = data, x = x)
 }
 
 
@@ -856,6 +905,233 @@ p
 #
 # x a vector or list
 .compact <- function(x){Filter(Negate(is.null), x)}
+
+# Check if is a list
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.is_list <- function(x){
+  inherits(x, "list")
+}
+
+# Returns the levels of a factor variable
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.levels <- function(x){
+  if(!is.factor(x)) x <- as.factor(x)
+  levels(x)
+}
+
+# Remove items from a list
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.remove_item <- function(.list, items){
+  for(item in items)
+    .list[[item]] <- NULL
+  .list
+}
+
+# Additems in a list
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.add_item <- function(.list, ...){
+  pms <- list(...)
+  for(pms.names in names(pms)){
+    .list[[pms.names]] <- pms[[pms.names]]
+  }
+  .list
+}
+
+
+# Select a colun as vector from tiblle data frame
+.select_vec <- function(df, column){
+  if(is.numeric(column))
+    df %>% dplyr::select(column) %>% unlist(use.names = FALSE)
+  else
+    df %>% dplyr::select_(.dots = column) %>% unlist(use.names = FALSE)
+}
+
+# Select the top up or down rows of a data frame sorted by variables
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# - df: data frame
+# - x: x axis variables (grouping variables)
+# - y: y axis variables (sorting variables)
+# - n the number of rows
+# - grps: other grouping variables
+.top_up <- function(df, x, y, n, grouping.vars = NULL){
+  . <- NULL
+  grouping.vars <- c(x, grouping.vars) %>%
+    unique()
+  df %>%
+    arrange_(.dots = c(grouping.vars, y)) %>%
+    group_by_(.dots = grouping.vars) %>%
+    do(utils::tail(., n))
+}
+
+
+.top_down <- function(df, x, y, n, grouping.vars = NULL){
+  . <- NULL
+  grouping.vars <- c(x, grouping.vars) %>%
+    unique()
+  df %>%
+    arrange_(.dots = c(grouping.vars, y)) %>%
+    group_by_(.dots = grouping.vars) %>%
+    do(utils::head(., n))
+}
+
+
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# Apply ggpubr functions on a data
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# fun: function, can be ggboxplot, ggdotplot, ggstripchart, ...
+.plotter <- function(fun, data, x, y, combine = FALSE, merge = FALSE,
+                     color = "black", fill = "white",
+                     title = NULL, xlab = NULL, ylab = NULL,
+                     legend = NULL, legend.title = NULL,
+                     facet.by = NULL,
+                     select = NULL, remove = NULL, order = NULL,
+                     add = "none", add.params = list(),
+                     label = NULL, font.label = list(size = 11, color = "black"),
+                     label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                     ggtheme = theme_pubr(),
+                     fun_name = "",
+                     ...)
+  {
+
+  if(is.logical(merge)){
+    if(merge) merge = "asis"
+    else merge = "none"
+  }
+  if(combine & merge != "none")
+    stop("You should use either combine = TRUE or merge = TRUE, but not both together.")
+
+  if(length(y) == 1){
+    combine <- FALSE
+    merge <- "none"
+  }
+
+  if(combine) facet.by <- ".y." # Faceting by y variables
+  if(merge != "none"){
+    facet.by <- NULL
+    if(missing(legend.title)) legend.title <- "" # remove .y. in the legend
+  }
+
+  # Check data
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # - returns a list of updated main options:
+  #       list(y, data,  x)
+  opts <- .check_data(data, x, y, combine = combine | merge != "none")
+
+  # Updating parameters after merging
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+  group = 1 # for line plot
+  user.add.color <- add.params$color
+
+  if(merge == "asis" ){
+    .grouping.var <- ".y."  # y variables become grouping variable
+  }
+  else if(merge == "flip"){
+    .grouping.var <- opts$x  # x variable becomes grouping variable
+     opts$x <- ".y."  # y variables become x tick labels
+    if(missing(xlab)) xlab <- FALSE
+  }
+
+  if(merge == "asis" | merge == "flip"){
+    if(!any(c(color, fill) %in% names(data))){
+      color <- add.params$color <- .grouping.var
+      fill <- "white"
+    }
+    if(color %in% names(data))
+      color <-  add.params$color <- .grouping.var
+    if(fill %in% names(data)) fill <- .grouping.var
+    group <- .grouping.var
+  }
+
+  if(!combine & merge == "none" & length(opts$y) > 1 & is.null(title))
+    title <- opts$y
+
+  # Item to display
+  x <- opts$data[, opts$x] %>% as.vector()
+  if(!is.null(select))
+    opts$data <- subset(opts$data, x %in% select)
+  if(!is.null(remove))
+    opts$data <- subset(opts$data, !(x %in% remove))
+  if(!is.null(order)) opts$data[, opts$x] <- factor(opts$data[, opts$x], levels = order)
+
+  # Add additional options, which can be potentially vectorized
+  # when multiple plots
+  opts <- opts %>% c(list(title = title, xlab = xlab, ylab = ylab)) %>%
+    .compact()
+  data <- opts$data
+  opts$data <- list(opts$data)
+ if(fun_name == "ggline") opts$group <- group
+  # Plotting
+  #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # Apply the pecific distribution function to each y variables
+  p <- purrr::pmap(opts, fun, color = color, fill = fill, legend = legend,
+                   legend.title = legend.title, ggtheme = ggtheme, facet.by = facet.by,
+                   add = add, add.params  = add.params ,
+                   # group = group, # for line plot
+                   user.add.color = user.add.color,
+                   font.label = font.label, repel = repel, label.rectangle = label.rectangle,
+                   ...)
+
+  if(!is.null(label)){
+    grouping.vars <- intersect(c(facet.by, color, fill), colnames(data))
+
+    font.label <- .parse_font(font.label)
+    label.opts <- font.label %>%
+      .add_item(data = data, x = opts$x, y = opts$y,
+                label = label, label.select = label.select,
+                repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme,
+                grouping.vars = grouping.vars)
+    p <- purrr::map(p,
+                   function(p, label.opts){
+                     . <- NULL
+                     label.opts %>% .add_item(ggp = p) %>%
+                       do.call(ggtext, .)
+                   },
+                   label.opts
+                   )
+  }
+
+  # Faceting
+  if(!is.null(facet.by))
+    p <-purrr::map(p, facet, facet.by = facet.by, ...)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  p
+
+}
+
+
+# get the geometry of the first layer
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.geom <- function(p, .layer = 1){
+
+  . <- NULL
+  if(is.null(p) | .is_empty(p$layers)) return("")
+  class(p$layers[[.layer]]$geom)[1] %>%
+    tolower() %>%
+    gsub("geom", "", .)
+}
+
+
+# Get the mapping variables of the first layer
+.mapping <- function(p){
+
+  if(is.null(p)) return(list())
+
+  res0 <- as.character(p$mapping)
+  res1 <- NULL
+  if(!.is_empty(p$layers))
+    res1 <- as.character(p$layers[[1]]$mapping)
+  c(res0, res1) %>%
+    as.list()
+}
+
+# Call geom_exec function to update a plot
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.update_plot <- function(opts, p){
+  p + do.call(geom_exec, opts)
+}
+
 
 
 
