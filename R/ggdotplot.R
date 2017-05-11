@@ -88,7 +88,8 @@ ggdotplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 
 ggdotplot_core <- function(data, x, y,
                       color = "black", fill = "lightgray", palette = NULL,
-                      size = NULL,
+                      size = NULL, dotsize = size,
+                      binwidth = NULL,
                       add = "mean_se",
                       add.params = list(),
                       error.plot = "pointrange",
@@ -121,7 +122,7 @@ ggdotplot_core <- function(data, x, y,
                 binaxis = "y", stackdir = "center",
                 color = color, fill = fill,
                 position = position_dodge(0.8), stackratio = 1,
-                dotsize = size, ...)
+                dotsize = dotsize, binwidth = binwidth, ...)
 
   # Add errors
   if(error.plot == "crossbar"){}
