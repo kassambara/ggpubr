@@ -4,11 +4,15 @@
 \alias{ggline}
 \title{Line plot}
 \usage{
-ggline(data, x, y, group = 1, color = "black", palette = NULL,
-  linetype = "solid", plot_type = c("b", "l", "p"), size = 0.5,
-  shape = 19, select = NULL, order = NULL, add = "none",
-  add.params = list(), error.plot = "errorbar", ggtheme = theme_classic(),
-  ...)
+ggline(data, x, y, group = 1, combine = FALSE, merge = FALSE,
+  color = "black", palette = NULL, linetype = "solid",
+  plot_type = c("b", "l", "p"), size = 0.5, shape = 19, title = NULL,
+  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
+  short.panel.labs = TRUE, select = NULL, remove = NULL, order = NULL,
+  add = "none", add.params = list(), error.plot = "errorbar",
+  label = NULL, font.label = list(size = 11, color = "black"),
+  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+  show.line.label = FALSE, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -19,42 +23,104 @@ ggline(data, x, y, group = 1, color = "black", palette = NULL,
 Allowed values are 1 (for one line, one group) or a character vector specifying
 the name of the grouping variable (case of multiple lines).}
 
+\item{combine}{logical value. Default is FALSE. Used only when y is a vector
+containing multiple variables to plot. If TRUE, create a multi-panel plot by
+combining the plot of y variables.}
+
+\item{merge}{logical or character value. Default is FALSE. Used only when y is
+a vector containing multiple variables to plot. If TRUE, merge multiple y
+variables in the same plotting area. Allowed values include also "asis"
+(TRUE) and "flip". If merge = "flip", then y variables are used as x tick
+labels and the x variable is used as grouping variable.}
+
 \item{color}{line colors.}
 
-\item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; brewer
-palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
-"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
+\item{palette}{the color palette to be used for coloring or filling by groups.
+Allowed values include "grey" for grey color palettes; brewer palettes e.g.
+"RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
+scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
+"lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{linetype}{line type.}
 
 \item{plot_type}{plot type. Allowed values are one of "b" for both line and point;
 "l" for line only; and "p" for point only. Default is "b".}
 
-\item{size}{Numeric value (e.g.: size = 1). change the size of points and outlines.}
+\item{size}{Numeric value (e.g.: size = 1). change the size of points and
+outlines.}
 
 \item{shape}{point shapes.}
 
+\item{title}{plot main title.}
+
+\item{xlab}{character vector specifying x axis labels. Use xlab
+= FALSE to hide xlab.}
+
+\item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.}
+
+\item{facet.by}{character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.}
+
+\item{panel.labs}{a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c("Male", "Female")) specifies
+the labels for the "sex" variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
+"Lev", "Lev2") ).}
+
+\item{short.panel.labs}{logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.}
+
 \item{select}{character vector specifying which items to display.}
+
+\item{remove}{character vector specifying which items to remove from the plot.}
 
 \item{order}{character vector specifying the order of items.}
 
-\item{add}{character vector for adding another plot element (e.g.: dot plot
-or error bars). Allowed values are one or the combination of: "none",
-"dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd", "mean_ci",
-"mean_range", "median", "median_iqr", "median_mad", "median_range"; see
-?desc_statby for more details.}
+\item{add}{character vector for adding another plot element (e.g.: dot plot or
+error bars). Allowed values are one or the combination of: "none",
+"dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
+"mean_ci", "mean_range", "median", "median_iqr", "median_mad",
+"median_range"; see ?desc_statby for more details.}
 
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
-\item{error.plot}{plot type used to visualize error. Allowed values are one
-of c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
-"lower_errorbar", "upper_pointrange", "lower_pointrange",
-"upper_linerange", "lower_linerange"). Default value is "pointrange" or "errorbar". Used
-only when add != "none" and add contains one "mean_*" or "med_*" where "*"
-= sd, se, ....}
+\item{error.plot}{plot type used to visualize error. Allowed values are one of
+c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
+"lower_errorbar", "upper_pointrange", "lower_pointrange", "upper_linerange",
+"lower_linerange"). Default value is "pointrange" or "errorbar". Used only
+when add != "none" and add contains one "mean_*" or "med_*" where "*" = sd,
+se, ....}
+
+\item{label}{the name of the column containing point labels. Can be also a
+character vector with length = nrow(data).}
+
+\item{font.label}{a list which can contain the combination of the following elements: the size
+(e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
+the color (e.g.: "red") of labels. For example font.label = list(size = 14,
+face = "bold", color ="red"). To specify only the size and the style, use font.label =
+list(size = 14, face = "plain").}
+
+\item{label.select}{can be of two formats: \itemize{
+\item a character vector specifying some labels to show.
+\item a list containting one or the combination of the following components:
+  \itemize{
+     \item \code{top.up} and \code{top.down}: to display the labels  of the top up/down points.
+     For example, \code{label.select = list(top.up = 10, top.down = 4)}.
+     \item \code{criteria}: to filter, for example, by x and y variabes values,
+     use this: \code{label.select = list(criteria = list("`y` > 2 & `y` < 5 & `x` \%in\% c('A', 'B')"))}.
+}
+}}
+
+\item{repel}{a logical value, whether to use ggrepel to avoid overplotting
+text labels or not.}
+
+\item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
+text, making it easier to read.}
+
+\item{show.line.label}{logical value. If TRUE, shows line labels.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

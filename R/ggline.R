@@ -13,6 +13,7 @@ NULL
 #' @param plot_type plot type. Allowed values are one of "b" for both line and point;
 #' "l" for line only; and "p" for point only. Default is "b".
 #' @param shape point shapes.
+#' @param show.line.label logical value. If TRUE, shows line labels.
 #' @param ... other arguments to be passed to geom_dotplot.
 #' @details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
@@ -111,45 +112,85 @@ NULL
 #'
 #'
 #' @export
-ggline <- function(data, x, y, group = 1,
-                      color = "black", palette = NULL,
-                      linetype = "solid",
-                      plot_type = c("b", "l", "p"),
-                      size = 0.5, shape = 19,
-                      select = NULL, order = NULL,
-                      add = "none",
-                      add.params = list(),
-                      error.plot = "errorbar",
-                      ggtheme = theme_classic(),
+ggline<- function(data, x, y, group = 1,
+                  combine = FALSE, merge = FALSE,
+                  color = "black", palette = NULL,
+                  linetype = "solid",
+                  plot_type = c("b", "l", "p"),
+                  size = 0.5, shape = 19,
+                  title = NULL, xlab = NULL, ylab = NULL,
+                  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                  select = NULL, remove = NULL, order = NULL,
+                  add = "none",
+                  add.params = list(),
+                  error.plot = "errorbar",
+                  label = NULL, font.label = list(size = 11, color = "black"),
+                  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                  show.line.label = FALSE,
+                  ggtheme = theme_pubr(),
+                  ...)
+{
+  .opts <- match.call(expand.dots = TRUE)
+  .opts <- as.list(.opts)
+  .opts[[1]] <- NULL
+  .opts$fun <- ggline_core
+  .opts$fun_name <- "ggline"
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+}
+
+
+ggline_core <- function(data, x, y, group = 1,
+                  color = "black", fill = "white", palette = NULL,
+                  linetype = "solid",
+                  plot_type = c("b", "l", "p"),
+                  size = 0.6, shape = 19,
+                  select = NULL, order = NULL,
+                  facet.by = NULL,
+                  add = "none",
+                  add.params = list(),
+                  error.plot = "errorbar",
+                  show.line.label = FALSE,
+                  font.label = list(size = 11, color = "black"),
+                  repel = FALSE, label.rectangle = FALSE,
+                  ggtheme = theme_pubr(),
                       ...)
 {
-
-  data[, x] <- as.factor(data[, x])
+  data[, x] <- .select_vec(data, x) %>% as.factor()
   error.plot = error.plot[1]
   plot_type <- match.arg(plot_type)
   if("none" %in% add) add <- "none"
   position = "identity"
+  grouping.vars <- intersect(c(x, color, linetype, group, facet.by), names(data))
+  . <- NULL
 
   # static summaries for computing mean/median and adding errors
   if(is.null(add.params$fill)) add.params$fill <- "white"
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill = "white", ...)
 
-  errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
-  if(any(errors %in% add)) {
-    data_sum <- desc_statby(data, measure.var = y,
-                        grps = intersect(c(x, color, linetype, group), names(data)))
-    .center <- intersect(c("mean", "median"), add)
-    errors <- c("mean_se", "mean_sd", "mean_ci", "mean_range", "median_iqr", "median_mad", "median_range")
-    if(length(.center) == 2) stop("Use mean or mdedian, but not both at the same time.")
-    else if(length(.center) == 0) .center <- unlist(strsplit(errors, "_", fixed = TRUE))[1]
+  if(any(.summary_functions() %in% add)) {
+    data_sum <- desc_statby(data, measure.var = y, grps = grouping.vars)
+
+    summary.funcs <- intersect(.summary_functions(), add)
+    if(length(summary.funcs) > 1)
+      stop("Only one summary function is allowed. ",
+           "Choose one of ", .collapse(.summary_functions(), sep = ", "))
+
+    .center <- summary.funcs %>%
+      strsplit("_", fixed = TRUE) %>%
+      unlist() %>% .[1]
+
     add <- setdiff(add, .center)
     names(data_sum)[which(names(data_sum) == .center)] <- y
     data_sum[, x] <- as.factor(data_sum[, x])
   }
   else data_sum <- data
 
-  group = group
-  .cols <- unique(c(color, linetype))
+  .cols <- unique(c(color, linetype, group))
   if(any(.cols %in% names(data))){
     .in <- which(.cols %in% names(data))
     group <- .cols[.in]
@@ -157,14 +198,31 @@ ggline <- function(data, x, y, group = 1,
 
 
   p <- ggplot(data, aes_string(x, y))
-  # Add errors
-  p <- .add(p, add = add,
-            add.params = add.params, error.plot = error.plot,
-            position = "identity", p_geom = "geom_line")
+
+  # Add other geom or summary
+  #:::::::::::::::::::::::::::::::::::::::
+  add.params <- add.params %>%
+    .add_item(error.plot = error.plot,
+              position = "identity", p_geom = "geom_line")
+
+  # First add geom if any
+  p <- add.params %>%
+    .add_item(p = p, add = setdiff(add, .summary_functions())) %>%
+    do.call(ggadd, .)
+  # Then add summary statistics
+  p <- add.params %>%
+    .add_item(p = p, size = size, add = intersect(add, .summary_functions())) %>%
+    do.call(ggadd, .)
+
+
+  # add.params <- add.params %>%
+  #   .add_item(p = p, add = add, error.plot = error.plot,
+  #             position = "identity", p_geom = "geom_line")
+  # p <- do.call(ggadd, add.params)
 
   # Main plot
   if(plot_type %in% c("b", "l")){
-    line_args <- .geom_exec(NULL, data = data_sum,
+    line_args <- geom_exec(NULL, data = data_sum,
                             stat = "identity",
                             color = color, linetype = linetype,
                             position = position,
@@ -178,18 +236,35 @@ ggline <- function(data, x, y, group = 1,
 
   if(plot_type %in% c("p", "b")){
     p <- p +
-    .geom_exec(geom_point, data = data_sum,
-               color = color, shape = shape,
-               size = 1.5+size)
+    geom_exec(geom_point, data = data_sum,
+               color = add.params$color, shape = shape,
+               size = 1.2+size)
     # Adjust shape when ngroups > 6, to avoid ggplot warnings
     p <-.scale_point_shape(p, data_sum, shape)
   }
 
+  # Color palette
+  user.add.color <- list(...)$user.add.color
+  if(is.null(user.add.color)) user.add.color <- ""
+  if(.is_color(user.add.color) & !is.numeric(group)){
+    ngroup <- nlevels(.select_vec(data_sum, group))
+    palette <- rep(user.add.color, ngroup)
+  }
 
-  # Select and order
-  if(is.null(select)) select <- order
-  if (!is.null(select) | !is.null(order))
-    p <- p + scale_x_discrete(limits = as.character(select))
+  if(show.line.label & !is.numeric(group)){
+    xval <- .select_vec(data_sum, x)
+    last.xval <- .levels(xval) %>% utils::tail(1)
+    groupval <- .select_vec(data_sum, group)
+    label.data <- subset(data_sum, xval == last.xval)
+
+    font.label <- .parse_font(font.label)
+    p <- font.label %>%
+      .add_item(data = label.data, x = x, y = y, label = group,
+                repel = repel, label.rectangle = label.rectangle,
+                ggtheme = ggtheme, ggp = p) %>%
+      do.call(ggtext, .)
+  }
+
    p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
 
   p
