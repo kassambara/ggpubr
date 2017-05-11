@@ -137,7 +137,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       color = "black", fill = "white", palette = NULL,
                       title = NULL, xlab = NULL, ylab = NULL,
                       facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-                      linetype = "solid", size = NULL, width = 1,  notch = FALSE,
+                      linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
                       select = NULL, remove = NULL, order = NULL,
                       add = "none", add.params = list(),
                       error.plot = "pointrange",
@@ -158,6 +158,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 }
 
 
+
 ggboxplot_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
@@ -166,6 +167,7 @@ ggboxplot_core <- function(data, x, y,
                       ggtheme = theme_pubr(),
                       ...)
 {
+
   if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
 
   p <- ggplot(data, aes_string(x, y)) +
