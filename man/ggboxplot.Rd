@@ -7,7 +7,7 @@
 ggboxplot(data, x, y, combine = FALSE, merge = FALSE, color = "black",
   fill = "white", palette = NULL, title = NULL, xlab = NULL,
   ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, linetype = "solid", size = NULL, width = 1,
+  short.panel.labs = TRUE, linetype = "solid", size = NULL, width = 0.7,
   notch = FALSE, select = NULL, remove = NULL, order = NULL,
   add = "none", add.params = list(), error.plot = "pointrange",
   label = NULL, font.label = list(size = 11, color = "black"),
@@ -105,7 +105,16 @@ the color (e.g.: "red") of labels. For example font.label = list(size = 14,
 face = "bold", color ="red"). To specify only the size and the style, use font.label =
 list(size = 14, face = "plain").}
 
-\item{label.select}{character vector specifying some labels to show.}
+\item{label.select}{can be of two formats: \itemize{
+\item a character vector specifying some labels to show.
+\item a list containting one or the combination of the following components:
+  \itemize{
+     \item \code{top.up} and \code{top.down}: to display the labels  of the top up/down points.
+     For example, \code{label.select = list(top.up = 10, top.down = 4)}.
+     \item \code{criteria}: to filter, for example, by x and y variabes values,
+     use this: \code{label.select = list(criteria = list("`y` > 2 & `y` < 5 & `x` \%in\% c('A', 'B')"))}.
+}
+}}
 
 \item{repel}{a logical value, whether to use ggrepel to avoid overplotting
 text labels or not.}

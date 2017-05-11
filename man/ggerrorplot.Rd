@@ -21,35 +21,36 @@ Allowed values are one of , "mean", "mean_se", "mean_sd", "mean_ci", "mean_range
 
 \item{color, fill}{outline and fill colors.}
 
-\item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; brewer
-palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
-"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
+\item{palette}{the color palette to be used for coloring or filling by groups.
+Allowed values include "grey" for grey color palettes; brewer palettes e.g.
+"RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
+scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
+"lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
-\item{size}{Numeric value (e.g.: size = 1). change the size of points and outlines.}
+\item{size}{Numeric value (e.g.: size = 1). change the size of points and
+outlines.}
 
-\item{width}{plot width.}
+\item{width}{numeric value between 0 and 1 specifying box width.}
 
 \item{select}{character vector specifying which items to display.}
 
 \item{order}{character vector specifying the order of items.}
 
-\item{add}{character vector for adding another plot element (e.g.: dot plot
-or error bars). Allowed values are one or the combination of: "none",
-"dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd", "mean_ci",
-"mean_range", "median", "median_iqr", "median_mad", "median_range"; see
-?desc_statby for more details.}
+\item{add}{character vector for adding another plot element (e.g.: dot plot or
+error bars). Allowed values are one or the combination of: "none",
+"dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
+"mean_ci", "mean_range", "median", "median_iqr", "median_mad",
+"median_range"; see ?desc_statby for more details.}
 
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
-\item{error.plot}{plot type used to visualize error. Allowed values are one
-of c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
-"lower_errorbar", "upper_pointrange", "lower_pointrange",
-"upper_linerange", "lower_linerange"). Default value is "pointrange" or "errorbar". Used
-only when add != "none" and add contains one "mean_*" or "med_*" where "*"
-= sd, se, ....}
+\item{error.plot}{plot type used to visualize error. Allowed values are one of
+c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
+"lower_errorbar", "upper_pointrange", "lower_pointrange", "upper_linerange",
+"lower_linerange"). Default value is "pointrange" or "errorbar". Used only
+when add != "none" and add contains one "mean_*" or "med_*" where "*" = sd,
+se, ....}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}

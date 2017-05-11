@@ -19,13 +19,14 @@ gghistogram(data, x, y = "..count..", color = "black", fill = NA,
 
 \item{color, fill}{histogram line color and fill color.}
 
-\item{palette}{the color palette to be used for coloring or filling by
-groups. Allowed values include "grey" for grey color palettes; brewer
-palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
-"red"); and scientific journal palettes from ggsci R package, e.g.: "npg", "aaas", "lancet", "jco",
-"ucscgb", "uchicago", "simpsons" and "rickandmorty".}
+\item{palette}{the color palette to be used for coloring or filling by groups.
+Allowed values include "grey" for grey color palettes; brewer palettes e.g.
+"RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
+scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
+"lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
-\item{size}{Numeric value (e.g.: size = 1). change the size of points and outlines.}
+\item{size}{Numeric value (e.g.: size = 1). change the size of points and
+outlines.}
 
 \item{linetype}{line type. See \code{\link{show_line_types}}.}
 
