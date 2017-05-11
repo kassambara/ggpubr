@@ -15,6 +15,30 @@ NULL
 #' @param shape point shapes.
 #' @param show.line.label logical value. If TRUE, shows line labels.
 #' @param ... other arguments to be passed to geom_dotplot.
+#'
+#'@section FURTHER ARGUMENTS:
+#'Find below further arguments to customize the plots.
+#'See also the \link{ggpubr_args} page.
+#'
+#'@section Plot title and axis labels:
+#'\itemize{
+#'  \item \strong{title}: main title.
+#'  \item \strong{xlab, ylab}: x and y axis labels, respectively.
+#'}
+#'
+#'@section Legend title and position:
+#'\itemize{
+#'  \item \strong{legend}: character specifying legend position. Allowed values are one of
+#'  c("top", "bottom", "left", "right", "none"). Default is "top" side position.
+#'  to remove the legend use legend = "none". Legend position can be also
+#'  specified using a numeric vector c(x, y). In this case it is
+#'  possible to position the legend inside the plotting area. x and y are the
+#'  coordinates of the legend box. Their values should be between 0 and 1.
+#'  c(0,0) corresponds to the "bottom left" and c(1,1) corresponds to the "top
+#'  right" position. For instance use legend = c(0.8, 0.2).
+#'  \item \strong{legend.title}: legend title.
+#'}
+#'
 #' @details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
 #'   xlab, ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
@@ -130,9 +154,41 @@ ggline<- function(data, x, y, group = 1,
                   ggtheme = theme_pubr(),
                   ...)
 {
-  .opts <- match.call(expand.dots = TRUE)
-  .opts <- as.list(.opts)
-  .opts[[1]] <- NULL
+
+
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    group = group,
+    combine = combine, merge = merge,
+    color = color, palette = palette,
+    linetype = linetype, plot_type = plot_type,
+    size = size, shape = shape,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    select = select , remove = remove, order = order,
+    add = add, add.params = add.params, error.plot = error.plot,
+    label = label, font.label = font.label, label.select = label.select,
+    repel = repel, label.rectangle = label.rectangle,
+    show.line.label = show.line.label, ggtheme = ggtheme, ...)
+
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+
+  #.opts <- match.call(expand.dots = TRUE)
+  #.opts <- as.list(.opts)
+  #.opts[[1]] <- NULL
   .opts$fun <- ggline_core
   .opts$fun_name <- "ggline"
   if(missing(ggtheme) & (!is.null(facet.by) | combine))

@@ -140,6 +140,35 @@ The plot can be easily customized using the function ggpar(). Read
   labels and position: legend = "right" \item plot orientation : orientation
   = c("vertical", "horizontal", "reverse") }
 }
+\section{FURTHER ARGUMENTS}{
+
+Find below further arguments to customize the plots.
+See also the \link{ggpubr_args} page.
+}
+
+\section{Plot title and axis labels}{
+
+\itemize{
+ \item \strong{title}: main title.
+ \item \strong{xlab, ylab}: x and y axis labels, respectively.
+}
+}
+
+\section{Legend title and position}{
+
+\itemize{
+ \item \strong{legend}: character specifying legend position. Allowed values are one of
+ c("top", "bottom", "left", "right", "none"). Default is "top" side position.
+ to remove the legend use legend = "none". Legend position can be also
+ specified using a numeric vector c(x, y). In this case it is
+ possible to position the legend inside the plotting area. x and y are the
+ coordinates of the legend box. Their values should be between 0 and 1.
+ c(0,0) corresponds to the "bottom left" and c(1,1) corresponds to the "top
+ right" position. For instance use legend = c(0.8, 0.2).
+ \item \strong{legend.title}: legend title.
+}
+}
+
 \examples{
 # Data
 df <- data.frame(dose=c("D0.5", "D1", "D2"),
