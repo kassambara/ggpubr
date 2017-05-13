@@ -1007,6 +1007,8 @@ p
                      fun_name = "", group = 1, # used only by ggline
                      ...)
   {
+  is_density_plot <- y[1] %in% c("..count..", "..density..")
+
   if(is.logical(merge)){
     if(merge) merge = "asis"
     else merge = "none"
@@ -1021,9 +1023,10 @@ p
 
   if(combine) facet.by <- ".y." # Faceting by y variables
   if(merge != "none"){
-    facet.by <- NULL
+    if(!is_density_plot) facet.by <- NULL
     if(is.null(legend.title)) legend.title <- "" # remove .y. in the legend
   }
+
 
   # Check data
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
