@@ -19,7 +19,7 @@ NULL
 #'        \item \code{top.up} and \code{top.down}: to display the labels  of the top up/down points.
 #'        For example, \code{label.select = list(top.up = 10, top.down = 4)}.
 #'        \item \code{criteria}: to filter, for example, by x and y variabes values,
-#'        use this: \code{label.select = list(criteria = list("`y` > 2 & `y` < 5 & `x` \%in\% c('A', 'B')"))}.
+#'        use this: \code{label.select = list(criteria = "`y` > 2 & `y` < 5 & `x` \%in\% c('A', 'B')")}.
 #'   }
 #'   }
 #' @param repel a logical value, whether to use ggrepel to avoid overplotting
