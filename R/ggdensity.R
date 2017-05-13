@@ -69,9 +69,32 @@ ggdensity <- function(data, x, y = "..density..", combine = FALSE, merge = FALSE
                       ggtheme = theme_pubr(),
                       ...){
 
-  .opts <- match.call(expand.dots = TRUE)
-  .opts <- as.list(.opts)
-  .opts[[1]] <- NULL
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    combine = combine, merge = merge,
+    color = color, fill = fill, palette = palette,
+    linetype = linetype, size = size, alpha = alpha,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    select = select , remove = remove, order = order,
+    add = add, add.params = add.params, rug = rug,
+    label = label, font.label = font.label, label.select = label.select,
+    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+
   .opts$fun <- ggdensity_core
   if(missing(ggtheme) & (!is.null(facet.by) | combine))
     .opts$ggtheme <- theme_pubr(border = TRUE)
@@ -89,6 +112,7 @@ ggdensity_core <- function(data, x, y = "..density..",
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
                       rug = FALSE,
+                      facet.by = NULL,
                       ggtheme = theme_classic(),
                       ...)
 {
@@ -100,6 +124,10 @@ ggdensity_core <- function(data, x, y = "..density..",
   x <- .dd$x
   y <- .dd$y
 
+  grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
+    unique() %>%
+    intersect(colnames(data))
+
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
@@ -108,33 +136,28 @@ ggdensity_core <- function(data, x, y = "..density..",
   p <- ggplot(data, aes_string(x, y))
 
   p <- p +
-      .geom_exec(geom_density, data = data,
+       geom_exec(geom_density, data = data,
                  color = color, fill = fill, size = size,
                  linetype = linetype, alpha = alpha, ...)
 
   # Add mean/median
   #++++++++++++++++++++++
   if(add %in% c("mean", "median")){
-    grp <- intersect(unique(c(color, fill, linetype, size, alpha)), colnames(data))[1]
     # NO grouping variable
-    if(is.na(grp)) {
+    if(.is_empty(grouping.vars)) {
       m <- ifelse(add == "mean",
                   mean(data[, x], na.rm = TRUE),
                   stats::median(data[, x], na.rm = TRUE))
-      p <- p + .geom_exec(geom_vline, data = data,
+      p <- p + geom_exec(geom_vline, data = data,
                           xintercept = m, color = add.params$color,
                           linetype = add.params$linetype, size = add.params$size)
     }
     # Case of grouping variable
     else {
-      grp_name <- grp
-      if(!inherits(data[, grp_name], "factor")) data[, grp_name] <- as.factor(data[, grp_name])
-      df <- data.frame(grp = data[, grp_name], x = data[, x])
-      if (add == "mean") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), mean, na.rm = TRUE)
-      else if (add == "median") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), stats::median, na.rm = TRUE)
-      names(df.m) <- c(grp_name,'x.mean')
-      p <- p + .geom_exec(geom_vline, data = df.m,
-                          xintercept = "x.mean", color = add.params$color,
+      data_sum <- desc_statby(data, measure.var = x, grps = grouping.vars)
+      names(data_sum)[which(names(data_sum) == add)] <- x
+      p <- p + geom_exec(geom_vline, data = data_sum,
+                          xintercept = x, color = add.params$color,
                           linetype = add.params$linetype, size = add.params$size)
     }
   }
@@ -142,8 +165,12 @@ ggdensity_core <- function(data, x, y = "..density..",
   # Add marginal rug
   # +++++++++++
   if(rug) {
-    .args <- .geom_exec(NULL, data = data,
-                              color = color, sides = "b")
+
+    grps <- c(color, fill, linetype, size, alpha) %>%
+      unique() %>% intersect(colnames(data))
+    alpha <- ifelse(.is_empty(grps), 1, alpha)
+    .args <- geom_exec(NULL, data = data,
+                              color = color, sides = "b", alpha = alpha)
     mapping <- .args$mapping
     mapping[["y"]] <- 0
     option <- .args$option
