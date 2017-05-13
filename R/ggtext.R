@@ -143,7 +143,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   {
 
   if(.is_list(label.select)){
-    expected.components = c("top.up", "top.down")
+    expected.components = c("top.up", "top.down", "criteria")
     if(!any(expected.components %in% names(label.select)))
       stop("If label.select is a list, it should contain one or the combination ",
            "of the following element: ", .collapse(expected.components, sep = ", "))
