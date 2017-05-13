@@ -831,7 +831,7 @@ p
   }
   # Combining x variables: Case of density plot or histograms
   #......................................................
-  else if(combine & length(x) > 1 & y %in% c("..density..", "..count..")){
+  else if(combine & length(x) > 1 & y[1] %in% c("..density..", "..count..")){
 
     data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
                            gather_cols = x)
@@ -849,7 +849,7 @@ p
   x <- unique(x)
   names(x) <- x
 
-  if(y %in% c("..density..", "..count.."))
+  if(y[1] %in% c("..density..", "..count.."))
     list(x = x, data = data, y = y)    # The name of plots are x variables
   else
     list(y = y, data = data, x = x)   # The name of plots will be y variables
@@ -1084,7 +1084,7 @@ p
 
   if(!combine & merge == "none" & is.null(title)){
     if(length(opts$y) > 1) title <- opts$y
-    else if (length(opts$x) > 1 & y %in% c("..density..", "..count.."))  # case of density plot
+    else if (length(opts$x) > 1 & y[1] %in% c("..density..", "..count.."))  # case of density plot
       title <- opts$x
   }
 
