@@ -1030,9 +1030,16 @@ p
   # - returns a list of updated main options:
   #       list(y, data,  x)
   opts <- .check_data(data, x, y, combine = combine | merge != "none")
+  data <- opts$data
 
   # Updating parameters after merging
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+  # Special case for density and histograms:
+      # x are variables and y is ..count.. or ..density..
+      # after merging ggpubr add a new column .y. which hold x variables
+      # User might want to color by x variables as follow color = ".x." and
+      # he aren't aware that the column is ".y." --> so we should translate this (see from line 1055)
 
   user.add.color <- add.params$color
 
@@ -1046,14 +1053,30 @@ p
   }
 
   if(merge == "asis" | merge == "flip"){
-    if(!any(c(color, fill) %in% names(data))){
-      color <- add.params$color <- .grouping.var
-      fill <- "white"
+
+    if(y %in% c("..count..", "..density..")){
+      color <- ifelse(color == ".x.", ".y.", color)
+      fill <- ifelse(fill == ".x.", ".y.", fill)
     }
-    if(color %in% names(data))
-      color <-  add.params$color <- .grouping.var
-    if(fill %in% names(data)) fill <- .grouping.var
+
+    if(any(c(color, fill) %in% names(data))){
+      add.params$color <- ifelse(color %in% names(data), color, fill)
+    }
+    else if(!all(c(color, fill) %in% names(data))){
+      color <- add.params$color <- .grouping.var
+      #fill <- "white"
+    }
     group <- .grouping.var
+
+    #
+    # if(!any(c(color, fill) %in% names(data))){
+    #   color <- add.params$color <- .grouping.var
+    #   fill <- "white"
+    # }
+    # if(color %in% names(data))
+    #   color <-  add.params$color <- .grouping.var
+    # if(fill %in% names(data)) fill <- .grouping.var
+    #group <- .grouping.var
   }
 
   if(!combine & merge == "none" & length(opts$y) > 1 & is.null(title))
