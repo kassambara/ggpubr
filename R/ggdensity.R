@@ -117,13 +117,6 @@ ggdensity_core <- function(data, x, y = "..density..",
                       ...)
 {
 
-
-  # Check data
-  .dd <- .check_data(data, x, y)
-  data <- .dd$data
-  x <- .dd$x
-  y <- .dd$y
-
   grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
     unique() %>%
     intersect(colnames(data))
