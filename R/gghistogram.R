@@ -64,10 +64,65 @@ NULL
 #'
 #'
 #' @export
-gghistogram <- function(data, x, y = "..count..",
+gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE,
+                        color = "black", fill = NA, palette = NULL,
+                        size = NULL, linetype = "solid", alpha = 0.5,
+                        bins = NULL,
+                        title = NULL, xlab = NULL, ylab = NULL,
+                        facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                        select = NULL, remove = NULL, order = NULL,
+                        add = c("none", "mean", "median"),
+                        add.params = list(linetype = "dashed"),
+                        rug = FALSE, add_density = FALSE,
+                        label = NULL, font.label = list(size = 11, color = "black"),
+                        label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                        ggtheme = theme_pubr(),
+                        ...)
+{
+
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    combine = combine, merge = merge,
+    color = color, fill = fill, palette = palette,
+    linetype = linetype, size = size, alpha = alpha, bins = bins,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    select = select , remove = remove, order = order,
+    add = add, add.params = add.params, rug = rug, add_density = add_density,
+    label = label, font.label = font.label, label.select = label.select,
+    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+
+  .opts$fun <- gghistogram_core
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  if(missing(y)) .opts$y <- y
+  if(missing(add.params)) .opts$add.params <- add.params
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+
+}
+
+gghistogram_core <- function(data, x, y = "..count..",
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
                       bins = NULL,
+                      facet.by = NULL,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
                       rug = FALSE, add_density = FALSE,
@@ -75,15 +130,15 @@ gghistogram <- function(data, x, y = "..count..",
                       ...)
 {
 
-  # Check data
-  .dd <- .check_data(data, x, y)
-  data <- .dd$data
-  x <- .dd$x
-  y <- .dd$y
+  grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
+    unique() %>%
+    intersect(colnames(data))
+
   # Check bins
   if(is.null(bins)){
     bins <- 30
-    warning("Using `bins = 30` by default. Pick better value with the argument `bins`.")
+    warning("Using `bins = 30` by default. Pick better value with the argument `bins`.",
+            call.= FALSE)
   }
 
   add <- match.arg(add)
@@ -95,45 +150,42 @@ gghistogram <- function(data, x, y = "..count..",
   p <- ggplot(data, aes_string(x, y))
 
   p <- p +
-      .geom_exec(geom_histogram, data = data,
+      geom_exec(geom_histogram, data = data,
                  color = color, fill = fill, size = size,
                  linetype = linetype, alpha = alpha, bins = bins,
                  position = "identity", ...)
 
   # Add mean/median
   #++++++++++++++++++++++
-  grp <- intersect(unique(c(color, fill, linetype, size, alpha)), colnames(data))[1]
-  if(!is.na(grp)) add.params$color <- grp
   if(add %in% c("mean", "median")){
     # NO grouping variable
-    if(is.na(grp)) {
+    if(.is_empty(grouping.vars)) {
       m <- ifelse(add == "mean",
                   mean(data[, x], na.rm = TRUE),
                   stats::median(data[, x], na.rm = TRUE))
-      p <- p + .geom_exec(geom_vline, data = data,
-                          xintercept = m, color = add.params$color,
-                          linetype = add.params$linetype,
-                          size = add.params$size)
+      p <- p + geom_exec(geom_vline, data = data,
+                         xintercept = m, color = add.params$color,
+                         linetype = add.params$linetype, size = add.params$size)
     }
     # Case of grouping variable
     else {
-      grp_name <- grp
-      if(!inherits(data[, grp_name], "factor")) data[, grp_name] <- as.factor(data[, grp_name])
-      df <- data.frame(grp = data[, grp_name], x = data[, x])
-      if (add == "mean") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), mean, na.rm = TRUE)
-      else if (add == "median") df.m <- stats::aggregate(df[, "x"], by = list(grp = df[, "grp"]), stats::median, na.rm = TRUE)
-      names(df.m) <- c(grp_name,'x.mean')
-      p <- p + .geom_exec(geom_vline, data = df.m,
-                          xintercept = "x.mean", color = add.params$color,
-                          linetype = add.params$linetype, size = add.params$size)
+      data_sum <- desc_statby(data, measure.var = x, grps = grouping.vars)
+      names(data_sum)[which(names(data_sum) == add)] <- x
+      p <- p + geom_exec(geom_vline, data = data_sum,
+                         xintercept = x, color = add.params$color,
+                         linetype = add.params$linetype, size = add.params$size)
     }
   }
 
   # Add marginal rug
   # +++++++++++
   if(rug) {
-    .args <- .geom_exec(NULL, data = data,
-                              color = add.params$color, sides = "b")
+
+    grps <- c(color, fill, linetype, size, alpha) %>%
+      unique() %>% intersect(colnames(data))
+    alpha <- ifelse(.is_empty(grps), 1, alpha)
+    .args <- geom_exec(NULL, data = data,
+                       color = color, sides = "b", alpha = alpha)
     mapping <- .args$mapping
     mapping[["y"]] <- 0
     option <- .args$option
@@ -142,13 +194,50 @@ gghistogram <- function(data, x, y = "..count..",
   }
 
   # Add density curve
-  if(add_density) p <- p + .geom_exec(geom_density, data = data,
+  if(add_density) p <- p + geom_exec(geom_density, data = data,
                                       color = add.params$color,
                                       linetype = linetype, alpha = alpha,
                                       size = add.params$size)
 
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  p
+}
+
+
+# Add mean or median line
+# p: main plot
+# data: data frame
+# x: measure variables
+# add: center to add
+# grouping.vars: grouping variables
+.add_center_line <- function(p, data, x, add = c("none", "mean", "median"), grouping.vars = NULL,
+                             color = "black", linetype = "dashed", size = NULL)
+  {
+
+  add <- match.arg(add)
+
+  if(add == "none")
+    return(p)
+
+  # NO grouping variable
+  if(.is_empty(grouping.vars)) {
+    m <- ifelse(add == "mean",
+                mean(data[, x], na.rm = TRUE),
+                stats::median(data[, x], na.rm = TRUE))
+    p <- p + geom_exec(geom_vline, data = data,
+                       xintercept = m, color = color,
+                       linetype = linetype, size = size)
+  }
+  # Case of grouping variable
+  else {
+    data_sum <- desc_statby(data, measure.var = x, grps = grouping.vars)
+    names(data_sum)[which(names(data_sum) == add)] <- x
+    p <- p + geom_exec(geom_vline, data = data_sum,
+                       xintercept = x, color = color,
+                       linetype = linetype, size = size)
+  }
+
   p
 }
 
