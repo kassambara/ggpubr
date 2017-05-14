@@ -156,29 +156,12 @@ gghistogram_core <- function(data, x, y = "..count..",
                  position = "identity", ...)
 
   # Add mean/median
-  #++++++++++++++++++++++
   if(add %in% c("mean", "median")){
-    # NO grouping variable
-    if(.is_empty(grouping.vars)) {
-      m <- ifelse(add == "mean",
-                  mean(data[, x], na.rm = TRUE),
-                  stats::median(data[, x], na.rm = TRUE))
-      p <- p + geom_exec(geom_vline, data = data,
-                         xintercept = m, color = add.params$color,
-                         linetype = add.params$linetype, size = add.params$size)
-    }
-    # Case of grouping variable
-    else {
-      data_sum <- desc_statby(data, measure.var = x, grps = grouping.vars)
-      names(data_sum)[which(names(data_sum) == add)] <- x
-      p <- p + geom_exec(geom_vline, data = data_sum,
-                         xintercept = x, color = add.params$color,
-                         linetype = add.params$linetype, size = add.params$size)
-    }
+    p <- p %>% .add_center_line(add = add, grouping.vars = grouping.vars, color = add.params$color,
+                                linetype = add.params$linetype, size = add.params$size)
   }
 
   # Add marginal rug
-  # +++++++++++
   if(rug) {
 
     grps <- c(color, fill, linetype, size, alpha) %>%
@@ -203,43 +186,5 @@ gghistogram_core <- function(data, x, y = "..count..",
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
   p
 }
-
-
-# Add mean or median line
-# p: main plot
-# data: data frame
-# x: measure variables
-# add: center to add
-# grouping.vars: grouping variables
-.add_center_line <- function(p, data, x, add = c("none", "mean", "median"), grouping.vars = NULL,
-                             color = "black", linetype = "dashed", size = NULL)
-  {
-
-  add <- match.arg(add)
-
-  if(add == "none")
-    return(p)
-
-  # NO grouping variable
-  if(.is_empty(grouping.vars)) {
-    m <- ifelse(add == "mean",
-                mean(data[, x], na.rm = TRUE),
-                stats::median(data[, x], na.rm = TRUE))
-    p <- p + geom_exec(geom_vline, data = data,
-                       xintercept = m, color = color,
-                       linetype = linetype, size = size)
-  }
-  # Case of grouping variable
-  else {
-    data_sum <- desc_statby(data, measure.var = x, grps = grouping.vars)
-    names(data_sum)[which(names(data_sum) == add)] <- x
-    p <- p + geom_exec(geom_vline, data = data_sum,
-                       xintercept = x, color = color,
-                       linetype = linetype, size = size)
-  }
-
-  p
-}
-
 
 

@@ -1057,7 +1057,7 @@ p
 
   if(merge == "asis" | merge == "flip"){
 
-    if(y %in% c("..count..", "..density..")){
+    if(y[1] %in% c("..count..", "..density..")){
       color <- ifelse(color == ".x.", ".y.", color)
       fill <- ifelse(fill == ".x.", ".y.", fill)
     }
@@ -1087,7 +1087,7 @@ p
 
   if(!combine & merge == "none" & is.null(title)){
     if(length(opts$y) > 1) title <- opts$y
-    else if (length(opts$x) > 1 & y[1] %in% c("..density..", "..count.."))  # case of density plot
+    else if (length(opts$x) > 1 & is_density_plot)  # case of density plot
       title <- opts$x
   }
 
@@ -1176,6 +1176,51 @@ p
 .update_plot <- function(opts, p){
   p + do.call(geom_exec, opts)
 }
+
+
+# Add mean or median line
+# used by ggdensity and gghistogram
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# p: main plot
+# data: data frame
+# x: measure variables
+# add: center to add
+# grouping.vars: grouping variables
+.add_center_line <- function(p, add = c("none", "mean", "median"), grouping.vars = NULL,
+                             color = "black", linetype = "dashed", size = NULL)
+{
+
+  add <- match.arg(add)
+  data <- p$data
+  x <- .mapping(p)$x
+
+  if(!(add %in% c("mean", "median")))
+    return(p)
+
+  # NO grouping variable
+  if(.is_empty(grouping.vars)) {
+    m <- ifelse(add == "mean",
+                mean(data[, x], na.rm = TRUE),
+                stats::median(data[, x], na.rm = TRUE))
+    p <- p + geom_exec(geom_vline, data = data,
+                       xintercept = m, color = color,
+                       linetype = linetype, size = size)
+  }
+  # Case of grouping variable
+  else {
+    data_sum <- desc_statby(data, measure.var = x, grps = grouping.vars)
+    names(data_sum)[which(names(data_sum) == add)] <- x
+    p <- p + geom_exec(geom_vline, data = data_sum,
+                       xintercept = x, color = color,
+                       linetype = linetype, size = size)
+  }
+
+  p
+}
+
+
+
+
 
 
 
