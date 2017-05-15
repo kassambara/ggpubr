@@ -4,7 +4,8 @@ NULL
 #' @description Create a dot plot.
 #' @inheritParams ggboxplot
 #' @param binwidth numeric value specifying bin width. use value between 0 and 1
-#'   when you have a strong dense dotplot. For example binwidth = 0.2 .
+#'   when you have a strong dense dotplot. For example binwidth = 0.2.
+#'   \href{Read more about binwidth}{http://r4ds.had.co.nz/eda.html)}.
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_dotplot}}, \code{\link{ggpar}} and
 #'   \code{\link{facet}}.
