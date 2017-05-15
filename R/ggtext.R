@@ -133,7 +133,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                         alpha = alpha,
                         box.padding = unit(0.35, "lines"),
                         point.padding = unit(0.3, "lines"),
-                        force = 1)
+                        force = 1, segment.size = 0.2)
   }
   else{
     ggfunc <- geom_text
