@@ -6,13 +6,14 @@
 \usage{
 gghistogram(data, x, y = "..count..", combine = FALSE, merge = FALSE,
   color = "black", fill = NA, palette = NULL, size = NULL,
-  linetype = "solid", alpha = 0.5, bins = NULL, title = NULL,
-  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, select = NULL, remove = NULL, order = NULL,
-  add = c("none", "mean", "median"), add.params = list(linetype = "dashed"),
-  rug = FALSE, add_density = FALSE, label = NULL, font.label = list(size
-  = 11, color = "black"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, ggtheme = theme_pubr(), ...)
+  linetype = "solid", alpha = 0.5, bins = NULL, binwidth = NULL,
+  title = NULL, xlab = NULL, ylab = NULL, facet.by = NULL,
+  panel.labs = NULL, short.panel.labs = TRUE, select = NULL,
+  remove = NULL, order = NULL, add = c("none", "mean", "median"),
+  add.params = list(linetype = "dashed"), rug = FALSE,
+  add_density = FALSE, label = NULL, font.label = list(size = 11, color =
+  "black"), label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -48,6 +49,10 @@ outlines.}
 be in [0, 1], where 0 is full transparency and 1 is no transparency.}
 
 \item{bins}{Number of bins. Defaults to 30.}
+
+\item{binwidth}{numeric value specifying bin width. use value between 0 and 1
+when you have a strong dense dotplot. For example binwidth = 0.2.
+\href{Read more about binwidth}{http://r4ds.had.co.nz/eda.html)}.}
 
 \item{title}{plot main title.}
 

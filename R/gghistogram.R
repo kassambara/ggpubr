@@ -10,6 +10,9 @@ NULL
 #' @param alpha numeric value specifying fill color transparency. Value should
 #'   be in [0, 1], where 0 is full transparency and 1 is no transparency.
 #' @param bins Number of bins. Defaults to 30.
+#' @param binwidth numeric value specifying bin width. use value between 0 and 1
+#'   when you have a strong dense dotplot. For example binwidth = 0.2.
+#'   \href{Read more about binwidth}{http://r4ds.had.co.nz/eda.html)}.
 #' @param add allowed values are one of "mean" or "median" (for adding mean or
 #'   median line, respectively).
 #' @param add.params parameters (color, size, linetype) for the argument 'add';
@@ -67,7 +70,7 @@ NULL
 gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE,
                         color = "black", fill = NA, palette = NULL,
                         size = NULL, linetype = "solid", alpha = 0.5,
-                        bins = NULL,
+                        bins = NULL, binwidth = NULL,
                         title = NULL, xlab = NULL, ylab = NULL,
                         facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                         select = NULL, remove = NULL, order = NULL,
@@ -85,7 +88,7 @@ gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE
   .opts <- list(
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
-    linetype = linetype, size = size, alpha = alpha, bins = bins,
+    linetype = linetype, size = size, alpha = alpha, bins = bins, binwidth = binwidth,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     select = select , remove = remove, order = order,
@@ -121,7 +124,7 @@ gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE
 gghistogram_core <- function(data, x, y = "..count..",
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
-                      bins = NULL,
+                      bins = NULL, binwidth = NULL,
                       facet.by = NULL,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
@@ -135,7 +138,7 @@ gghistogram_core <- function(data, x, y = "..count..",
     intersect(colnames(data))
 
   # Check bins
-  if(is.null(bins)){
+  if(is.null(bins) & is.null(binwidth)){
     bins <- 30
     warning("Using `bins = 30` by default. Pick better value with the argument `bins`.",
             call.= FALSE)
@@ -152,7 +155,7 @@ gghistogram_core <- function(data, x, y = "..count..",
   p <- p +
       geom_exec(geom_histogram, data = data,
                  color = color, fill = fill, size = size,
-                 linetype = linetype, alpha = alpha, bins = bins,
+                 linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
                  position = "identity", ...)
 
   # Add mean/median
