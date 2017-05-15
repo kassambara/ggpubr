@@ -67,6 +67,8 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                       ...)
 {
 
+  set.seed(123)
+  . <- NULL
   data <- as.data.frame(data)
   if(length(label) >1){
     if(length(label) != nrow(data))
@@ -88,9 +90,34 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     return(p)
 
   lab_data <- data
+
+  # Special case for density plot and histogram
+  # y is calculated as ..count.. or ..density..
+  # we should estimate label y from ggplot2 output
+  .is_density_plot <- y[1] %in% c("..count..", "..density..")
+  if(.is_density_plot){
+
+
+   # by_panel <- hist.data %>% group_by_(.dots = "PANEL")
+    lab_data <- .hist_label_data(p, grouping.vars = list(...)$facet.by)
+    y <- "lab.y"
+
+    # hist.data <- ggplot_build(p)$data[[1]][, c("x", "y", "count", "density")]
+    # hist.x <- hist.data$x
+    # hist.y <- hist.data$y
+    # break.x <- c(0, hist.x) %>% unique()
+    # label.break <- 1:(length(break.x)-1)
+    # lab.y <- .select_vec(data, x) %>%
+    #   cut(breaks = break.x, labels = label.break) %>%
+    #   hist.y[.]
+    # lab_data$lab.y <- lab.y
+    # y <- "lab.y"
+    # lab_data <- lab_data %>% dplyr::filter(!is.na(lab.y))
+  }
+
   # Select some labels to show
   if(!is.null(label.select)){
-    lab_data <- .get_label_data (data, x, y, label = label,
+    lab_data <- .get_label_data (lab_data, x, y, label = label,
                                 label.select = label.select,
                                 grouping.vars = grouping.vars)
   }
@@ -141,7 +168,6 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                             label.select = NULL, grouping.vars = NULL)
 
   {
-
   if(.is_list(label.select)){
     expected.components = c("top.up", "top.down", "criteria")
     if(!any(expected.components %in% names(label.select)))
@@ -177,6 +203,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
       criteria <- gsub("`y`", y, label.select$criteria) %>%
         gsub("`x`", x, .)
       lab_data <- dplyr::filter_(lab_data, .dots = criteria)
+
     }
 
 
@@ -186,6 +213,62 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                         drop = FALSE)
 
   return(lab_data)
+}
+
+
+
+
+
+# Get histogram/density label y coord from ggplot output
+# grouping.vars : facet variables
+.hist_label_data <- function(p, grouping.vars = NULL){
+
+  .  <- NULL
+  x <- .mapping(p) %>%.$x
+  hist.data <- ggplot_build(p)$data[[1]]
+  data <- p$data
+
+  if(is.null(grouping.vars)){
+    return(.hist_label_y(hist.data, data, x ))
+  }
+
+
+  data <- p$data %>%
+    dplyr::group_by_(.dots = grouping.vars) %>%
+    tidyr::nest()
+
+  hist.data <- hist.data %>%
+    dplyr::group_by_(.dots = "PANEL") %>%
+    tidyr::nest() %>%
+    .$data
+
+  data <- data %>% mutate(hist.data = hist.data)
+  lab.data <- purrr::map2(data$hist.data, data$data, .hist_label_y, x)
+
+  data <- data %>% mutate(lab.data  = lab.data ) %>%
+    dplyr::select_(.dots = c( "lab.data", grouping.vars)) %>%
+    tidyr::unnest()
+
+  data
+}
+
+# Get histogram/density label y coord from ggplot output
+# hist.data: histogram data. ggplot_build(p)$data[[1]]
+# data: data frame
+# x: x variable name
+.hist_label_y <- function(hist.data, data, x ){
+  . <- NULL
+  hist.x <- hist.data$x
+  hist.y <- hist.data$y
+  break.x <- c(0, hist.x) %>% unique()
+  label.break <- 1:(length(break.x)-1)
+  lab.y <- .select_vec(data, x) %>%
+    cut(breaks = break.x, labels = label.break) %>%
+    hist.y[.]
+
+  data$lab.y <- lab.y
+  data <- data %>% dplyr::filter(!is.na(lab.y))
+  data
 }
 
 

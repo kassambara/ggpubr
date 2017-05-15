@@ -4,6 +4,7 @@ NULL
 #' @importFrom magrittr %>%
 #' @importFrom dplyr group_by_
 #' @importFrom dplyr arrange_
+#' @importFrom dplyr mutate
 #' @importFrom dplyr do
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1117,6 +1118,11 @@ p
                    font.label = font.label, repel = repel, label.rectangle = label.rectangle,
                    ...)
 
+  # Faceting
+  if(!is.null(facet.by))
+    p <-purrr::map(p, facet, facet.by = facet.by, ...)
+
+
   if(!is.null(label)){
     grouping.vars <- intersect(c(facet.by, color, fill), colnames(data))
 
@@ -1125,7 +1131,7 @@ p
       .add_item(data = data, x = opts$x, y = opts$y,
                 label = label, label.select = label.select,
                 repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme,
-                grouping.vars = grouping.vars)
+                grouping.vars = grouping.vars, facet.by = facet.by)
     p <- purrr::map(p,
                    function(p, label.opts){
                      . <- NULL
@@ -1135,10 +1141,6 @@ p
                    label.opts
                    )
   }
-
-  # Faceting
-  if(!is.null(facet.by))
-    p <-purrr::map(p, facet, facet.by = facet.by, ...)
 
   if(.is_list(p) & length(p) == 1) p <- p[[1]]
   p
