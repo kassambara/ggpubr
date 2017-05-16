@@ -40,6 +40,7 @@ Collate:
     'add_summary.R'
     'diff_express.R'
     'facet.R'
+    'gene_citation.R'
     'geom_exec.R'
     'get_palette.R'
     'ggadd.R'
