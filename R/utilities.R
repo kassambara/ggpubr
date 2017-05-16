@@ -1141,7 +1141,7 @@ p
                    label.opts
                    )
   }
-
+  # Take into account the legend argument, when the main plot has no legend and ggtext has legend
   p <-purrr::map(p, ggpar, legend = legend, legend.title = legend.title)
 
   if(.is_list(p) & length(p) == 1) p <- p[[1]]
