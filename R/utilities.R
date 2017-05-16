@@ -1117,12 +1117,12 @@ p
                    user.add.color = user.add.color,
                    font.label = font.label, repel = repel, label.rectangle = label.rectangle,
                    ...)
-
   # Faceting
   if(!is.null(facet.by))
     p <-purrr::map(p, facet, facet.by = facet.by, ...)
 
 
+  # Add labels
   if(!is.null(label)){
     grouping.vars <- intersect(c(facet.by, color, fill), colnames(data))
 
@@ -1130,7 +1130,7 @@ p
     label.opts <- font.label %>%
       .add_item(data = data, x = opts$x, y = opts$y,
                 label = label, label.select = label.select,
-                repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme,
+                repel = repel, label.rectangle = label.rectangle, ggtheme = NULL,
                 grouping.vars = grouping.vars, facet.by = facet.by)
     p <- purrr::map(p,
                    function(p, label.opts){
@@ -1141,6 +1141,8 @@ p
                    label.opts
                    )
   }
+
+  p <-purrr::map(p, ggpar, legend = legend, legend.title = legend.title)
 
   if(.is_list(p) & length(p) == 1) p <- p[[1]]
   p
