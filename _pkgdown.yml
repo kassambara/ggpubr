@@ -43,7 +43,9 @@ reference:
       - ggadd
       - get_palette
   - title: Data
-    contents: diff_express
+    contents:
+      - diff_express
+      - gene_citation
   - title: Others
     contents:
       - desc_statby
