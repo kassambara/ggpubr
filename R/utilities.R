@@ -6,6 +6,7 @@ NULL
 #' @importFrom dplyr arrange_
 #' @importFrom dplyr mutate
 #' @importFrom dplyr do
+#' @importFrom dplyr summarise
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2
