@@ -412,10 +412,13 @@ NULL
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_ticks <-
   function(ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
-           xtickslab.rt = 0, ytickslab.rt = 0)
+           xtickslab.rt = NULL, ytickslab.rt = NULL)
   {
 
-    if(xtickslab.rt > 5) xhjust <- 1 else xhjust <- NULL
+   if(!is.null(xtickslab.rt)) {
+     if(xtickslab.rt > 5) xhjust <- 1
+     }
+    else xhjust <- NULL
 
     if (ticks)
       ticks <-
@@ -1010,7 +1013,8 @@ p
                      ...)
   {
   is_density_plot <- y[1] %in% c("..count..", "..density..")
-
+  font.label <- .parse_font(font.label)
+  if(is.null(label) & fun_name == "barplot") label  <- FALSE
   if(is.logical(merge)){
     if(merge) merge = "asis"
     else merge = "none"
@@ -1047,6 +1051,7 @@ p
       # he aren't aware that the column is ".y." --> so we should translate this (see from line 1055)
 
   user.add.color <- add.params$color
+  geom.text.position <- "identity"
 
   if(merge == "asis" ){
     .grouping.var <- ".y."  # y variables become grouping variable
@@ -1065,13 +1070,14 @@ p
     }
 
     if(any(c(color, fill) %in% names(data))){
-      add.params$color <- ifelse(color %in% names(data), color, fill)
+      add.params$color <- font.label$color <- ifelse(color %in% names(data), color, fill)
     }
     else if(!all(c(color, fill) %in% names(data))){
-      color <- add.params$color <- .grouping.var
+      color <- add.params$color <- font.label$color <-  .grouping.var
       #fill <- "white"
     }
     group <- .grouping.var
+    geom.text.position <- position_dodge(0.8)
   }
 
   if(!combine & merge == "none" & length(opts$y) > 1 & is.null(title))
@@ -1106,6 +1112,7 @@ p
                    add = add, add.params  = add.params ,
                    # group = group, # for line plot
                    user.add.color = user.add.color,
+                   label = label, # used only in ggbarplot
                    font.label = font.label, repel = repel, label.rectangle = label.rectangle,
                    ...)
   # Faceting
@@ -1114,15 +1121,19 @@ p
 
 
   # Add labels
-  if(!is.null(label)){
+  if(!is.null(label) & fun_name != "barplot"){
+
+    if(is.logical(label)){
+      if(label) label <- opts$y
+    }
+
     grouping.vars <- intersect(c(facet.by, color, fill), colnames(data))
 
-    font.label <- .parse_font(font.label)
     label.opts <- font.label %>%
       .add_item(data = data, x = opts$x, y = opts$y,
                 label = label, label.select = label.select,
                 repel = repel, label.rectangle = label.rectangle, ggtheme = NULL,
-                grouping.vars = grouping.vars, facet.by = facet.by)
+                grouping.vars = grouping.vars, facet.by = facet.by, position = geom.text.position)
     p <- purrr::map(p,
                    function(p, label.opts){
                      . <- NULL
