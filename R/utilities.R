@@ -415,6 +415,7 @@ NULL
            xtickslab.rt = NULL, ytickslab.rt = NULL)
   {
 
+    . <- NULL
    if(!is.null(xtickslab.rt)) {
      if(xtickslab.rt > 5) xhjust <- 1
      }
@@ -426,21 +427,13 @@ NULL
     else
       ticks <- element_blank()
     if (is.null(font.tickslab))
-      font <- list(size = 12, face = "plain", color = "black")
+      font <- list()
     else
       font <- .parse_font(font.tickslab)
     if (tickslab) {
-      xtickslab <-
-        element_text(
-          size = font$size, face = font$face,
-          colour = font$color, angle = xtickslab.rt,
-          hjust = xhjust
-        )
-      ytickslab <-
-        element_text(
-          size = font$size, face = font$face,
-          colour = font$color, angle = ytickslab.rt
-        )
+      xtickslab <- font %>% .add_item(hjust = xhjust, angle = xtickslab.rt) %>%
+        do.call(element_text, .)
+      ytickslab <- font %>% .add_item(angle = ytickslab.rt) %>% do.call(element_text, .)
     }
     else {
       xtickslab <- element_blank()
@@ -1019,6 +1012,9 @@ p
     if(merge) merge = "asis"
     else merge = "none"
   }
+  .lab <- label
+  if(fun_name != "barplot") .lab <- NULL
+
   if(combine & merge != "none")
     stop("You should use either combine = TRUE or merge = TRUE, but not both together.")
 
@@ -1106,13 +1102,13 @@ p
  if(fun_name == "ggline") opts$group <- group
   # Plotting
   #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  # Apply the pecific distribution function to each y variables
+  # Apply function to each y variables
   p <- purrr::pmap(opts, fun, color = color, fill = fill, legend = legend,
                    legend.title = legend.title, ggtheme = ggtheme, facet.by = facet.by,
                    add = add, add.params  = add.params ,
                    # group = group, # for line plot
                    user.add.color = user.add.color,
-                   label = label, # used only in ggbarplot
+                   label = .lab, # used only in ggbarplot
                    font.label = font.label, repel = repel, label.rectangle = label.rectangle,
                    ...)
   # Faceting
