@@ -140,19 +140,87 @@ NULL
 #'
 #'
 #' @export
-ggbarplot <- function(data, x, y,
+ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       color = "black", fill = "white", palette = NULL,
                       size = NULL, width = NULL,
+                      title = NULL, xlab = NULL, ylab = NULL,
+                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                      select = NULL, remove = NULL, order = NULL,
+                      add = "none", add.params = list(), error.plot = "errorbar",
                       label = FALSE, lab.col = "black", lab.size = 4,
                       lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
-                      select = NULL, order = NULL,
                       sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
+                      top = Inf,
+                      position = position_stack(),
+                      ggtheme = theme_pubr(),
+                      ...)
+{
+
+
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    combine = combine, merge = merge,
+    color = color, fill = fill, palette = palette,
+    size = size, width = width,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    select = select , remove = remove, order = order,
+    add = add, add.params = add.params, error.plot = error.plot,
+    label = label, lab.col = lab.col, lab.size = lab.size,
+    lab.pos = lab.pos, lab.vjust = lab.vjust, lab.hjust = lab.hjust,
+    sort.val = sort.val, sort.by.groups = sort.by.groups, top = top,
+    position = position, ggtheme = ggtheme, ...)
+
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+
+  if(is.logical(merge)){
+    if(merge & missing(position))
+      .opts$position <- position_dodge(0.8)
+    if(merge & missing(lab.col))
+      .opts$lab.col <- ".y."
+  }
+  else if(is.character(merge)){
+    .opts$position <- position_dodge(0.8)
+  }
+
+  .opts$fun <- ggbarplot_core
+  .opts$fun_name <- "barplot"
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+
+}
+
+ggbarplot_core <- function(data, x, y,
+                      color = "black", fill = "white", palette = NULL,
+                      size = NULL, width = 0.7,
+                      label = FALSE, lab.col = "black", lab.size = 4,
+                      lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
+                      select = NULL, order = NULL, facet.by = NULL,
+                      sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
+                      merge = FALSE,
                       top = Inf,
                       add = "none",
                       add.params = list(),
                       error.plot = "errorbar",
                       position = position_stack(),
-                      ggtheme = theme_classic(),
+                      ggtheme = theme_pubr(),
                       ...)
 {
 
@@ -164,20 +232,30 @@ ggbarplot <- function(data, x, y,
   label <- as.vector(label)
   if("none" %in% add) add <- "none"
 
+  grouping.vars <- intersect(c(x, color, fill, facet.by), names(data))
+  . <- NULL
+
   # static summaries for computing mean/median and adding errors
   if(is.null(add.params$fill)) add.params$fill <- "white"
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 
   errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
-  if(any(errors %in% add)) {
-    data_sum <- desc_statby(data, measure.var = y,
-                        grps = intersect(c(x, color, fill), names(data)))
-    .center <- intersect(c("mean", "median"), add)
-    errors <- c("mean_se", "mean_sd", "mean_ci", "mean_range", "median_iqr", "median_mad", "median_range")
-    if(length(.center) == 2) stop("Use mean or mdedian, but not both at the same time.")
-    else if(length(.center) == 0) .center <- unlist(strsplit(errors, "_", fixed = TRUE))[1]
+  if(any(.summary_functions() %in% add)) {
+    data_sum <- desc_statby(data, measure.var = y, grps = grouping.vars)
+
+    summary.funcs <- intersect(.summary_functions(), add)
+    if(length(summary.funcs) > 1)
+      stop("Only one summary function is allowed. ",
+           "Choose one of ", .collapse(.summary_functions(), sep = ", "))
+
+    .center <- summary.funcs %>%
+      strsplit("_", fixed = TRUE) %>%
+      unlist() %>% .[1]
+
     add <- setdiff(add, .center)
     names(data_sum)[which(names(data_sum) == .center)] <- y
+    data_sum[, x] <- as.factor(data_sum[, x])
+
   }
   else data_sum <- data
 
@@ -209,15 +287,19 @@ ggbarplot <- function(data, x, y,
   if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.95
   p <- ggplot(data, aes_string(x, y))
   p <- p +
-      .geom_exec(geom_bar, data = data_sum,
+      geom_exec(geom_bar, data = data_sum,
                 stat = "identity",
                 color = color, fill = fill,
                 position = position,
                 size = size, width = width, ...)
 
   # Add errors
-   p <- .add(p, add = add,
-            add.params = add.params, error.plot = error.plot)
+  if(inherits(position, "PositionStack")) add.position <- "identity"
+  else add.position <- position_dodge(0.8)
+
+  p <- add.params %>%
+    .add_item(p = p, add = add, error.plot = error.plot, position = add.position) %>%
+    do.call(ggadd, .)
 
    # Add labels
    add.label <- FALSE
@@ -238,12 +320,13 @@ ggbarplot <- function(data, x, y,
      if(any(.cols %in% names(data))){
        .in <- which(.cols %in% names(data))
        lab.fill <- .cols[.in]
-       p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,  #fill = lab.fill
+       p <- p + geom_exec(geom_text, data = data_sum, label = .lab,  #fill = lab.fill
                            vjust = lab.vjust, hjust = lab.hjust, size = lab.size, color = lab.col,
                            fontface = "plain", position = position)
      }
      else{
-     p <- p + .geom_exec(geom_text, data = data_sum, label = .lab,
+
+     p <- p + geom_exec(geom_text, data = data_sum, label = .lab,
                          vjust = lab.vjust,  hjust = lab.hjust, size = lab.size, color = lab.col,
                          fontface = "plain", position = position)
      }
@@ -251,11 +334,6 @@ ggbarplot <- function(data, x, y,
 
    # To do
    # top10, visualizing error
-
-  # Select and order
-  if(is.null(select)) select <- order
-  if (!is.null(select) | !is.null(order))
-    p <- p + scale_x_discrete(limits = as.character(select))
    p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
 
   p
