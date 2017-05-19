@@ -63,7 +63,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                   size = 11,  face = "plain", family = "",
                   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                   grouping.vars = NULL,
-                  position = position_dodge(0.8),
+                  position = "identity",
                   ggp = NULL, ggtheme = theme_pubr(),
                       ...)
 {
