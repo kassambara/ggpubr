@@ -12,7 +12,7 @@ ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL,
   "log2", "log10", "sqrt"), yscale = c("none", "log2", "log10", "sqrt"),
   format.scale = FALSE, legend = NULL, legend.title = NULL,
   font.legend = NULL, ticks = TRUE, tickslab = TRUE,
-  font.tickslab = NULL, xtickslab.rt = 0, ytickslab.rt = 0,
+  font.tickslab = NULL, xtickslab.rt = NULL, ytickslab.rt = NULL,
   xticks.by = NULL, yticks.by = NULL, orientation = c("vertical",
   "horizontal", "reverse"), ggtheme = NULL, ...)
 }
@@ -80,7 +80,7 @@ labels.}
 c(14, "bold", "red").}
 
 \item{xtickslab.rt, ytickslab.rt}{Rotation angle of x and y axis tick labels,
-respectively. Default value is 0.}
+respectively. Default value is NULL. For vertical x axis texts use xtickslab.rt = 90.}
 
 \item{xticks.by, yticks.by}{numeric value controlling x and y axis breaks,
 respectively. For example, if yticks.by = 5, a tick mark is shown on every

@@ -47,7 +47,7 @@ NULL
 #' @param font.tickslab Font style (size, face, color) for tick labels, e.g.:
 #'   c(14, "bold", "red").
 #' @param xtickslab.rt,ytickslab.rt Rotation angle of x and y axis tick labels,
-#'   respectively. Default value is 0.
+#'   respectively. Default value is NULL. For vertical x axis texts use xtickslab.rt = 90.
 #' @param xticks.by,yticks.by numeric value controlling x and y axis breaks,
 #'   respectively. For example, if yticks.by = 5, a tick mark is shown on every
 #'   5. Default value is NULL.
@@ -147,7 +147,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   legend = NULL,
                   legend.title = NULL, font.legend = NULL,
                   ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
-                  xtickslab.rt = 0, ytickslab.rt = 0,
+                  xtickslab.rt = NULL, ytickslab.rt = NULL,
                   xticks.by = NULL, yticks.by = NULL,
                   orientation = c("vertical", "horizontal", "reverse"),
                   ggtheme = NULL,
