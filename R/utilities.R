@@ -1072,16 +1072,6 @@ p
       #fill <- "white"
     }
     group <- .grouping.var
-
-    #
-    # if(!any(c(color, fill) %in% names(data))){
-    #   color <- add.params$color <- .grouping.var
-    #   fill <- "white"
-    # }
-    # if(color %in% names(data))
-    #   color <-  add.params$color <- .grouping.var
-    # if(fill %in% names(data)) fill <- .grouping.var
-    #group <- .grouping.var
   }
 
   if(!combine & merge == "none" & length(opts$y) > 1 & is.null(title))
