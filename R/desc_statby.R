@@ -73,6 +73,7 @@ desc_statby <- function(data, measure.var, grps, ci = 0.95){
   data_sum$range <- data_sum$max - data_sum$min
   data_sum$cv <- data_sum$sd/data_sum$mean
   data_sum$var <- data_sum$sd^2
+  data_sum[, 2:ncol(data_sum)] <- round(data_sum[, 2:ncol(data_sum)], 1)
   return(data_sum)
 }
 
