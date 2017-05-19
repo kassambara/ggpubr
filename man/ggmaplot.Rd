@@ -56,8 +56,8 @@ changes, respectively.}
 
 \item{main}{plot main title.}
 
-\item{xlab}{character vector specifying x axis labels. Use xlab
-= FALSE to hide xlab.}
+\item{xlab}{character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}

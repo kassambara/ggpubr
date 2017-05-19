@@ -49,8 +49,8 @@ be in [0, 1], where 0 is full transparency and 1 is no transparency.}
 
 \item{title}{plot main title.}
 
-\item{xlab}{character vector specifying x axis labels. Use xlab
-= FALSE to hide xlab.}
+\item{xlab}{character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}

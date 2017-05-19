@@ -26,7 +26,8 @@ palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
 "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
 "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 "rickandmorty". Can be also a numeric vector of length(groups); in this
-case a basic color palette is created using the function \link[grDevices]{palette}.}
+case a basic color palette is created using the function
+\link[grDevices]{palette}.}
 
 \item{shape}{point shape. See \code{\link{show_point_shapes}}.}
 
