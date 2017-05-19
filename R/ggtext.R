@@ -12,22 +12,22 @@ NULL
 #' @param face text font style. Allowed values are one of c("plain", "bold",
 #'   "italic", "bold.italic").
 #' @param family character vector specifying font family.
-#' @param label.select can be of two formats: \itemize{
-#'   \item a character vector specifying some labels to show.
-#'   \item a list containting one or the combination of the following components:
-#'     \itemize{
-#'        \item \code{top.up} and \code{top.down}: to display the labels  of the top up/down points.
-#'        For example, \code{label.select = list(top.up = 10, top.down = 4)}.
-#'        \item \code{criteria}: to filter, for example, by x and y variabes values,
-#'        use this: \code{label.select = list(criteria = "`y` > 2 & `y` < 5 & `x` \%in\% c('A', 'B')")}.
-#'   }
-#'   }
+#' @param label.select can be of two formats: \itemize{ \item a character vector
+#'   specifying some labels to show. \item a list containting one or the
+#'   combination of the following components: \itemize{ \item \code{top.up} and
+#'   \code{top.down}: to display the labels  of the top up/down points. For
+#'   example, \code{label.select = list(top.up = 10, top.down = 4)}. \item
+#'   \code{criteria}: to filter, for example, by x and y variabes values, use
+#'   this: \code{label.select = list(criteria = "`y` > 2 & `y` < 5 & `x` \%in\%
+#'   c('A', 'B')")}. } }
 #' @param repel a logical value, whether to use ggrepel to avoid overplotting
 #'   text labels or not.
 #' @param label.rectangle logical value. If TRUE, add rectangle underneath the
 #'   text, making it easier to read.
 #' @param grouping.vars grouping variables to sort the data by, when the user
 #'   wants to display the top n up/down labels.
+#' @param position Position adjustment, either as a string, or the result of a
+#'   call to a position adjustment function.
 #' @param ggp a ggplot. If not NULL, points are added to an existing plot.
 #' @param ... other arguments to be passed to \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -63,6 +63,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                   size = 11,  face = "plain", family = "",
                   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                   grouping.vars = NULL,
+                  position = position_dodge(0.8),
                   ggp = NULL, ggtheme = theme_pubr(),
                       ...)
 {
@@ -145,7 +146,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     p <- p + geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
                         label = label, fontface = face, family = family,
                         size = size/3, color = color,
-                        vjust = vjust, alpha = alpha)
+                        vjust = vjust, alpha = alpha, position = position)
 
   }
 
