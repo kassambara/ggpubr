@@ -5,8 +5,9 @@
 \title{QQ Plots}
 \usage{
 ggqqplot(data, x, color = "black", palette = NULL, size = NULL,
-  add = c("qqline", "none"), add.params = list(linetype = "solid"),
-  conf.int = TRUE, conf.int.level = 0.95, ggtheme = theme_classic(), ...)
+  shape = NULL, add = c("qqline", "none"), add.params = list(linetype =
+  "solid"), conf.int = TRUE, conf.int.level = 0.95,
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -22,6 +23,8 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 "lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
 \item{size}{point size.}
+
+\item{shape}{point shape.}
 
 \item{add}{character vector. Allowed values are one of "none" and "qqline"
 (for adding qqline).}
