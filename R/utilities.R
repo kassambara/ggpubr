@@ -829,7 +829,7 @@ p
   }
   # Combining x variables: Case of density plot or histograms
   #......................................................
-  else if(combine & length(x) > 1 & y[1] %in% c("..density..", "..count..")){
+  else if(combine & length(x) > 1 & y[1] %in% c("..density..", "..count..", "..ecdf..", "..qq..")){
 
     data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
                            gather_cols = x)
@@ -847,7 +847,7 @@ p
   x <- unique(x)
   names(x) <- x
 
-  if(y[1] %in% c("..density..", "..count.."))
+  if(y[1] %in% c("..density..", "..count..", "..ecdf..", "..qq.."))
     list(x = x, data = data, y = y)    # The name of plots are x variables
   else
     list(y = y, data = data, x = x)   # The name of plots will be y variables
@@ -1005,30 +1005,25 @@ p
                      fun_name = "", group = 1, # used only by ggline
                      ...)
   {
-  is_density_plot <- y[1] %in% c("..count..", "..density..")
-  font.label <- .parse_font(font.label)
-  if(is.null(label) & fun_name == "barplot") label  <- FALSE
+
   if(is.logical(merge)){
     if(merge) merge = "asis"
     else merge = "none"
   }
-  .lab <- label
-  if(fun_name != "barplot") .lab <- NULL
-
   if(combine & merge != "none")
     stop("You should use either combine = TRUE or merge = TRUE, but not both together.")
 
-  if(length(y) == 1 & length(x) == 1){
-    combine <- FALSE
-    merge <- "none"
-  }
+  font.label <- .parse_font(font.label)
+  if(is.null(label) & fun_name == "barplot") label  <- FALSE
+  .lab <- label
+  if(fun_name != "barplot") .lab <- NULL
 
-  if(combine) facet.by <- ".y." # Faceting by y variables
-  if(merge != "none"){
-    if(!is_density_plot) facet.by <- NULL
-    if(is.null(legend.title)) legend.title <- "" # remove .y. in the legend
+  if(!missing(x) & !missing(y)){
+    if(length(y) == 1 & length(x) == 1){
+      combine <- FALSE
+      merge <- "none"
+    }
   }
-
 
   # Check data
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1036,6 +1031,18 @@ p
   #       list(y, data,  x)
   opts <- .check_data(data, x, y, combine = combine | merge != "none")
   data <- opts$data
+  x <- opts$x
+  y <- opts$y
+
+
+  is_density_plot <- y[1] %in% c("..count..", "..density..", "..ecdf..", "..qq..")
+
+  if(combine) facet.by <- ".y." # Faceting by y variables
+  if(merge != "none"){
+    if(!is_density_plot) facet.by <- NULL
+    if(is.null(legend.title)) legend.title <- "" # remove .y. in the legend
+  }
+
 
   # Updating parameters after merging
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1060,7 +1067,7 @@ p
 
   if(merge == "asis" | merge == "flip"){
 
-    if(y[1] %in% c("..count..", "..density..")){
+    if(is_density_plot){
       color <- ifelse(color == ".x.", ".y.", color)
       fill <- ifelse(fill == ".x.", ".y.", fill)
     }
