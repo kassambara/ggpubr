@@ -6,14 +6,14 @@ NULL
 #' @param x variable to be drawn.
 #' @param color point color.
 #' @param size point size.
+#' @param shape point shape.
 #' @param add character vector. Allowed values are one of "none" and "qqline"
 #'   (for adding qqline).
 #' @param add.params parameters (color, size,  linetype) for the
 #'   argument 'add'; e.g.: add.params = list(color = "red").
 #' @param conf.int logical value. If TRUE, confidence interval is added.
 #' @param conf.int.level the confidence level. Default value is 0.95.
-#' @param ... other arguments to be passed to \code{\link[ggplot2]{stat_qq}} and
-#'   \code{\link{ggpar}}.
+#' @param ... other arguments to be passed to \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
 #'   xlab, ylab \item axis limits: xlim, ylim (e.g.: ylim = c(0, 30)) \item axis
@@ -41,13 +41,61 @@ NULL
 #'    color = "sex", palette = c("#00AFBB", "#E7B800"))
 #'
 #' @export
-ggqqplot <- function(data, x,
+ggqqplot <- function(data, x, combine = FALSE, merge = FALSE,
+                     color = "black",  palette = NULL,
+                     size = NULL, shape = NULL,
+                     add = c( "qqline", "none"),
+                     add.params = list(linetype = "solid"),
+                     conf.int = TRUE, conf.int.level = 0.95,
+                     title = NULL, xlab = NULL, ylab = NULL,
+                     facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                     ggtheme = theme_pubr(),
+                     ...)
+{
+
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    combine = combine, merge = merge,
+    color = color, palette = palette,
+    size = size, shape = shape,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    ggtheme = ggtheme, ...)
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+  .opts$fun <- ggqqplot_core
+  .opts$y <- "..qq.."
+  if(is.null(.opts$xlab)) .opts$xlab <- "Theoretical"
+  if(is.null(.opts$ylab)) .opts$ylab <- "Sample"
+  if(is.null(.opts$add)) .opts$add <- "qqline"
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+
+
+}
+
+ggqqplot_core <- function(data, x, y = "..qq..",
                       color = "black",  palette = NULL,
-                      size = NULL,
+                      size = NULL, shape = NULL, fill = "white",
                       add = c( "qqline", "none"),
                       add.params = list(linetype = "solid"),
                       conf.int = TRUE, conf.int.level = 0.95,
-                      ggtheme = theme_classic(),
+                      ggtheme = theme_pubr(),
                       ...)
 {
 
@@ -57,27 +105,32 @@ ggqqplot <- function(data, x,
   x <- .dd$x
   y <- .dd$y
 
+  group <- c(shape, color) %>% unique() %>%
+    intersect(colnames(data))
+  group <- ifelse(.is_empty(group), 1, group[1])
+
   add <- match.arg(add)
-  add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill = "white", ...)
+  add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill = fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
   if(is.null(add.params$linetype)) add.params$linetype <- "solid"
 
   p <- ggplot(data, aes_string(sample = x))
 
   p <- p +
-      .geom_exec(stat_qq, data = data,
-                 color = color,  size = size, ...)
+      geom_exec(stat_qq, data = data,
+                 color = color,  size = size, shape = shape)
 
 
   if ("qqline" %in% add) p <- p +
-    .geom_exec(.stat_qqline, data = data,
+     geom_exec(.stat_qqline, data = data,
                color = add.params$color,  size = add.params$size,
-               linetype = add.params$linetype)
+               linetype = add.params$linetype, group = group)
 
   # Confidence interval
   if(conf.int){
-    p <- p + .geom_exec(.stat_qq_confint, data = data,
-               fill = color, alpha = 0.2, conf.int.level = conf.int.level)
+    p <- p + geom_exec(.stat_qq_confint, data = data,
+               fill = color, alpha = 0.2, conf.int.level = conf.int.level,
+               group = group)
   }
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)

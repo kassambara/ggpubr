@@ -4,13 +4,25 @@
 \alias{ggecdf}
 \title{Empirical cumulative density function}
 \usage{
-ggecdf(data, x, color = "black", palette = NULL, size = NULL,
-  linetype = "solid", ggtheme = theme_classic(), ...)
+ggecdf(data, x, combine = FALSE, merge = FALSE, color = "black",
+  palette = NULL, size = NULL, linetype = "solid", title = NULL,
+  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
+  short.panel.labs = TRUE, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
 
 \item{x}{variable to be drawn.}
+
+\item{combine}{logical value. Default is FALSE. Used only when y is a vector
+containing multiple variables to plot. If TRUE, create a multi-panel plot by
+combining the plot of y variables.}
+
+\item{merge}{logical or character value. Default is FALSE. Used only when y is
+a vector containing multiple variables to plot. If TRUE, merge multiple y
+variables in the same plotting area. Allowed values include also "asis"
+(TRUE) and "flip". If merge = "flip", then y variables are used as x tick
+labels and the x variable is used as grouping variable.}
 
 \item{color}{line and point color.}
 
@@ -23,6 +35,27 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 \item{size}{line and point size.}
 
 \item{linetype}{line type. See \code{\link{show_line_types}}.}
+
+\item{title}{plot main title.}
+
+\item{xlab}{character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.}
+
+\item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.}
+
+\item{facet.by}{character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.}
+
+\item{panel.labs}{a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c("Male", "Female")) specifies
+the labels for the "sex" variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
+"Lev", "Lev2") ).}
+
+\item{short.panel.labs}{logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
