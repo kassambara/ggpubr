@@ -8,9 +8,8 @@ gghistogram(data, x, y = "..count..", combine = FALSE, merge = FALSE,
   color = "black", fill = NA, palette = NULL, size = NULL,
   linetype = "solid", alpha = 0.5, bins = NULL, binwidth = NULL,
   title = NULL, xlab = NULL, ylab = NULL, facet.by = NULL,
-  panel.labs = NULL, short.panel.labs = TRUE, select = NULL,
-  remove = NULL, order = NULL, add = c("none", "mean", "median"),
-  add.params = list(linetype = "dashed"), rug = FALSE,
+  panel.labs = NULL, short.panel.labs = TRUE, add = c("none", "mean",
+  "median"), add.params = list(linetype = "dashed"), rug = FALSE,
   add_density = FALSE, label = NULL, font.label = list(size = 11, color =
   "black"), label.select = NULL, repel = FALSE, label.rectangle = FALSE,
   ggtheme = theme_pubr(), ...)
@@ -74,12 +73,6 @@ for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
 \item{short.panel.labs}{logical value. Default is TRUE. If TRUE, create short
 labels for panels by omitting variable names; in other words panels will be
 labelled only by variable grouping levels.}
-
-\item{select}{character vector specifying which items to display.}
-
-\item{remove}{character vector specifying which items to remove from the plot.}
-
-\item{order}{character vector specifying the order of items.}
 
 \item{add}{allowed values are one of "mean" or "median" (for adding mean or
 median line, respectively).}

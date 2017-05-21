@@ -60,7 +60,6 @@ ggdensity <- function(data, x, y = "..density..", combine = FALSE, merge = FALSE
                       size = NULL, linetype = "solid", alpha = 0.5,
                       title = NULL, xlab = NULL, ylab = NULL,
                       facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-                      select = NULL, remove = NULL, order = NULL,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
                       rug = FALSE,
@@ -77,7 +76,6 @@ ggdensity <- function(data, x, y = "..density..", combine = FALSE, merge = FALSE
     linetype = linetype, size = size, alpha = alpha,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    select = select , remove = remove, order = order,
     add = add, add.params = add.params, rug = rug,
     label = label, font.label = font.label, label.select = label.select,
     repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
