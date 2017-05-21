@@ -10,14 +10,15 @@ NULL
 #'   "red"); and scientific journal palettes from ggsci R package, e.g.: "npg",
 #'   "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 #'   "rickandmorty". Can be also a numeric vector of length(groups); in this
-#'   case a basic color palette is created using the function \link[grDevices]{palette}.
+#'   case a basic color palette is created using the function
+#'   \link[grDevices]{palette}.
 #' @param gradient.cols vector of colors to use for n-colour gradient. Allowed
 #'   values include brewer and ggsci color palettes.
 #' @param main,title plot main title.
 #' @param submain,subtitle plot subtitle.
 #' @param caption plot caption.
-#' @param xlab character vector specifying x axis labels. Use xlab
-#'   = FALSE to hide xlab.
+#' @param xlab character vector specifying x axis labels. Use xlab = FALSE to
+#'   hide xlab.
 #' @param ylab character vector specifying y axis labels. Use ylab = FALSE to
 #'   hide ylab.
 #' @param font.main,font.submain,font.caption,font.x,font.y a vector of length 3
@@ -46,8 +47,11 @@ NULL
 #'   labels.
 #' @param font.tickslab Font style (size, face, color) for tick labels, e.g.:
 #'   c(14, "bold", "red").
-#' @param xtickslab.rt,ytickslab.rt Rotation angle of x and y axis tick labels,
-#'   respectively. Default value is NULL. For vertical x axis texts use xtickslab.rt = 90.
+#' @param x.text.angle,y.text.angle Numeric value specifying the rotation angle
+#'   of x and y axis tick labels, respectively. Default value is NULL. For
+#'   vertical x axis texts use x.text.angle = 90.
+#' @param xtickslab.rt,ytickslab.rt Same as x.text.angle and y.text.angle,
+#'   respectively. Will be deprecated in the near future.
 #' @param xticks.by,yticks.by numeric value controlling x and y axis breaks,
 #'   respectively. For example, if yticks.by = 5, a tick mark is shown on every
 #'   5. Default value is NULL.
@@ -147,7 +151,8 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   legend = NULL,
                   legend.title = NULL, font.legend = NULL,
                   ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
-                  xtickslab.rt = NULL, ytickslab.rt = NULL,
+                  x.text.angle = NULL, y.text.angle = NULL,
+                  xtickslab.rt = x.text.angle, ytickslab.rt = y.text.angle,
                   xticks.by = NULL, yticks.by = NULL,
                   orientation = c("vertical", "horizontal", "reverse"),
                   ggtheme = NULL,
