@@ -36,11 +36,16 @@ reference:
     desc: Plotting data obtained from genomic data analyses.
     contents:
       - ggmaplot
+  - title: Arrange and Export
+    contents:
+      - ggarrange
+      - ggexport
   - title: Helpers
     contents:
       - facet
       - add_summary
       - ggadd
+      - ggarrange
       - get_palette
   - title: Data
     contents:
