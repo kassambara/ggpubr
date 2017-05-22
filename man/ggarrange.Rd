@@ -7,24 +7,26 @@
 ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL)
 }
 \arguments{
-\item{...}{List of plots to be arranged into the grid. The plots can be either ggplot2 plot objects
-or arbitrary gtables.}
+\item{...}{list of plots to be arranged into the grid. The plots can be
+either ggplot2 plot objects or arbitrary gtables.}
 
-\item{plotlist}{(optional) List of plots to display. Alternatively, the plots can be provided
-individually as the first n arguments of the function plot_grid (see examples).}
+\item{plotlist}{(optional) list of plots to display.}
 
-\item{ncol}{(optional) Number of columns in the plot grid.}
+\item{ncol}{(optional) number of columns in the plot grid.}
 
-\item{nrow}{(optional) Number of rows in the plot grid.}
+\item{nrow}{(optional) number of rows in the plot grid.}
 
-\item{labels}{(optional) List of labels to be added to the plots. You can also set \code{labels="AUTO"} to
-auto-generate upper-case labels or \code{labels="auto"} to auto-generate lower-case labels.}
+\item{labels}{(optional) list of labels to be added to the plots. You can
+also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
+to auto-generate lower-case labels.}
 }
 \value{
-a ggplot
+return an object of class \code{ggarrange}, which is a ggplot or a list of ggplot.
 }
 \description{
-Arrange multiple ggplots on the same page.
+Arrange multiple ggplots on the same page. Wrapper around
+  \code{\link[cowplot]{plot_grid}}. Can arrange multiple ggplots over
+  multiple pages.
 }
 \examples{
 data("ToothGrowth")
