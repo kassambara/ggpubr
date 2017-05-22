@@ -1,4 +1,4 @@
-#' @include desc_statby.R
+#' @include desc_statby.R utilities_base.R
 NULL
 #' @import ggplot2
 #' @importFrom magrittr %>%
