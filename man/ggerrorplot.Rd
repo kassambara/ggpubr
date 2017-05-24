@@ -4,11 +4,13 @@
 \alias{ggerrorplot}
 \title{Visualizing Error}
 \usage{
-ggerrorplot(data, x, y, desc_stat = "mean_se", color = "black",
-  fill = "white", palette = NULL, size = NULL, width = NULL,
-  select = NULL, order = NULL, add = "none", add.params = list(),
-  error.plot = "pointrange", position = position_dodge(),
-  ggtheme = theme_classic(), ...)
+ggerrorplot(data, x, y, desc_stat = "mean_se", combine = FALSE,
+  merge = FALSE, color = "black", fill = "white", palette = NULL,
+  size = NULL, width = NULL, title = NULL, xlab = NULL, ylab = NULL,
+  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+  select = NULL, remove = NULL, order = NULL, add = "none",
+  add.params = list(), error.plot = "pointrange",
+  position = position_dodge(), ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -18,6 +20,16 @@ ggerrorplot(data, x, y, desc_stat = "mean_se", color = "black",
 \item{desc_stat}{descriptive statistics to be used for visualizing errors. Default value is "mean_se".
 Allowed values are one of , "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
 "median", "median_iqr", "median_mad", "median_range"; see \code{\link{desc_statby}} for more details.}
+
+\item{combine}{logical value. Default is FALSE. Used only when y is a vector
+containing multiple variables to plot. If TRUE, create a multi-panel plot by
+combining the plot of y variables.}
+
+\item{merge}{logical or character value. Default is FALSE. Used only when y is
+a vector containing multiple variables to plot. If TRUE, merge multiple y
+variables in the same plotting area. Allowed values include also "asis"
+(TRUE) and "flip". If merge = "flip", then y variables are used as x tick
+labels and the x variable is used as grouping variable.}
 
 \item{color, fill}{outline and fill colors.}
 
@@ -32,7 +44,30 @@ outlines.}
 
 \item{width}{numeric value between 0 and 1 specifying box width.}
 
+\item{title}{plot main title.}
+
+\item{xlab}{character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.}
+
+\item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.}
+
+\item{facet.by}{character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.}
+
+\item{panel.labs}{a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c("Male", "Female")) specifies
+the labels for the "sex" variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
+"Lev", "Lev2") ).}
+
+\item{short.panel.labs}{logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.}
+
 \item{select}{character vector specifying which items to display.}
+
+\item{remove}{character vector specifying which items to remove from the plot.}
 
 \item{order}{character vector specifying the order of items.}
 

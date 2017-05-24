@@ -68,14 +68,64 @@ NULL
 #'
 #' @export
 ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
+                        combine = FALSE, merge = FALSE,
+                        color = "black", fill = "white", palette = NULL,
+                        size = NULL, width = NULL,
+                        title = NULL, xlab = NULL, ylab = NULL,
+                        facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                        select = NULL, remove = NULL, order = NULL,
+                        add = "none",
+                        add.params = list(),
+                        error.plot = "pointrange",
+                        position = position_dodge(),
+                        ggtheme = theme_pubr(),
+                        ...)
+{
+
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    desc_stat = desc_stat,
+    combine = combine, merge = merge,
+    color = color, fill = fill, palette = palette,
+    size = size, width = width,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    select = select , remove = remove, order = order,
+    add = add, add.params = add.params, error.plot = error.plot,
+    position = position, ggtheme = ggtheme, ...)
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+  .opts$fun <- ggerrorplot_core
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+}
+
+
+ggerrorplot_core <- function(data, x, y, desc_stat = "mean_se",
                       color = "black", fill = "white", palette = NULL,
                       size = NULL, width = NULL,
                       select = NULL, order = NULL,
                       add = "none",
                       add.params = list(),
                       error.plot = "pointrange",
-                      position = position_dodge(),
-                      ggtheme = theme_classic(),
+                      position = position_dodge(0.8),
+                      ggtheme = theme_pubr(),
                       ...)
 {
 
@@ -89,26 +139,18 @@ ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 
   add <- setdiff(add, desc_stat)
-  if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.95
+  if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.8
   p <- ggplot(data, aes_string(x, y))
-  p <- .add(p, add = add, data = data,
-            add.params = add.params, error.plot = error.plot,
-            position = position)
+  add.params <- add.params %>%
+    .add_item(add = add, data = data, error.plot = error.plot, position = position, p = p)
+  p <- do.call(ggadd, add.params)
 
   # Main plot
-  add.params$color <- color
-  add.params$fill <- fill
-  add.params$size <- size
-  add.params$width <- width
-  add.params$position <- position
-  p <- .add(p, add = desc_stat, data = data,
-            add.params = add.params, error.plot = error.plot,
-            position = position)
+  add.params <- add.params %>%
+    .add_item(color = color, fill = fill, size = size, width = width,
+              add = desc_stat, p = p)
+  p <- do.call(ggadd, add.params)
 
-  # Select and order
-  if(is.null(select)) select <- order
-  if (!is.null(select) | !is.null(order))
-    p <- p + scale_x_discrete(limits = as.character(select))
    p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
 
   p
