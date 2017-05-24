@@ -99,7 +99,9 @@ groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
 palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
 &quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;,
 &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and
-&quot;rickandmorty&quot;.</dd>
+&quot;rickandmorty&quot;. Can be also a numeric vector of length(groups); in this
+case a basic color palette is created using the function
+<a href='http://www.rdocumentation.org/packages/grDevices/topics/palette'>palette</a>.</dd>
       <dt>shape</dt>
       <dd>point shape. See <code><a href='show_point_shapes.html'>show_point_shapes</a></code>.</dd>
       <dt>sorting</dt>

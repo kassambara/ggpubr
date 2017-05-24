@@ -82,7 +82,7 @@
   <span class='st'>"black"</span>), <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#B31B21"</span>, <span class='st'>"#1465AC"</span>,
   <span class='st'>"darkgray"</span>), <span class='kw'>top</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>select.top.method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"padj"</span>, <span class='st'>"fc"</span>), <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Log2 mean expression"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Log2 fold change"</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_classic2</a></span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -122,11 +122,11 @@ c(14, &quot;bold&quot;, &quot;red&quot;)</em>.</dd>
       <dd>logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.</dd>
       <dt>palette</dt>
-      <dd>the color palette to be used for coloring or filling by
-groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
-palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
-&quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;,
-&quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
+      <dd>the color palette to be used for coloring or filling by groups.
+Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
+&quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
+scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
+&quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
       <dt>top</dt>
       <dd>the number of top genes to be shown on the plot. Use top = 0 to hide to gene labels.</dd>
       <dt>select.top.method</dt>
@@ -136,8 +136,8 @@ changes, respectively.</dd>
       <dt>main</dt>
       <dd>plot main title.</dd>
       <dt>xlab</dt>
-      <dd>character vector specifying x axis labels, respectively. Use xlab
-= FALSE to hide xlab.</dd>
+      <dd>character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.</dd>
       <dt>ylab</dt>
       <dd>character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.</dd>

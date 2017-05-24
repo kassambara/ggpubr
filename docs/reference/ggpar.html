@@ -84,7 +84,8 @@
   <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
   <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='no'>x.text.angle</span>, <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='no'>y.text.angle</span>,
   <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"vertical"</span>,
   <span class='st'>"horizontal"</span>, <span class='st'>"reverse"</span>), <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
@@ -98,7 +99,9 @@ groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
 palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
 &quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;,
 &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and
-&quot;rickandmorty&quot;.</dd>
+&quot;rickandmorty&quot;. Can be also a numeric vector of length(groups); in this
+case a basic color palette is created using the function
+<a href='http://www.rdocumentation.org/packages/grDevices/topics/palette'>palette</a>.</dd>
       <dt>gradient.cols</dt>
       <dd>vector of colors to use for n-colour gradient. Allowed
 values include brewer and ggsci color palettes.</dd>
@@ -109,8 +112,8 @@ values include brewer and ggsci color palettes.</dd>
       <dt>caption</dt>
       <dd>plot caption.</dd>
       <dt>xlab</dt>
-      <dd>character vector specifying x axis labels, respectively. Use xlab
-= FALSE to hide xlab.</dd>
+      <dd>character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.</dd>
       <dt>ylab</dt>
       <dd>character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.</dd>
@@ -151,9 +154,13 @@ labels.</dd>
       <dt>font.tickslab</dt>
       <dd>Font style (size, face, color) for tick labels, e.g.:
 c(14, &quot;bold&quot;, &quot;red&quot;).</dd>
+      <dt>x.text.angle, y.text.angle</dt>
+      <dd>Numeric value specifying the rotation angle
+of x and y axis tick labels, respectively. Default value is NULL. For
+vertical x axis texts use x.text.angle = 90.</dd>
       <dt>xtickslab.rt, ytickslab.rt</dt>
-      <dd>Rotation angle of x and y axis tick labels,
-respectively. Default value is 0.</dd>
+      <dd>Same as x.text.angle and y.text.angle,
+respectively. Will be deprecated in the near future.</dd>
       <dt>xticks.by, yticks.by</dt>
       <dd>numeric value controlling x and y axis breaks,
 respectively. For example, if yticks.by = 5, a tick mark is shown on every

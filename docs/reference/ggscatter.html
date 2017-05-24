@@ -83,11 +83,11 @@
   <span class='kw'>ellipse.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ellipse.type</span> <span class='kw'>=</span> <span class='st'>"norm"</span>, <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
   <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mean.point.size</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>is.numeric</span>(<span class='no'>size</span>), <span class='fl'>2</span> * <span class='no'>size</span>,
   <span class='no'>size</span>), <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>), <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.legend.text</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_classic2</a></span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>), <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>NULL</span>,
+  <span class='kw'>NULL</span>), <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.legend.text</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -98,15 +98,16 @@
       <dt>color, fill</dt>
       <dd>point colors.</dd>
       <dt>palette</dt>
-      <dd>the color palette to be used for coloring or filling by
-groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
-palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
-&quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;,
-&quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
+      <dd>the color palette to be used for coloring or filling by groups.
+Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
+&quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
+scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
+&quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
       <dt>shape</dt>
       <dd>point shape. See <code><a href='show_point_shapes.html'>show_point_shapes</a></code>.</dd>
       <dt>size</dt>
-      <dd>Numeric value (e.g.: size = 1). change the size of points and outlines.</dd>
+      <dd>Numeric value (e.g.: size = 1). change the size of points and
+outlines.</dd>
       <dt>point</dt>
       <dd>logical value. If TRUE, show points.</dd>
       <dt>rug</dt>
@@ -157,6 +158,8 @@ character vector with length = nrow(data).</dd>
 the color (e.g.: &quot;red&quot;) of point labels. For example <em>font.label =
 c(14, &quot;bold&quot;, &quot;red&quot;)</em>. To specify only the size and the style, use
 font.label = c(14, &quot;plain&quot;).</dd>
+      <dt>font.family</dt>
+      <dd>character vector specifying font family.</dd>
       <dt>label.select</dt>
       <dd>character vector specifying some labels to show.</dd>
       <dt>repel</dt>

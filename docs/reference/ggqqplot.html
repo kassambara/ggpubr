@@ -76,9 +76,12 @@
     <p>Quantile-Quantile plot.</p>
     
 
-    <pre><span class='fu'>ggqqplot</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qqline"</span>, <span class='st'>"none"</span>), <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>),
-  <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_classic2</a></span>(), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>ggqqplot</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"qqline"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>), <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -86,16 +89,28 @@
       <dd>a data frame</dd>
       <dt>x</dt>
       <dd>variable to be drawn.</dd>
+      <dt>combine</dt>
+      <dd>logical value. Default is FALSE. Used only when y is a vector
+containing multiple variables to plot. If TRUE, create a multi-panel plot by
+combining the plot of y variables.</dd>
+      <dt>merge</dt>
+      <dd>logical or character value. Default is FALSE. Used only when y is
+a vector containing multiple variables to plot. If TRUE, merge multiple y
+variables in the same plotting area. Allowed values include also &quot;asis&quot;
+(TRUE) and &quot;flip&quot;. If merge = &quot;flip&quot;, then y variables are used as x tick
+labels and the x variable is used as grouping variable.</dd>
       <dt>color</dt>
       <dd>point color.</dd>
       <dt>palette</dt>
-      <dd>the color palette to be used for coloring or filling by
-groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
-palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
-&quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;,
-&quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
+      <dd>the color palette to be used for coloring or filling by groups.
+Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
+&quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
+scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
+&quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
       <dt>size</dt>
       <dd>point size.</dd>
+      <dt>shape</dt>
+      <dd>point shape.</dd>
       <dt>add</dt>
       <dd>character vector. Allowed values are one of &quot;none&quot; and &quot;qqline&quot;
 (for adding qqline).</dd>
@@ -106,13 +121,33 @@ argument &#39;add&#39;; e.g.: add.params = list(color = &quot;red&quot;).</dd>
       <dd>logical value. If TRUE, confidence interval is added.</dd>
       <dt>conf.int.level</dt>
       <dd>the confidence level. Default value is 0.95.</dd>
+      <dt>title</dt>
+      <dd>plot main title.</dd>
+      <dt>xlab</dt>
+      <dd>character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.</dd>
+      <dt>ylab</dt>
+      <dd>character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.</dd>
+      <dt>facet.by</dt>
+      <dd>character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.</dd>
+      <dt>panel.labs</dt>
+      <dd>a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;)) specifies
+the labels for the &quot;sex&quot; variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;), rx = c(&quot;Obs&quot;,
+&quot;Lev&quot;, &quot;Lev2&quot;) ).</dd>
+      <dt>short.panel.labs</dt>
+      <dd>logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.</dd>
       <dt>ggtheme</dt>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....</dd>
       <dt>...</dt>
-      <dd>other arguments to be passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_qq'>stat_qq</a></code> and
-<code><a href='ggpar.html'>ggpar</a></code>.</dd>
+      <dd>other arguments to be passed to <code><a href='ggpar.html'>ggpar</a></code>.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

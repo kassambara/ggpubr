@@ -76,10 +76,11 @@
     <p>Add text to a plot.</p>
     
 
-    <pre><span class='fu'>ggtext</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>point</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>),
+    <pre><span class='fu'>ggtext</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_classic2</a></span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>grouping.vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -87,35 +88,53 @@
       <dd>a data frame</dd>
       <dt>x, y</dt>
       <dd>x and y variables for drawing.</dd>
-      <dt>color</dt>
-      <dd>point colors.</dd>
-      <dt>palette</dt>
-      <dd>the color palette to be used for coloring or filling by
-groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
-palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
-&quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;,
-&quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
-      <dt>size</dt>
-      <dd>Numeric value (e.g.: size = 1). change the size of points and outlines.</dd>
-      <dt>point</dt>
-      <dd>logical value. If TRUE, show points.</dd>
       <dt>label</dt>
       <dd>the name of the column containing point labels. Can be also a
 character vector with length = nrow(data).</dd>
-      <dt>font.label</dt>
-      <dd>a vector of length 3 indicating respectively the size
-(e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and
-the color (e.g.: &quot;red&quot;) of point labels. For example <em>font.label =
-c(14, &quot;bold&quot;, &quot;red&quot;)</em>. To specify only the size and the style, use
-font.label = c(14, &quot;plain&quot;).</dd>
+      <dt>color</dt>
+      <dd>text font color.</dd>
+      <dt>palette</dt>
+      <dd>the color palette to be used for coloring or filling by groups.
+Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
+&quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
+scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
+&quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
+      <dt>size</dt>
+      <dd>text font size.</dd>
+      <dt>face</dt>
+      <dd>text font style. Allowed values are one of c(&quot;plain&quot;, &quot;bold&quot;,
+&quot;italic&quot;, &quot;bold.italic&quot;).</dd>
+      <dt>family</dt>
+      <dd>character vector specifying font family.</dd>
       <dt>label.select</dt>
-      <dd>character vector specifying some labels to show.</dd>
+      <dd>can be of two formats: <ul>
+<li> a character vector
+specifying some labels to show. </li>
+<li> a list containting one or the
+combination of the following components: <ul>
+<li> <code>top.up</code> and
+<code>top.down</code>: to display the labels  of the top up/down points. For
+example, <code>label.select = list(top.up = 10, top.down = 4)</code>. </li>
+<li>
+<code>criteria</code>: to filter, for example, by x and y variabes values, use
+this: <code>label.select = list(criteria = &quot;`y` &gt; 2 &amp; `y` &lt; 5 &amp; `x` %in%
+c(&#39;A&#39;, &#39;B&#39;)&quot;)</code>. </li>
+</ul>
+ </li>
+</ul>
+</dd>
       <dt>repel</dt>
       <dd>a logical value, whether to use ggrepel to avoid overplotting
 text labels or not.</dd>
       <dt>label.rectangle</dt>
       <dd>logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.</dd>
+      <dt>grouping.vars</dt>
+      <dd>grouping variables to sort the data by, when the user
+wants to display the top n up/down labels.</dd>
+      <dt>position</dt>
+      <dd>Position adjustment, either as a string, or the result of a
+call to a position adjustment function.</dd>
       <dt>ggp</dt>
       <dd>a ggplot. If not NULL, points are added to an existing plot.</dd>
       <dt>ggtheme</dt>
@@ -123,8 +142,7 @@ text, making it easier to read.</dd>
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....</dd>
       <dt>...</dt>
-      <dd>other arguments to be passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code>
-and <code><a href='ggpar.html'>ggpar</a></code>.</dd>
+      <dd>other arguments to be passed to <code><a href='ggpar.html'>ggpar</a></code>.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

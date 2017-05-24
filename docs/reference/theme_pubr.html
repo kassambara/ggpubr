@@ -74,16 +74,18 @@
 
     
     <p><ul>
-<li> <strong>theme_pubr()</strong>: Create a publication ready theme
- </li>
-<li> <strong>labs_pubr()</strong>: Format only plot labels to a publication ready style
- </li>
-<li> <strong>theme_classic()</strong>: Create a classic theme with axis lines
-</li>
+<li> <strong>theme_pubr()</strong>: Create a publication ready
+ theme </li>
+<li> <strong>labs_pubr()</strong>: Format only plot labels to a publication
+ ready style </li>
+<li> <strong>theme_classic2()</strong>: Create a classic theme with
+ axis lines </li>
 </ul></p>
     
 
-    <pre><span class='fu'>theme_pubr</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>14</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>)
+    <pre><span class='fu'>theme_pubr</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"top"</span>, <span class='st'>"bottom"</span>, <span class='st'>"left"</span>, <span class='st'>"right"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='fu'>labs_pubr</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>14</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
@@ -95,6 +97,22 @@
       <dd>base font size</dd>
       <dt>base_family</dt>
       <dd>base font family</dd>
+      <dt>border</dt>
+      <dd>logical value. Default is FALSE. If TRUE, add panel border.</dd>
+      <dt>margin</dt>
+      <dd>logical value. Default is TRUE. If FALSE, reduce plot margin.</dd>
+      <dt>legend</dt>
+      <dd>character specifying legend position. Allowed values are one of
+c(&quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;, &quot;none&quot;). Default is &quot;top&quot; side position.
+to remove the legend use legend = &quot;none&quot;. Legend position can be also
+specified using a numeric vector c(x, y).  In this case it is possible to
+position the legend inside the plotting area. x and y are the coordinates of
+the legend box. Their values should be between 0 and 1. c(0,0) corresponds
+to the &quot;bottom left&quot; and c(1,1) corresponds to the &quot;top right&quot; position. For
+instance use legend = c(0.8, 0.2).</dd>
+      <dt>x.text.angle</dt>
+      <dd>Rotation angle of x axis tick labels.
+Default value is 0. Use 90 for vertical text.</dd>
     </dl>
     
 

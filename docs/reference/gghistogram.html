@@ -76,11 +76,15 @@
     <p>Create a histogram plot.</p>
     
 
-    <pre><span class='fu'>gghistogram</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"..count.."</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>bins</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"mean"</span>, <span class='st'>"median"</span>),
-  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>), <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>add_density</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_classic2</a></span>(), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>gghistogram</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"..count.."</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"mean"</span>,
+  <span class='st'>"median"</span>), <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>), <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>add_density</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span>
+  <span class='st'>"black"</span>), <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -90,16 +94,27 @@
       <dd>variable to be drawn.</dd>
       <dt>y</dt>
       <dd>one of &quot;..density..&quot; or &quot;..count..&quot;.</dd>
+      <dt>combine</dt>
+      <dd>logical value. Default is FALSE. Used only when y is a vector
+containing multiple variables to plot. If TRUE, create a multi-panel plot by
+combining the plot of y variables.</dd>
+      <dt>merge</dt>
+      <dd>logical or character value. Default is FALSE. Used only when y is
+a vector containing multiple variables to plot. If TRUE, merge multiple y
+variables in the same plotting area. Allowed values include also &quot;asis&quot;
+(TRUE) and &quot;flip&quot;. If merge = &quot;flip&quot;, then y variables are used as x tick
+labels and the x variable is used as grouping variable.</dd>
       <dt>color, fill</dt>
       <dd>histogram line color and fill color.</dd>
       <dt>palette</dt>
-      <dd>the color palette to be used for coloring or filling by
-groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
-palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
-&quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;,
-&quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
+      <dd>the color palette to be used for coloring or filling by groups.
+Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
+&quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
+scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
+&quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
       <dt>size</dt>
-      <dd>Numeric value (e.g.: size = 1). change the size of points and outlines.</dd>
+      <dd>Numeric value (e.g.: size = 1). change the size of points and
+outlines.</dd>
       <dt>linetype</dt>
       <dd>line type. See <code><a href='show_line_types.html'>show_line_types</a></code>.</dd>
       <dt>alpha</dt>
@@ -107,6 +122,31 @@ palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette 
 be in [0, 1], where 0 is full transparency and 1 is no transparency.</dd>
       <dt>bins</dt>
       <dd>Number of bins. Defaults to 30.</dd>
+      <dt>binwidth</dt>
+      <dd>numeric value specifying bin width. use value between 0 and 1
+when you have a strong dense dotplot. For example binwidth = 0.2.
+<a href = 'http://r4ds.had.co.nz/eda.html)'>Read more about binwidth</a>.</dd>
+      <dt>title</dt>
+      <dd>plot main title.</dd>
+      <dt>xlab</dt>
+      <dd>character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.</dd>
+      <dt>ylab</dt>
+      <dd>character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.</dd>
+      <dt>facet.by</dt>
+      <dd>character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.</dd>
+      <dt>panel.labs</dt>
+      <dd>a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;)) specifies
+the labels for the &quot;sex&quot; variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;), rx = c(&quot;Obs&quot;,
+&quot;Lev&quot;, &quot;Lev2&quot;) ).</dd>
+      <dt>short.panel.labs</dt>
+      <dd>logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.</dd>
       <dt>add</dt>
       <dd>allowed values are one of &quot;mean&quot; or &quot;median&quot; (for adding mean or
 median line, respectively).</dd>
@@ -117,6 +157,38 @@ e.g.: add.params = list(color = &quot;red&quot;).</dd>
       <dd>logical value. If TRUE, add marginal rug.</dd>
       <dt>add_density</dt>
       <dd>logical value. If TRUE, add density curves.</dd>
+      <dt>label</dt>
+      <dd>the name of the column containing point labels. Can be also a
+character vector with length = nrow(data).</dd>
+      <dt>font.label</dt>
+      <dd>a list which can contain the combination of the following elements: the size
+(e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and
+the color (e.g.: &quot;red&quot;) of labels. For example font.label = list(size = 14,
+face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and the style, use font.label =
+list(size = 14, face = &quot;plain&quot;).</dd>
+      <dt>label.select</dt>
+      <dd>can be of two formats: <ul>
+<li> a character vector
+specifying some labels to show. </li>
+<li> a list containting one or the
+combination of the following components: <ul>
+<li> <code>top.up</code> and
+<code>top.down</code>: to display the labels  of the top up/down points. For
+example, <code>label.select = list(top.up = 10, top.down = 4)</code>. </li>
+<li>
+<code>criteria</code>: to filter, for example, by x and y variabes values, use
+this: <code>label.select = list(criteria = &quot;`y` &gt; 2 &amp; `y` &lt; 5 &amp; `x` %in%
+c(&#39;A&#39;, &#39;B&#39;)&quot;)</code>. </li>
+</ul>
+ </li>
+</ul>
+</dd>
+      <dt>repel</dt>
+      <dd>a logical value, whether to use ggrepel to avoid overplotting
+text labels or not.</dd>
+      <dt>label.rectangle</dt>
+      <dd>logical value. If TRUE, add rectangle underneath the
+text, making it easier to read.</dd>
       <dt>ggtheme</dt>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
