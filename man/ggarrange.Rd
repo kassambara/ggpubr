@@ -42,9 +42,9 @@ dp <- ggdotplot(df, x = "dose", y = "len",
 # Density plot
 dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 
-ggarrange(bxp, dp, dens, ncol = 2)
+ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 
 }
 \author{
-Alboukadel Kassambara <alboukadel.kassambara@gmail.com>
+Alboukadel Kassambara \email{alboukadel.kassambara@gmail.com}
 }

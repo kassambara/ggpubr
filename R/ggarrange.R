@@ -11,7 +11,7 @@
 #'   also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
 #'   to auto-generate lower-case labels.
 #' @return return an object of class \code{ggarrange}, which is a ggplot or a list of ggplot.
-#' @author Alboukadel Kassambara <alboukadel.kassambara@@gmail.com>
+#' @author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
 #' @examples
 #' data("ToothGrowth")
 #' df <- ToothGrowth
@@ -26,7 +26,7 @@
 #' # Density plot
 #' dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 #'
-#' ggarrange(bxp, dp, dens, ncol = 2)
+#' ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 #'
 #' @export
 ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL)
