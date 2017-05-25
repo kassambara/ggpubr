@@ -8,7 +8,7 @@ NULL
 #'@param color points and boxs plot colors. To color by conditions, use color = "condition".
 #'@param fill box plot fill color. To change fill color by conditions, use fill = "condition".
 #'@param line.color line color.
-#'@param size line and point size.
+#'@param point.size,line.size point and line size, respectively.
 #'@param width box plot width.
 #'@param ... other arguments to be passed to be passed to \link{ggpar}().
 #' @examples
@@ -18,19 +18,18 @@ NULL
 #'
 #' d <- data.frame(before = before, after = after)
 #' ggpaired(d, cond1 = "before", cond2 = "after",
-#'     fill = "condition", size = 0.6)
+#'     fill = "condition", palette = "jco")
 #'
 #'
 #' @export
 ggpaired <- function(data, cond1, cond2,
                         color = "black", fill = "white", palette = NULL,
-                        size = NULL, width = 0.7, line.color = "black",
+                        width = 0.5, point.size = 1.2, line.size = 0.5, line.color = "black",
                         title = NULL, xlab = "Condition", ylab = "Value",
                         ggtheme = theme_pubr(),
                         ...)
 {
 
-  if(is.null(size)) size <- 0.8
   data <- data %>%
     tidyr::gather_(key_col = "condition", value_col = "val",
                    gather_cols = c(cond1, cond2)) %>%
@@ -39,10 +38,10 @@ ggpaired <- function(data, cond1, cond2,
   data$condition<- factor(data$condition, levels = c(cond1, cond2))
 
   condition <- val <- id <- NULL
-  p <- ggplot(data, aes(condition, val)) +
+  p <- ggplot(data, aes(x = condition, y = val)) +
     geom_exec(geom_boxplot, data = data, color = color, fill = fill, width = width)+
-    geom_exec(geom_point, data = data, color = color, size = size)+
-    geom_line(aes(condition= id),  color = line.color, size = size)
+    geom_line(aes(group= id),  color = line.color, size = line.size)+
+    geom_exec(geom_point, data = data, color = color, size = point.size)
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, xlab = xlab, ylab = ylab, title = title, ...)
 
