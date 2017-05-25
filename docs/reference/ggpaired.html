@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ggpubr General Arguments Description — ggpubr_args • ggpubr</title>
+<title>Plot Paired Data — ggpaired • ggpubr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,80 +69,47 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>ggpubr General Arguments Description</h1>
+    <h1>Plot Paired Data</h1>
     </div>
 
     
-    <p>ggpubr General Arguments Description</p>
+    <p>Plot paired data.</p>
     
 
+    <pre><span class='fu'>ggpaired</span>(<span class='no'>data</span>, <span class='no'>cond1</span>, <span class='no'>cond2</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>point.size</span> <span class='kw'>=</span> <span class='fl'>1.2</span>, <span class='kw'>line.size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>line.color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Condition"</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Value"</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>data</dt>
       <dd>a data frame</dd>
-      <dt>x</dt>
-      <dd>character string containing the name of x variable.</dd>
-      <dt>y</dt>
-      <dd>character vector containing one or more variables to plot</dd>
-      <dt>combine</dt>
-      <dd>logical value. Default is FALSE. Used only when y is a vector
-containing multiple variables to plot. If TRUE, create a multi-panel plot by
-combining the plot of y variables.</dd>
-      <dt>merge</dt>
-      <dd>logical or character value. Default is FALSE. Used only when y is
-a vector containing multiple variables to plot. If TRUE, merge multiple y
-variables in the same plotting area. Allowed values include also &quot;asis&quot;
-(TRUE) and &quot;flip&quot;. If merge = &quot;flip&quot;, then y variables are used as x tick
-labels and the x variable is used as grouping variable.</dd>
+      <dt>cond1</dt>
+      <dd>variable name corresponding to the first condition.</dd>
+      <dt>cond2</dt>
+      <dd>variable name corresponding to the second condition.</dd>
       <dt>color</dt>
-      <dd>outline color.</dd>
+      <dd>points and boxs plot colors. To color by conditions, use color = &quot;condition&quot;.</dd>
       <dt>fill</dt>
-      <dd>fill color.</dd>
+      <dd>box plot fill color. To change fill color by conditions, use fill = &quot;condition&quot;.</dd>
       <dt>palette</dt>
       <dd>the color palette to be used for coloring or filling by groups.
 Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
 &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
 scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
 &quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
-      <dt>linetype</dt>
-      <dd>line types.</dd>
-      <dt>size</dt>
-      <dd>Numeric value (e.g.: size = 1). change the size of points and
-outlines.</dd>
-      <dt>select</dt>
-      <dd>character vector specifying which items to display.</dd>
-      <dt>remove</dt>
-      <dd>character vector specifying which items to remove from the plot.</dd>
-      <dt>order</dt>
-      <dd>character vector specifying the order of items.</dd>
-      <dt>add</dt>
-      <dd>character vector for adding another plot element (e.g.: dot plot or
-error bars). Allowed values are one or the combination of: &quot;none&quot;,
-&quot;dotplot&quot;, &quot;jitter&quot;, &quot;boxplot&quot;, &quot;point&quot;, &quot;mean&quot;, &quot;mean_se&quot;, &quot;mean_sd&quot;,
-&quot;mean_ci&quot;, &quot;mean_range&quot;, &quot;median&quot;, &quot;median_iqr&quot;, &quot;median_mad&quot;,
-&quot;median_range&quot;; see ?desc_statby for more details.</dd>
-      <dt>add.params</dt>
-      <dd>parameters (color, shape, size, fill, linetype) for the
-argument &#39;add&#39;; e.g.: add.params = list(color = &quot;red&quot;).</dd>
-      <dt>error.plot</dt>
-      <dd>plot type used to visualize error. Allowed values are one of
-c(&quot;pointrange&quot;, &quot;linerange&quot;, &quot;crossbar&quot;, &quot;errorbar&quot;, &quot;upper_errorbar&quot;,
-&quot;lower_errorbar&quot;, &quot;upper_pointrange&quot;, &quot;lower_pointrange&quot;, &quot;upper_linerange&quot;,
-&quot;lower_linerange&quot;). Default value is &quot;pointrange&quot; or &quot;errorbar&quot;. Used only
-when add != &quot;none&quot; and add contains one &quot;mean_*&quot; or &quot;med_*&quot; where &quot;*&quot; = sd,
-se, ....</dd>
-      <dt>font.label</dt>
-      <dd>a list which can contain the combination of the following elements: the size
-(e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and
-the color (e.g.: &quot;red&quot;) of labels. For example font.label = list(size = 14,
-face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and the style, use font.label =
-list(size = 14, face = &quot;plain&quot;).</dd>
+      <dt>width</dt>
+      <dd>box plot width.</dd>
+      <dt>point.size, line.size</dt>
+      <dd>point and line size, respectively.</dd>
+      <dt>line.color</dt>
+      <dd>line color.</dd>
       <dt>title</dt>
       <dd>plot main title.</dd>
       <dt>xlab</dt>
-      <dd>character vector specifying x axis labels. Use xlab
-= FALSE to hide xlab.</dd>
+      <dd>character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.</dd>
       <dt>ylab</dt>
       <dd>character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.</dd>
@@ -150,15 +117,29 @@ hide ylab.</dd>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....</dd>
+      <dt>...</dt>
+      <dd>other arguments to be passed to be passed to <a href='ggpar.html'>ggpar</a>().</dd>
     </dl>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>before</span> <span class='kw'>&lt;-</span><span class='fu'>c</span>(<span class='fl'>200.1</span>, <span class='fl'>190.9</span>, <span class='fl'>192.7</span>, <span class='fl'>213</span>, <span class='fl'>241.4</span>, <span class='fl'>196.9</span>, <span class='fl'>172.2</span>, <span class='fl'>185.5</span>, <span class='fl'>205.2</span>, <span class='fl'>193.7</span>)
+<span class='no'>after</span> <span class='kw'>&lt;-</span><span class='fu'>c</span>(<span class='fl'>392.9</span>, <span class='fl'>393.2</span>, <span class='fl'>345.1</span>, <span class='fl'>393</span>, <span class='fl'>434</span>, <span class='fl'>427.9</span>, <span class='fl'>422</span>, <span class='fl'>383.9</span>, <span class='fl'>392.3</span>, <span class='fl'>352.2</span>)
+
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>before</span> <span class='kw'>=</span> <span class='no'>before</span>, <span class='kw'>after</span> <span class='kw'>=</span> <span class='no'>after</span>)
+<span class='fu'>ggpaired</span>(<span class='no'>d</span>, <span class='kw'>cond1</span> <span class='kw'>=</span> <span class='st'>"before"</span>, <span class='kw'>cond2</span> <span class='kw'>=</span> <span class='st'>"after"</span>,
+    <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"condition"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)</div><img src='ggpaired-2.png' alt='' width='540' height='400' /><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

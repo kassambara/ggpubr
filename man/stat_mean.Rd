@@ -57,8 +57,9 @@ df <- mtcars
 df$cyl <- as.factor(df$cyl)
 
 # Scatter plot with ellipses and group mean points
-ggscatter(df, x = "wt", y = "mpg", color = "cyl", ellipse = TRUE)+
- stat_mean(aes(color = cyl, shape = cyl))
+ggscatter(df, x = "wt", y = "mpg",
+   color = "cyl", shape = "cyl", ellipse = TRUE)+
+ stat_mean(aes(color = cyl, shape = cyl), size = 4)
 
 }
 \seealso{

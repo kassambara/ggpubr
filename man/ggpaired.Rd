@@ -5,9 +5,9 @@
 \title{Plot Paired Data}
 \usage{
 ggpaired(data, cond1, cond2, color = "black", fill = "white",
-  palette = NULL, size = NULL, width = 0.7, line.color = "black",
-  title = NULL, xlab = "Condition", ylab = "Value",
-  ggtheme = theme_pubr(), ...)
+  palette = NULL, width = 0.5, point.size = 1.2, line.size = 0.5,
+  line.color = "black", title = NULL, xlab = "Condition",
+  ylab = "Value", ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -26,9 +26,9 @@ Allowed values include "grey" for grey color palettes; brewer palettes e.g.
 scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 "lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
-\item{size}{line and point size.}
-
 \item{width}{box plot width.}
+
+\item{point.size, line.size}{point and line size, respectively.}
 
 \item{line.color}{line color.}
 
@@ -56,7 +56,7 @@ after <-c(392.9, 393.2, 345.1, 393, 434, 427.9, 422, 383.9, 392.3, 352.2)
 
 d <- data.frame(before = before, after = after)
 ggpaired(d, cond1 = "before", cond2 = "after",
-    fill = "condition", size = 0.6)
+    fill = "condition", palette = "jco")
 
 
 }
