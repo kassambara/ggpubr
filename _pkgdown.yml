@@ -1,6 +1,6 @@
 templates:
   params:
-    bootswatch: cerulean
+    bootswatch: lumen
 reference:
   - title: Plot one variable - X, Continuous
     desc:  Visualize distributions.
@@ -25,6 +25,10 @@ reference:
     desc: Scatter plots
     contents:
       - ggscatter
+  - title: Plot paired data
+    desc: Paired data
+    contents:
+      - ggpaired
   - title: Graphical parameters
     desc: Change graphical parameters such as, titles, legend, colors, axis limits, scale transformation (log, sqrt), axis ticks and plot orientation (vertical, horizontal).
     contents:
@@ -45,7 +49,6 @@ reference:
       - facet
       - add_summary
       - ggadd
-      - ggarrange
       - get_palette
   - title: Data
     contents:
@@ -57,6 +60,8 @@ reference:
       - stat_chull
       - stat_conf_ellipse
       - stat_mean
+      - stat_stars
+      - stat_cor
 
 
 
