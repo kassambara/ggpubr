@@ -76,7 +76,7 @@
 # coord.values: label coordinate for each group. If too short, they are recycled.
 # group.id the id of groups as returned by ggplot_build()
 .group_coord <- function(coord.values, group.id){
-  if(!is_empty(coord.values)){
+  if(!.is_empty(coord.values)){
     coord.values <- ifelse(length(coord.values) >= group.id,
                            coord.values[group.id], coord.values[1])
   }
