@@ -14,7 +14,7 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   label = NULL, font.label = c(12, "plain"), font.family = "",
   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
   cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson",
-  cor.coef.coord = c(NULL, NULL), cor.coef.size = 12, ggp = NULL,
+  cor.coef.coord = c(NULL, NULL), cor.coef.size = 4, ggp = NULL,
   show.legend.text = NA, ggtheme = theme_classic(), ...)
 }
 \arguments{
