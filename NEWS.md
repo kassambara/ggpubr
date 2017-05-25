@@ -2,34 +2,44 @@
    
 ## New features
    
-- New function `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5))
-     
-- New arguments - `facet.by, panel.labs and short.panel.labs`,  added in many ggpubr functions for faceting. These functions include:  
-   - ggboxplot()
-   - ggdotplot()
-   - ggstripchart()
-   - ggviolin()
-   - ggline()
+- New function `ggarrange()` to arrange multiple ggplots on the same page.
    
-- Now, in some ggpubr functions, the argument `y` can be a character vector of multiple variables to plot at once. This might be useful in genomic fields to plot the gene expression levels of multiple genes at once. see ggboxplot(), ggdotplot(), ggstripchart() and ggviolin().
+- New function `ggexport()` to export one or multiple ggplots to a file (pdf, eps, png, jpeg).
+  
+- New function `ggpaired()` to plot paired data.
     
+- Now, the argument `y` can be a character vector of multiple variables to plot at once. This might be useful in genomic fields to plot the gene expression levels of multiple genes at once. see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`.
+   
+   
+- The argument `x` can be a vector of multiple variables in `gghistogram()`, `ggdensity()`, `ggecdf()` and `ggqqplot()`.
     
-- New arguments `combine` added to combine multiple y variables on the same graph
-- New argument `merge` to merge multiple y variables in the same ploting area.
-- New argument `remove` to remove a specific item from a plot
-- New arguments added to show point labels
-     
-     
-- New function `add_summary()` to add summary statistics.
-- New function `ggadd()` to Add summary statistics or a geometry onto a ggplot.
+- New helper functions:
+    - `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5)).
+    - `add_summary()` to add summary statistics.
+    - `ggadd()` to add summary statistics or a geometry onto a ggplot.
+    - `stat_stars()` to add stars to a scatter plot.
+    - `stat_cor()` to add correlation coefficients with p-values to a scatter plot.
 
-- New arguments `grouping.vars`  in `ggtext()`. Grouping variables to sort the data by, when the user wants to display the top n up/down labels.
+- New arguments in ggpubr functions, see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`:
+    - `combine` added to combine multiple y variables on the same graph.
+    - `merge` to merge multiple y variables in the same ploting area.
+    - `select` to select which item to display.
+    - `remove` to remove a specific item from a plot.
+    - `order` to order plot items.
+    - `label, font.label, label.select, repel, label.rectangle` to add and customize labels
+    - `facet.by, panel.labs and short.panel.labs`: support for faceting and customization of plot panels
+    
+- New argument `grouping.vars`  in `ggtext()`. Grouping variables to sort the data by, when the user wants to display the top n up/down labels.
 
 - New arguments in `theme_pubr()`: 
     - border,
     - margin, 
     - legend,
     - x.text.angle
+    
+- New data set added: `gene_citation`
+
+- New arguments in `ggpar()`: `x.text.angle` and `y.text.angle`
       
       
 ## Major changes
@@ -48,15 +58,39 @@
 - `ggmaplot()` now handles situations, wehre there is only upregulated, or downlegulated gnes.
    
 ## To check
-add labels on boxplot:
-  label = "name", 
-  label.show = c(nam1, name2), 
-  label.show = list(top_up = 10, top_down = 10)
-  label.font = list(size, color, family)
-  
-https://cran.r-project.org/web/packages/ggsignif/vignettes/intro.html
+
+http://techqa.info/programming/question/29263046/how-to-draw-the-boxplot-with-significant-level
+
 https://cran.r-project.org/web/packages/ggpmisc/vignettes/user-guide.html
 http://techqa.info/programming/question/37536950/ggplot2:-add-p-values-to-the-plot
+
+```r
+formula <- y ~x
+df <- mtcars
+df$cyl <- as.factor(df$cyl)
+df$vs <- as.factor(df$vs)
+ggscatter(df, x = "wt", y = "mpg",
+          color = "cyl", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+          label = "name", repel = TRUE, add = "reg.line", cor.coef = TRUE)+
+  #facet_wrap(~cyl, scales = "free")+
+  stat_fit_glance(method = 'lm',
+                  method.args = list(formula = y ~x),
+                  geom = 'text',
+                  aes(label = paste("P-value = ", signif(..p.value.., digits = 4), sep = ""), color = cyl),
+                  label.x.npc = 'right', label.y.npc = 0.9, size = 3)+
+  stat_poly_eq(aes(label = paste(..rr.label..), color = cyl), 
+               label.x.npc = "right", label.y.npc = 0.8,
+               formula = y ~x, parse = TRUE, size = 3)+
+  stat_poly_eq(aes(label =  paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
+               formula = formula, parse = TRUE, geom = "label")
+```
+
+
+
+
+volcano plot:
+http://www.gettinggeneticsdone.com/2014/05/r-volcano-plots-to-visualize-rnaseq-microarray.html
+http://www.sthda.com/french/wiki/ggplot2-textes-ajouter-du-texte-a-un-graphique-logiciel-r-et-visualisation-de-donnees
 
 # ggpubr 0.1.2
    

@@ -34,7 +34,6 @@ Find out more at <http://www.sthda.com/english/rpkgs/ggpubr>.
 
 ``` r
 library(ggpubr)
-#> Loading required package: ggplot2
 # Create some data format
 # +++++++++++++++++++++++++++++++++++++++++++
 set.seed(1234)

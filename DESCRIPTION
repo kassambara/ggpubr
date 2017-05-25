@@ -25,7 +25,8 @@ Imports:
     utils,
     tidyr,
     purrr,
-    dplyr
+    dplyr,
+    cowplot
 Suggests:
     grDevices,
     knitr,
@@ -35,6 +36,7 @@ URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
 Collate: 
+    'utilities_base.R'
     'desc_statby.R'
     'utilities.R'
     'add_summary.R'
@@ -44,6 +46,7 @@ Collate:
     'geom_exec.R'
     'get_palette.R'
     'ggadd.R'
+    'ggarrange.R'
     'ggpar.R'
     'ggbarplot.R'
     'ggboxplot.R'
@@ -54,16 +57,22 @@ Collate:
     'ggdotplot.R'
     'ggecdf.R'
     'ggerrorplot.R'
+    'ggexport.R'
     'gghistogram.R'
     'ggline.R'
     'ggmaplot.R'
+    'ggpaired.R'
     'ggpie.R'
     'ggpubr_args.R'
     'ggqqplot.R'
+    'utilities_label.R'
+    'stat_cor.R'
+    'stat_stars.R'
     'ggscatter.R'
     'ggstripchart.R'
     'ggtext.R'
     'ggviolin.R'
+    'mean_comparison.R'
     'show_line_types.R'
     'show_point_shapes.R'
     'stat_mean.R'
