@@ -1,4 +1,4 @@
-#' @include utilities.R ggpar.R stat_chull.R stat_conf_ellipse.R
+#' @include utilities.R ggpar.R stat_chull.R stat_conf_ellipse.R stat_stars.R stat_cor.R
 NULL
 #' Scatter plot
 #' @description Create a scatter plot.
@@ -47,15 +47,19 @@ NULL
 #'   text, making it easier to read.
 #' @param cor.coef logical value. If TRUE, correlation coefficient with the
 #'   p-value will be added to the plot.
+#' @param cor.coeff.args a list of arguments to pass to the function
+#'   \code{\link{stat_cor}} for customizing the displayed correlation
+#'   coefficients. For example: \code{cor.coeff.args = list(method = "pearson",
+#'   label.x.npc = "right", label.y.npc = "top")}.
 #' @param cor.method method for computing correlation coefficient. Allowed
 #'   values are one of "pearson", "kendall", or "spearman".
 #' @param cor.coef.coord numeric vector, of length 2, specifying the x and y
 #'   coordinates of the correlation coefficient. Default values are NULL.
 #' @param cor.coef.size correlation coefficient text font size.
 #' @param ggp a ggplot. If not NULL, points are added to an existing plot.
-#' @param show.legend.text logical. Should text be included in the
-#'   legends? NA, the default, includes if any aesthetics are mapped. FALSE
-#'   never includes, and TRUE always includes.
+#' @param show.legend.text logical. Should text be included in the legends? NA,
+#'   the default, includes if any aesthetics are mapped. FALSE never includes,
+#'   and TRUE always includes.
 #' @param ... other arguments to be passed to \code{\link[ggplot2]{geom_point}}
 #'   and \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -65,7 +69,7 @@ NULL
 #'   palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
-#' @seealso \code{\link{ggpar}}
+#' @seealso \code{\link{stat_cor}}, \code{\link{stat_stars}}, \code{\link{stat_conf_ellipse}} and \code{\link{ggpar}}.
 #' @examples
 #' # Load data
 #' data("mtcars")
@@ -80,7 +84,8 @@ NULL
 #'    add = "reg.line",  # Add regressin line
 #'    add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
 #'    conf.int = TRUE, # Add confidence interval
-#'    cor.coef = TRUE # Add correlation coefficient
+#'    cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#'    cor.coeff.args = list(method = "pearson", label.x = 3, label.sep = "\n")
 #'    )
 #'
 #' # loess method: local regression fitting
@@ -133,7 +138,7 @@ ggscatter <- function(data, x, y,
                       star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
                       label = NULL,  font.label = c(12, "plain"), font.family = "",
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-                      cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
+                      cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 12,
                       ggp = NULL, show.legend.text = NA,
                       ggtheme = theme_classic(),
                       ...)
@@ -233,8 +238,8 @@ ggscatter <- function(data, x, y,
   # Star plots
   # ++++++++++++
   if(star.plot){
-    p <-.add_stars(p, data, x, y, color, fill, shape,
-                   star.plot.lty = star.plot.lty, star.plot.lwd = star.plot.lwd)
+    p <- p + .geom_exec(stat_stars, data = data,
+                        color = color, linetype = star.plot.lty, size = star.plot.lwd)
   }
 
   #/ star plots
@@ -279,14 +284,15 @@ ggscatter <- function(data, x, y,
   # Add correlation coefficient
   if(cor.coef){
 
-    coeff <- stats::cor.test(data[, x, drop = TRUE], data[, y, drop = TRUE],
-                             method = cor.method)
-    pval <- coeff$p.value
-    pvaltxt <- ifelse(pval < 1e-04, "p < 0.0001",
-                      paste("p =", signif(pval, 2)))
-     cortxt <- paste0("r = ", signif(coeff$estimate, 2),
-                     "\n",  pvaltxt)
-    p <- p + .ggannotate(cortxt, size = cor.coef.size, coord = cor.coef.coord)
+    if(!missing(cor.method))
+      cor.coeff.args$method <- cor.method
+    if(!missing(cor.coef.size))
+      cor.coeff.args$size <- cor.coef.size
+    if(!missing(cor.coef.coord)){
+      cor.coeff.args$label.x <- cor.coef.coord[1]
+      cor.coeff.args$label.y <- cor.coef.coord[2]
+    }
+     p <- p + do.call(stat_cor, cor.coeff.args)
   }
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
@@ -351,41 +357,3 @@ ggscatter <- function(data, x, y,
                        geom = 'polygon')
   }
 }
-
-
-# Add stars to a plot
-# +++++++++++++++++++++
-.add_stars <- function(p, data, x, y, color, fill, shape, star.plot.lty, star.plot.lwd){
-
-  grp <- intersect(unique(c(color, fill, shape, star.plot.lty)), colnames(data))[1]
-  data <- stats::na.omit(data)
-  # NO grouping variable
-  if(is.na(grp)) {
-    grp <- factor(rep(1, nrow(data)))
-    grp_name <- "group"
-    data$group <- grp
-  }
-  # Case of grouping variable
-  else {
-    grp_name <- grp
-    grp <- data[, grp_name]
-    if(!inherits(data[, grp_name], "factor")) data[, grp_name] <- as.factor(data[, grp_name])
-  }
-  dd <- cbind.data.frame(grp = grp, data[, c(x, y)])
-  # calculate group centroid locations
-  centroids <- stats::aggregate(data[, c(x, y)], by = list(grp = grp), mean)
-  # merge centroid locations into ggplot dataframe
-  dd <- merge(dd, centroids, by="grp", suffixes = c("",".centroid"))
-  colnames(dd)[1] <- grp_name
-
-  .coord <- paste0(c(x, y), ".centroid")
-
-  # Star plot
-  p + .geom_exec(geom_segment, data = dd, x = .coord[1], y = .coord[2],
-                 xend = x, yend = y, color = color, linetype = star.plot.lty,
-                 size = star.plot.lwd)
-}
-
-
-
-

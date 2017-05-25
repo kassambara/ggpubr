@@ -13,9 +13,9 @@ ggscatter(data, x, y, color = "black", fill = "lightgray", palette = NULL,
   size), star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
   label = NULL, font.label = c(12, "plain"), font.family = "",
   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  cor.coef = FALSE, cor.method = "pearson", cor.coef.coord = c(NULL,
-  NULL), cor.coef.size = 12, ggp = NULL, show.legend.text = NA,
-  ggtheme = theme_classic(), ...)
+  cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson",
+  cor.coef.coord = c(NULL, NULL), cor.coef.size = 12, ggp = NULL,
+  show.legend.text = NA, ggtheme = theme_classic(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -98,6 +98,11 @@ text, making it easier to read.}
 \item{cor.coef}{logical value. If TRUE, correlation coefficient with the
 p-value will be added to the plot.}
 
+\item{cor.coeff.args}{a list of arguments to pass to the function
+\code{\link{stat_cor}} for customizing the displayed correlation
+coefficients. For example: \code{cor.coeff.args = list(method = "pearson",
+label.x.npc = "right", label.y.npc = "top")}.}
+
 \item{cor.method}{method for computing correlation coefficient. Allowed
 values are one of "pearson", "kendall", or "spearman".}
 
@@ -108,9 +113,9 @@ coordinates of the correlation coefficient. Default values are NULL.}
 
 \item{ggp}{a ggplot. If not NULL, points are added to an existing plot.}
 
-\item{show.legend.text}{logical. Should text be included in the
-legends? NA, the default, includes if any aesthetics are mapped. FALSE
-never includes, and TRUE always includes.}
+\item{show.legend.text}{logical. Should text be included in the legends? NA,
+the default, includes if any aesthetics are mapped. FALSE never includes,
+and TRUE always includes.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -145,7 +150,8 @@ ggscatter(df, x = "wt", y = "mpg",
    add = "reg.line",  # Add regressin line
    add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
    conf.int = TRUE, # Add confidence interval
-   cor.coef = TRUE # Add correlation coefficient
+   cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+   cor.coeff.args = list(method = "pearson", label.x = 3, label.sep = "\\n")
    )
 
 # loess method: local regression fitting
@@ -188,5 +194,5 @@ ggscatter(df, x = "wt", y = "mpg",
 
 }
 \seealso{
-\code{\link{ggpar}}
+\code{\link{stat_cor}}, \code{\link{stat_stars}}, \code{\link{stat_conf_ellipse}} and \code{\link{ggpar}}.
 }
