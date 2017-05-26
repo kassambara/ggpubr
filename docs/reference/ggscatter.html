@@ -76,18 +76,21 @@
     <p>Create a scatter plot.</p>
     
 
-    <pre><span class='fu'>ggscatter</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>point</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>,
-  <span class='st'>"reg.line"</span>, <span class='st'>"loess"</span>), <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>fullrange</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ellipse.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ellipse.type</span> <span class='kw'>=</span> <span class='st'>"norm"</span>, <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mean.point.size</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>is.numeric</span>(<span class='no'>size</span>), <span class='fl'>2</span> * <span class='no'>size</span>,
-  <span class='no'>size</span>), <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre><span class='fu'>ggscatter</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>point</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"reg.line"</span>, <span class='st'>"loess"</span>), <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>fullrange</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ellipse.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ellipse.type</span> <span class='kw'>=</span> <span class='st'>"norm"</span>,
+  <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>mean.point.size</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>is.numeric</span>(<span class='no'>size</span>), <span class='fl'>2</span> * <span class='no'>size</span>, <span class='no'>size</span>),
+  <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>), <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>,
   <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>NULL</span>,
-  <span class='kw'>NULL</span>), <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.legend.text</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.coeff.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
+  <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>), <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>show.legend.text</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -95,6 +98,16 @@
       <dd>a data frame</dd>
       <dt>x, y</dt>
       <dd>x and y variables for drawing.</dd>
+      <dt>combine</dt>
+      <dd>logical value. Default is FALSE. Used only when y is a vector
+containing multiple variables to plot. If TRUE, create a multi-panel plot by
+combining the plot of y variables.</dd>
+      <dt>merge</dt>
+      <dd>logical or character value. Default is FALSE. Used only when y is
+a vector containing multiple variables to plot. If TRUE, merge multiple y
+variables in the same plotting area. Allowed values include also &quot;asis&quot;
+(TRUE) and &quot;flip&quot;. If merge = &quot;flip&quot;, then y variables are used as x tick
+labels and the x variable is used as grouping variable.</dd>
       <dt>color, fill</dt>
       <dd>point colors.</dd>
       <dt>palette</dt>
@@ -112,6 +125,27 @@ outlines.</dd>
       <dd>logical value. If TRUE, show points.</dd>
       <dt>rug</dt>
       <dd>logical value. If TRUE, add marginal rug.</dd>
+      <dt>title</dt>
+      <dd>plot main title.</dd>
+      <dt>xlab</dt>
+      <dd>character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.</dd>
+      <dt>ylab</dt>
+      <dd>character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.</dd>
+      <dt>facet.by</dt>
+      <dd>character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.</dd>
+      <dt>panel.labs</dt>
+      <dd>a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;)) specifies
+the labels for the &quot;sex&quot; variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;), rx = c(&quot;Obs&quot;,
+&quot;Lev&quot;, &quot;Lev2&quot;) ).</dd>
+      <dt>short.panel.labs</dt>
+      <dd>logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.</dd>
       <dt>add</dt>
       <dd>allowed values are one of &quot;none&quot;, &quot;reg.line&quot; (for adding linear
 regression line) or &quot;loess&quot; (for adding local regression fitting).</dd>
@@ -171,6 +205,11 @@ text, making it easier to read.</dd>
       <dt>cor.coef</dt>
       <dd>logical value. If TRUE, correlation coefficient with the
 p-value will be added to the plot.</dd>
+      <dt>cor.coeff.args</dt>
+      <dd>a list of arguments to pass to the function
+<code><a href='stat_cor.html'>stat_cor</a></code> for customizing the displayed correlation
+coefficients. For example: <code>cor.coeff.args = list(method = &quot;pearson&quot;,
+label.x.npc = &quot;right&quot;, label.y.npc = &quot;top&quot;)</code>.</dd>
       <dt>cor.method</dt>
       <dd>method for computing correlation coefficient. Allowed
 values are one of &quot;pearson&quot;, &quot;kendall&quot;, or &quot;spearman&quot;.</dd>
@@ -182,9 +221,9 @@ coordinates of the correlation coefficient. Default values are NULL.</dd>
       <dt>ggp</dt>
       <dd>a ggplot. If not NULL, points are added to an existing plot.</dd>
       <dt>show.legend.text</dt>
-      <dd>logical. Should text be included in the
-legends? NA, the default, includes if any aesthetics are mapped. FALSE
-never includes, and TRUE always includes.</dd>
+      <dd>logical. Should text be included in the legends? NA,
+the default, includes if any aesthetics are mapped. FALSE never includes,
+and TRUE always includes.</dd>
       <dt>ggtheme</dt>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -213,7 +252,7 @@ and <code><a href='ggpar.html'>ggpar</a></code>.</dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='ggpar.html'>ggpar</a></code></p>
+    <p><code><a href='stat_cor.html'>stat_cor</a></code>, <code><a href='stat_stars.html'>stat_stars</a></code>, <code><a href='stat_conf_ellipse.html'>stat_conf_ellipse</a></code> and <code><a href='ggpar.html'>ggpar</a></code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -232,7 +271,8 @@ and <code><a href='ggpar.html'>ggpar</a></code>.</dd>
    <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>,  <span class='co'># Add regressin line</span>
    <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>), <span class='co'># Customize reg. line</span>
    <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='co'># Add confidence interval</span>
-   <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>TRUE</span> <span class='co'># Add correlation coefficient</span>
+   <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='co'># Add correlation coefficient. see ?stat_cor</span>
+   <span class='kw'>cor.coeff.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)
    )</div><img src='ggscatter-4.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># loess method: local regression fitting</span>
 <span class='fu'>ggscatter</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,

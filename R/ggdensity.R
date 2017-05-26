@@ -23,7 +23,7 @@ NULL
 #'   palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
-#' @seealso \code{\link{ggpar}}
+#' @seealso \code{\link{gghistogram}} and \code{\link{ggpar}}.
 #'
 #' @examples
 #' # Create some data format

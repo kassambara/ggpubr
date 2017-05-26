@@ -178,5 +178,6 @@ ggdotplot(df, "dose", "len", fill = "supp", color = "supp",
 
 }
 \seealso{
-\code{\link{ggpar}}
+\code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggboxplot}}
+ and \code{\link{ggstripchart}}.
 }

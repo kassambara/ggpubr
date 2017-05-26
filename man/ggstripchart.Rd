@@ -208,5 +208,6 @@ ggstripchart(df, "dose", "len", shape = "supp",
 
 }
 \seealso{
-\code{\link{ggpar}}
+\code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}}
+ and \code{\link{ggboxplot}}.
 }

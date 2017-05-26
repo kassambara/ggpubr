@@ -40,7 +40,7 @@ reference:
     desc: Plotting data obtained from genomic data analyses.
     contents:
       - ggmaplot
-  - title: Arrange and Export
+  - title: Arrange and export multiple ggplots
     contents:
       - ggarrange
       - ggexport

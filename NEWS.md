@@ -63,6 +63,7 @@ http://techqa.info/programming/question/29263046/how-to-draw-the-boxplot-with-si
 
 https://cran.r-project.org/web/packages/ggpmisc/vignettes/user-guide.html
 http://techqa.info/programming/question/37536950/ggplot2:-add-p-values-to-the-plot
+http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html
 
 ```r
 formula <- y ~x

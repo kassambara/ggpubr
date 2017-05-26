@@ -149,5 +149,5 @@ ggdensity(wdata, x = "weight",
 
 }
 \seealso{
-\code{\link{ggpar}}
+\code{\link{gghistogram}} and \code{\link{ggpar}}.
 }

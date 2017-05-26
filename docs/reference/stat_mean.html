@@ -135,8 +135,9 @@ the default plot specification, e.g. <code>borders</code>.</dd>
 <span class='no'>df</span>$<span class='no'>cyl</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>(<span class='no'>df</span>$<span class='no'>cyl</span>)
 
 <span class='co'># Scatter plot with ellipses and group mean points</span>
-<span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)+
- <span class='fu'>stat_mean</span>(<span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>cyl</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='no'>cyl</span>))</div><img src='stat_mean-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
+   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)+
+ <span class='fu'>stat_mean</span>(<span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>cyl</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='no'>cyl</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><img src='stat_mean-2.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
