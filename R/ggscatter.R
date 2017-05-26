@@ -3,6 +3,8 @@ NULL
 #' Scatter plot
 #' @description Create a scatter plot.
 #' @inheritParams ggboxplot
+#' @inheritParams facet
+#' @inheritParams ggpar
 #' @param x,y x and y variables for drawing.
 #' @param color,fill point colors.
 #' @param shape point shape. See \code{\link{show_point_shapes}}.
@@ -127,7 +129,75 @@ NULL
 #'
 #'
 #' @export
-ggscatter <- function(data, x, y,
+ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
+                      color = "black", fill = "lightgray", palette = NULL,
+                      shape = 19, size = 2, point = TRUE,  rug = FALSE,
+                      title = NULL, xlab = NULL, ylab = NULL,
+                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+                      add = c("none", "reg.line", "loess"), add.params = list(),
+                      conf.int = FALSE, conf.int.level = 0.95, fullrange = FALSE,
+                      ellipse = FALSE, ellipse.level = 0.95,
+                      ellipse.type = "norm", ellipse.alpha = 0.1,
+                      mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2*size, size),
+                      star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
+                      label = NULL,  font.label = c(12, "plain"), font.family = "",
+                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                      cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 4,
+                      ggp = NULL, show.legend.text = NA,
+                      ggtheme = theme_pubr(),
+                      ...){
+
+
+  # Default options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    combine = combine, merge = merge,
+    color = color, fill = fill, palette = palette,
+    title = title, xlab = xlab, ylab = ylab,
+    facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
+    shape = shape, size = size, point = point,  rug = rug,
+    add = add, add.params = add.params,
+    conf.int = conf.int, conf.int.level = conf.int.level, fullrange = fullrange,
+    ellipse = ellipse, ellipse.level = ellipse.level,
+    ellipse.type = ellipse.type, ellipse.alpha = ellipse.alpha,
+    mean.point = mean.point, mean.point.size = mean.point.size,
+    star.plot = star.plot, star.plot.lty = star.plot.lty, star.plot.lwd = star.plot.lwd,
+    label = label, font.label = font.label, font.family = font.family,
+    label.select = label.select, repel = repel, label.rectangle = label.rectangle,
+    cor.coef = cor.coef, cor.coeff.args = cor.coeff.args, cor.method = cor.method,
+    cor.coef.coord = cor.coef.coord, cor.coef.size = cor.coef.size,
+    ggp = ggp, show.legend.text = show.legend.text, ggtheme = ggtheme, ...)
+
+  if(!missing(data)) .opts$data <- data
+  if(!missing(x)) .opts$x <- x
+  if(!missing(y)) .opts$y <- y
+
+  # User options
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .user.opts <- as.list(match.call(expand.dots = TRUE))
+  .user.opts[[1]] <- NULL # Remove the function name
+  # keep only user arguments
+  for(opt.name in names(.opts)){
+    if(is.null(.user.opts[[opt.name]]))
+      .opts[[opt.name]] <- NULL
+  }
+
+  font.label <- .parse_font(font.label) %>% .compact()
+  font.label$color <- ifelse(is.null(font.label$color), color, font.label$color)
+  .opts$font.label <- font.label
+
+  .opts$fun <- ggscatter_core
+  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+    .opts$ggtheme <- theme_pubr(border = TRUE)
+  p <- do.call(.plotter, .opts)
+
+  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  return(p)
+
+}
+
+
+ggscatter_core <- function(data, x, y,
                       color = "black", fill = "lightgray", palette = NULL,
                       shape = 19, size = 2, point = TRUE,  rug = FALSE,
                       add = c("none", "reg.line", "loess"), add.params = list(),
