@@ -2,14 +2,14 @@ templates:
   params:
     bootswatch: lumen
 reference:
-  - title: Plot one variable - X, Continuous
+  - title: Plot One Variable - X, Continuous
     desc:  Visualize distributions.
     contents:
       - ggdensity
       - gghistogram
       - ggecdf
       - ggqqplot
-  - title: Plot two variables - X and Y, Discrete X and Continuous Y
+  - title: Plot Two vVriables - X and Y, Discrete X and Continuous Y
     desc: Visualize data distributions by groups.
     contents:
       - ggboxplot
@@ -21,15 +21,17 @@ reference:
       - ggerrorplot
       - ggpie
       - ggdotchart
-  - title: Plot two continuous variables
+  - title: Plot Two Continuous Variables
     desc: Scatter plots
     contents:
       - ggscatter
-  - title: Plot paired data
+      - stat_cor
+      - stat_stars
+  - title: Plot Paired Data
     desc: Paired data
     contents:
       - ggpaired
-  - title: Graphical parameters
+  - title: Graphical Parameters
     desc: Change graphical parameters such as, titles, legend, colors, axis limits, scale transformation (log, sqrt), axis ticks and plot orientation (vertical, horizontal).
     contents:
       - ggpar
@@ -40,10 +42,13 @@ reference:
     desc: Plotting data obtained from genomic data analyses.
     contents:
       - ggmaplot
-  - title: Arrange and export multiple ggplots
+  - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange
       - ggexport
+  - title: Statistical Tests
+    contents:
+      - compare_means
   - title: Helpers
     contents:
       - facet
@@ -60,8 +65,6 @@ reference:
       - stat_chull
       - stat_conf_ellipse
       - stat_mean
-      - stat_stars
-      - stat_cor
 
 
 
