@@ -98,7 +98,7 @@ StatCor<- ggproto("StatCor", Stat,
   .cor <- stats::cor.test(x, y, method = method, exact = FALSE)
   z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method)
   pval <- .cor$p.value
-  pvaltxt <- ifelse(pval < 1e-04, "p < 0.0001",
+  pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16",
                     paste("p =", signif(pval, 2)))
   cortxt <- paste0("r = ", signif(.cor$estimate, 2),
                    label.sep,  pvaltxt)
