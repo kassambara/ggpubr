@@ -2,11 +2,12 @@
    
 ## New features
    
-- New function `ggarrange()` to arrange multiple ggplots on the same page.
-   
-- New function `ggexport()` to export one or multiple ggplots to a file (pdf, eps, png, jpeg).
-  
-- New function `ggpaired()` to plot paired data.
+- New functions:
+    - `ggarrange()` to arrange multiple ggplots on the same page.
+    - `ggexport()` to export one or multiple ggplots to a file (pdf, eps, png, jpeg).
+    - `ggpaired()` to plot paired data.
+    - `compare_means()` to compare the means of two or multiple groups. Returns a data frame
+    
     
 - Now, the argument `y` can be a character vector of multiple variables to plot at once. This might be useful in genomic fields to plot the gene expression levels of multiple genes at once. see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`.
    
@@ -19,6 +20,7 @@
     - `ggadd()` to add summary statistics or a geometry onto a ggplot.
     - `stat_stars()` to add stars to a scatter plot.
     - `stat_cor()` to add correlation coefficients with p-values to a scatter plot.
+    - `stat_compare_means()` to add p-values and significance levels to plots.
 
 - New arguments in ggpubr functions, see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`:
     - `combine` added to combine multiple y variables on the same graph.
@@ -59,13 +61,16 @@
    
 ## To check
 
+see http://www.tengfei.name/ggbio/docs/man/tracks.html for ggarrange
 http://techqa.info/programming/question/29263046/how-to-draw-the-boxplot-with-significant-level
 
-https://cran.r-project.org/web/packages/ggpmisc/vignettes/user-guide.html
-http://techqa.info/programming/question/37536950/ggplot2:-add-p-values-to-the-plot
+https://cran.rstudio.com/web/packages/ggpmisc/vignettes/a-user-guide.html
+
+
 http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html
 
 ```r
+library(ggpmisc)
 formula <- y ~x
 df <- mtcars
 df$cyl <- as.factor(df$cyl)
