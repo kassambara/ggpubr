@@ -7,6 +7,7 @@ NULL
 #' @importFrom dplyr mutate
 #' @importFrom dplyr do
 #' @importFrom dplyr summarise
+#' @importFrom dplyr everything
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2
