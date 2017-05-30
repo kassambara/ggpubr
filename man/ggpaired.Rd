@@ -4,10 +4,10 @@
 \alias{ggpaired}
 \title{Plot Paired Data}
 \usage{
-ggpaired(data, cond1, cond2, color = "black", fill = "white",
-  palette = NULL, width = 0.5, point.size = 1.2, line.size = 0.5,
-  line.color = "black", title = NULL, xlab = "Condition",
-  ylab = "Value", ggtheme = theme_pubr(), ...)
+ggpaired(data, cond1, cond2, x = NULL, y = NULL, color = "black",
+  fill = "white", palette = NULL, width = 0.5, point.size = 1.2,
+  line.size = 0.5, line.color = "black", title = NULL,
+  xlab = "Condition", ylab = "Value", ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -16,9 +16,15 @@ ggpaired(data, cond1, cond2, color = "black", fill = "white",
 
 \item{cond2}{variable name corresponding to the second condition.}
 
-\item{color}{points and boxs plot colors. To color by conditions, use color = "condition".}
+\item{x, y}{x and y variables, where x is a grouping variable and y contains
+values for each group. Considered only when \code{cond1} and \code{cond2}
+are missing.}
 
-\item{fill}{box plot fill color. To change fill color by conditions, use fill = "condition".}
+\item{color}{points and boxs plot colors. To color by conditions, use color =
+"condition".}
+
+\item{fill}{box plot fill color. To change fill color by conditions, use fill
+= "condition".}
 
 \item{palette}{the color palette to be used for coloring or filling by groups.
 Allowed values include "grey" for grey color palettes; brewer palettes e.g.
@@ -51,6 +57,8 @@ Plot paired data.
 }
 \examples{
 
+# Example 1
+#::::::::::::::::::::::::::::::::::::::::::
 before <-c(200.1, 190.9, 192.7, 213, 241.4, 196.9, 172.2, 185.5, 205.2, 193.7)
 after <-c(392.9, 393.2, 345.1, 393, 434, 427.9, 422, 383.9, 392.3, 352.2)
 
@@ -58,5 +66,10 @@ d <- data.frame(before = before, after = after)
 ggpaired(d, cond1 = "before", cond2 = "after",
     fill = "condition", palette = "jco")
 
+# Example 2
+#::::::::::::::::::::::::::::::::::::::::::
+ggpaired(ToothGrowth, x = "supp", y = "len",
+ color = "supp", line.color = "gray", line.size = 0.4,
+ palette = "npg")
 
 }
