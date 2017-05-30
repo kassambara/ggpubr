@@ -7,8 +7,9 @@
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Returns a data frame with x, y, hjust, vjust
 .label_params <- function(data, scales, label.x.npc = "left", label.y.npc = "right",
-                          label.x = NULL, label.y = NULL){
+                          label.x = NULL, label.y = NULL, .by = c("group", "panel")){
 
+  .by <- match.arg(.by)
   # Check label coordinates for each group
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   group.id <- group.id <- abs(data$group[1])
@@ -64,6 +65,10 @@
         vjust <- 1.4 * group.id
       }
     }
+  }
+  if(.by == "panel"){
+    hjust <- 0.5
+    vjust = 0.5
   }
 
   data.frame(x = x, y = y, hjust = hjust, vjust = vjust)
