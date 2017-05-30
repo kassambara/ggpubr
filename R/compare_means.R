@@ -14,10 +14,12 @@ NULL
 #'  values include: \itemize{ \item \code{\link[stats]{t.test}} (parametric) and
 #'  \code{\link[stats]{wilcox.test}} (non-parametric). Perform comparison
 #'  between two groups of samples. If the grouping variable contains more than
-#'  two levels, then a pairwise comparison is performed.
-#'  \item \code{\link[stats]{anova}} (parametric) and
-#'  \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA test comparing multiple groups.
-#'  }
+#'  two levels, then a pairwise comparison is performed. \item
+#'  \code{\link[stats]{anova}} (parametric) and
+#'  \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
+#'  test comparing multiple groups. }
+#'@param paired a logical indicating whether you want a paired test. Used only
+#'  in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.
 #'@param group.by  a character vector containing the name of grouping variables.
 #'@param ref.group a character string specifying the reference group. If
 #'  specified, for a given grouping variable, each of the group levels will be
@@ -29,7 +31,7 @@ NULL
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 #'  example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
 #'  0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "+", "NS")))}.
-#' @return return a data frame.
+#'@return return a data frame.
 #'@param ... Other arguments to be passed to the test function.
 #' @examples
 #' # Load data
@@ -75,9 +77,27 @@ NULL
 #' @rdname compare_means
 #' @export
 compare_means <- function(formula, data, method = "wilcox.test",
+                          paired = FALSE,
                           group.by = NULL, ref.group = NULL,
                           symnum.args = list(),  ...)
 {
+
+  allowed.methods <- list(
+    t = "t.test", t.test = "t.test", student = "t.test",
+    wiloxon = "wilcox.test", wilcox = "wilcox.test", wilcox.test = "wilcox.test",
+    anova = "anova", aov = "anova",
+    kruskal = "kruskal.test", kruskal.test = "kruskal.test")
+
+  method.names <- list(
+     t.test = "T-test", wilcox.test = "Wilcoxon",
+    anova = "Anova", kruskal.test = "Kruskal-Wallis")
+
+  if(!(method %in% names(allowed.methods)))
+    stop("Non-supported method specified. Allowed methods are one of: ",
+         .collapse(allowed.methods, sep =", "))
+  method <- allowed.methods[[method]]
+  method.name <- method.names[[method]]
+
 
   if(.is_empty(symnum.args))
     symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05, 0.1, 1),
@@ -150,7 +170,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     test.func <- .test_multigroups
 
   if(is.null(group.by)){
-    res <- test.func(formula = formula, data = data, method = method,  ...)
+    res <- test.func(formula = formula, data = data, method = method, paired = paired, ...)
   }
   else{
     grouped.d <- .group_by(data, group.by)
@@ -175,7 +195,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
   pvalue.format <- format.pval(res$p.value, digits = 2)
   res <- res %>%
     mutate(p.value.format = pvalue.format, p.value.signif = pvalue.signif,
-           method = method)
+           method = method.name)
 
   # Select only reference groups if any
   #::::::::::::::::::::::::::::::::::::::::::::::::::::::::

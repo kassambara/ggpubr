@@ -4,6 +4,7 @@ NULL
 #' @description Add mean comprison p-values to a ggplot, such as box blots, dot
 #'   plots and stripcharts.
 #' @inheritParams ggplot2::layer
+#' @inheritParams compare_means
 #' @param method a character string indicating which method to be used for
 #'   comparing means.
 #' @param label.sep a character string to separate the terms. Default is ", ",
@@ -51,7 +52,7 @@ NULL
 #'
 #' @export
 stat_compare_means <- function(mapping = NULL, data = NULL,
-                     method = "anova", label.sep = ", ",
+                     method = NULL, paired = FALSE, label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
@@ -61,7 +62,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
                   label.x = label.x, label.y = label.y, label.sep = label.sep,
-                  method = method, na.rm = na.rm, ...)
+                  method = method, paired = paired, na.rm = na.rm, ...)
   )
 }
 
@@ -70,22 +71,32 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                   required_aes = c("x", "y"),
                   default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
 
-                  compute_panel = function(data, scales, method, label.x.npc, label.y.npc,
+                  compute_panel = function(data, scales, method, paired, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep)
                     {
-                    # Returns a data frame with estimate, p.value, label, method
-                    if(all(data$x == data$group))
-                      .test <- compare_means(y~x, data = data, method = method)
+
+                    x.levels <- .levels(data$x)
+
+                    if(all(data$x == data$group)){
+                      if(length(x.levels) == 2 & is.null(method))
+                        method <- "wilcox.test"
+                      else if(is.null(method))
+                        method <- "anova"
+                      .test <- compare_means(y~x, data = data, method = method, paired = paired)
+                    }
                     else
-                      .test <- compare_means(y~group, data = data, method = method, group.by = "x")
+                      .test <- compare_means(y~group, data = data, method = method, group.by = "x",
+                                             paired = paired)
+
                     pvaltxt <- ifelse(.test$p.value < 2.2e-16, "p < 2.2e-16",
                                       paste("p =", signif(.test$p.value, 2)))
                     .test$label <- paste(.test$method, pvaltxt, sep =  label.sep)
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
                                                 label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-                                                label.x = label.x, label.y = label.y )
-                    cbind(.test, .label.pms)
+                                                label.x = label.x, label.y = label.y, .by = "panel" )
+                    res <- cbind(.test, .label.pms)
+                    res
                   }
 
 )

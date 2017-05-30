@@ -4,10 +4,11 @@
 \alias{stat_compare_means}
 \title{Add Mean Comparison P-values to a ggplot}
 \usage{
-stat_compare_means(mapping = NULL, data = NULL, method = "anova",
-  label.sep = ", ", label.x.npc = "left", label.y.npc = "top",
-  label.x = NULL, label.y = NULL, geom = "text", position = "identity",
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...)
+stat_compare_means(mapping = NULL, data = NULL, method = NULL,
+  paired = FALSE, label.sep = ", ", label.x.npc = "left",
+  label.y.npc = "top", label.x = NULL, label.y = NULL, geom = "text",
+  position = "identity", na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -31,6 +32,9 @@ plot. You must supply \code{mapping} if there is no plot mapping.}
 
 \item{method}{a character string indicating which method to be used for
 comparing means.}
+
+\item{paired}{a logical indicating whether you want a paired test. Used only
+in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 
 \item{label.sep}{a character string to separate the terms. Default is ", ",
 to separate the correlation coefficient and the p.value.}

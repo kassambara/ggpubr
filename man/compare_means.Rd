@@ -4,8 +4,8 @@
 \alias{compare_means}
 \title{Comparison of Means}
 \usage{
-compare_means(formula, data, method = "wilcox.test", group.by = NULL,
-  ref.group = NULL, symnum.args = list(), ...)
+compare_means(formula, data, method = "wilcox.test", paired = FALSE,
+  group.by = NULL, ref.group = NULL, symnum.args = list(), ...)
 }
 \arguments{
 \item{formula}{a formula of the form \code{x ~ group} where \code{x} is a
@@ -22,10 +22,13 @@ compare_means(formula, data, method = "wilcox.test", group.by = NULL,
 values include: \itemize{ \item \code{\link[stats]{t.test}} (parametric) and
 \code{\link[stats]{wilcox.test}} (non-parametric). Perform comparison
 between two groups of samples. If the grouping variable contains more than
-two levels, then a pairwise comparison is performed.
-\item \code{\link[stats]{anova}} (parametric) and
-\code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA test comparing multiple groups.
-}}
+two levels, then a pairwise comparison is performed. \item
+\code{\link[stats]{anova}} (parametric) and
+\code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
+test comparing multiple groups. }}
+
+\item{paired}{a logical indicating whether you want a paired test. Used only
+in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 
 \item{group.by}{a character vector containing the name of grouping variables.}
 
