@@ -5,7 +5,8 @@
 \title{Comparison of Means}
 \usage{
 compare_means(formula, data, method = "wilcox.test", paired = FALSE,
-  group.by = NULL, ref.group = NULL, symnum.args = list(), ...)
+  group.by = NULL, ref.group = NULL, symnum.args = list(),
+  p.adjust.method = "holm", ...)
 }
 \arguments{
 \item{formula}{a formula of the form \code{x ~ group} where \code{x} is a
@@ -43,6 +44,16 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
 0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "+", "NS")))}.}
+
+\item{p.adjust.method}{method for adjusting p values (see
+ \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
+ multiple pairwise tests are performed; or when there are multiple grouping variables.
+ Allowed values include "holm", "hochberg", "hommel", "bonferroni", "BH",
+ "BY", "fdr", "none". If you don't want to adjust the p value (not
+ recommended), use p.adjust.method = "none".
+
+ Note that, when the \code{formula} contains multiple variables, the p-value
+ adjustment is done independently for each variable.}
 
 \item{...}{Other arguments to be passed to the test function.}
 }

@@ -31,6 +31,15 @@ NULL
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 #'  example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
 #'  0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "+", "NS")))}.
+#'@param p.adjust.method method for adjusting p values (see
+#'  \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
+#'  multiple pairwise tests are performed; or when there are multiple grouping variables.
+#'  Allowed values include "holm", "hochberg", "hommel", "bonferroni", "BH",
+#'  "BY", "fdr", "none". If you don't want to adjust the p value (not
+#'  recommended), use p.adjust.method = "none".
+#'
+#'  Note that, when the \code{formula} contains multiple variables, the p-value
+#'  adjustment is done independently for each variable.
 #'@return return a data frame.
 #'@param ... Other arguments to be passed to the test function.
 #' @examples
@@ -79,7 +88,7 @@ NULL
 compare_means <- function(formula, data, method = "wilcox.test",
                           paired = FALSE,
                           group.by = NULL, ref.group = NULL,
-                          symnum.args = list(),  ...)
+                          symnum.args = list(), p.adjust.method = "holm", ...)
 {
 
   allowed.methods <- list(
@@ -170,13 +179,15 @@ compare_means <- function(formula, data, method = "wilcox.test",
     test.func <- .test_multigroups
 
   if(is.null(group.by)){
-    res <- test.func(formula = formula, data = data, method = method, paired = paired, ...)
+    res <- test.func(formula = formula, data = data, method = method,
+                     paired = paired, p.adjust.method = "none", ...)
   }
   else{
     grouped.d <- .group_by(data, group.by)
-    pvalues <- purrr::map(grouped.d$data, test.func, formula = formula, method = method, ...)
-    res <- grouped.d %>% mutate(p.value = pvalues) %>%
-      dplyr::select_(.dots = c(group.by, "p.value")) %>%
+    pvalues <- purrr::map(grouped.d$data, test.func, formula = formula,
+                          method = method, paired = paired, p.adjust.method = "none",...)
+    res <- grouped.d %>% mutate(p = pvalues) %>%
+      dplyr::select_(.dots = c(group.by, "p")) %>%
       tidyr::unnest()
   }
 
@@ -187,16 +198,6 @@ compare_means <- function(formula, data, method = "wilcox.test",
     dplyr::mutate(.y. = variables) %>%
     dplyr::select_(.dots = c(group.by, ".y.", "dplyr::everything()"))
 
-  # Formatting pvalues and adding significance symbols
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::
-  symnum.args$x <- res$p.value
-  pvalue.signif <- do.call(stats::symnum, symnum.args) %>%
-    as.character()
-  pvalue.format <- format.pval(res$p.value, digits = 2)
-  res <- res %>%
-    mutate(p.value.format = pvalue.format, p.value.signif = pvalue.signif,
-           method = method.name)
-
   # Select only reference groups if any
   #::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   if(!is.null(ref.group)){
@@ -204,6 +205,22 @@ compare_means <- function(formula, data, method = "wilcox.test",
     group1 <- NULL
     res <- res %>% dplyr::filter(group1 == ref.group)
   }
+
+  # Formatting and adjusting pvalues, and adding significance symbols
+  #:::::::::::::::::::::::::::::::::::::::::::::::::::::
+  symnum.args$x <- res$p
+  pvalue.signif <- do.call(stats::symnum, symnum.args) %>%
+    as.character()
+
+  pvalue.format <- format.pval(res$p, digits = 2)
+
+  .y. <- NULL
+  .p.adjust <- function(d, ...) {data.frame(p.adj = stats::p.adjust(d$p, ...))}
+  by_y <- res %>% group_by(.y.)
+  pvalue.adj <- do(by_y, .p.adjust(., method = p.adjust.method))
+  res <- res %>%
+    mutate(p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
+           method = method.name)
 
   return(res)
 }
@@ -243,7 +260,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
   else test.opts <- list(formula = formula, data = data, ...)
   if(method == "wilcox.test") test.opts$exact <- FALSE
 
-  res <- data.frame(p.value = do.call(test, test.opts)$p.value)
+  res <- data.frame(p = do.call(test, test.opts)$p.value)
   group1 <- group2 <- NULL
 
   if(!.is_empty(group)){
@@ -287,12 +304,12 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   pvalues <- do.call(test, test.opts)$p.value %>%
     as.data.frame()
-  group1 <- group2 <- p.value <- NULL
+  group1 <- group2 <- p <- NULL
   pvalues$group2 <- rownames(pvalues)
   pvalues <- pvalues %>%
-    tidyr::gather(key = "group1", value = "p.value", -group2) %>%
-    dplyr::select(group1, group2, p.value) %>%
-    dplyr::filter(!is.na(p.value))
+    tidyr::gather(key = "group1", value = "p", -group2) %>%
+    dplyr::select(group1, group2, p) %>%
+    dplyr::filter(!is.na(p))
   pvalues
 }
 
@@ -313,7 +330,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     pvalue <- stats::kruskal.test(formula, data = data)$p.value
   }
 
-  data.frame(p.value = pvalue)
+  data.frame(p = pvalue)
 }
 
 
