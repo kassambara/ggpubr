@@ -30,17 +30,33 @@ NULL
 #'@param symnum.args a list of arguments to pass to the function
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 #'  example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
-#'  0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "+", "NS")))}.
+#'  0.01, 0.05, 1), symbols = c("****", "***", "**", "*",  "ns")))}.
+#'
+#'  In other words, we use the following convention for symbols indicating
+#'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
+#'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }
 #'@param p.adjust.method method for adjusting p values (see
 #'  \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
-#'  multiple pairwise tests are performed; or when there are multiple grouping variables.
-#'  Allowed values include "holm", "hochberg", "hommel", "bonferroni", "BH",
-#'  "BY", "fdr", "none". If you don't want to adjust the p value (not
-#'  recommended), use p.adjust.method = "none".
+#'  multiple pairwise tests are performed; or when there are multiple grouping
+#'  variables. Allowed values include "holm", "hochberg", "hommel",
+#'  "bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
+#'  value (not recommended), use p.adjust.method = "none".
 #'
 #'  Note that, when the \code{formula} contains multiple variables, the p-value
 #'  adjustment is done independently for each variable.
-#'@return return a data frame.
+#'@return return a data frame with the following columns:
+#'\itemize{
+#'\item \code{.y.}: the y variable used in the test.
+#'\item \code{group1,group2}: the compared groups in the pairwise tests.
+#'Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
+#'\item \code{p}: the p-value.
+#'\item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
+#'\item \code{p.format}: the formatted p-value.
+#'\item \code{p.signif}: the significance level.
+#'\item \code{method}: the statistical test used to compare groups.
+#'
+#'
+#'}
 #'@param ... Other arguments to be passed to the test function.
 #' @examples
 #' # Load data
@@ -91,26 +107,15 @@ compare_means <- function(formula, data, method = "wilcox.test",
                           symnum.args = list(), p.adjust.method = "holm", ...)
 {
 
-  allowed.methods <- list(
-    t = "t.test", t.test = "t.test", student = "t.test",
-    wiloxon = "wilcox.test", wilcox = "wilcox.test", wilcox.test = "wilcox.test",
-    anova = "anova", aov = "anova",
-    kruskal = "kruskal.test", kruskal.test = "kruskal.test")
+  . <- NULL
 
-  method.names <- list(
-     t.test = "T-test", wilcox.test = "Wilcoxon",
-    anova = "Anova", kruskal.test = "Kruskal-Wallis")
-
-  if(!(method %in% names(allowed.methods)))
-    stop("Non-supported method specified. Allowed methods are one of: ",
-         .collapse(allowed.methods, sep =", "))
-  method <- allowed.methods[[method]]
-  method.name <- method.names[[method]]
-
+  method.info <- .method_info(method)
+  method <- method.info$method
+  method.name <- method.info$name
 
   if(.is_empty(symnum.args))
-    symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05, 0.1, 1),
-                        symbols = c("****", "***", "**", "*", "+", "NS"))
+    symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05,  1),
+                        symbols = c("****", "***", "**", "*",  "ns"))
 
   if(!inherits(data, "data.frame"))
     stop("data must be a data.frame.")
@@ -222,28 +227,36 @@ compare_means <- function(formula, data, method = "wilcox.test",
     mutate(p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
            method = method.name)
 
-  return(res)
+  res %>%
+    dplyr::tbl_df()
 }
 
 
+# Check and get test method info
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# return a list(method, name)
+.method_info <- function(method){
 
-.group_by <- function(data, grouping.vars){
+  if(is.null(method))
+    method = "wilcox.test"
 
-  . <- NULL # used in pipes
+  allowed.methods <- list(
+    t = "t.test", t.test = "t.test", student = "t.test",
+    wiloxon = "wilcox.test", wilcox = "wilcox.test", wilcox.test = "wilcox.test",
+    anova = "anova", aov = "anova",
+    kruskal = "kruskal.test", kruskal.test = "kruskal.test")
 
-  # Grouping the data ==> list of data sets
-  #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  grouped.d <- dplyr::group_by_(.data = data, .dots = grouping.vars) %>%
-    tidyr::nest()
+  method.names <- list(
+    t.test = "T-test", wilcox.test = "Wilcoxon",
+    anova = "Anova", kruskal.test = "Kruskal-Wallis")
 
-  # Defining names for the list of data sets.
-  #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  # names = combination of the levels of the grouping variables
-  .names.df <- grouped.d[, grouping.vars, drop = FALSE]
-  .names <- .paste_colnames(.names.df, sep = ":") %>%
-    apply(1, paste, collapse = ", ")
-  names(grouped.d$data) <- .names
-  return(grouped.d)
+  if(!(method %in% names(allowed.methods)))
+    stop("Non-supported method specified. Allowed methods are one of: ",
+         .collapse(allowed.methods, sep =", "))
+  method <- allowed.methods[[method]]
+  method.name <- method.names[[method]]
+
+  list(method = method, name = method.name)
 }
 
 # Comparing two groups
@@ -333,30 +346,6 @@ compare_means <- function(formula, data, method = "wilcox.test",
   data.frame(p = pvalue)
 }
 
-
-# Pasting the column name to each value of a dataframe
-#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-.paste_colnames <- function(data, sep = "."){
-
-  data <- as.data.frame(data)
-
-  if(ncol(data) == 1){
-
-    res <- paste0(colnames(data), ".", data[[1]])
-    res <- data.frame(x = res, stringsAsFactors = FALSE)
-    colnames(res) <- colnames(data)
-    return(res)
-  }
-
-  res <- apply(data, 1,
-               function(row, cname){paste(cname, row, sep = sep)},
-               colnames(data)
-  ) %>%
-    t() %>%
-    as.data.frame(stringsAsFactors = FALSE)
-  colnames(res) <- colnames(data)
-  res
-}
 
 
 # Formula with multiple response variables

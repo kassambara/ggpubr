@@ -41,16 +41,20 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
  grouping variable levels is compared to all (i.e. basemean).}
 
 \item{symnum.args}{a list of arguments to pass to the function
-\code{\link[stats]{symnum}} for symbolic number coding of p-values. For
-example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
-0.01, 0.05, 0.1, 1), symbols = c("****", "***", "**", "*", "+", "NS")))}.}
+ \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
+ example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
+ 0.01, 0.05, 1), symbols = c("****", "***", "**", "*",  "ns")))}.
+
+ In other words, we use the following convention for symbols indicating
+ statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
+ \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }}
 
 \item{p.adjust.method}{method for adjusting p values (see
  \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
- multiple pairwise tests are performed; or when there are multiple grouping variables.
- Allowed values include "holm", "hochberg", "hommel", "bonferroni", "BH",
- "BY", "fdr", "none". If you don't want to adjust the p value (not
- recommended), use p.adjust.method = "none".
+ multiple pairwise tests are performed; or when there are multiple grouping
+ variables. Allowed values include "holm", "hochberg", "hommel",
+ "bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
+ value (not recommended), use p.adjust.method = "none".
 
  Note that, when the \code{formula} contains multiple variables, the p-value
  adjustment is done independently for each variable.}
@@ -58,7 +62,19 @@ example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
 \item{...}{Other arguments to be passed to the test function.}
 }
 \value{
-return a data frame.
+return a data frame with the following columns:
+\itemize{
+\item \code{.y.}: the y variable used in the test.
+\item \code{group1,group2}: the compared groups in the pairwise tests.
+Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
+\item \code{p}: the p-value.
+\item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
+\item \code{p.format}: the formatted p-value.
+\item \code{p.signif}: the significance level.
+\item \code{method}: the statistical test used to compare groups.
+
+
+}
 }
 \description{
 Performs one or multiple mean comparisons.
