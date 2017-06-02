@@ -9,7 +9,7 @@ reference:
       - gghistogram
       - ggecdf
       - ggqqplot
-  - title: Plot Two vVriables - X and Y, Discrete X and Continuous Y
+  - title: Plot Two Vriables - X and Y, Discrete X and Continuous Y
     desc: Visualize data distributions by groups.
     contents:
       - ggboxplot
@@ -31,6 +31,14 @@ reference:
     desc: Paired data
     contents:
       - ggpaired
+  - title: Comparing Means and Adding p-values
+    contents:
+      - compare_means
+      - stat_compare_means
+  - title: Genomics
+    desc: Plotting data obtained from genomic data analyses.
+    contents:
+      - ggmaplot
   - title: Graphical Parameters
     desc: Change graphical parameters such as, titles, legend, colors, axis limits, scale transformation (log, sqrt), axis ticks and plot orientation (vertical, horizontal).
     contents:
@@ -38,17 +46,10 @@ reference:
       - theme_pubr
       - show_line_types
       - show_point_shapes
-  - title: Genomics
-    desc: Plotting data obtained from genomic data analyses.
-    contents:
-      - ggmaplot
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange
       - ggexport
-  - title: Statistical Tests
-    contents:
-      - compare_means
   - title: Helpers
     contents:
       - facet
