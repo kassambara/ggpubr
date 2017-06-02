@@ -77,7 +77,8 @@
   plots and stripcharts.</p>
     
 
-    <pre><span class='fu'>stat_compare_means</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>,
+    <pre><span class='fu'>stat_compare_means</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
   <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
   <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
@@ -106,6 +107,23 @@ plot. You must supply <code>mapping</code> if there is no plot mapping.</dd>
       <dt>method</dt>
       <dd>a character string indicating which method to be used for
 comparing means.</dd>
+      <dt>paired</dt>
+      <dd>a logical indicating whether you want a paired test. Used only
+in <code><a href='http://www.rdocumentation.org/packages/stats/topics/t.test'>t.test</a></code> and in <a href='http://www.rdocumentation.org/packages/stats/topics/wilcox.test'>wilcox.test</a>.</dd>
+      <dt>ref.group</dt>
+      <dd>a character string specifying the reference group. If
+ specified, for a given grouping variable, each of the group levels will be
+ compared to the reference group (i.e. control group).
+
+ <code>ref.group</code> can be also <code>&quot;.all.&quot;</code>. In this case, each of the
+ grouping variable levels is compared to all (i.e. basemean).</dd>
+      <dt>comparisons</dt>
+      <dd>A list of length-2 vectors. The entries in the vector are
+either the names of 2 values on the x-axis or the 2 integers that
+correspond to the index of the groups of interest, to be compared.</dd>
+      <dt>hide.ns</dt>
+      <dd>logical value. If TRUE, hide ns symbol when displaying
+significance levels.</dd>
       <dt>label.sep</dt>
       <dd>a character string to separate the terms. Default is &quot;, &quot;,
 to separate the correlation coefficient and the p.value.</dd>
@@ -151,30 +169,59 @@ the default plot specification, e.g. <code>borders</code>.</dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='ggscatter.html'>ggscatter</a></code></p>
+    <p><code><a href='compare_means.html'>compare_means</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Load data</span>
-<span class='fu'>data</span>(<span class='st'>"mtcars"</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span>
-<span class='no'>df</span>$<span class='no'>cyl</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>(<span class='no'>df</span>$<span class='no'>cyl</span>)
-
-<span class='co'># Scatter plot with correlation coefficient</span>
+<span class='fu'>data</span>(<span class='st'>"ToothGrowth"</span>)
+<span class='fu'>head</span>(<span class='no'>ToothGrowth</span>)</div><div class='output co'>#&gt;    len supp dose
+#&gt; 1  4.2   VC  0.5
+#&gt; 2 11.5   VC  0.5
+#&gt; 3  7.3   VC  0.5
+#&gt; 4  5.8   VC  0.5
+#&gt; 5  6.4   VC  0.5
+#&gt; 6 10.0   VC  0.5</div><div class='input'>
+<span class='co'># Two independent groups</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class='no'>sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>,  <span class='co'># Add regressin line</span>
-   <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>), <span class='co'># Customize reg. line</span>
-   <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span> <span class='co'># Add confidence interval</span>
-   )
-<span class='co'># Add correlation coefficient</span>
-<span class='no'>sp</span> + <span class='fu'><a href='stat_cor.html'>stat_cor</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>30</span>)</div><img src='stat_compare_means-2.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Color by groups and facet</span>
-<span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class='no'>sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
-   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>sp</span> + <span class='fu'><a href='stat_cor.html'>stat_cor</a></span>(<span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>cyl</span>), <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><img src='stat_compare_means-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>)
+
+<span class='co'>#  Add p-value</span>
+<span class='no'>p</span> + <span class='fu'>stat_compare_means</span>()</div><img src='stat_compare_means-4.png' alt='' width='540' height='400' /><div class='input'><span class='co'># Change method</span>
+<span class='no'>p</span> + <span class='fu'>stat_compare_means</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>)</div><img src='stat_compare_means-6.png' alt='' width='540' height='400' /><div class='input'>
+ <span class='co'># Paired samples</span>
+ <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::</span>
+ <span class='fu'><a href='ggpaired.html'>ggpaired</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>line.color</span> <span class='kw'>=</span> <span class='st'>"gray"</span>, <span class='kw'>line.size</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)+
+ <span class='fu'>stat_compare_means</span>(<span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><img src='stat_compare_means-8.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># More than two groups</span>
+<span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='co'># Pairwise comparisons: Specify the comparisons you want</span>
+<span class='no'>my_comparisons</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>( <span class='fu'>c</span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>), <span class='fu'>c</span>(<span class='st'>"0.5"</span>, <span class='st'>"2"</span>) )
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+          <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)+
+<span class='co'># Add pairwise comparisons p-value</span>
+<span class='fu'>stat_compare_means</span>(<span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>29</span>, <span class='fl'>35</span>, <span class='fl'>40</span>))+
+<span class='fu'>stat_compare_means</span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>45</span>)     <span class='co'># Add global Anova p-value</span></div><img src='stat_compare_means-10.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Multiple pairwise test against a reference group</span>
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+    <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)+
+<span class='fu'>stat_compare_means</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>40</span>)+ <span class='co'># Add global p-value</span>
+<span class='fu'>stat_compare_means</span>(<span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>..p.signif..</span>),
+                  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><img src='stat_compare_means-12.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Multiple grouping variables</span>
+<span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='co'># Box plot facetted by "dose"</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+              <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>,
+              <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>,
+              <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'># Use only p.format as label. Remove method name.</span>
+<span class='no'>p</span> + <span class='fu'>stat_compare_means</span>(
+ <span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"p = "</span>, <span class='no'>..p.format..</span>))
+)</div><img src='stat_compare_means-14.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

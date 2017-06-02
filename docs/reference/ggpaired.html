@@ -76,10 +76,13 @@
     <p>Plot paired data.</p>
     
 
-    <pre><span class='fu'>ggpaired</span>(<span class='no'>data</span>, <span class='no'>cond1</span>, <span class='no'>cond2</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>point.size</span> <span class='kw'>=</span> <span class='fl'>1.2</span>, <span class='kw'>line.size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>line.color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Condition"</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Value"</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>ggpaired</span>(<span class='no'>data</span>, <span class='no'>cond1</span>, <span class='no'>cond2</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>point.size</span> <span class='kw'>=</span> <span class='fl'>1.2</span>, <span class='kw'>line.size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>line.color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Condition"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Value"</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>), <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -89,10 +92,19 @@
       <dd>variable name corresponding to the first condition.</dd>
       <dt>cond2</dt>
       <dd>variable name corresponding to the second condition.</dd>
+      <dt>x, y</dt>
+      <dd>x and y variables, where x is a grouping variable and y contains
+values for each group. Considered only when <code>cond1</code> and <code>cond2</code>
+are missing.</dd>
+      <dt>id</dt>
+      <dd>variable name corresponding to paired samples&#39; id. Used to connect
+paired points with lines.</dd>
       <dt>color</dt>
-      <dd>points and boxs plot colors. To color by conditions, use color = &quot;condition&quot;.</dd>
+      <dd>points and boxs plot colors. To color by conditions, use color =
+&quot;condition&quot;.</dd>
       <dt>fill</dt>
-      <dd>box plot fill color. To change fill color by conditions, use fill = &quot;condition&quot;.</dd>
+      <dd>box plot fill color. To change fill color by conditions, use fill
+= &quot;condition&quot;.</dd>
       <dt>palette</dt>
       <dd>the color palette to be used for coloring or filling by groups.
 Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
@@ -113,6 +125,51 @@ hide xlab.</dd>
       <dt>ylab</dt>
       <dd>character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.</dd>
+      <dt>facet.by</dt>
+      <dd>character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.</dd>
+      <dt>panel.labs</dt>
+      <dd>a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;)) specifies
+the labels for the &quot;sex&quot; variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;), rx = c(&quot;Obs&quot;,
+&quot;Lev&quot;, &quot;Lev2&quot;) ).</dd>
+      <dt>short.panel.labs</dt>
+      <dd>logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.</dd>
+      <dt>label</dt>
+      <dd>the name of the column containing point labels. Can be also a
+character vector with length = nrow(data).</dd>
+      <dt>font.label</dt>
+      <dd>a list which can contain the combination of the following elements: the size
+(e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and
+the color (e.g.: &quot;red&quot;) of labels. For example font.label = list(size = 14,
+face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and the style, use font.label =
+list(size = 14, face = &quot;plain&quot;).</dd>
+      <dt>label.select</dt>
+      <dd>can be of two formats: <ul>
+<li> a character vector
+specifying some labels to show. </li>
+<li> a list containting one or the
+combination of the following components: <ul>
+<li> <code>top.up</code> and
+<code>top.down</code>: to display the labels  of the top up/down points. For
+example, <code>label.select = list(top.up = 10, top.down = 4)</code>. </li>
+<li>
+<code>criteria</code>: to filter, for example, by x and y variabes values, use
+this: <code>label.select = list(criteria = &quot;`y` &gt; 2 &amp; `y` &lt; 5 &amp; `x` %in%
+c(&#39;A&#39;, &#39;B&#39;)&quot;)</code>. </li>
+</ul>
+ </li>
+</ul>
+</dd>
+      <dt>repel</dt>
+      <dd>a logical value, whether to use ggrepel to avoid overplotting
+text labels or not.</dd>
+      <dt>label.rectangle</dt>
+      <dd>logical value. If TRUE, add rectangle underneath the
+text, making it easier to read.</dd>
       <dt>ggtheme</dt>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -124,13 +181,19 @@ theme_minimal(), theme_classic(), theme_void(), ....</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
+<span class='co'># Example 1</span>
+<span class='co'>#::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='no'>before</span> <span class='kw'>&lt;-</span><span class='fu'>c</span>(<span class='fl'>200.1</span>, <span class='fl'>190.9</span>, <span class='fl'>192.7</span>, <span class='fl'>213</span>, <span class='fl'>241.4</span>, <span class='fl'>196.9</span>, <span class='fl'>172.2</span>, <span class='fl'>185.5</span>, <span class='fl'>205.2</span>, <span class='fl'>193.7</span>)
 <span class='no'>after</span> <span class='kw'>&lt;-</span><span class='fu'>c</span>(<span class='fl'>392.9</span>, <span class='fl'>393.2</span>, <span class='fl'>345.1</span>, <span class='fl'>393</span>, <span class='fl'>434</span>, <span class='fl'>427.9</span>, <span class='fl'>422</span>, <span class='fl'>383.9</span>, <span class='fl'>392.3</span>, <span class='fl'>352.2</span>)
 
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>before</span> <span class='kw'>=</span> <span class='no'>before</span>, <span class='kw'>after</span> <span class='kw'>=</span> <span class='no'>after</span>)
 <span class='fu'>ggpaired</span>(<span class='no'>d</span>, <span class='kw'>cond1</span> <span class='kw'>=</span> <span class='st'>"before"</span>, <span class='kw'>cond2</span> <span class='kw'>=</span> <span class='st'>"after"</span>,
     <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"condition"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)</div><img src='ggpaired-2.png' alt='' width='540' height='400' /><div class='input'>
-
+<span class='co'># Example 2</span>
+<span class='co'>#::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='fu'>ggpaired</span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+ <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>line.color</span> <span class='kw'>=</span> <span class='st'>"gray"</span>, <span class='kw'>line.size</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+ <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)</div><img src='ggpaired-4.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

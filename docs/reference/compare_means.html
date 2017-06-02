@@ -76,8 +76,9 @@
     <p>Performs one or multiple mean comparisons.</p>
     
 
-    <pre><span class='fu'>compare_means</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"wilcox.test"</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>symnum.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>compare_means</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"wilcox.test"</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>symnum.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='kw'>p.adjust.method</span> <span class='kw'>=</span> <span class='st'>"holm"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -97,13 +98,16 @@ values include: <ul>
 <li> <code><a href='http://www.rdocumentation.org/packages/stats/topics/t.test'>t.test</a></code> (parametric) and
 <code><a href='http://www.rdocumentation.org/packages/stats/topics/wilcox.test'>wilcox.test</a></code> (non-parametric). Perform comparison
 between two groups of samples. If the grouping variable contains more than
-two levels, then a pairwise comparison is performed.
-</li>
-<li> <code><a href='http://www.rdocumentation.org/packages/stats/topics/anova'>anova</a></code> (parametric) and
-<code><a href='http://www.rdocumentation.org/packages/stats/topics/kruskal.test'>kruskal.test</a></code> (non-parametric). Perform one-way ANOVA test comparing multiple groups.
-</li>
+two levels, then a pairwise comparison is performed. </li>
+<li>
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/anova'>anova</a></code> (parametric) and
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/kruskal.test'>kruskal.test</a></code> (non-parametric). Perform one-way ANOVA
+test comparing multiple groups. </li>
 </ul>
 </dd>
+      <dt>paired</dt>
+      <dd>a logical indicating whether you want a paired test. Used only
+in <code><a href='http://www.rdocumentation.org/packages/stats/topics/t.test'>t.test</a></code> and in <a href='http://www.rdocumentation.org/packages/stats/topics/wilcox.test'>wilcox.test</a>.</dd>
       <dt>group.by</dt>
       <dd>a character vector containing the name of grouping variables.</dd>
       <dt>ref.group</dt>
@@ -115,16 +119,54 @@ two levels, then a pairwise comparison is performed.
  grouping variable levels is compared to all (i.e. basemean).</dd>
       <dt>symnum.args</dt>
       <dd>a list of arguments to pass to the function
-<code><a href='http://www.rdocumentation.org/packages/stats/topics/symnum'>symnum</a></code> for symbolic number coding of p-values. For
-example, <code>symnum.args &lt;- list(list(cutpoints = c(0, 0.0001, 0.001,
-0.01, 0.05, 0.1, 1), symbols = c(&quot;****&quot;, &quot;***&quot;, &quot;**&quot;, &quot;*&quot;, &quot;+&quot;, &quot;NS&quot;)))</code>.</dd>
+ <code><a href='http://www.rdocumentation.org/packages/stats/topics/symnum'>symnum</a></code> for symbolic number coding of p-values. For
+ example, <code>symnum.args &lt;- list(list(cutpoints = c(0, 0.0001, 0.001,
+ 0.01, 0.05, 1), symbols = c(&quot;****&quot;, &quot;***&quot;, &quot;**&quot;, &quot;*&quot;,  &quot;ns&quot;)))</code>.
+
+ In other words, we use the following convention for symbols indicating
+ statistical significance: <ul>
+<li> <code>ns</code>: p &gt; 0.05 </li>
+<li>
+ <code>*</code>: p &lt;= 0.05 </li>
+<li> <code>**</code>: p &lt;= 0.01 </li>
+<li> <code>***</code>: p &lt;= 0.001 </li>
+<li> <code>****</code>:  p &lt;= 0.0001 </li>
+</ul>
+</dd>
+      <dt>p.adjust.method</dt>
+      <dd>method for adjusting p values (see
+ <code><a href='http://www.rdocumentation.org/packages/stats/topics/p.adjust'>p.adjust</a></code>). Has impact only in a situation, where
+ multiple pairwise tests are performed; or when there are multiple grouping
+ variables. Allowed values include &quot;holm&quot;, &quot;hochberg&quot;, &quot;hommel&quot;,
+ &quot;bonferroni&quot;, &quot;BH&quot;, &quot;BY&quot;, &quot;fdr&quot;, &quot;none&quot;. If you don&#39;t want to adjust the p
+ value (not recommended), use p.adjust.method = &quot;none&quot;.
+
+ Note that, when the <code>formula</code> contains multiple variables, the p-value
+ adjustment is done independently for each variable.</dd>
       <dt>...</dt>
       <dd>Other arguments to be passed to the test function.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>return a data frame.</p>
+    <p>return a data frame with the following columns:
+<ul>
+<li> <code>.y.</code>: the y variable used in the test.
+</li>
+<li> <code>group1,group2</code>: the compared groups in the pairwise tests.
+Available only when <code>method = &quot;t.test&quot;</code> or <code>method = &quot;wilcox.test&quot;</code>.
+</li>
+<li> <code>p</code>: the p-value.
+</li>
+<li> <code>p.adj</code>: the adjusted p-value. Default for <code>p.adjust.method = &quot;holm&quot;</code>.
+</li>
+<li> <code>p.format</code>: the formatted p-value.
+</li>
+<li> <code>p.signif</code>: the significance level.
+</li>
+<li> <code>method</code>: the statistical test used to compare groups.</p>
+    <p></li>
+</ul></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -135,49 +177,64 @@ example, <code>symnum.args &lt;- list(list(cutpoints = c(0, 0.0001, 0.001,
 
 <span class='co'># One-sample test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='fl'>1</span>, <span class='no'>df</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt;   .y. group1     group2      p.value p.value.format p.value.signif      method
-#&gt; 1 len      1 null model 1.664007e-11        1.7e-11           **** wilcox.test</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='fl'>1</span>, <span class='no'>df</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
+#&gt;     .y. group1     group2            p        p.adj p.format p.signif   method
+#&gt;   &lt;chr&gt;  &lt;dbl&gt;      &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
+#&gt; 1   len      1 null model 1.664007e-11 1.664007e-11  1.7e-11     **** Wilcoxon</div><div class='input'>
 <span class='co'># Two-samples unpaired test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt;   .y. group1 group2    p.value p.value.format p.value.signif      method
-#&gt; 1 len     OJ     VC 0.06449067          0.064              + wilcox.test</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
+#&gt;     .y. group1 group2          p      p.adj p.format p.signif   method
+#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
+#&gt; 1   len     OJ     VC 0.06449067 0.06449067    0.064       ns Wilcoxon</div><div class='input'>
 <span class='co'># Two-samples paired test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   .y. group1 group2     p.value p.value.format p.value.signif      method
-#&gt; 1 len     OJ     VC 0.004312554         0.0043             ** wilcox.test</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
+#&gt;     .y. group1 group2           p       p.adj p.format p.signif   method
+#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
+#&gt; 1   len     OJ     VC 0.004312554 0.004312554   0.0043       ** Wilcoxon</div><div class='input'>
 <span class='co'># Compare supp levels after grouping the data by "dose"</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 8
-#&gt;    dose   .y. group1 group2     p.value p.value.format p.value.signif
-#&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;          &lt;chr&gt;          &lt;chr&gt;
-#&gt; 1   0.5   len     OJ     VC 0.023186427          0.023              *
-#&gt; 2   1.0   len     OJ     VC 0.004030367          0.004             **
-#&gt; 3   2.0   len     OJ     VC 1.000000000          1.000             NS
-#&gt; # ... with 1 more variables: method &lt;chr&gt;</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 9
+#&gt;    dose   .y. group1 group2           p      p.adj p.format p.signif   method
+#&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
+#&gt; 1   0.5   len     OJ     VC 0.023186427 0.04637285    0.023        * Wilcoxon
+#&gt; 2   1.0   len     OJ     VC 0.004030367 0.01209110    0.004       ** Wilcoxon
+#&gt; 3   2.0   len     OJ     VC 1.000000000 1.00000000    1.000       ns Wilcoxon</div><div class='input'>
 <span class='co'># pairwise comparisons</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># As dose contains more thant two levels ==&gt;</span>
 <span class='co'># pairwise test is automatically performed.</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt;   .y. group1 group2      p.value p.value.format p.value.signif      method
-#&gt; 1 len    0.5      1 1.404171e-05        1.4e-05           **** wilcox.test
-#&gt; 2 len    0.5      2 2.521934e-07        2.5e-07           **** wilcox.test
-#&gt; 3 len      1      2 1.772382e-04        0.00018            *** wilcox.test</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 8
+#&gt;     .y. group1 group2            p        p.adj p.format p.signif   method
+#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
+#&gt; 1   len    0.5      1 7.020855e-06 1.404171e-05  7.0e-06     **** Wilcoxon
+#&gt; 2   len    0.5      2 8.406447e-08 2.521934e-07  8.4e-08     **** Wilcoxon
+#&gt; 3   len      1      2 1.772382e-04 1.772382e-04  0.00018      *** Wilcoxon</div><div class='input'>
 <span class='co'># Comparison against reference group</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><div class='output co'>#&gt;   .y. group1 group2      p.value p.value.format p.value.signif      method
-#&gt; 1 len    0.5      1 1.404171e-05        1.4e-05           **** wilcox.test
-#&gt; 2 len    0.5      2 2.521934e-07        2.5e-07           **** wilcox.test</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 8
+#&gt;     .y. group1 group2            p        p.adj p.format p.signif   method
+#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
+#&gt; 1   len    0.5      1 7.020855e-06 7.020855e-06  7.0e-06     **** Wilcoxon
+#&gt; 2   len    0.5      2 8.406447e-08 1.681289e-07  8.4e-08     **** Wilcoxon</div><div class='input'>
 <span class='co'># Comparison against all</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>".all."</span>)</div><div class='output co'>#&gt;   .y. group1 group2      p.value p.value.format p.value.signif      method
-#&gt; 1 len  .all.    0.5 0.0002031515        0.00020            *** wilcox.test
-#&gt; 2 len  .all.      1 0.7640429386        0.76404             NS wilcox.test
-#&gt; 3 len  .all.      2 0.0005317147        0.00053            *** wilcox.test</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>".all."</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 8
+#&gt;     .y. group1 group2            p        p.adj p.format p.signif   method
+#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
+#&gt; 1   len  .all.    0.5 5.078788e-05 0.0001523636  5.1e-05     **** Wilcoxon
+#&gt; 2   len  .all.      1 7.640429e-01 0.7640429386  0.76404       ns Wilcoxon
+#&gt; 3   len  .all.      2 1.791243e-04 0.0003582486  0.00018      *** Wilcoxon</div><div class='input'>
 <span class='co'># Anova and kruskal.test</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>)</div><div class='output co'>#&gt;   .y.      p.value p.value.format p.value.signif method
-#&gt; 1 len 9.532727e-16        9.5e-16           ****  anova</div><div class='input'><span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kruskal.test"</span>)</div><div class='output co'>#&gt;   .y.      p.value p.value.format p.value.signif       method
-#&gt; 1 len 1.475207e-09        1.5e-09           **** kruskal.test</div></pre>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;     .y.            p        p.adj p.format p.signif method
+#&gt;   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;
+#&gt; 1   len 9.532727e-16 9.532727e-16  9.5e-16     ****  Anova</div><div class='input'><span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kruskal.test"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;     .y.            p        p.adj p.format p.signif         method
+#&gt;   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;
+#&gt; 1   len 1.475207e-09 1.475207e-09  1.5e-09     **** Kruskal-Wallis</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
