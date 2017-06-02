@@ -3,6 +3,7 @@ NULL
 #' @import ggplot2
 #' @importFrom magrittr %>%
 #' @importFrom dplyr group_by_
+#' @importFrom dplyr group_by
 #' @importFrom dplyr arrange_
 #' @importFrom dplyr mutate
 #' @importFrom dplyr do
