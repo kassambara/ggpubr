@@ -6,9 +6,10 @@
 \usage{
 stat_compare_means(mapping = NULL, data = NULL, method = NULL,
   paired = FALSE, ref.group = NULL, comparisons = NULL, hide.ns = FALSE,
-  label.sep = ", ", label.x.npc = "left", label.y.npc = "top",
-  label.x = NULL, label.y = NULL, geom = "text", position = "identity",
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...)
+  label.sep = ", ", label = NULL, label.x.npc = "left",
+  label.y.npc = "top", label.x = NULL, label.y = NULL, geom = "text",
+  position = "identity", na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -44,25 +45,28 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
  grouping variable levels is compared to all (i.e. basemean).}
 
 \item{comparisons}{A list of length-2 vectors. The entries in the vector are
-either the names of 2 values on the x-axis or the 2 integers that
-correspond to the index of the groups of interest, to be compared.}
+either the names of 2 values on the x-axis or the 2 integers that correspond
+to the index of the groups of interest, to be compared.}
 
 \item{hide.ns}{logical value. If TRUE, hide ns symbol when displaying
 significance levels.}
 
-\item{label.sep}{a character string to separate the terms. Default is ", ",
-to separate the correlation coefficient and the p.value.}
+\item{label.sep}{a character string to separate the terms. Default is ", ", to
+separate the correlation coefficient and the p.value.}
+
+\item{label}{character string specifying label type. Allowed values include
+"p.signif", "p.format".}
 
 \item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
-  vector of the same length as the number of groups and/or panels. If too
-  short they will be recycled. \itemize{ \item If \code{numeric}, value
-  should be between 0 and 1. Coordinates to be used for positioning the
-  label, expressed in "normalized parent coordinates". \item If
-  \code{character}, allowed values include: i) one of c('right', 'left',
-  'center', 'centre', 'middle') for x-axis; ii) and one of c( 'bottom',
-  'top', 'center', 'centre', 'middle') for y-axis.}
+ vector of the same length as the number of groups and/or panels. If too
+ short they will be recycled. \itemize{ \item If \code{numeric}, value should
+ be between 0 and 1. Coordinates to be used for positioning the label,
+ expressed in "normalized parent coordinates". \item If \code{character},
+ allowed values include: i) one of c('right', 'left', 'center', 'centre',
+ 'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
+ 'middle') for y-axis.}
 
-  If too short they will be recycled.}
+ If too short they will be recycled.}
 
 \item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
@@ -72,8 +76,8 @@ for absolute positioning of the label. If too short they will be recycled.}
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
-\item{na.rm}{If FALSE (the default), removes missing values with a warning.
-If TRUE silently removes missing values.}
+\item{na.rm}{If FALSE (the default), removes missing values with a warning. If
+TRUE silently removes missing values.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
@@ -89,7 +93,7 @@ the default plot specification, e.g. \code{\link{borders}}.}
 }
 \description{
 Add mean comprison p-values to a ggplot, such as box blots, dot
-  plots and stripcharts.
+ plots and stripcharts.
 }
 \examples{
 # Load data

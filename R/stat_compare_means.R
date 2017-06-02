@@ -1,37 +1,39 @@
 #' @include utilities.R utilities_label.R
 NULL
-#' Add Mean Comparison P-values to a ggplot
-#' @description Add mean comprison p-values to a ggplot, such as box blots, dot
-#'   plots and stripcharts.
-#' @inheritParams ggplot2::layer
-#' @inheritParams compare_means
-#' @param method a character string indicating which method to be used for
-#'   comparing means.
-#' @param comparisons A list of length-2 vectors. The entries in the vector are
-#'   either the names of 2 values on the x-axis or the 2 integers that
-#'   correspond to the index of the groups of interest, to be compared.
-#' @param hide.ns logical value. If TRUE, hide ns symbol when displaying
-#'   significance levels.
-#' @param label.sep a character string to separate the terms. Default is ", ",
-#'   to separate the correlation coefficient and the p.value.
-#' @param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
-#'   vector of the same length as the number of groups and/or panels. If too
-#'   short they will be recycled. \itemize{ \item If \code{numeric}, value
-#'   should be between 0 and 1. Coordinates to be used for positioning the
-#'   label, expressed in "normalized parent coordinates". \item If
-#'   \code{character}, allowed values include: i) one of c('right', 'left',
-#'   'center', 'centre', 'middle') for x-axis; ii) and one of c( 'bottom',
-#'   'top', 'center', 'centre', 'middle') for y-axis.}
+#'Add Mean Comparison P-values to a ggplot
+#'@description Add mean comprison p-values to a ggplot, such as box blots, dot
+#'  plots and stripcharts.
+#'@inheritParams ggplot2::layer
+#'@inheritParams compare_means
+#'@param method a character string indicating which method to be used for
+#'  comparing means.
+#'@param comparisons A list of length-2 vectors. The entries in the vector are
+#'  either the names of 2 values on the x-axis or the 2 integers that correspond
+#'  to the index of the groups of interest, to be compared.
+#'@param hide.ns logical value. If TRUE, hide ns symbol when displaying
+#'  significance levels.
+#'@param label character string specifying label type. Allowed values include
+#'  "p.signif", "p.format".
+#'@param label.sep a character string to separate the terms. Default is ", ", to
+#'  separate the correlation coefficient and the p.value.
+#'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
+#'  vector of the same length as the number of groups and/or panels. If too
+#'  short they will be recycled. \itemize{ \item If \code{numeric}, value should
+#'  be between 0 and 1. Coordinates to be used for positioning the label,
+#'  expressed in "normalized parent coordinates". \item If \code{character},
+#'  allowed values include: i) one of c('right', 'left', 'center', 'centre',
+#'  'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
+#'  'middle') for y-axis.}
 #'
-#'   If too short they will be recycled.
-#' @param label.x,label.y \code{numeric} Coordinates (in data units) to be used
-#'   for absolute positioning of the label. If too short they will be recycled.
+#'  If too short they will be recycled.
+#'@param label.x,label.y \code{numeric} Coordinates (in data units) to be used
+#'  for absolute positioning of the label. If too short they will be recycled.
 #'
-#' @param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
-#'   \code{\link[ggplot2]{geom_label}}.
-#' @param na.rm If FALSE (the default), removes missing values with a warning.
-#'   If TRUE silently removes missing values.
-#' @seealso \code{\link{compare_means}}
+#'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
+#'  \code{\link[ggplot2]{geom_label}}.
+#'@param na.rm If FALSE (the default), removes missing values with a warning. If
+#'  TRUE silently removes missing values.
+#'@seealso \code{\link{compare_means}}
 #' @examples
 #' # Load data
 #' data("ToothGrowth")
@@ -83,11 +85,11 @@ NULL
 #'  aes(label = paste0("p = ", ..p.format..))
 #')
 #'
-#' @export
+#'@export
 stat_compare_means <- function(mapping = NULL, data = NULL,
                      method = NULL, paired = FALSE, ref.group = NULL,
                      comparisons = NULL, hide.ns = FALSE, label.sep = ", ",
-                     label.x.npc = "left", label.y.npc = "top",
+                     label = NULL, label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
@@ -119,7 +121,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
   }
 
   else{
-
+    mapping <- .update_mapping(mapping, label)
     layer(
       stat = StatCompareMeans, data = data, mapping = mapping, geom = geom,
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -223,6 +225,33 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
     }
   }
   return(res)
+}
+
+# Update mapping with label
+.update_mapping <- function (mapping, label){
+
+  allowed.label <- list(
+    "p.signif" = quote(..p.signif..),
+    "..p.signif.." = quote(..p.signif..),
+    "p.format" = quote(paste0("p = ",..p.format..)),
+    "..p.format.." = quote(paste0("p = ",..p.format..)),
+    "p" = quote(paste0("p = ",..p.format..)),
+    "..p.." = quote(paste0("p = ",..p.format..))
+  )
+
+  if(!is.null(label)){
+    if(!label %in% names(allowed.label) )
+      stop("Allowed values for label are: ", .collapse(names(allowed.label) , sep = ", "))
+  }
+
+  if(!is.null(mapping) & is.character(label)){
+    mapping$label <- allowed.label[[label]]
+  }
+  else if(is.character(label)){
+    mapping <- aes()
+    mapping$label <- allowed.label[[label]]
+  }
+  mapping
 }
 
 
