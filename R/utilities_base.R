@@ -36,3 +36,49 @@
   dev
 }
 
+
+# Grouping data by variables
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.group_by <- function(data, grouping.vars){
+
+  . <- NULL # used in pipes
+
+  # Grouping the data ==> list of data sets
+  grouped.d <- dplyr::group_by_(.data = data, .dots = grouping.vars) %>%
+    tidyr::nest()
+
+  # Defining names for the list of data sets.
+  # names = combination of the levels of the grouping variables
+  .names.df <- grouped.d[, grouping.vars, drop = FALSE]
+  .names <- .paste_colnames(.names.df, sep = ":") %>%
+    apply(1, paste, collapse = ", ")
+  names(grouped.d$data) <- .names
+  return(grouped.d)
+}
+
+
+# Pasting the column name to each value of a dataframe
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.paste_colnames <- function(data, sep = "."){
+
+  data <- as.data.frame(data)
+
+  if(ncol(data) == 1){
+
+    res <- paste0(colnames(data), ".", data[[1]])
+    res <- data.frame(x = res, stringsAsFactors = FALSE)
+    colnames(res) <- colnames(data)
+    return(res)
+  }
+
+  res <- apply(data, 1,
+               function(row, cname){paste(cname, row, sep = sep)},
+               colnames(data)
+  ) %>%
+    t() %>%
+    as.data.frame(stringsAsFactors = FALSE)
+  colnames(res) <- colnames(data)
+  res
+}
+
+
