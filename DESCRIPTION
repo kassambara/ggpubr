@@ -26,7 +26,8 @@ Imports:
     tidyr,
     purrr,
     dplyr,
-    cowplot
+    cowplot,
+    ggsignif
 Suggests:
     grDevices,
     knitr,
@@ -35,7 +36,7 @@ Suggests:
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
-Collate: 
+Collate:
     'utilities_base.R'
     'desc_statby.R'
     'utilities.R'
