@@ -4,10 +4,13 @@
 \alias{ggpaired}
 \title{Plot Paired Data}
 \usage{
-ggpaired(data, cond1, cond2, x = NULL, y = NULL, color = "black",
-  fill = "white", palette = NULL, width = 0.5, point.size = 1.2,
-  line.size = 0.5, line.color = "black", title = NULL,
-  xlab = "Condition", ylab = "Value", ggtheme = theme_pubr(), ...)
+ggpaired(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
+  color = "black", fill = "white", palette = NULL, width = 0.5,
+  point.size = 1.2, line.size = 0.5, line.color = "black", title = NULL,
+  xlab = "Condition", ylab = "Value", facet.by = NULL,
+  panel.labs = NULL, short.panel.labs = TRUE, label = NULL,
+  font.label = list(size = 11, color = "black"), label.select = NULL,
+  repel = FALSE, label.rectangle = FALSE, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -19,6 +22,9 @@ ggpaired(data, cond1, cond2, x = NULL, y = NULL, color = "black",
 \item{x, y}{x and y variables, where x is a grouping variable and y contains
 values for each group. Considered only when \code{cond1} and \code{cond2}
 are missing.}
+
+\item{id}{variable name corresponding to paired samples' id. Used to connect
+paired points with lines.}
 
 \item{color}{points and boxs plot colors. To color by conditions, use color =
 "condition".}
@@ -45,6 +51,43 @@ hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}
+
+\item{facet.by}{character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.}
+
+\item{panel.labs}{a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c("Male", "Female")) specifies
+the labels for the "sex" variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
+"Lev", "Lev2") ).}
+
+\item{short.panel.labs}{logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.}
+
+\item{label}{the name of the column containing point labels. Can be also a
+character vector with length = nrow(data).}
+
+\item{font.label}{a list which can contain the combination of the following elements: the size
+(e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
+the color (e.g.: "red") of labels. For example font.label = list(size = 14,
+face = "bold", color ="red"). To specify only the size and the style, use font.label =
+list(size = 14, face = "plain").}
+
+\item{label.select}{can be of two formats: \itemize{ \item a character vector
+specifying some labels to show. \item a list containting one or the
+combination of the following components: \itemize{ \item \code{top.up} and
+\code{top.down}: to display the labels  of the top up/down points. For
+example, \code{label.select = list(top.up = 10, top.down = 4)}. \item
+\code{criteria}: to filter, for example, by x and y variabes values, use
+this: \code{label.select = list(criteria = "`y` > 2 & `y` < 5 & `x` \%in\%
+c('A', 'B')")}. } }}
+
+\item{repel}{a logical value, whether to use ggrepel to avoid overplotting
+text labels or not.}
+
+\item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
+text, making it easier to read.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
