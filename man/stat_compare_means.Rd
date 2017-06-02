@@ -5,10 +5,10 @@
 \title{Add Mean Comparison P-values to a ggplot}
 \usage{
 stat_compare_means(mapping = NULL, data = NULL, method = NULL,
-  paired = FALSE, label.sep = ", ", label.x.npc = "left",
-  label.y.npc = "top", label.x = NULL, label.y = NULL, geom = "text",
-  position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, ...)
+  paired = FALSE, ref.group = NULL, comparisons = NULL, hide.ns = FALSE,
+  label.sep = ", ", label.x.npc = "left", label.y.npc = "top",
+  label.x = NULL, label.y = NULL, geom = "text", position = "identity",
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -35,6 +35,20 @@ comparing means.}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
+
+\item{ref.group}{a character string specifying the reference group. If
+ specified, for a given grouping variable, each of the group levels will be
+ compared to the reference group (i.e. control group).
+
+ \code{ref.group} can be also \code{".all."}. In this case, each of the
+ grouping variable levels is compared to all (i.e. basemean).}
+
+\item{comparisons}{A list of length-2 vectors. The entries in the vector are
+either the names of 2 values on the x-axis or the 2 integers that
+correspond to the index of the groups of interest, to be compared.}
+
+\item{hide.ns}{logical value. If TRUE, hide ns symbol when displaying
+significance levels.}
 
 \item{label.sep}{a character string to separate the terms. Default is ", ",
 to separate the correlation coefficient and the p.value.}
@@ -79,28 +93,56 @@ Add mean comprison p-values to a ggplot, such as box blots, dot
 }
 \examples{
 # Load data
-data("mtcars")
-df <- mtcars
-df$cyl <- as.factor(df$cyl)
+data("ToothGrowth")
+head(ToothGrowth)
 
-# Scatter plot with correlation coefficient
+# Two independent groups
 #:::::::::::::::::::::::::::::::::::::::::::::::::
-sp <- ggscatter(df, x = "wt", y = "mpg",
-   add = "reg.line",  # Add regressin line
-   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
-   conf.int = TRUE # Add confidence interval
-   )
-# Add correlation coefficient
-sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
+p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
+  color = "supp", palette = "npg", add = "jitter")
 
-# Color by groups and facet
-#::::::::::::::::::::::::::::::::::::::::::::::::::::
-sp <- ggscatter(df, x = "wt", y = "mpg",
-   color = "cyl", palette = "jco",
-   add = "reg.line", conf.int = TRUE)
-sp + stat_cor(aes(color = cyl), label.x = 3)
+#  Add p-value
+p + stat_compare_means()
+# Change method
+p + stat_compare_means(method = "t.test")
+
+ # Paired samples
+ #:::::::::::::::::::::::::::::::::::::::::::::::::
+ ggpaired(ToothGrowth, x = "supp", y = "len",
+   color = "supp", line.color = "gray", line.size = 0.4,
+   palette = "npg")+
+ stat_compare_means(paired = TRUE)
+
+# More than two groups
+#:::::::::::::::::::::::::::::::::::::::::::::::::
+# Pairwise comparisons: Specify the comparisons you want
+my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
+ggboxplot(ToothGrowth, x = "dose", y = "len",
+          color = "dose", palette = "npg")+
+# Add pairwise comparisons p-value
+stat_compare_means(comparisons = my_comparisons, label.y = c(29, 35, 40))+
+stat_compare_means(label.y = 45)     # Add global Anova p-value
+
+# Multiple pairwise test against a reference group
+ggboxplot(ToothGrowth, x = "dose", y = "len",
+    color = "dose", palette = "npg")+
+stat_compare_means(method = "anova", label.y = 40)+ # Add global p-value
+stat_compare_means(aes(label = ..p.signif..),
+                  method = "t.test", ref.group = "0.5")
+
+# Multiple grouping variables
+#:::::::::::::::::::::::::::::::::::::::::::::::::
+# Box plot facetted by "dose"
+p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
+              color = "supp", palette = "npg",
+              add = "jitter",
+              facet.by = "dose", short.panel.labs = FALSE)
+# Use only p.format as label. Remove method name.
+p + stat_compare_means(
+ aes(label = paste0("p = ", ..p.format..))
+)
 
 }
 \seealso{
-\code{\link{ggscatter}}
+\code{\link{compare_means}}
 }
