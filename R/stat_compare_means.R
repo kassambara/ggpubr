@@ -189,7 +189,8 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                       .test <- compare_means(y~x, data = data, method = method,
                                              paired = paired, ref.group = ref.group)
                       .label.pms <- label.opts %>%
-                        do.call(.label_params, .) # Returns a data frame with label: x, y, hjust, vjust
+                        do.call(.label_params, .) %>% # Returns a data frame with label: x, y, hjust, vjust
+                        dplyr::mutate(hjust = 0.2)
                     }
 
                     pvaltxt <- ifelse(.test$p < 2.2e-16, "p < 2.2e-16",
@@ -201,6 +202,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                       # Set label x value to group names
                       other.group.index <- as.numeric(res$group2)
                       res$x <- scales$x$range$range[other.group.index ]
+                      res <- res %>% dplyr::mutate(hjust = 0.5)
                     }
 
                     if(hide.ns){

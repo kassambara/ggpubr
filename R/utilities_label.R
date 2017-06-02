@@ -71,7 +71,7 @@
     }
   }
   if(.by == "panel"){
-    hjust <- 0.2
+    hjust <- 0.5
     vjust = 0.5
   }
 
