@@ -6,13 +6,17 @@
 # Get label parameters for each group
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Returns a data frame with x, y, hjust, vjust
+# group.id is the index position of the group in a boxplot for example
 .label_params <- function(data, scales, label.x.npc = "left", label.y.npc = "right",
-                          label.x = NULL, label.y = NULL, .by = c("group", "panel")){
+                          label.x = NULL, label.y = NULL, .by = c("group", "panel"),
+                          group.id = NULL, ...)
+  {
 
   .by <- match.arg(.by)
   # Check label coordinates for each group
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  group.id <- group.id <- abs(data$group[1])
+  if(is.null(group.id))
+    group.id <- group.id <- abs(data$group[1])
   label.x.npc <- .group_coord(label.x.npc, group.id)
   label.y.npc <- .group_coord(label.y.npc, group.id)
   label.x <- .group_coord(label.x, group.id)
@@ -67,11 +71,24 @@
     }
   }
   if(.by == "panel"){
-    hjust <- 0.5
+    hjust <- 0.2
     vjust = 0.5
   }
 
   data.frame(x = x, y = y, hjust = hjust, vjust = vjust)
+}
+
+
+# Get label parameters by group
+# Useful in boxplot, where group.ids is the index of the group: 1, 2, 3, etc
+# Useful only when computation is done by panel
+.label_params_by_group <- function(..., group.ids){
+  purrr::map(group.ids,
+             function(group.id, ...){.label_params(..., group.id = group.id)},
+             ...) %>%
+    dplyr::bind_rows() #%>%
+    #dplyr::mutate(x = group.ids)
+
 }
 
 
