@@ -34,6 +34,8 @@ Find out more at <http://www.sthda.com/english/rpkgs/ggpubr>.
 
 ``` r
 library(ggpubr)
+#> Loading required package: ggplot2
+#> Loading required package: magrittr
 # Create some data format
 # +++++++++++++++++++++++++++++++++++++++++++
 set.seed(1234)
@@ -90,14 +92,27 @@ head(df, 4)
 # Change outline colors by groups: dose
 # Use custom color palette
 # Add jitter points and change the shape by groups
- ggboxplot(df, x = "dose", y = "len",
-    color = "dose", palette =c("#00AFBB", "#E7B800", "#FC4E07"),
-    add = "jitter", shape = "dose")
+ p <- ggboxplot(df, x = "dose", y = "len",
+                color = "dose", palette =c("#00AFBB", "#E7B800", "#FC4E07"),
+                add = "jitter", shape = "dose")
+ p
 ```
 
 ![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-1.png)
 
 ``` r
+ 
+ # Add p-values comparing groups
+ # Specify the comparisons you want
+my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
+p + stat_compare_means(comparisons = my_comparisons)+ # Add pairwise comparisons p-value
+  stat_compare_means(label.y = 50)     # Add global p-value
+```
+
+![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png)
+
+``` r
+
  
 # Violin plots with box plots inside
 # +++++++++++++++++++++++++++++++++
@@ -108,7 +123,7 @@ ggviolin(df, x = "dose", y = "len", fill = "dose",
    add = "boxplot", add.params = list(fill = "white"))
 ```
 
-![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png)
+![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-3.png)
 
 ### More
 
