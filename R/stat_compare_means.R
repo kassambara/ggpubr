@@ -152,6 +152,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                     }
 
                     # Guess the number of group to be compared
+                    #::::::::::::::::::::::::::::::::::::::::::::::::::
                     if(.is.multiple.grouping.vars)
                       x.levels <- .levels(data$group)
                     else x.levels <- .levels(data$x)
@@ -159,22 +160,35 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                     multi.groups <- length(x.levels) > 2
 
                     # Guess the test to be performed
+                    #::::::::::::::::::::::::::::::::::::::::::::::::::
                     if(two.groups & is.null(method))
                       method <- "wilcox.test"
                     else if(multi.groups & is.null(method))
                       method <- "kruskal.test"
 
+                    # Perform group comparisons
+                    #::::::::::::::::::::::::::::::::::::::::::::::::::
+                    if(.is.multiple.grouping.vars){
+                      .test <- compare_means(y~group, data = data, method = method, group.by = "x",
+                                             paired = paired, ref.group = ref.group)
 
+                    }
+                    else{
+                      .test <- compare_means(y~x, data = data, method = method,
+                                             paired = paired, ref.group = ref.group)
+                    }
+
+                    pvaltxt <- ifelse(.test$p < 2.2e-16, "p < 2.2e-16",
+                                      paste("p =", signif(.test$p, 2)))
+                    .test$label <- paste(.test$method, pvaltxt, sep =  label.sep)
 
                     # Options for label positioning
+                    #::::::::::::::::::::::::::::::::::::::::::::::::::
                     label.opts <- list(data = data, scales = scales,
                                        label.x.npc = label.x.npc, label.y.npc = label.y.npc,
                                        label.x = label.x, label.y = label.y, .by = "panel" )
 
-                    # Perform group comparisons
                     if(.is.multiple.grouping.vars){
-                      .test <- compare_means(y~group, data = data, method = method, group.by = "x",
-                                             paired = paired, ref.group = ref.group)
 
                       if(is.null(label.x) & length(label.x.npc) == 1)
                         label.opts$label.x <- .test$x
@@ -185,17 +199,24 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                       .test <- dplyr::select(.test, -x)
 
                     }
+
                     else{
-                      .test <- compare_means(y~x, data = data, method = method,
-                                             paired = paired, ref.group = ref.group)
                       .label.pms <- label.opts %>%
                         do.call(.label_params, .) %>% # Returns a data frame with label: x, y, hjust, vjust
                         dplyr::mutate(hjust = 0.2)
                     }
+                    if(!is.null(ref.group)){
+                      group.ids <- as.numeric(.test$group2)
+                      if(!is.null(label.y) & ref.group != ".all."){
+                        if(length(label.y) == length(group.ids))
+                          label.opts$label.y <- c(0, label.y)
+                      }
+                      .label.pms <- label.opts %>%
+                        .add_item(group.ids = group.ids) %>%
+                        do.call(.label_params_by_group, .)
+                    }
 
-                    pvaltxt <- ifelse(.test$p < 2.2e-16, "p < 2.2e-16",
-                                      paste("p =", signif(.test$p, 2)))
-                    .test$label <- paste(.test$method, pvaltxt, sep =  label.sep)
+
                     res <- cbind(.test, .label.pms)
 
                     if(!is.null(ref.group)){

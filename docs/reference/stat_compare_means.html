@@ -74,14 +74,15 @@
 
     
     <p>Add mean comprison p-values to a ggplot, such as box blots, dot
-  plots and stripcharts.</p>
+ plots and stripcharts.</p>
     
 
     <pre><span class='fu'>stat_compare_means</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
-  <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>,
+  <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -119,29 +120,32 @@ in <code><a href='http://www.rdocumentation.org/packages/stats/topics/t.test'>t.
  grouping variable levels is compared to all (i.e. basemean).</dd>
       <dt>comparisons</dt>
       <dd>A list of length-2 vectors. The entries in the vector are
-either the names of 2 values on the x-axis or the 2 integers that
-correspond to the index of the groups of interest, to be compared.</dd>
+either the names of 2 values on the x-axis or the 2 integers that correspond
+to the index of the groups of interest, to be compared.</dd>
       <dt>hide.ns</dt>
       <dd>logical value. If TRUE, hide ns symbol when displaying
 significance levels.</dd>
       <dt>label.sep</dt>
-      <dd>a character string to separate the terms. Default is &quot;, &quot;,
-to separate the correlation coefficient and the p.value.</dd>
+      <dd>a character string to separate the terms. Default is &quot;, &quot;, to
+separate the correlation coefficient and the p.value.</dd>
+      <dt>label</dt>
+      <dd>character string specifying label type. Allowed values include
+&quot;p.signif&quot;, &quot;p.format&quot;.</dd>
       <dt>label.x.npc, label.y.npc</dt>
       <dd>can be <code>numeric</code> or <code>character</code>
-  vector of the same length as the number of groups and/or panels. If too
-  short they will be recycled. <ul>
-<li> If <code>numeric</code>, value
-  should be between 0 and 1. Coordinates to be used for positioning the
-  label, expressed in &quot;normalized parent coordinates&quot;. </li>
-<li> If
-  <code>character</code>, allowed values include: i) one of c(&#39;right&#39;, &#39;left&#39;,
-  &#39;center&#39;, &#39;centre&#39;, &#39;middle&#39;) for x-axis; ii) and one of c( &#39;bottom&#39;,
-  &#39;top&#39;, &#39;center&#39;, &#39;centre&#39;, &#39;middle&#39;) for y-axis.</li>
+ vector of the same length as the number of groups and/or panels. If too
+ short they will be recycled. <ul>
+<li> If <code>numeric</code>, value should
+ be between 0 and 1. Coordinates to be used for positioning the label,
+ expressed in &quot;normalized parent coordinates&quot;. </li>
+<li> If <code>character</code>,
+ allowed values include: i) one of c(&#39;right&#39;, &#39;left&#39;, &#39;center&#39;, &#39;centre&#39;,
+ &#39;middle&#39;) for x-axis; ii) and one of c( &#39;bottom&#39;, &#39;top&#39;, &#39;center&#39;, &#39;centre&#39;,
+ &#39;middle&#39;) for y-axis.</li>
 </ul>
 
 
-  If too short they will be recycled.</dd>
+ If too short they will be recycled.</dd>
       <dt>label.x, label.y</dt>
       <dd><code>numeric</code> Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.</dd>
@@ -151,8 +155,8 @@ for absolute positioning of the label. If too short they will be recycled.</dd>
       <dd>Position adjustment, either as a string, or the result of
 a call to a position adjustment function.</dd>
       <dt>na.rm</dt>
-      <dd>If FALSE (the default), removes missing values with a warning.
-If TRUE silently removes missing values.</dd>
+      <dd>If FALSE (the default), removes missing values with a warning. If
+TRUE silently removes missing values.</dd>
       <dt>show.legend</dt>
       <dd>logical. Should this layer be included in the legends?
 <code>NA</code>, the default, includes if any aesthetics are mapped.
