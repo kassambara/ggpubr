@@ -12,10 +12,12 @@ ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL,
   "log2", "log10", "sqrt"), yscale = c("none", "log2", "log10", "sqrt"),
   format.scale = FALSE, legend = NULL, legend.title = NULL,
   font.legend = NULL, ticks = TRUE, tickslab = TRUE,
-  font.tickslab = NULL, x.text.angle = NULL, y.text.angle = NULL,
-  xtickslab.rt = x.text.angle, ytickslab.rt = y.text.angle,
-  xticks.by = NULL, yticks.by = NULL, rotate = FALSE,
-  orientation = c("vertical", "horizontal", "reverse"), ggtheme = NULL, ...)
+  font.tickslab = NULL, font.xtickslab = font.tickslab,
+  font.ytickslab = font.tickslab, x.text.angle = NULL,
+  y.text.angle = NULL, xtickslab.rt = x.text.angle,
+  ytickslab.rt = y.text.angle, xticks.by = NULL, yticks.by = NULL,
+  rotate = FALSE, orientation = c("vertical", "horizontal", "reverse"),
+  ggtheme = NULL, ...)
 }
 \arguments{
 \item{p}{an object of class ggplot or a list of ggplots}
@@ -78,7 +80,7 @@ vector c(x, y); see details section.}
 \item{tickslab}{logical value. Default is TRUE. If FALSE, hide axis tick
 labels.}
 
-\item{font.tickslab}{Font style (size, face, color) for tick labels, e.g.:
+\item{font.tickslab, font.xtickslab, font.ytickslab}{Font style (size, face, color) for tick labels, e.g.:
 c(14, "bold", "red").}
 
 \item{x.text.angle, y.text.angle}{Numeric value specifying the rotation angle

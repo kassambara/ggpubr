@@ -414,7 +414,8 @@ NULL
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_ticks <-
   function(ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
-           xtickslab.rt = NULL, ytickslab.rt = NULL)
+           xtickslab.rt = NULL, ytickslab.rt = NULL,
+           font.xtickslab = font.tickslab, font.ytickslab = font.tickslab)
   {
 
     . <- xhjust <- NULL
@@ -428,14 +429,16 @@ NULL
         element_line(colour = "black")
     else
       ticks <- element_blank()
-    if (is.null(font.tickslab))
-      font <- list()
-    else
-      font <- .parse_font(font.tickslab)
+
+    if (is.null(font.xtickslab)) font.x <- list()
+    else font.x <- .parse_font(font.xtickslab)
+    if (is.null(font.ytickslab)) font.y <- list()
+    else font.y <- .parse_font(font.ytickslab)
+
     if (tickslab) {
-      xtickslab <- font %>% .add_item(hjust = xhjust, angle = xtickslab.rt) %>%
+      xtickslab <- font.x %>% .add_item(hjust = xhjust, angle = xtickslab.rt) %>%
         do.call(element_text, .)
-      ytickslab <- font %>% .add_item(angle = ytickslab.rt) %>% do.call(element_text, .)
+      ytickslab <- font.y %>% .add_item(angle = ytickslab.rt) %>% do.call(element_text, .)
     }
     else {
       xtickslab <- element_blank()

@@ -45,7 +45,7 @@ NULL
 #' @param ticks logical value. Default is TRUE. If FALSE, hide axis tick marks.
 #' @param tickslab logical value. Default is TRUE. If FALSE, hide axis tick
 #'   labels.
-#' @param font.tickslab Font style (size, face, color) for tick labels, e.g.:
+#' @param font.tickslab,font.xtickslab,font.ytickslab Font style (size, face, color) for tick labels, e.g.:
 #'   c(14, "bold", "red").
 #' @param x.text.angle,y.text.angle Numeric value specifying the rotation angle
 #'   of x and y axis tick labels, respectively. Default value is NULL. For
@@ -153,6 +153,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   legend = NULL,
                   legend.title = NULL, font.legend = NULL,
                   ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
+                  font.xtickslab = font.tickslab, font.ytickslab = font.tickslab,
                   x.text.angle = NULL, y.text.angle = NULL,
                   xtickslab.rt = x.text.angle, ytickslab.rt = y.text.angle,
                   xticks.by = NULL, yticks.by = NULL,
@@ -184,7 +185,8 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
         if(!is.null(gradient.cols)) p <- p + .gradient_col(gradient.cols)
 
         p <- p +.set_ticks(ticks, tickslab, font.tickslab,
-                     xtickslab.rt, ytickslab.rt)
+                     xtickslab.rt, ytickslab.rt,
+                     font.xtickslab = font.tickslab, font.ytickslab = font.tickslab)
         p <- .set_ticksby(p, xticks.by, yticks.by)
         p <- p + .set_axis_limits(xlim, ylim)
         p <-.set_legend(p, legend, legend.title, font.legend)
