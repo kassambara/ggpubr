@@ -186,7 +186,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
 
         p <- p +.set_ticks(ticks, tickslab, font.tickslab,
                      xtickslab.rt, ytickslab.rt,
-                     font.xtickslab = font.tickslab, font.ytickslab = font.tickslab)
+                     font.xtickslab = font.xtickslab, font.ytickslab = font.ytickslab)
         p <- .set_ticksby(p, xticks.by, yticks.by)
         p <- p + .set_axis_limits(xlim, ylim)
         p <-.set_legend(p, legend, legend.title, font.legend)
