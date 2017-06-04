@@ -6,7 +6,10 @@
     - `ggarrange()` to arrange multiple ggplots on the same page.
     - `ggexport()` to export one or multiple ggplots to a file (pdf, eps, png, jpeg).
     - `ggpaired()` to plot paired data.
-    - `compare_means()` to compare the means of two or multiple groups. Returns a data frame
+    - `compare_means()` to compare the means of two or multiple groups. Returns a data frame.
+    - `stat_compare_means()` to add p-values and significance levels to plots.
+    - `stat_cor()` to add correlation coefficients with p-values to a scatter plot.
+    - `stat_stars()` to add stars to a scatter plot.
     
     
 - Now, the argument `y` can be a character vector of multiple variables to plot at once. This might be useful in genomic fields to plot the gene expression levels of multiple genes at once. see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`.
@@ -18,9 +21,8 @@
     - `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5)).
     - `add_summary()` to add summary statistics.
     - `ggadd()` to add summary statistics or a geometry onto a ggplot.
-    - `stat_stars()` to add stars to a scatter plot.
-    - `stat_cor()` to add correlation coefficients with p-values to a scatter plot.
-    - `stat_compare_means()` to add p-values and significance levels to plots.
+    
+    
 
 - New arguments in ggpubr functions, see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`:
     - `combine` added to combine multiple y variables on the same graph.
@@ -58,46 +60,10 @@
 - Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
 
 - `ggmaplot()` now handles situations, wehre there is only upregulated, or downlegulated gnes.
-   
-## To check
-
-see http://www.tengfei.name/ggbio/docs/man/tracks.html for ggarrange
-http://techqa.info/programming/question/29263046/how-to-draw-the-boxplot-with-significant-level
-
-https://cran.rstudio.com/web/packages/ggpmisc/vignettes/a-user-guide.html
+  
 
 
-http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html
-
-```r
-library(ggpmisc)
-formula <- y ~x
-df <- mtcars
-df$cyl <- as.factor(df$cyl)
-df$vs <- as.factor(df$vs)
-ggscatter(df, x = "wt", y = "mpg",
-          color = "cyl", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          label = "name", repel = TRUE, add = "reg.line", cor.coef = TRUE)+
-  #facet_wrap(~cyl, scales = "free")+
-  stat_fit_glance(method = 'lm',
-                  method.args = list(formula = y ~x),
-                  geom = 'text',
-                  aes(label = paste("P-value = ", signif(..p.value.., digits = 4), sep = ""), color = cyl),
-                  label.x.npc = 'right', label.y.npc = 0.9, size = 3)+
-  stat_poly_eq(aes(label = paste(..rr.label..), color = cyl), 
-               label.x.npc = "right", label.y.npc = 0.8,
-               formula = y ~x, parse = TRUE, size = 3)+
-  stat_poly_eq(aes(label =  paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
-               formula = formula, parse = TRUE, geom = "label")
-```
-
-
-
-
-volcano plot:
-http://www.gettinggeneticsdone.com/2014/05/r-volcano-plots-to-visualize-rnaseq-microarray.html
-http://www.sthda.com/french/wiki/ggplot2-textes-ajouter-du-texte-a-un-graphique-logiciel-r-et-visualisation-de-donnees
-
+     
 # ggpubr 0.1.2
    
     
