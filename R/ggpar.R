@@ -55,6 +55,8 @@ NULL
 #' @param xticks.by,yticks.by numeric value controlling x and y axis breaks,
 #'   respectively. For example, if yticks.by = 5, a tick mark is shown on every
 #'   5. Default value is NULL.
+#' @param rotate logical value. If TRUE, rotate the graph by setting the plot
+#'   orientation to horizontal.
 #' @param orientation change the orientation of the plot. Allowed values are one
 #'   of c( "vertical", "horizontal", "reverse"). Partial match is allowed.
 #' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
@@ -154,12 +156,14 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   x.text.angle = NULL, y.text.angle = NULL,
                   xtickslab.rt = x.text.angle, ytickslab.rt = y.text.angle,
                   xticks.by = NULL, yticks.by = NULL,
+                  rotate = FALSE,
                   orientation = c("vertical", "horizontal", "reverse"),
                   ggtheme = NULL,
                   ...)
   {
 
   original.p <- p
+  if(rotate) orientation <- "horizontal"
 
   if(is.ggplot(original.p)) list.plots <- list(original.p)
   else if(is.list(original.p)) list.plots <- original.p

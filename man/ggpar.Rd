@@ -14,8 +14,8 @@ ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL,
   font.legend = NULL, ticks = TRUE, tickslab = TRUE,
   font.tickslab = NULL, x.text.angle = NULL, y.text.angle = NULL,
   xtickslab.rt = x.text.angle, ytickslab.rt = y.text.angle,
-  xticks.by = NULL, yticks.by = NULL, orientation = c("vertical",
-  "horizontal", "reverse"), ggtheme = NULL, ...)
+  xticks.by = NULL, yticks.by = NULL, rotate = FALSE,
+  orientation = c("vertical", "horizontal", "reverse"), ggtheme = NULL, ...)
 }
 \arguments{
 \item{p}{an object of class ggplot or a list of ggplots}
@@ -91,6 +91,9 @@ respectively. Will be deprecated in the near future.}
 \item{xticks.by, yticks.by}{numeric value controlling x and y axis breaks,
 respectively. For example, if yticks.by = 5, a tick mark is shown on every
 5. Default value is NULL.}
+
+\item{rotate}{logical value. If TRUE, rotate the graph by setting the plot
+orientation to horizontal.}
 
 \item{orientation}{change the orientation of the plot. Allowed values are one
 of c( "vertical", "horizontal", "reverse"). Partial match is allowed.}
