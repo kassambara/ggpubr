@@ -13,7 +13,7 @@ NULL
 #'@param hide.ns logical value. If TRUE, hide ns symbol when displaying
 #'  significance levels.
 #'@param label character string specifying label type. Allowed values include
-#'  "p.signif", "p.format".
+#'  "p.signif" (shows the significance levels), "p.format" (shows the formatted p value).
 #'@param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the correlation coefficient and the p.value.
 #'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -108,7 +108,9 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     color <- ifelse(is.null(pms$color), "black", pms$color)
 
     map_signif_level <- FALSE
-    if(.is_p.signif_in_mapping(mapping)){
+
+    if(.is_p.signif_in_mapping(mapping) | !.is_empty(label %in% "p.signif"))
+      {
       map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05)
       if(hide.ns) map_signif_level[4] <- " "
     }
