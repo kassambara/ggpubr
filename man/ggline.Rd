@@ -6,8 +6,9 @@
 \usage{
 ggline(data, x, y, group = 1, combine = FALSE, merge = FALSE,
   color = "black", palette = NULL, linetype = "solid",
-  plot_type = c("b", "l", "p"), size = 0.5, shape = 19, title = NULL,
-  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
+  plot_type = c("b", "l", "p"), size = 0.5, shape = 19,
+  point.size = size, point.color = color, title = NULL, xlab = NULL,
+  ylab = NULL, facet.by = NULL, panel.labs = NULL,
   short.panel.labs = TRUE, select = NULL, remove = NULL, order = NULL,
   add = "none", add.params = list(), error.plot = "errorbar",
   label = NULL, font.label = list(size = 11, color = "black"),
@@ -50,6 +51,10 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 outlines.}
 
 \item{shape}{point shapes.}
+
+\item{point.size}{point size.}
+
+\item{point.color}{point color.}
 
 \item{title}{plot main title.}
 

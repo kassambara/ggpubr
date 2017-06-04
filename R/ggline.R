@@ -14,6 +14,8 @@ NULL
 #' "l" for line only; and "p" for point only. Default is "b".
 #' @param shape point shapes.
 #' @param show.line.label logical value. If TRUE, shows line labels.
+#' @param point.size point size.
+#' @param point.color point color.
 #' @param ... other arguments to be passed to geom_dotplot.
 #'
 #'
@@ -119,7 +121,7 @@ ggline<- function(data, x, y, group = 1,
                   color = "black", palette = NULL,
                   linetype = "solid",
                   plot_type = c("b", "l", "p"),
-                  size = 0.5, shape = 19,
+                  size = 0.5, shape = 19, point.size = size, point.color = color,
                   title = NULL, xlab = NULL, ylab = NULL,
                   facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                   select = NULL, remove = NULL, order = NULL,
@@ -141,7 +143,8 @@ ggline<- function(data, x, y, group = 1,
     combine = combine, merge = merge,
     color = color, palette = palette,
     linetype = linetype, plot_type = plot_type,
-    size = size, shape = shape,
+    size = size,  shape = shape,
+    point.size = point.size, point.color = point.color,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     select = select , remove = remove, order = order,
@@ -177,7 +180,8 @@ ggline_core <- function(data, x, y, group = 1,
                   color = "black", fill = "white", palette = NULL,
                   linetype = "solid",
                   plot_type = c("b", "l", "p"),
-                  size = 0.6, shape = 19,
+                  size = 0.5, shape = 19,
+                  point.size = size, point.color = color,
                   select = NULL, order = NULL,
                   facet.by = NULL,
                   add = "none",
@@ -266,8 +270,8 @@ ggline_core <- function(data, x, y, group = 1,
   if(plot_type %in% c("p", "b")){
     p <- p +
     geom_exec(geom_point, data = data_sum,
-               color = add.params$color, shape = shape,
-               size = 1.2+size)
+               color = point.color, shape = shape,
+               size = 1.2+point.size)
     # Adjust shape when ngroups > 6, to avoid ggplot warnings
     p <-.scale_point_shape(p, data_sum, shape)
   }
