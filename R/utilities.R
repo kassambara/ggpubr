@@ -417,7 +417,7 @@ NULL
            xtickslab.rt = NULL, ytickslab.rt = NULL)
   {
 
-    . <- NULL
+    . <- xhjust <- NULL
    if(!is.null(xtickslab.rt)) {
      if(xtickslab.rt > 5) xhjust <- 1
      }
@@ -1108,7 +1108,7 @@ p
     .compact()
   data <- opts$data
   opts$data <- list(opts$data)
- if(fun_name == "ggline") opts$group <- group
+ if(fun_name %in% c("ggline", "ggdotchart")) opts$group <- group
   # Plotting
   #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   # Apply function to each y variables
@@ -1148,6 +1148,7 @@ p
                    label.opts
                    )
   }
+
   # Take into account the legend argument, when the main plot has no legend and ggtext has legend
   p <-purrr::map(p, ggpar, legend = legend, legend.title = legend.title)
 
