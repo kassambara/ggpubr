@@ -70,6 +70,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
 
   set.seed(123)
   . <- NULL
+  .dots <- list(...)
   data <- as.data.frame(data)
   if(length(label) >1){
     if(length(label) != nrow(data))
@@ -139,18 +140,21 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   else{
     ggfunc <- geom_text
     vjust  <- -0.7
+    hjust <- NULL
     if(label.rectangle) {
       ggfunc <- geom_label
       vjust <- -0.4
     }
+    vjust <- ifelse(is.null(.dots$vjust), vjust, .dots$vjust)
+    if(!is.null(.dots$hjust)) hjust <- .dots$hjust
     p <- p + geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
                         label = label, fontface = face, family = family,
                         size = size/3, color = color,
-                        vjust = vjust, alpha = alpha, position = position)
+                        vjust = vjust, hjust = hjust, alpha = alpha, position = position)
 
   }
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  #p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
   if(family != "")
     p <- p + theme(text = element_text(family = family))
 
