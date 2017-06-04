@@ -58,6 +58,7 @@
 <a href="#ggpubr-ggplot2-based-publication-ready-plots" class="anchor"> </a>ggpubr: ‘ggplot2’ Based Publication Ready Plots</h1></div>
 <p>ggplot2 by <a href="http://docs.ggplot2.org/current/">Hadley Wickham</a> is an excellent and flexible package for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a ggplot, the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills.</p>
 <p>The ‘ggpubr’ package provides some easy-to-use functions for creating and customizing ‘ggplot2’- based publication ready plots.</p>
+<p>Find out more at <a href="http://www.sthda.com/english/rpkgs/ggpubr" class="uri">http://www.sthda.com/english/rpkgs/ggpubr</a>.</p>
 <div id="installation-and-loading" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation-and-loading" class="anchor"> </a>Installation and loading</h2>
@@ -72,16 +73,12 @@
 if(!<span class="kw">require</span>(devtools)) <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 devtools::<span class="kw">install_github</span>(<span class="st">"kassambara/ggpubr"</span>)</code></pre></div>
 </div>
-<div id="geting-started" class="section level2">
+<div id="distribution" class="section level2">
 <h2 class="hasAnchor">
-<a href="#geting-started" class="anchor"> </a>Geting started</h2>
-<p>Find out more at <a href="http://www.sthda.com/english/rpkgs/ggpubr" class="uri">http://www.sthda.com/english/rpkgs/ggpubr</a>.</p>
-<div id="density-and-histogram-plots" class="section level3">
-<h3 class="hasAnchor">
-<a href="#density-and-histogram-plots" class="anchor"> </a>Density and histogram plots</h3>
+<a href="#distribution" class="anchor"> </a>Distribution</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggpubr)
 <span class="co"># Create some data format</span>
-<span class="co"># +++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="kw">set.seed</span>(<span class="dv">1234</span>)
 wdata =<span class="st"> </span><span class="kw">data.frame</span>(
    <span class="dt">sex =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">"F"</span>, <span class="st">"M"</span>), <span class="dt">each=</span><span class="dv">200</span>)),
@@ -94,7 +91,7 @@ wdata =<span class="st"> </span><span class="kw">data.frame</span>(
 <span class="co">#&gt; 4   F 52.65430</span>
 
 <span class="co"># Density plot with mean lines and marginal rug</span>
-<span class="co"># +++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="co"># Change outline and fill colors by groups ("sex")</span>
 <span class="co"># Use custom palette</span>
 <span class="kw"><a href="reference/ggdensity.html">ggdensity</a></span>(wdata, <span class="dt">x =</span> <span class="st">"weight"</span>,
@@ -103,7 +100,7 @@ wdata =<span class="st"> </span><span class="kw">data.frame</span>(
    <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</code></pre></div>
 <p><img src="tools/README-ggpubr-1.png" width="508.8"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Histogram plot with mean lines and marginal rug</span>
-<span class="co"># +++++++++++++++++++++++++++++++++++++++++++</span>
+<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="co"># Change outline and fill colors by groups ("sex")</span>
 <span class="co"># Use custom color palette</span>
 <span class="kw"><a href="reference/gghistogram.html">gghistogram</a></span>(wdata, <span class="dt">x =</span> <span class="st">"weight"</span>,
@@ -112,9 +109,9 @@ wdata =<span class="st"> </span><span class="kw">data.frame</span>(
    <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</code></pre></div>
 <p><img src="tools/README-ggpubr-2.png" width="508.8"></p>
 </div>
-<div id="box-plots-and-violin-plots" class="section level3">
-<h3 class="hasAnchor">
-<a href="#box-plots-and-violin-plots" class="anchor"> </a>Box plots and violin plots</h3>
+<div id="box-plots-and-violin-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#box-plots-and-violin-plots" class="anchor"> </a>Box plots and violin plots</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load data</span>
 <span class="kw">data</span>(<span class="st">"ToothGrowth"</span>)
 df &lt;-<span class="st"> </span>ToothGrowth
@@ -126,29 +123,209 @@ df &lt;-<span class="st"> </span>ToothGrowth
 <span class="co">#&gt; 4  5.8   VC  0.5</span>
 
 <span class="co"># Box plots with jittered points</span>
-<span class="co"># ++++++++++++++++++++++++++++++++</span>
+<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="co"># Change outline colors by groups: dose</span>
 <span class="co"># Use custom color palette</span>
 <span class="co"># Add jitter points and change the shape by groups</span>
- <span class="kw"><a href="reference/ggboxplot.html">ggboxplot</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>,
-    <span class="dt">color =</span> <span class="st">"dose"</span>, <span class="dt">palette =</span><span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
-    <span class="dt">add =</span> <span class="st">"jitter"</span>, <span class="dt">shape =</span> <span class="st">"dose"</span>)</code></pre></div>
+ p &lt;-<span class="st"> </span><span class="kw"><a href="reference/ggboxplot.html">ggboxplot</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>,
+                <span class="dt">color =</span> <span class="st">"dose"</span>, <span class="dt">palette =</span><span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
+                <span class="dt">add =</span> <span class="st">"jitter"</span>, <span class="dt">shape =</span> <span class="st">"dose"</span>)
+ p</code></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-1.png" width="508.8"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> 
+ <span class="co"># Add p-values comparing groups</span>
+ <span class="co"># Specify the comparisons you want</span>
+my_comparisons &lt;-<span class="st"> </span><span class="kw">list</span>( <span class="kw">c</span>(<span class="st">"0.5"</span>, <span class="st">"1"</span>), <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>), <span class="kw">c</span>(<span class="st">"0.5"</span>, <span class="st">"2"</span>) )
+p +<span class="st"> </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons)+<span class="st"> </span><span class="co"># Add pairwise comparisons p-value</span>
+<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                   <span class="co"># Add global p-value</span></code></pre></div>
+<p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png" width="508.8"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+ 
 <span class="co"># Violin plots with box plots inside</span>
-<span class="co"># +++++++++++++++++++++++++++++++++</span>
+<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="co"># Change fill color by groups: dose</span>
 <span class="co"># add boxplot with white fill color</span>
 <span class="kw"><a href="reference/ggviolin.html">ggviolin</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>, <span class="dt">fill =</span> <span class="st">"dose"</span>,
-   <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
-   <span class="dt">add =</span> <span class="st">"boxplot"</span>, <span class="dt">add.params =</span> <span class="kw">list</span>(<span class="dt">fill =</span> <span class="st">"white"</span>))</code></pre></div>
-<p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png" width="508.8"></p>
+         <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
+         <span class="dt">add =</span> <span class="st">"boxplot"</span>, <span class="dt">add.params =</span> <span class="kw">list</span>(<span class="dt">fill =</span> <span class="st">"white"</span>))+
+<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons, <span class="dt">label =</span> <span class="st">"p.signif"</span>)+<span class="st"> </span><span class="co"># Add significance levels</span>
+<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                                      <span class="co"># Add global the p-value </span></code></pre></div>
+<p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-3.png" width="508.8"></p>
 </div>
-<div id="more" class="section level3">
+<div id="bar-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bar-plots" class="anchor"> </a>Bar plots</h2>
+<div id="demo-data-set" class="section level3">
 <h3 class="hasAnchor">
-<a href="#more" class="anchor"> </a>More</h3>
-<p>Find out more at <a href="http://www.sthda.com/english/rpkgs/ggpubr" class="uri">http://www.sthda.com/english/rpkgs/ggpubr</a>.</p>
+<a href="#demo-data-set" class="anchor"> </a>Demo data set</h3>
+<p>Load and prepare data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load data</span>
+<span class="kw">data</span>(<span class="st">"mtcars"</span>)
+dfm &lt;-<span class="st"> </span>mtcars
+<span class="co"># Convert the cyl variable to a factor</span>
+dfm$cyl &lt;-<span class="st"> </span><span class="kw">as.factor</span>(dfm$cyl)
+<span class="co"># Add the name colums</span>
+dfm$name &lt;-<span class="st"> </span><span class="kw">rownames</span>(dfm)
+<span class="co"># Inspect the data</span>
+<span class="kw">head</span>(dfm[, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"cyl"</span>)])
+<span class="co">#&gt;                                name    wt  mpg cyl</span>
+<span class="co">#&gt; Mazda RX4                 Mazda RX4 2.620 21.0   6</span>
+<span class="co">#&gt; Mazda RX4 Wag         Mazda RX4 Wag 2.875 21.0   6</span>
+<span class="co">#&gt; Datsun 710               Datsun 710 2.320 22.8   4</span>
+<span class="co">#&gt; Hornet 4 Drive       Hornet 4 Drive 3.215 21.4   6</span>
+<span class="co">#&gt; Hornet Sportabout Hornet Sportabout 3.440 18.7   8</span>
+<span class="co">#&gt; Valiant                     Valiant 3.460 18.1   6</span></code></pre></div>
 </div>
+<div id="ordered-bar-plots" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ordered-bar-plots" class="anchor"> </a>Ordered bar plots</h3>
+<p>Change the fill color by the grouping variable “cyl”. Sorting will be done globally, but not by groups.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
+          <span class="dt">fill =</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span>
+          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
+          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
+          <span class="dt">sort.val =</span> <span class="st">"desc"</span>,          <span class="co"># Sort the value in dscending order</span>
+          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span>
+          <span class="dt">x.text.angle =</span> <span class="dv">90</span>           <span class="co"># Rotate vertically x axis texts</span>
+          )</code></pre></div>
+<p><img src="tools/README-ordered-bar-plots-1.png" width="576"></p>
+<p>Sort bars inside each group. Use the argument <strong>sort.by.groups = TRUE</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
+          <span class="dt">fill =</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span>
+          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
+          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
+          <span class="dt">sort.val =</span> <span class="st">"asc"</span>,          <span class="co"># Sort the value in dscending order</span>
+          <span class="dt">sort.by.groups =</span> <span class="ot">TRUE</span>,      <span class="co"># Don't sort inside each group</span>
+          <span class="dt">x.text.angle =</span> <span class="dv">90</span>          <span class="co"># Rotate vertically x axis texts</span>
+          )</code></pre></div>
+<p><img src="tools/README-ordered-bar-plots-by-groups-1.png" width="576"></p>
+</div>
+<div id="deviation-graphs" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deviation-graphs" class="anchor"> </a>Deviation graphs</h3>
+<p>The deviation graph shows the deviation of quantitatives values to a reference value. In the R code below, we’ll plot the mpg z-score from the mtcars dataset.</p>
+<p>Calculate the z-score of the mpg data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculate the z-score of the mpg data</span>
+dfm$mpg_z &lt;-<span class="st"> </span>(dfm$mpg -<span class="kw">mean</span>(dfm$mpg))/<span class="kw">sd</span>(dfm$mpg)
+dfm$mpg_grp &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">ifelse</span>(dfm$mpg_z &lt;<span class="st"> </span><span class="dv">0</span>, <span class="st">"low"</span>, <span class="st">"high"</span>), 
+                     <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">"low"</span>, <span class="st">"high"</span>))
+<span class="co"># Inspect the data</span>
+<span class="kw">head</span>(dfm[, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"mpg_z"</span>, <span class="st">"mpg_grp"</span>, <span class="st">"cyl"</span>)])
+<span class="co">#&gt;                                name    wt  mpg      mpg_z mpg_grp cyl</span>
+<span class="co">#&gt; Mazda RX4                 Mazda RX4 2.620 21.0  0.1508848    high   6</span>
+<span class="co">#&gt; Mazda RX4 Wag         Mazda RX4 Wag 2.875 21.0  0.1508848    high   6</span>
+<span class="co">#&gt; Datsun 710               Datsun 710 2.320 22.8  0.4495434    high   4</span>
+<span class="co">#&gt; Hornet 4 Drive       Hornet 4 Drive 3.215 21.4  0.2172534    high   6</span>
+<span class="co">#&gt; Hornet Sportabout Hornet Sportabout 3.440 18.7 -0.2307345     low   8</span>
+<span class="co">#&gt; Valiant                     Valiant 3.460 18.1 -0.3302874     low   6</span></code></pre></div>
+<p>Create an ordered barplot, colored according to the level of mpg:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,
+          <span class="dt">fill =</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span>
+          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
+          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
+          <span class="dt">sort.val =</span> <span class="st">"asc"</span>,           <span class="co"># Sort the value in ascending order</span>
+          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span>
+          <span class="dt">x.text.angle =</span> <span class="dv">90</span>,          <span class="co"># Rotate vertically x axis texts</span>
+          <span class="dt">ylab =</span> <span class="st">"MPG z-score"</span>,
+          <span class="dt">xlab =</span> <span class="ot">FALSE</span>,
+          <span class="dt">legend.title =</span> <span class="st">"MPG Group"</span>
+          )</code></pre></div>
+<p><img src="tools/README-deviation-graphs-1.png" width="576"></p>
+<p>Rotate the plot: use rotate = TRUE and sort.val = “desc”</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,
+          <span class="dt">fill =</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span>
+          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
+          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
+          <span class="dt">sort.val =</span> <span class="st">"desc"</span>,          <span class="co"># Sort the value in descending order</span>
+          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span>
+          <span class="dt">x.text.angle =</span> <span class="dv">90</span>,          <span class="co"># Rotate vertically x axis texts</span>
+          <span class="dt">ylab =</span> <span class="st">"MPG z-score"</span>,
+          <span class="dt">legend.title =</span> <span class="st">"MPG Group"</span>,
+          <span class="dt">rotate =</span> <span class="ot">TRUE</span>,
+          <span class="dt">ggtheme =</span> <span class="kw">theme_minimal</span>()
+          )</code></pre></div>
+<p><img src="tools/README-deviation-graphs-horizontal-1.png" width="624"></p>
+</div>
+</div>
+<div id="dot-charts" class="section level2">
+<h2 class="hasAnchor">
+<a href="#dot-charts" class="anchor"> </a>Dot charts</h2>
+<div id="lollipop-chart" class="section level3">
+<h3 class="hasAnchor">
+<a href="#lollipop-chart" class="anchor"> </a>Lollipop chart</h3>
+<p>Lollipop chart is an alternative to bar plots, when you have a large set of values to visualize.</p>
+<p>Lollipop chart colored by the grouping variable “cyl”:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
+           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
+           <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
+           <span class="dt">sorting =</span> <span class="st">"ascending"</span>,                        <span class="co"># Sort value in descending order</span>
+           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span>
+           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           )</code></pre></div>
+<p><img src="tools/README-lollipop-chart-1.png" width="720"></p>
+<ul>
+<li>Sort in decending order. <strong>sorting = “descending”</strong>.</li>
+<li>Rotate the plot vertically, using <strong>rotate = TRUE</strong>.</li>
+<li>Sort the mpg value inside each group by using <strong>group = “cyl”</strong>.</li>
+<li>Set <strong>dot.size</strong> to 6.</li>
+<li>Add mpg values as label. <strong>label = “mpg”</strong> or <strong>label = round(dfm$mpg)</strong>.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
+           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
+           <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
+           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
+           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span>
+           <span class="dt">rotate =</span> <span class="ot">TRUE</span>,                                <span class="co"># Rotate vertically</span>
+           <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span>
+           <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span>
+           <span class="dt">label =</span> <span class="kw">round</span>(dfm$mpg),                        <span class="co"># Add mpg values as dot labels</span>
+           <span class="dt">font.label =</span> <span class="kw">list</span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, 
+                             <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
+           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           )</code></pre></div>
+<p><img src="tools/README-lollipop-chart-rotate-1.png" width="480"></p>
+<p>Deviation graph:</p>
+<ul>
+<li>Use y = “mpg_z”</li>
+<li>Change segment color and size: add.params = list(color = “lightgray”, size = 2)</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,
+           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
+           <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
+           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
+           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span>
+           <span class="dt">add.params =</span> <span class="kw">list</span>(<span class="dt">color =</span> <span class="st">"lightgray"</span>, <span class="dt">size =</span> <span class="dv">2</span>), <span class="co"># Change segment color and size</span>
+           <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span>
+           <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span>
+           <span class="dt">label =</span> <span class="kw">round</span>(dfm$mpg_z,<span class="dv">1</span>),                        <span class="co"># Add mpg values as dot labels</span>
+           <span class="dt">font.label =</span> <span class="kw">list</span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, 
+                             <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
+           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           )+
+<span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">"lightgray"</span>)</code></pre></div>
+<p><img src="tools/README-lollipop-chart-deviation-1.png" width="720"></p>
+</div>
+<div id="clevelands-dot-plot" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clevelands-dot-plot" class="anchor"> </a>Cleveland’s dot plot</h3>
+<p>Color y text by groups. Use y.text.col = TRUE.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
+           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
+           <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
+           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
+           <span class="dt">rotate =</span> <span class="ot">TRUE</span>,                                <span class="co"># Rotate vertically</span>
+           <span class="dt">dot.size =</span> <span class="dv">2</span>,                                 <span class="co"># Large dot size</span>
+           <span class="dt">y.text.col =</span> <span class="ot">TRUE</span>,                            <span class="co"># Color y text by groups</span>
+           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           )+
+<span class="st">  </span><span class="kw"><a href="reference/ggdotchart.html">theme_cleveland</a></span>()                                      <span class="co"># Add dashed grids</span></code></pre></div>
+<p><img src="tools/README-cleveland-dot-plots-1.png" width="480"></p>
+</div>
+</div>
+<div id="more" class="section level2">
+<h2 class="hasAnchor">
+<a href="#more" class="anchor"> </a>More</h2>
+<p>Find out more at <a href="http://www.sthda.com/english/rpkgs/ggpubr" class="uri">http://www.sthda.com/english/rpkgs/ggpubr</a>.</p>
 </div>
 <div id="blog-posts" class="section level2">
 <h2 class="hasAnchor">

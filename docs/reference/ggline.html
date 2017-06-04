@@ -78,8 +78,9 @@
 
     <pre><span class='fu'>ggline</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
-  <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"b"</span>, <span class='st'>"l"</span>, <span class='st'>"p"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"b"</span>, <span class='st'>"l"</span>, <span class='st'>"p"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
+  <span class='kw'>point.size</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>point.color</span> <span class='kw'>=</span> <span class='no'>color</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"errorbar"</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>),
@@ -124,6 +125,10 @@ scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;a
 outlines.</dd>
       <dt>shape</dt>
       <dd>point shapes.</dd>
+      <dt>point.size</dt>
+      <dd>point size.</dd>
+      <dt>point.color</dt>
+      <dd>point color.</dd>
       <dt>title</dt>
       <dd>plot main title.</dd>
       <dt>xlab</dt>

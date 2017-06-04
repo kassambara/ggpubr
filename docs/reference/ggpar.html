@@ -86,8 +86,8 @@
   <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='no'>x.text.angle</span>, <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='no'>y.text.angle</span>,
-  <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"vertical"</span>,
-  <span class='st'>"horizontal"</span>, <span class='st'>"reverse"</span>), <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"vertical"</span>, <span class='st'>"horizontal"</span>, <span class='st'>"reverse"</span>), <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -165,6 +165,9 @@ respectively. Will be deprecated in the near future.</dd>
       <dd>numeric value controlling x and y axis breaks,
 respectively. For example, if yticks.by = 5, a tick mark is shown on every
 5. Default value is NULL.</dd>
+      <dt>rotate</dt>
+      <dd>logical value. If TRUE, rotate the graph by setting the plot
+orientation to horizontal.</dd>
       <dt>orientation</dt>
       <dd>change the orientation of the plot. Allowed values are one
 of c( &quot;vertical&quot;, &quot;horizontal&quot;, &quot;reverse&quot;). Partial match is allowed.</dd>

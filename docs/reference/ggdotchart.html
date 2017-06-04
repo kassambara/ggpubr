@@ -76,42 +76,120 @@
     <p>Draw a Cleveland dot plot.</p>
     
 
-    <pre><span class='fu'>ggdotchart</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>label</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"descending"</span>, <span class='st'>"ascending"</span>),
-  <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"vertical"</span>, <span class='st'>"horizontal"</span>), <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_bw</span>(), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>ggdotchart</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dot.size</span> <span class='kw'>=</span> <span class='no'>size</span>,
+  <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ascending"</span>, <span class='st'>"descending"</span>), <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"segment"</span>),
+  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>x.text.col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>),
+  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)
+
+<span class='fu'>theme_cleveland</span>(<span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>data</dt>
       <dd>a data frame</dd>
-      <dt>x</dt>
-      <dd>x variable for drawing.</dd>
-      <dt>label</dt>
-      <dd>the name of the column containing point labels.</dd>
+      <dt>x, y</dt>
+      <dd>x and y variables for drawing.</dd>
       <dt>group</dt>
       <dd>an optional column name indicating how the elements of x are
 grouped.</dd>
+      <dt>combine</dt>
+      <dd>logical value. Default is FALSE. Used only when y is a vector
+containing multiple variables to plot. If TRUE, create a multi-panel plot by
+combining the plot of y variables.</dd>
       <dt>color, size</dt>
       <dd>points color and size.</dd>
       <dt>palette</dt>
-      <dd>the color palette to be used for coloring or filling by
-groups. Allowed values include &quot;grey&quot; for grey color palettes; brewer
-palettes e.g. &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;,
-&quot;red&quot;); and scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;,
-&quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and
-&quot;rickandmorty&quot;. Can be also a numeric vector of length(groups); in this
-case a basic color palette is created using the function
-<a href='http://www.rdocumentation.org/packages/grDevices/topics/palette'>palette</a>.</dd>
+      <dd>the color palette to be used for coloring or filling by groups.
+Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes e.g.
+&quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
+scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
+&quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
       <dt>shape</dt>
       <dd>point shape. See <code><a href='show_point_shapes.html'>show_point_shapes</a></code>.</dd>
+      <dt>dot.size</dt>
+      <dd>numeric value specifying the dot size.</dd>
       <dt>sorting</dt>
       <dd>a character vector for sorting into ascending or descending
 order. Allowed values are one of &quot;descending&quot; and &quot;ascending&quot;. Partial
 match are allowed (e.g. sorting = &quot;desc&quot; or &quot;asc&quot;). Default is
 &quot;descending&quot;.</dd>
-      <dt>orientation</dt>
-      <dd>change the orientation of the plot. Allowed values are one
-of c( &quot;vertical&quot;, &quot;horizontal&quot;, &quot;reverse&quot;). Partial match is allowed.</dd>
+      <dt>add</dt>
+      <dd>character vector for adding another plot element (e.g.: dot plot or
+error bars). Allowed values are one or the combination of: &quot;none&quot;,
+&quot;dotplot&quot;, &quot;jitter&quot;, &quot;boxplot&quot;, &quot;point&quot;, &quot;mean&quot;, &quot;mean_se&quot;, &quot;mean_sd&quot;,
+&quot;mean_ci&quot;, &quot;mean_range&quot;, &quot;median&quot;, &quot;median_iqr&quot;, &quot;median_mad&quot;,
+&quot;median_range&quot;; see ?desc_statby for more details.</dd>
+      <dt>add.params</dt>
+      <dd>parameters (color, shape, size, fill, linetype) for the
+argument &#39;add&#39;; e.g.: add.params = list(color = &quot;red&quot;).</dd>
+      <dt>x.text.col</dt>
+      <dd>logical. If TRUE (default), x axis texts are colored by groups.</dd>
+      <dt>rotate</dt>
+      <dd>logical value. If TRUE, rotate the graph by setting the plot
+orientation to horizontal.</dd>
+      <dt>title</dt>
+      <dd>plot main title.</dd>
+      <dt>xlab</dt>
+      <dd>character vector specifying x axis labels. Use xlab = FALSE to
+hide xlab.</dd>
+      <dt>ylab</dt>
+      <dd>character vector specifying y axis labels. Use ylab = FALSE to
+hide ylab.</dd>
+      <dt>facet.by</dt>
+      <dd>character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels. Should be in the data.</dd>
+      <dt>panel.labs</dt>
+      <dd>a list of one or two character vectors to modify facet panel
+labels. For example, panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;)) specifies
+the labels for the &quot;sex&quot; variable. For two grouping variables, you can use
+for example panel.labs = list(sex = c(&quot;Male&quot;, &quot;Female&quot;), rx = c(&quot;Obs&quot;,
+&quot;Lev&quot;, &quot;Lev2&quot;) ).</dd>
+      <dt>short.panel.labs</dt>
+      <dd>logical value. Default is TRUE. If TRUE, create short
+labels for panels by omitting variable names; in other words panels will be
+labelled only by variable grouping levels.</dd>
+      <dt>select</dt>
+      <dd>character vector specifying which items to display.</dd>
+      <dt>remove</dt>
+      <dd>character vector specifying which items to remove from the plot.</dd>
+      <dt>order</dt>
+      <dd>character vector specifying the order of items.</dd>
+      <dt>label</dt>
+      <dd>the name of the column containing point labels.</dd>
+      <dt>font.label</dt>
+      <dd>a list which can contain the combination of the following elements: the size
+(e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and
+the color (e.g.: &quot;red&quot;) of labels. For example font.label = list(size = 14,
+face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and the style, use font.label =
+list(size = 14, face = &quot;plain&quot;).</dd>
+      <dt>label.select</dt>
+      <dd>can be of two formats: <ul>
+<li> a character vector
+specifying some labels to show. </li>
+<li> a list containting one or the
+combination of the following components: <ul>
+<li> <code>top.up</code> and
+<code>top.down</code>: to display the labels  of the top up/down points. For
+example, <code>label.select = list(top.up = 10, top.down = 4)</code>. </li>
+<li>
+<code>criteria</code>: to filter, for example, by x and y variabes values, use
+this: <code>label.select = list(criteria = &quot;`y` &gt; 2 &amp; `y` &lt; 5 &amp; `x` %in%
+c(&#39;A&#39;, &#39;B&#39;)&quot;)</code>. </li>
+</ul>
+ </li>
+</ul>
+</dd>
+      <dt>repel</dt>
+      <dd>a logical value, whether to use ggrepel to avoid overplotting
+text labels or not.</dd>
+      <dt>label.rectangle</dt>
+      <dd>logical value. If TRUE, add rectangle underneath the
+text, making it easier to read.</dd>
       <dt>ggtheme</dt>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -154,20 +232,16 @@ and <code><a href='ggpar.html'>ggpar</a></code>.</dd>
 #&gt; Mazda RX4 Wag 2.875 21.0   6
 #&gt; Datsun 710    2.320 22.8   4</div><div class='input'>
 <span class='co'># Basic plot</span>
-<span class='fu'>ggdotchart</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"name"</span> )</div><img src='ggdotchart-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>ggdotchart</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"name"</span>, <span class='kw'>y</span> <span class='kw'>=</span><span class='st'>"mpg"</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_bw</span>())</div><img src='ggdotchart-4.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Change colors by  group cyl</span>
-<span class='fu'>ggdotchart</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"name"</span>,
+<span class='fu'>ggdotchart</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"name"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
    <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>,
-   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'#999999'</span>,<span class='st'>'#E69F00'</span>,<span class='st'>'#56B4E9'</span>) )</div><img src='ggdotchart-6.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Use brewer palette</span>
-<span class='fu'>ggdotchart</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"name"</span>,
-   <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span> )</div><img src='ggdotchart-8.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Change the orientation</span>
-<span class='co'># Sort in ascending order</span>
-<span class='fu'>ggdotchart</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"name"</span>,
-   <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>,
-    <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>, <span class='st'>"#FC4E07"</span>),
-   <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='st'>"horizontal"</span>, <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='st'>"ascending"</span> )</div><img src='ggdotchart-10.png' alt='' width='540' height='400' /><div class='input'>
+   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'#999999'</span>,<span class='st'>'#E69F00'</span>,<span class='st'>'#56B4E9'</span>),
+   <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+   <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='st'>"descending"</span>,
+   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_bw</span>(),
+   <span class='kw'>y.text.col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span> )</div><img src='ggdotchart-6.png' alt='' width='540' height='400' /><div class='input'>
 
 </div></pre>
   </div>
