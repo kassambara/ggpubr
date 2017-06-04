@@ -2,6 +2,7 @@
 % Please edit documentation in R/ggdotchart.R
 \name{ggdotchart}
 \alias{ggdotchart}
+\alias{theme_cleveland}
 \title{Cleveland's Dot Plots}
 \usage{
 ggdotchart(data, x, y, group = NULL, combine = FALSE, color = "black",
@@ -13,6 +14,8 @@ ggdotchart(data, x, y, group = NULL, combine = FALSE, color = "black",
   label = NULL, font.label = list(size = 11, color = "black"),
   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
   ggtheme = theme_pubr(), ...)
+
+theme_cleveland(rotate = TRUE)
 }
 \arguments{
 \item{data}{a data frame}
@@ -135,22 +138,17 @@ df$name <- rownames(df)
 head(df[, c("wt", "mpg", "cyl")], 3)
 
 # Basic plot
-ggdotchart(df, x = "name", y ="mpg")
+ggdotchart(df, x = "name", y ="mpg",
+  ggtheme = theme_bw())
 
 # Change colors by  group cyl
 ggdotchart(df, x = "name", y = "mpg",
    group = "cyl", color = "cyl",
-   palette = c('#999999','#E69F00','#56B4E9') )
-
-# Use brewer palette
-ggdotchart(df, x = "name", y ="mpg",
-   group = "cyl", color = "cyl", palette = "Dark2" )
-
-# Rotate the plot
-ggdotchart(df, x = "name", y = "mpg",
-   group = "cyl", color = "cyl",
-   palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-   rotate = TRUE)
+   palette = c('#999999','#E69F00','#56B4E9'),
+   rotate = TRUE,
+   sorting = "descending",
+   ggtheme = theme_bw(),
+   y.text.col = TRUE )
 
 
 }

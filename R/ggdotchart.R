@@ -36,22 +36,17 @@ NULL
 #' head(df[, c("wt", "mpg", "cyl")], 3)
 #'
 #' # Basic plot
-#' ggdotchart(df, x = "name", y ="mpg")
+#' ggdotchart(df, x = "name", y ="mpg",
+#'   ggtheme = theme_bw())
 #'
 #' # Change colors by  group cyl
 #' ggdotchart(df, x = "name", y = "mpg",
 #'    group = "cyl", color = "cyl",
-#'    palette = c('#999999','#E69F00','#56B4E9') )
-#'
-#' # Use brewer palette
-#' ggdotchart(df, x = "name", y ="mpg",
-#'    group = "cyl", color = "cyl", palette = "Dark2" )
-#'
-#' # Rotate the plot
-#' ggdotchart(df, x = "name", y = "mpg",
-#'    group = "cyl", color = "cyl",
-#'    palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-#'    rotate = TRUE)
+#'    palette = c('#999999','#E69F00','#56B4E9'),
+#'    rotate = TRUE,
+#'    sorting = "descending",
+#'    ggtheme = theme_bw(),
+#'    y.text.col = TRUE )
 #'
 #'
 #' @export
@@ -216,7 +211,9 @@ ggdotchart_core <- function(data, x, y, group = NULL,
 
 # Helper functions
 # +++++++++++++++++++++++++
-.theme_cleveland <- function(rotate = TRUE){
+#' @export
+#' @rdname ggdotchart
+theme_cleveland <- function(rotate = TRUE){
   if(rotate){
     theme(panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank(),
@@ -227,6 +224,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
   else{
     theme(panel.grid.major.x = element_line(colour = "grey70", linetype = "dashed"),
           panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
           axis.title.x = element_blank(),
           axis.ticks.x = element_blank())
   }
