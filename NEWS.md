@@ -23,7 +23,13 @@
     - `ggadd()` to add summary statistics or a geometry onto a ggplot.
     
     
+- New data set added: `gene_citation`
 
+- New arguments in `ggpar()`: `x.text.angle` and `y.text.angle`
+      
+      
+## Major changes
+   
 - New arguments in ggpubr functions, see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`:
     - `combine` added to combine multiple y variables on the same graph.
     - `merge` to merge multiple y variables in the same ploting area.
@@ -40,14 +46,6 @@
     - margin, 
     - legend,
     - x.text.angle
-    
-- New data set added: `gene_citation`
-
-- New arguments in `ggpar()`: `x.text.angle` and `y.text.angle`
-      
-      
-## Major changes
-   
 
    
 ## Minor changes
