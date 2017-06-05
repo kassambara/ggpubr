@@ -52,6 +52,7 @@ reference:
       - set_palette
       - border
       - bgcolor
+      - rremove
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange
