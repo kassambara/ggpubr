@@ -19,7 +19,7 @@ Allowed values are one or the combination of: "none", "dotplot", "jitter",
 
 \item{color}{point or outline color.}
 
-\item{fill}{fill color. Used only whne \code{error.plot = "crossbar"}.}
+\item{fill}{fill color. Used only when \code{error.plot = "crossbar"}.}
 
 \item{width}{numeric value between 0 and 1 specifying bar or box width.
 Example width = 0.8. Used only when \code{error.plot} is one of

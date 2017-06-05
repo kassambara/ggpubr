@@ -9,7 +9,7 @@ NULL
 #'  "boxplot", "point", "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
 #'  "median", "median_iqr", "median_mad", "median_range".
 #'@param color point or outline color.
-#'@param fill fill color. Used only whne \code{error.plot = "crossbar"}.
+#'@param fill fill color. Used only when \code{error.plot = "crossbar"}.
 #'@param width numeric value between 0 and 1 specifying bar or box width.
 #'  Example width = 0.8. Used only when \code{error.plot} is one of
 #'  c("crossbar", "errorbar").
