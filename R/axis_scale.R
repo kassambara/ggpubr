@@ -1,4 +1,4 @@
-#'Change Axis Scale
+#'Change Axis Scale: log2, log10 and more
 #'
 #'@description Change axis scale.
 #'\itemize{

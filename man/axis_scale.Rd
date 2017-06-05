@@ -5,7 +5,7 @@
 \alias{xscale}
 \alias{axis_scale}
 \alias{yscale}
-\title{Change Axis Scale}
+\title{Change Axis Scale: log2, log10 and more}
 \usage{
 xscale(.scale, .format = FALSE)
 
