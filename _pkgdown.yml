@@ -50,6 +50,7 @@ reference:
       - rotate
       - rotate_axis_text
       - set_palette
+      - border
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange
