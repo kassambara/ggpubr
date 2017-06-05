@@ -11,12 +11,12 @@ font(object, size = NULL, color = NULL, face = NULL, family = NULL, ...)
 include: \itemize{ \item \code{"title"} for the main title \item
 \code{"subtitle"} for the plot subtitle \item \code{"caption"} for the plot
 caption \item \code{"legend.title"} for the legend title \item
-\code{"legend.text"} for the legend text \item \code{"x", "xlab", or "xtitle"}
-for x axis label \item \code{"y", "ylab", or "ytitle"} for y axis label \item
-\code{"xy", "xylab", "xytitle" or "axistitle"} for both x and y axis
-labels \item \code{"xtext"} for x axis texts (x axis tick labels) \item
-\code{"ytext"} for y axis texts (y axis tick labels) \item \code{"xytext"}
-or \code{"axistext"} for both x and y axis texts }}
+\code{"legend.text"} for the legend text \item \code{"x", "xlab", or "x.title"}
+for x axis label \item \code{"y", "ylab", or "y.title"} for y axis label \item
+\code{"xy", "xylab", "xy.title" or "axis.title"} for both x and y axis
+labels \item \code{"x.text"} for x axis texts (x axis tick labels) \item
+\code{"y.text"} for y axis texts (y axis tick labels) \item \code{"xy.text"}
+or \code{"axis.text"} for both x and y axis texts }}
 
 \item{size}{numeric value specifying the font size, (e.g.: \code{size = 12}).}
 
@@ -57,7 +57,7 @@ p +
  font("caption", size = 10, color = "orange")+
  font("xlab", size = 12, color = "blue")+
  font("ylab", size = 12, color = "#993333")+
- font("xytext", size = 12, color = "gray", face = "bold")
+ font("xy.text", size = 12, color = "gray", face = "bold")
 
 # Change the appearance of legend title and texts
 p +
