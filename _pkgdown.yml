@@ -47,6 +47,7 @@ reference:
       - show_line_types
       - show_point_shapes
       - font
+      - rotate
       - rotate_axis_text
   - title: Arrange and Export Multiple ggplots
     contents:
