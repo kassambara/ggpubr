@@ -19,7 +19,7 @@
 #'# Add border
 #' p + border()
 #'@export
-border <- function(color = "black", size = 1, linetype = NULL){
+border <- function(color = "black", size = 0.8, linetype = NULL){
    theme(panel.background = element_rect(color = color, size = size, linetype = linetype),
             axis.line = element_blank())
 }

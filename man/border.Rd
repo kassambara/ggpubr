@@ -4,7 +4,7 @@
 \alias{border}
 \title{Set ggplot Panel Border Line}
 \usage{
-border(color = "black", size = 1, linetype = NULL)
+border(color = "black", size = 0.8, linetype = NULL)
 }
 \arguments{
 \item{color}{border line color.}
