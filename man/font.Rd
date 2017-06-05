@@ -40,10 +40,9 @@ Change the appearance of the main title, subtitle, caption, axis
 \examples{
 # Load data
 data("ToothGrowth")
-df <- ToothGrowth
 
 # Basic plot
-p <- ggboxplot(df, x = "dose", y = "len", color = "dose",
+p <- ggboxplot(ToothGrowth, x = "dose", y = "len", color = "dose",
               title = "Box Plot created with ggpubr",
               subtitle = "Length by dose",
               caption = "Source: ggpubr",
