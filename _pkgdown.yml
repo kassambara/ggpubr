@@ -49,6 +49,7 @@ reference:
       - font
       - rotate
       - rotate_axis_text
+      - set_palette
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange

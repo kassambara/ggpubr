@@ -20,6 +20,7 @@
    - `font()` to change the appearance of titles and labels.
    - `rotate_x_text()` and `rotate_y_text()` to rotate x and y axis texts.
    - `rotate()` to rotate a ggplot for creating horizontal plot.
+   - `set_palette()` or `change_palette()` to change a ggplot color palette.
     
 - New helper functions:
     - `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5)).
