@@ -21,16 +21,17 @@
 #'@examples
 #'# Load data
 #'data("ToothGrowth")
-#'df <- ToothGrowth
 #'
 #'# Basic plot
-#'ggboxplot(df, x = "dose", y = "len")
+#'p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
+#'   ggtheme = theme_gray())
 #'p
 #'
-#'# Change panel background color
-#' p +
-#'   bgcolor("#BFD5E3")+
-#'   border("#BFD5E3")
+#'# Remove all grids
+#' p + rremove("grid")
+#'
+#' # Remove only x grids
+#' p + rremove("x.grid")
 #'@export
 rremove <- function(object){
 
@@ -38,12 +39,9 @@ rremove <- function(object){
 
   switch(object,
 
-         grid = theme(panel.grid.minor = blank, panel.grid.major = blank,
-                      panel.grid.minor = blank),
-         x.grid = theme(panel.grid.minor.x = blank, panel.grid.major.x = blank,
-                        panel.grid.minor.x = blank),
-         y.grid = theme(panel.grid.minor.y = blank, panel.grid.major.y = blank,
-                        panel.grid.minor.y = blank),
+         grid = theme(panel.grid.minor = blank, panel.grid.major = blank),
+         x.grid = theme(panel.grid.minor.x = blank, panel.grid.major.x = blank),
+         y.grid = theme(panel.grid.minor.y = blank, panel.grid.major.y = blank),
 
          axis = theme(axis.line = blank),
          x.axis = theme(axis.line.x = blank),

@@ -29,14 +29,15 @@ Remove a specific component from a ggplot.
 \examples{
 # Load data
 data("ToothGrowth")
-df <- ToothGrowth
 
 # Basic plot
-ggboxplot(df, x = "dose", y = "len")
+p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
+  ggtheme = theme_gray())
 p
 
-# Change panel background color
-p +
-  bgcolor("#BFD5E3")+
-  border("#BFD5E3")
+# Remove all grids
+p + rremove("grid")
+
+# Remove only x grids
+p + rremove("x.grid")
 }
