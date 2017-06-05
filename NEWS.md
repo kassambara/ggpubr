@@ -14,14 +14,17 @@
     
 - Now, the argument `y` can be a character vector of multiple variables to plot at once. This might be useful in genomic fields to plot the gene expression levels of multiple genes at once. see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`.
    
-   
 - The argument `x` can be a vector of multiple variables in `gghistogram()`, `ggdensity()`, `ggecdf()` and `ggqqplot()`.
+
+- New functions to edit ggplot graphical parameters:
+   - `font()` to change the appearance of titles and labels.
+   - `rotate_x_text()` and `rotate_y_text()` to rotate x and y axis texts
     
 - New helper functions:
     - `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5)).
     - `add_summary()` to add summary statistics.
     - `ggadd()` to add summary statistics or a geometry onto a ggplot.
-    - `font()` to change the appearance of titles and labels.
+    
     
     
 - New data set added: `gene_citation`
