@@ -17,6 +17,7 @@ NULL
 #'# Basic plot
 #'p <- ggboxplot(df, x = "dose", y = "len",
 #'    color = "dose")
+#'p
 #'
 #'# Change the color palette
 #' set_palette(p, "jco")
