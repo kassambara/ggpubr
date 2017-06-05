@@ -53,6 +53,7 @@ reference:
       - border
       - bgcolor
       - rremove
+      - grids
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange

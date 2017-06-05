@@ -78,6 +78,7 @@ Collate:
     'ggstripchart.R'
     'ggtext.R'
     'ggviolin.R'
+    'grids.R'
     'rotate.R'
     'rotate_axis_text.R'
     'rremove.R'
