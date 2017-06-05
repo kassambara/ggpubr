@@ -6,7 +6,7 @@ NULL
 #'@param p a ggplot
 #'@param facet.by character vector, of length 1 or 2, specifying grouping
 #'  variables for faceting the plot into multiple panels. Should be in the data.
-#'@param nrow,ncol Number of rows and columns in the pannel. Used only when the
+#'@param nrow,ncol Number of rows and columns in the panel. Used only when the
 #'  data is faceted by one grouping variable.
 #'@param scales should axis scales of panels be fixed ("fixed", the default),
 #'  free ("free"), or free in one dimension ("free_x", "free_y").

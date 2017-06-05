@@ -8,7 +8,7 @@
 #' @param data a data frame to be used for mapping
 #' @param position Position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function.
-#' @param ... arguments accepeted by the function
+#' @param ... arguments accepted by the function
 #' @return return a plot if geomfunc!=Null or a list(option, mapping) if
 #'   geomfunc = NULL.
 #' @examples

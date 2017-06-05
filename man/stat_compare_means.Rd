@@ -92,7 +92,7 @@ the default plot specification, e.g. \code{\link{borders}}.}
 \code{\link[ggplot2]{geom_label}}.}
 }
 \description{
-Add mean comprison p-values to a ggplot, such as box blots, dot
+Add mean comparison p-values to a ggplot, such as box blots, dot
  plots and stripcharts.
 }
 \examples{

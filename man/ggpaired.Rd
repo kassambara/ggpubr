@@ -26,7 +26,7 @@ are missing.}
 \item{id}{variable name corresponding to paired samples' id. Used to connect
 paired points with lines.}
 
-\item{color}{points and boxs plot colors. To color by conditions, use color =
+\item{color}{points and box plot colors. To color by conditions, use color =
 "condition".}
 
 \item{fill}{box plot fill color. To change fill color by conditions, use fill
@@ -75,7 +75,7 @@ face = "bold", color ="red"). To specify only the size and the style, use font.l
 list(size = 14, face = "plain").}
 
 \item{label.select}{can be of two formats: \itemize{ \item a character vector
-specifying some labels to show. \item a list containting one or the
+specifying some labels to show. \item a list containing one or the
 combination of the following components: \itemize{ \item \code{top.up} and
 \code{top.down}: to display the labels  of the top up/down points. For
 example, \code{label.select = list(top.up = 10, top.down = 4)}. \item

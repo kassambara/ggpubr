@@ -10,7 +10,7 @@ NULL
 #'  are missing.
 #'@param id variable name corresponding to paired samples' id. Used to connect
 #'  paired points with lines.
-#'@param color points and boxs plot colors. To color by conditions, use color =
+#'@param color points and box plot colors. To color by conditions, use color =
 #'  "condition".
 #'@param fill box plot fill color. To change fill color by conditions, use fill
 #'  = "condition".

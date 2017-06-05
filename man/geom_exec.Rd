@@ -14,7 +14,7 @@ geom_exec(geomfunc = NULL, data = NULL, position = NULL, ...)
 \item{position}{Position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
 
-\item{...}{arguments accepeted by the function}
+\item{...}{arguments accepted by the function}
 }
 \value{
 return a plot if geomfunc!=Null or a list(option, mapping) if

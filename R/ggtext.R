@@ -13,7 +13,7 @@ NULL
 #'   "italic", "bold.italic").
 #' @param family character vector specifying font family.
 #' @param label.select can be of two formats: \itemize{ \item a character vector
-#'   specifying some labels to show. \item a list containting one or the
+#'   specifying some labels to show. \item a list containing one or the
 #'   combination of the following components: \itemize{ \item \code{top.up} and
 #'   \code{top.down}: to display the labels  of the top up/down points. For
 #'   example, \code{label.select = list(top.up = 10, top.down = 4)}. \item

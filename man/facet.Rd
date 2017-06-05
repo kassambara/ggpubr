@@ -17,7 +17,7 @@ facet(p, facet.by, nrow = NULL, ncol = NULL, scales = "fixed",
 \item{facet.by}{character vector, of length 1 or 2, specifying grouping
 variables for faceting the plot into multiple panels. Should be in the data.}
 
-\item{nrow, ncol}{Number of rows and columns in the pannel. Used only when the
+\item{nrow, ncol}{Number of rows and columns in the panel. Used only when the
 data is faceted by one grouping variable.}
 
 \item{scales}{should axis scales of panels be fixed ("fixed", the default),
