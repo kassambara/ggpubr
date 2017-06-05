@@ -18,7 +18,8 @@
 
 - New functions to edit ggplot graphical parameters:
    - `font()` to change the appearance of titles and labels.
-   - `rotate_x_text()` and `rotate_y_text()` to rotate x and y axis texts
+   - `rotate_x_text()` and `rotate_y_text()` to rotate x and y axis texts.
+   - `rotate()` to rotate a ggplot for creating horizontal plot.
     
 - New helper functions:
     - `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5)).

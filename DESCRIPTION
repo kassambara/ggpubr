@@ -75,6 +75,7 @@ Collate:
     'ggstripchart.R'
     'ggtext.R'
     'ggviolin.R'
+    'rotate.R'
     'rotate_axis_text.R'
     'show_line_types.R'
     'show_point_shapes.R'
