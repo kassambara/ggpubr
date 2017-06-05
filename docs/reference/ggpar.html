@@ -84,10 +84,12 @@
   <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
   <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='no'>x.text.angle</span>, <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='no'>y.text.angle</span>,
-  <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"vertical"</span>, <span class='st'>"horizontal"</span>, <span class='st'>"reverse"</span>), <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.xtickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>,
+  <span class='kw'>font.ytickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>, <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>y.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='no'>x.text.angle</span>,
+  <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='no'>y.text.angle</span>, <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"vertical"</span>, <span class='st'>"horizontal"</span>, <span class='st'>"reverse"</span>),
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -151,7 +153,7 @@ vector c(x, y); see details section.</dd>
       <dt>tickslab</dt>
       <dd>logical value. Default is TRUE. If FALSE, hide axis tick
 labels.</dd>
-      <dt>font.tickslab</dt>
+      <dt>font.tickslab, font.xtickslab, font.ytickslab</dt>
       <dd>Font style (size, face, color) for tick labels, e.g.:
 c(14, &quot;bold&quot;, &quot;red&quot;).</dd>
       <dt>x.text.angle, y.text.angle</dt>

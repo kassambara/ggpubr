@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Execute ggplot2 functions — geom_exec • ggpubr</title>
+<title>Rotate a ggplot Horizontally — rotate • ggpubr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,50 +69,39 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Execute ggplot2 functions</h1>
+    <h1>Rotate a ggplot Horizontally</h1>
     </div>
 
     
-    <p>A helper function used by ggpubr functions to execute any geom_*
-  functions in ggplot2. Useful only when you want to call a geom_* function
-  without carrying about the arguments to put in aes(). Basic users of ggpubr
-  don&#39;t need this function.</p>
+    <p>Rotate a ggplot to create horizontal plots. Wrapper around
+ <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/coord_flip'>coord_flip</a></code>.</p>
     
 
-    <pre><span class='fu'>geom_exec</span>(<span class='kw'>geomfunc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>rotate</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>geomfunc</dt>
-      <dd>a ggplot2 function (e.g.: geom_point)</dd>
-      <dt>data</dt>
-      <dd>a data frame to be used for mapping</dd>
-      <dt>position</dt>
-      <dd>Position adjustment, either as a string, or the result of a
-call to a position adjustment function.</dd>
       <dt>...</dt>
-      <dd>arguments accepted by the function</dd>
+      <dd>other arguments to pass to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/coord_flip'>coord_flip</a></code>.</dd>
     </dl>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>return a plot if geomfunc!=Null or a list(option, mapping) if
-  geomfunc = NULL.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># ggplot() + geom_exec(geom_point, data = mtcars,</span>
-<span class='co'>#     x = "mpg", y = "wt", size = "cyl", color = "cyl")</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='co'># Load data</span>
+<span class='fu'>data</span>(<span class='st'>"ToothGrowth"</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='no'>ToothGrowth</span>
+
+<span class='co'># Basic plot</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
+<span class='no'>p</span></div><img src='rotate-2.png' alt='' width='540' height='400' /><div class='input'><span class='co'># Create horizontal plots</span>
+<span class='no'>p</span> + <span class='fu'>rotate</span>()</div><img src='rotate-4.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 
