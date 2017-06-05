@@ -32,6 +32,8 @@ Distribution
 
 ``` r
 library(ggpubr)
+#> Loading required package: ggplot2
+#> Loading required package: magrittr
 # Create some data format
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
 set.seed(1234)
@@ -174,9 +176,9 @@ ggbarplot(dfm, x = "name", y = "mpg",
           fill = "cyl",               # change fill color by cyl
           color = "white",            # Set bar border colors to white
           palette = "jco",            # jco journal color palett. see ?ggpar
-          sort.val = "asc",          # Sort the value in dscending order
-          sort.by.groups = TRUE,      # Don't sort inside each group
-          x.text.angle = 90          # Rotate vertically x axis texts
+          sort.val = "asc",           # Sort the value in dscending order
+          sort.by.groups = TRUE,      # Sort inside each group
+          x.text.angle = 90           # Rotate vertically x axis texts
           )
 ```
 
