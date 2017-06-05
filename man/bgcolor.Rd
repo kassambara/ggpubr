@@ -18,7 +18,7 @@ data("ToothGrowth")
 df <- ToothGrowth
 
 # Basic plot
-ggboxplot(df, x = "dose", y = "len")
+p <- ggboxplot(df, x = "dose", y = "len")
 p
 
 # Change panel background color
