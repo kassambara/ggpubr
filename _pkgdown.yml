@@ -51,6 +51,7 @@ reference:
       - rotate_axis_text
       - set_palette
       - border
+      - bgcolor
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange

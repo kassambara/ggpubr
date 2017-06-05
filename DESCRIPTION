@@ -42,6 +42,7 @@ Collate:
     'desc_statby.R'
     'utilities.R'
     'add_summary.R'
+    'bgcolor.R'
     'border.R'
     'compare_means.R'
     'diff_express.R'
