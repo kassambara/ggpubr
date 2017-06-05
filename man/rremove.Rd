@@ -13,6 +13,7 @@ include: \itemize{
 \item \code{"x.grid"} for x axis grids
 \item \code{"y.grid"} for y axis grids
 \item \code{"legend.title"} for the legend title
+\item \code{"legend"} for the legend
 \item \code{"xlab", or "x.title"}
 for x axis label
 \item \code{"ylab", or "y.title"} for y axis label
