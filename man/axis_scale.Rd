@@ -16,10 +16,14 @@ yscale(.scale, .format = FALSE)
 "sqrt", "percent", "dollar", "scientific"); e.g.: .scale="log2".}
 
 \item{.format}{ogical value. If TRUE, axis tick mark labels will be formatted
-when xscale or yscale = "log2" or "log10".}
+when .scale  = "log2" or "log10".}
 }
 \description{
 Change axis scale.
+\itemize{
+\item \code{xscale}: change x axis scale.
+\item \code{yscale}: change y axis scale.
+}
 }
 \examples{
 # Basic scatter plots

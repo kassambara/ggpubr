@@ -1,10 +1,14 @@
 #'Change Axis Scale
 #'
 #'@description Change axis scale.
+#'\itemize{
+#'\item \code{xscale}: change x axis scale.
+#'\item \code{yscale}: change y axis scale.
+#'}
 #'@param .scale axis scale. Allowed values are one of c("none", "log2", "log10",
 #'  "sqrt", "percent", "dollar", "scientific"); e.g.: .scale="log2".
 #'@param .format ogical value. If TRUE, axis tick mark labels will be formatted
-#'  when xscale or yscale = "log2" or "log10".
+#'  when .scale  = "log2" or "log10".
 #'
 #'
 #'@examples
@@ -20,6 +24,8 @@
 #'@export
 xscale <- function(.scale, .format = FALSE)
 {
+
+  .x <- NULL
 
   if(.format & .scale %in% c("percent", "dollar", "scientific"))
     .format <- FALSE
@@ -60,6 +66,8 @@ xscale <- function(.scale, .format = FALSE)
 #'@export
 yscale <- function(.scale, .format = FALSE)
 {
+
+  .x <- NULL
 
   if(.format & .scale %in% c("percent", "dollar", "scientific"))
     .format <- FALSE
