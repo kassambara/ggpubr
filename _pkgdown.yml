@@ -46,6 +46,7 @@ reference:
       - theme_pubr
       - show_line_types
       - show_point_shapes
+      - font
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange

@@ -21,11 +21,13 @@
     - `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5)).
     - `add_summary()` to add summary statistics.
     - `ggadd()` to add summary statistics or a geometry onto a ggplot.
+    - `font()` to change the appearance of titles and labels.
     
     
 - New data set added: `gene_citation`
 
 - New arguments in `ggpar()`: `x.text.angle` and `y.text.angle`
+
       
       
 ## Major changes

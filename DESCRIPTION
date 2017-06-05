@@ -36,7 +36,7 @@ Suggests:
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
-Collate:
+Collate: 
     'utilities_base.R'
     'desc_statby.R'
     'utilities.R'
@@ -44,6 +44,7 @@ Collate:
     'compare_means.R'
     'diff_express.R'
     'facet.R'
+    'font.R'
     'gene_citation.R'
     'geom_exec.R'
     'get_palette.R'
