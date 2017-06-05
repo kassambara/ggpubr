@@ -27,12 +27,12 @@ Imports:
     purrr,
     dplyr,
     cowplot,
-    ggsignif
+    ggsignif,
+    scales
 Suggests:
     grDevices,
     knitr,
-    RColorBrewer,
-    scales
+    RColorBrewer
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
@@ -42,6 +42,7 @@ Collate:
     'desc_statby.R'
     'utilities.R'
     'add_summary.R'
+    'axis_scale.R'
     'bgcolor.R'
     'border.R'
     'compare_means.R'

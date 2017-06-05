@@ -54,6 +54,7 @@ reference:
       - bgcolor
       - rremove
       - grids
+      - axis_scale
   - title: Arrange and Export Multiple ggplots
     contents:
       - ggarrange

@@ -25,6 +25,7 @@
    - `bgcolor()` to change ggplot panel background color.
    - `rremove()` to remove a specific component from a ggplot.
    - `grids()` to add grid lines.
+   - `xscale()` and `yscale()` to change axis scale.
     
 - New helper functions:
     - `facet()` added to create multi-panel plots ([#5](https://github.com/kassambara/ggpubr/issues/5)).
