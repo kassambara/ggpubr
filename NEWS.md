@@ -1,3 +1,13 @@
+# ggpubr 0.1.3.999
+
+## New features
+
+## Major changes
+
+## Minor changes
+
+- In `gghistogram()`, density curve and rug react to the fill color.
+
 # ggpubr 0.1.3
    
 ## New features
