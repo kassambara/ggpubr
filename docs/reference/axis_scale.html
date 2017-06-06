@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Change Axis Scale: log2, log10 and more — axis_scale • ggpubr</title>
+<title>Change Axis Scale: log2, log10 and more — xscale • ggpubr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -101,9 +101,9 @@ when .scale  = &quot;log2&quot; or &quot;log10&quot;.</dd>
     <pre class="examples"><div class='input'><span class='co'># Basic scatter plots</span>
 <span class='fu'>data</span>(<span class='no'>cars</span>)
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>cars</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"speed"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"dist"</span>)
-<span class='no'>p</span></div><img src='axis_scale-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='no'>p</span></div><img src='xscale-2.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Set log scale</span>
-<span class='no'>p</span> + <span class='fu'>yscale</span>(<span class='st'>"log2"</span>, <span class='kw'>.format</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><img src='axis_scale-4.png' alt='' width='540' height='400' /></pre>
+<span class='no'>p</span> + <span class='fu'>yscale</span>(<span class='st'>"log2"</span>, <span class='kw'>.format</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><img src='xscale-4.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

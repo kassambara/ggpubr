@@ -146,6 +146,8 @@ gghistogram_core <- function(data, x, y = "..count..",
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
+  #grouping.vars <- c(color, fill) %>% unique() %>% intersect(colnames(data))
+  #if(!.is_empty(grouping.vars)) add.params$color <- grouping.vars
   # if(add_density) y <- "..density.."
 
   p <- ggplot(data, aes_string(x, y))
