@@ -134,6 +134,7 @@ gghistogram_core <- function(data, x, y = "..count..",
   grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
     unique() %>%
     intersect(colnames(data))
+  color2 <-  c(color, fill) %>% unique() %>% intersect(colnames(data))
 
   # Check bins
   if(is.null(bins) & is.null(binwidth)){
@@ -143,11 +144,12 @@ gghistogram_core <- function(data, x, y = "..count..",
   }
 
   add <- match.arg(add)
+  if(is.null(add.params$color)){
+    if(!.is_empty(color2)) add.params$color <- color2
+  }
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
-  #grouping.vars <- c(color, fill) %>% unique() %>% intersect(colnames(data))
-  #if(!.is_empty(grouping.vars)) add.params$color <- grouping.vars
   # if(add_density) y <- "..density.."
 
   p <- ggplot(data, aes_string(x, y))
@@ -171,7 +173,7 @@ gghistogram_core <- function(data, x, y = "..count..",
       unique() %>% intersect(colnames(data))
     alpha <- ifelse(.is_empty(grps), 1, alpha)
     .args <- geom_exec(NULL, data = data,
-                       color = color, sides = "b", alpha = alpha)
+                       color = color2, sides = "b", alpha = alpha)
     mapping <- .args$mapping
     mapping[["y"]] <- 0
     option <- .args$option
