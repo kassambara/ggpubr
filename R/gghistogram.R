@@ -135,6 +135,7 @@ gghistogram_core <- function(data, x, y = "..count..",
     unique() %>%
     intersect(colnames(data))
   color2 <-  c(color, fill) %>% unique() %>% intersect(colnames(data))
+  if(.is_empty(color2)) color2 <- color
 
   # Check bins
   if(is.null(bins) & is.null(binwidth)){
