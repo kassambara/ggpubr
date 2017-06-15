@@ -8,21 +8,30 @@ rremove(object)
 }
 \arguments{
 \item{object}{character string specifying the plot components. Allowed values
-include: \itemize{
-\item \code{"grid"} for both x and y grids
-\item \code{"x.grid"} for x axis grids
-\item \code{"y.grid"} for y axis grids
-\item \code{"legend.title"} for the legend title
-\item \code{"legend"} for the legend
-\item \code{"xlab", or "x.title"}
-for x axis label
-\item \code{"ylab", or "y.title"} for y axis label
-\item \code{"xylab", "xy.title" or "axis.title"} for both x and y axis
-labels
-\item \code{"x.text"} for x axis texts (x axis tick labels) \item
-\code{"y.text"} for y axis texts (y axis tick labels)
- \item \code{"xy.text"}
-or \code{"axis.text"} for both x and y axis texts }}
+ include: \itemize{
+ \item \code{"grid"} for both x and y grids
+ \item \code{"x.grid"} for x axis grids
+ \item \code{"y.grid"} for y axis grids
+ \item \code{"axis"} for both x and y axes
+ \item \code{"x.axis"} for x axis
+ \item \code{"y.axis"} for y axis
+
+ \item \code{"xlab", or "x.title"}
+ for x axis label
+ \item \code{"ylab", or "y.title"} for y axis label
+ \item \code{"xylab", "xy.title" or "axis.title"} for both x and y axis
+ labels
+ \item \code{"x.text"} for x axis texts (x axis tick labels)
+ \item \code{"y.text"} for y axis texts (y axis tick labels)
+ \item \code{"xy.text"} or \code{"axis.text"} for both x and y axis texts
+
+ \item \code{"ticks"} for both x and y ticks
+ \item \code{"x.ticks"} for x ticks
+ \item \code{"y.ticks"} for y ticks
+
+ \item \code{"legend.title"} for the legend title
+ \item \code{"legend"} for the legend
+ }}
 }
 \description{
 Remove a specific component from a ggplot.
