@@ -50,6 +50,7 @@ reference:
       - rotate
       - rotate_axis_text
       - set_palette
+      - gradient_color
       - border
       - bgcolor
       - rremove

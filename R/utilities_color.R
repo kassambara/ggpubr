@@ -192,13 +192,5 @@
 # Set gradient colors
 # cols a vector of colors
 .gradient_col <- function (cols){
-  if(.is_col_palette(cols)) cols <- .get_pal(cols, k = 3)
-  n_cols <- length(cols)
-
-  if(n_cols == 1) {
-    cols <- grDevices::colorRampPalette(c("white", cols))(10)
-    cols <- cols[c(1, 10)]
-    n_cols <- 2
-  }
-  ggplot2::scale_color_gradientn(colours = cols)
+  gradient_color(cols)
 }

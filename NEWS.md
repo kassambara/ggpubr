@@ -2,6 +2,9 @@
 
 ## New features
 
+- New helper functions:
+    - `gradient_color()` to change gradient color palette.
+    
 ## Major changes
 
 ## Minor changes
