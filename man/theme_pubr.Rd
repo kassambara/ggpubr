@@ -4,6 +4,7 @@
 \alias{theme_pubr}
 \alias{labs_pubr}
 \alias{theme_classic2}
+\alias{clean_theme}
 \title{Publication ready theme}
 \usage{
 theme_pubr(base_size = 12, base_family = "", border = FALSE,
@@ -13,6 +14,8 @@ theme_pubr(base_size = 12, base_family = "", border = FALSE,
 labs_pubr(base_size = 14, base_family = "")
 
 theme_classic2(base_size = 12, base_family = "")
+
+clean_theme()
 }
 \arguments{
 \item{base_size}{base font size}
@@ -39,7 +42,9 @@ Default value is 0. Use 90 for vertical text.}
 \itemize{ \item \strong{theme_pubr()}: Create a publication ready
  theme \item \strong{labs_pubr()}: Format only plot labels to a publication
  ready style \item \strong{theme_classic2()}: Create a classic theme with
- axis lines }
+ axis lines.
+ \item \strong{clean_theme()}: Remove axis lines, ticks, texts and titles.
+  }
 }
 \examples{
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +

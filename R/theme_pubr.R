@@ -6,7 +6,9 @@ NULL
 #'@description \itemize{ \item \strong{theme_pubr()}: Create a publication ready
 #'  theme \item \strong{labs_pubr()}: Format only plot labels to a publication
 #'  ready style \item \strong{theme_classic2()}: Create a classic theme with
-#'  axis lines }
+#'  axis lines.
+#'  \item \strong{clean_theme()}: Remove axis lines, ticks, texts and titles.
+#'   }
 #'@param base_size base font size
 #'@param base_family base font family
 #'@param border logical value. Default is FALSE. If TRUE, add panel border.
@@ -114,4 +116,20 @@ theme_classic2 <-
       )
   }
 
+
+#' @export
+#' @rdname theme_pubr
+clean_theme <- function()
+{
+  theme(
+    axis.line.x = element_blank(),
+    axis.line.y = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
+}
 
