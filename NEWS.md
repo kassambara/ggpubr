@@ -3,7 +3,7 @@
 ## New features
 
 - New helper functions:
-    - `gradient_color()`: change gradient color palette.
+    - `gradient_color()` and `gradient_color()`: change gradient color and fill palettes.
     - `clean_theme()`: remove axis lines, ticks, texts and titles.
     
 ## Major changes

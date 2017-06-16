@@ -2,9 +2,12 @@
 % Please edit documentation in R/gradient_color.R
 \name{gradient_color}
 \alias{gradient_color}
+\alias{gradient_fill}
 \title{Set Gradient Color}
 \usage{
 gradient_color(palette)
+
+gradient_fill(palette)
 }
 \arguments{
 \item{palette}{the color palette to be used for coloring or filling by
@@ -18,6 +21,10 @@ case a basic color palette is created using the function
 }
 \description{
 Change gradient color.
+\itemize{
+\item \code{gradient_color()}: Change gradient color.
+\item \code{gradient_fill()}: Change gradient fill.
+}
 }
 \examples{
 df <- mtcars

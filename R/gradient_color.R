@@ -3,6 +3,10 @@ NULL
 #'Set Gradient Color
 #'
 #' @description Change gradient color.
+#' \itemize{
+#' \item \code{gradient_color()}: Change gradient color.
+#' \item \code{gradient_fill()}: Change gradient fill.
+#' }
 #' @param palette the color palette to be used for coloring or filling by
 #'   groups. Allowed values include "grey" for grey color palettes; brewer
 #'   palettes e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue",
@@ -35,6 +39,7 @@ NULL
 #'
 #' # Use ggsci color palette
 #' p + gradient_color("npg")
+#' @rdname gradient_color
 #' @export
 gradient_color <- function(palette){
 
@@ -47,4 +52,19 @@ gradient_color <- function(palette){
     n_palette <- 2
   }
   ggplot2::scale_color_gradientn(colours = palette)
+}
+
+#' @rdname gradient_color
+#' @export
+gradient_fill <- function(palette){
+
+  if(.is_col_palette(palette)) palette <- .get_pal(palette, k = 3)
+  n_palette <- length(palette)
+
+  if(n_palette == 1) {
+    palette <- grDevices::colorRampPalette(c("white", palette))(10)
+    palette <- palette[c(1, 10)]
+    n_palette <- 2
+  }
+  ggplot2::scale_fill_gradientn(colours = palette)
 }
