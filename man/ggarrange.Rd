@@ -4,7 +4,8 @@
 \alias{ggarrange}
 \title{Arrange Multiple ggplots}
 \usage{
-ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL)
+ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL,
+  align = c("none", "h", "v", "hv"))
 }
 \arguments{
 \item{...}{list of plots to be arranged into the grid. The plots can be
@@ -19,14 +20,17 @@ either ggplot2 plot objects or arbitrary gtables.}
 \item{labels}{(optional) list of labels to be added to the plots. You can
 also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
 to auto-generate lower-case labels.}
+
+\item{align}{(optional) Specifies whether graphs in the grid should be horizontally ("h") or
+vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".}
 }
 \value{
 return an object of class \code{ggarrange}, which is a ggplot or a list of ggplot.
 }
 \description{
 Arrange multiple ggplots on the same page. Wrapper around
-  \code{\link[cowplot]{plot_grid}}. Can arrange multiple ggplots over
-  multiple pages.
+  \code{\link[cowplot]{plot_grid}()}. Can arrange multiple ggplots over
+  multiple pages, compared to the standard \code{\link[cowplot]{plot_grid}()}.
 }
 \examples{
 data("ToothGrowth")

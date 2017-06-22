@@ -11,6 +11,12 @@
 ## Minor changes
 
 - In `gghistogram()`, density curve and rug react to the fill color.
+- New arguments `àlign` in `ggarrange()` to specify whether graphs in the grid should be horizontally ("h") or vertically ("v") aligned. 
+     
+     
+## To check
+
+color palette: http://earlglynn.github.io/RNotes/package/RColorBrewer/index.html
 
 # ggpubr 0.1.3
    

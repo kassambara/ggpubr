@@ -1,7 +1,8 @@
 #' Arrange Multiple ggplots
 #' @description Arrange multiple ggplots on the same page. Wrapper around
-#'   \code{\link[cowplot]{plot_grid}}. Can arrange multiple ggplots over
-#'   multiple pages.
+#'   \code{\link[cowplot]{plot_grid}()}. Can arrange multiple ggplots over
+#'   multiple pages, compared to the standard \code{\link[cowplot]{plot_grid}()}.
+#' @inheritParams cowplot::plot_grid
 #' @param ... list of plots to be arranged into the grid. The plots can be
 #'   either ggplot2 plot objects or arbitrary gtables.
 #' @param plotlist (optional) list of plots to display.
@@ -29,8 +30,11 @@
 #' ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 #'
 #' @export
-ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL)
+ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
+                      labels = NULL,
+                      align = c("none", "h", "v", "hv"))
   {
+  align <- match.arg(align)
   plots <- c(list(...), plotlist)
   nb.plots <- length(plots)
   nb.plots.per.page <- .nbplots_per_page(ncol, nrow)
@@ -38,13 +42,15 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = N
   # One unique page
   if(nb.plots.per.page >= nb.plots)
     res <- cowplot::plot_grid(plotlist = plots, ncol = ncol, nrow = nrow,
-                     labels = labels)
+                     labels = labels,
+                     align = align)
   # Multiple page
   else{
     plots.split <- split(plots, ceiling(seq_along(plots)/nb.plots.per.page))
 
     res <- purrr::map(plots.split, .plot_grid,
-                ncol = ncol, nrow = nrow)
+                ncol = ncol, nrow = nrow,
+                align = align)
   }
 
   class(res) <- c(class(res), "ggarrange")
