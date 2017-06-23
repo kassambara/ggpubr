@@ -11,12 +11,11 @@ NULL
 #'         ggtheme = theme_minimal())
 #' p
 #'
-#' # Extract the legend
+#' # Extract the legend. Returns a gtable
 #' leg <- get_legend(p)
 #'
-#' library(grid)
-#' grid.newpage()
-#' grid.draw(leg)
+#' # Convert to a ggplot and print
+#' as_ggplot(leg)
 #'
 #' @export
 get_legend <- function(p){
