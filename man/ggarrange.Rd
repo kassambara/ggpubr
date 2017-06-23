@@ -5,7 +5,7 @@
 \title{Arrange Multiple ggplots}
 \usage{
 ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL,
-  align = c("none", "h", "v", "hv"))
+  align = c("none", "h", "v", "hv"), legend = NULL, common.legend = FALSE)
 }
 \arguments{
 \item{...}{list of plots to be arranged into the grid. The plots can be
@@ -23,20 +23,29 @@ to auto-generate lower-case labels.}
 
 \item{align}{(optional) Specifies whether graphs in the grid should be horizontally ("h") or
 vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".}
+
+\item{legend}{character specifying legend position. Allowed values are one of
+c("top", "bottom", "left", "right", "none"). To remove the legend use
+legend = "none".}
 }
 \value{
-return an object of class \code{ggarrange}, which is a ggplot or a list of ggplot.
+return an object of class \code{ggarrange}, which is a ggplot or a
+  list of ggplot.
 }
 \description{
 Arrange multiple ggplots on the same page. Wrapper around
   \code{\link[cowplot]{plot_grid}()}. Can arrange multiple ggplots over
-  multiple pages, compared to the standard \code{\link[cowplot]{plot_grid}()}.
+  multiple pages, compared to the standard
+  \code{\link[cowplot]{plot_grid}()}. Can also create a common unique legend for
+  multiple plots.
 }
 \examples{
 data("ToothGrowth")
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
 
+# Create some plots
+# ::::::::::::::::::::::::::::::::::::::::::::::::::
 # Box plot
 bxp <- ggboxplot(df, x = "dose", y = "len",
     color = "dose", palette = "jco")
@@ -46,7 +55,12 @@ dp <- ggdotplot(df, x = "dose", y = "len",
 # Density plot
 dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 
+# Arrange
+# ::::::::::::::::::::::::::::::::::::::::::::::::::
 ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
+# Use a common legend for multiple plots
+ggarrange(bxp, dp,  common.legend = TRUE)
+
 
 }
 \author{

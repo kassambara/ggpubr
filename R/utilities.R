@@ -1030,6 +1030,25 @@ p
 }
 
 
+# Check legend argument
+.check_legend <- function(legend){
+
+  allowed.values <- c("top", "bottom", "left", "right", "none")
+
+  if(is.null(legend) | is.numeric(legend))
+    return(legend)
+  else if(is.logical(legend)){
+    if(legend) legend <- "top"
+    else legend <- "none"
+  }
+  else if(is.character(legend)){
+    legend <- legend[1]
+    if(!legend %in% allowed.values)
+      stop("Argument legend should be one of ", .collapse(allowed.values, sep = ", "))
+  }
+  return (legend)
+}
+
 
 
 

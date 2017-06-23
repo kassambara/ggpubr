@@ -5,13 +5,17 @@
 - New helper functions:
     - `gradient_color()` and `gradient_color()`: change gradient color and fill palettes.
     - `clean_theme()`: remove axis lines, ticks, texts and titles.
+    - `get_legend()`: to extract the legend labels from a ggplot object.
     
 ## Major changes
 
 ## Minor changes
 
 - In `gghistogram()`, density curve and rug react to the fill color.
-- New arguments `àlign` in `ggarrange()` to specify whether graphs in the grid should be horizontally ("h") or vertically ("v") aligned. 
+- `ggarrange()`:
+    - New  argument `àlign` to specify whether graphs in the grid should be horizontally ("h") or vertically ("v") aligned. 
+    - New argument `legend` to remove or specify the legend position when arranging multiple plots.
+    - New argument `common.legend` to create a common unique legend for multiple plots.
      
      
 ## To check
