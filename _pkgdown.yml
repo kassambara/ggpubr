@@ -67,6 +67,7 @@ reference:
       - add_summary
       - ggadd
       - get_palette
+      - as_ggplot
   - title: Data
     contents:
       - diff_express

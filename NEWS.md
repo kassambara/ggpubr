@@ -6,7 +6,8 @@
     - `gradient_color()` and `gradient_color()`: change gradient color and fill palettes.
     - `clean_theme()`: remove axis lines, ticks, texts and titles.
     - `get_legend()`: to extract the legend labels from a ggplot object.
-    
+    - `as_ggplot()`: Transform the output of `gridExtra::arrangeGrob()` and `gridExtra::grid.arrange()` to a an object of class ggplot.
+      
 ## Major changes
 
 ## Minor changes
