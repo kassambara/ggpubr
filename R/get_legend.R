@@ -1,0 +1,26 @@
+#' @include utilities.R
+NULL
+#' Extract Legends from a ggplot object
+#' @description Extract the legend labels from a ggplot object.
+#' @param p an object of class ggplot.
+#' @return an object of class gtable.
+#' @examples
+#' # Create a scatter plot
+#' p <- ggscatter(iris, x = "Sepal.Length", y = "Sepal.Width",
+#'         color = "Species", palette = "jco",
+#'         ggtheme = theme_minimal())
+#' p
+#'
+#' # Extract the legend
+#' leg <- get_legend(p)
+#'
+#' library(grid)
+#' grid.newpage()
+#' grid.draw(leg)
+#'
+#' @export
+get_legend <- function(p){
+  tmp <- ggplot_gtable(ggplot_build(p))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  return(tmp$grobs[[leg]])
+}

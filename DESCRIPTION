@@ -51,6 +51,7 @@ Collate:
     'font.R'
     'gene_citation.R'
     'geom_exec.R'
+    'get_legend.R'
     'get_palette.R'
     'ggadd.R'
     'ggarrange.R'
