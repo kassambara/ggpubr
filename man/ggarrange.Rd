@@ -27,6 +27,9 @@ vertically ("v") aligned. Options are "none" (default), "hv" (align in both dire
 \item{legend}{character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none".}
+
+\item{common.legend}{logical value. Default is FALSE. If TRUE, a common
+unique legend will be created for arranged plots.}
 }
 \value{
 return an object of class \code{ggarrange}, which is a ggplot or a
@@ -36,8 +39,8 @@ return an object of class \code{ggarrange}, which is a ggplot or a
 Arrange multiple ggplots on the same page. Wrapper around
   \code{\link[cowplot]{plot_grid}()}. Can arrange multiple ggplots over
   multiple pages, compared to the standard
-  \code{\link[cowplot]{plot_grid}()}. Can also create a common unique legend for
-  multiple plots.
+  \code{\link[cowplot]{plot_grid}()}. Can also create a common unique legend
+  for multiple plots.
 }
 \examples{
 data("ToothGrowth")

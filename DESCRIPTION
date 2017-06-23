@@ -28,7 +28,8 @@ Imports:
     dplyr,
     cowplot,
     ggsignif,
-    scales
+    scales,
+    gridExtra
 Suggests:
     grDevices,
     knitr,
@@ -36,7 +37,7 @@ Suggests:
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
-Collate: 
+Collate:
     'utilities_color.R'
     'utilities_base.R'
     'desc_statby.R'

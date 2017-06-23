@@ -2,8 +2,8 @@
 #' @description Arrange multiple ggplots on the same page. Wrapper around
 #'   \code{\link[cowplot]{plot_grid}()}. Can arrange multiple ggplots over
 #'   multiple pages, compared to the standard
-#'   \code{\link[cowplot]{plot_grid}()}. Can also create a common unique legend for
-#'   multiple plots.
+#'   \code{\link[cowplot]{plot_grid}()}. Can also create a common unique legend
+#'   for multiple plots.
 #' @inheritParams cowplot::plot_grid
 #' @param ... list of plots to be arranged into the grid. The plots can be
 #'   either ggplot2 plot objects or arbitrary gtables.
@@ -16,6 +16,8 @@
 #' @param legend character specifying legend position. Allowed values are one of
 #'   c("top", "bottom", "left", "right", "none"). To remove the legend use
 #'   legend = "none".
+#' @param common.legend logical value. Default is FALSE. If TRUE, a common
+#'   unique legend will be created for arranged plots.
 #' @return return an object of class \code{ggarrange}, which is a ggplot or a
 #'   list of ggplot.
 #' @author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
