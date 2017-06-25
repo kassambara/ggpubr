@@ -107,4 +107,23 @@ ggtexttable(df, rows = NULL,
            )
 )
 
+# Combine density plot and summary table
+#:::::::::::::::::::::::::::::::::::::
+# Density plot of "Sepal.Length"
+density.p <- ggdensity(iris, x = "Sepal.Length",
+                      fill = "Species", palette = "jco")
+
+# Draw the summary table of Sepal.Length
+# Descriptive statistics by groups
+stable <- desc_statby(iris, measure.var = "Sepal.Length",
+                     grps = "Species")
+stable <- stable[, c("Species", "length", "mean", "sd")]
+stable.p <- ggtexttable(stable, rows = NULL,
+                       theme = ttheme("mOrange"))
+
+# Arrange the plots on the same page
+ggarrange(density.p, stable.p,
+         ncol = 1, nrow = 2,
+         heights = c(1, 0.5))
+
 }
