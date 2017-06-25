@@ -90,7 +90,7 @@ Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
 }
 \examples{
 # data
-df <- head(ToothGrowth)
+df <- head(iris)
 
 # Default table
 # Remove row names using rows = NULL

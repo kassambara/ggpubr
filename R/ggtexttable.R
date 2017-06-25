@@ -39,7 +39,7 @@ NULL
 #'
 #' @examples
 #' # data
-#' df <- head(ToothGrowth)
+#' df <- head(iris)
 #'
 #' # Default table
 #' # Remove row names using rows = NULL
