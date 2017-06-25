@@ -24,7 +24,7 @@ NULL
 #'              "and petal length and width, respectively,",
 #'              "for 50 flowers from each of 3 species of iris.",
 #'              "The species are Iris setosa, versicolor, and virginica.", sep = " ")
-#'text.p <- ggparagraph(text, face = "italic", size = 10)
+#'text.p <- ggparagraph(text, face = "italic", size = 12)
 #'
 #'# Arrange the plots on the same page
 #'ggarrange(density.p, text.p,

@@ -46,7 +46,7 @@ NULL
 #' ggtexttable(df, rows = NULL, theme = ttheme("mBlue"))
 #'
 #' # Blank theme
-#' ggtexttable(df, rows = NULL, theme = ttheme("mBlue"))
+#' ggtexttable(df, rows = NULL, theme = ttheme("blank"))
 #'
 #' # Customize the table as you want
 #' ggtexttable(df, rows = NULL,
