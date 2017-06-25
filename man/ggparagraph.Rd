@@ -5,7 +5,7 @@
 \title{Draw a Paragraph of Text}
 \usage{
 ggparagraph(text, color = NULL, size = NULL, face = NULL, family = NULL,
-  lineheight = NULL, ...)
+  lineheight = NULL)
 }
 \arguments{
 \item{text}{the text to plot.}

@@ -33,13 +33,14 @@ NULL
 #'
 #'@export
 ggparagraph <- function(text, color = NULL, size = NULL, face = NULL,
-                        family = NULL, lineheight = NULL, ...)
+                        family = NULL, lineheight = NULL)
 {
 
   style <- grid::gpar(col = color, fontsize = size,
                       fontface = face, fontfamily = family,
                       lineheight = lineheight)
 
-  grid::grob(text = text, cl = "splitText", gp = style, ...) %>%
-    as_ggplot()
+  p <- grid::grob(text = text, cl = "splitText", gp = style)
+  p <- as_ggplot(p)
+  return(p)
 }

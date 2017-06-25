@@ -43,11 +43,14 @@ reference:
     desc: Plotting data obtained from genomic data analyses.
     contents:
       - ggmaplot
+  - title: Themes
+    contents:
+      - theme_pubr
+      - theme_transparent
   - title: Graphical Parameters
     desc: Change graphical parameters such as, titles, legend, colors, axis limits, scale transformation (log, sqrt), axis ticks and plot orientation (vertical, horizontal).
     contents:
       - ggpar
-      - theme_pubr
       - show_line_types
       - show_point_shapes
       - font

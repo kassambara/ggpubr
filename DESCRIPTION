@@ -95,3 +95,4 @@ Collate:
     'stat_compare_means.R'
     'stat_mean.R'
     'theme_pubr.R'
+    'theme_transparent.R'
