@@ -13,6 +13,10 @@
 #' @param labels (optional) list of labels to be added to the plots. You can
 #'   also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
 #'   to auto-generate lower-case labels.
+#' @param widths (optional) numerical vector of relative columns widths. For
+#'   example, in a two-column grid, widths = c(2, 1) would make the first column
+#'   twice as wide as the second column.
+#' @param heights same as \code{widths} but for column heights.
 #' @param legend character specifying legend position. Allowed values are one of
 #'   c("top", "bottom", "left", "right", "none"). To remove the legend use
 #'   legend = "none".
@@ -48,6 +52,7 @@
 ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       labels = NULL,
                       align = c("none", "h", "v", "hv"),
+                      widths = 1, heights = 1,
                       legend = NULL, common.legend = FALSE )
   {
   align <- match.arg(align)
@@ -71,6 +76,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
 
   res <- purrr::map(plots, .plot_grid,
               ncol = ncol, nrow = nrow, labels = labels, align = align,
+              rel_widths = widths, rel_heights = heights,
               legend = legend, common.legend = common.legend)
 
   if(length(res) == 1) res <- res[[1]]

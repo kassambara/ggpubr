@@ -5,7 +5,8 @@
 \title{Arrange Multiple ggplots}
 \usage{
 ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL,
-  align = c("none", "h", "v", "hv"), legend = NULL, common.legend = FALSE)
+  align = c("none", "h", "v", "hv"), widths = 1, heights = 1,
+  legend = NULL, common.legend = FALSE)
 }
 \arguments{
 \item{...}{list of plots to be arranged into the grid. The plots can be
@@ -23,6 +24,12 @@ to auto-generate lower-case labels.}
 
 \item{align}{(optional) Specifies whether graphs in the grid should be horizontally ("h") or
 vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".}
+
+\item{widths}{(optional) numerical vector of relative columns widths. For
+example, in a two-column grid, widths = c(2, 1) would make the first column
+twice as wide as the second column.}
+
+\item{heights}{same as \code{widths} but for column heights.}
 
 \item{legend}{character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use
