@@ -75,11 +75,11 @@
     
     <p>Draw a textual table. <ul>
 <li> <code>ggtexttable()</code>: draw
-  a textual table. </li>
+ a textual table. </li>
 <li> <code>ttheme()</code>: customize table theme. </li>
 <li>
-  <code>rownames_style(), colnames_style(), tbody_style()</code>: helper functions
-  to customize the table row names, column names and body. </li>
+ <code>rownames_style(), colnames_style(), tbody_style()</code>: helper functions
+ to customize the table row names, column names and body. </li>
 </ul></p>
     
 
@@ -112,22 +112,22 @@
       <dt>vp</dt>
       <dd>optional viewport</dd>
       <dt>theme</dt>
-      <dd>a list, as returned by the function <code>ttheme()</code>, defining
-the parameters of the table theme. Allowed values include one of
-<code>ttheme()</code> and <code>ttheme_clean()</code>.</dd>
+      <dd>a list, as returned by the function <code>ttheme()</code>, defining the
+parameters of the table theme. Allowed values include one of <code>ttheme()</code>
+and <code>ttheme_clean()</code>.</dd>
       <dt>...</dt>
       <dd>further arguments to control the gtable</dd>
       <dt>base_style</dt>
       <dd>charcter string the table style/theme. The available themes
 are illustrated in the
 <a href = 'ggtexttable-theme.pdf'>http://www.sthda.com/english/rpkgs/ggpubr/files/ggtexttable-theme.pdf</a>
-file. Allowed values include one of <code>c(&quot;default&quot;, &quot;blank&quot;, &quot;lBlack&quot;,
-&quot;lBlue&quot;, &quot;lRed&quot;, &quot;lGreen&quot;, &quot;lViolet&quot;, &quot;lCyan&quot;, &quot;lOrange&quot;, &quot;lBlackWhite&quot;,
-&quot;lBlueWhite&quot;, &quot;lRedWhite&quot;, &quot;lGreenWhite&quot;, &quot;lVioletWhite&quot;, &quot;lCyanWhite&quot;,
-&quot;lOrangeWhite&quot;, &quot;mBlack&quot;, &quot;mBlue&quot;, &quot;mRed&quot;, &quot;mGreen&quot;, &quot;mViolet&quot;, &quot;mCyan&quot;,
-&quot;mOrange&quot;, &quot;mBlackWhite&quot;, &quot;mBlueWhite&quot;, &quot;mRedWhite&quot;, &quot;mGreenWhite&quot;,
-&quot;mVioletWhite&quot;, &quot;mCyanWhite&quot;, &quot;mOrangeWhite&quot; )</code>. Note that, l = &quot;light&quot;; m
-= &quot;medium&quot;.</dd>
+ file. Allowed values include one of <code>c(&quot;default&quot;, &quot;blank&quot;, &quot;classic&quot;,
+&quot;minimal&quot;, &quot;light&quot;, &quot;lBlack&quot;, &quot;lBlue&quot;, &quot;lRed&quot;, &quot;lGreen&quot;, &quot;lViolet&quot;, &quot;lCyan&quot;,
+&quot;lOrange&quot;, &quot;lBlackWhite&quot;, &quot;lBlueWhite&quot;, &quot;lRedWhite&quot;, &quot;lGreenWhite&quot;,
+&quot;lVioletWhite&quot;, &quot;lCyanWhite&quot;, &quot;lOrangeWhite&quot;, &quot;mBlack&quot;, &quot;mBlue&quot;, &quot;mRed&quot;,
+&quot;mGreen&quot;, &quot;mViolet&quot;, &quot;mCyan&quot;, &quot;mOrange&quot;, &quot;mBlackWhite&quot;, &quot;mBlueWhite&quot;,
+&quot;mRedWhite&quot;, &quot;mGreenWhite&quot;, &quot;mVioletWhite&quot;, &quot;mCyanWhite&quot;, &quot;mOrangeWhite&quot; )</code>.
+Note that, l = &quot;light&quot;; m = &quot;medium&quot;.</dd>
       <dt>base_size</dt>
       <dd>default font size</dd>
       <dt>base_colour</dt>
@@ -136,13 +136,16 @@ file. Allowed values include one of <code>c(&quot;default&quot;, &quot;blank&quo
       <dd>length-2 unit vector specifying the horizontal and vertical padding of text within each cell</dd>
       <dt>colnames.style</dt>
       <dd>a list, as returned by the function
-<code>colnames_style()</code>, defining the style of the table column names.</dd>
+<code>colnames_style()</code>, defining the style of the table column names.
+Considered only when <code>base_size = &quot;default&quot;</code>.</dd>
       <dt>rownames.style</dt>
       <dd>a list, as returned by the function
-<code>rownames_style()</code>, defining the style of the table row names.</dd>
+<code>rownames_style()</code>, defining the style of the table row names.
+Considered only when <code>base_size = &quot;default&quot;</code>.</dd>
       <dt>tbody.style</dt>
       <dd>a list, as returned by the function <code>tbody_style()</code>,
-defining the style of the table body.</dd>
+defining the style of the table body. Considered only when <code>base_size =
+&quot;default&quot;</code>.</dd>
       <dt>color, face, size</dt>
       <dd>text font color, face and size, respectively. Allowed
 values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;).</dd>
@@ -166,17 +169,30 @@ values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot
 <span class='co'># Default table</span>
 <span class='co'># Remove row names using rows = NULL</span>
 <span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><img src='ggtexttable-2.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Medium blue (mBlue) theme</span>
-<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"mBlue"</span>))</div><img src='ggtexttable-4.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Blank theme</span>
-<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"mBlue"</span>))</div><img src='ggtexttable-6.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"blank"</span>))</div><img src='ggtexttable-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># classic theme</span>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"classic"</span>))</div><img src='ggtexttable-6.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># minimal theme</span>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"minimal"</span>))</div><img src='ggtexttable-8.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Medium blue (mBlue) theme</span>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"mBlue"</span>))</div><img src='ggtexttable-10.png' alt='' width='540' height='400' /><div class='input'>
+
 <span class='co'># Customize the table as you want</span>
 <span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
            <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(
              <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"#8cc257"</span>),
              <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#e8f3de"</span>, <span class='st'>"#d3e8bb"</span>))
            )
-)</div><img src='ggtexttable-8.png' alt='' width='540' height='400' /><div class='input'>
+)</div><img src='ggtexttable-12.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Use RColorBrewer palette</span>
+<span class='co'># Provide as many fill color as there are rows in the table body, here nrow = 6</span>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>,
+           <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(
+             <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>),
+             <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='get_palette.html'>get_palette</a></span>(<span class='st'>"RdBu"</span>, <span class='fl'>6</span>))
+           )
+)</div><img src='ggtexttable-14.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Combine density plot and summary table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Density plot of "Sepal.Length"</span>
@@ -194,7 +210,7 @@ values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot
 <span class='co'># Arrange the plots on the same page</span>
 <span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>density.p</span>, <span class='no'>stable.p</span>,
          <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><img src='ggtexttable-10.png' alt='' width='540' height='400' /></pre>
+         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><img src='ggtexttable-16.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

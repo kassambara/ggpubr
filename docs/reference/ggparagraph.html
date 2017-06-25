@@ -79,7 +79,7 @@
     
 
     <pre><span class='fu'>ggparagraph</span>(<span class='no'>text</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lineheight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>lineheight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -112,7 +112,7 @@
              <span class='st'>"and petal length and width, respectively,"</span>,
              <span class='st'>"for 50 flowers from each of 3 species of iris."</span>,
              <span class='st'>"The species are Iris setosa, versicolor, and virginica."</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>" "</span>)
-<span class='no'>text.p</span> <span class='kw'>&lt;-</span> <span class='fu'>ggparagraph</span>(<span class='no'>text</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"italic"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='no'>text.p</span> <span class='kw'>&lt;-</span> <span class='fu'>ggparagraph</span>(<span class='no'>text</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"italic"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>)
 
 <span class='co'># Arrange the plots on the same page</span>
 <span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>density.p</span>, <span class='no'>text.p</span>,

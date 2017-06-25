@@ -133,7 +133,12 @@ and y direction, respectively.</dd>
     <pre class="examples"><div class='input'><span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
       <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>)
 <span class='fu'>print</span>(<span class='no'>p</span>)</div><img src='facet-2.png' alt='' width='540' height='400' /><div class='input'>
-<span class='fu'>facet</span>(<span class='no'>p</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>)</div><img src='facet-4.png' alt='' width='540' height='400' /></pre>
+<span class='fu'>facet</span>(<span class='no'>p</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>)</div><img src='facet-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Customize</span>
+<span class='fu'>facet</span>(<span class='no'>p</span> + <span class='fu'>theme_bw</span>(), <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>,
+  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,   <span class='co'># Allow long labels in panels</span>
+  <span class='kw'>panel.labs.background</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"steelblue"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"steelblue"</span>)
+)</div><img src='facet-6.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

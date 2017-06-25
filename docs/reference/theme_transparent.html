@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set Color Palette — set_palette • ggpubr</title>
+<title>Create a ggplot with Transparent Background — theme_transparent • ggpubr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,69 +69,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set Color Palette</h1>
+    <h1>Create a ggplot with Transparent Background</h1>
     </div>
 
     
-    <p><ul>
-<li> <code>change_palette(), set_palette()</code>: Change
-both color and fill palettes. </li>
-<li> <code>color_palette()</code>: change color
-palette only. </li>
-<li> <code>fill_palette()</code>: change fill palette only.</p>
-
-    <p></li>
-</ul></p>
+    <p>Create a ggplot with transparent background.</p>
     
 
-    <pre><span class='fu'>set_palette</span>(<span class='no'>p</span>, <span class='no'>palette</span>)
-
-<span class='fu'>change_palette</span>(<span class='no'>p</span>, <span class='no'>palette</span>)
-
-<span class='fu'>color_palette</span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
-
-<span class='fu'>fill_palette</span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>theme_transparent</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>p</dt>
-      <dd>a ggplot</dd>
-      <dt>palette</dt>
-      <dd>Color palette. Allowed values include: <ul>
-<li>
-<strong>Grey color palettes</strong>: &quot;grey&quot; or &quot;gray&quot;; </li>
-<li> <strong>RColorBrewer
-palettes</strong>, see <code><a href='http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer'>brewer.pal</a></code> and details section.
-Examples of palette names include: &quot;RdBu&quot;, &quot;Blues&quot;, &quot;Dark2&quot;, &quot;Set2&quot;, ...;
-</li>
-<li> <strong>Custom color palettes</strong>. For example, palette = c(&quot;#00AFBB&quot;,
-&quot;#E7B800&quot;, &quot;#FC4E07&quot;); </li>
-<li> <strong>ggsci scientific journal palettes</strong>,
-e.g.: &quot;npg&quot;, &quot;aaas&quot;, &quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and
-&quot;rickandmorty&quot;. </li>
-</ul>
-</dd>
-      <dt>...</dt>
-      <dd>other arguments passed to ggplot2 scale_color_xxx() and
-scale_fill_xxx() functions.</dd>
+      <dt>base_size</dt>
+      <dd>base font size</dd>
+      <dt>base_family</dt>
+      <dd>base font family</dd>
     </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='get_palette.html'>get_palette</a>.</p>
+    <p><code><a href='theme_pubr.html'>theme_pubr</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load data</span>
-<span class='fu'>data</span>(<span class='st'>"ToothGrowth"</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='no'>ToothGrowth</span>
-
-<span class='co'># Basic plot</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
-   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)
-<span class='no'>p</span></div><img src='set_palette-2.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Change the color palette</span>
-<span class='fu'>set_palette</span>(<span class='no'>p</span>, <span class='st'>"jco"</span>)</div><img src='set_palette-4.png' alt='' width='540' height='400' /></pre>
+    <pre class="examples"><div class='input'><span class='co'># Create a scatter plot</span>
+<span class='no'>sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>iris</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Sepal.Width"</span>,
+               <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Species"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>,
+               <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.6</span>)
+<span class='no'>sp</span></div><img src='theme_transparent-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Transparent theme</span>
+<span class='no'>sp</span> + <span class='fu'>theme_transparent</span>()</div><img src='theme_transparent-4.png' alt='' width='540' height='400' /><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
