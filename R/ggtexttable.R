@@ -1,37 +1,40 @@
 #' @include utilities.R
 NULL
-#' Draw a Textual Table
+#'Draw a Textual Table
 #'
-#' @description Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
-#'   a textual table. \item \code{ttheme()}: customize table theme. \item
-#'   \code{rownames_style(), colnames_style(), tbody_style()}: helper functions
-#'   to customize the table row names, column names and body. }
-#' @inheritParams gridExtra::tableGrob
-#' @param x a \code{data.frame} or \code{matrix}.
-#' @param theme a list, as returned by the function \code{ttheme()}, defining
-#'   the parameters of the table theme. Allowed values include one of
-#'   \code{ttheme()} and \code{ttheme_clean()}.
-#' @param base_style charcter string the table style/theme. The available themes
-#'   are illustrated in the
-#'   \href{http://www.sthda.com/english/rpkgs/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
-#'   file. Allowed values include one of \code{c("default", "blank", "lBlack",
-#'   "lBlue", "lRed", "lGreen", "lViolet", "lCyan", "lOrange", "lBlackWhite",
-#'   "lBlueWhite", "lRedWhite", "lGreenWhite", "lVioletWhite", "lCyanWhite",
-#'   "lOrangeWhite", "mBlack", "mBlue", "mRed", "mGreen", "mViolet", "mCyan",
-#'   "mOrange", "mBlackWhite", "mBlueWhite", "mRedWhite", "mGreenWhite",
-#'   "mVioletWhite", "mCyanWhite", "mOrangeWhite" )}. Note that, l = "light"; m
-#'   = "medium".
-#' @param colnames.style a list, as returned by the function
-#'   \code{colnames_style()}, defining the style of the table column names.
-#' @param rownames.style a list, as returned by the function
-#'   \code{rownames_style()}, defining the style of the table row names.
-#' @param tbody.style a list, as returned by the function \code{tbody_style()},
-#'   defining the style of the table body.
-#' @param color,face,size text font color, face and size, respectively. Allowed
-#'   values for face include c("plain", "bold", "italic", "bold.italic").
-#' @param fill background color.
-#' @param linewidth,linecolor line width and color, respectively.
-#' @return an object of class ggplot.
+#'@description Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
+#'  a textual table. \item \code{ttheme()}: customize table theme. \item
+#'  \code{rownames_style(), colnames_style(), tbody_style()}: helper functions
+#'  to customize the table row names, column names and body. }
+#'@inheritParams gridExtra::tableGrob
+#'@param x a \code{data.frame} or \code{matrix}.
+#'@param theme a list, as returned by the function \code{ttheme()}, defining the
+#'  parameters of the table theme. Allowed values include one of \code{ttheme()}
+#'  and \code{ttheme_clean()}.
+#'@param base_style charcter string the table style/theme. The available themes
+#'  are illustrated in the
+#'  \href{http://www.sthda.com/english/rpkgs/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
+#'   file. Allowed values include one of \code{c("default", "blank", "classic",
+#'  "minimal", "light", "lBlack", "lBlue", "lRed", "lGreen", "lViolet", "lCyan",
+#'  "lOrange", "lBlackWhite", "lBlueWhite", "lRedWhite", "lGreenWhite",
+#'  "lVioletWhite", "lCyanWhite", "lOrangeWhite", "mBlack", "mBlue", "mRed",
+#'  "mGreen", "mViolet", "mCyan", "mOrange", "mBlackWhite", "mBlueWhite",
+#'  "mRedWhite", "mGreenWhite", "mVioletWhite", "mCyanWhite", "mOrangeWhite" )}.
+#'  Note that, l = "light"; m = "medium".
+#'@param colnames.style a list, as returned by the function
+#'  \code{colnames_style()}, defining the style of the table column names.
+#'  Considered only when \code{base_size = "default"}.
+#'@param rownames.style a list, as returned by the function
+#'  \code{rownames_style()}, defining the style of the table row names.
+#'  Considered only when \code{base_size = "default"}.
+#'@param tbody.style a list, as returned by the function \code{tbody_style()},
+#'  defining the style of the table body. Considered only when \code{base_size =
+#'  "default"}.
+#'@param color,face,size text font color, face and size, respectively. Allowed
+#'  values for face include c("plain", "bold", "italic", "bold.italic").
+#'@param fill background color.
+#'@param linewidth,linecolor line width and color, respectively.
+#'@return an object of class ggplot.
 #'
 #'
 #' @examples
@@ -42,11 +45,18 @@ NULL
 #' # Remove row names using rows = NULL
 #' ggtexttable(df, rows = NULL)
 #'
+#' # Blank theme
+#' ggtexttable(df, rows = NULL, theme = ttheme("blank"))
+#'
+#' # classic theme
+#' ggtexttable(df, rows = NULL, theme = ttheme("classic"))
+#'
+#' # minimal theme
+#' ggtexttable(df, rows = NULL, theme = ttheme("minimal"))
+#'
 #' # Medium blue (mBlue) theme
 #' ggtexttable(df, rows = NULL, theme = ttheme("mBlue"))
 #'
-#' # Blank theme
-#' ggtexttable(df, rows = NULL, theme = ttheme("blank"))
 #'
 #' # Customize the table as you want
 #' ggtexttable(df, rows = NULL,
@@ -55,6 +65,15 @@ NULL
 #'              tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"))
 #'            )
 #' )
+#'
+#' # Use RColorBrewer palette
+#' # Provide as many fill color as there are rows in the table body, here nrow = 6
+#'ggtexttable(df,
+#'            theme = ttheme(
+#'              colnames.style = colnames_style(fill = "white"),
+#'              tbody.style = tbody_style(fill = get_palette("RdBu", 6))
+#'            )
+#')
 #'
 #' # Combine density plot and summary table
 #'#:::::::::::::::::::::::::::::::::::::
@@ -75,14 +94,29 @@ NULL
 #'          ncol = 1, nrow = 2,
 #'          heights = c(1, 0.5))
 #'
-#' @rdname ggtexttable
-#' @export
+#'@rdname ggtexttable
+#'@export
 ggtexttable <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL,
                        theme = ttheme(), ...)
 {
-  gridExtra::tableGrob(x, rows = rows, cols = cols, vp = vp,
-                       theme = theme, ...) %>%
-    as_ggplot()
+  style <- attr(theme, "style")
+
+  if(style == "minimal"){
+    res <- minimalTableGrob(x, rows = rows, cols = cols, vp = vp, ...) %>%
+      as_ggplot()
+  }
+  else if(style == "light"){
+    res <- lightTableGrob(x, rows = rows, cols = cols, vp = vp, ...) %>%
+      as_ggplot()
+  }
+  else
+  {
+    res <- gridExtra::tableGrob(x, rows = rows, cols = cols, vp = vp,
+                                theme = theme, ...) %>%
+      as_ggplot()
+  }
+
+  return(res)
 }
 
 #' @export
@@ -109,6 +143,8 @@ ttheme <- function(base_style = "default", base_size = 11, base_colour = "black"
   .ttheme$colhead <- do.call(.add_item, c(list(.list = .ttheme$colhead), colnames.style))
   .ttheme$rowhead <- do.call(.add_item, c(list(.list = .ttheme$rowhead), rownames.style))
   .ttheme$core <- do.call(.add_item, c(list(.list = .ttheme$core), tbody.style))
+
+  attr(.ttheme, "style") <- base_style
 
   .ttheme
 }
@@ -160,10 +196,54 @@ tbody_style <- function(color = "black", face = "plain", size = 12,
 # Helper function
 #::::::::::::::::::::::::::::::::::::::::
 
+
+# Return a minimalist table
+minimalTableGrob <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL, ...){
+
+  if (!requireNamespace("gtable", quietly = TRUE)) {
+    stop("gtable package needed for style = 'minimal'. Please install it first.")
+  }
+
+  tgrob <- gridExtra::tableGrob(x, rows = rows, cols = cols, vp = vp,
+                                theme = gridExtra::ttheme_minimal(), ...)
+  separators <- replicate(ncol(tgrob)-1,
+                          grid::segmentsGrob(x1 = grid::unit(0, "npc"), gp = grid::gpar(lty=1)),
+                          simplify=FALSE)
+  # add vertical lines on the left side of columns (after 2nd)
+  tgrob <- gtable::gtable_add_grob(tgrob, grobs = separators,
+                                   t = 2, b = nrow(tgrob), l = 2:(ncol(tgrob)))
+  tgrob
+}
+
+
+# Return a light table
+lightTableGrob <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL, ...){
+
+  if (!requireNamespace("gtable", quietly = TRUE)) {
+    stop("gtable package needed for style = 'minimal'. Please install it first.")
+  }
+
+  unit <- grid::unit
+
+  tgrob <- gridExtra::tableGrob(x, rows = rows, cols = cols, vp = vp,
+                                theme = gridExtra::ttheme_minimal(), ...)
+  separators <- replicate(2,
+                          grid::segmentsGrob(x1 = unit(ncol(tgrob),"npc"),
+                                             gp = grid::gpar( lty = 1, lwd = 1.5)),
+                          simplify = FALSE
+                          )
+  tgrob <- gtable::gtable_add_grob(tgrob, grobs = separators,
+                                   t = c(1, nrow(tgrob)),
+                                   b = c(1, nrow(tgrob)),
+                                   l = 1, r = ncol(tgrob))
+  tgrob
+}
+
+
 # Define table style
 tstyle <- function(pal, size = 12){
 
-  allowed.palettes = c("default", "blank",
+  allowed.palettes = c("default", "blank", "classic", "minimal", "light",
                       "lBlack", "lBlue", "lRed", "lGreen", "lViolet", "lCyan", "lOrange",
                       "lBlackWhite", "lBlueWhite", "lRedWhite", "lGreenWhite", "lVioletWhite", "lCyanWhite", "lOrangeWhite",
                       "mBlack", "mBlue", "mRed", "mGreen", "mViolet", "mCyan", "mOrange",
@@ -178,6 +258,12 @@ tstyle <- function(pal, size = 12){
                     colnames.style = colnames_style(fill = NA, linecolor = NA, size = size),
                     rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
                     tbody.style = tbody_style(fill = NA, linecolor = NA, size = size)
+                  ),
+
+                  classic = list(
+                    colnames.style = colnames_style(fill = NA, linecolor = "black", size = size),
+                    rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
+                    tbody.style = tbody_style(fill = NA, linecolor = "black", size = size)
                   ),
 
                   lBlack = list(

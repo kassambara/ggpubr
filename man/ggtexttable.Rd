@@ -35,22 +35,22 @@ tbody_style(color = "black", face = "plain", size = 12,
 
 \item{vp}{optional viewport}
 
-\item{theme}{a list, as returned by the function \code{ttheme()}, defining
-the parameters of the table theme. Allowed values include one of
-\code{ttheme()} and \code{ttheme_clean()}.}
+\item{theme}{a list, as returned by the function \code{ttheme()}, defining the
+parameters of the table theme. Allowed values include one of \code{ttheme()}
+and \code{ttheme_clean()}.}
 
 \item{...}{further arguments to control the gtable}
 
 \item{base_style}{charcter string the table style/theme. The available themes
 are illustrated in the
 \href{http://www.sthda.com/english/rpkgs/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
-file. Allowed values include one of \code{c("default", "blank", "lBlack",
-"lBlue", "lRed", "lGreen", "lViolet", "lCyan", "lOrange", "lBlackWhite",
-"lBlueWhite", "lRedWhite", "lGreenWhite", "lVioletWhite", "lCyanWhite",
-"lOrangeWhite", "mBlack", "mBlue", "mRed", "mGreen", "mViolet", "mCyan",
-"mOrange", "mBlackWhite", "mBlueWhite", "mRedWhite", "mGreenWhite",
-"mVioletWhite", "mCyanWhite", "mOrangeWhite" )}. Note that, l = "light"; m
-= "medium".}
+ file. Allowed values include one of \code{c("default", "blank", "classic",
+"minimal", "light", "lBlack", "lBlue", "lRed", "lGreen", "lViolet", "lCyan",
+"lOrange", "lBlackWhite", "lBlueWhite", "lRedWhite", "lGreenWhite",
+"lVioletWhite", "lCyanWhite", "lOrangeWhite", "mBlack", "mBlue", "mRed",
+"mGreen", "mViolet", "mCyan", "mOrange", "mBlackWhite", "mBlueWhite",
+"mRedWhite", "mGreenWhite", "mVioletWhite", "mCyanWhite", "mOrangeWhite" )}.
+Note that, l = "light"; m = "medium".}
 
 \item{base_size}{default font size}
 
@@ -59,13 +59,16 @@ file. Allowed values include one of \code{c("default", "blank", "lBlack",
 \item{padding}{length-2 unit vector specifying the horizontal and vertical padding of text within each cell}
 
 \item{colnames.style}{a list, as returned by the function
-\code{colnames_style()}, defining the style of the table column names.}
+\code{colnames_style()}, defining the style of the table column names.
+Considered only when \code{base_size = "default"}.}
 
 \item{rownames.style}{a list, as returned by the function
-\code{rownames_style()}, defining the style of the table row names.}
+\code{rownames_style()}, defining the style of the table row names.
+Considered only when \code{base_size = "default"}.}
 
 \item{tbody.style}{a list, as returned by the function \code{tbody_style()},
-defining the style of the table body.}
+defining the style of the table body. Considered only when \code{base_size =
+"default"}.}
 
 \item{color, face, size}{text font color, face and size, respectively. Allowed
 values for face include c("plain", "bold", "italic", "bold.italic").}
@@ -81,9 +84,9 @@ an object of class ggplot.
 }
 \description{
 Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
-  a textual table. \item \code{ttheme()}: customize table theme. \item
-  \code{rownames_style(), colnames_style(), tbody_style()}: helper functions
-  to customize the table row names, column names and body. }
+ a textual table. \item \code{ttheme()}: customize table theme. \item
+ \code{rownames_style(), colnames_style(), tbody_style()}: helper functions
+ to customize the table row names, column names and body. }
 }
 \examples{
 # data
@@ -93,17 +96,33 @@ df <- head(ToothGrowth)
 # Remove row names using rows = NULL
 ggtexttable(df, rows = NULL)
 
+# Blank theme
+ggtexttable(df, rows = NULL, theme = ttheme("blank"))
+
+# classic theme
+ggtexttable(df, rows = NULL, theme = ttheme("classic"))
+
+# minimal theme
+ggtexttable(df, rows = NULL, theme = ttheme("minimal"))
+
 # Medium blue (mBlue) theme
 ggtexttable(df, rows = NULL, theme = ttheme("mBlue"))
 
-# Blank theme
-ggtexttable(df, rows = NULL, theme = ttheme("blank"))
 
 # Customize the table as you want
 ggtexttable(df, rows = NULL,
            theme = ttheme(
              colnames.style = colnames_style(color = "white", fill = "#8cc257"),
              tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"))
+           )
+)
+
+# Use RColorBrewer palette
+# Provide as many fill color as there are rows in the table body, here nrow = 6
+ggtexttable(df,
+           theme = ttheme(
+             colnames.style = colnames_style(fill = "white"),
+             tbody.style = tbody_style(fill = get_palette("RdBu", 6))
            )
 )
 
