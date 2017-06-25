@@ -1,4 +1,7 @@
+#' @include utilities.R
+NULL
 #' Arrange Multiple ggplots
+#'
 #' @description Arrange multiple ggplots on the same page. Wrapper around
 #'   \code{\link[cowplot]{plot_grid}()}. Can arrange multiple ggplots over
 #'   multiple pages, compared to the standard
