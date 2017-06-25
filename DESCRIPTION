@@ -38,12 +38,13 @@ Suggests:
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
-Collate:
+Collate: 
     'utilities_color.R'
     'utilities_base.R'
     'desc_statby.R'
     'utilities.R'
     'add_summary.R'
+    'annotate_figure.R'
     'as_ggplot.R'
     'axis_scale.R'
     'bgcolor.R'

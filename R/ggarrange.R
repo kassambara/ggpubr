@@ -28,6 +28,7 @@ NULL
 #' @return return an object of class \code{ggarrange}, which is a ggplot or a
 #'   list of ggplot.
 #' @author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
+#' @seealso \code{\link{annotate_figure}()}
 #' @examples
 #' data("ToothGrowth")
 #' df <- ToothGrowth

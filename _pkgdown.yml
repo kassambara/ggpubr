@@ -68,6 +68,7 @@ reference:
     contents:
       - ggarrange
       - ggexport
+      - annotate_figure
   - title: Helpers
     contents:
       - facet

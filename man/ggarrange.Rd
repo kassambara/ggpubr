@@ -73,6 +73,9 @@ ggarrange(bxp, dp,  common.legend = TRUE)
 
 
 }
+\seealso{
+\code{\link{annotate_figure}()}
+}
 \author{
 Alboukadel Kassambara \email{alboukadel.kassambara@gmail.com}
 }

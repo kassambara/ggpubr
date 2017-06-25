@@ -10,6 +10,7 @@
     - `ggtexttable()`: to draw a textual table.
     - `ggparagraph()`: to draw a paragraph of text.
     - fill_palette() and color_palette() to change the fill and color palette, respectively.
+    - `annotate_figure()` to annotate (arranged) ggplots.
     
 - New theme function `theme_transparent()` to create a ggplot with transparent background.
       
