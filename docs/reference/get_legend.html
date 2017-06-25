@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove a ggplot Component — rremove • ggpubr</title>
+<title>Extract Legends from a ggplot object — get_legend • ggpubr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,82 +69,46 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove a ggplot Component</h1>
+    <h1>Extract Legends from a ggplot object</h1>
     </div>
 
     
-    <p>Remove a specific component from a ggplot.</p>
+    <p>Extract the legend labels from a ggplot object.</p>
     
 
-    <pre><span class='fu'>rremove</span>(<span class='no'>object</span>)</pre>
+    <pre><span class='fu'>get_legend</span>(<span class='no'>p</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>object</dt>
-      <dd>character string specifying the plot components. Allowed values
- include: <ul>
-<li> <code>&quot;grid&quot;</code> for both x and y grids
- </li>
-<li> <code>&quot;x.grid&quot;</code> for x axis grids
- </li>
-<li> <code>&quot;y.grid&quot;</code> for y axis grids
- </li>
-<li> <code>&quot;axis&quot;</code> for both x and y axes
- </li>
-<li> <code>&quot;x.axis&quot;</code> for x axis
- </li>
-<li> <code>&quot;y.axis&quot;</code> for y axis
-
- </li>
-<li> <code>&quot;xlab&quot;, or &quot;x.title&quot;</code>
- for x axis label
- </li>
-<li> <code>&quot;ylab&quot;, or &quot;y.title&quot;</code> for y axis label
- </li>
-<li> <code>&quot;xylab&quot;, &quot;xy.title&quot; or &quot;axis.title&quot;</code> for both x and y axis
- labels
- </li>
-<li> <code>&quot;x.text&quot;</code> for x axis texts (x axis tick labels)
- </li>
-<li> <code>&quot;y.text&quot;</code> for y axis texts (y axis tick labels)
- </li>
-<li> <code>&quot;xy.text&quot;</code> or <code>&quot;axis.text&quot;</code> for both x and y axis texts
-
- </li>
-<li> <code>&quot;ticks&quot;</code> for both x and y ticks
- </li>
-<li> <code>&quot;x.ticks&quot;</code> for x ticks
- </li>
-<li> <code>&quot;y.ticks&quot;</code> for y ticks
-
- </li>
-<li> <code>&quot;legend.title&quot;</code> for the legend title
- </li>
-<li> <code>&quot;legend&quot;</code> for the legend
- </li>
-</ul>
-</dd>
+      <dt>p</dt>
+      <dd>an object of class ggplot.</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an object of class gtable.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load data</span>
-<span class='fu'>data</span>(<span class='st'>"ToothGrowth"</span>)
+    <pre class="examples"><div class='input'><span class='co'># Create a scatter plot</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>iris</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Sepal.Width"</span>,
+        <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Species"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>,
+        <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_minimal</span>())
+<span class='no'>p</span></div><img src='get_legend-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Extract the legend. Returns a gtable</span>
+<span class='no'>leg</span> <span class='kw'>&lt;-</span> <span class='fu'>get_legend</span>(<span class='no'>p</span>)
 
-<span class='co'># Basic plot</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_gray</span>())
-<span class='no'>p</span></div><img src='rremove-2.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Remove all grids</span>
-<span class='no'>p</span> + <span class='fu'>rremove</span>(<span class='st'>"grid"</span>)</div><img src='rremove-4.png' alt='' width='540' height='400' /><div class='input'>
-<span class='co'># Remove only x grids</span>
-<span class='no'>p</span> + <span class='fu'>rremove</span>(<span class='st'>"x.grid"</span>)</div><img src='rremove-6.png' alt='' width='540' height='400' /></pre>
+<span class='co'># Convert to a ggplot and print</span>
+<span class='fu'><a href='as_ggplot.html'>as_ggplot</a></span>(<span class='no'>leg</span>)</div><img src='get_legend-4.png' alt='' width='540' height='400' /><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

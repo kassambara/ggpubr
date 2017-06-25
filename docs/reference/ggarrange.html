@@ -74,11 +74,15 @@
 
     
     <p>Arrange multiple ggplots on the same page. Wrapper around
-  <code><a href='http://www.rdocumentation.org/packages/cowplot/topics/plot_grid'>plot_grid</a></code>. Can arrange multiple ggplots over
-  multiple pages.</p>
+  <code><a href='http://www.rdocumentation.org/packages/cowplot/topics/plot_grid'>plot_grid</a>()</code>. Can arrange multiple ggplots over
+  multiple pages, compared to the standard
+  <code><a href='http://www.rdocumentation.org/packages/cowplot/topics/plot_grid'>plot_grid</a>()</code>. Can also create a common unique legend
+  for multiple plots.</p>
     
 
-    <pre><span class='fu'>ggarrange</span>(<span class='no'>...</span>, <span class='kw'>plotlist</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre><span class='fu'>ggarrange</span>(<span class='no'>...</span>, <span class='kw'>plotlist</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>align</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>common.legend</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -95,11 +99,28 @@ either ggplot2 plot objects or arbitrary gtables.</dd>
       <dd>(optional) list of labels to be added to the plots. You can
 also set labels=&quot;AUTO&quot; to auto-generate upper-case labels or labels=&quot;auto&quot;
 to auto-generate lower-case labels.</dd>
+      <dt>align</dt>
+      <dd>(optional) Specifies whether graphs in the grid should be horizontally (&quot;h&quot;) or
+vertically (&quot;v&quot;) aligned. Options are &quot;none&quot; (default), &quot;hv&quot; (align in both directions), &quot;h&quot;, and &quot;v&quot;.</dd>
+      <dt>widths</dt>
+      <dd>(optional) numerical vector of relative columns widths. For
+example, in a two-column grid, widths = c(2, 1) would make the first column
+twice as wide as the second column.</dd>
+      <dt>heights</dt>
+      <dd>same as <code>widths</code> but for column heights.</dd>
+      <dt>legend</dt>
+      <dd>character specifying legend position. Allowed values are one of
+c(&quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;, &quot;none&quot;). To remove the legend use
+legend = &quot;none&quot;.</dd>
+      <dt>common.legend</dt>
+      <dd>logical value. Default is FALSE. If TRUE, a common
+unique legend will be created for arranged plots.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>return an object of class <code>ggarrange</code>, which is a ggplot or a list of ggplot.</p>
+    <p>return an object of class <code>ggarrange</code>, which is a ggplot or a
+  list of ggplot.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -107,6 +128,8 @@ to auto-generate lower-case labels.</dd>
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='no'>ToothGrowth</span>
 <span class='no'>df</span>$<span class='no'>dose</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>(<span class='no'>df</span>$<span class='no'>dose</span>)
 
+<span class='co'># Create some plots</span>
+<span class='co'># ::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Box plot</span>
 <span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
@@ -116,8 +139,12 @@ to auto-generate lower-case labels.</dd>
 <span class='co'># Density plot</span>
 <span class='no'>dens</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 
-<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='input'>
-</div><img src='ggarrange-4.png' alt='' width='540' height='400' /></pre>
+<span class='co'># Arrange</span>
+<span class='co'># ::::::::::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='input'><span class='co'># Use a common legend for multiple plots</span>
+<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>,  <span class='kw'>common.legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><img src='ggarrange-5.png' alt='' width='540' height='400' /><img src='ggarrange-6.png' alt='' width='540' height='400' /><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
