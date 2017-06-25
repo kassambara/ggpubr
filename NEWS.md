@@ -8,6 +8,7 @@
     - `get_legend()`: to extract the legend labels from a ggplot object.
     - `as_ggplot()`: Transform the output of `gridExtra::arrangeGrob()` and `gridExtra::grid.arrange()` to a an object of class ggplot.
     - `ggtexttable()`: to draw a textual table.
+    - `ggparagraph()`: to draw a paragraph of text.
       
       
 ## Major changes

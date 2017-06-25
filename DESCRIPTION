@@ -72,6 +72,7 @@ Collate:
     'ggline.R'
     'ggmaplot.R'
     'ggpaired.R'
+    'ggparagraph.R'
     'ggpie.R'
     'ggpubr_args.R'
     'ggqqplot.R'

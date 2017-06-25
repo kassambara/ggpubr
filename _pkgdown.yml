@@ -35,9 +35,10 @@ reference:
     contents:
       - compare_means
       - stat_compare_means
-  - title: Plot Tables
+  - title: Plot Tables and Paragraphs
     contents:
       - ggtexttable
+      - ggparagraph
   - title: Genomics
     desc: Plotting data obtained from genomic data analyses.
     contents:
