@@ -36,6 +36,12 @@ NULL
 #' print(p)
 #'
 #' facet(p, facet.by = "supp")
+#'
+#' # Customize
+#' facet(p + theme_bw(), facet.by = "supp",
+#'   short.panel.labs = FALSE,   # Allow long labels in panels
+#'   panel.labs.background = list(fill = "steelblue", color = "steelblue")
+#' )
 #'@rdname facet
 #'@export
 facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
