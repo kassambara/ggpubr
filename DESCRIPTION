@@ -81,6 +81,7 @@ Collate:
     'ggscatter.R'
     'ggstripchart.R'
     'ggtext.R'
+    'ggtexttable.R'
     'ggviolin.R'
     'gradient_color.R'
     'grids.R'
