@@ -2,13 +2,18 @@
 % Please edit documentation in R/set_palette.R
 \name{set_palette}
 \alias{set_palette}
-\alias{set_palette}
 \alias{change_palette}
+\alias{color_palette}
+\alias{fill_palette}
 \title{Set Color Palette}
 \usage{
 set_palette(p, palette)
 
 change_palette(p, palette)
+
+color_palette(palette = NULL, ...)
+
+fill_palette(palette = NULL, ...)
 }
 \arguments{
 \item{p}{a ggplot}
@@ -21,9 +26,16 @@ Examples of palette names include: "RdBu", "Blues", "Dark2", "Set2", ...;
 "#E7B800", "#FC4E07"); \item \strong{ggsci scientific journal palettes},
 e.g.: "npg", "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 "rickandmorty". }}
+
+\item{...}{other arguments passed to ggplot2 scale_color_xxx() and
+scale_fill_xxx() functions.}
 }
 \description{
-Change color palette. \code{change_palette()} is an alias of \code{set_palette()}.
+\itemize{ \item \code{change_palette(), set_palette()}: Change
+both color and fill palettes. \item \code{color_palette()}: change color
+palette only. \item \code{fill_palette()}: change fill palette only.
+
+}
 }
 \examples{
 # Load data

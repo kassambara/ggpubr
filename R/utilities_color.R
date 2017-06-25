@@ -29,51 +29,13 @@
 # Change color manually
 # possible value for palette: brewer palette, "grey" or a vector of colors
 .ggcolor <- function(palette = NULL, ...) {
-  brewerpal <- .brewerpal()
-  ggscipal <- .ggscipal()
-
-  res <- NULL
-  if (is.null(palette))
-    palette <- ""
-  if (length(palette) == 1) {
-    if (palette %in% brewerpal)
-      ggplot2::scale_color_brewer(..., palette = palette)
-    else if (palette %in% ggscipal)
-      .scale_color_ggsci(palette = palette)
-    else if (palette == "grey")
-      ggplot2::scale_color_grey(..., start = 0.8, end = 0.2)
-    else if (palette == "hue")
-      ggplot2::scale_color_hue(...)
-    else if(.is_color(palette))
-      ggplot2::scale_color_manual(..., values = palette)
-  }
-  else if (palette[1] != "")
-    ggplot2::scale_color_manual(..., values = palette)
+  color_palette(palette = palette, ...)
 }
 
 # Change fill color manually
 # possible value for palette: brewer palette, "grey" or a vector of colors
 .ggfill <- function(palette = NULL, ...) {
-  brewerpal <- .brewerpal()
-  ggscipal <- .ggscipal()
-
-  res <- NULL
-  if (is.null(palette))
-    palette <- ""
-  if (length(palette) == 1) {
-    if (palette %in% brewerpal)
-      ggplot2::scale_fill_brewer(..., palette = palette)
-    else if (palette %in% ggscipal)
-      .scale_fill_ggsci(palette = palette)
-    else if (palette == "grey")
-      ggplot2::scale_fill_grey(..., start = 0.8, end = 0.2)
-    else if (palette == "hue")
-      ggplot2::scale_fill_hue(...)
-    else if(.is_color(palette))
-      ggplot2::scale_fill_manual(..., values = palette)
-  }
-  else if (palette[1] != "")
-    ggplot2::scale_fill_manual(..., values = palette)
+ fill_palette(palette = palette, ...)
 }
 
 
