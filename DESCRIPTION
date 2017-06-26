@@ -96,5 +96,6 @@ Collate:
     'show_point_shapes.R'
     'stat_compare_means.R'
     'stat_mean.R'
+    'text_grob.R'
     'theme_pubr.R'
     'theme_transparent.R'

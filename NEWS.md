@@ -11,6 +11,7 @@
     - `ggparagraph()`: to draw a paragraph of text.
     - fill_palette() and color_palette() to change the fill and color palette, respectively.
     - `annotate_figure()` to annotate (arranged) ggplots.
+    - `text_grob()` to create easily a customized text graphical object. 
     
 - New theme function `theme_transparent()` to create a ggplot with transparent background.
       

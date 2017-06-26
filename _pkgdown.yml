@@ -39,6 +39,7 @@ reference:
     contents:
       - ggtexttable
       - ggparagraph
+      - text_grob
   - title: Genomics
     desc: Plotting data obtained from genomic data analyses.
     contents:
