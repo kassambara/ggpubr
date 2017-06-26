@@ -1,4 +1,4 @@
-#'Rotate X-axis Text
+#'Rotate Axes Text
 #'
 #'@description Rotate the x-axis text (tick mark labels).
 #'\itemize{
