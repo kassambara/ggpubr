@@ -34,15 +34,14 @@ NULL
 #'
 #' # Arrange and annotate
 #' # ::::::::::::::::::::::::::::::::::::::::::::::::::
-#' library(grid)
-#' gp = grid::gpar(col = "black", fontface = "bold")
-#' res <- ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
-#'annotate_figure(res,
-#'                top = textGrob("Visualizing Tooth Growth by Vitamin C Dose", gp = gp),
-#'                bottom = "Data source: ToothGrowth data set",
-#'                left = "Arranged plot using ggpubr",
-#'                right = "I'm done",
-#'                fig.lab = "Figure 1", fig.lab.face = "bold")
+#'annotate_figure(figure,
+#'                top = text_grob("Visualizing Tooth Growth", color = "red", face = "bold", size = 14),
+#'                bottom = text_grob("Data source: \n ToothGrowth data set", color = "blue",
+#'                                   hjust = 1, x = 1, face = "italic", size = 10),
+#'                left = text_grob("Figure arranged using ggpubr", color = "green", rot = 90),
+#'                right = "I'm done, thanks :-)!",
+#'                fig.lab = "Figure 1", fig.lab.face = "bold"
+#')
 #'
 #'
 #'@export

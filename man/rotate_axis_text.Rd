@@ -5,7 +5,7 @@
 \alias{rotate_x_text}
 \alias{rotate_axis_text}
 \alias{rotate_y_text}
-\title{Rotate X-axis Text}
+\title{Rotate Axes Text}
 \usage{
 rotate_x_text(angle = 90, hjust = NULL, vjust = NULL, ...)
 
