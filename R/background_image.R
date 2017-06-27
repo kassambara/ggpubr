@@ -23,7 +23,7 @@ NULL
 #'
 #'@export
 background_image <- function(raster.img){
-  annotation_raster(img,
+  annotation_raster(raster.img,
                     xmin = -Inf, xmax = Inf,
                     ymin = -Inf, ymax = Inf)
 }
