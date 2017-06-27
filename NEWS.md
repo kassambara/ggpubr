@@ -27,10 +27,6 @@
     - New argument `legend` to remove or specify the legend position when arranging multiple plots.
     - New argument `common.legend` to create a common unique legend for multiple plots.
      
-     
-## To check
-
-color palette: http://earlglynn.github.io/RNotes/package/RColorBrewer/index.html
 
 # ggpubr 0.1.3
    
