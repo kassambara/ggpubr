@@ -47,6 +47,7 @@ dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 
 # Arrange and annotate
 # ::::::::::::::::::::::::::::::::::::::::::::::::::
+figure <- ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 annotate_figure(figure,
                top = text_grob("Visualizing Tooth Growth", color = "red", face = "bold", size = 14),
                bottom = text_grob("Data source: \\n ToothGrowth data set", color = "blue",
