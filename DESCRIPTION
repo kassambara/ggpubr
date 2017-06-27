@@ -47,6 +47,7 @@ Collate:
     'annotate_figure.R'
     'as_ggplot.R'
     'axis_scale.R'
+    'background_image.R'
     'bgcolor.R'
     'border.R'
     'compare_means.R'

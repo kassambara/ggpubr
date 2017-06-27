@@ -3,6 +3,7 @@
 export(add_summary)
 export(annotate_figure)
 export(as_ggplot)
+export(background_image)
 export(bgcolor)
 export(border)
 export(change_palette)
