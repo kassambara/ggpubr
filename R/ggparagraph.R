@@ -44,3 +44,38 @@ ggparagraph <- function(text, color = NULL, size = NULL, face = NULL,
   p <- as_ggplot(p)
   return(p)
 }
+
+
+
+
+# Helper functions
+# Extracted from RGraphics package
+# :::::::::::::::::::::::::::::::::::::::::::
+splitString <- function(text) {
+  strings <- strsplit(text, " ")[[1]]
+  newstring <- strings[1]
+  linewidth <- grid::stringWidth(newstring)
+  gapwidth <- grid::stringWidth(" ")
+  availwidth <-
+    grid::convertWidth(unit(1, "npc"),
+                 "in", valueOnly=TRUE)
+  for (i in 2:length(strings)) {
+    width <- grid::stringWidth(strings[i])
+    if (grid::convertWidth(linewidth + gapwidth + width,
+                     "in", valueOnly=TRUE) <
+        availwidth) {
+      sep <- " "
+      linewidth <- linewidth + gapwidth + width
+    } else {
+      sep <- "\n"
+      linewidth <- width
+    }
+    newstring <- paste(newstring, strings[i], sep=sep)
+  }
+  newstring
+}
+
+drawDetails.splitText <- function(x, recording) {
+  grid::grid.text(splitString(x$text),
+            x=0, y=1, just=c("left", "top"))
+}
