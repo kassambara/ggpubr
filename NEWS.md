@@ -1,4 +1,4 @@
-# ggpubr 0.1.3.999
+# ggpubr 0.1.4
 
 ## New features
 
@@ -15,10 +15,7 @@
     - `background_image()` to add a background image to a ggplot.
     
 - New theme function `theme_transparent()` to create a ggplot with transparent background.
-      
-      
-## Major changes
-
+ 
 ## Minor changes
 
 - In `gghistogram()`, density curve and rug react to the fill color.

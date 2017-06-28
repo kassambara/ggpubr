@@ -1,8 +1,8 @@
 Package: ggpubr
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots
-Version: 0.1.3.999
-Date: 2017-06-06
+Version: 0.1.4
+Date: 2017-06-27
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"))
 Description: 'ggplot2' is an excellent and flexible package for elegant data
