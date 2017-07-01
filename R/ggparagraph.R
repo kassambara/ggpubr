@@ -75,6 +75,9 @@ splitString <- function(text) {
   newstring
 }
 
+#' @method drawDetails splitText
+#' @rdname ggparagraph
+#' @export
 drawDetails.splitText <- function(x, recording) {
   grid::grid.text(splitString(x$text),
             x=0, y=1, just=c("left", "top"))

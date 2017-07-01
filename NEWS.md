@@ -9,7 +9,8 @@
 
 
 ## Bug fixes
-
+   
+- `drawDetails.splitText()` exported so that the function `ggparagraph()` works properly.
 
 
 # ggpubr 0.1.4

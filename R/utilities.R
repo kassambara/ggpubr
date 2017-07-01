@@ -9,6 +9,7 @@ NULL
 #' @importFrom dplyr do
 #' @importFrom dplyr summarise
 #' @importFrom dplyr everything
+#' @importFrom grid drawDetails
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2
