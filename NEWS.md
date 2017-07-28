@@ -7,6 +7,7 @@
   
 ## Minor changes
 
+new argument `font.family` in `ggpie`().
 
 ## Bug fixes
    
