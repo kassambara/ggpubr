@@ -77,6 +77,9 @@ splitString <- function(text) {
 
 #' @method drawDetails splitText
 #' @rdname ggparagraph
+#' @param x a grid grob
+#' @param recording a logical value indicating whether a grob is being added to
+#'   the display list or redrawn from the display list.
 #' @export
 drawDetails.splitText <- function(x, recording) {
   grid::grid.text(splitString(x$text),
