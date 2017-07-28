@@ -20,6 +20,7 @@
 #'# Set log scale
 #'p + yscale("log2", .format = TRUE)
 
+#'@name axis_scale
 #'@rdname axis_scale
 #'@export
 xscale <- function(.scale, .format = FALSE)
