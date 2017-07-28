@@ -92,7 +92,7 @@ ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 
 
   p <- ggplot(data, aes_string(x = 1, y = x))+
     .geom_exec(geom_bar, data,  stat = "identity", fill = fill, color = color, size = size)
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme, font.family = font.family, ...)
 
   p <- p + coord_polar(theta = "y", start = 0) +
     theme(

@@ -7,7 +7,7 @@
   
 ## Minor changes
 
-new argument `font.family` in `ggpie`().
+- The function `ggpie()`can now display japanese texts. New argument `font.family` in `ggpie`() and in `ggpar()` ([@tomochan001, #15](https://github.com/kassambara/ggpubr/issues/15)).
 
 ## Bug fixes
    

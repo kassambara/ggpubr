@@ -8,11 +8,11 @@ ggpar(p, palette = NULL, gradient.cols = NULL, main = NULL,
   submain = NULL, caption = NULL, xlab = NULL, ylab = NULL,
   title = NULL, subtitle = NULL, font.main = NULL, font.submain = NULL,
   font.x = NULL, font.y = NULL, font.caption = NULL, font.title = NULL,
-  font.subtitle = NULL, xlim = NULL, ylim = NULL, xscale = c("none",
-  "log2", "log10", "sqrt"), yscale = c("none", "log2", "log10", "sqrt"),
-  format.scale = FALSE, legend = NULL, legend.title = NULL,
-  font.legend = NULL, ticks = TRUE, tickslab = TRUE,
-  font.tickslab = NULL, font.xtickslab = font.tickslab,
+  font.subtitle = NULL, font.family = "", xlim = NULL, ylim = NULL,
+  xscale = c("none", "log2", "log10", "sqrt"), yscale = c("none", "log2",
+  "log10", "sqrt"), format.scale = FALSE, legend = NULL,
+  legend.title = NULL, font.legend = NULL, ticks = TRUE,
+  tickslab = TRUE, font.tickslab = NULL, font.xtickslab = font.tickslab,
   font.ytickslab = font.tickslab, x.text.angle = NULL,
   y.text.angle = NULL, xtickslab.rt = x.text.angle,
   ytickslab.rt = y.text.angle, xticks.by = NULL, yticks.by = NULL,
@@ -55,6 +55,8 @@ font.x = "bold", to change only font face.}
 
 \item{font.title, font.subtitle}{alias of font.submain and font.submain,
 respectively.}
+
+\item{font.family}{character vector specifying font family.}
 
 \item{xlim, ylim}{a numeric vector of length 2, specifying  x and y axis
 limits (minimum and maximum), respectively. e.g.: ylim = c(0, 50).}

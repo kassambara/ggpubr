@@ -29,6 +29,7 @@ NULL
 #'   font.x = "bold", to change only font face.
 #' @param font.title,font.subtitle alias of font.submain and font.submain,
 #'   respectively.
+#' @param font.family character vector specifying font family.
 #' @param xlim,ylim a numeric vector of length 2, specifying  x and y axis
 #'   limits (minimum and maximum), respectively. e.g.: ylim = c(0, 50).
 #' @param xscale,yscale x and y axis scale, respectively. Allowed values are one
@@ -145,7 +146,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   main = NULL, submain = NULL, caption = NULL, xlab = NULL, ylab = NULL,
                   title = NULL, subtitle = NULL,
                   font.main = NULL, font.submain = NULL, font.x = NULL, font.y = NULL, font.caption = NULL,
-                  font.title = NULL, font.subtitle = NULL,
+                  font.title = NULL, font.subtitle = NULL, font.family = "",
                   xlim = NULL, ylim = NULL,
                   xscale = c("none", "log2", "log10", "sqrt"),
                   yscale = c("none", "log2", "log10", "sqrt"),
@@ -195,6 +196,8 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                      font.main, font.x, font.y,
                    submain = submain, caption = caption, font.submain = font.submain, font.caption = font.caption)
         p <- .set_orientation(p, orientation)
+        if(font.family != "")
+          p <- p + theme(text = element_text(family = font.family))
         list.plots[[i]] <- p
     }
 
