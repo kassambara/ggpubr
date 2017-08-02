@@ -258,7 +258,9 @@ ggbarplot_core <- function(data, x, y,
 
     add <- setdiff(add, .center)
     names(data_sum)[which(names(data_sum) == .center)] <- y
-    data_sum[, x] <- as.factor(data_sum[, x])
+    # data_sum[, x] <- as.factor(data_sum[, x])
+    if(inherits(xx, c("character", "numeric")))
+      data_sum[, x] <- .select_vec(data_sum, x) %>% as.factor()
 
   }
   else data_sum <- data
