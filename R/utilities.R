@@ -755,10 +755,7 @@ p
 
 # Select a colun as vector from tiblle data frame
 .select_vec <- function(df, column){
-  if(is.numeric(column))
-    df %>% dplyr::select(column) %>% unlist(use.names = FALSE)
-  else
-    df %>% dplyr::select_(.dots = column) %>% unlist(use.names = FALSE)
+  dplyr::pull(df, column)
 }
 
 # Select the top up or down rows of a data frame sorted by variables
