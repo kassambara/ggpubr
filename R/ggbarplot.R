@@ -226,7 +226,11 @@ ggbarplot_core <- function(data, x, y,
 
   sort.val <- match.arg(sort.val)
   if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
-  else data[, x] <- factor(data[, x])
+  else {
+    xx <- .select_vec(data, x)
+    if(inherits(xx, c("character", "numeric")))
+      data[, x] <- .select_vec(data, x) %>% as.factor()
+  }
   error.plot = error.plot[1]
   lab.pos <- match.arg(lab.pos)
   label <- as.vector(label)

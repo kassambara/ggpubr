@@ -193,7 +193,10 @@ ggline_core <- function(data, x, y, group = 1,
                   ggtheme = theme_pubr(),
                       ...)
 {
-  data[, x] <- .select_vec(data, x) %>% as.factor()
+  xx <- .select_vec(data, x)
+  if(inherits(xx, c("character", "numeric")))
+    data[, x] <- .select_vec(data, x) %>% as.factor()
+
   error.plot = error.plot[1]
   plot_type <- match.arg(plot_type)
   if("none" %in% add) add <- "none"
