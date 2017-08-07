@@ -122,6 +122,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   variables <- response.var <- .formula_left_variables(formula)
   group <- .formula_right_variables(formula)
+  if(group == "1") group <- NULL # NULL model
 
   if(!.is_empty(group)){
     group.vals <- .select_vec(data, group)
