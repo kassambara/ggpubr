@@ -123,6 +123,7 @@ gghistogram_core <- function(data, x, y = "..count..",
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
                       bins = NULL, binwidth = NULL,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       facet.by = NULL,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
@@ -189,7 +190,8 @@ gghistogram_core <- function(data, x, y = "..count..",
                                       size = add.params$size)
 
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+             title = title, xlab = xlab, ylab = ylab,...)
   p
 }
 

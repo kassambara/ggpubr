@@ -15,6 +15,7 @@
 ## Bug fixes
    
 - `drawDetails.splitText()` exported so that the function `ggparagraph()` works properly.
+- Now, ggpubr functions accept expression for label text
 
 
 # ggpubr 0.1.4

@@ -210,6 +210,7 @@ ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 ggbarplot_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       size = NULL, width = 0.7,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       label = FALSE, lab.col = "black", lab.size = 4,
                       lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
                       select = NULL, order = NULL, facet.by = NULL,
@@ -340,7 +341,8 @@ ggbarplot_core <- function(data, x, y,
 
    # To do
    # top10, visualizing error
-   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+   p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+              title = title, xlab = xlab, ylab = ylab,...)
 
   p
 }

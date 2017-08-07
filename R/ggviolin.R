@@ -139,6 +139,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
 
 ggviolin_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       linetype = "solid", trim = FALSE, size = NULL, width = 1,
                       draw_quantiles = NULL,
                       add = "mean_se", add.params = list(),
@@ -163,7 +164,8 @@ ggviolin_core <- function(data, x, y,
    add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
      .add_item(p = p, add = add, error.plot = error.plot)
    p <- do.call(ggadd, add.params) %>%
-     ggpar(palette = palette, ggtheme = ggtheme, ...)
+     ggpar(palette = palette, ggtheme = ggtheme,
+           title = title, xlab = xlab, ylab = ylab,...)
 
   p
 }

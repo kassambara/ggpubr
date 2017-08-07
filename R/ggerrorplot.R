@@ -119,6 +119,7 @@ ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
 
 ggerrorplot_core <- function(data, x, y, desc_stat = "mean_se",
                       color = "black", fill = "white", palette = NULL,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       size = NULL, width = NULL,
                       select = NULL, order = NULL,
                       add = "none",
@@ -151,7 +152,8 @@ ggerrorplot_core <- function(data, x, y, desc_stat = "mean_se",
               add = desc_stat, p = p)
   p <- do.call(ggadd, add.params)
 
-   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+   p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+              title = title, xlab = xlab, ylab = ylab,...)
 
   p
 }

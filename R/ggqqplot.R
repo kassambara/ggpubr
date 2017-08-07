@@ -95,6 +95,7 @@ ggqqplot_core <- function(data, x, y = "..qq..",
                       add = c( "qqline", "none"),
                       add.params = list(linetype = "solid"),
                       conf.int = TRUE, conf.int.level = 0.95,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       ggtheme = theme_pubr(),
                       ...)
 {
@@ -133,7 +134,8 @@ ggqqplot_core <- function(data, x, y = "..qq..",
                group = group)
   }
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+             title = title, xlab = xlab, ylab = ylab,...)
   p
 }
 

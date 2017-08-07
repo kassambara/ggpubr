@@ -107,6 +107,7 @@ ggdensity <- function(data, x, y = "..density..", combine = FALSE, merge = FALSE
 ggdensity_core <- function(data, x, y = "..density..",
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
                       rug = FALSE,
@@ -153,7 +154,8 @@ ggdensity_core <- function(data, x, y = "..density..",
   }
 
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+             title = title, xlab = xlab, ylab = ylab,...)
   p
 }
 

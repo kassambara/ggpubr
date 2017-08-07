@@ -81,6 +81,7 @@ ggecdf <- function(data, x,  combine = FALSE, merge = FALSE,
 ggecdf_core <- function(data, x, y = "..ecdf..",
                       color = "black",  palette = NULL,
                       size = NULL, linetype = "solid",
+                      title = NULL, xlab = NULL, ylab = NULL,
                       ggtheme = theme_classic(),
                       ...)
 {
@@ -92,7 +93,8 @@ ggecdf_core <- function(data, x, y = "..ecdf..",
                  color = color,  size = size,
                  linetype = linetype)+
     labs(y = paste0("F(", x, ")"))
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+             title = title, xlab = xlab, ylab = ylab,...)
   p
 }
 

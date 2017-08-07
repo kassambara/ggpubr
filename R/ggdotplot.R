@@ -113,6 +113,7 @@ ggdotplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 
 ggdotplot_core <- function(data, x, y,
                       color = "black", fill = "lightgray", palette = NULL,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       size = NULL, dotsize = size,
                       binwidth = NULL,
                       add = "mean_se",
@@ -156,7 +157,8 @@ ggdotplot_core <- function(data, x, y,
               add = setdiff(add, c("boxplot", "violin", "jitter"))) %>%
     do.call(ggadd, .)
 
-   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+   p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+              title = title, xlab = xlab, ylab = ylab,...)
 
   p
 }

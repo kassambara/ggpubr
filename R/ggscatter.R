@@ -200,6 +200,7 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
 ggscatter_core <- function(data, x, y,
                       color = "black", fill = "lightgray", palette = NULL,
                       shape = 19, size = 2, point = TRUE,  rug = FALSE,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       add = c("none", "reg.line", "loess"), add.params = list(),
                       conf.int = FALSE, conf.int.level = 0.95, fullrange = FALSE,
                       ellipse = FALSE, ellipse.level = 0.95,
@@ -365,7 +366,8 @@ ggscatter_core <- function(data, x, y,
      p <- p + do.call(stat_cor, cor.coeff.args)
   }
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+             title = title, xlab = xlab, ylab = ylab,...)
   if(font.family != "")
     p <- p + theme(text = element_text(family = font.family))
   p

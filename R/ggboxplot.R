@@ -186,6 +186,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 ggboxplot_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       add = "none", add.params = list(),
                       error.plot = "pointrange",
                       ggtheme = theme_pubr(),
@@ -204,7 +205,8 @@ ggboxplot_core <- function(data, x, y,
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
     .add_item(p = p, add = add, error.plot = error.plot)
   p <- do.call(ggadd, add.params) %>%
-    ggpar(palette = palette, ggtheme = ggtheme, ...)
+    ggpar(palette = palette, ggtheme = ggtheme,
+          title = title, xlab = xlab, ylab = ylab, ...)
   p
 }
 

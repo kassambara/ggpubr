@@ -144,6 +144,7 @@ ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
 
 ggstripchart_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
+                      title = NULL, xlab = NULL, ylab = NULL,
                       shape = 19, size = NULL,
                       add = "mean_se",
                       add.params = list(),
@@ -186,7 +187,8 @@ ggstripchart_core <- function(data, x, y,
               add = setdiff(add, c("boxplot", "violin", "jitter"))) %>%
     do.call(ggadd, .)
 
-   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+   p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+              title = title, xlab = xlab, ylab = ylab,...)
 
   p
 }

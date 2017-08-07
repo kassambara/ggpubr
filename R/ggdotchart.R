@@ -111,6 +111,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
                        add = c("none", "segments"), add.params = list(),
                        x.text.col = FALSE,
                        rotate = FALSE,
+                       title = NULL, xlab = NULL, ylab = NULL,
                        ggtheme = theme_bw(),
                        ...)
 {
@@ -168,7 +169,8 @@ ggdotchart_core <- function(data, x, y, group = NULL,
                       color = color, size = dot.size)
 
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, x.text.angle = x.text.angle, ...)
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme, x.text.angle = x.text.angle,
+             title = title, xlab = xlab, ylab = ylab, ...)
 
 
   # Change x axis text colors
