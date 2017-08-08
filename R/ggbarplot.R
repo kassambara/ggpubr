@@ -326,7 +326,10 @@ ggbarplot_core <- function(data, x, y,
      .cols <- unique(c(color, fill))
      if(any(.cols %in% names(data))){
        .in <- which(.cols %in% names(data))
-       lab.fill <- .cols[.in]
+       lab.fill <- color.var <- .cols[.in]
+       data_sum <- data_sum %>%
+         dplyr::arrange_(.dots = list(x, paste0("desc(", color.var, ")")))
+
        p <- p + geom_exec(geom_text, data = data_sum, label = .lab,  #fill = lab.fill
                            vjust = lab.vjust, hjust = lab.hjust, size = lab.size, color = lab.col,
                            fontface = "plain", position = position)
