@@ -14,6 +14,7 @@
 
 ## Bug fixes
    
+- `stat_compare_means()` now reacts to `hide.ns` properly.
 - `drawDetails.splitText()` exported so that the function `ggparagraph()` works properly.
 - Now, ggpubr functions accept expression for label text
 - In `ggbarplot()`, now labels correspond to the true size of bars ([@tdelhomme, #15](https://github.com/kassambara/ggpubr/issues/15)).
