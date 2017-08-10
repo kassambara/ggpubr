@@ -198,7 +198,8 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                       .label.pms <- label.opts %>%
                         .add_item(group.ids = .test$x) %>%
                         do.call(.label_params_by_group, .) # Returns a data frame with label: x, y, hjust, vjust
-                      .test <- dplyr::select(.test, -x)
+                      # .test <- dplyr::select(.test, -x)
+                      .label.pms <- dplyr::select(.label.pms, -x)
 
                     }
 
@@ -217,7 +218,6 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                         .add_item(group.ids = group.ids) %>%
                         do.call(.label_params_by_group, .)
                     }
-
 
                     res <- cbind(.test, .label.pms)
 

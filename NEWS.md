@@ -17,6 +17,7 @@
 - `drawDetails.splitText()` exported so that the function `ggparagraph()` works properly.
 - Now, ggpubr functions accept expression for label text
 - In `ggbarplot()`, now labels correspond to the true size of bars ([@tdelhomme, #15](https://github.com/kassambara/ggpubr/issues/15)).
+- `stat_compare_means()` now keep the default order of factor levels ([@RoKant, #12](https://github.com/kassambara/ggpubr/issues/12)).
 
 
 # ggpubr 0.1.4
