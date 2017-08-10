@@ -7,9 +7,12 @@
   
 ## Minor changes
 
+- Support for text justification added in `ggtexttable()` ([@cj-wilson, #15](https://github.com/kassambara/ggpubr/issues/18))
+
 - The function `ggpie()`can now display japanese texts. New argument `font.family` in `ggpie`() and in `ggpar()` ([@tomochan001, #15](https://github.com/kassambara/ggpubr/issues/15)).
 
 - Using time on x axis works know with `ggline()` and `ggbarplot()` ([@jcpsantiago, #15](https://github.com/kassambara/ggpubr/issues/17)).
+
 
 
 ## Bug fixes

@@ -34,6 +34,9 @@ NULL
 #'  values for face include c("plain", "bold", "italic", "bold.italic").
 #'@param fill background color.
 #'@param linewidth,linecolor line width and color, respectively.
+#'@param ... extra parameters for text justification, e.g.: hjust and x. Default
+#'  is "centre" for the body and header, and "right" for the row names. Left
+#'  justification: \code{hjust = 0, x = 0.1}. Right justification: \code{hjust = 1, x = 0.9}.
 #'@return an object of class ggplot.
 #'
 #'
@@ -72,6 +75,18 @@ NULL
 #'            theme = ttheme(
 #'              colnames.style = colnames_style(fill = "white"),
 #'              tbody.style = tbody_style(fill = get_palette("RdBu", 6))
+#'            )
+#')
+#'
+#'# Text justification
+#'#::::::::::::::::::::::::::::::::::::::::::::::
+#'# Default is "centre" for the body and header, and "right" for the row names.
+#'# Left justification: hjust=0, x=0.1
+#'# Right justification: hjust=1, x=0.9
+#'ggtexttable(head(iris), rows = NULL,
+#'            theme = ttheme(
+#'              colnames.style = colnames_style(color = "white", fill = "#8cc257"),
+#'              tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"), hjust=1, x=0.9)
 #'            )
 #')
 #'
@@ -156,11 +171,13 @@ ttheme <- function(base_style = "default", base_size = 11, base_colour = "black"
 #' @rdname ggtexttable
 colnames_style <- function(color = "black", face = "bold", size = 12,
                         fill = "grey80", linewidth = 1, linecolor = "white",
-                        parse = FALSE)
+                        parse = FALSE, ...)
 {
+
   list(
     fg_params = list(parse = parse, col = color,
-                     fontface = face, fontsize = size),
+                     fontface = face, fontsize = size) %>%
+      .add_item(...), # Accept extra parameters
     bg_params = list(fill = fill, lwd = linewidth, col = linecolor))
 }
 
@@ -168,11 +185,12 @@ colnames_style <- function(color = "black", face = "bold", size = 12,
 #' @rdname ggtexttable
 rownames_style <- function(color = "black", face = "italic", size = 12,
                         fill = NA, linewidth = 1, linecolor = "white",
-                        parse = FALSE)
+                        parse = FALSE, ...)
 {
   list(
     fg_params = list(parse = parse, col = color,
-                     fontface = face, fontsize = size, hjust = 1, x = 0.95),
+                     fontface = face, fontsize = size, hjust = 1, x = 0.95) %>%
+      .add_item(...), # Accept extra parameters
     bg_params = list(fill = fill, lwd = linewidth, col = linecolor))
 }
 
@@ -182,11 +200,12 @@ rownames_style <- function(color = "black", face = "italic", size = 12,
 tbody_style <- function(color = "black", face = "plain", size = 12,
                         fill = c("grey95", "grey90"),
                         linewidth = 1, linecolor = "white",
-                        parse = FALSE)
+                        parse = FALSE, ...)
 {
   list(
     fg_params = list(parse = parse, col = color,
-                     fontface = face, fontsize = size),
+                     fontface = face, fontsize = size)%>%
+      .add_item(...), # Accept extra parameters
     bg_params = list(fill = fill, lwd = linewidth, col = linecolor))
 }
 

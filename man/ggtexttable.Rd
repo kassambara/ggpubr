@@ -17,14 +17,15 @@ ttheme(base_style = "default", base_size = 11, base_colour = "black",
   tbody.style = tbody_style(size = base_size))
 
 colnames_style(color = "black", face = "bold", size = 12,
-  fill = "grey80", linewidth = 1, linecolor = "white", parse = FALSE)
+  fill = "grey80", linewidth = 1, linecolor = "white", parse = FALSE,
+  ...)
 
 rownames_style(color = "black", face = "italic", size = 12, fill = NA,
-  linewidth = 1, linecolor = "white", parse = FALSE)
+  linewidth = 1, linecolor = "white", parse = FALSE, ...)
 
 tbody_style(color = "black", face = "plain", size = 12,
   fill = c("grey95", "grey90"), linewidth = 1, linecolor = "white",
-  parse = FALSE)
+  parse = FALSE, ...)
 }
 \arguments{
 \item{x}{a \code{data.frame} or \code{matrix}.}
@@ -39,7 +40,9 @@ tbody_style(color = "black", face = "plain", size = 12,
 parameters of the table theme. Allowed values include one of \code{ttheme()}
 and \code{ttheme_clean()}.}
 
-\item{...}{further arguments to control the gtable}
+\item{...}{extra parameters for text justification, e.g.: hjust and x. Default
+is "centre" for the body and header, and "right" for the row names. Left
+justification: \code{hjust = 0, x = 0.1}. Right justification: \code{hjust = 1, x = 0.9}.}
 
 \item{base_style}{charcter string the table style/theme. The available themes
 are illustrated in the
@@ -123,6 +126,18 @@ ggtexttable(df,
            theme = ttheme(
              colnames.style = colnames_style(fill = "white"),
              tbody.style = tbody_style(fill = get_palette("RdBu", 6))
+           )
+)
+
+# Text justification
+#::::::::::::::::::::::::::::::::::::::::::::::
+# Default is "centre" for the body and header, and "right" for the row names.
+# Left justification: hjust=0, x=0.1
+# Right justification: hjust=1, x=0.9
+ggtexttable(head(iris), rows = NULL,
+           theme = ttheme(
+             colnames.style = colnames_style(color = "white", fill = "#8cc257"),
+             tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"), hjust=1, x=0.9)
            )
 )
 
