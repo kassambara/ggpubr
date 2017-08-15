@@ -28,6 +28,7 @@ NULL
 #'   "euclid").
 #' @param ellipse.alpha Alpha for ellipse specifying the transparency level of
 #'   fill color. Use alpha = 0 for no fill color.
+#' @param ellipse.border.remove logical value. If TRUE, remove ellipse border lines.
 #' @param mean.point logical value. If TRUE, group mean points are added to the
 #'   plot.
 #' @param mean.point.size numeric value specifying the size of mean points.
@@ -138,6 +139,7 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
                       conf.int = FALSE, conf.int.level = 0.95, fullrange = FALSE,
                       ellipse = FALSE, ellipse.level = 0.95,
                       ellipse.type = "norm", ellipse.alpha = 0.1,
+                      ellipse.border.remove = FALSE,
                       mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2*size, size),
                       star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
                       label = NULL,  font.label = c(12, "plain"), font.family = "",
@@ -160,6 +162,7 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
     conf.int = conf.int, conf.int.level = conf.int.level, fullrange = fullrange,
     ellipse = ellipse, ellipse.level = ellipse.level,
     ellipse.type = ellipse.type, ellipse.alpha = ellipse.alpha,
+    ellipse.border.remove = ellipse.border.remove,
     mean.point = mean.point, mean.point.size = mean.point.size,
     star.plot = star.plot, star.plot.lty = star.plot.lty, star.plot.lwd = star.plot.lwd,
     label = label, font.label = font.label, font.family = font.family,
@@ -205,6 +208,7 @@ ggscatter_core <- function(data, x, y,
                       conf.int = FALSE, conf.int.level = 0.95, fullrange = FALSE,
                       ellipse = FALSE, ellipse.level = 0.95,
                       ellipse.type = "norm", ellipse.alpha = 0.1,
+                      ellipse.border.remove = FALSE,
                       mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2*size, size),
                       star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
                       label = NULL,  font.label = c(12, "plain"), font.family = "",
@@ -288,13 +292,16 @@ ggscatter_core <- function(data, x, y,
     }
 
     if (ellipse.type == 'convex')
-      p <- p + .convex_ellipse(data, x, y, grp_name, color, fill, ellipse.alpha)
+      p <- p + .convex_ellipse(data, x, y, grp_name, color, fill, ellipse.alpha,
+                               ellipse.border.remove = ellipse.border.remove)
     else if(ellipse.type == "confidence")
       p <- p + .confidence_ellipse(data, x, y, grp_name, color, fill,
-                                   alpha = ellipse.alpha, level = ellipse.level)
+                                   alpha = ellipse.alpha, level = ellipse.level,
+                                   ellipse.border.remove = ellipse.border.remove)
      else if (ellipse.type %in% c('t', 'norm', 'euclid'))
        p <- p + .stat_ellipse(data, x, y, grp_name, color = color, fill = fill,
-                              alpha = ellipse.alpha, type = ellipse.type, level = ellipse.level)
+                              alpha = ellipse.alpha, type = ellipse.type, level = ellipse.level,
+                              ellipse.border.remove = ellipse.border.remove)
   }
   # /ellipse
 
@@ -379,20 +386,25 @@ ggscatter_core <- function(data, x, y,
 # data a data frame
 # x,y: x and y variables
 # grp_name: grp variable
-.convex_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray", alpha = 0.1){
-  grp_levels <- levels(data[, grp_name])
+.convex_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray", alpha = 0.1,
+                            ellipse.border.remove = FALSE ){
 
+  grp_levels <- levels(data[, grp_name])
   if(length(grp_levels) == 1) .geom_exec(geomfunc = stat_chull, data = data,
                                          color = color, fill = fill, alpha = alpha,
                                          geom = "polygon")
-  else .geom_exec(geomfunc = stat_chull, data = data,
-                  color = grp_name, fill = grp_name, alpha = alpha,
+  else {
+    if( ellipse.border.remove) color <- NULL
+    else color = grp_name
+    .geom_exec(geomfunc = stat_chull, data = data,
+                  color = color, fill = grp_name, alpha = alpha,
                   geom = "polygon")
+  }
 }
 
 # Confidence ellipse
 .confidence_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray",
-                                alpha = 0.1, level = 0.95){
+                                alpha = 0.1, level = 0.95, ellipse.border.remove = FALSE){
   grp_levels <- levels(data[, grp_name])
   if(length(grp_levels) == 1) {
     mapping <- aes_string(x = x, y = y)
@@ -402,6 +414,7 @@ ggscatter_core <- function(data, x, y,
   }
   else {
     mapping = aes_string(x = x, y = y, colour = grp_name, fill = grp_name)
+    if(ellipse.border.remove ) mapping = aes_string(x = x, y = y,  fill = grp_name)
     stat_conf_ellipse(mapping = mapping, data = data,
                           level = level, alpha = alpha,
                           geom = 'polygon')
@@ -412,7 +425,7 @@ ggscatter_core <- function(data, x, y,
 
 # Add ggplot2 stat ellipse
 .stat_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray",
-                          alpha = 0.1, type = "norm", level = 0.95)
+                          alpha = 0.1, type = "norm", level = 0.95, ellipse.border.remove = FALSE)
   {
   grp_levels <- levels(data[, grp_name])
   if(length(grp_levels) == 1){
@@ -424,6 +437,7 @@ ggscatter_core <- function(data, x, y,
   }
   else{
   mapping = aes_string(x = x, y = y, colour = grp_name, group = grp_name, fill = grp_name)
+  if(ellipse.border.remove) mapping = aes_string(x = x, y = y, colour = NULL, group = grp_name, fill = grp_name)
   ggplot2::stat_ellipse(mapping = mapping, data = data,
                        level = level, type = type, alpha = alpha,
                        geom = 'polygon')

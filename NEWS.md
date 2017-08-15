@@ -7,6 +7,15 @@
   
 ## Minor changes
 
+- New argument `ellipse.border.remove` in `ggscatter()` to remove ellipse border lines.
+   
+```r
+ggscatter(mtcars, x = "mpg", y = "wt", 
+          color = "cyl",
+          ellipse = TRUE, mean.point = TRUE, 
+          ellipse.border.remove = TRUE)
+```
+
 - In `ggscatter`(), the argument `mean.point` now reacts to fill color.
 - Support for text justification added in `ggtexttable()` ([@cj-wilson, #15](https://github.com/kassambara/ggpubr/issues/18))
 
