@@ -7,6 +7,7 @@
   
 ## Minor changes
 
+- In `ggscatter`(), the argument `mean.point` now reacts to fill color.
 - Support for text justification added in `ggtexttable()` ([@cj-wilson, #15](https://github.com/kassambara/ggpubr/issues/18))
 
 - The function `ggpie()`can now display japanese texts. New argument `font.family` in `ggpie`() and in `ggpar()` ([@tomochan001, #15](https://github.com/kassambara/ggpubr/issues/15)).

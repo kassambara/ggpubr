@@ -302,7 +302,7 @@ ggscatter_core <- function(data, x, y,
   # +++++++++
   if(mean.point) {
     p <- p + .geom_exec(stat_mean, data = data,
-                        color = color, shape = shape,
+                        color = color, shape = shape, fill = fill,
                         size = mean.point.size)
   }
 
