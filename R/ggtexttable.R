@@ -83,10 +83,12 @@ NULL
 #'# Default is "centre" for the body and header, and "right" for the row names.
 #'# Left justification: hjust=0, x=0.1
 #'# Right justification: hjust=1, x=0.9
+#'tbody.style = tbody_style(color = "black",
+#'    fill = c("#e8f3de", "#d3e8bb"), hjust=1, x=0.9)
 #'ggtexttable(head(iris), rows = NULL,
 #'            theme = ttheme(
 #'              colnames.style = colnames_style(color = "white", fill = "#8cc257"),
-#'              tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"), hjust=1, x=0.9)
+#'              tbody.style = tbody.style
 #'            )
 #')
 #'
