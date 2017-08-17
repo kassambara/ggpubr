@@ -40,14 +40,16 @@ NULL
 #'   c("top", "bottom", "left", "right", "none"). To remove the legend use
 #'   legend = "none". Legend position can be also specified using a numeric
 #'   vector c(x, y); see details section.
-#' @param legend.title legend title.
+#' @param legend.title legend title, e.g.: \code{legend.title = "Species"}. Can
+#'   be also a list, \code{legend.title = list(color = "Species", linetype = "Species",
+#'   shape = "Species")}.
 #' @param font.legend legend text font style; e.g.: font.legend = c(10, "plain",
 #'   "black").
 #' @param ticks logical value. Default is TRUE. If FALSE, hide axis tick marks.
 #' @param tickslab logical value. Default is TRUE. If FALSE, hide axis tick
 #'   labels.
-#' @param font.tickslab,font.xtickslab,font.ytickslab Font style (size, face, color) for tick labels, e.g.:
-#'   c(14, "bold", "red").
+#' @param font.tickslab,font.xtickslab,font.ytickslab Font style (size, face,
+#'   color) for tick labels, e.g.: c(14, "bold", "red").
 #' @param x.text.angle,y.text.angle Numeric value specifying the rotation angle
 #'   of x and y axis tick labels, respectively. Default value is NULL. For
 #'   vertical x axis texts use x.text.angle = 90.

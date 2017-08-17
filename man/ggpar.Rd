@@ -72,7 +72,9 @@ c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none". Legend position can be also specified using a numeric
 vector c(x, y); see details section.}
 
-\item{legend.title}{legend title.}
+\item{legend.title}{legend title, e.g.: \code{legend.title = "Species"}. Can
+be also a list, \code{legend.title = list(color = "Species", linetype = "Species",
+shape = "Species")}.}
 
 \item{font.legend}{legend text font style; e.g.: font.legend = c(10, "plain",
 "black").}
@@ -82,8 +84,8 @@ vector c(x, y); see details section.}
 \item{tickslab}{logical value. Default is TRUE. If FALSE, hide axis tick
 labels.}
 
-\item{font.tickslab, font.xtickslab, font.ytickslab}{Font style (size, face, color) for tick labels, e.g.:
-c(14, "bold", "red").}
+\item{font.tickslab, font.xtickslab, font.ytickslab}{Font style (size, face,
+color) for tick labels, e.g.: c(14, "bold", "red").}
 
 \item{x.text.angle, y.text.angle}{Numeric value specifying the rotation angle
 of x and y axis tick labels, respectively. Default value is NULL. For

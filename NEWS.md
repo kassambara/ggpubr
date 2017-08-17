@@ -7,6 +7,8 @@
   
 ## Minor changes
 
+- In `ggpar()`, now `legend.title` can be either a character vector, e.g.: legend.title = "Species" or a list, `legend.title = list(color = "Species", linetype = "Species", shape = "Species")`.
+
 - New argument `ellipse.border.remove` in `ggscatter()` to remove ellipse border lines.
    
 ```r
