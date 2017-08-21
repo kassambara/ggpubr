@@ -77,8 +77,9 @@
     
 
     <pre><span class='fu'>ggpie</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lab.pos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"out"</span>, <span class='st'>"in"</span>), <span class='kw'>lab.adjust</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>lab.font</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='st'>"bold"</span>, <span class='st'>"black"</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>lab.font</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='st'>"bold"</span>, <span class='st'>"black"</span>), <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -99,6 +100,8 @@ are &quot;out&quot; (for outside) or &quot;in&quot; (for inside).</dd>
 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and the
 color (e.g.: &quot;red&quot;) of label font. For example <em>lab.font= c(4, &quot;bold&quot;,
 &quot;red&quot;)</em>.</dd>
+      <dt>font.family</dt>
+      <dd>character vector specifying font family.</dd>
       <dt>color, fill</dt>
       <dd>outline and fill colors.</dd>
       <dt>palette</dt>

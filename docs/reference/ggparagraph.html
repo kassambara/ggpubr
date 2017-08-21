@@ -79,7 +79,10 @@
     
 
     <pre><span class='fu'>ggparagraph</span>(<span class='no'>text</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lineheight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>lineheight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='co'># S3 method for splitText</span>
+<span class='fu'>drawDetails</span>(<span class='no'>x</span>, <span class='no'>recording</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -96,6 +99,11 @@
       <dd>font family</dd>
       <dt>lineheight</dt>
       <dd>Line height, example: lineheight = 2.</dd>
+      <dt>x</dt>
+      <dd>a grid grob</dd>
+      <dt>recording</dt>
+      <dd>a logical value indicating whether a grob is being added to
+the display list or redrawn from the display list.</dd>
       <dt>...</dt>
       <dd>other arguments passed to <a href='http://www.rdocumentation.org/packages/grid/topics/grid.grob'>grob</a>.</dd>
     </dl>

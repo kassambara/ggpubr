@@ -80,11 +80,11 @@
   <span class='kw'>submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>font.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>,
-  <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
-  <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.xtickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>,
+  <span class='kw'>font.subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>,
+  <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.xtickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>,
   <span class='kw'>font.ytickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>, <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>y.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='no'>x.text.angle</span>,
   <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='no'>y.text.angle</span>, <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -129,6 +129,8 @@ font.x = &quot;bold&quot;, to change only font face.</dd>
       <dt>font.title, font.subtitle</dt>
       <dd>alias of font.submain and font.submain,
 respectively.</dd>
+      <dt>font.family</dt>
+      <dd>character vector specifying font family.</dd>
       <dt>xlim, ylim</dt>
       <dd>a numeric vector of length 2, specifying  x and y axis
 limits (minimum and maximum), respectively. e.g.: ylim = c(0, 50).</dd>
@@ -144,7 +146,9 @@ c(&quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;, &quo
 legend = &quot;none&quot;. Legend position can be also specified using a numeric
 vector c(x, y); see details section.</dd>
       <dt>legend.title</dt>
-      <dd>legend title.</dd>
+      <dd>legend title, e.g.: <code>legend.title = &quot;Species&quot;</code>. Can
+be also a list, <code>legend.title = list(color = &quot;Species&quot;, linetype = &quot;Species&quot;,
+shape = &quot;Species&quot;)</code>.</dd>
       <dt>font.legend</dt>
       <dd>legend text font style; e.g.: font.legend = c(10, &quot;plain&quot;,
 &quot;black&quot;).</dd>
@@ -154,8 +158,8 @@ vector c(x, y); see details section.</dd>
       <dd>logical value. Default is TRUE. If FALSE, hide axis tick
 labels.</dd>
       <dt>font.tickslab, font.xtickslab, font.ytickslab</dt>
-      <dd>Font style (size, face, color) for tick labels, e.g.:
-c(14, &quot;bold&quot;, &quot;red&quot;).</dd>
+      <dd>Font style (size, face,
+color) for tick labels, e.g.: c(14, &quot;bold&quot;, &quot;red&quot;).</dd>
       <dt>x.text.angle, y.text.angle</dt>
       <dd>Numeric value specifying the rotation angle
 of x and y axis tick labels, respectively. Default value is NULL. For

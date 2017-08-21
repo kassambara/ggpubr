@@ -74,6 +74,42 @@
     </div>
 
     <div class="contents">
+    <div id="ggpubr-0-1-5" class="section level1">
+<h1 class="hasAnchor">
+<a href="#ggpubr-0-1-5" class="anchor"> </a>ggpubr 0.1.5</h1>
+<div id="minor-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes" class="anchor"> </a>Minor changes</h2>
+<ul>
+<li><p>In <code><a href="../reference/ggpar.html">ggpar()</a></code>, now <code>legend.title</code> can be either a character vector, e.g.: legend.title = “Species” or a list, <code>legend.title = list(color = "Species", linetype = "Species", shape = "Species")</code>.</p></li>
+<li><p>New argument <code>ellipse.border.remove</code> in <code><a href="../reference/ggscatter.html">ggscatter()</a></code> to remove ellipse border lines.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ggscatter.html">ggscatter</a></span>(mtcars, <span class="dt">x =</span> <span class="st">"mpg"</span>, <span class="dt">y =</span> <span class="st">"wt"</span>, 
+          <span class="dt">color =</span> <span class="st">"cyl"</span>,
+          <span class="dt">ellipse =</span> <span class="ot">TRUE</span>, <span class="dt">mean.point =</span> <span class="ot">TRUE</span>, 
+          <span class="dt">ellipse.border.remove =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<ul>
+<li>In <code>ggscatter</code>(), the argument <code>mean.point</code> now reacts to fill color.</li>
+<li><p>Support for text justification added in <code><a href="../reference/ggtexttable.html">ggtexttable()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/18">@cj-wilson, #15</a>)</p></li>
+<li><p>The function <code><a href="../reference/ggpie.html">ggpie()</a></code> can now display japanese texts. New argument <code>font.family</code> in <code>ggpie</code>() and in <code><a href="../reference/ggpar.html">ggpar()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/15">@tomochan001, #15</a>).</p></li>
+<li><p>Using time on x axis works know with <code><a href="../reference/ggline.html">ggline()</a></code> and <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/17">@jcpsantiago, #15</a>).</p></li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"> </a>Bug fixes</h2>
+<ul>
+<li>
+<code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> now reacts to <code>hide.ns</code> properly.</li>
+<li>
+<code><a href="../reference/ggparagraph.html">drawDetails.splitText()</a></code> exported so that the function <code><a href="../reference/ggparagraph.html">ggparagraph()</a></code> works properly.</li>
+<li>Now, ggpubr functions accept expression for label text</li>
+<li>In <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code>, now labels correspond to the true size of bars (<a href="https://github.com/kassambara/ggpubr/issues/15">@tdelhomme, #15</a>).</li>
+<li>
+<code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> now keep the default order of factor levels (<a href="https://github.com/kassambara/ggpubr/issues/12">@RoKant, #12</a>).</li>
+</ul>
+</div>
+</div>
     <div id="ggpubr-0-1-4" class="section level1">
 <h1 class="hasAnchor">
 <a href="#ggpubr-0-1-4" class="anchor"> </a>ggpubr 0.1.4</h1>
@@ -107,9 +143,9 @@
 <li>New theme function <code><a href="../reference/theme_transparent.html">theme_transparent()</a></code> to create a ggplot with transparent background.</li>
 </ul>
 </div>
-<div id="minor-changes" class="section level2">
+<div id="minor-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes" class="anchor"> </a>Minor changes</h2>
+<a href="#minor-changes-1" class="anchor"> </a>Minor changes</h2>
 <ul>
 <li>In <code><a href="../reference/gghistogram.html">gghistogram()</a></code>, density curve and rug react to the fill color.</li>
 <li>
@@ -169,7 +205,7 @@
 <li>
 <code><a href="../reference/grids.html">grids()</a></code> to add grid lines.</li>
 <li>
-<code><a href="../reference/xscale.html">xscale()</a></code> and <code><a href="../reference/xscale.html">yscale()</a></code> to change axis scale.</li>
+<code><a href="../reference/axis_scale.html">xscale()</a></code> and <code><a href="../reference/axis_scale.html">yscale()</a></code> to change axis scale.</li>
 </ul>
 </li>
 <li>New helper functions:
@@ -219,9 +255,9 @@
 </li>
 </ul>
 </div>
-<div id="minor-changes-1" class="section level2">
+<div id="minor-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-1" class="anchor"> </a>Minor changes</h2>
+<a href="#minor-changes-2" class="anchor"> </a>Minor changes</h2>
 <ul>
 <li>Now, the argument <code>palette</code> Can be also a numeric vector of length(groups); in this case a basic color palette is created using the function <code>grDevices::palette()</code>.</li>
 </ul>
@@ -246,9 +282,9 @@
 <li>New function <code><a href="../reference/theme_pubr.html">theme_classic2()</a></code> added. Classic theme with axis lines.</li>
 </ul>
 </div>
-<div id="minor-changes-3" class="section level2">
+<div id="minor-changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-3" class="anchor"> </a>Minor changes</h2>
+<a href="#minor-changes-4" class="anchor"> </a>Minor changes</h2>
 <ul>
 <li>
 <code><a href="../reference/ggboxplot.html">ggboxplot()</a></code>, <code><a href="../reference/ggviolin.html">ggviolin()</a></code>, <code><a href="../reference/ggdotplot.html">ggdotplot()</a></code>, <code><a href="../reference/ggstripchart.html">ggstripchart()</a></code>, <code><a href="../reference/gghistogram.html">gghistogram()</a></code>, <code><a href="../reference/ggdensity.html">ggdensity()</a></code>, <code><a href="../reference/ggecdf.html">ggecdf()</a></code> and <code><a href="../reference/ggqqplot.html">ggqqplot()</a></code> can now handle one single numeric vector.</li>
@@ -341,6 +377,7 @@ ggboxplot(iris$Sepal.Length)</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#ggpubr-0-1-5">0.1.5</a></li>
         <li><a href="#ggpubr-0-1-4">0.1.4</a></li>
         <li><a href="#ggpubr-0-1-3">0.1.3</a></li>
         <li><a href="#ggpubr-0-1-1">0.1.1</a></li>

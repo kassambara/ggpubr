@@ -32,6 +32,8 @@ Distribution
 
 ``` r
 library(ggpubr)
+#> Loading required package: ggplot2
+#> Loading required package: magrittr
 # Create some data format
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
 set.seed(1234)

@@ -83,7 +83,7 @@
   <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"reg.line"</span>, <span class='st'>"loess"</span>), <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
   <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>fullrange</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ellipse.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ellipse.type</span> <span class='kw'>=</span> <span class='st'>"norm"</span>,
-  <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>ellipse.border.remove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>mean.point.size</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='fu'>is.numeric</span>(<span class='no'>size</span>), <span class='fl'>2</span> * <span class='no'>size</span>, <span class='no'>size</span>),
   <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>), <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>,
@@ -167,12 +167,30 @@ data. Used only when add != &quot;none&quot;.</dd>
 probability.</dd>
       <dt>ellipse.type</dt>
       <dd>Character specifying frame type. Possible values are
-&#39;convex&#39;, &#39;confidence&#39; or types supported by
-<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_ellipse'>stat_ellipse</a></code> including one of c(&quot;t&quot;, &quot;norm&quot;,
-&quot;euclid&quot;).</dd>
+ <code>&quot;convex&quot;</code>, <code>&quot;confidence&quot;</code> or types supported by
+ <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_ellipse'>stat_ellipse</a>()</code> including one of <code>c(&quot;t&quot;, &quot;norm&quot;,
+ &quot;euclid&quot;)</code> for plotting concentration ellipses.
+
+ <ul>
+<li> <code>&quot;convex&quot;</code>: plot convex hull of a set o points. </li>
+<li>
+ <code>&quot;confidence&quot;</code>: plot confidence ellipses arround group mean points as
+ <code><a href='http://www.rdocumentation.org/packages/FactoMineR/topics/coord.ellipse'>coord.ellipse</a>()</code>[in FactoMineR]. </li>
+<li> <code>&quot;t&quot;</code>:
+ assumes a multivariate t-distribution. </li>
+<li> <code>&quot;norm&quot;</code>: assumes a
+ multivariate normal distribution. </li>
+<li> <code>&quot;euclid&quot;</code>: draws a circle with
+ the radius equal to level, representing the euclidean distance from the
+ center. This ellipse probably won&#39;t appear circular unless
+ <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/coord_fixed'>coord_fixed</a>()</code> is applied.</li>
+</ul>
+</dd>
       <dt>ellipse.alpha</dt>
       <dd>Alpha for ellipse specifying the transparency level of
 fill color. Use alpha = 0 for no fill color.</dd>
+      <dt>ellipse.border.remove</dt>
+      <dd>logical value. If TRUE, remove ellipse border lines.</dd>
       <dt>mean.point</dt>
       <dd>logical value. If TRUE, group mean points are added to the
 plot.</dd>

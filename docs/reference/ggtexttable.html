@@ -92,14 +92,15 @@
   <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>base_size</span>))
 
 <span class='fu'>colnames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"grey80"</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"grey80"</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>)
 
 <span class='fu'>rownames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"italic"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>tbody_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"grey95"</span>, <span class='st'>"grey90"</span>), <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -116,11 +117,13 @@
 parameters of the table theme. Allowed values include one of <code>ttheme()</code>
 and <code>ttheme_clean()</code>.</dd>
       <dt>...</dt>
-      <dd>further arguments to control the gtable</dd>
+      <dd>extra parameters for text justification, e.g.: hjust and x. Default
+is &quot;centre&quot; for the body and header, and &quot;right&quot; for the row names. Left
+justification: <code>hjust = 0, x = 0.1</code>. Right justification: <code>hjust = 1, x = 0.9</code>.</dd>
       <dt>base_style</dt>
       <dd>charcter string the table style/theme. The available themes
 are illustrated in the
-<a href = 'http://www.sthda.com/english/rpkgs/ggpubr/files/ggtexttable-theme.pdf'>ggtexttable-theme.pdf</a>
+<a href = 'ggtexttable-theme.pdf'>http://www.sthda.com/english/rpkgs/ggpubr/files/ggtexttable-theme.pdf</a>
  file. Allowed values include one of <code>c(&quot;default&quot;, &quot;blank&quot;, &quot;classic&quot;,
 &quot;minimal&quot;, &quot;light&quot;, &quot;lBlack&quot;, &quot;lBlue&quot;, &quot;lRed&quot;, &quot;lGreen&quot;, &quot;lViolet&quot;, &quot;lCyan&quot;,
 &quot;lOrange&quot;, &quot;lBlackWhite&quot;, &quot;lBlueWhite&quot;, &quot;lRedWhite&quot;, &quot;lGreenWhite&quot;,
@@ -193,6 +196,19 @@ values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot
              <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='get_palette.html'>get_palette</a></span>(<span class='st'>"RdBu"</span>, <span class='fl'>6</span>))
            )
 )</div><img src='ggtexttable-14.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Text justification</span>
+<span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='co'># Default is "centre" for the body and header, and "right" for the row names.</span>
+<span class='co'># Left justification: hjust=0, x=0.1</span>
+<span class='co'># Right justification: hjust=1, x=0.9</span>
+<span class='no'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+   <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"#e8f3de"</span>, <span class='st'>"#d3e8bb"</span>), <span class='kw'>hjust</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>x</span><span class='kw'>=</span><span class='fl'>0.9</span>)
+<span class='fu'>ggtexttable</span>(<span class='fu'>head</span>(<span class='no'>iris</span>), <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+           <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(
+             <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"#8cc257"</span>),
+             <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='no'>tbody.style</span>
+           )
+)</div><img src='ggtexttable-16.png' alt='' width='540' height='400' /><div class='input'>
 <span class='co'># Combine density plot and summary table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Density plot of "Sepal.Length"</span>
@@ -210,7 +226,7 @@ values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot
 <span class='co'># Arrange the plots on the same page</span>
 <span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>density.p</span>, <span class='no'>stable.p</span>,
          <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><img src='ggtexttable-16.png' alt='' width='540' height='400' /><div class='input'>
+         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><img src='ggtexttable-18.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
