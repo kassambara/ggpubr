@@ -1,9 +1,4 @@
-# ggpubr 0.1.4.999
-
-## New features
-  
-  
-## Major changes
+# ggpubr 0.1.5
   
 ## Minor changes
 
@@ -21,7 +16,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 - In `ggscatter`(), the argument `mean.point` now reacts to fill color.
 - Support for text justification added in `ggtexttable()` ([@cj-wilson, #15](https://github.com/kassambara/ggpubr/issues/18))
 
-- The function `ggpie()`can now display japanese texts. New argument `font.family` in `ggpie`() and in `ggpar()` ([@tomochan001, #15](https://github.com/kassambara/ggpubr/issues/15)).
+- The function `ggpie()` can now display japanese texts. New argument `font.family` in `ggpie`() and in `ggpar()` ([@tomochan001, #15](https://github.com/kassambara/ggpubr/issues/15)).
 
 - Using time on x axis works know with `ggline()` and `ggbarplot()` ([@jcpsantiago, #15](https://github.com/kassambara/ggpubr/issues/17)).
 
