@@ -82,10 +82,10 @@ ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 
   lab.pos <- match.arg(lab.pos)
   lab.font <- .parse_font(lab.font)
   # data <- data[order(data[, x]), , drop = FALSE]
-  # if(fill %in% colnames(data)) {
-  #   fill_d <- as.vector(data[, fill])
-  #   data[, fill] <- factor(fill_d, levels = rev(fill_d))
-  # }
+  if(fill %in% colnames(data)) {
+    fill_d <- dplyr::pull(data, fill)
+    data[, fill] <- factor(fill_d, levels = rev(fill_d))
+  }
 
   if(is.null(lab.font)) lab.font <- list(size = 5, face = "bold", color = "black")
 
