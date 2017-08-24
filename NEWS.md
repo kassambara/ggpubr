@@ -8,6 +8,8 @@
 
 ## Bug fixes
 
+- Now, the p.values are displayed correctly when ref.group is not the first group ([@sehufnkjesktgna, #15](https://github.com/kassambara/ggpubr/issues/27)).
+ 
 # ggpubr 0.1.5
   
 ## Minor changes
