@@ -212,6 +212,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     res <- res %>% dplyr::filter(group1 == ref.group | group2 == ref.group)
     # ref.group should be always in group1 column
     # swap group1 and group2 if group2 contains ref.group
+    group2 <- res$group2
     res <- transform(res,
                     group1 = ifelse(group2 == ref.group, group2, group1),
                     group2 = ifelse(group2 == ref.group, group1, group2))
