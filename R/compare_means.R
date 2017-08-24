@@ -209,9 +209,13 @@ compare_means <- function(formula, data, method = "wilcox.test",
   if(!is.null(ref.group)){
     group.levs <- .select_vec(data, group) %>% .levels()
     group1 <- NULL
-    res <- res %>% dplyr::filter(group1 == ref.group)
+    res <- res %>% dplyr::filter(group1 == ref.group | group2 == ref.group)
+    # ref.group should be always in group1 column
+    # swap group1 and group2 if group2 contains ref.group
+    res <- transform(res,
+                    group1 = ifelse(group2 == ref.group, group2, group1),
+                    group2 = ifelse(group2 == ref.group, group1, group2))
   }
-
   # Formatting and adjusting pvalues, and adding significance symbols
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::
   symnum.args$x <- res$p
