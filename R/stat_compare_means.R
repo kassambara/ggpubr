@@ -108,8 +108,9 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     color <- ifelse(is.null(pms$color), "black", pms$color)
 
     map_signif_level <- FALSE
+    if(is.null(label)) label <- "p.format"
 
-    if(.is_p.signif_in_mapping(mapping) | !.is_empty(label %in% "p.signif"))
+    if(.is_p.signif_in_mapping(mapping) | (label %in% "p.signif"))
       {
       map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, " "=1)
       if(hide.ns) map_signif_level[5] <- c(" "=1)
