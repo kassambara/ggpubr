@@ -13,7 +13,8 @@ NULL
 #'@param hide.ns logical value. If TRUE, hide ns symbol when displaying
 #'  significance levels.
 #'@param label character string specifying label type. Allowed values include
-#'  "p.signif" (shows the significance levels), "p.format" (shows the formatted p value).
+#'  "p.signif" (shows the significance levels), "p.format" (shows the formatted
+#'  p value).
 #'@param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the correlation coefficient and the p.value.
 #'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -24,6 +25,10 @@ NULL
 #'  allowed values include: i) one of c('right', 'left', 'center', 'centre',
 #'  'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
 #'  'middle') for y-axis.}
+#'@param tip.length numeric vector with the fraction of total height that the
+#'  bar goes down to indicate the precise column. Default is 0.03. Can be of
+#'  same length as the number of comparisons to adjust specifically the tip
+#'  lenth of each comparison. For example tip.length = c(0.01, 0.03).
 #'
 #'  If too short they will be recycled.
 #'@param label.x,label.y \code{numeric} Coordinates (in data units) to be used
@@ -90,7 +95,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      method = NULL, paired = FALSE, ref.group = NULL,
                      comparisons = NULL, hide.ns = FALSE, label.sep = ", ",
                      label = NULL, label.x.npc = "left", label.y.npc = "top",
-                     label.x = NULL, label.y = NULL,
+                     label.x = NULL, label.y = NULL, tip.length = 0.03,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
 
@@ -120,7 +125,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     ggsignif::geom_signif(comparisons = comparisons, y_position = label.y,
                           test = method, test.args = test.args,
                           step_increase = step_increase, size = size, color = color,
-                          map_signif_level = map_signif_level)
+                          map_signif_level = map_signif_level, tip_length = tip.length)
   }
 
   else{

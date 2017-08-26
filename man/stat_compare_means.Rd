@@ -7,9 +7,9 @@
 stat_compare_means(mapping = NULL, data = NULL, method = NULL,
   paired = FALSE, ref.group = NULL, comparisons = NULL, hide.ns = FALSE,
   label.sep = ", ", label = NULL, label.x.npc = "left",
-  label.y.npc = "top", label.x = NULL, label.y = NULL, geom = "text",
-  position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, ...)
+  label.y.npc = "top", label.x = NULL, label.y = NULL,
+  tip.length = 0.03, geom = "text", position = "identity",
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link{aes}} or
@@ -55,21 +55,27 @@ significance levels.}
 separate the correlation coefficient and the p.value.}
 
 \item{label}{character string specifying label type. Allowed values include
-"p.signif" (shows the significance levels), "p.format" (shows the formatted p value).}
+"p.signif" (shows the significance levels), "p.format" (shows the formatted
+p value).}
 
 \item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
- vector of the same length as the number of groups and/or panels. If too
- short they will be recycled. \itemize{ \item If \code{numeric}, value should
- be between 0 and 1. Coordinates to be used for positioning the label,
- expressed in "normalized parent coordinates". \item If \code{character},
- allowed values include: i) one of c('right', 'left', 'center', 'centre',
- 'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
- 'middle') for y-axis.}
-
- If too short they will be recycled.}
+vector of the same length as the number of groups and/or panels. If too
+short they will be recycled. \itemize{ \item If \code{numeric}, value should
+be between 0 and 1. Coordinates to be used for positioning the label,
+expressed in "normalized parent coordinates". \item If \code{character},
+allowed values include: i) one of c('right', 'left', 'center', 'centre',
+'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
+'middle') for y-axis.}}
 
 \item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
+
+\item{tip.length}{numeric vector with the fraction of total height that the
+ bar goes down to indicate the precise column. Default is 0.03. Can be of
+ same length as the number of comparisons to adjust specifically the tip
+ lenth of each comparison. For example tip.length = c(0.01, 0.03).
+
+ If too short they will be recycled.}
 
 \item{geom}{The geometric object to use display the data}
 
