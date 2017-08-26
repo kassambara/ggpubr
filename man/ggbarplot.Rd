@@ -11,8 +11,8 @@ ggbarplot(data, x, y, combine = FALSE, merge = FALSE, color = "black",
   remove = NULL, order = NULL, add = "none", add.params = list(),
   error.plot = "errorbar", label = FALSE, lab.col = "black",
   lab.size = 4, lab.pos = c("out", "in"), lab.vjust = NULL,
-  lab.hjust = NULL, sort.val = c("none", "desc", "asc"),
-  sort.by.groups = TRUE, top = Inf, position = position_stack(),
+  lab.hjust = NULL, lab.nb.digits = NULL, sort.val = c("none", "desc",
+  "asc"), sort.by.groups = TRUE, top = Inf, position = position_stack(),
   ggtheme = theme_pubr(), ...)
 }
 \arguments{
@@ -102,6 +102,8 @@ value (e.g.: -0.4) to put labels outside the bars or positive value to put
 labels inside (e.g.: 2).}
 
 \item{lab.hjust}{numeric, horizontal justification of labels.}
+
+\item{lab.nb.digits}{integer indicating the number of decimal places (round) to be used.}
 
 \item{sort.val}{a string specifying whether the value should be sorted.
 Allowed values are "none" (no sorting), "asc" (for ascending) or "desc" (for descending).}

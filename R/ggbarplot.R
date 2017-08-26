@@ -23,6 +23,7 @@ NULL
 #'   value (e.g.: -0.4) to put labels outside the bars or positive value to put
 #'   labels inside (e.g.: 2).
 #' @param lab.hjust numeric, horizontal justification of labels.
+#' @param lab.nb.digits integer indicating the number of decimal places (round) to be used.
 #' @param ... other arguments to be passed to be passed to ggpar().
 #' @details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
@@ -149,6 +150,7 @@ ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       add = "none", add.params = list(), error.plot = "errorbar",
                       label = FALSE, lab.col = "black", lab.size = 4,
                       lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
+                      lab.nb.digits = NULL,
                       sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
                       top = Inf,
                       position = position_stack(),
@@ -169,6 +171,7 @@ ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, lab.col = lab.col, lab.size = lab.size,
     lab.pos = lab.pos, lab.vjust = lab.vjust, lab.hjust = lab.hjust,
+    lab.nb.digits = lab.nb.digits,
     sort.val = sort.val, sort.by.groups = sort.by.groups, top = top,
     position = position, ggtheme = ggtheme, ...)
 
@@ -213,6 +216,7 @@ ggbarplot_core <- function(data, x, y,
                       title = NULL, xlab = NULL, ylab = NULL,
                       label = FALSE, lab.col = "black", lab.size = 4,
                       lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
+                      lab.nb.digits = NULL,
                       select = NULL, order = NULL, facet.by = NULL,
                       sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
                       merge = FALSE,
@@ -321,6 +325,14 @@ ggbarplot_core <- function(data, x, y,
    if(add.label) {
      if(is.null(lab.vjust)) lab.vjust <- ifelse(lab.pos == "out", -0.4, 2 )
      if(is.null(lab.hjust)) lab.hjust <- 0.5
+     if(!is.null(lab.nb.digits)){
+       if(is.numeric(.lab)) .lab <- round(.lab, digits = lab.nb.digits)
+       else if(.lab[1] %in% colnames(data_sum))
+         data_sum[, .lab] <- dplyr::pull(data_sum, .lab) %>%
+           round(digits = lab.nb.digits)
+
+     }
+
       # pos <- "identity"
       # if color or fill by groups
      .cols <- unique(c(color, fill))

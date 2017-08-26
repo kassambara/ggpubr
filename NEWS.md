@@ -2,6 +2,8 @@
 
 ## New features
 
+- New argument `lab.nb.digits` in `ggbarplot()`. Integer indicating the number of decimal places (round) to be used ([#28](https://github.com/kassambara/ggpubr/issues/28)). Example: lab.nb.digits = 2.
+
 ## Major changes
 
 ## Minor changes
