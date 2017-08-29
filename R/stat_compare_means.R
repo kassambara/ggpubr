@@ -117,8 +117,8 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
 
     if(.is_p.signif_in_mapping(mapping) | (label %in% "p.signif"))
       {
-      map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, " "=1)
-      if(hide.ns) map_signif_level[5] <- c(" "=1)
+      map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, "ns"=1)
+      if(hide.ns) names(map_signif_level)[5] <- " "
     }
 
     step_increase <- ifelse(is.null(label.y), 0.12, 0)
