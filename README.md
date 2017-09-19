@@ -339,4 +339,4 @@ Find out more at <http://www.sthda.com/english/rpkgs/ggpubr>.
 Blog posts
 ----------
 
--   A. Kassambara. STHDA Jully 2016. [ggpubr R Package: ggplot2-Based Publication Ready Plots](http://www.sthda.com/english/wiki/ggpubr-r-package-ggplot2-based-publication-ready-plots)
+-   A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
