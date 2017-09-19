@@ -299,7 +299,9 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
 # pairwise test
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-.test_pairwise <- function(data, formula, method = "wilcox.test", ...)
+.test_pairwise <- function(data, formula, method = "wilcox.test",
+                           paired = FALSE, pool.sd = !paired,
+                           ...)
 {
 
   x <- deparse(formula[[2]])
@@ -318,8 +320,16 @@ compare_means <- function(formula, data, method = "wilcox.test",
   test <- match.fun(method)
 
   test.opts <- list(x = .select_vec(data, x),
-                    g = .select_vec(data, group),  ...)
+                    g = .select_vec(data, group),
+                    paired = paired,
+                    ...)
   if(method == "pairwise.wilcox.test") test.opts$exact <- FALSE
+  else if(method == "pairwise.t.test"){
+    if(missing(pool.sd)){
+      if(!paired) pool.sd <- FALSE
+    }
+    test.opts$pool.sd <- pool.sd
+  }
 
   pvalues <- do.call(test, test.opts)$p.value %>%
     as.data.frame()
