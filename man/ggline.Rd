@@ -4,8 +4,8 @@
 \alias{ggline}
 \title{Line plot}
 \usage{
-ggline(data, x, y, group = 1, combine = FALSE, merge = FALSE,
-  color = "black", palette = NULL, linetype = "solid",
+ggline(data, x, y, group = 1, numeric.x.axis = FALSE, combine = FALSE,
+  merge = FALSE, color = "black", palette = NULL, linetype = "solid",
   plot_type = c("b", "l", "p"), size = 0.5, shape = 19,
   point.size = size, point.color = color, title = NULL, xlab = NULL,
   ylab = NULL, facet.by = NULL, panel.labs = NULL,
@@ -23,6 +23,8 @@ ggline(data, x, y, group = 1, combine = FALSE, merge = FALSE,
 \item{group}{grouping variable to connect points by line.
 Allowed values are 1 (for one line, one group) or a character vector specifying
 the name of the grouping variable (case of multiple lines).}
+
+\item{numeric.x.axis}{logical. If TRUE, x axis will be treated as numeric. Default is FALSE.}
 
 \item{combine}{logical value. Default is FALSE. Used only when y is a vector
 containing multiple variables to plot. If TRUE, create a multi-panel plot by

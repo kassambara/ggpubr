@@ -8,6 +8,7 @@ NULL
 #' @param group grouping variable to connect points by line.
 #' Allowed values are 1 (for one line, one group) or a character vector specifying
 #' the name of the grouping variable (case of multiple lines).
+#' @param numeric.x.axis logical. If TRUE, x axis will be treated as numeric. Default is FALSE.
 #' @param color line colors.
 #' @param linetype line type.
 #' @param plot_type plot type. Allowed values are one of "b" for both line and point;
@@ -117,6 +118,7 @@ NULL
 #'
 #' @export
 ggline<- function(data, x, y, group = 1,
+                  numeric.x.axis = FALSE,
                   combine = FALSE, merge = FALSE,
                   color = "black", palette = NULL,
                   linetype = "solid",
@@ -139,7 +141,7 @@ ggline<- function(data, x, y, group = 1,
   # Default options
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
-    group = group,
+    group = group, numeric.x.axis = numeric.x.axis,
     combine = combine, merge = merge,
     color = color, palette = palette,
     linetype = linetype, plot_type = plot_type,
@@ -177,6 +179,7 @@ ggline<- function(data, x, y, group = 1,
 
 
 ggline_core <- function(data, x, y, group = 1,
+                  numeric.x.axis = FALSE,
                   color = "black", fill = "white", palette = NULL,
                   linetype = "solid",
                   plot_type = c("b", "l", "p"),
@@ -195,8 +198,9 @@ ggline_core <- function(data, x, y, group = 1,
                       ...)
 {
   xx <- .select_vec(data, x)
-  if(inherits(xx, c("character", "numeric")))
+  if(inherits(xx, c("character", "numeric")) & !numeric.x.axis)
     data[, x] <- .select_vec(data, x) %>% as.factor()
+
   error.plot = error.plot[1]
   plot_type <- match.arg(plot_type)
   if("none" %in% add) add <- "none"
@@ -222,7 +226,7 @@ ggline_core <- function(data, x, y, group = 1,
     add <- setdiff(add, .center)
     names(data_sum)[which(names(data_sum) == .center)] <- y
     # data_sum[, x] <- as.factor(data_sum[, x])
-    if(inherits(xx, c("character", "numeric")))
+    if(inherits(xx, c("character", "numeric")) & !numeric.x.axis)
       data_sum[, x] <- .select_vec(data_sum, x) %>% as.factor()
   }
   else data_sum <- data

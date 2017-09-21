@@ -1,6 +1,8 @@
 # ggpubr 0.1.5.999
 
 ## New features
+   
+- New argument `numeric.x.axis` in `ggline()`. logical. If TRUE, x axis will be treated as numeric. Default is FALSE. ([@mdphan, #35](https://github.com/kassambara/ggpubr/issues/35))
 
 - New argument `lab.nb.digits` in `ggbarplot()`. Integer indicating the number of decimal places (round) to be used ([#28](https://github.com/kassambara/ggpubr/issues/28)). Example: lab.nb.digits = 2.
 
