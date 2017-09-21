@@ -6,6 +6,8 @@
 \alias{colnames_style}
 \alias{rownames_style}
 \alias{tbody_style}
+\alias{table_cell_font}
+\alias{table_cell_bg}
 \title{Draw a Textual Table}
 \usage{
 ggtexttable(x, rows = rownames(x), cols = colnames(x), vp = NULL,
@@ -26,6 +28,11 @@ rownames_style(color = "black", face = "italic", size = 12, fill = NA,
 tbody_style(color = "black", face = "plain", size = 12,
   fill = c("grey95", "grey90"), linewidth = 1, linecolor = "white",
   parse = FALSE, ...)
+
+table_cell_font(tab, row, column, face = NULL, size = NULL)
+
+table_cell_bg(tab, row, column, fill = NULL, color = NULL,
+  linewidth = NULL)
 }
 \arguments{
 \item{x}{a \code{data.frame} or \code{matrix}.}
@@ -81,6 +88,10 @@ values for face include c("plain", "bold", "italic", "bold.italic").}
 \item{linewidth, linecolor}{line width and color, respectively.}
 
 \item{parse}{logical, default behaviour for parsing text as plotmath}
+
+\item{tab}{an object of class ggtexttable.}
+
+\item{row, column}{an integer specifying the row and the column numbers for the cell of interest.}
 }
 \value{
 an object of class ggplot.
@@ -89,7 +100,10 @@ an object of class ggplot.
 Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
  a textual table. \item \code{ttheme()}: customize table theme. \item
  \code{rownames_style(), colnames_style(), tbody_style()}: helper functions
- to customize the table row names, column names and body. }
+ to customize the table row names, column names and body.
+ \item \code{table_cell_font()}: access to a table cell for changing the text font (size and face).
+ \item \code{table_cell_bg()}: access to a table cell for changing the background (fill, color, linewidth).
+  }
 }
 \examples{
 # data
@@ -142,6 +156,18 @@ ggtexttable(head(iris), rows = NULL,
              tbody.style = tbody.style
            )
 )
+
+# Access and modify the font and
+# the background of table cells
+# :::::::::::::::::::::::::::::::::::::::::::::
+tab <- ggtexttable(head(iris), rows = NULL,
+                  theme = ttheme("classic"))
+tab <- table_cell_font(tab, row = 3, column = 2,
+                      face = "bold")
+tab <- table_cell_bg(tab, row = 4, column = 3, linewidth = 5,
+                    fill="darkolivegreen1", color = "darkolivegreen4")
+tab
+
 
 # Combine density plot and summary table
 #:::::::::::::::::::::::::::::::::::::

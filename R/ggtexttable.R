@@ -5,7 +5,10 @@ NULL
 #'@description Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
 #'  a textual table. \item \code{ttheme()}: customize table theme. \item
 #'  \code{rownames_style(), colnames_style(), tbody_style()}: helper functions
-#'  to customize the table row names, column names and body. }
+#'  to customize the table row names, column names and body.
+#'  \item \code{table_cell_font()}: access to a table cell for changing the text font (size and face).
+#'  \item \code{table_cell_bg()}: access to a table cell for changing the background (fill, color, linewidth).
+#'   }
 #'@inheritParams gridExtra::tableGrob
 #'@param x a \code{data.frame} or \code{matrix}.
 #'@param theme a list, as returned by the function \code{ttheme()}, defining the
@@ -92,6 +95,18 @@ NULL
 #'            )
 #')
 #'
+#'# Access and modify the font and
+#'# the background of table cells
+#'# :::::::::::::::::::::::::::::::::::::::::::::
+#'tab <- ggtexttable(head(iris), rows = NULL,
+#'                   theme = ttheme("classic"))
+#'tab <- table_cell_font(tab, row = 3, column = 2,
+#'                       face = "bold")
+#'tab <- table_cell_bg(tab, row = 4, column = 3, linewidth = 5,
+#'                     fill="darkolivegreen1", color = "darkolivegreen4")
+#'tab
+#'
+#'
 #' # Combine density plot and summary table
 #'#:::::::::::::::::::::::::::::::::::::
 #'# Density plot of "Sepal.Length"
@@ -119,20 +134,20 @@ ggtexttable <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL,
   style <- attr(theme, "style")
 
   if(style == "minimal"){
-    res <- minimalTableGrob(x, rows = rows, cols = cols, vp = vp, ...) %>%
-      as_ggplot()
+    res <- minimalTableGrob(x, rows = rows, cols = cols, vp = vp, ...)
   }
   else if(style == "light"){
-    res <- lightTableGrob(x, rows = rows, cols = cols, vp = vp, ...) %>%
-      as_ggplot()
+    res <- lightTableGrob(x, rows = rows, cols = cols, vp = vp, ...)
   }
   else
   {
     res <- gridExtra::tableGrob(x, rows = rows, cols = cols, vp = vp,
-                                theme = theme, ...) %>%
-      as_ggplot()
+                                theme = theme, ...)
   }
 
+  .grob <- res
+  res <- as_ggplot(res)
+  attr(res, "ggtexttableGrob") <- .grob
   return(res)
 }
 
@@ -209,6 +224,40 @@ tbody_style <- function(color = "black", face = "plain", size = 12,
                      fontface = face, fontsize = size)%>%
       .add_item(...), # Accept extra parameters
     bg_params = list(fill = fill, lwd = linewidth, col = linecolor))
+}
+
+
+#' @export
+#' @rdname ggtexttable
+#' @param tab an object of class ggtexttable.
+#' @param row,column an integer specifying the row and the column numbers for the cell of interest.
+table_cell_font <- function(tab, row, column, face = NULL, size = NULL)
+{
+  tabGrob <- attr(tab, "ggtexttableGrob")
+  tc <- .find_cell(tabGrob, row, column, "core-fg")
+  tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(fontface = face, fontsize = size)
+
+  res <-as_ggplot(tabGrob)
+  attr(res, "ggtexttableGrob") <- tabGrob
+  res
+}
+
+#' @export
+#' @rdname ggtexttable
+table_cell_bg <- function(tab, row, column, fill = NULL, color = NULL, linewidth = NULL)
+{
+  tabGrob <- attr(tab, "ggtexttableGrob")
+  tc <- .find_cell(tabGrob, row, column, "core-bg")
+  tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(fill = fill, col = color, lwd = linewidth)
+
+  res <- as_ggplot(tabGrob)
+  attr(res, "ggtexttableGrob") <- tabGrob
+  res
+}
+
+.find_cell <- function(tab, row, column, name="core-fg"){
+  l <- tab$layout
+  which(l$t==row & l$l==column & l$name==name)
 }
 
 
@@ -518,7 +567,7 @@ tstyle <- function(pal, size = 12){
 }
 
 
-rgb(71, 125, 192, maxColorValue=255)
+
 
 
 
