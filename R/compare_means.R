@@ -29,8 +29,8 @@ NULL
 #'  grouping variable levels is compared to all (i.e. basemean).
 #'@param symnum.args a list of arguments to pass to the function
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
-#'  example, \code{symnum.args <- list(list(cutpoints = c(0, 0.0001, 0.001,
-#'  0.01, 0.05, 1), symbols = c("****", "***", "**", "*",  "ns")))}.
+#'  example, \code{symnum.args <- list(cutpoints = c(0, 0.0001, 0.001,
+#'  0.01, 0.05, 1), symbols = c("****", "***", "**", "*",  "ns"))}.
 #'
 #'  In other words, we use the following convention for symbols indicating
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item

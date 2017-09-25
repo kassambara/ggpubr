@@ -96,6 +96,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      comparisons = NULL, hide.ns = FALSE, label.sep = ", ",
                      label = NULL, label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, tip.length = 0.03,
+                     symnum.args = list(),
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
 
@@ -136,6 +137,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
       params = list(label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
                     label.x = label.x, label.y = label.y, label.sep = label.sep,
                     method = method, paired = paired, ref.group = ref.group,
+                    symnum.args = symnum.args,
                     hide.ns = hide.ns, na.rm = na.rm, ...)
     )
 
@@ -149,6 +151,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                   default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
 
                   compute_panel = function(data, scales, method, paired, ref.group,
+                                           symnum.args,
                                            hide.ns, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep)
                     {
@@ -178,12 +181,14 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                     #::::::::::::::::::::::::::::::::::::::::::::::::::
                     if(.is.multiple.grouping.vars){
                       .test <- compare_means(y~group, data = data, method = method, group.by = "x",
-                                             paired = paired, ref.group = ref.group)
+                                             paired = paired, ref.group = ref.group,
+                                             symnum.args = symnum.args)
 
                     }
                     else{
                       .test <- compare_means(y~x, data = data, method = method,
-                                             paired = paired, ref.group = ref.group)
+                                             paired = paired, ref.group = ref.group,
+                                             symnum.args = symnum.args)
                     }
 
                     pvaltxt <- ifelse(.test$p < 2.2e-16, "p < 2.2e-16",
@@ -194,7 +199,8 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                     #::::::::::::::::::::::::::::::::::::::::::::::::::
                     label.opts <- list(data = data, scales = scales,
                                        label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-                                       label.x = label.x, label.y = label.y, .by = "panel" )
+                                       label.x = label.x, label.y = label.y,
+                                       symnum.args = symnum.args, .by = "panel" )
 
                     if(.is.multiple.grouping.vars){
 
