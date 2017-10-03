@@ -6,7 +6,9 @@
 \usage{
 ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL,
   align = c("none", "h", "v", "hv"), widths = 1, heights = 1,
-  legend = NULL, common.legend = FALSE)
+  legend = NULL, common.legend = FALSE, label_size = 14,
+  label_fontfamily = NULL, label_fontface = "bold", label_colour = NULL,
+  label_x = 0, label_y = 1, hjust = -0.5, vjust = 1.5)
 }
 \arguments{
 \item{...}{list of plots to be arranged into the grid. The plots can be
@@ -37,6 +39,28 @@ legend = "none".}
 
 \item{common.legend}{logical value. Default is FALSE. If TRUE, a common
 unique legend will be created for arranged plots.}
+
+\item{label_size}{(optional) Numerical value indicating the label size. Default is 14.}
+
+\item{label_fontfamily}{(optional) Font family of the plot labels. If not provided, is taken from the current theme.}
+
+\item{label_fontface}{(optional) Font face of the plot labels. Default is "bold".}
+
+\item{label_colour}{(optional) Color of the plot labels. If not provided, is taken from the current theme.}
+
+\item{label_x}{(optional) Single value or vector of x positions for plot labels, relative to each subplot.
+Defaults to 0 for all labels. (Each label is placed all the way to the left of each plot.)}
+
+\item{label_y}{(optional) Single value or vector of y positions for plot labels, relative to each subplot.
+Defaults to 1 for all labels. (Each label is placed all the way to the top of each plot.)}
+
+\item{hjust}{Adjusts the horizontal position of each label. More negative values move the label further
+to the right on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+(one for each label). Default is -0.5.}
+
+\item{vjust}{Adjusts the vertical position of each label. More positive values move the label further
+down on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+(one for each label). Default is 1.5.}
 }
 \value{
 return an object of class \code{ggarrange}, which is a ggplot or a

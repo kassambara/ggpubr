@@ -25,6 +25,20 @@ NULL
 #'   legend = "none".
 #' @param common.legend logical value. Default is FALSE. If TRUE, a common
 #'   unique legend will be created for arranged plots.
+#' @param label_size (optional) Numerical value indicating the label size. Default is 14.
+#' @param label_fontfamily (optional) Font family of the plot labels. If not provided, is taken from the current theme.
+#' @param label_fontface (optional) Font face of the plot labels. Default is "bold".
+#' @param label_colour (optional) Color of the plot labels. If not provided, is taken from the current theme.
+#' @param label_x (optional) Single value or vector of x positions for plot labels, relative to each subplot.
+#'   Defaults to 0 for all labels. (Each label is placed all the way to the left of each plot.)
+#' @param label_y (optional) Single value or vector of y positions for plot labels, relative to each subplot.
+#'   Defaults to 1 for all labels. (Each label is placed all the way to the top of each plot.)
+#' @param hjust Adjusts the horizontal position of each label. More negative values move the label further
+#'   to the right on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+#'   (one for each label). Default is -0.5.
+#' @param vjust Adjusts the vertical position of each label. More positive values move the label further
+#'   down on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+#'   (one for each label). Default is 1.5.
 #' @return return an object of class \code{ggarrange}, which is a ggplot or a
 #'   list of ggplot.
 #' @author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
@@ -57,7 +71,11 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       labels = NULL,
                       align = c("none", "h", "v", "hv"),
                       widths = 1, heights = 1,
-                      legend = NULL, common.legend = FALSE )
+                      legend = NULL, common.legend = FALSE,
+                      label_size = 14, label_fontfamily = NULL,
+                      label_fontface = "bold", label_colour = NULL,
+                      label_x = 0, label_y = 1,
+                      hjust = -0.5, vjust = 1.5)
   {
   align <- match.arg(align)
   plots <- c(list(...), plotlist)
@@ -79,9 +97,13 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   else plots <- list(plots)
 
   res <- purrr::map(plots, .plot_grid,
-              ncol = ncol, nrow = nrow, labels = labels, align = align,
-              rel_widths = widths, rel_heights = heights,
-              legend = legend, common.legend = common.legend)
+                    ncol = ncol, nrow = nrow, labels = labels, align = align,
+                    rel_widths = widths, rel_heights = heights,
+                    legend = legend, common.legend = common.legend,
+                    label_size = label_size, label_fontfamily = label_fontfamily,
+                    label_fontface = label_fontface, label_colour = label_colour,
+                    label_x = label_x, label_y = label_y,
+                    hjust = hjust, vjust = vjust)
 
   if(length(res) == 1) res <- res[[1]]
 
