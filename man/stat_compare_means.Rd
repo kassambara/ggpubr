@@ -5,11 +5,11 @@
 \title{Add Mean Comparison P-values to a ggplot}
 \usage{
 stat_compare_means(mapping = NULL, data = NULL, method = NULL,
-  paired = FALSE, ref.group = NULL, comparisons = NULL, hide.ns = FALSE,
-  label.sep = ", ", label = NULL, label.x.npc = "left",
-  label.y.npc = "top", label.x = NULL, label.y = NULL,
-  tip.length = 0.03, symnum.args = list(), geom = "text",
-  position = "identity", na.rm = FALSE, show.legend = NA,
+  paired = FALSE, method.args = list(), ref.group = NULL,
+  comparisons = NULL, hide.ns = FALSE, label.sep = ", ", label = NULL,
+  label.x.npc = "left", label.y.npc = "top", label.x = NULL,
+  label.y = NULL, tip.length = 0.03, symnum.args = list(),
+  geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...)
 }
 \arguments{
@@ -37,6 +37,10 @@ comparing means.}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
+
+\item{method.args}{a list of additional arguments used for the test method.
+For example one might use \code{method.args = list(alternative = "greater")}
+for wilcoxon test.}
 
 \item{ref.group}{a character string specifying the reference group. If
  specified, for a given grouping variable, each of the group levels will be

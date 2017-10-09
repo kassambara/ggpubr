@@ -2,6 +2,8 @@
 
 ## New features
    
+- New argument `method.args` added to `stat_compare_means()`. A list of additional arguments used for the test method. For example one might use method.args = list(alternative = "greater") for wilcoxon test ([@Nicktz, #41](https://github.com/kassambara/ggpubr/issues/41)).
+
 - New argument `symnum.args` added to `stat_compare_means()`. A list of arguments to pass to the function symnum for symbolic number coding of p-values. For example, `symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05, 1), symbols = c("****", "***", "**", "*", "ns"))`
 
 - New functions `table_cell_font()` and `table_cell_bg()` to easily access and change the text font and the background of `ggtexttable()` cells ([@ProbleMaker, #29](https://github.com/kassambara/ggpubr/issues/29)).
