@@ -16,6 +16,16 @@ NULL
 #' @param labels (optional) list of labels to be added to the plots. You can
 #'   also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
 #'   to auto-generate lower-case labels.
+#' @param font.label a list of arguments for customizing labels. Allowed values
+#'   are the combination of the following elements: size (e.g.: 14), face (e.g.:
+#'   "plain", "bold", "italic", "bold.italic"), color (e.g.: "red") and family.
+#'   For example font.label = list(size = 14, face = "bold", color ="red").
+#' @param label.x (optional) Single value or vector of x positions for plot
+#'   labels, relative to each subplot. Defaults to 0 for all labels. (Each label
+#'   is placed all the way to the left of each plot.)
+#' @param label.y (optional) Single value or vector of y positions for plot
+#'   labels, relative to each subplot. Defaults to 1 for all labels. (Each label
+#'   is placed all the way to the top of each plot.)
 #' @param widths (optional) numerical vector of relative columns widths. For
 #'   example, in a two-column grid, widths = c(2, 1) would make the first column
 #'   twice as wide as the second column.
@@ -54,7 +64,8 @@ NULL
 #'
 #' @export
 ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
-                      labels = NULL,
+                      labels = NULL, label.x = 0, label.y = 1, hjust = -0.5, vjust = 1.5,
+                      font.label = list(size = 14, color = "black", face = "bold", family = NULL),
                       align = c("none", "h", "v", "hv"),
                       widths = 1, heights = 1,
                       legend = NULL, common.legend = FALSE )
@@ -78,10 +89,22 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   # One unique page
   else plots <- list(plots)
 
+  # label arguments
+  .lab <- .update_label_pms(font.label, label.x = label.x, label.y = label.y,
+                            hjust = hjust, vjust = vjust)
+
   res <- purrr::map(plots, .plot_grid,
-              ncol = ncol, nrow = nrow, labels = labels, align = align,
+              ncol = ncol, nrow = nrow, labels = labels,
+              label_size = .lab$size, label_fontfamily = .lab$family,
+              label_fontface = .lab$face, label_colour = .lab$color,
+              label_x = .lab$label.x, label_y = .lab$label.y,
+              hjust = .lab$hjust, vjust = .lab$vjust, align = align,
               rel_widths = widths, rel_heights = heights,
-              legend = legend, common.legend = common.legend)
+              legend = legend, common.legend = common.legend
+              )
+
+
+
 
   if(length(res) == 1) res <- res[[1]]
 
@@ -138,3 +161,24 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   p
 
 }
+
+# update label parameters for cowplot::plot_grid()
+.update_label_pms <- function(font.label,
+                             label.x = 0, label.y = 1, hjust = -0.5, vjust = 1.5)
+  {
+
+  .font <- list(size = 14, color = "black", face = "bold", family = NULL)
+  new.font.names <- names(font.label)
+  for(i in new.font.names) .font[[i]] <- font.label[[i]]
+
+  pms <- .font
+  list(
+    size = pms$size,
+    family = pms$family,
+    face = pms$face,
+    color = pms$color,
+    label.x = label.x, label.y = label.y,
+    hjust = hjust, vjust = vjust
+  )
+}
+

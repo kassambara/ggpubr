@@ -5,6 +5,8 @@
 \title{Arrange Multiple ggplots}
 \usage{
 ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL, labels = NULL,
+  label.x = 0, label.y = 1, hjust = -0.5, vjust = 1.5,
+  font.label = list(size = 14, color = "black", face = "bold", family = NULL),
   align = c("none", "h", "v", "hv"), widths = 1, heights = 1,
   legend = NULL, common.legend = FALSE)
 }
@@ -21,6 +23,27 @@ either ggplot2 plot objects or arbitrary gtables.}
 \item{labels}{(optional) list of labels to be added to the plots. You can
 also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
 to auto-generate lower-case labels.}
+
+\item{label.x}{(optional) Single value or vector of x positions for plot
+labels, relative to each subplot. Defaults to 0 for all labels. (Each label
+is placed all the way to the left of each plot.)}
+
+\item{label.y}{(optional) Single value or vector of y positions for plot
+labels, relative to each subplot. Defaults to 1 for all labels. (Each label
+is placed all the way to the top of each plot.)}
+
+\item{hjust}{Adjusts the horizontal position of each label. More negative values move the label further
+to the right on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+(one for each label). Default is -0.5.}
+
+\item{vjust}{Adjusts the vertical position of each label. More positive values move the label further
+down on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+(one for each label). Default is 1.5.}
+
+\item{font.label}{a list of arguments for customizing labels. Allowed values
+are the combination of the following elements: size (e.g.: 14), face (e.g.:
+"plain", "bold", "italic", "bold.italic"), color (e.g.: "red") and family.
+For example font.label = list(size = 14, face = "bold", color ="red").}
 
 \item{align}{(optional) Specifies whether graphs in the grid should be horizontally ("h") or
 vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".}

@@ -251,6 +251,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
 
                     if(hide.ns){
                       p.signif <- res$p.signif
+                      p.format <- res$p.format
                       p.signif[p.signif == "ns"] <- " "
                       res$p.signif <- p.signif
                     }
