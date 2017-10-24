@@ -17,10 +17,13 @@ show_point_shapes <- function()
     scale_x_continuous(name="") +
     scale_shape_identity() +
     geom_point(data=d, mapping=aes(x=p%%6, y=p%/%6, shape=p), size=5, fill="blue") +
-    geom_text(data=d, mapping=aes(x=p%%6, y=p%/%6+0.25, label=p), size=3)
+    geom_text(data=d, mapping=aes(x=p%%6, y=p%/%6+0.25, label=p), size=3)+
+    scale_y_reverse() +
+    theme(
+      axis.title = element_blank()
+    )
   ggpar(p, ticks = FALSE, tickslab = FALSE,
-        main = "Point shapes available in R")+
-    theme_gray()
+        main = "Point shapes available in R")
 }
 
 
