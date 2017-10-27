@@ -2,6 +2,7 @@
 
 ## New features
    
+- New theme `theme_pubclean()`: a clean theme without axis lines, to direct more attention to the data.
 - New arguments in `ggarrange()` to customize plot labels ([@G-Thomson, #41](https://github.com/kassambara/ggpubr/issues/38)):  
     - font.label
     - label.x and label.y

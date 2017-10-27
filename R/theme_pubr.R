@@ -4,11 +4,11 @@ NULL
 #'Publication ready theme
 #'
 #'@description \itemize{ \item \strong{theme_pubr()}: Create a publication ready
-#'  theme \item \strong{labs_pubr()}: Format only plot labels to a publication
-#'  ready style \item \strong{theme_classic2()}: Create a classic theme with
-#'  axis lines.
-#'  \item \strong{clean_theme()}: Remove axis lines, ticks, texts and titles.
-#'   }
+#'  theme \item \strong{theme_pubclean()}: a clean theme without axis lines, to
+#'  direct more attention to the data.  \item \strong{labs_pubr()}: Format only
+#'  plot labels to a publication ready style \item \strong{theme_classic2()}:
+#'  Create a classic theme with axis lines. \item \strong{clean_theme()}: Remove
+#'  axis lines, ticks, texts and titles. }
 #'@param base_size base font size
 #'@param base_family base font family
 #'@param border logical value. Default is FALSE. If TRUE, add panel border.
@@ -21,8 +21,8 @@ NULL
 #'  the legend box. Their values should be between 0 and 1. c(0,0) corresponds
 #'  to the "bottom left" and c(1,1) corresponds to the "top right" position. For
 #'  instance use legend = c(0.8, 0.2).
-#'@param x.text.angle Rotation angle of x axis tick labels.
-#'  Default value is 0. Use 90 for vertical text.
+#'@param x.text.angle Rotation angle of x axis tick labels. Default value is 0.
+#'  Use 90 for vertical text.
 #' @examples
 #' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'    geom_point(aes(color = gear))
@@ -78,6 +78,31 @@ theme_pubr <- function (base_size = 12, base_family = "",
     .theme <- .theme + theme(axis.text.x = element_text(angle = x.text.angle, hjust = xhjust))
 
   .theme
+}
+
+#' @rdname theme_pubr
+#' @export
+theme_pubclean <- function (base_size = 12, base_family = "", flip = FALSE)
+{
+  res <- theme_grey(base_size = base_size, base_family = base_family) +
+    theme(
+      panel.background = element_rect(fill = "white"),
+      legend.background = element_rect(fill = "white"),
+      legend.position = "top"
+
+    )
+  if(flip){
+    res <- res + theme(
+      panel.grid.major.x = element_line(linetype = "dotted", color = "grey"),
+      axis.line.y = element_line(color = "black")
+    )
+  }
+  else{
+    res <- res + theme(
+      panel.grid.major.y = element_line(linetype = "dotted", color = "grey")
+    )
+  }
+  res
 }
 
 

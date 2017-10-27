@@ -2,6 +2,7 @@
 % Please edit documentation in R/theme_pubr.R
 \name{theme_pubr}
 \alias{theme_pubr}
+\alias{theme_pubclean}
 \alias{labs_pubr}
 \alias{theme_classic2}
 \alias{clean_theme}
@@ -10,6 +11,8 @@
 theme_pubr(base_size = 12, base_family = "", border = FALSE,
   margin = TRUE, legend = c("top", "bottom", "left", "right", "none"),
   x.text.angle = 0)
+
+theme_pubclean(base_size = 12, base_family = "", flip = FALSE)
 
 labs_pubr(base_size = 14, base_family = "")
 
@@ -35,16 +38,16 @@ the legend box. Their values should be between 0 and 1. c(0,0) corresponds
 to the "bottom left" and c(1,1) corresponds to the "top right" position. For
 instance use legend = c(0.8, 0.2).}
 
-\item{x.text.angle}{Rotation angle of x axis tick labels.
-Default value is 0. Use 90 for vertical text.}
+\item{x.text.angle}{Rotation angle of x axis tick labels. Default value is 0.
+Use 90 for vertical text.}
 }
 \description{
 \itemize{ \item \strong{theme_pubr()}: Create a publication ready
- theme \item \strong{labs_pubr()}: Format only plot labels to a publication
- ready style \item \strong{theme_classic2()}: Create a classic theme with
- axis lines.
- \item \strong{clean_theme()}: Remove axis lines, ticks, texts and titles.
-  }
+ theme \item \strong{theme_pubclean()}: a clean theme without axis lines, to
+ direct more attention to the data.  \item \strong{labs_pubr()}: Format only
+ plot labels to a publication ready style \item \strong{theme_classic2()}:
+ Create a classic theme with axis lines. \item \strong{clean_theme()}: Remove
+ axis lines, ticks, texts and titles. }
 }
 \examples{
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
