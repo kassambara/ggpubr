@@ -25,6 +25,9 @@
 
 ## Minor changes
 
+- Now `get_legend()` returns NULL when the plot doesn't have legend.  
+   
+   
 ## Bug fixes
 
 - Now `compare_means()` returns the same p-values as `stat_compare_means()` ([@wydty, #15](https://github.com/kassambara/ggpubr/issues/34)).
