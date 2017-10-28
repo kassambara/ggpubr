@@ -27,6 +27,7 @@ reference:
       - ggscatter
       - stat_cor
       - stat_stars
+      - ggscatterhist
   - title: Plot Paired Data
     desc: Paired data
     contents:

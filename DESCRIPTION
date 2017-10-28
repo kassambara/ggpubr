@@ -83,6 +83,7 @@ Collate:
     'stat_cor.R'
     'stat_stars.R'
     'ggscatter.R'
+    'ggscatterhist.R'
     'ggstripchart.R'
     'ggtext.R'
     'ggtexttable.R'
