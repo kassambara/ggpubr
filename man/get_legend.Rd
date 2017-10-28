@@ -7,7 +7,7 @@
 get_legend(p)
 }
 \arguments{
-\item{p}{an object of class ggplot.}
+\item{p}{an object of class ggplot or a list of ggplots. If p is a list, only the first legend is returned.}
 }
 \value{
 an object of class gtable.
