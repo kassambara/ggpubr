@@ -87,7 +87,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
 
   leg <- NULL
   if(common.legend){
-    leg <- get_legend(plots[[1]])
+    leg <- get_legend(plots)
     plots <- purrr::map(
       plots,
       function(x) {if(!is.null(x)) x + theme(legend.position = "none") else x}
