@@ -18,6 +18,30 @@ NULL
 #' @param legend specify the legend position. Allowed values include: "top", "bottom", "left", "right".
 #' @param ggtheme the theme to be used for the scatter plot. Default is \code{\link{theme_pubr}()}.
 #' @param ... other arguments passed to the function \code{\link{ggscatter}()}.
+#'
+#' @examples
+#' # Basic scatter plot with marginal density plot
+#' ggscatterhist(iris, x = "Sepal.Length", y = "Sepal.Width",
+#'               color = "#00AFBB",
+#'               margin.params = list(fill = "lightgray"))
+#'
+#'
+#' # Grouped data
+#'ggscatterhist(
+#'  iris, x = "Sepal.Length", y = "Sepal.Width",
+#'  color = "Species", size = 3, alpha = 0.6,
+#'  palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+#'  margin.params = list(fill = "Species", color = "black", size = 0.2)
+#')
+#'
+#'# Use boxplot as marginal
+#'ggscatterhist(
+#'  iris, x = "Sepal.Length", y = "Sepal.Width",
+#'  color = "Species", size = 3, alpha = 0.6,
+#'  palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+#'  margin.plot = "boxplot",
+#'  ggtheme = theme_bw()
+#')
 #' @export
 ggscatterhist <- function(
   data, x, y, group = NULL,
