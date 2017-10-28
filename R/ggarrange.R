@@ -70,8 +70,9 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       widths = 1, heights = 1,
                       legend = NULL, common.legend = FALSE )
   {
-  align <- match.arg(align)
+
   plots <- c(list(...), plotlist)
+  align <- match.arg(align)
   nb.plots <- length(plots)
   nb.plots.per.page <- .nbplots_per_page(ncol, nrow)
 
@@ -79,7 +80,19 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
     legend <- "top"
   legend <- .check_legend(legend)
   if(!is.null(legend))
-    plots <- purrr::map(plots, function(x) x + theme(legend.position = legend))
+    plots <- purrr::map(
+      plots,
+      function(x) {if(!is.null(x)) x + theme(legend.position = legend) else x}
+      )
+
+  leg <- NULL
+  if(common.legend){
+    leg <- get_legend(plots[[1]])
+    plots <- purrr::map(
+      plots,
+      function(x) {if(!is.null(x)) x + theme(legend.position = "none") else x}
+    )
+  }
 
   # Split plots over multiple pages
   if(nb.plots > nb.plots.per.page){
@@ -100,7 +113,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
               label_x = .lab$label.x, label_y = .lab$label.y,
               hjust = .lab$hjust, vjust = .lab$vjust, align = align,
               rel_widths = widths, rel_heights = heights,
-              legend = legend, common.legend = common.legend
+              legend = legend, common.legend.grob = leg
               )
 
 
@@ -128,19 +141,16 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
 }
 
 
-.plot_grid <- function(plotlist, legend = "top", common.legend = FALSE,  ... ){
+.plot_grid <- function(plotlist, legend = "top", common.legend.grob = NULL,  ... ){
 
-
-  if(common.legend){
-    # Legend infos
-    leg <- get_legend(plotlist[[1]])
-    lheight <- sum(leg$height)
-    lwidth <- sum(leg$width)
-    plotlist <- purrr::map(plotlist, function(x) x + theme(legend.position = "none"))
-  }
 
   res <- cowplot::plot_grid(plotlist = plotlist, ...)
-  if(!common.legend) return(res)
+  if(is.null(common.legend.grob)) return(res)
+  else {
+    leg <- common.legend.grob
+    lheight <- sum(leg$height)
+    lwidth <- sum(leg$width)
+  }
 
   arrangeGrob <- gridExtra::arrangeGrob
   unit.c <- grid::unit.c
