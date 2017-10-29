@@ -342,9 +342,11 @@ ggbarplot_core <- function(data, x, y,
        data_sum <- data_sum %>%
          dplyr::arrange_(.dots = list(x, paste0("desc(", color.var, ")")))
 
+       group <- intersect(.cols, names(data))[1]# You should specify group for dodging text
+
        p <- p + geom_exec(geom_text, data = data_sum, label = .lab,  #fill = lab.fill
                            vjust = lab.vjust, hjust = lab.hjust, size = lab.size, color = lab.col,
-                           fontface = "plain", position = position)
+                           fontface = "plain", position = position, group = group)
      }
      else{
 
@@ -353,7 +355,6 @@ ggbarplot_core <- function(data, x, y,
                          fontface = "plain", position = position)
      }
    }
-
    # To do
    # top10, visualizing error
    p <- ggpar(p, palette = palette, ggtheme = ggtheme,
