@@ -13,7 +13,7 @@ ggdotchart(data, x, y, group = NULL, combine = FALSE, color = "black",
   short.panel.labs = TRUE, select = NULL, remove = NULL, order = NULL,
   label = NULL, font.label = list(size = 11, color = "black"),
   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  ggtheme = theme_pubr(), ...)
+  position = "identity", ggtheme = theme_pubr(), ...)
 
 theme_cleveland(rotate = TRUE)
 }
@@ -55,7 +55,8 @@ error bars). Allowed values are one or the combination of: "none",
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
-\item{x.text.col}{logical. If TRUE (default), x axis texts are colored by groups.}
+\item{x.text.col}{logical. If TRUE (default), x axis texts are colored by
+groups.}
 
 \item{rotate}{logical value. If TRUE, rotate the graph by setting the plot
 orientation to horizontal.}
@@ -109,6 +110,9 @@ text labels or not.}
 
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
+
+\item{position}{Position adjustment, either as a string, or the result of a
+call to a position adjustment function.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

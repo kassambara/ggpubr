@@ -16,7 +16,10 @@ NULL
 #'   order. Allowed values are one of "descending" and "ascending". Partial
 #'   match are allowed (e.g. sorting = "desc" or "asc"). Default is
 #'   "descending".
-#' @param x.text.col logical. If TRUE (default), x axis texts are colored by groups.
+#' @param x.text.col logical. If TRUE (default), x axis texts are colored by
+#'   groups.
+#' @param position Position adjustment, either as a string, or the result of a
+#'   call to a position adjustment function.
 #' @param ... other arguments to be passed to \code{\link[ggplot2]{geom_point}}
 #'   and \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -63,6 +66,7 @@ ggdotchart <- function(data, x, y, group = NULL,
                        select = NULL, remove = NULL, order = NULL,
                        label = NULL, font.label = list(size = 11, color = "black"),
                        label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                       position = "identity",
                        ggtheme = theme_pubr(),
                        ...){
 
@@ -78,7 +82,8 @@ ggdotchart <- function(data, x, y, group = NULL,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
+    repel = repel, label.rectangle = label.rectangle,
+    position = position, ggtheme = ggtheme, ...)
 
   # User options
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -152,8 +157,12 @@ ggdotchart_core <- function(data, x, y, group = NULL,
                           size = size, position = position)
 
     mapping <- seg.opts$mapping %>%
-      .add_item(y = 0, x = x, yend = y, xend = x)
+      .add_item(x = x, ymin = 0, ymax = y)
     option <- seg.opts$option
+
+    # mapping <- seg.opts$mapping %>%
+    #   .add_item(y = 0, x = x, yend = y, xend = x)
+    # option <- seg.opts$option
 
     seg.col <- "lightgray"
     if(!is.null(add.params$color))
@@ -175,7 +184,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
     #   option$size <- add.params$size
 
     option[["mapping"]] <- do.call(aes_string, mapping)
-    p <- p + do.call(geom_segment, option)
+    p <- p + do.call(geom_linerange, option)
   }
 
 
