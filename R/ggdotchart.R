@@ -113,6 +113,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
                        rotate = FALSE,
                        title = NULL, xlab = NULL, ylab = NULL,
                        ggtheme = theme_bw(),
+                       position = "identity",
                        ...)
 {
   add <- match.arg(add)
@@ -147,18 +148,31 @@ ggdotchart_core <- function(data, x, y, group = NULL,
   p <- ggplot(data, aes_string(x = x, y =y))
 
   if(add == "segments"){
-    seg.opts <- geom_exec(data = data, color = color, size = size)
+    seg.opts <- geom_exec(data = data, color = color,
+                          size = size, position = position)
 
     mapping <- seg.opts$mapping %>%
       .add_item(y = 0, x = x, yend = y, xend = x)
     option <- seg.opts$option
 
+    seg.col <- "lightgray"
     if(!is.null(add.params$color))
-      option$color <- add.params$color
+      seg.col <- add.params$color
     else if(!is.null(add.params$colour))
-      option$color <- add.params$colour
+      seg.col <- add.params$colour
+    if(seg.col %in% names(data)) mapping$color <- seg.col
+    else option$color <- seg.col
+
+
     if(!is.null(add.params$size))
       option$size <- add.params$size
+
+    # if(!is.null(add.params$color))
+    #   option$color <- add.params$color
+    # else if(!is.null(add.params$colour))
+    #   option$color <- add.params$colour
+    # if(!is.null(add.params$size))
+    #   option$size <- add.params$size
 
     option[["mapping"]] <- do.call(aes_string, mapping)
     p <- p + do.call(geom_segment, option)
@@ -166,7 +180,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
 
 
   p <- p + geom_exec(geom_point, data = data, shape = shape,
-                      color = color, size = dot.size)
+                      color = color, size = dot.size, position = position)
 
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, x.text.angle = x.text.angle,
