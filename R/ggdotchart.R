@@ -122,11 +122,15 @@ ggdotchart_core <- function(data, x, y, group = NULL,
                        ...)
 {
   add <- match.arg(add)
-
   if(!is.null(group)){
     if(group == 1)
       group <- NULL
   }
+
+  if(is.null(group) & color[1] %in% names(data)){
+    group <- color[1]
+  }
+
 
   .dots <- list(...)
   sorting <- match.arg(sorting)
@@ -157,7 +161,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
                           size = size, position = position)
 
     mapping <- seg.opts$mapping %>%
-      .add_item(x = x, ymin = 0, ymax = y)
+      .add_item(x = x, ymin = 0, ymax = y, group = group)
     option <- seg.opts$option
 
     # mapping <- seg.opts$mapping %>%
