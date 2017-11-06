@@ -60,6 +60,7 @@ Collate:
     'get_palette.R'
     'ggadd.R'
     'ggarrange.R'
+    'ggballoonplot.R'
     'ggpar.R'
     'ggbarplot.R'
     'ggboxplot.R'

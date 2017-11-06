@@ -2,6 +2,8 @@
 
 ## New features
    
+- New function `ggballoonplot()` added to visualize a contingency table.
+
 - `ggdotchart()` can be now used to plot multiple groups with `position = position_dodge()` [@ManuelSpinola, #45](https://github.com/kassambara/ggpubr/issues/45).
 
 - New function `ggscatterhist()` to create a scatter plot with marginal histograms, density plots and box plots.
