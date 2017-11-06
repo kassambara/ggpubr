@@ -72,7 +72,87 @@ NULL
 #'
 #'
 #'@export
-ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 0,
+ggpie <- function(
+  data, x, label = x, lab.pos = c("out", "in"), lab.adjust = 0,
+  lab.font = c(4, "bold", "black"), font.family = "",
+  color = "black", fill = "white", palette = NULL,
+  size = NULL, ggtheme = theme_pubr(), ...
+  )
+  {
+
+  lab.pos <- match.arg(lab.pos)
+  lab.font <- .parse_font(lab.font) %>%
+    .check_pie_labfont()
+
+  # We should order the data in desc order. Because,
+  # in stacked bar plot the order of factor levels are reversed
+  # Very important to have the label in the right place
+  group.vars <- intersect(c(fill, color), names(data))
+  if(length(group.vars) != 0){
+    group.val <- dplyr::pull(data, group.vars[1])
+    data <- data %>% dplyr::arrange(dplyr::desc(group.val))
+  }
+
+  # Label y coordinates when placed inside slices
+  .x <- dplyr::pull(data, x)
+  data <- data %>%
+    dplyr::mutate(
+      .lab.ypos. = cumsum(.x) -0.5*.x -lab.adjust
+    )
+
+  if(length(label) > 1 & length(label) != nrow(data))
+    stop("label should be of the same length as data")
+  else if(length(label) > 1){
+    # 1. Add label column
+      data <- data %>%
+        dplyr::mutate(.label. = label)
+      label <- ".label."
+  }
+
+  p <- ggplot(data, aes_string(x = "1", y = x)) +
+    geom_exec(
+      geom_bar, data,  stat = "identity",
+      fill = fill, color = color, size = size
+      )
+
+  p <- ggpar(
+    p, palette = palette,
+    ggtheme = ggtheme,
+    font.family = font.family, ...
+    ) +
+    coord_polar(
+      theta = "y", start = 0
+      ) +
+    ggtheme + .remove_axis()
+
+  # Annotate pie slice
+  #:::::::::::::::::::::::::::::::::::
+  if(!is.null(label)){
+    # Label each slice at the middle of the slice
+    if(lab.pos == "out"){
+      p <- p + scale_y_continuous(
+        breaks = cumsum(.x) - .x/2,
+        labels = dplyr::pull(data, label)
+      )
+    }
+    # Compute the cumulative sum as label ypos
+    if(lab.pos == "in"){
+     p <- p + geom_text(
+       aes_string(y = ".lab.ypos.", label = label),
+       size = lab.font$size, fontface = lab.font$face,
+       colour = lab.font$color, family = font.family
+      )+
+       clean_theme()
+    }
+
+  }
+
+  p
+}
+
+
+# Old version
+ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 0,
                   lab.font = c(4, "bold", "black"), font.family = "",
                       color = "black", fill = "white", palette = NULL,
                       size = NULL, ggtheme = theme_classic(),
@@ -81,6 +161,7 @@ ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 
 
   lab.pos <- match.arg(lab.pos)
   lab.font <- .parse_font(lab.font)
+
   # data <- data[order(data[, x]), , drop = FALSE]
   if(fill %in% colnames(data)) {
     fill_d <- dplyr::pull(data, fill)
@@ -139,3 +220,23 @@ ggpie <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust = 
   p
 }
 
+
+# Remove axis elements
+.remove_axis <- function(){
+  theme(
+    axis.title = element_blank(),
+    axis.text.y = element_blank(),
+    axis.line = element_blank(),
+    # panel.border = element_blank(),
+    # panel.grid=element_blank(),
+    axis.ticks = element_blank()
+  )
+}
+
+# Check labels font
+.check_pie_labfont <- function(lab.font){
+  lab.font$size <- ifelse(is.null(lab.font$size), 3.9, lab.font$size)
+  lab.font$color <- ifelse(is.null(lab.font$color), "black", lab.font$color)
+  lab.font$face <- ifelse(is.null(lab.font$ace), "plain", lab.font$face)
+  lab.font
+}
