@@ -66,6 +66,10 @@ Plot a graphical matrix where each cell contains a dot whose
   to visualize contingency table formed by two categorical variables.
 }
 \examples{
+# Define color palette
+my_cols <- c("#0D0887FF", "#6A00A8FF", "#B12A90FF",
+"#E16462FF", "#FCA636FF", "#F0F921FF")
+
 # Standard contingency table
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Read a contingency table: housetasks
@@ -85,7 +89,7 @@ ggballoonplot(data, color = "#0073C2FF", fill = "#0073C2FF")
 
 # Change color according to the value of table cells
 ggballoonplot(data, fill = "value")+
-  scale_fill_viridis_c(option = "C")
+   scale_fill_gradientn(colors = my_cols)
 
 # Change the plotting symbol shape
 ggballoonplot(data, fill = "value",  shape = 23)+
@@ -113,7 +117,7 @@ car_data
 
 ggballoonplot(car_data, x = "Car", y = "Color",
               size = "Value", fill = "Value") +
-  scale_fill_viridis_c(option = "D") +
+   scale_fill_gradientn(colors = my_cols) +
   guides(size = FALSE)
 
 
@@ -128,7 +132,7 @@ ggballoonplot(
  facet.by = c("Survived", "Age"),
  ggtheme = theme_bw()
 )+
- scale_fill_viridis_c(option = "C")
+  scale_fill_gradientn(colors = my_cols)
 
 # Hair and Eye Color of Statistics Students
 data(HairEyeColor)
