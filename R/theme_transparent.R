@@ -20,11 +20,16 @@ NULL
 #'@export
 theme_transparent <- function (base_size = 12, base_family = "")
 {
-   theme_void(base_size = base_size, base_family = base_family)+
+   theme_classic(base_size = base_size, base_family = base_family) +
     theme(
       panel.background = element_rect(fill = "transparent", colour = NA),
       plot.background = element_rect(fill = "transparent", colour = NA),
       legend.background = element_rect(fill = "transparent", colour = NA),
-      legend.box.background = element_rect(fill = "transparent", colour = NA)
+      legend.box.background = element_rect(fill = "transparent", colour = NA),
+      axis.line = element_blank(),
+      axis.title = element_blank(),
+      plot.title = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank()
     )
 }
