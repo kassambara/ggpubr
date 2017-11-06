@@ -41,6 +41,9 @@ reference:
       - ggtexttable
       - ggparagraph
       - text_grob
+  - title: Contingency table
+    contents:
+      - ggballoonplot
   - title: Genomics
     desc: Plotting data obtained from genomic data analyses.
     contents:
