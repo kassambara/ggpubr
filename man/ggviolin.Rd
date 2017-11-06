@@ -12,7 +12,8 @@ ggviolin(data, x, y, combine = FALSE, merge = FALSE, color = "black",
   remove = NULL, order = NULL, add = "mean_se", add.params = list(),
   error.plot = "pointrange", label = NULL, font.label = list(size = 11,
   color = "black"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, ggtheme = theme_pubr(), ...)
+  label.rectangle = FALSE, position = position_dodge(0.8),
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -120,6 +121,9 @@ text labels or not.}
 
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
+
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

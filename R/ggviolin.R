@@ -94,7 +94,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      error.plot = "pointrange",
                      label = NULL, font.label = list(size = 11, color = "black"),
                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-                     ggtheme = theme_pubr(),
+                     position = position_dodge(0.8), ggtheme = theme_pubr(),
                      ...)
 {
   # Default options
@@ -108,7 +108,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
+    repel = repel, label.rectangle = label.rectangle, position = position, ggtheme = ggtheme, ...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
   if(!missing(y)) .opts$y <- y
@@ -145,6 +145,7 @@ ggviolin_core <- function(data, x, y,
                       add = "mean_se", add.params = list(),
                       error.plot = "pointrange",
                       ggtheme = theme_pubr(),
+                      position = position_dodge(0.8),
                      ...)
 {
 
@@ -156,13 +157,13 @@ ggviolin_core <- function(data, x, y,
       geom_exec(geom_violin, data = data,
                 color = color, fill = fill, linetype = linetype,
                 trim = trim, size = size, width = width,
-                position = position_dodge(0.8), draw_quantiles = draw_quantiles,
+                position = position, draw_quantiles = draw_quantiles,
                 stat = pms$stat, scale = pms$scale)
 
   # Add
   #+++++++++++++++++++
    add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
-     .add_item(p = p, add = add, error.plot = error.plot)
+     .add_item(p = p, add = add, error.plot = error.plot, position = position)
    p <- do.call(ggadd, add.params) %>%
      ggpar(palette = palette, ggtheme = ggtheme,
            title = title, xlab = xlab, ylab = ylab,...)
