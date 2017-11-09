@@ -130,7 +130,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     ggsignif::geom_signif(comparisons = comparisons, y_position = label.y,
                           test = method, test.args = method.args,
                           step_increase = step_increase, size = size, color = color,
-                          map_signif_level = map_signif_level, tip_length = tip.length)
+                          map_signif_level = map_signif_level, tip_length = tip.length, ...)
   }
 
   else{
