@@ -63,7 +63,7 @@ ggscatterhist <- function(
     warning("Install the latest developmental version of cowplot on github ",
             "to fully use all the feature of ggscatterhist",
             .call = FALSE)
-    margin.space = TRUE
+    # margin.space = TRUE
   }
 
   margin.plot <- match.arg(margin.plot)
@@ -93,6 +93,7 @@ ggscatterhist <- function(
     ...
   )
 
+  # Type of graphics to be added in the margins
   geomfunc <- switch (margin.plot,
                       histogram = geom_histogram,
                       density = geom_density,
@@ -100,6 +101,8 @@ ggscatterhist <- function(
                       geom_histogram
   )
 
+  # Define the x and the y variables depending on
+  # the geometry used in margins
   if(margin.plot %in% c("density", "histogram")){
     xplot.x <- x
     xplot.y <- NULL
@@ -118,7 +121,7 @@ ggscatterhist <- function(
     yplot.y <- y
   }
 
-
+  # Create the different marginal plot
   xplot <- ggplot() + margin.params %>%
     .add_item(geomfunc = geomfunc, data = data,
               x = xplot.x, y = xplot.y, alpha = 0.7) %>%
@@ -172,8 +175,10 @@ ggscatterhist <- function(
   }
   else{
 
-    fig <- cowplot::insert_xaxis_grob(sp, xplot, grid::unit(margin.plot.size/5, "null"), position = "top")
-    fig <- cowplot::insert_yaxis_grob(fig, yplot, grid::unit(margin.plot.size/5, "null"), position = "right")
+    # fig <- cowplot::insert_xaxis_grob(sp, xplot, grid::unit(margin.plot.size/5, "null"), position = "top")
+    # fig <- cowplot::insert_yaxis_grob(fig, yplot, grid::unit(margin.plot.size/5, "null"), position = "right")
+    fig <- .insert_xaxis_grob(sp, xplot, grid::unit(margin.plot.size/5, "null"), position = "top")
+    fig <- .insert_yaxis_grob(fig, yplot, grid::unit(margin.plot.size/5, "null"), position = "right")
     fig <- cowplot::ggdraw(fig)
   }
 
@@ -211,4 +216,78 @@ has_cowplot_v0.9 <- function(){
   }
   if(is.null(params$linetype)) params$linetype <- linetype
   params
+}
+
+# Helper functions to insert marginal plots
+#::::::::::::::::::::::::::::::::::::::::::::::::::::
+# Use cowplot::insert_xaxis_grob and cowplot::insert_yaxis_grob,
+# when 0.9 stable version released
+
+.insert_xaxis_grob <- function (
+  plot, grob, height = grid::unit(0.2, "null"),
+  position = c("top",  "bottom")
+)
+  {
+
+  if(inherits(grob, "ggplot"))
+    grob <- .get_panel(grob)
+
+    gt <- .plot_to_gtable(plot)
+    pp <- gt$layout[gt$layout$name == "panel", ]
+
+    if (position[1] == "top") {
+    g <- gtable::gtable_add_rows(gt, height, pp$t - 1)
+    g <- gtable::gtable_add_grob(
+      g, grob, pp$t, pp$l, pp$t,
+      pp$r, clip = "inherit", name = "xaxis-grob-t"
+      )
+    }
+  else {
+    g <- gtable::gtable_add_rows(gt, height, pp$b)
+    g <- gtable::gtable_add_grob(
+      g, grob, pp$b + 1, pp$l,
+      pp$b + 1, pp$r, clip = "inherit", name = "xaxis-grob-b"
+      )
+  }
+}
+
+.insert_yaxis_grob <- function (
+  plot, grob, width = grid::unit(0.2, "null"),
+  position = c("right", "left"))
+{
+
+  if(inherits(grob, "ggplot"))
+    grob <- .get_panel(grob)
+
+  gt <- .plot_to_gtable(plot)
+  pp <- gt$layout[gt$layout$name == "panel", ]
+
+  if (position[1] == "right") {
+    g <- gtable::gtable_add_cols(gt, width, pp$r)
+    g <- gtable::gtable_add_grob(
+      g, grob, pp$t, pp$r + 1,
+      pp$b, pp$r + 1, clip = "inherit", name = "yaxis-grob-r"
+      )
+  }
+  else {
+    g <- gtable::gtable_add_cols(gt, width, pp$l - 1)
+    g <- gtable::gtable_add_grob(
+      g, grob, pp$t, pp$l, pp$b,
+      pp$l, clip = "inherit", name = "yaxis-grob-l"
+      )
+  }
+}
+
+
+.plot_to_gtable <- function (plot) {
+  if(inherits(plot, "gtable"))
+    return(plot)
+  else
+    ggplot2::ggplotGrob(plot)
+}
+
+.get_panel <- function (plot) {
+  gt <- .plot_to_gtable(plot)
+  panelIndex <- which(gt$layout$name == "panel")
+  panel <- gt$grobs[[panelIndex]]
 }
