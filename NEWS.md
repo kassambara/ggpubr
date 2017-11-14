@@ -1,4 +1,4 @@
-# ggpubr 0.1.5.999
+# ggpubr 0.1.6
 
 ## New features
    
@@ -7,7 +7,9 @@
 - `ggdotchart()` can be now used to plot multiple groups with `position = position_dodge()` [@ManuelSpinola, #45](https://github.com/kassambara/ggpubr/issues/45).
 
 - New function `ggscatterhist()` to create a scatter plot with marginal histograms, density plots and box plots.
+
 - New theme `theme_pubclean()`: a clean theme without axis lines, to direct more attention to the data.
+
 - New arguments in `ggarrange()` to customize plot labels ([@G-Thomson, #41](https://github.com/kassambara/ggpubr/issues/38)):  
     - font.label
     - label.x and label.y
@@ -25,8 +27,6 @@
 
 - New argument `tip.length` in `stat_compare_means()`. Numeric vector with the fraction of total height that the bar goes down to indicate the precise column. Default is 0.03. Can be of same length as the number of comparisons to adjust specifically the tip lenth of each comparison. For example tip.length = c(0.01, 0.03).
    
-   
-## Major changes
 
 ## Minor changes
 

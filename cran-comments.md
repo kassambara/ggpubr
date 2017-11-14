@@ -11,7 +11,7 @@ I have also run R CMD check on downstream dependencies of ggpubr.
 All packages that I could install passed.
 
 ## Update
-This is an update version 0.1.5 (see NEWS.md)
+This is an update version 0.1.6 (see NEWS.md)
 
 
 
