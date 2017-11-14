@@ -84,24 +84,24 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>mapping</dt>
-      <dd>Set of aesthetic mappings created by <code>aes</code> or
-<code>aes_</code>. If specified and <code>inherit.aes = TRUE</code> (the
+      <dd>Set of aesthetic mappings created by <code>aes()</code> or
+<code>aes_()</code>. If specified and <code>inherit.aes = TRUE</code> (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply <code>mapping</code> if there is no plot mapping.</dd>
       <dt>data</dt>
       <dd>The data to be displayed in this layer. There are three
-   options:
+options:
 
-   If <code>NULL</code>, the default, the data is inherited from the plot
-   data as specified in the call to <code>ggplot</code>.
+If <code>NULL</code>, the default, the data is inherited from the plot
+data as specified in the call to <code>ggplot()</code>.
 
-   A <code>data.frame</code>, or other object, will override the plot
-   data. All objects will be fortified to produce a data frame. See
-   <code>fortify</code> for which variables will be created.
+A <code>data.frame</code>, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+<code>fortify()</code> for which variables will be created.
 
-   A <code>function</code> will be called with a single argument,
-   the plot data. The return value must be a <code>data.frame.</code>, and
-   will be used as the layer data.</dd>
+A <code>function</code> will be called with a single argument,
+the plot data. The return value must be a <code>data.frame.</code>, and
+will be used as the layer data.</dd>
       <dt>geom</dt>
       <dd>The geometric object to use display the data</dd>
       <dt>position</dt>
@@ -113,12 +113,14 @@ a warning. If <code>TRUE</code>, missing values are silently removed.</dd>
       <dt>show.legend</dt>
       <dd>logical. Should this layer be included in the legends?
 <code>NA</code>, the default, includes if any aesthetics are mapped.
-<code>FALSE</code> never includes, and <code>TRUE</code> always includes.</dd>
+<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.</dd>
       <dt>inherit.aes</dt>
       <dd>If <code>FALSE</code>, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn&#39;t inherit behaviour from
-the default plot specification, e.g. <code>borders</code>.</dd>
+the default plot specification, e.g. <code>borders()</code>.</dd>
       <dt>level</dt>
       <dd>confidence level used to construct the ellipses. By
 default, 0.95.</dd>
@@ -128,7 +130,7 @@ default, 0.95.</dd>
       <dd>logical value. If TRUE, the coordinates of the ellipse around the
 barycentre of individuals are calculated.</dd>
       <dt>...</dt>
-      <dd>other arguments passed on to <code>layer</code>. These are
+      <dd>other arguments passed on to <code>layer()</code>. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 <code>color = &quot;red&quot;</code> or <code>size = 3</code>. They may also be parameters
 to the paired geom/stat.</dd>

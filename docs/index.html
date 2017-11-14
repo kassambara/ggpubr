@@ -70,8 +70,8 @@
 <li>Or, install the latest version from <a href="https://github.com/kassambara/ggpubr">GitHub</a> as follow:</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install</span>
-if(!<span class="kw">require</span>(devtools)) <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools::<span class="kw">install_github</span>(<span class="st">"kassambara/ggpubr"</span>)</code></pre></div>
+<span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(devtools)) <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kassambara/ggpubr"</span>)</code></pre></div>
 </div>
 <div id="distribution" class="section level2">
 <h2 class="hasAnchor">
@@ -136,7 +136,7 @@ df &lt;-<span class="st"> </span>ToothGrowth
  <span class="co"># Add p-values comparing groups</span>
  <span class="co"># Specify the comparisons you want</span>
 my_comparisons &lt;-<span class="st"> </span><span class="kw">list</span>( <span class="kw">c</span>(<span class="st">"0.5"</span>, <span class="st">"1"</span>), <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>), <span class="kw">c</span>(<span class="st">"0.5"</span>, <span class="st">"2"</span>) )
-p +<span class="st"> </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons)+<span class="st"> </span><span class="co"># Add pairwise comparisons p-value</span>
+p <span class="op">+</span><span class="st"> </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons)<span class="op">+</span><span class="st"> </span><span class="co"># Add pairwise comparisons p-value</span>
 <span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                   <span class="co"># Add global p-value</span></code></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png" width="508.8"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
@@ -147,8 +147,8 @@ p +<span class="st"> </span><span class="kw"><a href="reference/stat_compare_mea
 <span class="co"># add boxplot with white fill color</span>
 <span class="kw"><a href="reference/ggviolin.html">ggviolin</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>, <span class="dt">fill =</span> <span class="st">"dose"</span>,
          <span class="dt">palette =</span> <span class="kw">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
-         <span class="dt">add =</span> <span class="st">"boxplot"</span>, <span class="dt">add.params =</span> <span class="kw">list</span>(<span class="dt">fill =</span> <span class="st">"white"</span>))+
-<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons, <span class="dt">label =</span> <span class="st">"p.signif"</span>)+<span class="st"> </span><span class="co"># Add significance levels</span>
+         <span class="dt">add =</span> <span class="st">"boxplot"</span>, <span class="dt">add.params =</span> <span class="kw">list</span>(<span class="dt">fill =</span> <span class="st">"white"</span>))<span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons, <span class="dt">label =</span> <span class="st">"p.signif"</span>)<span class="op">+</span><span class="st"> </span><span class="co"># Add significance levels</span>
 <span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                                      <span class="co"># Add global the p-value </span></code></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-3.png" width="508.8"></p>
 </div>
@@ -163,9 +163,9 @@ p +<span class="st"> </span><span class="kw"><a href="reference/stat_compare_mea
 <span class="kw">data</span>(<span class="st">"mtcars"</span>)
 dfm &lt;-<span class="st"> </span>mtcars
 <span class="co"># Convert the cyl variable to a factor</span>
-dfm$cyl &lt;-<span class="st"> </span><span class="kw">as.factor</span>(dfm$cyl)
+dfm<span class="op">$</span>cyl &lt;-<span class="st"> </span><span class="kw">as.factor</span>(dfm<span class="op">$</span>cyl)
 <span class="co"># Add the name colums</span>
-dfm$name &lt;-<span class="st"> </span><span class="kw">rownames</span>(dfm)
+dfm<span class="op">$</span>name &lt;-<span class="st"> </span><span class="kw">rownames</span>(dfm)
 <span class="co"># Inspect the data</span>
 <span class="kw">head</span>(dfm[, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"cyl"</span>)])
 <span class="co">#&gt;                                name    wt  mpg cyl</span>
@@ -206,8 +206,8 @@ dfm$name &lt;-<span class="st"> </span><span class="kw">rownames</span>(dfm)
 <p>The deviation graph shows the deviation of quantitatives values to a reference value. In the R code below, we’ll plot the mpg z-score from the mtcars dataset.</p>
 <p>Calculate the z-score of the mpg data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculate the z-score of the mpg data</span>
-dfm$mpg_z &lt;-<span class="st"> </span>(dfm$mpg -<span class="kw">mean</span>(dfm$mpg))/<span class="kw">sd</span>(dfm$mpg)
-dfm$mpg_grp &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">ifelse</span>(dfm$mpg_z &lt;<span class="st"> </span><span class="dv">0</span>, <span class="st">"low"</span>, <span class="st">"high"</span>), 
+dfm<span class="op">$</span>mpg_z &lt;-<span class="st"> </span>(dfm<span class="op">$</span>mpg <span class="op">-</span><span class="kw">mean</span>(dfm<span class="op">$</span>mpg))<span class="op">/</span><span class="kw">sd</span>(dfm<span class="op">$</span>mpg)
+dfm<span class="op">$</span>mpg_grp &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">ifelse</span>(dfm<span class="op">$</span>mpg_z <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">"low"</span>, <span class="st">"high"</span>), 
                      <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">"low"</span>, <span class="st">"high"</span>))
 <span class="co"># Inspect the data</span>
 <span class="kw">head</span>(dfm[, <span class="kw">c</span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"mpg_z"</span>, <span class="st">"mpg_grp"</span>, <span class="st">"cyl"</span>)])
@@ -278,7 +278,7 @@ dfm$mpg_grp &lt;-<span class="st"> </span><span class="kw">factor</span>(<span c
            <span class="dt">rotate =</span> <span class="ot">TRUE</span>,                                <span class="co"># Rotate vertically</span>
            <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span>
            <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span>
-           <span class="dt">label =</span> <span class="kw">round</span>(dfm$mpg),                        <span class="co"># Add mpg values as dot labels</span>
+           <span class="dt">label =</span> <span class="kw">round</span>(dfm<span class="op">$</span>mpg),                        <span class="co"># Add mpg values as dot labels</span>
            <span class="dt">font.label =</span> <span class="kw">list</span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, 
                              <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
            <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
@@ -297,11 +297,11 @@ dfm$mpg_grp &lt;-<span class="st"> </span><span class="kw">factor</span>(<span c
            <span class="dt">add.params =</span> <span class="kw">list</span>(<span class="dt">color =</span> <span class="st">"lightgray"</span>, <span class="dt">size =</span> <span class="dv">2</span>), <span class="co"># Change segment color and size</span>
            <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span>
            <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span>
-           <span class="dt">label =</span> <span class="kw">round</span>(dfm$mpg_z,<span class="dv">1</span>),                        <span class="co"># Add mpg values as dot labels</span>
+           <span class="dt">label =</span> <span class="kw">round</span>(dfm<span class="op">$</span>mpg_z,<span class="dv">1</span>),                        <span class="co"># Add mpg values as dot labels</span>
            <span class="dt">font.label =</span> <span class="kw">list</span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, 
                              <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
            <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
-           )+
+           )<span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">"lightgray"</span>)</code></pre></div>
 <p><img src="tools/README-lollipop-chart-deviation-1.png" width="720"></p>
 </div>
@@ -317,7 +317,7 @@ dfm$mpg_grp &lt;-<span class="st"> </span><span class="kw">factor</span>(<span c
            <span class="dt">dot.size =</span> <span class="dv">2</span>,                                 <span class="co"># Large dot size</span>
            <span class="dt">y.text.col =</span> <span class="ot">TRUE</span>,                            <span class="co"># Color y text by groups</span>
            <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
-           )+
+           )<span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="reference/ggdotchart.html">theme_cleveland</a></span>()                                      <span class="co"># Add dashed grids</span></code></pre></div>
 <p><img src="tools/README-cleveland-dot-plots-1.png" width="480"></p>
 </div>
@@ -331,7 +331,7 @@ dfm$mpg_grp &lt;-<span class="st"> </span><span class="kw">factor</span>(<span c
 <h2 class="hasAnchor">
 <a href="#blog-posts" class="anchor"> </a>Blog posts</h2>
 <ul>
-<li>A. Kassambara. STHDA Jully 2016. <a href="http://www.sthda.com/english/wiki/ggpubr-r-package-ggplot2-based-publication-ready-plots">ggpubr R Package: ggplot2-Based Publication Ready Plots</a>
+<li>A. Kassambara. <a href="http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/">ggpubr R Package: ggplot2-Based Publication Ready Plots</a>
 </li>
 </ul>
 </div>

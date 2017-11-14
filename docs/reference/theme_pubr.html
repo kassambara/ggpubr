@@ -76,19 +76,22 @@
     <p><ul>
 <li> <strong>theme_pubr()</strong>: Create a publication ready
  theme </li>
-<li> <strong>labs_pubr()</strong>: Format only plot labels to a publication
- ready style </li>
-<li> <strong>theme_classic2()</strong>: Create a classic theme with
- axis lines.
- </li>
-<li> <strong>clean_theme()</strong>: Remove axis lines, ticks, texts and titles.
-  </li>
+<li> <strong>theme_pubclean()</strong>: a clean theme without axis lines, to
+ direct more attention to the data.  </li>
+<li> <strong>labs_pubr()</strong>: Format only
+ plot labels to a publication ready style </li>
+<li> <strong>theme_classic2()</strong>:
+ Create a classic theme with axis lines. </li>
+<li> <strong>clean_theme()</strong>: Remove
+ axis lines, ticks, texts and titles. </li>
 </ul></p>
     
 
     <pre><span class='fu'>theme_pubr</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"top"</span>, <span class='st'>"bottom"</span>, <span class='st'>"left"</span>, <span class='st'>"right"</span>, <span class='st'>"none"</span>),
   <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='fu'>theme_pubclean</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>flip</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>labs_pubr</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>14</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
@@ -116,8 +119,10 @@ the legend box. Their values should be between 0 and 1. c(0,0) corresponds
 to the &quot;bottom left&quot; and c(1,1) corresponds to the &quot;top right&quot; position. For
 instance use legend = c(0.8, 0.2).</dd>
       <dt>x.text.angle</dt>
-      <dd>Rotation angle of x axis tick labels.
-Default value is 0. Use 90 for vertical text.</dd>
+      <dd>Rotation angle of x axis tick labels. Default value is 0.
+Use 90 for vertical text.</dd>
+      <dt>flip</dt>
+      <dd>logical. If TRUE, grid lines are added to y axis instead of x axis.</dd>
     </dl>
     
 

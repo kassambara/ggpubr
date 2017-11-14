@@ -83,8 +83,8 @@
   <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
   <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"errorbar"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lab.col</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
   <span class='kw'>lab.size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>lab.pos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"out"</span>, <span class='st'>"in"</span>), <span class='kw'>lab.vjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lab.hjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sort.val</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"desc"</span>, <span class='st'>"asc"</span>),
-  <span class='kw'>sort.by.groups</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_stack</span>(),
+  <span class='kw'>lab.hjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lab.nb.digits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sort.val</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"desc"</span>,
+  <span class='st'>"asc"</span>), <span class='kw'>sort.by.groups</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>top</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_stack</span>(),
   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -180,6 +180,8 @@ value (e.g.: -0.4) to put labels outside the bars or positive value to put
 labels inside (e.g.: 2).</dd>
       <dt>lab.hjust</dt>
       <dd>numeric, horizontal justification of labels.</dd>
+      <dt>lab.nb.digits</dt>
+      <dd>integer indicating the number of decimal places (round) to be used.</dd>
       <dt>sort.val</dt>
       <dd>a string specifying whether the value should be sorted.
 Allowed values are &quot;none&quot; (no sorting), &quot;asc&quot; (for ascending) or &quot;desc&quot; (for descending).</dd>

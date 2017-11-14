@@ -79,7 +79,12 @@
 <li> <code>ttheme()</code>: customize table theme. </li>
 <li>
  <code>rownames_style(), colnames_style(), tbody_style()</code>: helper functions
- to customize the table row names, column names and body. </li>
+ to customize the table row names, column names and body.
+ </li>
+<li> <code>table_cell_font()</code>: access to a table cell for changing the text font (size and face).
+ </li>
+<li> <code>table_cell_bg()</code>: access to a table cell for changing the background (fill, color, linewidth).
+  </li>
 </ul></p>
     
 
@@ -100,7 +105,12 @@
 
 <span class='fu'>tbody_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"grey95"</span>, <span class='st'>"grey90"</span>), <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='fu'>table_cell_font</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>table_cell_bg</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -158,6 +168,10 @@ values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot
       <dd>line width and color, respectively.</dd>
       <dt>parse</dt>
       <dd>logical, default behaviour for parsing text as plotmath</dd>
+      <dt>tab</dt>
+      <dd>an object of class ggtexttable.</dd>
+      <dt>row, column</dt>
+      <dd>an integer specifying the row and the column numbers for the cell of interest.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -209,6 +223,17 @@ values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot
              <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='no'>tbody.style</span>
            )
 )</div><img src='ggtexttable-16.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># Access and modify the font and</span>
+<span class='co'># the background of table cells</span>
+<span class='co'># :::::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>ggtexttable</span>(<span class='fu'>head</span>(<span class='no'>iris</span>), <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+                  <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"classic"</span>))
+<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>table_cell_font</span>(<span class='no'>tab</span>, <span class='kw'>row</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>column</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                      <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>)
+<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>table_cell_bg</span>(<span class='no'>tab</span>, <span class='kw'>row</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>column</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+                    <span class='kw'>fill</span><span class='kw'>=</span><span class='st'>"darkolivegreen1"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"darkolivegreen4"</span>)
+<span class='no'>tab</span></div><img src='ggtexttable-18.png' alt='' width='540' height='400' /><div class='input'>
+
 <span class='co'># Combine density plot and summary table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Density plot of "Sepal.Length"</span>
@@ -226,7 +251,7 @@ values for face include c(&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot
 <span class='co'># Arrange the plots on the same page</span>
 <span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>density.p</span>, <span class='no'>stable.p</span>,
          <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><img src='ggtexttable-18.png' alt='' width='540' height='400' /><div class='input'>
+         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><img src='ggtexttable-20.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

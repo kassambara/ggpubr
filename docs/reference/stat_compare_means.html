@@ -78,39 +78,44 @@
     
 
     <pre><span class='fu'>stat_compare_means</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>,
-  <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>method.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.03</span>, <span class='kw'>symnum.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
   <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>mapping</dt>
-      <dd>Set of aesthetic mappings created by <code>aes</code> or
-<code>aes_</code>. If specified and <code>inherit.aes = TRUE</code> (the
+      <dd>Set of aesthetic mappings created by <code>aes()</code> or
+<code>aes_()</code>. If specified and <code>inherit.aes = TRUE</code> (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply <code>mapping</code> if there is no plot mapping.</dd>
       <dt>data</dt>
       <dd>The data to be displayed in this layer. There are three
-   options:
+options:
 
-   If <code>NULL</code>, the default, the data is inherited from the plot
-   data as specified in the call to <code>ggplot</code>.
+If <code>NULL</code>, the default, the data is inherited from the plot
+data as specified in the call to <code>ggplot()</code>.
 
-   A <code>data.frame</code>, or other object, will override the plot
-   data. All objects will be fortified to produce a data frame. See
-   <code>fortify</code> for which variables will be created.
+A <code>data.frame</code>, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+<code>fortify()</code> for which variables will be created.
 
-   A <code>function</code> will be called with a single argument,
-   the plot data. The return value must be a <code>data.frame.</code>, and
-   will be used as the layer data.</dd>
+A <code>function</code> will be called with a single argument,
+the plot data. The return value must be a <code>data.frame.</code>, and
+will be used as the layer data.</dd>
       <dt>method</dt>
       <dd>a character string indicating which method to be used for
 comparing means.</dd>
       <dt>paired</dt>
       <dd>a logical indicating whether you want a paired test. Used only
 in <code><a href='http://www.rdocumentation.org/packages/stats/topics/t.test'>t.test</a></code> and in <a href='http://www.rdocumentation.org/packages/stats/topics/wilcox.test'>wilcox.test</a>.</dd>
+      <dt>method.args</dt>
+      <dd>a list of additional arguments used for the test method.
+For example one might use <code>method.args = list(alternative = &quot;greater&quot;)</code>
+for wilcoxon test.</dd>
       <dt>ref.group</dt>
       <dd>a character string specifying the reference group. If
  specified, for a given grouping variable, each of the group levels will be
@@ -130,25 +135,47 @@ significance levels.</dd>
 separate the correlation coefficient and the p.value.</dd>
       <dt>label</dt>
       <dd>character string specifying label type. Allowed values include
-&quot;p.signif&quot; (shows the significance levels), &quot;p.format&quot; (shows the formatted p value).</dd>
+&quot;p.signif&quot; (shows the significance levels), &quot;p.format&quot; (shows the formatted
+p value).</dd>
       <dt>label.x.npc, label.y.npc</dt>
       <dd>can be <code>numeric</code> or <code>character</code>
- vector of the same length as the number of groups and/or panels. If too
- short they will be recycled. <ul>
+vector of the same length as the number of groups and/or panels. If too
+short they will be recycled. <ul>
 <li> If <code>numeric</code>, value should
- be between 0 and 1. Coordinates to be used for positioning the label,
- expressed in &quot;normalized parent coordinates&quot;. </li>
+be between 0 and 1. Coordinates to be used for positioning the label,
+expressed in &quot;normalized parent coordinates&quot;. </li>
 <li> If <code>character</code>,
- allowed values include: i) one of c(&#39;right&#39;, &#39;left&#39;, &#39;center&#39;, &#39;centre&#39;,
- &#39;middle&#39;) for x-axis; ii) and one of c( &#39;bottom&#39;, &#39;top&#39;, &#39;center&#39;, &#39;centre&#39;,
- &#39;middle&#39;) for y-axis.</li>
+allowed values include: i) one of c(&#39;right&#39;, &#39;left&#39;, &#39;center&#39;, &#39;centre&#39;,
+&#39;middle&#39;) for x-axis; ii) and one of c( &#39;bottom&#39;, &#39;top&#39;, &#39;center&#39;, &#39;centre&#39;,
+&#39;middle&#39;) for y-axis.</li>
 </ul>
-
-
- If too short they will be recycled.</dd>
+</dd>
       <dt>label.x, label.y</dt>
       <dd><code>numeric</code> Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.</dd>
+      <dt>tip.length</dt>
+      <dd>numeric vector with the fraction of total height that the
+ bar goes down to indicate the precise column. Default is 0.03. Can be of
+ same length as the number of comparisons to adjust specifically the tip
+ lenth of each comparison. For example tip.length = c(0.01, 0.03).
+
+ If too short they will be recycled.</dd>
+      <dt>symnum.args</dt>
+      <dd>a list of arguments to pass to the function
+ <code><a href='http://www.rdocumentation.org/packages/stats/topics/symnum'>symnum</a></code> for symbolic number coding of p-values. For
+ example, <code>symnum.args &lt;- list(cutpoints = c(0, 0.0001, 0.001,
+ 0.01, 0.05, 1), symbols = c(&quot;****&quot;, &quot;***&quot;, &quot;**&quot;, &quot;*&quot;,  &quot;ns&quot;))</code>.
+
+ In other words, we use the following convention for symbols indicating
+ statistical significance: <ul>
+<li> <code>ns</code>: p &gt; 0.05 </li>
+<li>
+ <code>*</code>: p &lt;= 0.05 </li>
+<li> <code>**</code>: p &lt;= 0.01 </li>
+<li> <code>***</code>: p &lt;= 0.001 </li>
+<li> <code>****</code>:  p &lt;= 0.0001 </li>
+</ul>
+</dd>
       <dt>geom</dt>
       <dd>The geometric object to use display the data</dd>
       <dt>position</dt>
@@ -160,12 +187,14 @@ TRUE silently removes missing values.</dd>
       <dt>show.legend</dt>
       <dd>logical. Should this layer be included in the legends?
 <code>NA</code>, the default, includes if any aesthetics are mapped.
-<code>FALSE</code> never includes, and <code>TRUE</code> always includes.</dd>
+<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.</dd>
       <dt>inherit.aes</dt>
       <dd>If <code>FALSE</code>, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn&#39;t inherit behaviour from
-the default plot specification, e.g. <code>borders</code>.</dd>
+the default plot specification, e.g. <code>borders()</code>.</dd>
       <dt>...</dt>
       <dd>other arguments to pass to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>geom_text</a></code> or
 <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>geom_label</a></code>.</dd>

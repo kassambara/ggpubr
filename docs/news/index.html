@@ -74,12 +74,57 @@
     </div>
 
     <div class="contents">
-    <div id="ggpubr-0-1-5" class="section level1">
+    <div id="ggpubr-0-1-6" class="section level1">
 <h1 class="hasAnchor">
-<a href="#ggpubr-0-1-5" class="anchor"> </a>ggpubr 0.1.5</h1>
+<a href="#ggpubr-0-1-6" class="anchor"> </a>ggpubr 0.1.6</h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"> </a>New features</h2>
+<ul>
+<li><p>New function <code><a href="../reference/ggballoonplot.html">ggballoonplot()</a></code> added to visualize a contingency table.</p></li>
+<li><p><code><a href="../reference/ggdotchart.html">ggdotchart()</a></code> can be now used to plot multiple groups with <code>position = position_dodge()</code> <a href="https://github.com/kassambara/ggpubr/issues/45">@ManuelSpinola, #45</a>.</p></li>
+<li><p>New function <code><a href="../reference/ggscatterhist.html">ggscatterhist()</a></code> to create a scatter plot with marginal histograms, density plots and box plots.</p></li>
+<li><p>New theme <code><a href="../reference/theme_pubr.html">theme_pubclean()</a></code>: a clean theme without axis lines, to direct more attention to the data.</p></li>
+<li>New arguments in <code><a href="../reference/ggarrange.html">ggarrange()</a></code> to customize plot labels (<a href="https://github.com/kassambara/ggpubr/issues/38">@G-Thomson, #41</a>):
+<ul>
+<li>font.label</li>
+<li>label.x and label.y</li>
+<li>hjust and vjust</li>
+</ul>
+</li>
+<li><p>New argument <code>method.args</code> added to <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code>. A list of additional arguments used for the test method. For example one might use method.args = list(alternative = “greater”) for wilcoxon test (<a href="https://github.com/kassambara/ggpubr/issues/41">@Nicktz, #41</a>).</p></li>
+<li><p>New argument <code>symnum.args</code> added to <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code>. A list of arguments to pass to the function symnum for symbolic number coding of p-values. For example, <code>symnum.args &lt;- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05, 1), symbols = c("****", "***", "**", "*", "ns"))</code></p></li>
+<li><p>New functions <code><a href="../reference/ggtexttable.html">table_cell_font()</a></code> and <code><a href="../reference/ggtexttable.html">table_cell_bg()</a></code> to easily access and change the text font and the background of <code><a href="../reference/ggtexttable.html">ggtexttable()</a></code> cells (<a href="https://github.com/kassambara/ggpubr/issues/29">@ProbleMaker, #29</a>).</p></li>
+<li><p>New argument <code>numeric.x.axis</code> in <code><a href="../reference/ggline.html">ggline()</a></code>. logical. If TRUE, x axis will be treated as numeric. Default is FALSE. (<a href="https://github.com/kassambara/ggpubr/issues/35">@mdphan, #35</a>)</p></li>
+<li><p>New argument <code>lab.nb.digits</code> in <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code>. Integer indicating the number of decimal places (round) to be used (<a href="https://github.com/kassambara/ggpubr/issues/28">#28</a>). Example: lab.nb.digits = 2.</p></li>
+<li><p>New argument <code>tip.length</code> in <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code>. Numeric vector with the fraction of total height that the bar goes down to indicate the precise column. Default is 0.03. Can be of same length as the number of comparisons to adjust specifically the tip lenth of each comparison. For example tip.length = c(0.01, 0.03).</p></li>
+</ul>
+</div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor"> </a>Minor changes</h2>
+<ul>
+<li>Now <code><a href="../reference/get_legend.html">get_legend()</a></code> returns NULL when the plot doesn’t have legend.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"> </a>Bug fixes</h2>
+<ul>
+<li><p>Now data argument are supported in <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> when the option comparisons are specified (<a href="https://github.com/kassambara/ggpubr/issues/48">@emcnerny, #48</a>)</p></li>
+<li>Now <code><a href="../reference/compare_means.html">compare_means()</a></code> returns the same p-values as <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/34">@wydty, #15</a>).</li>
+<li>
+<code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> now reacts to label = “p.format” when comparisons specified (<a href="https://github.com/kassambara/ggpubr/issues/28">#28</a>).</li>
+<li><p>Now, the p.values are displayed correctly when ref.group is not the first group (<a href="https://github.com/kassambara/ggpubr/issues/27">@sehufnkjesktgna, #15</a>).</p></li>
+</ul>
+</div>
+</div>
+    <div id="ggpubr-0-1-5" class="section level1">
+<h1 class="hasAnchor">
+<a href="#ggpubr-0-1-5" class="anchor"> </a>ggpubr 0.1.5</h1>
+<div id="minor-changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes-1" class="anchor"> </a>Minor changes</h2>
 <ul>
 <li><p>In <code><a href="../reference/ggpar.html">ggpar()</a></code>, now <code>legend.title</code> can be either a character vector, e.g.: legend.title = “Species” or a list, <code>legend.title = list(color = "Species", linetype = "Species", shape = "Species")</code>.</p></li>
 <li><p>New argument <code>ellipse.border.remove</code> in <code><a href="../reference/ggscatter.html">ggscatter()</a></code> to remove ellipse border lines.</p></li>
@@ -95,9 +140,9 @@
 <li><p>Using time on x axis works know with <code><a href="../reference/ggline.html">ggline()</a></code> and <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/17">@jcpsantiago, #15</a>).</p></li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"> </a>Bug fixes</h2>
 <ul>
 <li>
 <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> now reacts to <code>hide.ns</code> properly.</li>
@@ -113,9 +158,9 @@
     <div id="ggpubr-0-1-4" class="section level1">
 <h1 class="hasAnchor">
 <a href="#ggpubr-0-1-4" class="anchor"> </a>ggpubr 0.1.4</h1>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"> </a>New features</h2>
+<a href="#new-features-1" class="anchor"> </a>New features</h2>
 <ul>
 <li>New helper functions:
 <ul>
@@ -143,9 +188,9 @@
 <li>New theme function <code><a href="../reference/theme_transparent.html">theme_transparent()</a></code> to create a ggplot with transparent background.</li>
 </ul>
 </div>
-<div id="minor-changes-1" class="section level2">
+<div id="minor-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-1" class="anchor"> </a>Minor changes</h2>
+<a href="#minor-changes-2" class="anchor"> </a>Minor changes</h2>
 <ul>
 <li>In <code><a href="../reference/gghistogram.html">gghistogram()</a></code>, density curve and rug react to the fill color.</li>
 <li>
@@ -162,9 +207,9 @@
     <div id="ggpubr-0-1-3" class="section level1">
 <h1 class="hasAnchor">
 <a href="#ggpubr-0-1-3" class="anchor"> </a>ggpubr 0.1.3</h1>
-<div id="new-features-1" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"> </a>New features</h2>
+<a href="#new-features-2" class="anchor"> </a>New features</h2>
 <ul>
 <li>New functions:
 <ul>
@@ -255,9 +300,9 @@
 </li>
 </ul>
 </div>
-<div id="minor-changes-2" class="section level2">
+<div id="minor-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-2" class="anchor"> </a>Minor changes</h2>
+<a href="#minor-changes-3" class="anchor"> </a>Minor changes</h2>
 <ul>
 <li>Now, the argument <code>palette</code> Can be also a numeric vector of length(groups); in this case a basic color palette is created using the function <code>grDevices::palette()</code>.</li>
 </ul>
@@ -266,9 +311,9 @@
     <div id="ggpubr-0-1-1" class="section level1">
 <h1 class="hasAnchor">
 <a href="#ggpubr-0-1-1" class="anchor"> </a>ggpubr 0.1.1</h1>
-<div id="new-features-3" class="section level2">
+<div id="new-features-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-3" class="anchor"> </a>New features</h2>
+<a href="#new-features-4" class="anchor"> </a>New features</h2>
 <ul>
 <li>New function <code><a href="../reference/ggtext.html">ggtext()</a></code> for textual annotation.</li>
 <li>New argument star.plot in <code><a href="../reference/ggscatter.html">ggscatter()</a></code>. A logical value. If TRUE, a star plot is generated.</li>
@@ -282,9 +327,9 @@
 <li>New function <code><a href="../reference/theme_pubr.html">theme_classic2()</a></code> added. Classic theme with axis lines.</li>
 </ul>
 </div>
-<div id="minor-changes-4" class="section level2">
+<div id="minor-changes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-4" class="anchor"> </a>Minor changes</h2>
+<a href="#minor-changes-5" class="anchor"> </a>Minor changes</h2>
 <ul>
 <li>
 <code><a href="../reference/ggboxplot.html">ggboxplot()</a></code>, <code><a href="../reference/ggviolin.html">ggviolin()</a></code>, <code><a href="../reference/ggdotplot.html">ggdotplot()</a></code>, <code><a href="../reference/ggstripchart.html">ggstripchart()</a></code>, <code><a href="../reference/gghistogram.html">gghistogram()</a></code>, <code><a href="../reference/ggdensity.html">ggdensity()</a></code>, <code><a href="../reference/ggecdf.html">ggecdf()</a></code> and <code><a href="../reference/ggqqplot.html">ggqqplot()</a></code> can now handle one single numeric vector.</li>
@@ -377,6 +422,7 @@ ggboxplot(iris$Sepal.Length)</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#ggpubr-0-1-6">0.1.6</a></li>
         <li><a href="#ggpubr-0-1-5">0.1.5</a></li>
         <li><a href="#ggpubr-0-1-4">0.1.4</a></li>
         <li><a href="#ggpubr-0-1-3">0.1.3</a></li>

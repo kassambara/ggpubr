@@ -84,7 +84,7 @@
   <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>),
   <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)
 
 <span class='fu'>theme_cleveland</span>(<span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
@@ -128,7 +128,8 @@ error bars). Allowed values are one or the combination of: &quot;none&quot;,
       <dd>parameters (color, shape, size, fill, linetype) for the
 argument &#39;add&#39;; e.g.: add.params = list(color = &quot;red&quot;).</dd>
       <dt>x.text.col</dt>
-      <dd>logical. If TRUE (default), x axis texts are colored by groups.</dd>
+      <dd>logical. If TRUE (default), x axis texts are colored by
+groups.</dd>
       <dt>rotate</dt>
       <dd>logical value. If TRUE, rotate the graph by setting the plot
 orientation to horizontal.</dd>
@@ -190,6 +191,9 @@ text labels or not.</dd>
       <dt>label.rectangle</dt>
       <dd>logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.</dd>
+      <dt>position</dt>
+      <dd>Position adjustment, either as a string, or the result of a
+call to a position adjustment function.</dd>
       <dt>ggtheme</dt>
       <dd>function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -242,6 +246,28 @@ and <code><a href='ggpar.html'>ggpar</a></code>.</dd>
    <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='st'>"descending"</span>,
    <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_bw</span>(),
    <span class='kw'>y.text.col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span> )</div><img src='ggdotchart-6.png' alt='' width='540' height='400' /><div class='input'>
+
+<span class='co'># Plot with multiple groups</span>
+<span class='co'># +++++++++++++++++++++</span>
+<span class='co'># Create some data</span>
+<span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>supp</span><span class='kw'>=</span><span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"VC"</span>, <span class='st'>"OJ"</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>3</span>),
+                 <span class='kw'>dose</span><span class='kw'>=</span><span class='fu'>rep</span>(<span class='fu'>c</span>(<span class='st'>"D0.5"</span>, <span class='st'>"D1"</span>, <span class='st'>"D2"</span>),<span class='fl'>2</span>),
+                 <span class='kw'>len</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>6.8</span>, <span class='fl'>15</span>, <span class='fl'>33</span>, <span class='fl'>4.2</span>, <span class='fl'>10</span>, <span class='fl'>29.5</span>))
+<span class='fu'>print</span>(<span class='no'>df2</span>)</div><div class='output co'>#&gt;   supp dose  len
+#&gt; 1   VC D0.5  6.8
+#&gt; 2   VC   D1 15.0
+#&gt; 3   VC   D2 33.0
+#&gt; 4   OJ D0.5  4.2
+#&gt; 5   OJ   D1 10.0
+#&gt; 6   OJ   D2 29.5</div><div class='input'>
+<span class='fu'>ggdotchart</span>(<span class='no'>df2</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+          <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+          <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"segment"</span>,
+          <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>),
+          <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.3</span>),
+          <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>,
+          <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubclean</a></span>()
+)</div><img src='ggdotchart-10.png' alt='' width='540' height='400' /><div class='input'>
 
 </div></pre>
   </div>

@@ -81,6 +81,8 @@
     
 
     <pre><span class='fu'>ggarrange</span>(<span class='no'>...</span>, <span class='kw'>plotlist</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>hjust</span> <span class='kw'>=</span> -<span class='fl'>0.5</span>, <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>14</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
   <span class='kw'>align</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>), <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>common.legend</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
@@ -99,6 +101,27 @@ either ggplot2 plot objects or arbitrary gtables.</dd>
       <dd>(optional) list of labels to be added to the plots. You can
 also set labels=&quot;AUTO&quot; to auto-generate upper-case labels or labels=&quot;auto&quot;
 to auto-generate lower-case labels.</dd>
+      <dt>label.x</dt>
+      <dd>(optional) Single value or vector of x positions for plot
+labels, relative to each subplot. Defaults to 0 for all labels. (Each label
+is placed all the way to the left of each plot.)</dd>
+      <dt>label.y</dt>
+      <dd>(optional) Single value or vector of y positions for plot
+labels, relative to each subplot. Defaults to 1 for all labels. (Each label
+is placed all the way to the top of each plot.)</dd>
+      <dt>hjust</dt>
+      <dd>Adjusts the horizontal position of each label. More negative values move the label further
+to the right on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+(one for each label). Default is -0.5.</dd>
+      <dt>vjust</dt>
+      <dd>Adjusts the vertical position of each label. More positive values move the label further
+down on the plot canvas. Can be a single value (applied to all labels) or a vector of values
+(one for each label). Default is 1.5.</dd>
+      <dt>font.label</dt>
+      <dd>a list of arguments for customizing labels. Allowed values
+are the combination of the following elements: size (e.g.: 14), face (e.g.:
+&quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;), color (e.g.: &quot;red&quot;) and family.
+For example font.label = list(size = 14, face = &quot;bold&quot;, color =&quot;red&quot;).</dd>
       <dt>align</dt>
       <dd>(optional) Specifies whether graphs in the grid should be horizontally (&quot;h&quot;) or
 vertically (&quot;v&quot;) aligned. Options are &quot;none&quot; (default), &quot;hv&quot; (align in both directions), &quot;h&quot;, and &quot;v&quot;.</dd>

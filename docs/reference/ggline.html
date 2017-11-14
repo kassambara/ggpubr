@@ -76,8 +76,8 @@
     <p>Create a line plot.</p>
     
 
-    <pre><span class='fu'>ggline</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
+    <pre><span class='fu'>ggline</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>numeric.x.axis</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>,
   <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"b"</span>, <span class='st'>"l"</span>, <span class='st'>"p"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
   <span class='kw'>point.size</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>point.color</span> <span class='kw'>=</span> <span class='no'>color</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -97,6 +97,8 @@
       <dd>grouping variable to connect points by line.
 Allowed values are 1 (for one line, one group) or a character vector specifying
 the name of the grouping variable (case of multiple lines).</dd>
+      <dt>numeric.x.axis</dt>
+      <dd>logical. If TRUE, x axis will be treated as numeric. Default is FALSE.</dd>
       <dt>combine</dt>
       <dd>logical value. Default is FALSE. Used only when y is a vector
 containing multiple variables to plot. If TRUE, create a multi-panel plot by
