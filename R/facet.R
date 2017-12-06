@@ -42,6 +42,7 @@ NULL
 #'   short.panel.labs = FALSE,   # Allow long labels in panels
 #'   panel.labs.background = list(fill = "steelblue", color = "steelblue")
 #' )
+#'@name facet
 #'@rdname facet
 #'@export
 facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
