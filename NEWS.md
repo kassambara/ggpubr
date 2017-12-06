@@ -6,6 +6,8 @@
 
 ## Bug fixes
 
+- In `ggscatterhist()` the x variable was plotted two times, on both the plot x & y margins, instead of having, as expected, a) the x variable on the main plot x margin and 2) the y variable on the main plot y margin. This has been now fixed. 
+
 # ggpubr 0.1.6
 
 ## New features

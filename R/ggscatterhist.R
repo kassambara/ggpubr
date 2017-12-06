@@ -130,7 +130,7 @@ ggscatterhist <- function(
 
   yplot <- ggplot() + margin.params %>%
     .add_item(geomfunc = geomfunc, data = data,
-              x = xplot.x, y = xplot.y, alpha = 0.7) %>%
+              x = yplot.x, y = yplot.y, alpha = 0.7) %>%
     do.call(geom_exec, .)
   yplot <- set_palette(yplot, palette)
 
