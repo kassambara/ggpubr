@@ -123,7 +123,18 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     if(.is_p.signif_in_mapping(mapping) | (label %in% "p.signif"))
       {
       map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, "ns"=1)
-      if(hide.ns) names(map_signif_level)[5] <- " "
+      if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)
+    }
+
+    if(!.is_empty(symnum.args)){
+
+      symnum.args.isok <- length(symnum.args$cutpoints == length(symnum.args$symbols))
+      if(!symnum.args.isok)
+        stop("Incorrect format detected in symnum.args. ",
+             "Check the documentation.")
+      map_signif_level <- symnum.args$cutpoints[-1] # the first element is 0 (the minimum p-value)
+      names(map_signif_level) <- symnum.args$symbols
+      if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)
     }
 
     step_increase <- ifelse(is.null(label.y), 0.12, 0)
@@ -300,6 +311,15 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
     mapping$label <- allowed.label[[label]]
   }
   mapping
+}
+
+# Hide NS in map_signif_level
+.hide_ns <- function(x){
+  n <- names(x)
+  ns.pos <- which(n == "ns" | n == "NS")
+  if(!.is_empty(ns.pos)) n[ns.pos] = " "
+  names(x) <- n
+  x
 }
 
 

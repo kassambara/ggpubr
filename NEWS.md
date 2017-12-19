@@ -4,6 +4,8 @@
 
 ## Minor changes
 
+- Significance levels can be now customized and passed to `stat_compare_means()` ([@jaison75, #45](https://github.com/kassambara/ggpubr/issues/30)).
+
 ## Bug fixes
 
 - In `ggscatterhist()` the x variable was plotted two times, on both the plot x & y margins, instead of having, as expected, a) the x variable on the main plot x margin and 2) the y variable on the main plot y margin. This has been now fixed. 
@@ -14,7 +16,7 @@
    
 - New function `ggballoonplot()` added to visualize a contingency table.
 
-- `ggdotchart()` can be now used to plot multiple groups with `position = position_dodge()` [@ManuelSpinola, #45](https://github.com/kassambara/ggpubr/issues/45).
+- `ggdotchart()` can be now used to plot multiple groups with `position = position_dodge()` ([@ManuelSpinola, #45](https://github.com/kassambara/ggpubr/issues/45)).
 
 - New function `ggscatterhist()` to create a scatter plot with marginal histograms, density plots and box plots.
 
