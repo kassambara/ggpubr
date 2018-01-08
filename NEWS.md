@@ -2,6 +2,8 @@
 
 ## New features
 
+- New function `ggdonutchart()` added.
+   
 ## Minor changes
 
 - Significance levels can be now customized and passed to `stat_compare_means()` ([@jaison75, #45](https://github.com/kassambara/ggpubr/issues/30)).
