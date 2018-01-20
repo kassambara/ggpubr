@@ -306,7 +306,7 @@ ggbarplot_core <- function(data, x, y,
 
   # Add errors
   if(inherits(position, "PositionStack")) add.position <- "identity"
-  else add.position <- position_dodge(0.8)
+  else add.position <- position
 
   p <- add.params %>%
     .add_item(p = p, add = add, error.plot = error.plot, position = add.position) %>%
