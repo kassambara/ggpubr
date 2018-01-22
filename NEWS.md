@@ -8,6 +8,8 @@
 
 - Significance levels can be now customized and passed to `stat_compare_means()` ([@jaison75, #45](https://github.com/kassambara/ggpubr/issues/30)).
 
+- Editing pdf size is now supported in `ggexport()` ([@JauntyJJS, #45](https://github.com/kassambara/ggpubr/issues/63)).
+
 ## Bug fixes
 
 - In `ggscatterhist()` the x variable was plotted two times, on both the plot x & y margins, instead of having, as expected, a) the x variable on the main plot x margin and 2) the y variable on the main plot y margin. This has been now fixed. 

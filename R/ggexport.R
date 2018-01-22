@@ -63,6 +63,12 @@ ggexport <- function(..., plotlist = NULL, filename = NULL, ncol = NULL, nrow = 
     dev.opts <- dev.opts %>%
     .add_item(width = width, height = height, pointsize = pointsize, res = res)
 
+  if(file.ext %in% c("pdf")){
+    if(!missing(width)) dev.opts <- dev.opts %>% .add_item(width = width)
+    if(!missing(height)) dev.opts <- dev.opts %>% .add_item(height = height)
+    if(!missing(pointsize)) dev.opts <- dev.opts %>% .add_item(pointsize = pointsize)
+  }
+
   #width=800, height=800, pointsize=8, res=250
 
   # Plots
