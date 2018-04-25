@@ -617,7 +617,7 @@ p
         stop("Can't found the y elements in the data.")
 
       else if(!.is_empty(not_found))
-        warning("Can't found the following element in the data: ",
+        warning("Can't find the following element in the data: ",
               .collapse(not_found))
     }
   }
