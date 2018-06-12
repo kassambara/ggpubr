@@ -51,7 +51,7 @@ NULL
 #'
 #' @export
 stat_cor <- function(mapping = NULL, data = NULL,
-                     method = "pearson", label.sep = ", ",
+                     method = "pearson", show.P = F, label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
@@ -60,7 +60,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
     stat = StatCor, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
-                  label.x = label.x, label.y = label.y, label.sep = label.sep,
+                  label.x = label.x, label.y = label.y, show.p = show.p, label.sep = label.sep,
                   method = method, na.rm = na.rm, ...)
   )
 }
@@ -94,14 +94,27 @@ StatCor<- ggproto("StatCor", Stat,
 # Correlation test
 #::::::::::::::::::::::::::::::::::::::::
 # Returns a data frame: estimatel|p.value|method|label
-.cor_test <- function(x, y, method = "pearson", label.sep = ", "){
+.cor_test <- function(x, y, method = "pearson", show.p = F, label.sep = ", "){
   .cor <- stats::cor.test(x, y, method = method, exact = FALSE)
   z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method)
   pval <- .cor$p.value
-  pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16",
-                    paste("p =", signif(pval, 2)))
-  cortxt <- paste0("r = ", signif(.cor$estimate, 2),
-                   label.sep,  pvaltxt)
+if(show.p == T){
+  
+   pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16",
+                    
+                      paste("p =", signif(pval, 2)))
+  
+    cortxt <- paste0("r = ", signif(.cor$estimate, 2),
+                   
+                    label.sep,  pvaltxt)
+  }
+  else {
+    pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16",
+                      
+                      paste("p =", signif(pval, 2)))
+    
+    cortxt <- paste0("r = ", signif(.cor$estimate, 2))
+  }
   z$label <- cortxt
   z
 }
