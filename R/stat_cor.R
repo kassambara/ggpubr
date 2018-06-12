@@ -7,7 +7,7 @@ NULL
 #'   covariance) is to be computed. One of "pearson" (default), "kendall", or
 #'   "spearman".
 #' @param show.p a logical value (T/F) indicating whether the p-value is 
-#' displayed. Default to T, where the p.value is displayed.
+#'   displayed. Default to T, where the p.value is displayed.
 #' @param label.sep a character string to separate the terms. Default is ", ", to
 #'   separate the correlation coefficient and the p.value.
 #' @param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
