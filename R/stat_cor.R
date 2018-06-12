@@ -6,6 +6,8 @@ NULL
 #' @param method a character string indicating which correlation coefficient (or
 #'   covariance) is to be computed. One of "pearson" (default), "kendall", or
 #'   "spearman".
+#' @param show.p a logical value (T/F) indicating whether the p-value is 
+#' displayed. Default to T, where the p.value is displayed.
 #' @param label.sep a character string to separate the terms. Default is ", ", to
 #'   separate the correlation coefficient and the p.value.
 #' @param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -51,7 +53,7 @@ NULL
 #'
 #' @export
 stat_cor <- function(mapping = NULL, data = NULL,
-                     method = "pearson", show.p = F, label.sep = ", ",
+                     method = "pearson", show.p = T, label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
