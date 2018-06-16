@@ -101,7 +101,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
 
 
    # by_panel <- hist.data %>% group_by_(.dots = "PANEL")
-    lab_data <- .hist_label_data(p, grouping.vars = list(...)$facet.by)
+    lab_data <- .hist_label_data(p, grouping.vars = list(...)$facet.by, x = x)
     y <- "lab.y"
 
     # hist.data <- ggplot_build(p)$data[[1]][, c("x", "y", "count", "density")]
@@ -226,10 +226,11 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
 
 # Get histogram/density label y coord from ggplot output
 # grouping.vars : facet variables
-.hist_label_data <- function(p, grouping.vars = NULL){
+# x: x variable name
+.hist_label_data <- function(p, grouping.vars = NULL, x = NULL){
 
   .  <- NULL
-  x <- .mapping(p) %>%.$x
+  #x <- .mapping(p) %>%.$x
   hist.data <- ggplot_build(p)$data[[1]]
   data <- p$data
 
