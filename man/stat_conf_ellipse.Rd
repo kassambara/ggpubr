@@ -55,7 +55,7 @@ default, 0.95.}
 \item{bary}{logical value. If TRUE, the coordinates of the ellipse around the
 barycentre of individuals are calculated.}
 
-\item{...}{other arguments passed on to \code{\link[=layer]{layer()}}. These are
+\item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
