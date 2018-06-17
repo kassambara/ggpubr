@@ -339,12 +339,12 @@ p
 
     if(!is.null(yticks.by)) {
       y <- .data[, .mapping["y"]]
-      ybreaks <- seq(0, max(y), by = yticks.by)
+      ybreaks <- seq(0, max(y, na.rm = TRUE), by = yticks.by)
       p <- p + scale_y_continuous(breaks = ybreaks)
     }
     else if(!is.null(xticks.by)) {
       x <- .data[, .mapping["x"]]
-      xbreaks <- seq(0, max(x), by = xticks.by)
+      xbreaks <- seq(0, max(x, na.rm = TRUE), by = xticks.by)
       p <- p + scale_x_continuous(breaks = xbreaks)
     }
     p
