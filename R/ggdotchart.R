@@ -145,9 +145,9 @@ ggdotchart_core <- function(data, x, y, group = NULL,
       group <- NULL
   }
 
-  if(is.null(group) & color[1] %in% names(data)){
-    group <- color[1]
-  }
+  # if(is.null(group) & color[1] %in% names(data)){
+  #   group <- color[1]
+  # }
 
 
   .dots <- list(...)
