@@ -100,11 +100,13 @@
 
 <span class='co'># Arrange the plots in one page</span>
 <span class='co'># Returns a gtable (grob) object</span>
-<span class='fu'>library</span>(<span class='no'>gridExtra</span>)
-<span class='no'>gt</span> <span class='kw'>&lt;-</span> <span class='fu'>arrangeGrob</span>(<span class='no'>bxp</span>, <span class='no'>vp</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>library</span>(<span class='no'>gridExtra</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘gridExtra’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    combine</span></div><div class='input'><span class='no'>gt</span> <span class='kw'>&lt;-</span> <span class='fu'>arrangeGrob</span>(<span class='no'>bxp</span>, <span class='no'>vp</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
 <span class='co'># Transform to a ggplot and print</span>
-<span class='fu'>as_ggplot</span>(<span class='no'>gt</span>)</div><img src='as_ggplot-2.png' alt='' width='540' height='400' /><div class='input'>
+<span class='fu'>as_ggplot</span>(<span class='no'>gt</span>)</div><img src='as_ggplot-5.png' alt='' width='540' height='400' /><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
