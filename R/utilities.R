@@ -334,16 +334,17 @@ p
 .set_ticksby <- function(p, xticks.by = NULL, yticks.by = NULL)
   {
     .data <- p$data
-    .mapping <- as.character(p$mapping)
+    # .mapping <- as.character(p$mapping)
+    .mapping <- .get_gg_xy_variables(p)
 
     if(!is.null(yticks.by)) {
       y <- .data[, .mapping["y"]]
-      ybreaks <- seq(0, max(y), by = yticks.by)
+      ybreaks <- seq(0, max(y, na.rm = TRUE), by = yticks.by)
       p <- p + scale_y_continuous(breaks = ybreaks)
     }
     else if(!is.null(xticks.by)) {
       x <- .data[, .mapping["x"]]
-      xbreaks <- seq(0, max(x), by = xticks.by)
+      xbreaks <- seq(0, max(x, na.rm = TRUE), by = xticks.by)
       p <- p + scale_x_continuous(breaks = xbreaks)
     }
     p
@@ -397,7 +398,8 @@ p
 
 
   # stat summary
-  .mapping <- as.character(p$mapping)
+  #.mapping <- as.character(p$mapping)
+  .mapping <- .get_gg_xy_variables(p)
   x <- .mapping["x"]
   y <- .mapping["y"]
 
@@ -973,6 +975,7 @@ p
 
 
 # Get the mapping variables of the first layer
+#:::::::::::::::::::::::::::::::::::::::::::::::::
 .mapping <- function(p){
 
   if(is.null(p)) return(list())
@@ -992,6 +995,17 @@ p
 }
 
 
+# Get ggplot2 x and y variable
+# ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.get_gg_xy_variables <- function(p){
+  . <- NULL
+  x <- p$mapping['x'] %>% as.character() %>% gsub("~", "", .)
+  y <- p$mapping['y'] %>% as.character() %>% gsub("~", "", .)
+  xy <- c(x, y)
+  names(xy) <- c("x", "y")
+  return(xy)
+}
+
 # Add mean or median line
 # used by ggdensity and gghistogram
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1006,7 +1020,9 @@ p
 
   add <- match.arg(add)
   data <- p$data
-  x <- .mapping(p)$x
+  # x <- .mapping(p)$x
+  .mapping <- .get_gg_xy_variables(p)
+  x <- .mapping["x"]
 
   if(!(add %in% c("mean", "median")))
     return(p)

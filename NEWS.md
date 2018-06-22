@@ -1,4 +1,4 @@
-# ggpubr 0.1.6.999
+# ggpubr 0.1.7
 
 ## New features
 
@@ -13,7 +13,10 @@
 ## Bug fixes
 
 - In `ggscatterhist()` the x variable was plotted two times, on both the plot x & y margins, instead of having, as expected, a) the x variable on the main plot x margin and 2) the y variable on the main plot y margin. This has been now fixed. 
- 
+- In previous version, `ggdotchart()` sorted automatically within groups when the `color` argument is specified, even when groups = NULL. This default behaviour has been now removed. Sorting withi groups is performed only when the argument `group` is specified ([@sfeds, #90](https://github.com/kassambara/ggpubr/issues/90)).
+- Now, `yticks.by` and  `xticks.by` work with NAs ([@j3ypi, #89](https://github.com/kassambara/ggpubr/issues/89)).
+   
+   
 # ggpubr 0.1.6
 
 ## New features

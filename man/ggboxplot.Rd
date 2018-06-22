@@ -69,7 +69,7 @@ outlines.}
 
 \item{width}{numeric value between 0 and 1 specifying box width.}
 
-\item{notch}{if \code{FALSE} (default) make a standard box plot. If
+\item{notch}{If \code{FALSE} (default) make a standard box plot. If
 \code{TRUE}, make a notched box plot. Notches are used to compare groups;
 if the notches of two boxes do not overlap, this suggests that the medians
 are significantly different.}

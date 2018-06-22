@@ -20,6 +20,7 @@ reference:
       - ggline
       - ggerrorplot
       - ggpie
+      - ggdonutchart
       - ggdotchart
   - title: Plot Two Continuous Variables
     desc: Scatter plots
