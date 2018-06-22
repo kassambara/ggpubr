@@ -5,7 +5,7 @@ Version: 0.1.7
 Date: 2018-06-22
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"))
-Description: 'ggplot2' is an excellent and flexible package for elegant data
+Description: The 'ggplot2' package is excellent and flexible for elegant data
     visualization in R. However the default generated plots requires some formatting
     before we can send them for publication. Furthermore, to customize a 'ggplot',
     the syntax is opaque and this raises the level of difficulty for researchers

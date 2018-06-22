@@ -10,9 +10,11 @@ There were no ERRORs, WARNINGs or NOTEs.
 I have also run R CMD check on downstream dependencies of ggpubr. 
 All packages that I could install passed.
 
-## Update
-This is an update version 0.1.7 (see NEWS.md)
+## Resubmission
 
+This is a resubmission. In this version I have:
+
+* Reformulated the DESCRIPTION file so that it startds with capital letter
 
 
 
