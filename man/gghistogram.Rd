@@ -12,7 +12,7 @@ gghistogram(data, x, y = "..count..", combine = FALSE, merge = FALSE,
   "median"), add.params = list(linetype = "dashed"), rug = FALSE,
   add_density = FALSE, label = NULL, font.label = list(size = 11, color =
   "black"), label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  ggtheme = theme_pubr(), ...)
+  position = position_identity(), ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -107,6 +107,10 @@ text labels or not.}
 
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
+
+\item{position}{Position adjustment, either as a string, or the result of a
+call to a position adjustment function. Allowed values include "identity",
+"stack", "dodge".}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

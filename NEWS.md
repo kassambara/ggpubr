@@ -2,13 +2,14 @@
   
   
 ## New features
-
+ 
 
 ## Major changes
 
 
 ## Minor changes
-
+   
+- New argument `position` added in `gghistogram()`. Allowed values include "identity", "stack", "dodge".
 
 ## Bug fixes
 
