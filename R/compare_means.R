@@ -234,6 +234,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
            method = method.name)
 
   res %>%
+    mutate(p.adj = format.pval(p.adj, digits = 2)) %>%
     dplyr::tbl_df()
 }
 
