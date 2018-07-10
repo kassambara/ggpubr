@@ -3,6 +3,8 @@
   
 ## New features
  
+- New function `stat_pvalue_manual()` for adding p-values generated elswhere ([@achamess, #81](https://github.com/kassambara/ggpubr/issues/81), [@grst, #65](https://github.com/kassambara/ggpubr/issues/65)).
+
 
 ## Major changes
 
