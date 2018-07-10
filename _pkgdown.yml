@@ -37,6 +37,7 @@ reference:
     contents:
       - compare_means
       - stat_compare_means
+      - stat_pvalue_manual
   - title: Plot Tables and Paragraphs
     contents:
       - ggtexttable
