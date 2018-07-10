@@ -103,5 +103,10 @@ StatCor<- ggproto("StatCor", Stat,
   cortxt <- paste0("r = ", signif(.cor$estimate, 2),
                    label.sep,  pvaltxt)
   z$label <- cortxt
+  estimate <- p.value <- NULL
+  z <- z %>% dplyr::mutate(
+    r = signif(estimate, 2),
+    p = signif(p.value, 2)
+  )
   z
 }
