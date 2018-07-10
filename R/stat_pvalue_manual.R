@@ -51,6 +51,7 @@ stat_pvalue_manual <- function(
   )
 {
 
+
   available.variables <- colnames(data)
 
   if(!(label %in% available.variables))
