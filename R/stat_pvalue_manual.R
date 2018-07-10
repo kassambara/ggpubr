@@ -42,27 +42,6 @@ NULL
 #' # Create a box plot and add the p-value
 #' ggboxplot(ToothGrowth, x = "dose", y = "len") +
 #'   stat_pvalue_manual(stat.test, label = "p.adj")
-#'
-#' #:::::::::::::::::::::::::::::::::::
-#' # Use facet
-#' #:::::::::::::::::::::::::::::::::::
-#' # Pairwise t-test between groups
-#' stat.test <- ToothGrowth %>%
-#'   group_by(dose) %>%
-#'   do(t_test(data = ., len ~ supp)) %>%
-#'   ungroup() %>%
-#'   adjust_pvalue() %>%
-#'   mutate(y.position = 35)
-#' stat.test
-#' # Create a box plot and add the p-value
-#' p <- ggboxplot(
-#'   ToothGrowth, x = "supp", y = "len",
-#'   color = "supp", palette = "jco",
-#'   facet.by = "dose", ylim = c(0, 40)
-#' )
-#'
-#' p + stat_pvalue_manual(stat.test, label = "p.adj")
-#'
 #'@export
 stat_pvalue_manual <- function(
   data, label = "p", y.position = "y.position",
