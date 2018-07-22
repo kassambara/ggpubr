@@ -980,11 +980,23 @@ p
 
   if(is.null(p)) return(list())
 
-  res0 <- as.character(p$mapping)
-  res1 <- NULL
-  if(!.is_empty(p$layers))
-    res1 <- as.character(p$layers[[1]]$mapping)
-  c(res0, res1) %>%
+  . <- NULL
+
+  layer0.mapping <- as.character(p$mapping) %>% gsub("~", "", .)
+  layer0.mapping.labels <- p$mapping %>% names()
+  names(layer0.mapping) <- layer0.mapping.labels
+
+  layer1.mapping <- NULL
+
+  if(!.is_empty(p$layers)){
+    layer1.mapping <- p$layers[[1]]$mapping %>%
+      as.character() %>% gsub("~", "", .)
+    layer1.mapping.labels <- p$layers[[1]]$mapping %>%
+      names()
+    names(layer1.mapping) <- layer1.mapping.labels
+  }
+
+  c(layer0.mapping, layer1.mapping) %>%
     as.list()
 }
 
