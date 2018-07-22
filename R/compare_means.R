@@ -225,7 +225,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   pvalue.format <- format.pval(res$p, digits = 2)
 
-  .y. <- NULL
+  .y. <- p.adj <- NULL
   .p.adjust <- function(d, ...) {data.frame(p.adj = stats::p.adjust(d$p, ...))}
   by_y <- res %>% group_by(.y.)
   pvalue.adj <- do(by_y, .p.adjust(., method = p.adjust.method))
