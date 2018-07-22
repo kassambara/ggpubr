@@ -30,11 +30,6 @@ as a simple text.}
 
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column. Default is 0.03.}
-
-\item{...}{other arguments passed on to \code{\link{layer}}. These are
-often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
 }
 \description{
 Add manually p-values to a ggplot, such as box blots, dot plots

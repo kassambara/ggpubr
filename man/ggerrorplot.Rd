@@ -87,9 +87,6 @@ c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
 when add != "none" and add contains one "mean_*" or "med_*" where "*" = sd,
 se, ....}
 
-\item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function.}
-
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....}
