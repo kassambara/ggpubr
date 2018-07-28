@@ -17,9 +17,9 @@ the y coordinates of the p-values in the plot.}
 \item{label}{the column containing the label (e.g.: label = "p"). Default
 value is "p", for p-value.}
 
-\item{y.position}{\code{numeric} column containing the coordinates (in data
+\item{y.position}{column containing the coordinates (in data
 units) to be used for absolute positioning of the label. Default value is
-"y.position".}
+"y.position". Can be also a numeric vector.}
 
 \item{xmin}{column containing the position of the left sides of the brackets.
 Default value is "group1".}
@@ -30,6 +30,11 @@ as a simple text.}
 
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column. Default is 0.03.}
+
+\item{...}{other arguments passed on to \code{\link{layer}}. These are
+often aesthetics, used to set an aesthetic to a fixed value, like
+\code{color = "red"} or \code{size = 3}. They may also be parameters
+to the paired geom/stat.}
 }
 \description{
 Add manually p-values to a ggplot, such as box blots, dot plots

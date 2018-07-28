@@ -14,9 +14,9 @@ NULL
 #'  the y coordinates of the p-values in the plot.
 #'@param label the column containing the label (e.g.: label = "p"). Default
 #'  value is "p", for p-value.
-#'@param y.position \code{numeric} column containing the coordinates (in data
+#'@param y.position column containing the coordinates (in data
 #'  units) to be used for absolute positioning of the label. Default value is
-#'  "y.position".
+#'  "y.position". Can be also a numeric vector.
 #'@param xmin column containing the position of the left sides of the brackets.
 #'  Default value is "group1".
 #'@param xmax  (optional) column containing the position of the right sides of
@@ -59,6 +59,10 @@ stat_pvalue_manual <- function(
   if(!(xmin %in% available.variables))
     stop("can't find the xmin variable '", xmin, "' in the data")
 
+  y.position <- .valide_y_position(y.position, data)
+  if(is.numeric(y.position))
+    data <- data %>% mutate(y.position = y.position)
+
   # If xmax is null, pvalue is drawn as text
   if(!is.null(xmax)) {
     xmax <- data %>% pull(xmax)
@@ -100,4 +104,22 @@ stat_pvalue_manual <- function(
       data = data, ...
     )
   }
+}
+
+
+# get validate p-value y-position
+.valide_y_position <- function(y.position, data){
+  if(is.numeric(y.position)){
+    number.of.test <- nrow(data)
+    number.of.ycoord <- length(y.position)
+    xtimes <- number.of.test/number.of.ycoord
+
+    if(number.of.ycoord < number.of.test)
+      y.position <- rep(y.position, xtimes)
+  }
+  else if(is.character(y.position)){
+    if(!(y.position %in% colnames(data)))
+      stop("can't find the y.position variable '", y.position, "' in the data")
+  }
+  return(y.position)
 }
