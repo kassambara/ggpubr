@@ -65,10 +65,16 @@ labelled only by variable grouping levels.}
 
 \item{linetype}{line types.}
 
+\item{trim}{If \code{TRUE} (default), trim the tails of the violins
+to the range of the data. If \code{FALSE}, don't trim the tails.}
+
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}
 
 \item{width}{violin width.}
+
+\item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
+at the given quantiles of the density estimate.}
 
 \item{select}{character vector specifying which items to display.}
 
@@ -115,6 +121,9 @@ text labels or not.}
 
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
+
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
