@@ -29,7 +29,8 @@ Imports:
     cowplot,
     ggsignif,
     scales,
-    gridExtra
+    gridExtra,
+    glue
 Suggests:
     grDevices,
     knitr,
@@ -92,6 +93,7 @@ Collate:
     'ggviolin.R'
     'gradient_color.R'
     'grids.R'
+    'reexports.R'
     'rotate.R'
     'rotate_axis_text.R'
     'rremove.R'

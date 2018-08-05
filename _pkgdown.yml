@@ -94,6 +94,7 @@ reference:
       - stat_chull
       - stat_conf_ellipse
       - stat_mean
+      - reexports
 
 
 
