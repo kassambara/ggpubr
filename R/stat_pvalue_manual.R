@@ -1,6 +1,7 @@
 #' @include utilities.R
 #' @importFrom dplyr pull
 #' @importFrom dplyr tibble
+#' @importFrom glue glue
 NULL
 #'Add Manually P-values to a ggplot
 #'
@@ -13,10 +14,12 @@ NULL
 #'  have been compared. \code{p} is the resulting p-value. \code{y.position} is
 #'  the y coordinates of the p-values in the plot.
 #'@param label the column containing the label (e.g.: label = "p"). Default
-#'  value is "p", for p-value.
-#'@param y.position column containing the coordinates (in data
-#'  units) to be used for absolute positioning of the label. Default value is
-#'  "y.position". Can be also a numeric vector.
+#'  value is "p", for p-value. Can be also an expression that can be formatted
+#'  by the \code{\link[glue]{glue}()} package. For example, when specifying label =
+#'  "t-test, p = \{p\}", the expression \{p\} will be replaced by its value.
+#'@param y.position column containing the coordinates (in data units) to be used
+#'  for absolute positioning of the label. Default value is "y.position". Can be
+#'  also a numeric vector.
 #'@param xmin column containing the position of the left sides of the brackets.
 #'  Default value is "group1".
 #'@param xmax  (optional) column containing the position of the right sides of
@@ -51,6 +54,11 @@ stat_pvalue_manual <- function(
   )
 {
 
+  # If label is a glue package expression
+  if(.contains_curlybracket(label)){
+    data <- data %>% mutate(label = glue(label))
+    label <- "label"
+  }
 
   available.variables <- colnames(data)
 
@@ -122,4 +130,10 @@ stat_pvalue_manual <- function(
       stop("can't find the y.position variable '", y.position, "' in the data")
   }
   return(y.position)
+}
+
+
+# Check if a string contains curly bracket
+.contains_curlybracket <- function(x){
+  grepl("\\{|\\}", x, perl = TRUE)
 }
