@@ -15,8 +15,9 @@ NULL
 #'  the y coordinates of the p-values in the plot.
 #'@param label the column containing the label (e.g.: label = "p"). Default
 #'  value is "p", for p-value. Can be also an expression that can be formatted
-#'  by the \code{\link[glue]{glue}()} package. For example, when specifying label =
-#'  "t-test, p = \{p\}", the expression \{p\} will be replaced by its value.
+#'  by the \code{\link[glue]{glue}()} package. For example, when specifying
+#'  label = "t-test, p = \{p\}", the expression \{p\} will be replaced by its
+#'  value.
 #'@param y.position column containing the coordinates (in data units) to be used
 #'  for absolute positioning of the label. Default value is "y.position". Can be
 #'  also a numeric vector.
@@ -27,6 +28,9 @@ NULL
 #'  as a simple text.
 #'@param tip.length numeric vector with the fraction of total height that the
 #'  bar goes down to indicate the precise column. Default is 0.03.
+#'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
+#'  plot. Considered only in the situation, where comparisons are performed
+#'  against reference group or against "all".
 #'@seealso \code{\link{stat_compare_means}}
 #'@examples
 #'
@@ -62,7 +66,7 @@ NULL
 stat_pvalue_manual <- function(
   data, label = "p", y.position = "y.position",
   xmin = "group1", xmax = "group2",
-  tip.length = 0.03,
+  tip.length = 0.03, remove.bracket = FALSE,
   ...
   )
 {
@@ -79,6 +83,16 @@ stat_pvalue_manual <- function(
     stop("can't find the label variable '", label, "' in the data")
   if(!(xmin %in% available.variables))
     stop("can't find the xmin variable '", xmin, "' in the data")
+
+  if(remove.bracket){
+    group1.length <- data %>% pull(xmin) %>%
+      unique() %>% length()
+    if(group1.length == 1) {
+      xmax <- NULL
+      if(missing(xmin)) xmin <- "group2"
+    }
+    else warning("Pairwise comparison: bracket can't be removed", call. = FALSE)
+  }
 
   y.position <- .valide_y_position(y.position, data)
   if(is.numeric(y.position))

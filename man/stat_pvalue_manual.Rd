@@ -5,7 +5,8 @@
 \title{Add Manually P-values to a ggplot}
 \usage{
 stat_pvalue_manual(data, label = "p", y.position = "y.position",
-  xmin = "group1", xmax = "group2", tip.length = 0.03, ...)
+  xmin = "group1", xmax = "group2", tip.length = 0.03,
+  remove.bracket = FALSE, ...)
 }
 \arguments{
 \item{data}{a data frame containing statitistical test results. The expected
@@ -32,6 +33,8 @@ as a simple text.}
 
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column. Default is 0.03.}
+
+\item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the plot.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
