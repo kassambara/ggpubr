@@ -26,6 +26,8 @@ NULL
 #'@param xmax  (optional) column containing the position of the right sides of
 #'  the brackets. Default value is "group2". If NULL, the p-values are plotted
 #'  as a simple text.
+#'@param x x position of the p-value. Should be used only when you want plot the
+#'  p-value as text (without brackets).
 #'@param tip.length numeric vector with the fraction of total height that the
 #'  bar goes down to indicate the precise column. Default is 0.03.
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
@@ -65,7 +67,7 @@ NULL
 #'@export
 stat_pvalue_manual <- function(
   data, label = "p", y.position = "y.position",
-  xmin = "group1", xmax = "group2",
+  xmin = "group1", xmax = "group2", x = NULL,
   tip.length = 0.03, remove.bracket = FALSE,
   ...
   )
@@ -75,6 +77,11 @@ stat_pvalue_manual <- function(
   if(.contains_curlybracket(label)){
     data <- data %>% mutate(label = glue(label))
     label <- "label"
+  }
+  # P-value displayed as text (without brackets)
+  if(!missing(x)){
+    xmin <- x
+    xmax <- NULL
   }
 
   available.variables <- colnames(data)

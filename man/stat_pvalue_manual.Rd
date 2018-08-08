@@ -5,7 +5,7 @@
 \title{Add Manually P-values to a ggplot}
 \usage{
 stat_pvalue_manual(data, label = "p", y.position = "y.position",
-  xmin = "group1", xmax = "group2", tip.length = 0.03,
+  xmin = "group1", xmax = "group2", x = NULL, tip.length = 0.03,
   remove.bracket = FALSE, ...)
 }
 \arguments{
@@ -17,8 +17,9 @@ the y coordinates of the p-values in the plot.}
 
 \item{label}{the column containing the label (e.g.: label = "p"). Default
 value is "p", for p-value. Can be also an expression that can be formatted
-by the \code{\link[glue]{glue}()} package. For example, when specifying label =
-"t-test, p = \{p\}", the expression \{p\} will be replaced by its value.}
+by the \code{\link[glue]{glue}()} package. For example, when specifying
+label = "t-test, p = \{p\}", the expression \{p\} will be replaced by its
+value.}
 
 \item{y.position}{column containing the coordinates (in data units) to be used
 for absolute positioning of the label. Default value is "y.position". Can be
@@ -31,10 +32,15 @@ Default value is "group1".}
 the brackets. Default value is "group2". If NULL, the p-values are plotted
 as a simple text.}
 
+\item{x}{x position of the p-value. Should be used only when you want plot the
+p-value as text (without brackets).}
+
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column. Default is 0.03.}
 
-\item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the plot.}
+\item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
+plot. Considered only in the situation, where comparisons are performed
+against reference group or against "all".}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
