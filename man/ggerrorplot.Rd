@@ -9,7 +9,7 @@ ggerrorplot(data, x, y, desc_stat = "mean_se", combine = FALSE,
   size = NULL, width = NULL, title = NULL, xlab = NULL, ylab = NULL,
   facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
   select = NULL, remove = NULL, order = NULL, add = "none",
-  add.params = list(), error.plot = "pointrange",
+  add.params = list(), error.plot = "pointrange", ci = 0.95,
   position = position_dodge(), ggtheme = theme_pubr(), ...)
 }
 \arguments{
@@ -86,6 +86,8 @@ c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
 "lower_linerange"). Default value is "pointrange" or "errorbar". Used only
 when add != "none" and add contains one "mean_*" or "med_*" where "*" = sd,
 se, ....}
+
+\item{ci}{the percent range of the confidence interval (default is 0.95).}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}

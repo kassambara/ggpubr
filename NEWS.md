@@ -12,6 +12,7 @@
 ## Minor changes
    
 - New argument `position` added in `gghistogram()`. Allowed values include "identity", "stack", "dodge".
+- New argument `ci` added in `ggerrorplot()` [@abrar-alshaer, #94](https://github.com/kassambara/ggpubr/issues/94)
 
 ## Bug fixes
 

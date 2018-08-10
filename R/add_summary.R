@@ -43,7 +43,7 @@ NULL
 #'@export
 add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
                         color = "black", fill = "white",
-                        width = NULL, shape = 19, size = 1,
+                        width = NULL, shape = 19, size = 1, ci = 0.95,
                         data = NULL, position = position_dodge(0.8))
   {
 
@@ -109,6 +109,7 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
             color = color,  geom = geom, size = size,
             data = data, position = position,
             fun.args = list(error.limit = error.limit))
+  if(fun == "mean_ci") opts$fun.args$ci <- ci
 
   # Specific option
   #::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -6,7 +6,7 @@
 \usage{
 ggadd(p, add = NULL, color = "black", fill = "white", width = 1,
   shape = 19, size = NULL, alpha = 1, jitter = 0.2, binwidth = NULL,
-  dotsize = size, error.plot = "pointrange", data = NULL,
+  dotsize = size, error.plot = "pointrange", ci = 0.95, data = NULL,
   position = position_dodge(0.8), p_geom = "")
 }
 \arguments{
@@ -46,6 +46,8 @@ when \code{add} contains "dotplot".}
 \code{c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
 "lower_errorbar", "upper_pointrange", "lower_pointrange", "upper_linerange",
 "lower_linerange")}. Default value is "pointrange".}
+
+\item{ci}{the percent range of the confidence interval (default is 0.95).}
 
 \item{data}{a \code{data.frame} to be displayed. If \code{NULL}, the default, the
 data is inherited from the plot data as specified in the call to \link[ggplot2]{ggplot}.}

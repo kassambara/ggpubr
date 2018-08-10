@@ -4,6 +4,7 @@ NULL
 #'@description Visualizing error.
 #'@inheritParams ggboxplot
 #'@inheritParams ggplot2::geom_errorbar
+#'@param ci the percent range of the confidence interval (default is 0.95).
 #'@param x,y x and y variables for drawing.
 #'@param color,fill outline and fill colors.
 #'@param desc_stat descriptive statistics to be used for visualizing errors. Default value is "mean_se".
@@ -76,7 +77,7 @@ ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
                         select = NULL, remove = NULL, order = NULL,
                         add = "none",
                         add.params = list(),
-                        error.plot = "pointrange",
+                        error.plot = "pointrange", ci = 0.95,
                         position = position_dodge(),
                         ggtheme = theme_pubr(),
                         ...)
@@ -92,7 +93,7 @@ ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     select = select , remove = remove, order = order,
-    add = add, add.params = add.params, error.plot = error.plot,
+    add = add, add.params = add.params, error.plot = error.plot, ci = ci,
     position = position, ggtheme = ggtheme, ...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
@@ -124,7 +125,7 @@ ggerrorplot_core <- function(data, x, y, desc_stat = "mean_se",
                       select = NULL, order = NULL,
                       add = "none",
                       add.params = list(),
-                      error.plot = "pointrange",
+                      error.plot = "pointrange", ci = 0.95,
                       position = position_dodge(0.8),
                       ggtheme = theme_pubr(),
                       ...)
@@ -143,7 +144,7 @@ ggerrorplot_core <- function(data, x, y, desc_stat = "mean_se",
   if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.8
   p <- ggplot(data, aes_string(x, y))
   add.params <- add.params %>%
-    .add_item(add = add, data = data, error.plot = error.plot, position = position, p = p)
+    .add_item(add = add, data = data, error.plot = error.plot, ci = ci, position = position, p = p)
   p <- do.call(ggadd, add.params)
 
   # Main plot

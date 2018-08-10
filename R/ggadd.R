@@ -41,7 +41,7 @@ NULL
 ggadd <- function(p, add = NULL, color = "black", fill = "white",
                   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
                   binwidth = NULL, dotsize = size,
-                  error.plot = "pointrange",
+                  error.plot = "pointrange", ci = 0.95,
                   data = NULL, position = position_dodge(0.8),
                   p_geom = ""
 )
@@ -138,7 +138,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white",
       width <- 0.1
     else if(error.plot == "crossbar" & .geom(p) == "violin") width = 0.2
     p <- p %>% add_summary(errors, error.plot = error.plot, color = color, shape = shape,
-                  position = position, size = size, width = width)
+                  position = position, size = size, width = width, ci = ci)
   }
 
   p

@@ -13,7 +13,7 @@
 \usage{
 add_summary(p, fun = "mean_se", error.plot = "pointrange",
   color = "black", fill = "white", width = NULL, shape = 19, size = 1,
-  data = NULL, position = position_dodge(0.8))
+  ci = 0.95, data = NULL, position = position_dodge(0.8))
 
 mean_se_(x, error.limit = "both")
 
@@ -55,6 +55,8 @@ c("crossbar", "errorbar").}
 
 \item{size}{numeric value in [0-1] specifying point and line size.}
 
+\item{ci}{the percent range of the confidence interval (default is 0.95).}
+
 \item{data}{a \code{data.frame} to be displayed. If \code{NULL}, the default, the
 data is inherited from the plot data as specified in the call to \link[ggplot2]{ggplot}.}
 
@@ -67,8 +69,6 @@ groups.}
 \item{error.limit}{allowed values are one of ("both", "lower", "upper", "none")
 specifying whether to plot the lower and/or the upper limits of error
 interval.}
-
-\item{ci}{the percent range of the confidence interval (default is 0.95).}
 }
 \description{
 add summary statistics onto a ggplot.
