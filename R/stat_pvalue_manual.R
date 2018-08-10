@@ -28,6 +28,8 @@ NULL
 #'  as a simple text.
 #'@param x x position of the p-value. Should be used only when you want plot the
 #'  p-value as text (without brackets).
+#'@param size,label.size size of label text.
+#'@param bracket.size Width of the lines of the bracket.
 #'@param tip.length numeric vector with the fraction of total height that the
 #'  bar goes down to indicate the precise column. Default is 0.03.
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
@@ -68,7 +70,8 @@ NULL
 stat_pvalue_manual <- function(
   data, label = "p", y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
-  tip.length = 0.03, remove.bracket = FALSE,
+  size = 3.88, label.size = size, bracket.size = 0.5, tip.length = 0.03,
+  remove.bracket = FALSE,
   ...
   )
 {
@@ -133,6 +136,7 @@ stat_pvalue_manual <- function(
     ggsignif::geom_signif(
       mapping = mapping, data = data,
       manual= TRUE, tip_length =  tip.length,
+      textsize = label.size, size = bracket.size,
       ...
     )
   }
@@ -143,7 +147,7 @@ stat_pvalue_manual <- function(
 
     geom_text(
       aes(x = xmin, y = y.position, label = label),
-      data = data, ...
+      data = data, size = label.size,  ...
     )
   }
 }

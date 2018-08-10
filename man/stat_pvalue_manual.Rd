@@ -5,7 +5,8 @@
 \title{Add Manually P-values to a ggplot}
 \usage{
 stat_pvalue_manual(data, label = "p", y.position = "y.position",
-  xmin = "group1", xmax = "group2", x = NULL, tip.length = 0.03,
+  xmin = "group1", xmax = "group2", x = NULL, size = 3.88,
+  label.size = size, bracket.size = 0.5, tip.length = 0.03,
   remove.bracket = FALSE, ...)
 }
 \arguments{
@@ -34,6 +35,10 @@ as a simple text.}
 
 \item{x}{x position of the p-value. Should be used only when you want plot the
 p-value as text (without brackets).}
+
+\item{size, label.size}{size of label text.}
+
+\item{bracket.size}{Width of the lines of the bracket.}
 
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column. Default is 0.03.}
