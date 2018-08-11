@@ -38,15 +38,15 @@ covariance) is to be computed. One of "pearson" (default), "kendall", or
 separate the correlation coefficient and the p.value.}
 
 \item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
-  vector of the same length as the number of groups and/or panels. If too
-  short they will be recycled. \itemize{ \item If \code{numeric}, value
-  should be between 0 and 1. Coordinates to be used for positioning the
-  label, expressed in "normalized parent coordinates". \item If
-  \code{character}, allowed values include: i) one of c('right', 'left',
-  'center', 'centre', 'middle') for x-axis; ii) and one of c( 'bottom',
-  'top', 'center', 'centre', 'middle') for y-axis.}
+ vector of the same length as the number of groups and/or panels. If too
+ short they will be recycled. \itemize{ \item If \code{numeric}, value should
+ be between 0 and 1. Coordinates to be used for positioning the label,
+ expressed in "normalized parent coordinates". \item If \code{character},
+ allowed values include: i) one of c('right', 'left', 'center', 'centre',
+ 'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
+ 'middle') for y-axis.}
 
-  If too short they will be recycled.}
+ If too short they will be recycled.}
 
 \item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
@@ -58,8 +58,8 @@ for absolute positioning of the label. If too short they will be recycled.}
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
-\item{na.rm}{If FALSE (the default), removes missing values with a warning.
-If TRUE silently removes missing values.}
+\item{na.rm}{If FALSE (the default), removes missing values with a warning. If
+TRUE silently removes missing values.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
@@ -76,7 +76,8 @@ the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
 \code{\link[ggplot2]{geom_label}}.}
 }
 \description{
-Add correlation coefficients with p-values to a scatter plot.
+Add correlation coefficients with p-values to a scatter plot. Can
+ be also used to add `R2`.
 }
 \examples{
 # Load data
