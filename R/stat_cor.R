@@ -42,6 +42,13 @@ NULL
 #' # Add correlation coefficient
 #' sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
 #'
+#'# Use R2 instead of R
+#'ggscatter(df, x = "wt", y = "mpg", add = "reg.line") +
+#'  stat_cor(
+#'    aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+#'   label.x = 3
+#' )
+#'
 #' # Color by groups and facet
 #' #::::::::::::::::::::::::::::::::::::::::::::::::::::
 #' sp <- ggscatter(df, x = "wt", y = "mpg",
