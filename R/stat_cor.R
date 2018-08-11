@@ -94,7 +94,8 @@ StatCor<- ggproto("StatCor", Stat,
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
                                                 label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-                                                label.x = label.x, label.y = label.y )
+                                                label.x = label.x, label.y = label.y ) %>%
+                      mutate(hjust = 0)
                     cbind(.test, .label.pms)
                   }
 )
