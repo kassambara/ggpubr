@@ -94,8 +94,10 @@ Add regression line equation and R^2 to a ggplot. Regression
 # regression line
 #::::::::::::::::::::::::::::::::::::::::::::::::::::
 ggscatter(mtcars, x = "wt", y = "mpg", add = "reg.line") +
-  stat_cor(label.x = 3.5, label.y = 34) +
-  stat_regline_equation(label.x = 3.5, label.y = 33)
+  stat_cor(label.x = 3, label.y = 34) +
+  stat_regline_equation(label.x = 3, label.y = 32)
+
+
 # Groupped scatter plot
 #::::::::::::::::::::::::::::::::::::::::::::::::::::
 ggscatter(
