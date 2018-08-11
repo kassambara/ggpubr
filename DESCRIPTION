@@ -30,7 +30,8 @@ Imports:
     ggsignif,
     scales,
     gridExtra,
-    glue
+    glue,
+    polynom
 Suggests:
     grDevices,
     knitr,
@@ -39,7 +40,7 @@ Suggests:
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 6.0.1
-Collate: 
+Collate:
     'utilities_color.R'
     'utilities_base.R'
     'desc_statby.R'
@@ -103,6 +104,7 @@ Collate:
     'stat_compare_means.R'
     'stat_mean.R'
     'stat_pvalue_manual.R'
+    'stat_regline_equation.R'
     'text_grob.R'
     'theme_pubr.R'
     'theme_transparent.R'
