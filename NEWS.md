@@ -11,6 +11,7 @@
 
 ## Minor changes
    
+- New argument `bracket.size` added to `stat_compare_means()` [@mtmatter, #43](https://github.com/kassambara/ggpubr/issues/43)
 - Now, the function `stat_cor()` supports R^2 as an option [@philament, #32](https://github.com/kassambara/ggpubr/issues/32)
 - New argument `position` added in `gghistogram()`. Allowed values include "identity", "stack", "dodge".
 - New argument `ci` added in `ggerrorplot()` [@abrar-alshaer, #94](https://github.com/kassambara/ggpubr/issues/94)

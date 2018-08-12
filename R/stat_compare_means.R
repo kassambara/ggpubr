@@ -36,7 +36,7 @@ NULL
 #'  If too short they will be recycled.
 #'@param label.x,label.y \code{numeric} Coordinates (in data units) to be used
 #'  for absolute positioning of the label. If too short they will be recycled.
-#'
+#'@param bracket.size Width of the lines of the bracket.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -99,6 +99,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      comparisons = NULL, hide.ns = FALSE, label.sep = ", ",
                      label = NULL, label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, tip.length = 0.03,
+                     bracket.size = 0.3,
                      symnum.args = list(),
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
@@ -140,7 +141,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     step_increase <- ifelse(is.null(label.y), 0.12, 0)
     ggsignif::geom_signif(comparisons = comparisons, y_position = label.y,
                           test = method, test.args = method.args,
-                          step_increase = step_increase, size = 0.3, textsize = size, color = color,
+                          step_increase = step_increase, size = bracket.size, textsize = size, color = color,
                           map_signif_level = map_signif_level, tip_length = tip.length,
                           data = data)
   }
