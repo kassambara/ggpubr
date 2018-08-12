@@ -202,7 +202,6 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
   if(missing(ggtheme) & (!is.null(facet.by) | combine))
     .opts$ggtheme <- theme_pubr(border = TRUE)
   p <- do.call(.plotter, .opts)
-
   if(.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)
 
@@ -227,7 +226,6 @@ ggscatter_core <- function(data, x, y,
                       ggtheme = theme_classic(),
                       ...)
 {
-
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
 
@@ -238,7 +236,6 @@ ggscatter_core <- function(data, x, y,
     else data$label.xx <- label
     label <- "label.xx"
   }
-
   # label font
   font.label <- .parse_font(font.label)
   font.label$size <- ifelse(is.null(font.label$size), 12, font.label$size)
@@ -335,7 +332,6 @@ ggscatter_core <- function(data, x, y,
   # ++++++
   alpha <- 1
   if(!is.null(list(...)$alpha)) alpha <- list(...)$alpha
-
   if(!is.null(label)) {
     lab_data <- data
     # Select some labels to show
@@ -352,7 +348,7 @@ ggscatter_core <- function(data, x, y,
                           alpha = alpha, family = font.family,
                           box.padding = unit(0.35, "lines"),
                           point.padding = unit(0.3, "lines"),
-                          force = 1, show.legend = show.legend.text)
+                          force = 1, show.legend = show.legend.text, seed=123)
     }
     else{
       ggfunc <- geom_text
