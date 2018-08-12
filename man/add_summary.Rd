@@ -12,8 +12,9 @@
 \title{Add Summary Statistics onto a ggplot.}
 \usage{
 add_summary(p, fun = "mean_se", error.plot = "pointrange",
-  color = "black", fill = "white", width = NULL, shape = 19, size = 1,
-  ci = 0.95, data = NULL, position = position_dodge(0.8))
+  color = "black", fill = "white", group = 1, width = NULL,
+  shape = 19, size = 1, ci = 0.95, data = NULL,
+  position = position_dodge(0.8))
 
 mean_se_(x, error.limit = "both")
 
@@ -45,6 +46,10 @@ frame with variables ymin, y, and ymax. Allowed values are one of: "mean",
 \item{color}{point or outline color.}
 
 \item{fill}{fill color. Used only whne \code{error.plot = "crossbar"}.}
+
+\item{group}{grouping variable. Allowed values are 1 (for one group) or a
+character vector specifying the name of the grouping variable. Used only for
+adding statistical summary per group.}
 
 \item{width}{numeric value between 0 and 1 specifying bar or box width.
 Example width = 0.8. Used only when \code{error.plot} is one of

@@ -4,10 +4,10 @@
 \alias{ggadd}
 \title{Add Summary Statistics or a Geom onto a ggplot}
 \usage{
-ggadd(p, add = NULL, color = "black", fill = "white", width = 1,
-  shape = 19, size = NULL, alpha = 1, jitter = 0.2, binwidth = NULL,
-  dotsize = size, error.plot = "pointrange", ci = 0.95, data = NULL,
-  position = position_dodge(0.8), p_geom = "")
+ggadd(p, add = NULL, color = "black", fill = "white", group = 1,
+  width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
+  binwidth = NULL, dotsize = size, error.plot = "pointrange", ci = 0.95,
+  data = NULL, position = position_dodge(0.8), p_geom = "")
 }
 \arguments{
 \item{p}{a ggplot}
@@ -20,6 +20,10 @@ Allowed values are one or the combination of: "none", "dotplot", "jitter",
 \item{color}{point or outline color.}
 
 \item{fill}{fill color. Used only when \code{error.plot = "crossbar"}.}
+
+\item{group}{grouping variable. Allowed values are 1 (for one group) or a
+character vector specifying the name of the grouping variable. Used only for
+adding statistical summary per group.}
 
 \item{width}{numeric value between 0 and 1 specifying bar or box width.
 Example width = 0.8. Used only when \code{error.plot} is one of

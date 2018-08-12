@@ -10,6 +10,9 @@ NULL
 #'  "median", "median_iqr", "median_mad", "median_range".
 #'@param color point or outline color.
 #'@param fill fill color. Used only when \code{error.plot = "crossbar"}.
+#'@param group grouping variable. Allowed values are 1 (for one group) or a
+#'  character vector specifying the name of the grouping variable. Used only for
+#'  adding statistical summary per group.
 #'@param width numeric value between 0 and 1 specifying bar or box width.
 #'  Example width = 0.8. Used only when \code{error.plot} is one of
 #'  c("crossbar", "errorbar").
@@ -38,7 +41,7 @@ NULL
 #'p %>% ggadd(c("boxplot", "jitter"), color = "dose")
 #'
 #'@export
-ggadd <- function(p, add = NULL, color = "black", fill = "white",
+ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
                   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
                   binwidth = NULL, dotsize = size,
                   error.plot = "pointrange", ci = 0.95,
@@ -129,7 +132,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white",
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   if(!.is_empty(center))
     p <- p %>% add_summary(fun = center, color = color, shape = shape,
-                  position = position, size = size)
+                  position = position, size = size, group = group)
 
   # Add erors
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -138,7 +141,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white",
       width <- 0.1
     else if(error.plot == "crossbar" & .geom(p) == "violin") width = 0.2
     p <- p %>% add_summary(errors, error.plot = error.plot, color = color, shape = shape,
-                  position = position, size = size, width = width, ci = ci)
+                  position = position, size = size, width = width, ci = ci, group = group)
   }
 
   p

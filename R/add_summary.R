@@ -13,6 +13,9 @@ NULL
 #'  "lower_linerange")}. Default value is "pointrange".
 #'@param color point or outline color.
 #'@param fill fill color. Used only whne \code{error.plot = "crossbar"}.
+#'@param group grouping variable. Allowed values are 1 (for one group) or a
+#'  character vector specifying the name of the grouping variable. Used only for
+#'  adding statistical summary per group.
 #'@param width numeric value between 0 and 1 specifying bar or box width.
 #'  Example width = 0.8. Used only when \code{error.plot} is one of
 #'  c("crossbar", "errorbar").
@@ -42,7 +45,7 @@ NULL
 #' @describeIn add_summary add summary statistics onto a ggplot.
 #'@export
 add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
-                        color = "black", fill = "white",
+                        color = "black", fill = "white", group = 1,
                         width = NULL, shape = 19, size = 1, ci = 0.95,
                         data = NULL, position = position_dodge(0.8))
   {
@@ -108,7 +111,7 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
             fun.ymin = fun.ymin, fun.ymax = fun.ymax,
             color = color,  geom = geom, size = size,
             data = data, position = position,
-            fun.args = list(error.limit = error.limit))
+            fun.args = list(error.limit = error.limit), group = group)
   if(fun == "mean_ci") opts$fun.args$ci <- ci
 
   # Specific option
