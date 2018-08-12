@@ -84,7 +84,7 @@ NULL
 #'
 #'@export
 ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
-                     color = "black", fill = "white", palette = NULL,
+                     color = "black", fill = "white", palette = NULL, alpha = 1,
                      title = NULL, xlab = NULL, ylab = NULL,
                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                      linetype = "solid", trim = FALSE, size = NULL, width = 1,
@@ -101,7 +101,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
     combine = combine, merge = merge,
-    color = color, fill = fill, palette = palette,
+    color = color, fill = fill, palette = palette, alpha = alpha,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     linetype = linetype, trim = trim, size = size, width = width, draw_quantiles = draw_quantiles,
@@ -138,7 +138,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
 
 
 ggviolin_core <- function(data, x, y,
-                      color = "black", fill = "white", palette = NULL,
+                      color = "black", fill = "white", palette = NULL, alpha = 1,
                       title = NULL, xlab = NULL, ylab = NULL,
                       linetype = "solid", trim = FALSE, size = NULL, width = 1,
                       draw_quantiles = NULL,
@@ -156,7 +156,7 @@ ggviolin_core <- function(data, x, y,
   p <- ggplot(data, aes_string(x, y)) +
       geom_exec(geom_violin, data = data,
                 color = color, fill = fill, linetype = linetype,
-                trim = trim, size = size, width = width,
+                trim = trim, size = size, width = width, alpha = alpha,
                 position = position, draw_quantiles = draw_quantiles,
                 stat = pms$stat, scale = pms$scale)
 
