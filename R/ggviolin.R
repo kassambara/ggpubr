@@ -6,6 +6,7 @@ NULL
 #'data at different values.
 #'@inheritParams ggboxplot
 #'@param width violin width.
+#'@param alpha color transparency. Values should be between 0 and 1.
 #'@inheritParams ggplot2::geom_violin
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_violin}}, \code{\link{ggpar}} and

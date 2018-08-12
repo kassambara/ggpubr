@@ -42,6 +42,8 @@ Allowed values include "grey" for grey color palettes; brewer palettes e.g.
 scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 "lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
 
+\item{alpha}{color transparency. Values should be between 0 and 1.}
+
 \item{title}{plot main title.}
 
 \item{xlab}{character vector specifying x axis labels. Use xlab = FALSE to
