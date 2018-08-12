@@ -5,8 +5,8 @@
 \title{Violin plot}
 \usage{
 ggviolin(data, x, y, combine = FALSE, merge = FALSE, color = "black",
-  fill = "white", palette = NULL, alpha = 1, title = NULL, xlab = NULL,
-  ylab = NULL, facet.by = NULL, panel.labs = NULL,
+  fill = "white", palette = NULL, alpha = 1, title = NULL,
+  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
   short.panel.labs = TRUE, linetype = "solid", trim = FALSE,
   size = NULL, width = 1, draw_quantiles = NULL, select = NULL,
   remove = NULL, order = NULL, add = "mean_se", add.params = list(),
@@ -41,8 +41,6 @@ Allowed values include "grey" for grey color palettes; brewer palettes e.g.
 "RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
 scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 "lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".}
-
-\item{alpha}{the level of transparency to use.}
 
 \item{title}{plot main title.}
 
