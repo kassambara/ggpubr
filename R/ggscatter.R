@@ -270,7 +270,7 @@ ggscatter_core <- function(data, x, y,
     .args <- .geom_exec(NULL, data = data,
                         se = conf.int, level = conf.int.level,
                         color = add.params$color, fill = add.params$fill,
-                        linetype = add.params$linetype,
+                        linetype = add.params$linetype, size = add.params$size,
                         fullrange = fullrange)
 
     mapping <- .args$mapping

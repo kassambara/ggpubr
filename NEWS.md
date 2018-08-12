@@ -18,7 +18,8 @@
 - New argument `ci` added in `ggerrorplot()` [@abrar-alshaer, #94](https://github.com/kassambara/ggpubr/issues/94)
 
 ## Bug fixes
-
+  
+- Now, adding a `size` option to ggscatter `add.params` is supported [@retrogenomics, #94](https://github.com/kassambara/ggpubr/issues/53).
 
 # ggpubr 0.1.7
 
