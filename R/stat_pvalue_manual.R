@@ -70,7 +70,7 @@ NULL
 stat_pvalue_manual <- function(
   data, label = "p", y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
-  size = 3.88, label.size = size, bracket.size = 0.5, tip.length = 0.03,
+  size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
   remove.bracket = FALSE,
   ...
   )
