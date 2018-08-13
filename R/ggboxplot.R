@@ -21,6 +21,9 @@ NULL
 #'  "RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
 #'  scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 #'  "lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".
+#'@param bxp.errorbar logical value. If TRUE, shows error bars of box plots.
+#'@param bxp.errorbar.width numeric value specifying the width of box plot error
+#'  bars. Default is 0.4.
 #'@param linetype line types.
 #'@param size Numeric value (e.g.: size = 1). change the size of points and
 #'  outlines.
@@ -45,11 +48,11 @@ NULL
 #'  "lower_linerange"). Default value is "pointrange" or "errorbar". Used only
 #'  when add != "none" and add contains one "mean_*" or "med_*" where "*" = sd,
 #'  se, ....
-#'@param font.label a list which can contain the combination of the following elements: the size
-#'  (e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
-#'  the color (e.g.: "red") of labels. For example font.label = list(size = 14,
-#'  face = "bold", color ="red"). To specify only the size and the style, use font.label =
-#'  list(size = 14, face = "plain").
+#'@param font.label a list which can contain the combination of the following
+#'  elements: the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
+#'  "bold.italic") and the color (e.g.: "red") of labels. For example font.label
+#'  = list(size = 14, face = "bold", color ="red"). To specify only the size and
+#'  the style, use font.label = list(size = 14, face = "plain").
 #'@param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
 #'  Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'  theme_minimal(), theme_classic(), theme_void(), ....
@@ -136,6 +139,7 @@ NULL
 ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       color = "black", fill = "white", palette = NULL,
                       title = NULL, xlab = NULL, ylab = NULL,
+                      bxp.errorbar = FALSE, bxp.errorbar.width = 0.4,
                       facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                       linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
                       select = NULL, remove = NULL, order = NULL,
@@ -152,6 +156,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
     title = title, xlab = xlab, ylab = ylab,
+    bxp.errorbar = bxp.errorbar, bxp.errorbar.width = bxp.errorbar.width,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     linetype = linetype, size = size, width = width,  notch = notch,
     select = select , remove = remove, order = order,
@@ -187,6 +192,7 @@ ggboxplot_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
                       title = NULL, xlab = NULL, ylab = NULL,
+                      bxp.errorbar = FALSE, bxp.errorbar.width = 0.4,
                       add = "none", add.params = list(),
                       error.plot = "pointrange",
                       ggtheme = theme_pubr(),
@@ -195,11 +201,15 @@ ggboxplot_core <- function(data, x, y,
 
   if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
 
-  p <- ggplot(data, aes_string(x, y)) +
-      geom_exec(geom_boxplot, data = data,
-                color = color, fill = fill, linetype = linetype,
-                size = size, width = width, notch = notch,
-                position = position_dodge(0.8), size = size,...)
+  p <- ggplot(data, aes_string(x, y))
+  if(bxp.errorbar){
+    p <- p + stat_boxplot(geom = "errorbar", width = bxp.errorbar.width)
+  }
+
+  p <- p + geom_exec(geom_boxplot, data = data,
+              color = color, fill = fill, linetype = linetype,
+              size = size, width = width, notch = notch,
+              position = position_dodge(0.8), size = size,...)
 
   # Add
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%

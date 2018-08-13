@@ -6,13 +6,13 @@
 \usage{
 ggboxplot(data, x, y, combine = FALSE, merge = FALSE, color = "black",
   fill = "white", palette = NULL, title = NULL, xlab = NULL,
-  ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, linetype = "solid", size = NULL, width = 0.7,
-  notch = FALSE, select = NULL, remove = NULL, order = NULL,
-  add = "none", add.params = list(), error.plot = "pointrange",
-  label = NULL, font.label = list(size = 11, color = "black"),
-  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  ggtheme = theme_pubr(), ...)
+  ylab = NULL, bxp.errorbar = FALSE, bxp.errorbar.width = 0.4,
+  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+  linetype = "solid", size = NULL, width = 0.7, notch = FALSE,
+  select = NULL, remove = NULL, order = NULL, add = "none",
+  add.params = list(), error.plot = "pointrange", label = NULL,
+  font.label = list(size = 11, color = "black"), label.select = NULL,
+  repel = FALSE, label.rectangle = FALSE, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -48,6 +48,11 @@ hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}
+
+\item{bxp.errorbar}{logical value. If TRUE, shows error bars of box plots.}
+
+\item{bxp.errorbar.width}{numeric value specifying the width of box plot error
+bars. Default is 0.4.}
 
 \item{facet.by}{character vector, of length 1 or 2, specifying grouping
 variables for faceting the plot into multiple panels. Should be in the data.}
@@ -99,11 +104,11 @@ se, ....}
 \item{label}{the name of the column containing point labels. Can be also a
 character vector with length = nrow(data).}
 
-\item{font.label}{a list which can contain the combination of the following elements: the size
-(e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
-the color (e.g.: "red") of labels. For example font.label = list(size = 14,
-face = "bold", color ="red"). To specify only the size and the style, use font.label =
-list(size = 14, face = "plain").}
+\item{font.label}{a list which can contain the combination of the following
+elements: the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
+"bold.italic") and the color (e.g.: "red") of labels. For example font.label
+= list(size = 14, face = "bold", color ="red"). To specify only the size and
+the style, use font.label = list(size = 14, face = "plain").}
 
 \item{label.select}{can be of two formats: \itemize{ \item a character vector
 specifying some labels to show. \item a list containing one or the
