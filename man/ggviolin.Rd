@@ -103,11 +103,11 @@ se, ....}
 \item{label}{the name of the column containing point labels. Can be also a
 character vector with length = nrow(data).}
 
-\item{font.label}{a list which can contain the combination of the following elements: the size
-(e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
-the color (e.g.: "red") of labels. For example font.label = list(size = 14,
-face = "bold", color ="red"). To specify only the size and the style, use font.label =
-list(size = 14, face = "plain").}
+\item{font.label}{a list which can contain the combination of the following
+elements: the size (e.g.: 14), the style (e.g.: "plain", "bold", "italic",
+"bold.italic") and the color (e.g.: "red") of labels. For example font.label
+= list(size = 14, face = "bold", color ="red"). To specify only the size and
+the style, use font.label = list(size = 14, face = "plain").}
 
 \item{label.select}{can be of two formats: \itemize{ \item a character vector
 specifying some labels to show. \item a list containing one or the
