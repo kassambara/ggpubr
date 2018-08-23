@@ -12,6 +12,9 @@ NULL
 #' @param face text font style. Allowed values are one of c("plain", "bold",
 #'   "italic", "bold.italic").
 #' @param family character vector specifying font family.
+#' @param show.legend logical. Should text be included in the legends? NA,
+#'   the default, includes if any aesthetics are mapped. FALSE never includes,
+#'   and TRUE always includes.
 #' @param label.select can be of two formats: \itemize{ \item a character vector
 #'   specifying some labels to show. \item a list containing one or the
 #'   combination of the following components: \itemize{ \item \code{top.up} and
@@ -60,7 +63,7 @@ NULL
 #' @export
 ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                   color = "black",  palette = NULL,
-                  size = 11,  face = "plain", family = "",
+                  size = 11,  face = "plain", family = "", show.legend = NA,
                   label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                   grouping.vars = NULL,
                   position = "identity",
@@ -128,7 +131,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     if(label.rectangle) ggfunc <- ggrepel::geom_label_repel
       p <- p + geom_exec(ggfunc, data = lab_data, x = x, y = y,
                         label = label, fontface = face,
-                        family = family,
+                        family = family, show.legend = show.legend,
                         size = size/3, color = color,
                         alpha = alpha,
                         box.padding = unit(0.35, "lines"),
@@ -146,7 +149,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     vjust <- ifelse(is.null(.dots$vjust), vjust, .dots$vjust)
     if(!is.null(.dots$hjust)) hjust <- .dots$hjust
     p <- p + geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
-                        label = label, fontface = face, family = family,
+                        label = label, fontface = face, family = family, show.legend = show.legend,
                         size = size/3, color = color,
                         vjust = vjust, hjust = hjust, alpha = alpha, position = position)
 

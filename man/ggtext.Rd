@@ -6,9 +6,9 @@
 \usage{
 ggtext(data, x = NULL, y = NULL, label = NULL, color = "black",
   palette = NULL, size = 11, face = "plain", family = "",
-  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  grouping.vars = NULL, position = "identity", ggp = NULL,
-  ggtheme = theme_pubr(), ...)
+  show.legend = NA, label.select = NULL, repel = FALSE,
+  label.rectangle = FALSE, grouping.vars = NULL, position = "identity",
+  ggp = NULL, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -32,6 +32,10 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 "italic", "bold.italic").}
 
 \item{family}{character vector specifying font family.}
+
+\item{show.legend}{logical. Should text be included in the legends? NA,
+the default, includes if any aesthetics are mapped. FALSE never includes,
+and TRUE always includes.}
 
 \item{label.select}{can be of two formats: \itemize{ \item a character vector
 specifying some labels to show. \item a list containing one or the

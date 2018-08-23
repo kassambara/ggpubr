@@ -20,6 +20,7 @@
 
 ## Bug fixes
   
+- Now, `ggscatter()` can remove the letter 'a' from the legend, when the argument `show.legend.text = FALSE` specified [@atsyplenkov, #106](https://github.com/kassambara/ggpubr/issues/106).
 - Now, adding a `size` option to ggscatter `add.params` is supported [@retrogenomics, #94](https://github.com/kassambara/ggpubr/issues/53).
 
 # ggpubr 0.1.7

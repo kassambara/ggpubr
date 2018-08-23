@@ -809,6 +809,7 @@ p
                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                      ggtheme = theme_pubr(),
                      fun_name = "", group = 1, # used only by ggline
+                     show.legend.text = NA,
                      ...)
   {
 
@@ -942,7 +943,8 @@ p
       .add_item(data = data, x = opts$x, y = opts$y,
                 label = label, label.select = label.select,
                 repel = repel, label.rectangle = label.rectangle, ggtheme = NULL,
-                grouping.vars = grouping.vars, facet.by = facet.by, position = geom.text.position)
+                grouping.vars = grouping.vars, facet.by = facet.by, position = geom.text.position,
+                show.legend = show.legend.text)
     p <- purrr::map(p,
                    function(p, label.opts){
                      . <- NULL
