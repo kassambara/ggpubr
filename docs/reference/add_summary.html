@@ -77,8 +77,9 @@
     
 
     <pre><span class='fu'>add_summary</span>(<span class='no'>p</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>))
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>))
 
 <span class='fu'>mean_se_</span>(<span class='no'>x</span>, <span class='kw'>error.limit</span> <span class='kw'>=</span> <span class='st'>"both"</span>)
 
@@ -112,6 +113,10 @@ frame with variables ymin, y, and ymax. Allowed values are one of: &quot;mean&qu
       <dd>point or outline color.</dd>
       <dt>fill</dt>
       <dd>fill color. Used only whne <code>error.plot = &quot;crossbar&quot;</code>.</dd>
+      <dt>group</dt>
+      <dd>grouping variable. Allowed values are 1 (for one group) or a
+character vector specifying the name of the grouping variable. Used only for
+adding statistical summary per group.</dd>
       <dt>width</dt>
       <dd>numeric value between 0 and 1 specifying bar or box width.
 Example width = 0.8. Used only when <code>error.plot</code> is one of
@@ -121,6 +126,8 @@ c(&quot;crossbar&quot;, &quot;errorbar&quot;).</dd>
 <code><a href='show_point_shapes.html'>show_point_shapes</a>()</code>.</dd>
       <dt>size</dt>
       <dd>numeric value in [0-1] specifying point and line size.</dd>
+      <dt>ci</dt>
+      <dd>the percent range of the confidence interval (default is 0.95).</dd>
       <dt>data</dt>
       <dd>a <code>data.frame</code> to be displayed. If <code>NULL</code>, the default, the
 data is inherited from the plot data as specified in the call to <a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a>.</dd>
@@ -134,8 +141,6 @@ groups.</dd>
       <dd>allowed values are one of (&quot;both&quot;, &quot;lower&quot;, &quot;upper&quot;, &quot;none&quot;)
 specifying whether to plot the lower and/or the upper limits of error
 interval.</dd>
-      <dt>ci</dt>
-      <dd>the percent range of the confidence interval (default is 0.95).</dd>
     </dl>
     
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>

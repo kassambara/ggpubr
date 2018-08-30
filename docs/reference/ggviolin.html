@@ -79,8 +79,8 @@ data at different values.</p>
     
 
     <pre><span class='fu'>ggviolin</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>, <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>draw_quantiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
@@ -117,6 +117,8 @@ Allowed values include &quot;grey&quot; for grey color palettes; brewer palettes
 &quot;RdBu&quot;, &quot;Blues&quot;, ...; or custom color palette e.g. c(&quot;blue&quot;, &quot;red&quot;); and
 scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;aaas&quot;,
 &quot;lancet&quot;, &quot;jco&quot;, &quot;ucscgb&quot;, &quot;uchicago&quot;, &quot;simpsons&quot; and &quot;rickandmorty&quot;.</dd>
+      <dt>alpha</dt>
+      <dd>color transparency. Values should be between 0 and 1.</dd>
       <dt>title</dt>
       <dd>plot main title.</dd>
       <dt>xlab</dt>
@@ -177,11 +179,11 @@ se, ....</dd>
       <dd>the name of the column containing point labels. Can be also a
 character vector with length = nrow(data).</dd>
       <dt>font.label</dt>
-      <dd>a list which can contain the combination of the following elements: the size
-(e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and
-the color (e.g.: &quot;red&quot;) of labels. For example font.label = list(size = 14,
-face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and the style, use font.label =
-list(size = 14, face = &quot;plain&quot;).</dd>
+      <dd>a list which can contain the combination of the following
+elements: the size (e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;,
+&quot;bold.italic&quot;) and the color (e.g.: &quot;red&quot;) of labels. For example font.label
+= list(size = 14, face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and
+the style, use font.label = list(size = 14, face = &quot;plain&quot;).</dd>
       <dt>label.select</dt>
       <dd>can be of two formats: <ul>
 <li> a character vector

@@ -76,10 +76,10 @@
     <p>Add summary statistics or a geometry onto a ggplot.</p>
     
 
-    <pre><span class='fu'>ggadd</span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>jitter</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dotsize</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>), <span class='kw'>p_geom</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+    <pre><span class='fu'>ggadd</span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>jitter</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
+  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dotsize</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>), <span class='kw'>p_geom</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -94,6 +94,10 @@ Allowed values are one or the combination of: &quot;none&quot;, &quot;dotplot&qu
       <dd>point or outline color.</dd>
       <dt>fill</dt>
       <dd>fill color. Used only when <code>error.plot = &quot;crossbar&quot;</code>.</dd>
+      <dt>group</dt>
+      <dd>grouping variable. Allowed values are 1 (for one group) or a
+character vector specifying the name of the grouping variable. Used only for
+adding statistical summary per group.</dd>
       <dt>width</dt>
       <dd>numeric value between 0 and 1 specifying bar or box width.
 Example width = 0.8. Used only when <code>error.plot</code> is one of
@@ -120,6 +124,8 @@ when <code>add</code> contains &quot;dotplot&quot;.</dd>
 <code>c(&quot;pointrange&quot;, &quot;linerange&quot;, &quot;crossbar&quot;, &quot;errorbar&quot;, &quot;upper_errorbar&quot;,
 &quot;lower_errorbar&quot;, &quot;upper_pointrange&quot;, &quot;lower_pointrange&quot;, &quot;upper_linerange&quot;,
 &quot;lower_linerange&quot;)</code>. Default value is &quot;pointrange&quot;.</dd>
+      <dt>ci</dt>
+      <dd>the percent range of the confidence interval (default is 0.95).</dd>
       <dt>data</dt>
       <dd>a <code>data.frame</code> to be displayed. If <code>NULL</code>, the default, the
 data is inherited from the plot data as specified in the call to <a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a>.</dd>

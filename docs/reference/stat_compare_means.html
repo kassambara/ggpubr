@@ -81,9 +81,9 @@
   <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>method.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.03</span>, <span class='kw'>symnum.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
-  <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.03</span>, <span class='kw'>bracket.size</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>symnum.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
+  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -104,7 +104,7 @@ data. All objects will be fortified to produce a data frame. See
 <code>fortify()</code> for which variables will be created.
 
 A <code>function</code> will be called with a single argument,
-the plot data. The return value must be a <code>data.frame.</code>, and
+the plot data. The return value must be a <code>data.frame</code>, and
 will be used as the layer data.</dd>
       <dt>method</dt>
       <dd>a character string indicating which method to be used for
@@ -160,6 +160,8 @@ for absolute positioning of the label. If too short they will be recycled.</dd>
  lenth of each comparison. For example tip.length = c(0.01, 0.03).
 
  If too short they will be recycled.</dd>
+      <dt>bracket.size</dt>
+      <dd>Width of the lines of the bracket.</dd>
       <dt>symnum.args</dt>
       <dd>a list of arguments to pass to the function
  <code><a href='http://www.rdocumentation.org/packages/stats/topics/symnum'>symnum</a></code> for symbolic number coding of p-values. For

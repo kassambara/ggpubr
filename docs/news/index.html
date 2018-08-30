@@ -74,27 +74,40 @@
     </div>
 
     <div class="contents">
-    <div id="ggpubr-0-1-7-999" class="section level1">
+    <div id="ggpubr-0-1-8" class="section level1">
 <h1 class="hasAnchor">
-<a href="#ggpubr-0-1-7-999" class="anchor"> </a>ggpubr 0.1.7.999</h1>
+<a href="#ggpubr-0-1-8" class="anchor"> </a>ggpubr 0.1.8</h1>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features" class="anchor"> </a>New features</h2>
-</div>
-<div id="major-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#major-changes" class="anchor"> </a>Major changes</h2>
+<ul>
+<li>New arguments <code>bxp.errorbar</code> added to <code><a href="../reference/ggboxplot.html">ggboxplot()</a></code> for adding error bars at the top of the box plots (<a href="https://github.com/kassambara/ggpubr/issues/105">@ j3ypi, #105</a>.</li>
+<li>New function <code><a href="../reference/stat_pvalue_manual.html">stat_pvalue_manual()</a></code> for adding p-values generated elswhere (<a href="https://github.com/kassambara/ggpubr/issues/81">@achamess, #81</a>, <a href="https://github.com/kassambara/ggpubr/issues/65">@grst, #65</a>).</li>
+</ul>
 </div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor"> </a>Minor changes</h2>
 <ul>
+<li>
+<code>alpha</code>option added to <code><a href="../reference/ggviolin.html">ggviolin()</a></code> <a href="https://github.com/kassambara/ggpubr/pull/77">@mtmatter, #77</a>
+</li>
+<li>New argument <code>bracket.size</code> added to <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> <a href="https://github.com/kassambara/ggpubr/issues/43">@mtmatter, #43</a>
+</li>
+<li>Now, the function <code><a href="../reference/stat_cor.html">stat_cor()</a></code> supports R^2 as an option <a href="https://github.com/kassambara/ggpubr/issues/32">@philament, #32</a>
+</li>
 <li>New argument <code>position</code> added in <code><a href="../reference/gghistogram.html">gghistogram()</a></code>. Allowed values include “identity”, “stack”, “dodge”.</li>
+<li>New argument <code>ci</code> added in <code><a href="../reference/ggerrorplot.html">ggerrorplot()</a></code> <a href="https://github.com/kassambara/ggpubr/issues/94">@abrar-alshaer, #94</a>
+</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"> </a>Bug fixes</h2>
+<ul>
+<li>Now, <code><a href="../reference/ggscatter.html">ggscatter()</a></code> can remove the letter ‘a’ from the legend, when the argument <code>show.legend.text = FALSE</code> specified <a href="https://github.com/kassambara/ggpubr/issues/106">@atsyplenkov, #106</a>.</li>
+<li>Now, adding a <code>size</code> option to ggscatter <code>add.params</code> is supported <a href="https://github.com/kassambara/ggpubr/issues/53">@retrogenomics, #94</a>.</li>
+</ul>
 </div>
 </div>
     <div id="ggpubr-0-1-7" class="section level1">
@@ -318,9 +331,9 @@
 <li><p>New arguments in <code><a href="../reference/ggpar.html">ggpar()</a></code>: <code>x.text.angle</code> and <code>y.text.angle</code></p></li>
 </ul>
 </div>
-<div id="major-changes-1" class="section level2">
+<div id="major-changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-1" class="anchor"> </a>Major changes</h2>
+<a href="#major-changes" class="anchor"> </a>Major changes</h2>
 <ul>
 <li>New arguments in ggpubr functions, see <code><a href="../reference/ggboxplot.html">ggboxplot()</a></code>, <code><a href="../reference/ggdotplot.html">ggdotplot()</a></code>, <code><a href="../reference/ggstripchart.html">ggstripchart()</a></code>, <code><a href="../reference/ggviolin.html">ggviolin()</a></code>, <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code> and <code>ggline</code>:
 <ul>
@@ -473,7 +486,7 @@ ggboxplot(iris$Sepal.Length)</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#ggpubr-0-1-7-999">0.1.7.999</a></li>
+        <li><a href="#ggpubr-0-1-8">0.1.8</a></li>
         <li><a href="#ggpubr-0-1-7">0.1.7</a></li>
         <li><a href="#ggpubr-0-1-6">0.1.6</a></li>
         <li><a href="#ggpubr-0-1-5">0.1.5</a></li>

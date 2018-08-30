@@ -178,63 +178,63 @@ Available only when <code>method = &quot;t.test&quot;</code> or <code>method = &
 <span class='co'># One-sample test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='fl'>1</span>, <span class='no'>df</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
-#&gt;     .y. group1     group2            p        p.adj p.format p.signif   method
-#&gt;   &lt;chr&gt;  &lt;dbl&gt;      &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1   len      1 null model 1.664007e-11 1.664007e-11  1.7e-11     **** Wilcoxon</div><div class='input'>
+#&gt;   .y.   group1 group2            p    p.adj p.format p.signif method  
+#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+#&gt; 1 len        1 null model 1.66e-11 1.70e-11 1.7e-11  ****     Wilcoxon</div><div class='input'>
 <span class='co'># Two-samples unpaired test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
-#&gt;     .y. group1 group2          p      p.adj p.format p.signif   method
-#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1   len     OJ     VC 0.06449067 0.06449067    0.064       ns Wilcoxon</div><div class='input'>
+#&gt;   .y.   group1 group2      p p.adj p.format p.signif method  
+#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+#&gt; 1 len   OJ     VC     0.0645 0.064 0.064    ns       Wilcoxon</div><div class='input'>
 <span class='co'># Two-samples paired test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
-#&gt;     .y. group1 group2           p       p.adj p.format p.signif   method
-#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1   len     OJ     VC 0.004312554 0.004312554   0.0043       ** Wilcoxon</div><div class='input'>
+#&gt;   .y.   group1 group2       p  p.adj p.format p.signif method  
+#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+#&gt; 1 len   OJ     VC     0.00431 0.0043 0.0043   **       Wilcoxon</div><div class='input'>
 <span class='co'># Compare supp levels after grouping the data by "dose"</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 9
-#&gt;    dose   .y. group1 group2           p      p.adj p.format p.signif   method
-#&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1   0.5   len     OJ     VC 0.023186427 0.04637285    0.023        * Wilcoxon
-#&gt; 2   1.0   len     OJ     VC 0.004030367 0.01209110    0.004       ** Wilcoxon
-#&gt; 3   2.0   len     OJ     VC 1.000000000 1.00000000    1.000       ns Wilcoxon</div><div class='input'>
+#&gt;    dose .y.   group1 group2       p p.adj p.format p.signif method  
+#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+#&gt; 1   0.5 len   OJ     VC     0.0232  0.046 0.023    *        Wilcoxon
+#&gt; 2   1   len   OJ     VC     0.00403 0.012 0.004    **       Wilcoxon
+#&gt; 3   2   len   OJ     VC     1       1     1.000    ns       Wilcoxon</div><div class='input'>
 <span class='co'># pairwise comparisons</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># As dose contains more thant two levels ==&gt;</span>
 <span class='co'># pairwise test is automatically performed.</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 8
-#&gt;     .y. group1 group2            p        p.adj p.format p.signif   method
-#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1   len    0.5      1 7.020855e-06 1.404171e-05  7.0e-06     **** Wilcoxon
-#&gt; 2   len    0.5      2 8.406447e-08 2.521934e-07  8.4e-08     **** Wilcoxon
-#&gt; 3   len      1      2 1.772382e-04 1.772382e-04  0.00018      *** Wilcoxon</div><div class='input'>
+#&gt;   .y.   group1 group2            p      p.adj p.format p.signif method  
+#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+#&gt; 1 len   0.5    1      0.00000702   0.000014   7.0e-06  ****     Wilcoxon
+#&gt; 2 len   0.5    2      0.0000000841 0.00000025 8.4e-08  ****     Wilcoxon
+#&gt; 3 len   1      2      0.000177     0.00018    0.00018  ***      Wilcoxon</div><div class='input'>
 <span class='co'># Comparison against reference group</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 8
-#&gt;     .y. group1 group2            p        p.adj p.format p.signif   method
-#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1   len    0.5      1 7.020855e-06 7.020855e-06  7.0e-06     **** Wilcoxon
-#&gt; 2   len    0.5      2 8.406447e-08 1.681289e-07  8.4e-08     **** Wilcoxon</div><div class='input'>
+#&gt;   .y.   group1 group2            p      p.adj p.format p.signif method  
+#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+#&gt; 1 len   0.5    1      0.00000702   0.000007   7.0e-06  ****     Wilcoxon
+#&gt; 2 len   0.5    2      0.0000000841 0.00000017 8.4e-08  ****     Wilcoxon</div><div class='input'>
 <span class='co'># Comparison against all</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>".all."</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 8
-#&gt;     .y. group1 group2            p        p.adj p.format p.signif   method
-#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;
-#&gt; 1   len  .all.    0.5 5.078788e-05 0.0001523636  5.1e-05     **** Wilcoxon
-#&gt; 2   len  .all.      1 7.640429e-01 0.7640429386  0.76404       ns Wilcoxon
-#&gt; 3   len  .all.      2 1.791243e-04 0.0003582486  0.00018      *** Wilcoxon</div><div class='input'>
+#&gt;   .y.   group1 group2         p    p.adj p.format p.signif method  
+#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
+#&gt; 1 len   .all.  0.5    0.0000508 0.000150 5.1e-05  ****     Wilcoxon
+#&gt; 2 len   .all.  1      0.764     0.76     0.76404  ns       Wilcoxon
+#&gt; 3 len   .all.  2      0.000179  0.00036  0.00018  ***      Wilcoxon</div><div class='input'>
 <span class='co'># Anova and kruskal.test</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
-#&gt;     .y.            p        p.adj p.format p.signif method
-#&gt;   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;
-#&gt; 1   len 9.532727e-16 9.532727e-16  9.5e-16     ****  Anova</div><div class='input'><span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kruskal.test"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
-#&gt;     .y.            p        p.adj p.format p.signif         method
-#&gt;   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;
-#&gt; 1   len 1.475207e-09 1.475207e-09  1.5e-09     **** Kruskal-Wallis</div></pre>
+#&gt;   .y.          p    p.adj p.format p.signif method
+#&gt;   &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; 
+#&gt; 1 len   9.53e-16 9.50e-16 9.5e-16  ****     Anova </div><div class='input'><span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kruskal.test"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
+#&gt;   .y.               p        p.adj p.format p.signif method        
+#&gt;   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;         
+#&gt; 1 len   0.00000000148 0.0000000015 1.5e-09  ****     Kruskal-Wallis</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

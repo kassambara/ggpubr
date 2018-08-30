@@ -78,9 +78,9 @@
 
     <pre><span class='fu'>ggtext</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>grouping.vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>grouping.vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
+  <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -106,6 +106,10 @@ scientific journal palettes from ggsci R package, e.g.: &quot;npg&quot;, &quot;a
 &quot;italic&quot;, &quot;bold.italic&quot;).</dd>
       <dt>family</dt>
       <dd>character vector specifying font family.</dd>
+      <dt>show.legend</dt>
+      <dd>logical. Should text be included in the legends? NA,
+the default, includes if any aesthetics are mapped. FALSE never includes,
+and TRUE always includes.</dd>
       <dt>label.select</dt>
       <dd>can be of two formats: <ul>
 <li> a character vector

@@ -79,13 +79,13 @@
 
     <pre><span class='fu'>ggboxplot</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
   <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
-  <span class='kw'>notch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>),
-  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bxp.errorbar</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bxp.errorbar.width</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+  <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"solid"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>notch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
+  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>), <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -123,6 +123,11 @@ hide xlab.</dd>
       <dt>ylab</dt>
       <dd>character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.</dd>
+      <dt>bxp.errorbar</dt>
+      <dd>logical value. If TRUE, shows error bars of box plots.</dd>
+      <dt>bxp.errorbar.width</dt>
+      <dd>numeric value specifying the width of box plot error
+bars. Default is 0.4.</dd>
       <dt>facet.by</dt>
       <dd>character vector, of length 1 or 2, specifying grouping
 variables for faceting the plot into multiple panels. Should be in the data.</dd>
@@ -174,11 +179,11 @@ se, ....</dd>
       <dd>the name of the column containing point labels. Can be also a
 character vector with length = nrow(data).</dd>
       <dt>font.label</dt>
-      <dd>a list which can contain the combination of the following elements: the size
-(e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;, &quot;bold.italic&quot;) and
-the color (e.g.: &quot;red&quot;) of labels. For example font.label = list(size = 14,
-face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and the style, use font.label =
-list(size = 14, face = &quot;plain&quot;).</dd>
+      <dd>a list which can contain the combination of the following
+elements: the size (e.g.: 14), the style (e.g.: &quot;plain&quot;, &quot;bold&quot;, &quot;italic&quot;,
+&quot;bold.italic&quot;) and the color (e.g.: &quot;red&quot;) of labels. For example font.label
+= list(size = 14, face = &quot;bold&quot;, color =&quot;red&quot;). To specify only the size and
+the style, use font.label = list(size = 14, face = &quot;plain&quot;).</dd>
       <dt>label.select</dt>
       <dd>can be of two formats: <ul>
 <li> a character vector
