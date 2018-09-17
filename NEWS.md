@@ -8,14 +8,16 @@
 
 ## Minor changes
 
-
+## Bug fixes
+   
+- Added error bar color is now inherited from the main plot ([@JesseRop, #109](https://github.com/kassambara/ggpubr/issues/109)
 
 # ggpubr 0.1.8
   
   
 ## New features
  
-- New arguments `bxp.errorbar` added to `ggboxplot()` for adding error bars at the top of the box plots ([@	j3ypi, #105](https://github.com/kassambara/ggpubr/issues/105).
+- New arguments `bxp.errorbar` added to `ggboxplot()` for adding error bars at the top of the box plots ([@j3ypi, #105](https://github.com/kassambara/ggpubr/issues/105).
 - New function `stat_pvalue_manual()` for adding p-values generated elswhere ([@achamess, #81](https://github.com/kassambara/ggpubr/issues/81), [@grst, #65](https://github.com/kassambara/ggpubr/issues/65)).
 
 

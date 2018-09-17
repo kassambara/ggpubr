@@ -51,6 +51,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
 {
 
   . <- NULL
+  if(missing(group)) group <- NULL
   # Checkpoints
   #:::::::::::::::::::::::::::::::::::::::::::
   if("none" %in% add) add <- "none"
