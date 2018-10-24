@@ -10,7 +10,9 @@
 
 ## Bug fixes
    
+- Now, `ggqqplot()` reacts to the argument `conf.int.level` ([@vsluydts, #123](https://github.com/kassambara/ggpubr/issues/123)
 - Added error bar color is now inherited from the main plot ([@JesseRop, #109](https://github.com/kassambara/ggpubr/issues/109)
+
 
 # ggpubr 0.1.8
   
