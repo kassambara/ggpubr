@@ -14,8 +14,8 @@
 .ggscipal <- function(){
   # Scientific Journal and Sci-Fi Themed Color Palettes for ggplot2
   # ggsci package: https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html
-  c("npg", "aaas", "lancet", "jco",
-    "ucscgb", "uchicago", "simpsons", "rickandmorty")
+  c("npg", "aaas", "nejm", "lancet", "jama", "jco", "ucscgb", "d3", "locuszoom",
+    "igv", "uchicago", "startrek", "tron", "futurama", "rickandmorty", "simpsons")
 }
 
 # Check if color palette or default hue
@@ -42,8 +42,10 @@
 
 # Helper function to use palette from ggsci package
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-.scale_color_ggsci <- function(palette = c("npg", "aaas", "lancet", "jco",
-                                           "ucscgb", "uchicago", "simpsons", "rickandmorty"))
+.scale_color_ggsci <- function(palette = c("npg", "aaas", "nejm", "lancet", "jama",
+					   "jco", "ucscgb", "d3", "locuszoom",
+					   "igv", "uchicago", "startrek", "tron",
+					   "futurama", "rickandmorty", "simpsons"))
 {
 
   pal <- match.arg(palette)
@@ -61,8 +63,10 @@
   functs[[pal]]
 }
 
-.scale_fill_ggsci <- function(palette = c("npg", "aaas", "lancet", "jco",
-                                          "ucscgb", "uchicago", "simpsons", "rickandmorty"))
+.scale_fill_ggsci <- function(palette = c("npg", "aaas", "nejm", "lancet", "jama",
+					  "jco", "ucscgb", "d3", "locuszoom",
+					  "igv", "uchicago", "startrek", "tron",
+					  "futurama", "rickandmorty", "simpsons"))
 {
 
   pal <- match.arg(palette)
@@ -95,28 +99,41 @@
 
 # Generate color palette from ggsci
 # k the number of color
-.get_ggsci_pal <- function(palette = c("npg", "aaas", "lancet", "jco",
-                                       "ucscgb", "uchicago", "simpsons", "rickandmorty"), k)
+.get_ggsci_pal <- function(palette = c("npg", "aaas", "nejm", "lancet", "jama",
+				       "jco", "ucscgb", "d3", "locuszoom",
+				       "igv", "uchicago", "startrek", "tron",
+				       "futurama", "rickandmorty", "simpsons"), k)
 {
 
   pal <- match.arg(palette)
 
-  if(pal %in% c("npg", "aaas", "jco")) max_k <- 10
+  if(pal %in% c("npg", "aaas", "jco", "d3")) max_k <- 10
+  else if (pal %in% c("nejm")) max_k <- 8
+  else if (pal %in% c("jama", "locuszoom", "startrek", "tron")) max_k <- 7
+  else if (pal %in% c("igv")) max_k <- 51
   else if (pal %in% c("lancet", "uchicago")) max_k <- 9
   else if (pal %in% c("ucscgb")) max_k <- 26
+  else if (pal %in% c("futurama", "rickandmorty")) max_k <- 12
   else if (pal %in% c("simpsons")) max_k <- 16
-  else if (pal %in% c("rickandmorty")) max_k <- 12
   else stop("Don't support palette name: ", pal)
 
   functs <- list(
     npg = ggsci::pal_npg(),
     aaas = ggsci::pal_aaas(),
+    nejm = ggsci::pal_nejm(),
     lancet = ggsci::pal_lancet(),
+    jama = ggsci::pal_jama(),
     jco = ggsci::pal_jco(),
     ucscgb = ggsci::pal_ucscgb(),
+    d3 = ggsci::pal_d3(),
+    locuszoom = ggsci::pal_locuszoom(),
+    igv = ggsci::pal_igv(),
     uchicago = ggsci::pal_uchicago(),
-    simpsons = ggsci::pal_simpsons(),
-    rickandmorty = ggsci::pal_rickandmorty()
+    startrek = ggsci::pal_startrek(),
+    tron = ggsci::pal_tron(),
+    futurama = ggsci::pal_futurama(),
+    rickandmorty = ggsci::pal_rickandmorty(),
+    simpsons = ggsci::pal_simpsons()
   )
 
   if(k <= max_k) functs[[pal]](k)
