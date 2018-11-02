@@ -156,6 +156,9 @@ compare_means <- function(formula, data, method = "wilcox.test",
     if(is.factor(group.vals)) group.levs <- levels(group.vals)
     else group.levs <- unique(group.vals)
 
+    if(ref.group %in% group.levs){
+      data[, group] <- stats::relevel(group.vals, ref.group)
+    }
 
     if(ref.group == ".all."){
       data <- data %>%
