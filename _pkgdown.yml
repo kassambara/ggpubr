@@ -1,6 +1,13 @@
+url: https://rpkgs.datanovia.com/ggpubr
+
 templates:
   params:
     bootswatch: lumen
+    ganalytics: UA-54921687-5
+    docsearch:
+      api_key: 6417dc1a4a7896d9002b8ad567f92f4c
+      index_name: ggpubr
+
 reference:
   - title: Plot One Variable - X, Continuous
     desc:  Visualize distributions.

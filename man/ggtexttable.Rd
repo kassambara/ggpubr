@@ -53,7 +53,7 @@ justification: \code{hjust = 0, x = 0.1}. Right justification: \code{hjust = 1, 
 
 \item{base_style}{charcter string the table style/theme. The available themes
 are illustrated in the
-\href{http://www.sthda.com/english/rpkgs/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
+\href{https://rpkgs.datanovia.com/english/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
  file. Allowed values include one of \code{c("default", "blank", "classic",
 "minimal", "light", "lBlack", "lBlue", "lRed", "lGreen", "lViolet", "lCyan",
 "lOrange", "lBlackWhite", "lBlueWhite", "lRedWhite", "lGreenWhite",

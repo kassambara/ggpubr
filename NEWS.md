@@ -1,11 +1,5 @@
 # ggpubr 0.1.8.999
   
-## New features
-
-
-## Major changes
-
-
 ## Minor changes
    
 - ggsci palettes have been updated to add new palettes: nejm, jama, ucscgb, d3, locuszoom, igv, startrek, tron, futurama, simpsons ([@cbrueffer, #118](https://github.com/kassambara/ggpubr/pull/127)
