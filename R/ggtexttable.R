@@ -14,9 +14,9 @@ NULL
 #'@param theme a list, as returned by the function \code{ttheme()}, defining the
 #'  parameters of the table theme. Allowed values include one of \code{ttheme()}
 #'  and \code{ttheme_clean()}.
-#'@param base_style charcter string the table style/theme. The available themes
+#'@param base_style character string the table style/theme. The available themes
 #'  are illustrated in the
-#'  \href{https://rpkgs.datanovia.com/english/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
+#'  \href{https://rpkgs.datanovia.com/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
 #'   file. Allowed values include one of \code{c("default", "blank", "classic",
 #'  "minimal", "light", "lBlack", "lBlue", "lRed", "lGreen", "lViolet", "lCyan",
 #'  "lOrange", "lBlackWhite", "lBlueWhite", "lRedWhite", "lGreenWhite",
