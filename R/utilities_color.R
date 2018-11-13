@@ -53,12 +53,20 @@
   functs <- list(
     npg = ggsci::scale_color_npg(),
     aaas = ggsci::scale_color_aaas(),
+    nejm = ggsci::scale_color_nejm(),
     lancet = ggsci::scale_color_lancet(),
+    jama = ggsci::scale_color_jama(),
     jco = ggsci::scale_color_jco(),
     ucscgb = ggsci::scale_color_ucscgb(),
+    d3 = ggsci::scale_color_d3(),
+    locuszoom = ggsci::scale_color_locuszoom(),
+    igv = ggsci::scale_color_igv(),
     uchicago = ggsci::scale_color_uchicago(),
-    simpsons = ggsci::scale_color_simpsons(),
-    rickandmorty = ggsci::scale_color_rickandmorty()
+    startrek = ggsci::scale_color_startrek(),
+    tron = ggsci::scale_color_tron(),
+    futurama = ggsci::scale_color_futurama(),
+    rickandmorty = ggsci::scale_color_rickandmorty(),
+    simpsons = ggsci::scale_color_simpsons()
   )
   functs[[pal]]
 }
@@ -74,12 +82,20 @@
   functs <- list(
     npg = ggsci::scale_fill_npg(),
     aaas = ggsci::scale_fill_aaas(),
+    nejm = ggsci::scale_fill_nejm(),
     lancet = ggsci::scale_fill_lancet(),
+    jama = ggsci::scale_fill_jama(),
     jco = ggsci::scale_fill_jco(),
     ucscgb = ggsci::scale_fill_ucscgb(),
+    d3 = ggsci::scale_fill_d3(),
+    locuszoom = ggsci::scale_fill_locuszoom(),
+    igv = ggsci::scale_fill_igv(),
     uchicago = ggsci::scale_fill_uchicago(),
-    simpsons = ggsci::scale_fill_simpsons(),
-    rickandmorty = ggsci::scale_fill_rickandmorty()
+    startrek = ggsci::scale_fill_startrek(),
+    tron = ggsci::scale_fill_tron(),
+    futurama = ggsci::scale_fill_futurama(),
+    rickandmorty = ggsci::scale_fill_rickandmorty(),
+    simpsons = ggsci::scale_fill_simpsons()
   )
   functs[[pal]]
 }
