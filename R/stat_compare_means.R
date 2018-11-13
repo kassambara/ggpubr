@@ -197,9 +197,12 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
 
                     # Perform group comparisons
                     #::::::::::::::::::::::::::::::::::::::::::::::::::
+                    if(!is.null(ref.group))
+                      ref.group <- as.character(ref.group)
+
                     method.args <- method.args %>%
                       .add_item(data = data, method = method,
-                                paired = paired, ref.group = as.character(ref.group),
+                                paired = paired, ref.group = ref.group,
                                 symnum.args = symnum.args)
 
                     if(.is.multiple.grouping.vars){
@@ -212,7 +215,6 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                         .add_item(formula = y ~ x)
                       .test <- do.call(compare_means, method.args)
                     }
-                    print(.test)
 
                     pvaltxt <- ifelse(.test$p < 2.2e-16, "p < 2.2e-16",
                                       paste("p =", signif(.test$p, 2)))

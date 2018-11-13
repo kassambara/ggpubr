@@ -1,3 +1,10 @@
+# ggpubr 0.1.9.999
+
+## Bug fixes
+   
+- P-value for multiple comparisons by group (stat_compare_means()) are now correctly displayed ([@elisheva100, #135](https://github.com/kassambara/ggpubr/issues/135).
+
+
 # ggpubr 0.1.9
   
 ## Minor changes
