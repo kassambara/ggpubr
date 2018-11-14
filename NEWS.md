@@ -1,4 +1,4 @@
-# ggpubr 0.1.9.999
+# ggpubr 0.2
 
 ## Bug fixes
    
