@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -220,7 +220,7 @@ to the paired geom/stat.</p></td>
 <span class='co'># Add manually p-values from stat.test data</span>
 <span class='co'># First specify the y.position of each comparison</span>
 <span class='no'>stat.test</span> <span class='kw'>&lt;-</span> <span class='no'>stat.test</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>29</span>, <span class='fl'>35</span>, <span class='fl'>39</span>))
+ <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>29</span>, <span class='fl'>35</span>, <span class='fl'>39</span>))
 <span class='no'>p</span> + <span class='fu'>stat_pvalue_manual</span>(<span class='no'>stat.test</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: xmin, xmax, annotations, y_position</span></div><div class='img'><img src='stat_pvalue_manual-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Customize the label with glue expression</span>
 <span class='co'># (https://github.com/tidyverse/glue)</span>

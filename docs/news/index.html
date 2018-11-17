@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -99,9 +99,21 @@
       
     </div>
 
+    <div id="ggpubr-0-2" class="section level1">
+<h1 class="page-header">
+<a href="#ggpubr-0-2" class="anchor"></a>ggpubr 0.2<small> 2018-11-15 </small>
+</h1>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>P-value for multiple comparisons by group (stat_compare_means()) are now correctly displayed (<a href="https://github.com/kassambara/ggpubr/issues/135"><a href='http://github.com/elisheva100'>@elisheva100</a>, #135</a>.</li>
+</ul>
+</div>
+</div>
     <div id="ggpubr-0-1-9" class="section level1">
 <h1 class="page-header">
-<a href="#ggpubr-0-1-9" class="anchor"></a>ggpubr 0.1.9<small> Unreleased </small>
+<a href="#ggpubr-0-1-9" class="anchor"></a>ggpubr 0.1.9<small> 2018-11-11 </small>
 </h1>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
@@ -111,9 +123,9 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>The option <code>ref.group</code> was only considered when the grouping variable contains more than two levels. In that case, each level is compared against the specified reference group. Now, <code>ref.group</code> option is also considereded in two samples mean comparisons (<a href="https://github.com/kassambara/ggpubr/issues/118"><a href='http://github.com/OwenDonohoe'>@OwenDonohoe</a>, #118</a>)</p></li>
 <li>Now, <code><a href="../reference/ggqqplot.html">ggqqplot()</a></code> reacts to the argument <code>conf.int.level</code> (<a href="https://github.com/kassambara/ggpubr/issues/123"><a href='http://github.com/vsluydts'>@vsluydts</a>, #123</a>
@@ -150,9 +162,9 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Now, <code><a href="../reference/ggscatter.html">ggscatter()</a></code> can remove the letter ‘a’ from the legend, when the argument <code>show.legend.text = FALSE</code> specified <a href="https://github.com/kassambara/ggpubr/issues/106"><a href='http://github.com/atsyplenkov'>@atsyplenkov</a>, #106</a>.</li>
 <li>Now, adding a <code>size</code> option to ggscatter <code>add.params</code> is supported <a href="https://github.com/kassambara/ggpubr/issues/53"><a href='http://github.com/retrogenomics'>@retrogenomics</a>, #94</a>.</li>
@@ -178,9 +190,9 @@
 <li><p>Editing pdf size is now supported in <code><a href="../reference/ggexport.html">ggexport()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/63"><a href='http://github.com/JauntyJJS'>@JauntyJJS</a>, #45</a>).</p></li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>In <code><a href="../reference/ggscatterhist.html">ggscatterhist()</a></code> the x variable was plotted two times, on both the plot x &amp; y margins, instead of having, as expected, a) the x variable on the main plot x margin and 2) the y variable on the main plot y margin. This has been now fixed.</li>
 <li>In previous version, <code><a href="../reference/ggdotchart.html">ggdotchart()</a></code> sorted automatically within groups when the <code>color</code> argument is specified, even when groups = NULL. This default behaviour has been now removed. Sorting withi groups is performed only when the argument <code>group</code> is specified (<a href="https://github.com/kassambara/ggpubr/issues/90"><a href='http://github.com/sfeds'>@sfeds</a>, #90</a>).</li>
@@ -222,9 +234,9 @@
 <li>Now <code><a href="../reference/get_legend.html">get_legend()</a></code> returns NULL when the plot doesn’t have legend.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Now data argument are supported in <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> when the option comparisons are specified (<a href="https://github.com/kassambara/ggpubr/issues/48"><a href='http://github.com/emcnerny'>@emcnerny</a>, #48</a>)</p></li>
 <li>Now <code><a href="../reference/compare_means.html">compare_means()</a></code> returns the same p-values as <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/34"><a href='http://github.com/wydty'>@wydty</a>, #15</a>).</li>
@@ -256,9 +268,9 @@
 <li><p>Using time on x axis works know with <code><a href="../reference/ggline.html">ggline()</a></code> and <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code> (<a href="https://github.com/kassambara/ggpubr/issues/17"><a href='http://github.com/jcpsantiago'>@jcpsantiago</a>, #15</a>).</p></li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>
 <code><a href="../reference/stat_compare_means.html">stat_compare_means()</a></code> now reacts to <code>hide.ns</code> properly.</li>
@@ -467,7 +479,7 @@
 <ul>
 <li>New function <code><a href="../reference/ggtext.html">ggtext()</a></code> for textual annotation.</li>
 <li>New argument star.plot in <code><a href="../reference/ggscatter.html">ggscatter()</a></code>. A logical value. If TRUE, a star plot is generated.</li>
-<li>New helper function <code><a href="../reference/geom_exec.html">geom_exec()</a></code>. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without carrying about the arguments to put in <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">ggplot2::aes()</a></code>.</li>
+<li>New helper function <code><a href="../reference/geom_exec.html">geom_exec()</a></code>. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without carrying about the arguments to put in <code><a href="ggplot2.tidyverse.org/reference/aes.html">ggplot2::aes()</a></code>.</li>
 <li>New arguments sort.val and top in <code><a href="../reference/ggbarplot.html">ggbarplot()</a></code>.
 <ul>
 <li>sort.val: a string specifying whether the value should be sorted. Allowed values are “none” (no sorting), “asc” (for ascending) or “desc” (for descending).</li>
@@ -571,6 +583,7 @@ ggboxplot(iris$Sepal.Length)</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#ggpubr-0-2">0.2</a></li>
         <li><a href="#ggpubr-0-1-9">0.1.9</a></li>
         <li><a href="#ggpubr-0-1-8">0.1.8</a></li>
         <li><a href="#ggpubr-0-1-7">0.1.7</a></li>

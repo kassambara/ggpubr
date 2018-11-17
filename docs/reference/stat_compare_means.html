@@ -65,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
       </span>
     </div>
 
@@ -265,8 +265,8 @@ the default plot specification, e.g. <code>borders()</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments to pass to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>geom_text</a></code> or
-<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>geom_label</a></code>.</p></td>
+      <td><p>other arguments to pass to <code><a href='ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></code> or
+<code><a href='ggplot2.tidyverse.org/reference/geom_text.html'>geom_label</a></code>.</p></td>
     </tr>
     </table>
     
@@ -291,17 +291,14 @@ the default plot specification, e.g. <code>borders()</code>.</p></td>
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>)
 
 <span class='co'>#  Add p-value</span>
-<span class='no'>p</span> + <span class='fu'>stat_compare_means</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='img'><img src='stat_compare_means-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Change method</span>
-<span class='no'>p</span> + <span class='fu'>stat_compare_means</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='img'><img src='stat_compare_means-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p</span> + <span class='fu'>stat_compare_means</span>()</div><div class='img'><img src='stat_compare_means-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Change method</span>
+<span class='no'>p</span> + <span class='fu'>stat_compare_means</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>)</div><div class='img'><img src='stat_compare_means-2.png' alt='' width='700' height='433' /></div><div class='input'>
  <span class='co'># Paired samples</span>
  <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::</span>
  <span class='fu'><a href='ggpaired.html'>ggpaired</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
    <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>line.color</span> <span class='kw'>=</span> <span class='st'>"gray"</span>, <span class='kw'>line.size</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
    <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)+
- <span class='fu'>stat_compare_means</span>(<span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='img'><img src='stat_compare_means-3.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='fu'>stat_compare_means</span>(<span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='stat_compare_means-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># More than two groups</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Pairwise comparisons: Specify the comparisons you want</span>
@@ -310,19 +307,13 @@ the default plot specification, e.g. <code>borders()</code>.</p></td>
           <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)+
 <span class='co'># Add pairwise comparisons p-value</span>
 <span class='fu'>stat_compare_means</span>(<span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>29</span>, <span class='fl'>35</span>, <span class='fl'>40</span>))+
-<span class='fu'>stat_compare_means</span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>45</span>)     <span class='co'># Add global Anova p-value</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='img'><img src='stat_compare_means-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>stat_compare_means</span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>45</span>)     <span class='co'># Add global Anova p-value</span></div><div class='img'><img src='stat_compare_means-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Multiple pairwise test against a reference group</span>
 <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)+
 <span class='fu'>stat_compare_means</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>40</span>)+ <span class='co'># Add global p-value</span>
 <span class='fu'>stat_compare_means</span>(<span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>..p.signif..</span>),
-                  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='img'><img src='stat_compare_means-5.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [90m# A tibble: 2 x 8[39m
-#&gt;   .y.   group1 group2        p    p.adj p.format p.signif method
-#&gt;   [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m  [3m[90m&lt;chr&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m    [3m[90m&lt;chr&gt;[39m[23m    [3m[90m&lt;chr&gt;[39m[23m 
-#&gt; [90m1[39m y     1      2      1.27[90me[39m[31m- 7[39m 1.30[90me[39m[31m- 7[39m 1.3e-07  ****     T-test
-#&gt; [90m2[39m y     1      3      4.40[90me[39m[31m-14[39m 8.80[90me[39m[31m-14[39m 4.4e-14  ****     T-test</div><div class='input'>
+                  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><div class='img'><img src='stat_compare_means-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Multiple grouping variables</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Box plot facetted by "dose"</span>
@@ -333,10 +324,7 @@ the default plot specification, e.g. <code>borders()</code>.</p></td>
 <span class='co'># Use only p.format as label. Remove method name.</span>
 <span class='no'>p</span> + <span class='fu'>stat_compare_means</span>(
  <span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'>paste0</span>(<span class='st'>"p = "</span>, <span class='no'>..p.format..</span>))
-)</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_means()`:</span>
-#&gt; <span class='warning'>l'argument est de longueur nulle</span></div><div class='img'><img src='stat_compare_means-6.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='img'><img src='stat_compare_means-6.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
