@@ -13,7 +13,7 @@ NULL
 #' @param group an optional column name indicating how the elements of x are
 #'   grouped.
 #' @param sorting a character vector for sorting into ascending or descending
-#'   order. Allowed values are one of "descending" and "ascending". Partial
+#'   order. Allowed values are one of "descending", "ascending", and "none". Partial
 #'   match are allowed (e.g. sorting = "desc" or "asc"). Default is
 #'   "descending".
 #' @param x.text.col logical. If TRUE (default), x axis texts are colored by
@@ -75,7 +75,7 @@ ggdotchart <- function(data, x, y, group = NULL,
                        combine = FALSE,
                        color = "black",  palette = NULL,
                        shape = 19, size = NULL, dot.size = size,
-                       sorting = c("ascending", "descending"),
+                       sorting = c("ascending", "descending", "none"),
                        add = c("none", "segment"), add.params = list(),
                        x.text.col = TRUE,
                        rotate = FALSE,
@@ -130,7 +130,7 @@ ggdotchart <- function(data, x, y, group = NULL,
 ggdotchart_core <- function(data, x, y, group = NULL,
                        color = "black",  palette = NULL,
                        shape = 19, size = NULL, dot.size = size,
-                       sorting = c("ascending", "descending"),
+                       sorting = c("ascending", "descending", "none"),
                        add = c("none", "segments"), add.params = list(),
                        x.text.col = FALSE,
                        rotate = FALSE,
@@ -164,14 +164,16 @@ ggdotchart_core <- function(data, x, y, group = NULL,
   else if(rotate & sorting == "ascending") sorting <- "descending"
 
   y.sort <- y
-  if(sorting == "descending") y.sort <- paste0("desc(", y, ")")
-  if(is.null(group))
-    data <- dplyr::arrange_(data, .dots = y.sort)
-  else if(group != 1)
-    data <- dplyr::arrange_(data, .dots = c(group, y.sort))
-
-  data[, x] <- factor(data[, x], levels = unique(as.vector(data[, x])))
-
+  
+  if(sorting != "none"){
+    if(sorting == "descending") y.sort <- paste0("desc(", y, ")")
+    if(is.null(group))
+      data <- dplyr::arrange_(data, .dots = y.sort)
+    else if(group != 1)
+      data <- dplyr::arrange_(data, .dots = c(group, y.sort))
+    data[, x] <- factor(data[, x], levels = unique(as.vector(data[, x])))
+  }
+  
   p <- ggplot(data, aes_string(x = x, y =y))
 
   if(add == "segments"){
