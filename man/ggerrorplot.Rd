@@ -6,11 +6,12 @@
 \usage{
 ggerrorplot(data, x, y, desc_stat = "mean_se", combine = FALSE,
   merge = FALSE, color = "black", fill = "white", palette = NULL,
-  size = NULL, width = NULL, title = NULL, xlab = NULL, ylab = NULL,
-  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-  select = NULL, remove = NULL, order = NULL, add = "none",
-  add.params = list(), error.plot = "pointrange", ci = 0.95,
-  position = position_dodge(), ggtheme = theme_pubr(), ...)
+  size = NULL, width = NULL, title = NULL, xlab = NULL,
+  ylab = NULL, facet.by = NULL, panel.labs = NULL,
+  short.panel.labs = TRUE, select = NULL, remove = NULL,
+  order = NULL, add = "none", add.params = list(),
+  error.plot = "pointrange", ci = 0.95, position = position_dodge(),
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}

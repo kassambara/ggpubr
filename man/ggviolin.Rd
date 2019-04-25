@@ -9,11 +9,11 @@ ggviolin(data, x, y, combine = FALSE, merge = FALSE, color = "black",
   xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
   short.panel.labs = TRUE, linetype = "solid", trim = FALSE,
   size = NULL, width = 1, draw_quantiles = NULL, select = NULL,
-  remove = NULL, order = NULL, add = "mean_se", add.params = list(),
-  error.plot = "pointrange", label = NULL, font.label = list(size = 11,
-  color = "black"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, position = position_dodge(0.8),
-  ggtheme = theme_pubr(), ...)
+  remove = NULL, order = NULL, add = "mean_se",
+  add.params = list(), error.plot = "pointrange", label = NULL,
+  font.label = list(size = 11, color = "black"), label.select = NULL,
+  repel = FALSE, label.rectangle = FALSE,
+  position = position_dodge(0.8), ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}

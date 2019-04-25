@@ -4,14 +4,14 @@
 \alias{ggstripchart}
 \title{Stripcharts}
 \usage{
-ggstripchart(data, x, y, combine = FALSE, merge = FALSE, color = "black",
-  fill = "white", palette = NULL, title = NULL, xlab = NULL,
-  ylab = NULL, facet.by = NULL, panel.labs = NULL,
+ggstripchart(data, x, y, combine = FALSE, merge = FALSE,
+  color = "black", fill = "white", palette = NULL, title = NULL,
+  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
   short.panel.labs = TRUE, shape = 19, size = NULL, select = NULL,
-  remove = NULL, order = NULL, add = "mean_se", add.params = list(),
-  error.plot = "pointrange", label = NULL, font.label = list(size = 11,
-  color = "black"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, jitter = 0.2,
+  remove = NULL, order = NULL, add = "mean_se",
+  add.params = list(), error.plot = "pointrange", label = NULL,
+  font.label = list(size = 11, color = "black"), label.select = NULL,
+  repel = FALSE, label.rectangle = FALSE, jitter = 0.2,
   position = position_jitter(jitter), ggtheme = theme_pubr(), ...)
 }
 \arguments{

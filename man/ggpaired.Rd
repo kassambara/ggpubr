@@ -6,11 +6,12 @@
 \usage{
 ggpaired(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
   color = "black", fill = "white", palette = NULL, width = 0.5,
-  point.size = 1.2, line.size = 0.5, line.color = "black", title = NULL,
-  xlab = "Condition", ylab = "Value", facet.by = NULL,
-  panel.labs = NULL, short.panel.labs = TRUE, label = NULL,
-  font.label = list(size = 11, color = "black"), label.select = NULL,
-  repel = FALSE, label.rectangle = FALSE, ggtheme = theme_pubr(), ...)
+  point.size = 1.2, line.size = 0.5, line.color = "black",
+  title = NULL, xlab = "Condition", ylab = "Value",
+  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+  label = NULL, font.label = list(size = 11, color = "black"),
+  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}

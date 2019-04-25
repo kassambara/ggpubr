@@ -4,9 +4,10 @@
 \alias{annotate_figure}
 \title{Annotate Arranged Figure}
 \usage{
-annotate_figure(p, top = NULL, bottom = NULL, left = NULL, right = NULL,
-  fig.lab = NULL, fig.lab.pos = c("top.left", "top", "top.right",
-  "bottom.left", "bottom", "bottom.right"), fig.lab.size, fig.lab.face)
+annotate_figure(p, top = NULL, bottom = NULL, left = NULL,
+  right = NULL, fig.lab = NULL, fig.lab.pos = c("top.left", "top",
+  "top.right", "bottom.left", "bottom", "bottom.right"), fig.lab.size,
+  fig.lab.face)
 }
 \arguments{
 \item{p}{(arranged) ggplots.}

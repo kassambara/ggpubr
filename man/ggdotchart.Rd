@@ -5,15 +5,16 @@
 \alias{theme_cleveland}
 \title{Cleveland's Dot Plots}
 \usage{
-ggdotchart(data, x, y, group = NULL, combine = FALSE, color = "black",
-  palette = NULL, shape = 19, size = NULL, dot.size = size,
-  sorting = c("ascending", "descending"), add = c("none", "segment"),
-  add.params = list(), x.text.col = TRUE, rotate = FALSE, title = NULL,
-  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, select = NULL, remove = NULL, order = NULL,
-  label = NULL, font.label = list(size = 11, color = "black"),
-  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  position = "identity", ggtheme = theme_pubr(), ...)
+ggdotchart(data, x, y, group = NULL, combine = FALSE,
+  color = "black", palette = NULL, shape = 19, size = NULL,
+  dot.size = size, sorting = c("ascending", "descending"),
+  add = c("none", "segment"), add.params = list(), x.text.col = TRUE,
+  rotate = FALSE, title = NULL, xlab = NULL, ylab = NULL,
+  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+  select = NULL, remove = NULL, order = NULL, label = NULL,
+  font.label = list(size = 11, color = "black"), label.select = NULL,
+  repel = FALSE, label.rectangle = FALSE, position = "identity",
+  ggtheme = theme_pubr(), ...)
 
 theme_cleveland(rotate = TRUE)
 }

@@ -4,7 +4,8 @@
 \alias{font}
 \title{Change the Appearance of Titles and Axis Labels}
 \usage{
-font(object, size = NULL, color = NULL, face = NULL, family = NULL, ...)
+font(object, size = NULL, color = NULL, face = NULL, family = NULL,
+  ...)
 }
 \arguments{
 \item{object}{character string specifying the plot components. Allowed values

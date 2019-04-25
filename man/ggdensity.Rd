@@ -11,7 +11,8 @@ ggdensity(data, x, y = "..density..", combine = FALSE, merge = FALSE,
   short.panel.labs = TRUE, add = c("none", "mean", "median"),
   add.params = list(linetype = "dashed"), rug = FALSE, label = NULL,
   font.label = list(size = 11, color = "black"), label.select = NULL,
-  repel = FALSE, label.rectangle = FALSE, ggtheme = theme_pubr(), ...)
+  repel = FALSE, label.rectangle = FALSE, ggtheme = theme_pubr(),
+  ...)
 }
 \arguments{
 \item{data}{a data frame}

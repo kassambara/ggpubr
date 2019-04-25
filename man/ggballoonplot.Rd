@@ -4,10 +4,11 @@
 \alias{ggballoonplot}
 \title{Ballon plot}
 \usage{
-ggballoonplot(data, x = NULL, y = NULL, size = "value", facet.by = NULL,
-  size.range = c(1, 10), shape = 21, color = "black", fill = "gray",
-  show.label = FALSE, font.label = list(size = 12, color = "black"),
-  rotate.x.text = TRUE, ggtheme = theme_minimal(), ...)
+ggballoonplot(data, x = NULL, y = NULL, size = "value",
+  facet.by = NULL, size.range = c(1, 10), shape = 21,
+  color = "black", fill = "gray", show.label = FALSE,
+  font.label = list(size = 12, color = "black"), rotate.x.text = TRUE,
+  ggtheme = theme_minimal(), ...)
 }
 \arguments{
 \item{data}{a data frame. Can be: \itemize{ \item \bold{a standard

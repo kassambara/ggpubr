@@ -4,10 +4,10 @@
 \alias{ggdonutchart}
 \title{Donut chart}
 \usage{
-ggdonutchart(data, x, label = x, lab.pos = c("out", "in"), lab.adjust = 0,
-  lab.font = c(4, "bold", "black"), font.family = "", color = "black",
-  fill = "white", palette = NULL, size = NULL, ggtheme = theme_pubr(),
-  ...)
+ggdonutchart(data, x, label = x, lab.pos = c("out", "in"),
+  lab.adjust = 0, lab.font = c(4, "bold", "black"), font.family = "",
+  color = "black", fill = "white", palette = NULL, size = NULL,
+  ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}

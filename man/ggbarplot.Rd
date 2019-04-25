@@ -4,16 +4,17 @@
 \alias{ggbarplot}
 \title{Bar plot}
 \usage{
-ggbarplot(data, x, y, combine = FALSE, merge = FALSE, color = "black",
-  fill = "white", palette = NULL, size = NULL, width = NULL,
-  title = NULL, xlab = NULL, ylab = NULL, facet.by = NULL,
-  panel.labs = NULL, short.panel.labs = TRUE, select = NULL,
-  remove = NULL, order = NULL, add = "none", add.params = list(),
-  error.plot = "errorbar", label = FALSE, lab.col = "black",
-  lab.size = 4, lab.pos = c("out", "in"), lab.vjust = NULL,
-  lab.hjust = NULL, lab.nb.digits = NULL, sort.val = c("none", "desc",
-  "asc"), sort.by.groups = TRUE, top = Inf, position = position_stack(),
-  ggtheme = theme_pubr(), ...)
+ggbarplot(data, x, y, combine = FALSE, merge = FALSE,
+  color = "black", fill = "white", palette = NULL, size = NULL,
+  width = NULL, title = NULL, xlab = NULL, ylab = NULL,
+  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
+  select = NULL, remove = NULL, order = NULL, add = "none",
+  add.params = list(), error.plot = "errorbar", label = FALSE,
+  lab.col = "black", lab.size = 4, lab.pos = c("out", "in"),
+  lab.vjust = NULL, lab.hjust = NULL, lab.nb.digits = NULL,
+  sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
+  top = Inf, position = position_stack(), ggtheme = theme_pubr(),
+  ...)
 }
 \arguments{
 \item{data}{a data frame}

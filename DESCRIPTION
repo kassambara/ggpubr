@@ -13,6 +13,7 @@ Description: The 'ggplot2' package is excellent and flexible for elegant data
     functions for creating and customizing 'ggplot2'- based publication ready plots.
 License: GPL-2
 LazyData: TRUE
+Encoding: UTF-8
 Depends:
     R (>= 3.1.0),
     ggplot2,
@@ -39,7 +40,7 @@ Suggests:
     gtable
 URL: http://www.sthda.com/english/rpkgs/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Collate:
     'utilities_color.R'
     'utilities_base.R'

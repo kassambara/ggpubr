@@ -7,8 +7,8 @@
 stat_cor(mapping = NULL, data = NULL, method = "pearson",
   label.sep = ", ", label.x.npc = "left", label.y.npc = "top",
   label.x = NULL, label.y = NULL, output.type = "expression",
-  geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, ...)
+  geom = "text", position = "identity", na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or

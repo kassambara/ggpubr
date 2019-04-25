@@ -4,14 +4,15 @@
 \alias{ggscatter}
 \title{Scatter plot}
 \usage{
-ggscatter(data, x, y, combine = FALSE, merge = FALSE, color = "black",
-  fill = "lightgray", palette = NULL, shape = 19, size = 2,
-  point = TRUE, rug = FALSE, title = NULL, xlab = NULL, ylab = NULL,
-  facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-  add = c("none", "reg.line", "loess"), add.params = list(),
-  conf.int = FALSE, conf.int.level = 0.95, fullrange = FALSE,
-  ellipse = FALSE, ellipse.level = 0.95, ellipse.type = "norm",
-  ellipse.alpha = 0.1, ellipse.border.remove = FALSE, mean.point = FALSE,
+ggscatter(data, x, y, combine = FALSE, merge = FALSE,
+  color = "black", fill = "lightgray", palette = NULL, shape = 19,
+  size = 2, point = TRUE, rug = FALSE, title = NULL, xlab = NULL,
+  ylab = NULL, facet.by = NULL, panel.labs = NULL,
+  short.panel.labs = TRUE, add = c("none", "reg.line", "loess"),
+  add.params = list(), conf.int = FALSE, conf.int.level = 0.95,
+  fullrange = FALSE, ellipse = FALSE, ellipse.level = 0.95,
+  ellipse.type = "norm", ellipse.alpha = 0.1,
+  ellipse.border.remove = FALSE, mean.point = FALSE,
   mean.point.size = ifelse(is.numeric(size), 2 * size, size),
   star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
   label = NULL, font.label = c(12, "plain"), font.family = "",

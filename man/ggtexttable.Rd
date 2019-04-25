@@ -19,11 +19,12 @@ ttheme(base_style = "default", base_size = 11, base_colour = "black",
   tbody.style = tbody_style(size = base_size))
 
 colnames_style(color = "black", face = "bold", size = 12,
-  fill = "grey80", linewidth = 1, linecolor = "white", parse = FALSE,
-  ...)
+  fill = "grey80", linewidth = 1, linecolor = "white",
+  parse = FALSE, ...)
 
-rownames_style(color = "black", face = "italic", size = 12, fill = NA,
-  linewidth = 1, linecolor = "white", parse = FALSE, ...)
+rownames_style(color = "black", face = "italic", size = 12,
+  fill = NA, linewidth = 1, linecolor = "white", parse = FALSE,
+  ...)
 
 tbody_style(color = "black", face = "plain", size = 12,
   fill = c("grey95", "grey90"), linewidth = 1, linecolor = "white",

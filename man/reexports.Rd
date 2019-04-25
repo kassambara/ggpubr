@@ -4,10 +4,9 @@
 \name{reexports}
 \alias{reexports}
 \alias{\%>\%}
-\alias{reexports}
 \alias{mutate}
-\alias{reexports}
 \alias{group_by}
+\alias{geom_signif}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -16,6 +15,8 @@ below to see their documentation.
 
 \describe{
   \item{dplyr}{\code{\link[dplyr]{mutate}}, \code{\link[dplyr]{group_by}}}
+
+  \item{ggsignif}{\code{\link[ggsignif]{geom_signif}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 }}

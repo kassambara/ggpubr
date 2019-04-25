@@ -5,8 +5,8 @@
 \title{Scatter Plot with Marginal Histograms}
 \usage{
 ggscatterhist(data, x, y, group = NULL, color = "black", fill = NA,
-  palette = NULL, shape = 19, size = 2, linetype = "solid", bins = 30,
-  margin.plot = c("density", "histogram", "boxplot"),
+  palette = NULL, shape = 19, size = 2, linetype = "solid",
+  bins = 30, margin.plot = c("density", "histogram", "boxplot"),
   margin.params = list(), margin.ggtheme = theme_void(),
   margin.space = FALSE, main.plot.size = 2, margin.plot.size = 1,
   title = NULL, xlab = NULL, ylab = NULL, legend = "top",

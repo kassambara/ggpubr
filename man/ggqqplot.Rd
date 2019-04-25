@@ -5,8 +5,8 @@
 \title{QQ Plots}
 \usage{
 ggqqplot(data, x, combine = FALSE, merge = FALSE, color = "black",
-  palette = NULL, size = NULL, shape = NULL, add = c("qqline", "none"),
-  add.params = list(linetype = "solid"), conf.int = TRUE,
+  palette = NULL, size = NULL, shape = NULL, add = c("qqline",
+  "none"), add.params = list(linetype = "solid"), conf.int = TRUE,
   conf.int.level = 0.95, title = NULL, xlab = NULL, ylab = NULL,
   facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
   ggtheme = theme_pubr(), ...)

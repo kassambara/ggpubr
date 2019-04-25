@@ -6,8 +6,9 @@
 \usage{
 ggadd(p, add = NULL, color = "black", fill = "white", group = 1,
   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
-  binwidth = NULL, dotsize = size, error.plot = "pointrange", ci = 0.95,
-  data = NULL, position = position_dodge(0.8), p_geom = "")
+  binwidth = NULL, dotsize = size, error.plot = "pointrange",
+  ci = 0.95, data = NULL, position = position_dodge(0.8),
+  p_geom = "")
 }
 \arguments{
 \item{p}{a ggplot}

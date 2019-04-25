@@ -7,8 +7,8 @@
 ggtext(data, x = NULL, y = NULL, label = NULL, color = "black",
   palette = NULL, size = 11, face = "plain", family = "",
   show.legend = NA, label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, grouping.vars = NULL, position = "identity",
-  ggp = NULL, ggtheme = theme_pubr(), ...)
+  label.rectangle = FALSE, grouping.vars = NULL,
+  position = "identity", ggp = NULL, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}

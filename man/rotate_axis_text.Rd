@@ -3,7 +3,6 @@
 \name{rotate_axis_text}
 \alias{rotate_axis_text}
 \alias{rotate_x_text}
-\alias{rotate_axis_text}
 \alias{rotate_y_text}
 \title{Rotate Axes Text}
 \usage{

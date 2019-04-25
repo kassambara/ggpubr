@@ -4,9 +4,9 @@
 \alias{text_grob}
 \title{Create a Text Graphical object}
 \usage{
-text_grob(label, just = "centre", hjust = NULL, vjust = NULL, rot = 0,
-  color = "black", face = "plain", size = NULL, lineheight = NULL,
-  family = NULL, ...)
+text_grob(label, just = "centre", hjust = NULL, vjust = NULL,
+  rot = 0, color = "black", face = "plain", size = NULL,
+  lineheight = NULL, family = NULL, ...)
 }
 \arguments{
 \item{label}{A character or \link{expression} vector.  Other
