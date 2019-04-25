@@ -27,8 +27,12 @@ NULL
 #'@param panel.labs.font a list of aestheics indicating the size (e.g.: 14), the
 #'  face/style (e.g.: "plain", "bold", "italic", "bold.italic") and the color
 #'  (e.g.: "red") and the orientation angle (e.g.: 45) of panel labels.
-#'@param panel.labs.font.x,panel.labs.font.y same as panel.labs.font but for only x
-#'  and y direction, respectively.
+#'@param panel.labs.font.x,panel.labs.font.y same as panel.labs.font but for
+#'  only x and y direction, respectively.
+#'@param strip.position (used only in \code{facet_wrap()}). By default, the
+#'  labels are displayed on the top of the plot. Using \code{strip.position} it is
+#'  possible to place the labels on either of the four sides by setting
+#'  \code{strip.position = c("top", "bottom", "left", "right")}
 #'@param ... not used
 #' @examples
 #' p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
@@ -51,7 +55,8 @@ facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
                   panel.labs.background = list(color = NULL, fill = NULL),
                   panel.labs.font = list(face = NULL, color = NULL, size = NULL, angle = NULL),
                   panel.labs.font.x = panel.labs.font,
-                  panel.labs.font.y = panel.labs.font, ...
+                  panel.labs.font.y = panel.labs.font,
+                  strip.position = "top", ...
 )
 {
 
@@ -74,7 +79,8 @@ facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
 
   if(length(facet.by) == 1){
     facet.formula <- paste0("~", facet.by) %>% stats::as.formula()
-    p <- p + facet_wrap(facet.formula, nrow = nrow, ncol = ncol, scales = scales, labeller = .labeller)
+    p <- p + facet_wrap(facet.formula, nrow = nrow, ncol = ncol, scales = scales, labeller = .labeller,
+                        strip.position = strip.position)
   }
   else if(length(facet.by) == 2){
     facet.formula <- paste(facet.by, collapse = " ~ ") %>% stats::as.formula()
