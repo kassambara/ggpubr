@@ -158,7 +158,7 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
                       ggtheme = theme_pubr(),
                       ...){
 
-
+  add <- match.arg(add)
   # Default options
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
