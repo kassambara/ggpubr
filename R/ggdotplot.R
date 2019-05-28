@@ -119,6 +119,7 @@ ggdotplot_core <- function(data, x, y,
                       add = "mean_se",
                       add.params = list(),
                       error.plot = "pointrange",
+                      position = position_dodge(0.8),
                       ggtheme = theme_pubr(),
                       ...)
 {
@@ -147,7 +148,7 @@ ggdotplot_core <- function(data, x, y,
       geom_exec(geom_dotplot, data = data,
                 binaxis = "y", stackdir = "center",
                 color = color, fill = fill,
-                position = position_dodge(0.8), stackratio = 1,
+                position = position, stackratio = 1,
                 dotsize = dotsize, binwidth = binwidth, ...)
 
   # Add errors

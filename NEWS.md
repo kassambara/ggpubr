@@ -15,6 +15,7 @@
   
 ## Minor changes
    
+- the argument `position` is now handled by `ggdotplot()` ([@Adam-JJJJJ, #178](https://github.com/kassambara/ggpubr/pull/178)
 - ggsci palettes have been updated to add new palettes: nejm, jama, ucscgb, d3, locuszoom, igv, startrek, tron, futurama, simpsons ([@cbrueffer, #118](https://github.com/kassambara/ggpubr/pull/127)
 
 
