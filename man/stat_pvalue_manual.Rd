@@ -7,7 +7,7 @@
 stat_pvalue_manual(data, label = "p", y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL, size = 3.88,
   label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, ...)
+  remove.bracket = FALSE, ref.group = NULL, ...)
 }
 \arguments{
 \item{data}{a data frame containing statitistical test results. The expected
@@ -46,6 +46,10 @@ bar goes down to indicate the precise column. Default is 0.03.}
 \item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
 plot. Considered only in the situation, where comparisons are performed
 against reference group or against "all".}
+
+\item{ref.group}{a character vector specifying the reference group, in the
+situation where you have compared each group level against reference.
+Important to be specified for correctly positionning the label of grouped plots.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like

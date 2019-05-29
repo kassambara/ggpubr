@@ -35,6 +35,9 @@ NULL
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. Considered only in the situation, where comparisons are performed
 #'  against reference group or against "all".
+#'@param ref.group a character vector specifying the reference group, in the
+#'  situation where you have compared each group level against reference.
+#'  Important to be specified for correctly positionning the label of a dodged grouped plots.
 #'@seealso \code{\link{stat_compare_means}}
 #'@examples
 #'
@@ -71,7 +74,7 @@ stat_pvalue_manual <- function(
   data, label = "p", y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE,
+  remove.bracket = FALSE, ref.group = NULL,
   ...
   )
 {
@@ -141,14 +144,18 @@ stat_pvalue_manual <- function(
     )
   }
   else{
+    if(!is.null(ref.group)){
+      group2 <- NULL
+      data <- add_ctr_rows(data, ref.group = ref.group)
+      mapping <- aes(x = xmin, y = y.position, label = label, group = group2)
+    }
+    else{
+      mapping <- aes(x = xmin, y = y.position, label = label)
+    }
     # X axis variable should be a factor
     if(!is.factor(data$xmin))
       data$xmin <- factor(data$xmin, levels = unique(data$xmin))
-
-    geom_text(
-      aes(x = xmin, y = y.position, label = label),
-      data = data, size = label.size,  ...
-    )
+    geom_text(mapping, data = data, size = label.size, ...)
   }
 }
 
@@ -174,4 +181,15 @@ stat_pvalue_manual <- function(
 # Check if a string contains curly bracket
 .contains_curlybracket <- function(x){
   grepl("\\{|\\}", x, perl = TRUE)
+}
+
+# For ctr rows: the comparaison of ctr against itself
+# useful only when positionning the label of grouped bars
+add_ctr_rows <- function(data, ref.group){
+  xmin <- NULL
+  ctr <- data %>%
+    dplyr::distinct(xmin, .keep_all = TRUE) %>%
+    mutate(group2 = ref.group) %>%
+    mutate(label = " ")
+  dplyr::bind_rows(ctr, data)
 }
