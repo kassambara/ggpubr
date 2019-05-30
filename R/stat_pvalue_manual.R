@@ -71,6 +71,7 @@ NULL
 #'
 #' # Grouped bar plots
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' ToothGrowth$dose <- as.factor(ToothGrowth$dose)
 #' # Comparisons against reference
 #' stat.test <- compare_means(
 #'   len ~ dose, data = ToothGrowth, group.by = "supp",
