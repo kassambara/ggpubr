@@ -73,12 +73,12 @@ NULL
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # Comparisons against reference
 #' stat.test <- compare_means(
-#'   len ~ dose, data = df, group.by = "supp",
+#'   len ~ dose, data = ToothGrowth, group.by = "supp",
 #'   method = "t.test", ref.group = "0.5"
 #' )
 #' stat.test
 #' # Plot
-#' bp <- ggbarplot(df, x = "supp", y = "len",
+#' bp <- ggbarplot(ToothGrowth, x = "supp", y = "len",
 #'                 fill = "dose", palette = "jco",
 #'                 add = "mean_sd", add.params = list(group = "dose"),
 #'                 position = position_dodge(0.8))
