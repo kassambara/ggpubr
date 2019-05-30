@@ -6,7 +6,7 @@
    
 ## Minor changes
   
-- New argument `ref.group` added to `stat_pvalue_manual()`. A character vector specifying the reference group, in the situation where you have compared each group level against reference. Important to be specified for correctly positionning the label in a dodged grouped plot ([@emcnerny, #104](https://github.com/kassambara/ggpubr/issues/104).
+- `stat_pvalue_manual()` now supports dodged grouped plots ([@emcnerny, #104](https://github.com/kassambara/ggpubr/issues/104).
 - the argument `position` is now handled by `ggdotplot()` ([@Adam-JJJJJ, #178](https://github.com/kassambara/ggpubr/issues/178)
 
 ## Bug fixes

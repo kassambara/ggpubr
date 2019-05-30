@@ -35,9 +35,8 @@ NULL
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. Considered only in the situation, where comparisons are performed
 #'  against reference group or against "all".
-#'@param ref.group a character vector specifying the reference group, in the
-#'  situation where you have compared each group level against reference.
-#'  Important to be specified for correctly positionning the label of a dodged grouped plots.
+#'@param position position adjustment, either as a string, or the result of a
+#'  call to a position adjustment function.
 #'@seealso \code{\link{stat_compare_means}}
 #'@examples
 #'
@@ -69,16 +68,36 @@ NULL
 #'# (https://github.com/tidyverse/glue)
 #'p + stat_pvalue_manual(stat.test, label = "p = {p.adj}")
 #'
+#'
+#' # Grouped bar plots
+#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # Comparisons against reference
+#' stat.test <- compare_means(
+#'   len ~ dose, data = df, group.by = "supp",
+#'   method = "t.test", ref.group = "0.5"
+#' )
+#' stat.test
+#' # Plot
+#' bp <- ggbarplot(df, x = "supp", y = "len",
+#'                 fill = "dose", palette = "jco",
+#'                 add = "mean_sd", add.params = list(group = "dose"),
+#'                 position = position_dodge(0.8))
+#' bp + stat_pvalue_manual(
+#'   stat.test, x = "supp", y.position = 33,
+#'   label = "p.signif",
+#'   position = position_dodge(0.8)
+#' )
+#'
 #'@export
 stat_pvalue_manual <- function(
   data, label = "p", y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, ref.group = NULL,
-  ...
+  remove.bracket = FALSE, position = "identity", ...
   )
 {
-
+  asserttat_group_columns_exists(data)
+  comparison <- detect_comparison_type(data)
   # If label is a glue package expression
   if(.contains_curlybracket(label)){
     data <- data %>% mutate(label = glue(label))
@@ -140,14 +159,17 @@ stat_pvalue_manual <- function(
       mapping = mapping, data = data,
       manual= TRUE, tip_length =  tip.length,
       textsize = label.size, size = bracket.size,
-      ...
+      position = position, ...
     )
   }
   else{
-    if(!is.null(ref.group)){
+    if(comparison == "each_vs_ref"){
+      ref.group <- unique(data$group1)
       group2 <- NULL
       data <- add_ctr_rows(data, ref.group = ref.group)
       mapping <- aes(x = xmin, y = y.position, label = label, group = group2)
+      if(missing(position) & is_grouping_variable(x))
+        position <- position_dodge(0.8)
     }
     else{
       mapping <- aes(x = xmin, y = y.position, label = label)
@@ -155,10 +177,16 @@ stat_pvalue_manual <- function(
     # X axis variable should be a factor
     if(!is.factor(data$xmin))
       data$xmin <- factor(data$xmin, levels = unique(data$xmin))
-    geom_text(mapping, data = data, size = label.size, ...)
+    geom_text(mapping, data = data, size = label.size, position = position, ...)
   }
 }
 
+asserttat_group_columns_exists <- function(data){
+  groups.exist <- all(c("group1", "group2") %in% colnames(data))
+  if(!groups.exist){
+    stop("data should contain group1 and group2 columns")
+  }
+}
 
 # get validate p-value y-position
 .valide_y_position <- function(y.position, data){
@@ -192,4 +220,37 @@ add_ctr_rows <- function(data, ref.group){
     mutate(group2 = ref.group) %>%
     mutate(label = " ")
   dplyr::bind_rows(ctr, data)
+}
+
+# Returns the type of comparisons: one_group, two_groups, each_vs_ref, pairwise
+detect_comparison_type <- function(data){
+  ngroup1 <- unique(data$group1) %>% length()
+  ngroup2 <- unique(data$group2) %>% length()
+  if(is_null_model(data)){
+    type = "one_group"
+  }
+  else if(ngroup1 == 1 & ngroup2 >= 2){
+    type = "each_vs_ref"
+  }
+  else if(ngroup1 == 1 & ngroup2 == 1){
+    type = "two_groups"
+  }
+  else if (ngroup1 >= 2 & ngroup2 >= 2){
+    type = "pairwise"
+  }
+  else{
+    stop("Make sure that group1 and group2 columns exist in the data")
+  }
+  type
+}
+
+
+is_null_model <- function(data){
+  group2 <- unique(data$group2)
+  .diff <- setdiff(group2, "null model")
+  length(.diff) == 0
+}
+
+is_grouping_variable <- function(x){
+  !(x %in% c("group1", "group2"))
 }
