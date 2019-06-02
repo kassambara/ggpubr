@@ -169,8 +169,10 @@ stat_pvalue_manual <- function(
       group2 <- NULL
       data <- add_ctr_rows(data, ref.group = ref.group)
       mapping <- aes(x = xmin, y = y.position, label = label, group = group2)
-      if(missing(position) & is_grouping_variable(x))
-        position <- position_dodge(0.8)
+      if(missing(position) & !missing(x)){
+        if (is_grouping_variable(x))
+          position <- position_dodge(0.8)
+      }
     }
     else{
       mapping <- aes(x = xmin, y = y.position, label = label)
