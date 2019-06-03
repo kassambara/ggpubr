@@ -281,9 +281,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
   if(.is_empty(group)) # Case of null model
     test.opts <- list(x = .select_vec(data, x), ...)
   else test.opts <- list(formula = formula, data = data, ...)
-  if(method == "wilcox.test") test.opts$exact <- FALSE
 
-  res <- data.frame(p = do.call(test, test.opts)$p.value)
+  res <- data.frame(p = suppressWarnings(do.call(test, test.opts)$p.value))
   group1 <- group2 <- NULL
 
   if(!.is_empty(group)){
@@ -327,15 +326,15 @@ compare_means <- function(formula, data, method = "wilcox.test",
                     g = .select_vec(data, group),
                     paired = paired,
                     ...)
-  if(method == "pairwise.wilcox.test") test.opts$exact <- FALSE
-  else if(method == "pairwise.t.test"){
+  # if(method == "pairwise.wilcox.test") test.opts$exact <- FALSE
+  if(method == "pairwise.t.test"){
     if(missing(pool.sd)){
       if(!paired) pool.sd <- FALSE
     }
     test.opts$pool.sd <- pool.sd
   }
 
-  pvalues <- do.call(test, test.opts)$p.value %>%
+  pvalues <- suppressWarnings(do.call(test, test.opts)$p.value) %>%
     as.data.frame()
   group1 <- group2 <- p <- NULL
   pvalues$group2 <- rownames(pvalues)
