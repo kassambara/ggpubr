@@ -74,6 +74,9 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   plots <- c(list(...), plotlist)
   align <- match.arg(align)
   nb.plots <- length(plots)
+  page.layout <- .get_layout(ncol, nrow, nb.plots)
+  ncol <- page.layout$ncol
+  nrow <- page.layout$nrow
   nb.plots.per.page <- .nbplots_per_page(ncol, nrow)
 
   if(is.null(legend) & common.legend)
@@ -98,7 +101,6 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   if(nb.plots > nb.plots.per.page){
     plots <- split(plots, ceiling(seq_along(plots)/nb.plots.per.page))
   }
-
   # One unique page
   else plots <- list(plots)
 
@@ -127,6 +129,16 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
 
 
 
+.get_layout <- function(ncol, nrow, nb.plots){
+  if(!is.null(ncol) & !is.null(nrow)){}
+  else if(!is.null(ncol)){
+    if(ncol == 1) nrow = nb.plots
+  }
+  else if(!is.null(nrow)){
+    if(nrow == 1) ncol = nb.plots
+  }
+  list(ncol = ncol, nrow = nrow)
+}
 
 # Compute number of plots per page
 .nbplots_per_page <- function(ncol = NULL, nrow = NULL){
