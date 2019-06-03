@@ -246,6 +246,9 @@ ggbarplot_core <- function(data, x, y,
 
   # static summaries for computing mean/median and adding errors
   if(is.null(add.params$fill)) add.params$fill <- "white"
+  if(is.null(add.params$group)){
+    if(fill %in% names(data)) add.params$group <- fill
+  }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 
   errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
