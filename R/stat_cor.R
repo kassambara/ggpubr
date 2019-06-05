@@ -132,8 +132,19 @@ StatCor<- ggproto("StatCor", Stat,
     # Default label
     pvaltxt <- ifelse(pval < 2.2e-16, "italic(p)~`<`~2.2e-16",
                       paste("italic(p)~`=`~", signif(pval, 2)))
-    cortxt <- paste0("italic(R)~`=`~", signif(.cor$estimate, 2),
-                     "~`,`~",  pvaltxt)
+    if(label.sep == "\n"){
+      # Line break at each comma
+      cortxt <- paste0("atop(italic(R)~`=`~", signif(.cor$estimate, 2),
+                       ",",  pvaltxt, ")")
+    }
+    else{
+      label.sep <- trimws(label.sep)
+      if(label.sep == "") label.sep <- "~"
+      else label.sep <- paste0("~`", label.sep, "`~")
+      cortxt <- paste0("italic(R)~`=`~", signif(.cor$estimate, 2),
+                       label.sep,  pvaltxt)
+    }
+
     z$label <- cortxt
 
   }
@@ -149,7 +160,7 @@ StatCor<- ggproto("StatCor", Stat,
     pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16",
                       paste("p =", signif(pval, 2)))
     cortxt <- paste0("R = ", signif(.cor$estimate, 2),
-                     " , ",  pvaltxt)
+                     label.sep,  pvaltxt)
     z$label <- cortxt
   }
 
