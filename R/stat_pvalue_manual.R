@@ -118,7 +118,7 @@ stat_pvalue_manual <- function(
     stop("can't find the xmin variable '", xmin, "' in the data")
 
   if(remove.bracket){
-    group1.length <- data %>% pull(xmin) %>%
+    group1.length <- data %>% pull(!!xmin) %>%
       unique() %>% length()
     if(group1.length == 1) {
       xmax <- NULL
@@ -133,7 +133,7 @@ stat_pvalue_manual <- function(
 
   # If xmax is null, pvalue is drawn as text
   if(!is.null(xmax)) {
-    xmax <- data %>% pull(xmax)
+    xmax <- data %>% pull(!!xmax)
     pvalue.geom <- "bracket"
   }
   else {
@@ -144,9 +144,9 @@ stat_pvalue_manual <- function(
   # Build the statistical table for plotting
   data <- data %>%
     dplyr::mutate(
-      label = data %>% pull(label),
+      label = as.character(data %>% pull(label)),
       y.position = data %>% pull(y.position),
-      xmin = data %>% pull(xmin),
+      xmin = data %>% pull(!!xmin),
       xmax = xmax
     )
 
