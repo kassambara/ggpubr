@@ -6,6 +6,7 @@
    
 ## Minor changes
   
+- `stat_pvalue_manual()` can automatically handle the output of rstatix tests
 - `ggbarplot()` now automatically creates error bars by groups when users forget the option `add.params = list(group = )` ([#183](https://github.com/kassambara/ggpubr/issues/183).  
 - Now, `ggarrange()` works when either `ncol = 1` or `nrow = 1` ([@GegznaV, #141](https://github.com/kassambara/ggpubr/issues/144).
 - When method = "wilcox.test", the function `compare_means()` set automatically the option `exact = FALSE`. This is no longer the case ([@stemicha, #141](https://github.com/kassambara/ggpubr/issues/141). 

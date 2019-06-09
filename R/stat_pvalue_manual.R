@@ -99,6 +99,13 @@ stat_pvalue_manual <- function(
 {
   asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)
+  # detect automatically if xmin and xmax exists in the data.
+  if(missing(x) & missing(xmin) & missing(xmax)){
+    if(all(c("xmin", "xmax") %in% colnames(data))){
+      xmin <- "xmin"
+      xmax <- "xmax"
+    }
+  }
   # If label is a glue package expression
   if(.contains_curlybracket(label)){
     data <- data %>% mutate(label = glue(label))
@@ -129,7 +136,7 @@ stat_pvalue_manual <- function(
 
   y.position <- .valide_y_position(y.position, data)
   if(is.numeric(y.position))
-    data <- data %>% mutate(y.position = y.position)
+    data$y.position <- y.position
 
   # If xmax is null, pvalue is drawn as text
   if(!is.null(xmax)) {
@@ -153,9 +160,9 @@ stat_pvalue_manual <- function(
   if(pvalue.geom == "bracket"){
     mapping <- aes(
       xmin = xmin, xmax = xmax,
-      annotations = label, y_position = y.position
+      annotations = label, y_position = y.position,
+      group = 1:nrow(data)
     )
-
     ggsignif::geom_signif(
       mapping = mapping, data = data,
       manual= TRUE, tip_length =  tip.length,
