@@ -190,8 +190,8 @@ stat_pvalue_manual <- function(
       mapping <- aes(x = xmin, y = y.position, label = label)
     }
     # X axis variable should be a factor
-    if(!is.factor(data$xmin))
-      data$xmin <- factor(data$xmin, levels = unique(data$xmin))
+    #if(!is.factor(data$xmin))
+      #data$xmin <- factor(data$xmin, levels = unique(data$xmin))
     geom_text(mapping, data = data, size = label.size, position = position, ...)
   }
 }
