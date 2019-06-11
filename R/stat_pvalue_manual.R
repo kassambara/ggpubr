@@ -100,7 +100,7 @@ stat_pvalue_manual <- function(
   asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)
   # detect automatically if xmin and xmax exists in the data.
-  if(missing(x) & missing(xmin) & missing(xmax)){
+  if(is.null(x) & missing(xmin) & missing(xmax)){
     if(all(c("xmin", "xmax") %in% colnames(data))){
       xmin <- "xmin"
       xmax <- "xmax"
@@ -149,15 +149,20 @@ stat_pvalue_manual <- function(
   }
 
   # Build the statistical table for plotting
+  xxmax <-xmax  # so that mutate will avoid re-using an existing xmax in the data
   data <- data %>%
     dplyr::mutate(
-      label = as.character(data %>% pull(label)),
+      label = as.character(data %>% pull(!!label)),
       y.position = data %>% pull(y.position),
       xmin = data %>% pull(!!xmin),
-      xmax = xmax
+      xmax = xxmax
     )
 
   if(pvalue.geom == "bracket"){
+    if(identical(data$xmin, data$xmax)){
+      # case when ref.group = "all"
+      bracket.size = 0
+    }
     mapping <- aes(
       xmin = xmin, xmax = xmax,
       annotations = label, y_position = y.position,
