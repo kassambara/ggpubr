@@ -110,9 +110,6 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     method <- method.info$method
 
     method.args <- .add_item(method.args, paired = paired)
-    if(method == "wilcox.test")
-      method.args$exact <- FALSE
-
 
     pms <- list(...)
     size <- ifelse(is.null(pms$size), 3.88, pms$size)
