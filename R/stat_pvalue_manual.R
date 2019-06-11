@@ -159,7 +159,7 @@ stat_pvalue_manual <- function(
     )
 
   if(pvalue.geom == "bracket"){
-    if(identical(data$xmin, data$xmax)){
+    if(identical(data$xmin, data$xmax) | remove.bracket){
       # case when ref.group = "all"
       bracket.size = 0
     }
