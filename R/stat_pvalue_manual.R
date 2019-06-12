@@ -125,13 +125,11 @@ stat_pvalue_manual <- function(
     stop("can't find the xmin variable '", xmin, "' in the data")
 
   if(remove.bracket){
-    group1.length <- data %>% pull(!!xmin) %>%
-      unique() %>% length()
+    group1.length <- unique(data$group1) %>% length()
     if(group1.length == 1) {
+      xmin <- xmax
       xmax <- NULL
-      if(missing(xmin)) xmin <- "group2"
     }
-    else warning("Pairwise comparison: bracket can't be removed", call. = FALSE)
   }
 
   y.position <- .valide_y_position(y.position, data)
