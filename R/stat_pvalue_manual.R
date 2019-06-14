@@ -95,7 +95,7 @@ stat_pvalue_manual <- function(
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
   remove.bracket = FALSE, position = "identity", ...
-  )
+)
 {
   asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)
@@ -189,7 +189,7 @@ stat_pvalue_manual <- function(
     }
     # X axis variable should be a factor
     #if(!is.factor(data$xmin))
-      #data$xmin <- factor(data$xmin, levels = unique(data$xmin))
+    #data$xmin <- factor(data$xmin, levels = unique(data$xmin))
     geom_text(mapping, data = data, size = label.size, position = position, ...)
   }
 }
