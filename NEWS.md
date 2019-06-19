@@ -5,7 +5,8 @@
 ## Major changes
    
 ## Minor changes
-  
+
+- New arguments `step.increase` added in `stat_compare_means()` to avoid overlap between brackets.
 - In `stat_pvalue_manual()` x axis variable is no longer automatically converted into factor.
 - `stat_pvalue_manual()` can automatically handle the output of rstatix tests
 - `ggbarplot()` now automatically creates error bars by groups when users forget the option `add.params = list(group = )` ([#183](https://github.com/kassambara/ggpubr/issues/183).  

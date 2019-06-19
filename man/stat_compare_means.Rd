@@ -9,9 +9,9 @@ stat_compare_means(mapping = NULL, data = NULL, method = NULL,
   comparisons = NULL, hide.ns = FALSE, label.sep = ", ",
   label = NULL, label.x.npc = "left", label.y.npc = "top",
   label.x = NULL, label.y = NULL, tip.length = 0.03,
-  bracket.size = 0.3, symnum.args = list(), geom = "text",
-  position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, ...)
+  bracket.size = 0.3, step.increase = 0, symnum.args = list(),
+  geom = "text", position = "identity", na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or
@@ -84,6 +84,9 @@ for absolute positioning of the label. If too short they will be recycled.}
  If too short they will be recycled.}
 
 \item{bracket.size}{Width of the lines of the bracket.}
+
+\item{step.increase}{numeric vector with the increase in fraction of total
+height for every additional comparison to minimize overlap.}
 
 \item{symnum.args}{a list of arguments to pass to the function
  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
