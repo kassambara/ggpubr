@@ -163,6 +163,9 @@ ggviolin_core <- function(data, x, y,
 
   # Add
   #+++++++++++++++++++
+  if(is.null(add.params$group)){
+    if(fill %in% names(data)) add.params$group <- fill
+  }
    add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
      .add_item(p = p, add = add, error.plot = error.plot, position = position)
    p <- do.call(ggadd, add.params) %>%
