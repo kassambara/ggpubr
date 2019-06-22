@@ -120,7 +120,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
 
   if ( "point" %in% add ) {
     p <- common.opts %>% .remove_item("fill") %>%
-      .add_item(geomfunc = geom_point) %>%
+      .add_item(geomfunc = geom_point, group = group) %>%
       .update_plot(p)
   }
   if ( "line" %in% add ) {
