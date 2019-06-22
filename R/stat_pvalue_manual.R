@@ -99,8 +99,13 @@ stat_pvalue_manual <- function(
 {
   asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)
+  all.x.is.missing <- is.null(x) & missing(xmin) & missing(xmax)
+  if(all(data$group1 == "all") & all.x.is.missing){
+    is.grouped <- length(data$group2) > length(unique(data$group2))
+    if(!is.grouped) x <- "group2" # labels will be plotted at x = "group2"
+  }
   # detect automatically if xmin and xmax exists in the data.
-  if(is.null(x) & missing(xmin) & missing(xmax)){
+  if(all.x.is.missing){
     if(all(c("xmin", "xmax") %in% colnames(data))){
       xmin <- "xmin"
       xmax <- "xmax"

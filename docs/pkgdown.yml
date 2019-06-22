@@ -1,6 +1,6 @@
 pandoc: 1.19.2.1
-pkgdown: 1.1.0.9000
-pkgdown_sha: 7f564ddbcad38ba3c49bc4c2fed72696021b0fff
+pkgdown: 1.3.0
+pkgdown_sha: ~
 articles: []
 urls:
   reference: https://rpkgs.datanovia.com/ggpubr/reference

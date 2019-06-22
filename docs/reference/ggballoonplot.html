@@ -8,20 +8,18 @@
 
 <title>Ballon plot — ggballoonplot • ggpubr</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.1/clipboard.min.js" integrity="sha256-hIvIxeqhGZF+VVeM55k0mJvWpQ6gTkWk3Emc+NmowYA=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- sticky kit -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
@@ -42,7 +40,8 @@
 
 
 <!-- mathjax -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -66,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -113,10 +112,11 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ggballoonplot</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>size.range</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>10</span>), <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>21</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray"</span>,
-  <span class='kw'>show.label</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>),
-  <span class='kw'>rotate.x.text</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_minimal</span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ggballoonplot</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
+  <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size.range</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>10</span>), <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>21</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"gray"</span>, <span class='kw'>show.label</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>), <span class='kw'>rotate.x.text</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_minimal</span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,15 +205,15 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Define color palette</span>
-<span class='no'>my_cols</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"#0D0887FF"</span>, <span class='st'>"#6A00A8FF"</span>, <span class='st'>"#B12A90FF"</span>,
+<span class='no'>my_cols</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"#0D0887FF"</span>, <span class='st'>"#6A00A8FF"</span>, <span class='st'>"#B12A90FF"</span>,
 <span class='st'>"#E16462FF"</span>, <span class='st'>"#FCA636FF"</span>, <span class='st'>"#F0F921FF"</span>)
 
 <span class='co'># Standard contingency table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Read a contingency table: housetasks</span>
 <span class='co'># Repartition of 13 housetasks in the couple</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'>read.delim</span>(
-  <span class='fu'>system.file</span>(<span class='st'>"demo-data/housetasks.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"ggpubr"</span>),
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.delim</a></span>(
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"demo-data/housetasks.txt"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"ggpubr"</span>),
   <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>1</span>
   )
 <span class='no'>data</span></div><div class='output co'>#&gt;            Wife Alternating Husband Jointly
@@ -240,22 +240,22 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
    <span class='fu'>scale_fill_gradientn</span>(<span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>my_cols</span>)</div><div class='img'><img src='ggballoonplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Change the plotting symbol shape</span>
 <span class='fu'>ggballoonplot</span>(<span class='no'>data</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"value"</span>,  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>23</span>)+
-  <span class='fu'><a href='gradient_color.html'>gradient_fill</a></span>(<span class='fu'>c</span>(<span class='st'>"blue"</span>, <span class='st'>"white"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='ggballoonplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'><a href='gradient_color.html'>gradient_fill</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"white"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='ggballoonplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Set points size to 8, but change fill color by values</span>
 <span class='co'># Sow labels</span>
 <span class='fu'>ggballoonplot</span>(<span class='no'>data</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>,
               <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>show.label</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)+
-  <span class='fu'><a href='gradient_color.html'>gradient_fill</a></span>(<span class='fu'>c</span>(<span class='st'>"blue"</span>, <span class='st'>"white"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='ggballoonplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'><a href='gradient_color.html'>gradient_fill</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"white"</span>, <span class='st'>"red"</span>))</div><div class='img'><img src='ggballoonplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Streched contingency table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 
 <span class='co'># Create an Example Data Frame Containing Car x Color data</span>
-<span class='no'>carnames</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"bmw"</span>,<span class='st'>"renault"</span>,<span class='st'>"mercedes"</span>,<span class='st'>"seat"</span>)
-<span class='no'>carcolors</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"red"</span>,<span class='st'>"white"</span>,<span class='st'>"silver"</span>,<span class='st'>"green"</span>)
-<span class='no'>datavals</span> <span class='kw'>&lt;-</span> <span class='fu'>round</span>(<span class='fu'>rnorm</span>(<span class='fl'>16</span>, <span class='kw'>mean</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>60</span>),<span class='fl'>1</span>)
-<span class='no'>car_data</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Car</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='no'>carnames</span>,<span class='fl'>4</span>),
-                   <span class='kw'>Color</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='no'>carcolors</span>, <span class='fu'>c</span>(<span class='fl'>4</span>,<span class='fl'>4</span>,<span class='fl'>4</span>,<span class='fl'>4</span>) ),
+<span class='no'>carnames</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"bmw"</span>,<span class='st'>"renault"</span>,<span class='st'>"mercedes"</span>,<span class='st'>"seat"</span>)
+<span class='no'>carcolors</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"red"</span>,<span class='st'>"white"</span>,<span class='st'>"silver"</span>,<span class='st'>"green"</span>)
+<span class='no'>datavals</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>16</span>, <span class='kw'>mean</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>sd</span><span class='kw'>=</span><span class='fl'>60</span>),<span class='fl'>1</span>)
+<span class='no'>car_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>Car</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='no'>carnames</span>,<span class='fl'>4</span>),
+                   <span class='kw'>Color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='no'>carcolors</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>4</span>,<span class='fl'>4</span>,<span class='fl'>4</span>) ),
                    <span class='kw'>Value</span><span class='kw'>=</span><span class='no'>datavals</span> )
 
 <span class='no'>car_data</span></div><div class='output co'>#&gt;         Car  Color Value
@@ -282,9 +282,9 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 
 <span class='co'># Grouped frequency table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>data</span>(<span class='st'>"Titanic"</span>)
-<span class='no'>dframe</span> <span class='kw'>&lt;-</span> <span class='fu'>as.data.frame</span>(<span class='no'>Titanic</span>)
-<span class='fu'>head</span>(<span class='no'>dframe</span>)</div><div class='output co'>#&gt;   Class    Sex   Age Survived Freq
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"Titanic"</span>)
+<span class='no'>dframe</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>Titanic</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>dframe</span>)</div><div class='output co'>#&gt;   Class    Sex   Age Survived Freq
 #&gt; 1   1st   Male Child       No    0
 #&gt; 2   2nd   Male Child       No    0
 #&gt; 3   3rd   Male Child       No   35
@@ -293,13 +293,13 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 #&gt; 6   2nd Female Child       No    0</div><div class='input'><span class='fu'>ggballoonplot</span>(
  <span class='no'>dframe</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Class"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Sex"</span>,
  <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"Freq"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"Freq"</span>,
- <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Survived"</span>, <span class='st'>"Age"</span>),
+ <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Survived"</span>, <span class='st'>"Age"</span>),
  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_bw</span>()
 )+
   <span class='fu'>scale_fill_gradientn</span>(<span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>my_cols</span>)</div><div class='img'><img src='ggballoonplot-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Hair and Eye Color of Statistics Students</span>
-<span class='fu'>data</span>(<span class='no'>HairEyeColor</span>)
-<span class='fu'>ggballoonplot</span>( <span class='fu'>as.data.frame</span>(<span class='no'>HairEyeColor</span>),
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>HairEyeColor</span>)
+<span class='fu'>ggballoonplot</span>( <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>HairEyeColor</span>),
               <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Hair"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Eye"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"Freq"</span>,
               <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_gray</span>()) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='facet.html'>facet</a></span>(<span class='st'>"Sex"</span>)</div><div class='img'><img src='ggballoonplot-8.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -323,9 +323,8 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
    </div>
 

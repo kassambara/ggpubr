@@ -13,6 +13,6 @@ All packages that I could install passed.
 
 ## Update
 
-This is an update version 0.2 to fix an important breaking issue detected by users just after releasing ggpubr 0.1.9 (see NEWS.md).
+This is an update version 0.2.1 (see NEWS.md).
 
 
