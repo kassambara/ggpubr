@@ -12,7 +12,6 @@ NULL
 #' @param bins Number of bins. Defaults to 30.
 #' @param binwidth numeric value specifying bin width. use value between 0 and 1
 #'   when you have a strong dense dotplot. For example binwidth = 0.2.
-#'   \href{Read more about binwidth}{http://r4ds.had.co.nz/eda.html)}.
 #' @param add allowed values are one of "mean" or "median" (for adding mean or
 #'   median line, respectively).
 #' @param add.params parameters (color, size, linetype) for the argument 'add';

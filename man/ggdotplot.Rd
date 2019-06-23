@@ -66,8 +66,7 @@ labelled only by variable grouping levels.}
 outlines.}
 
 \item{binwidth}{numeric value specifying bin width. use value between 0 and 1
-when you have a strong dense dotplot. For example binwidth = 0.2.
-\href{Read more about binwidth}{http://r4ds.had.co.nz/eda.html)}.}
+when you have a strong dense dotplot. For example binwidth = 0.2.}
 
 \item{select}{character vector specifying which items to display.}
 
