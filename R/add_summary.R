@@ -23,16 +23,21 @@ NULL
 #'  \code{\link{show_point_shapes}()}.
 #'@param size numeric value in [0-1] specifying point and line size.
 #'@param linetype line type.
-#'@param data a \code{data.frame} to be displayed. If \code{NULL}, the default, the
-#'  data is inherited from the plot data as specified in the call to \link[ggplot2]{ggplot}.
+#'@param show.legend logical. Should this layer be included in the legends? NA,
+#'  the default, includes if any aesthetics are mapped. \code{FALSE} never includes,
+#'  and TRUE always includes. It can also be a named logical vector to finely
+#'  select the aesthetics to display.
+#'@param data a \code{data.frame} to be displayed. If \code{NULL}, the default,
+#'  the data is inherited from the plot data as specified in the call to
+#'  \link[ggplot2]{ggplot}.
 #'@param position position adjustment, either as a string, or the result of a
 #'  call to a position adjustment function. Used to adjust position for multiple
 #'  groups.
 #'@param x a numeric vector.
 #'@param ci the percent range of the confidence interval (default is 0.95).
-#'@param error.limit allowed values are one of ("both", "lower", "upper", "none")
-#'  specifying whether to plot the lower and/or the upper limits of error
-#'  interval.
+#'@param error.limit allowed values are one of ("both", "lower", "upper",
+#'  "none") specifying whether to plot the lower and/or the upper limits of
+#'  error interval.
 #'@examples
 #'
 #'# Basic violin plot
@@ -43,11 +48,12 @@ NULL
 #'add_summary(p, "mean_sd")
 #'
 #'
-#' @describeIn add_summary add summary statistics onto a ggplot.
+#'@describeIn add_summary add summary statistics onto a ggplot.
 #'@export
 add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
                         color = "black", fill = "white", group = 1,
-                        width = NULL, shape = 19, size = 1, linetype = 1, ci = 0.95,
+                        width = NULL, shape = 19, size = 1, linetype = 1,
+                        show.legend = NA, ci = 0.95,
                         data = NULL, position = position_dodge(0.8))
   {
 
@@ -111,7 +117,7 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
   opts <- list(geomfunc = "stat_summary", fun.data = fun.data, fun.y = fun.y,
             fun.ymin = fun.ymin, fun.ymax = fun.ymax,
             color = color,  geom = geom, size = size, linetype = linetype,
-            data = data, position = position,
+            show.legend = show.legend, data = data, position = position,
             fun.args = list(error.limit = error.limit), group = group)
   if(fun == "mean_ci") opts$fun.args$ci <- ci
 

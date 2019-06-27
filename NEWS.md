@@ -8,6 +8,7 @@
   
 ## Minor changes
    
+- New argument `show.legend` added to `ggadd()` and `add_summary()` functions.
 
 ## Bug fixes
    

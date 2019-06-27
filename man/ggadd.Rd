@@ -6,7 +6,7 @@
 \usage{
 ggadd(p, add = NULL, color = "black", fill = "white", group = 1,
   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
-  binwidth = NULL, dotsize = size, linetype = 1,
+  binwidth = NULL, dotsize = size, linetype = 1, show.legend = NA,
   error.plot = "pointrange", ci = 0.95, data = NULL,
   position = position_dodge(0.8), p_geom = "")
 }
@@ -49,6 +49,11 @@ when \code{add} contains "dotplot".}
 
 \item{linetype}{line type.}
 
+\item{show.legend}{logical. Should this layer be included in the legends? NA,
+the default, includes if any aesthetics are mapped. \code{FALSE} never includes,
+and TRUE always includes. It can also be a named logical vector to finely
+select the aesthetics to display.}
+
 \item{error.plot}{plot type used to visualize error. Allowed values are one of
 \code{c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
 "lower_errorbar", "upper_pointrange", "lower_pointrange", "upper_linerange",
@@ -56,8 +61,9 @@ when \code{add} contains "dotplot".}
 
 \item{ci}{the percent range of the confidence interval (default is 0.95).}
 
-\item{data}{a \code{data.frame} to be displayed. If \code{NULL}, the default, the
-data is inherited from the plot data as specified in the call to \link[ggplot2]{ggplot}.}
+\item{data}{a \code{data.frame} to be displayed. If \code{NULL}, the default,
+the data is inherited from the plot data as specified in the call to
+\link[ggplot2]{ggplot}.}
 
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function. Used to adjust position for multiple
