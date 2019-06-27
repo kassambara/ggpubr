@@ -235,6 +235,7 @@ ggline_core <- function(data, x, y, group = 1,
   if(any(.cols %in% names(data))){
     .in <- which(.cols %in% names(data))
     group <- .cols[.in]
+    if(is.null(add.params$group)) add.params$group <- group[1]
   }
 
   p <- ggplot(data, aes_string(x, y))

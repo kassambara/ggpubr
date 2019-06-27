@@ -6,9 +6,9 @@
 \usage{
 ggadd(p, add = NULL, color = "black", fill = "white", group = 1,
   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
-  binwidth = NULL, dotsize = size, error.plot = "pointrange",
-  ci = 0.95, data = NULL, position = position_dodge(0.8),
-  p_geom = "")
+  binwidth = NULL, dotsize = size, linetype = 1,
+  error.plot = "pointrange", ci = 0.95, data = NULL,
+  position = position_dodge(0.8), p_geom = "")
 }
 \arguments{
 \item{p}{a ggplot}
@@ -46,6 +46,8 @@ when you have a strong dense dotplot. For example binwidth = 0.2. Used only
 when \code{add} contains "dotplot".}
 
 \item{dotsize}{as \code{size} but applied only to dotplot.}
+
+\item{linetype}{line type.}
 
 \item{error.plot}{plot type used to visualize error. Allowed values are one of
 \code{c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",

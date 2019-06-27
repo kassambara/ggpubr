@@ -11,6 +11,7 @@
 
 ## Bug fixes
    
+- In `ggline()`, error bars now react automatically to grouping by line type ([#191](https://github.com/kassambara/ggpubr/issues/191))
 
 
 # ggpubr 0.2.1

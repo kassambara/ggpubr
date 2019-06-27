@@ -13,7 +13,7 @@
 \usage{
 add_summary(p, fun = "mean_se", error.plot = "pointrange",
   color = "black", fill = "white", group = 1, width = NULL,
-  shape = 19, size = 1, ci = 0.95, data = NULL,
+  shape = 19, size = 1, linetype = 1, ci = 0.95, data = NULL,
   position = position_dodge(0.8))
 
 mean_se_(x, error.limit = "both")
@@ -59,6 +59,8 @@ c("crossbar", "errorbar").}
 \code{\link{show_point_shapes}()}.}
 
 \item{size}{numeric value in [0-1] specifying point and line size.}
+
+\item{linetype}{line type.}
 
 \item{ci}{the percent range of the confidence interval (default is 0.95).}
 

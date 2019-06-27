@@ -22,6 +22,7 @@ NULL
 #'@param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #'@param size numeric value in [0-1] specifying point and line size.
+#'@param linetype line type.
 #'@param data a \code{data.frame} to be displayed. If \code{NULL}, the default, the
 #'  data is inherited from the plot data as specified in the call to \link[ggplot2]{ggplot}.
 #'@param position position adjustment, either as a string, or the result of a
@@ -46,7 +47,7 @@ NULL
 #'@export
 add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
                         color = "black", fill = "white", group = 1,
-                        width = NULL, shape = 19, size = 1, ci = 0.95,
+                        width = NULL, shape = 19, size = 1, linetype = 1, ci = 0.95,
                         data = NULL, position = position_dodge(0.8))
   {
 
@@ -109,7 +110,7 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
   #::::::::::::::::::::::::::::::::::::::::::::::::::
   opts <- list(geomfunc = "stat_summary", fun.data = fun.data, fun.y = fun.y,
             fun.ymin = fun.ymin, fun.ymax = fun.ymax,
-            color = color,  geom = geom, size = size,
+            color = color,  geom = geom, size = size, linetype = linetype,
             data = data, position = position,
             fun.args = list(error.limit = error.limit), group = group)
   if(fun == "mean_ci") opts$fun.args$ci <- ci

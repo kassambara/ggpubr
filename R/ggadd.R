@@ -19,6 +19,7 @@ NULL
 #'@param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #'@param size numeric value in [0-1] specifying point and line size.
+#'@param linetype line type.
 #'@param alpha numeric value specifying fill color transparency. Value should be
 #'  in [0, 1], where 0 is full transparency and 1 is no transparency.
 #'@param jitter a numeric value specifying the amount of jittering. Used only
@@ -43,7 +44,7 @@ NULL
 #'@export
 ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
                   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
-                  binwidth = NULL, dotsize = size,
+                  binwidth = NULL, dotsize = size, linetype = 1,
                   error.plot = "pointrange", ci = 0.95,
                   data = NULL, position = position_dodge(0.8),
                   p_geom = ""
@@ -142,7 +143,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
       width <- 0.1
     else if(error.plot == "crossbar" & .geom(p) == "violin") width = 0.2
     p <- p %>% add_summary(errors, error.plot = error.plot, color = color, shape = shape,
-                  position = position, size = size, width = width, ci = ci, group = group)
+                  position = position, size = size, width = width, ci = ci, group = group, linetype = linetype)
   }
 
   p
