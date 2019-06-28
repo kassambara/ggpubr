@@ -11,6 +11,8 @@ NULL
 #' @importFrom dplyr everything
 #' @importFrom grid drawDetails
 #' @importFrom rlang !!
+#' @importFrom rlang !!!
+#' @importFrom rlang syms
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2
@@ -1041,6 +1043,7 @@ p
 
   if(!(add %in% c("mean", "median")))
     return(p)
+  compute_center <- switch(add, mean = mean, median = stats::median)
 
   # NO grouping variable
   if(.is_empty(grouping.vars)) {
@@ -1053,10 +1056,11 @@ p
   }
   # Case of grouping variable
   else {
-    data_sum <- desc_statby(data, measure.var = x, grps = grouping.vars)
-    names(data_sum)[which(names(data_sum) == add)] <- x
+    data_sum <- data %>%
+      group_by(!!!syms(grouping.vars)) %>%
+      summarise(.center = compute_center(!!sym(x), na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data_sum,
-                       xintercept = x, color = color,
+                       xintercept = ".center", color = color,
                        linetype = linetype, size = size)
   }
 
