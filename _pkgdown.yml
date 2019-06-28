@@ -45,6 +45,7 @@ reference:
       - compare_means
       - stat_compare_means
       - stat_pvalue_manual
+      - geom_bracket
   - title: Plot Tables and Paragraphs
     contents:
       - ggtexttable

@@ -32,7 +32,8 @@ Imports:
     scales,
     gridExtra,
     glue,
-    polynom
+    polynom,
+    rlang
 Suggests:
     grDevices,
     knitr,
@@ -58,6 +59,7 @@ Collate:
     'facet.R'
     'font.R'
     'gene_citation.R'
+    'geom_bracket.R'
     'geom_exec.R'
     'get_legend.R'
     'get_palette.R'

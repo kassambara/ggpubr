@@ -10,6 +10,7 @@ NULL
 #' @importFrom dplyr summarise
 #' @importFrom dplyr everything
 #' @importFrom grid drawDetails
+#' @importFrom rlang !!
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2

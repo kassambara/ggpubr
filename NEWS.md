@@ -2,6 +2,7 @@
   
 ## New fatures
 
+- New function `geom_bracket()` for adding brackets with label annotation to a ggplot. Helpers for adding p-value or significance levels to a plot.
 
 ## Major changes
   
