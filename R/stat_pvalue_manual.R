@@ -1,4 +1,4 @@
-#' @include utilities.R
+#' @include utilities.R geom_bracket.R
 #' @importFrom dplyr pull
 #' @importFrom dplyr tibble
 #' @importFrom glue glue
@@ -168,13 +168,13 @@ stat_pvalue_manual <- function(
     }
     mapping <- aes(
       xmin = xmin, xmax = xmax,
-      annotations = label, y_position = y.position,
+      label = label, y.position = y.position,
       group = 1:nrow(data)
     )
-    ggsignif::geom_signif(
+    geom_bracket(
       mapping = mapping, data = data,
-      manual= TRUE, tip_length =  tip.length,
-      textsize = label.size, size = bracket.size,
+      tip.length =  tip.length,
+      label.size = label.size, size = bracket.size,
       position = position, ...
     )
   }
