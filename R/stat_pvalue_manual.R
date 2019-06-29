@@ -13,11 +13,11 @@ NULL
 #'  p | y.position | etc}. \code{group1} and \code{group2} are the groups that
 #'  have been compared. \code{p} is the resulting p-value. \code{y.position} is
 #'  the y coordinates of the p-values in the plot.
-#'@param label the column containing the label (e.g.: label = "p"). Default
-#'  value is "p", for p-value. Can be also an expression that can be formatted
-#'  by the \code{\link[glue]{glue}()} package. For example, when specifying
-#'  label = "t-test, p = \{p\}", the expression \{p\} will be replaced by its
-#'  value.
+#'@param label the column containing the label (e.g.: label = "p" or label =
+#'  "p.adj"), where \code{p} is the p-value. Can be also an expression that can
+#'  be formatted by the \code{\link[glue]{glue}()} package. For example, when
+#'  specifying label = "t-test, p = \{p\}", the expression \{p\} will be
+#'  replaced by its value.
 #'@param y.position column containing the coordinates (in data units) to be used
 #'  for absolute positioning of the label. Default value is "y.position". Can be
 #'  also a numeric vector.
@@ -91,12 +91,15 @@ NULL
 #'
 #'@export
 stat_pvalue_manual <- function(
-  data, label = "p", y.position = "y.position",
+  data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
   remove.bracket = FALSE, position = "identity", ...
 )
 {
+  if(is.null(label)){
+    label <- guess_signif_label_column(data)
+  }
   asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)
   all.x.is.missing <- is.null(x) & missing(xmin) & missing(xmax)

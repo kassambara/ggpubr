@@ -9,6 +9,7 @@
   
 ## Minor changes
    
+- `stat_pvalue_manual()` can now guess automatically the significance label column.
 - New argument `show.legend` added to `ggadd()` and `add_summary()` functions.
 
 ## Bug fixes
