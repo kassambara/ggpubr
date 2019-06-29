@@ -199,7 +199,7 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
 
 
 # Guess column to be used as significance labem
-guess_label_column <- function(data){
+guess_signif_label_column <- function(data){
   potential.label <- c(
     "label", "labels", "p.adj.signif", "p.adj", "padj",
     "p.signif", "p"
@@ -249,7 +249,7 @@ build_signif_mapping <- function(mapping, data){
     mapping <- ggplot2::aes()
   }
   if(is.null(mapping$label)){
-    label.col <- guess_label_column(data)
+    label.col <- guess_signif_label_column(data)
     data$label <- data %>% dplyr::pull(!!label.col)
     mapping$label <- data$label
   }
