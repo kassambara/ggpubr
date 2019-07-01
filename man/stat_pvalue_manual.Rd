@@ -7,7 +7,7 @@
 stat_pvalue_manual(data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL, size = 3.88,
   label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, position = "identity", ...)
+  remove.bracket = FALSE, vjust = 0, position = "identity", ...)
 }
 \arguments{
 \item{data}{a data frame containing statitistical test results. The expected
@@ -47,13 +47,14 @@ bar goes down to indicate the precise column. Default is 0.03.}
 plot. Considered only in the situation, where comparisons are performed
 against reference group or against "all".}
 
+\item{vjust}{move the text up or down relative to the bracket. Can be also a
+column name available in the data.}
+
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
 
-\item{...}{other arguments passed on to \code{\link{layer}}. These are
-often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
+\item{...}{other arguments passed to the function \code{geom_bracket()} or
+\code{geom_text()}}
 }
 \description{
 Add manually p-values to a ggplot, such as box blots, dot plots

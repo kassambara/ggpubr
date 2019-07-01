@@ -1,13 +1,12 @@
 #' @include utilities.R geom_bracket.R
 #' @importFrom dplyr pull
-#' @importFrom dplyr tibble
 #' @importFrom glue glue
 NULL
 #'Add Manually P-values to a ggplot
 #'
 #'@description Add manually p-values to a ggplot, such as box blots, dot plots
 #'  and stripcharts.
-#'@inheritParams ggsignif::geom_signif
+#'@inheritParams geom_bracket
 #'@param data a data frame containing statitistical test results. The expected
 #'  default format should contain the following columns: \code{group1 | group2 |
 #'  p | y.position | etc}. \code{group1} and \code{group2} are the groups that
@@ -35,8 +34,12 @@ NULL
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. Considered only in the situation, where comparisons are performed
 #'  against reference group or against "all".
+#'@param vjust move the text up or down relative to the bracket. Can be also a
+#'  column name available in the data.
 #'@param position position adjustment, either as a string, or the result of a
 #'  call to a position adjustment function.
+#'@param ... other arguments passed to the function \code{geom_bracket()} or
+#'  \code{geom_text()}
 #'@seealso \code{\link{stat_compare_means}}
 #'@examples
 #'
@@ -94,7 +97,7 @@ stat_pvalue_manual <- function(
   data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, position = "identity", ...
+  remove.bracket = FALSE, vjust = 0, position = "identity", ...
 )
 {
   if(is.null(label)){
@@ -174,6 +177,15 @@ stat_pvalue_manual <- function(
       xmin = xxmin,
       xmax = xxmax
     )
+  # vjust
+  if(is.character(vjust)){
+    vjust <- data %>% pull(!!vjust)
+  }
+  else if(missing(vjust)){
+    vjust <- guess_labels_default_vjust(data$label)
+  }
+  data <- data %>% mutate(vjust = !!vjust)
+
 
   if(pvalue.geom == "bracket"){
     if(identical(data$xmin, data$xmax) | remove.bracket){
@@ -183,7 +195,7 @@ stat_pvalue_manual <- function(
     mapping <- aes(
       xmin = xmin, xmax = xmax,
       label = label, y.position = y.position,
-      group = 1:nrow(data)
+      vjust = vjust, group = 1:nrow(data)
     )
     geom_bracket(
       mapping = mapping, data = data,
@@ -197,14 +209,14 @@ stat_pvalue_manual <- function(
       ref.group <- unique(data$group1)
       group2 <- NULL
       data <- add_ctr_rows(data, ref.group = ref.group)
-      mapping <- aes(x = xmin, y = y.position, label = label, group = group2)
+      mapping <- aes(x = xmin, y = y.position, vjust = vjust, label = label, group = group2)
       if(missing(position) & !missing(x)){
         if (is_grouping_variable(x))
           position <- position_dodge(0.8)
       }
     }
     else{
-      mapping <- aes(x = xmin, y = y.position, label = label)
+      mapping <- aes(x = xmin, y = y.position, vjust = vjust, label = label)
     }
     # X axis variable should be a factor
     #if(!is.factor(data$xmin))
@@ -285,4 +297,30 @@ is_null_model <- function(data){
 
 is_grouping_variable <- function(x){
   !(x %in% c("group1", "group2"))
+}
+
+
+
+# Check if label column contains stars
+contains_signif_stars <- function(data, label.col){
+  result <- FALSE
+  if(label.col[1] %in% colnames(data)){
+    labels <- data %>% pull(!!label.col)
+    stars <- c("****", "***", "**", "*")
+    result <- any(labels %in% stars)
+  }
+  result
+}
+
+# guess label default vjust
+guess_label_default_vjust <- function(label){
+  if(label %in% c("****", "***", "**", "*"))
+    vjust <- 0.5
+  else vjust <- 0
+  vjust
+}
+guess_labels_default_vjust <- function(labels){
+  labels %>%
+    purrr::map(guess_label_default_vjust) %>%
+    unlist()
 }
