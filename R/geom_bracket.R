@@ -184,7 +184,7 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
                          step.increase = 0, tip.length = 0.03,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
                          ...) {
-  data <- build_signif_data(data, label, y.position, xmin, xmax, step.increase)
+  data <- build_signif_data(data, label, y.position, xmin, xmax, step.increase, vjust)
   mapping <- build_signif_mapping(mapping, data)
   ggplot2::layer(
     stat = stat, geom = GeomBracket, mapping = mapping,  data = data,
@@ -192,7 +192,7 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
     params = list(
       tip.length = tip.length,
       size = size, label.size = label.size,
-      family=family, vjust=vjust, na.rm = na.rm, ...
+      family=family, na.rm = na.rm, ...
     )
   )
 }
@@ -215,18 +215,20 @@ guess_signif_label_column <- function(data){
 }
 
 build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
-                              xmin = NULL, xmax = NULL, step.increase = 0){
+                              xmin = NULL, xmax = NULL, step.increase = 0, vjust = 0){
   if(is.null(data)){
     data <- data.frame(
       label = label, y.position = y.position,
       xmin = xmin, xmax = xmax
-    )
+    ) %>%
+      mutate(vjust = !!vjust)
   }
   else{
     if(!is.null(label)) data <- data %>% mutate(label = !!label)
     if(!is.null(y.position)) data <- data %>% mutate(y.position = !!y.position)
     if(!is.null(xmin)) data <- data %>% mutate(xmin = !!xmin)
     if(!is.null(xmax)) data <- data %>% mutate(xmax = !!xmax)
+    if(!identical(vjust, 0)) data <- data %>% mutate(vjust = !!vjust)
   }
   comparisons.number <- 0:(nrow(data)-1)
   step.increase <- step.increase*comparisons.number
@@ -258,6 +260,7 @@ build_signif_mapping <- function(mapping, data){
   if(is.null(mapping$y.position)) mapping$y.position <- data$y.position
   if(is.null(mapping$group)) mapping$group <- 1:nrow(data)
   if(is.null(mapping$step.increase)) mapping$step.increase <- data$step.increase
+  if(is.null(mapping$vjust)) mapping$vjust <- data$vjust
   if(! "x" %in% names(mapping)){
     mapping$x <- mapping$xmin
   }
@@ -266,4 +269,3 @@ build_signif_mapping <- function(mapping, data){
   }
   mapping
 }
-
