@@ -107,31 +107,14 @@ stat_pvalue_manual <- function(
     is.grouped <- length(data$group2) > length(unique(data$group2))
     if(!is.grouped) x <- "group2" # labels will be plotted at x = "group2"
   }
-  # detect automatically if xmin and xmax exists in the data.
+  # Detect automatically if xmin and xmax exists in the data.
   if(all.x.is.missing){
     if(all(c("xmin", "xmax") %in% colnames(data))){
       xmin <- "xmin"
       xmax <- "xmax"
     }
   }
-  # If label is a glue package expression
-  if(.contains_curlybracket(label)){
-    data <- data %>% mutate(label = glue(label))
-    label <- "label"
-  }
-  # P-value displayed as text (without brackets)
-  if(!missing(x)){
-    xmin <- x
-    xmax <- NULL
-  }
-
-  available.variables <- colnames(data)
-
-  if(!(label %in% available.variables))
-    stop("can't find the label variable '", label, "' in the data")
-  if(!(xmin %in% available.variables))
-    stop("can't find the xmin variable '", xmin, "' in the data")
-
+  # should stay before (!is.null(x))
   if(remove.bracket){
     group1.length <- unique(data$group1) %>% length()
     if(group1.length == 1) {
@@ -139,10 +122,30 @@ stat_pvalue_manual <- function(
       xmax <- NULL
     }
   }
+  # P-value displayed as text (without brackets)
+  if(!is.null(x)){
+    xmin <- x
+    xmax <- NULL
+  }
+
+  # If label is a glue package expression
+  if(.contains_curlybracket(label)){
+    data <- data %>% mutate(label = glue(label))
+    label <- "label"
+  }
+
+  available.variables <- colnames(data)
+  if(!(label %in% available.variables))
+    stop("can't find the label variable '", label, "' in the data")
+  if(!(xmin %in% available.variables))
+    stop("can't find the xmin variable '", xmin, "' in the data")
 
   y.position <- .valide_y_position(y.position, data)
-  if(is.numeric(y.position))
+  if(is.numeric(y.position)){
     data$y.position <- y.position
+    y.position <- "y.position"
+  }
+
 
   # If xmax is null, pvalue is drawn as text
   if(!is.null(xmax)) {
@@ -154,13 +157,21 @@ stat_pvalue_manual <- function(
     pvalue.geom <- "text"
   }
 
+  if(!is.null(xmin)){
+    xmin <- data %>% pull(!!xmin)
+  }
+  else{
+    xmin <- NA
+  }
+
   # Build the statistical table for plotting
   xxmax <-xmax  # so that mutate will avoid re-using an existing xmax in the data
+  xxmin <- xmin
   data <- data %>%
     dplyr::mutate(
       label = as.character(data %>% pull(!!label)),
-      y.position = data %>% pull(y.position),
-      xmin = data %>% pull(!!xmin),
+      y.position = data %>% pull(!!y.position),
+      xmin = xxmin,
       xmax = xxmax
     )
 
