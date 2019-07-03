@@ -34,6 +34,9 @@ NULL
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. Considered only in the situation, where comparisons are performed
 #'  against reference group or against "all".
+#'@param hide.ns logical value. If TRUE, hide ns symbol when displaying
+#'  significance levels. Filter is done by checking the column
+#'  \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
 #'@param vjust move the text up or down relative to the bracket. Can be also a
 #'  column name available in the data.
 #'@param position position adjustment, either as a string, or the result of a
@@ -97,11 +100,14 @@ stat_pvalue_manual <- function(
   data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, vjust = 0, step.increase = 0, position = "identity", ...
+  remove.bracket = FALSE, step.increase = 0, hide.ns = FALSE, vjust = 0, position = "identity", ...
 )
 {
   if(is.null(label)){
     label <- guess_signif_label_column(data)
+  }
+  if(hide.ns){
+    data <- remove_ns(data)
   }
   asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)
@@ -323,4 +329,23 @@ guess_labels_default_vjust <- function(labels){
   labels %>%
     purrr::map(guess_label_default_vjust) %>%
     unlist()
+}
+
+# remove non significant
+remove_ns <- function(data){
+  filter <- dplyr::filter
+  columns <- colnames(data)
+  if("p.adj.signif" %in% columns){
+    data <- data %>% filter(.data$p.adj.signif != "ns")
+  }
+  else if("p.adj" %in% columns){
+    data <- data %>% filter(.data$p.adj <= 0.05)
+  }
+  else if("p.signif" %in% columns){
+    data <- data %>% filter(.data$p.signif != "ns")
+  }
+  else if("p" %in% columns){
+    data <- data %>% filter(.data$p <= 0.05)
+  }
+  data
 }

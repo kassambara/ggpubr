@@ -7,8 +7,8 @@
 stat_pvalue_manual(data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL, size = 3.88,
   label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, vjust = 0, step.increase = 0,
-  position = "identity", ...)
+  remove.bracket = FALSE, step.increase = 0, hide.ns = FALSE,
+  vjust = 0, position = "identity", ...)
 }
 \arguments{
 \item{data}{a data frame containing statitistical test results. The expected
@@ -48,11 +48,15 @@ bar goes down to indicate the precise column. Default is 0.03.}
 plot. Considered only in the situation, where comparisons are performed
 against reference group or against "all".}
 
-\item{vjust}{move the text up or down relative to the bracket. Can be also a
-column name available in the data.}
-
 \item{step.increase}{numeric vector with the increase in fraction of total
 height for every additional comparison to minimize overlap.}
+
+\item{hide.ns}{logical value. If TRUE, hide ns symbol when displaying
+significance levels. Filter is done by checking the column
+\code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.}
+
+\item{vjust}{move the text up or down relative to the bracket. Can be also a
+column name available in the data.}
 
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
