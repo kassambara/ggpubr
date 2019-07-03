@@ -97,7 +97,7 @@ stat_pvalue_manual <- function(
   data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, vjust = 0, position = "identity", ...
+  remove.bracket = FALSE, vjust = 0, step.increase = 0, position = "identity", ...
 )
 {
   if(is.null(label)){
@@ -201,7 +201,7 @@ stat_pvalue_manual <- function(
       mapping = mapping, data = data,
       tip.length =  tip.length,
       label.size = label.size, size = bracket.size,
-      position = position, ...
+      step.increase = step.increase, position = position, ...
     )
   }
   else{
