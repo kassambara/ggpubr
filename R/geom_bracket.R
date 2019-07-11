@@ -230,6 +230,8 @@ build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
     if(!is.null(xmax)) data <- data %>% mutate(xmax = !!xmax)
     if(!identical(vjust, 0)) data <- data %>% mutate(vjust = !!vjust)
   }
+  # add vjust column if doesn't exist
+  if(!(vjust %in% colnames(data))) data <- data %>% mutate(vjust = !!vjust)
   comparisons.number <- 0:(nrow(data)-1)
   step.increase <- step.increase*comparisons.number
   data <- data %>% mutate(step.increase = !!step.increase)
