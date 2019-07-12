@@ -141,8 +141,9 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
                                   vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3,
                                   xmin = NULL, xmax = NULL, label = NULL, y.position = NULL, step.increase = 0 # Added to avoid aesthetics warning
                                   ),
-                                draw_key = function(...){grid::nullGrob()},
-
+                                # draw_key = function(...){grid::nullGrob()},
+                                # for legend:
+                                draw_key = draw_key_path,
                                 draw_group = function(data, panel_params, coord) {
                                   coords <- coord$transform(data, panel_params)
                                   grid::gList(
