@@ -9,7 +9,8 @@
   
 ## Minor changes
 
-- New arguments `vjust`, `hide.ns`, `step.increase` and `step.group.by`added in `stat_pvalue_manual()`
+- `geom_exec()` now handles `geom_bracket()` arguments
+- New arguments `vjust`, `hide.ns`, `step.increase`, `step.group.by`, `color` and `linetype` added in `stat_pvalue_manual()`
 - `stat_pvalue_manual()` can now guess automatically the significance label column.
 - New argument `show.legend` added to `ggadd()` and `add_summary()` functions.
   

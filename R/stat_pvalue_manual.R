@@ -29,6 +29,8 @@ NULL
 #'  p-value as text (without brackets).
 #'@param size,label.size size of label text.
 #'@param bracket.size Width of the lines of the bracket.
+#'@param color text and line color. Can be variable name in the data for coloring by groups.
+#'@param linetype linetype. Can be variable name in the data for changing linetype by groups.
 #'@param tip.length numeric vector with the fraction of total height that the
 #'  bar goes down to indicate the precise column. Default is 0.03.
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
@@ -99,7 +101,8 @@ NULL
 stat_pvalue_manual <- function(
   data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
-  size = 3.88, label.size = size, bracket.size = 0.3, tip.length = 0.03,
+  size = 3.88, label.size = size, bracket.size = 0.3,
+  color = "black", linetype = 1, tip.length = 0.03,
   remove.bracket = FALSE, step.increase = 0, step.group.by = NULL,
   hide.ns = FALSE, vjust = 0, position = "identity", ...
 )
@@ -199,17 +202,13 @@ stat_pvalue_manual <- function(
       # case when ref.group = "all"
       bracket.size = 0
     }
-    mapping <- aes(
-      xmin = xmin, xmax = xmax,
-      label = label, y.position = y.position,
-      vjust = vjust, group = 1:nrow(data)
-    )
-    geom_bracket(
-      mapping = mapping, data = data,
-      tip.length =  tip.length,
-      label.size = label.size, size = bracket.size,
-      step.increase = step.increase, step.group.by = step.group.by,
-      position = position, ...
+    geom_exec(
+      geom_bracket, data = data, xmin = "xmin", xmax = "xmax",
+      label = "label", y.position = "y.position", vjust = "vjust",
+      group = 1:nrow(data),  tip.length =  tip.length,
+      label.size = label.size, size = bracket.size, color = color,
+      linetype = linetype, step.increase = step.increase,
+      step.group.by = step.group.by, position = position, ...
     )
   }
   else{
@@ -226,10 +225,12 @@ stat_pvalue_manual <- function(
     else{
       mapping <- aes(x = xmin, y = y.position, vjust = vjust, label = label)
     }
-    # X axis variable should be a factor
-    #if(!is.factor(data$xmin))
-    #data$xmin <- factor(data$xmin, levels = unique(data$xmin))
-    geom_text(mapping, data = data, size = label.size, position = position, ...)
+
+    option <- list(data = data, size = label.size, position = position, ...)
+    if(color %in% colnames(data)) mapping$colour <- rlang::ensym(color)
+    else option$color <- color
+    option[["mapping"]] <- mapping
+    do.call(geom_text, option)
   }
 }
 

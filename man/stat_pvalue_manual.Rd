@@ -6,8 +6,9 @@
 \usage{
 stat_pvalue_manual(data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL, size = 3.88,
-  label.size = size, bracket.size = 0.3, tip.length = 0.03,
-  remove.bracket = FALSE, step.increase = 0, hide.ns = FALSE,
+  label.size = size, bracket.size = 0.3, color = "black",
+  linetype = 1, tip.length = 0.03, remove.bracket = FALSE,
+  step.increase = 0, step.group.by = NULL, hide.ns = FALSE,
   vjust = 0, position = "identity", ...)
 }
 \arguments{
@@ -41,6 +42,10 @@ p-value as text (without brackets).}
 
 \item{bracket.size}{Width of the lines of the bracket.}
 
+\item{color}{text and line color. Can be variable name in the data for coloring by groups.}
+
+\item{linetype}{linetype. Can be variable name in the data for changing linetype by groups.}
+
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column. Default is 0.03.}
 
@@ -50,6 +55,9 @@ against reference group or against "all".}
 
 \item{step.increase}{numeric vector with the increase in fraction of total
 height for every additional comparison to minimize overlap.}
+
+\item{step.group.by}{a variable name for grouping brackets before adding
+step.increase. Useful to group bracket by facet panel.}
 
 \item{hide.ns}{logical value. If TRUE, hide ns symbol when displaying
 significance levels. Filter is done by checking the column
