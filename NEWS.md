@@ -9,7 +9,7 @@
   
 ## Minor changes
 
-- New arguments `vjust`, `hide.ns`, `step.increase` and `step.group.by` added in `stat_pvalue_manual()`
+- New arguments `vjust`, `hide.ns`, `step.increase` and `step.group.by`added in `stat_pvalue_manual()`
 - `stat_pvalue_manual()` can now guess automatically the significance label column.
 - New argument `show.legend` added to `ggadd()` and `add_summary()` functions.
   
