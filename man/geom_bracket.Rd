@@ -8,14 +8,15 @@
 stat_bracket(mapping = NULL, data = NULL, position = "identity",
   na.rm = FALSE, show.legend = NA, inherit.aes = TRUE,
   label = NULL, y.position = NULL, xmin = NULL, xmax = NULL,
-  step.increase = 0, tip.length = 0.03, size = 0.3,
-  label.size = 3.88, family = "", vjust = 0, ...)
+  step.increase = 0, step.group.by = NULL, tip.length = 0.03,
+  size = 0.3, label.size = 3.88, family = "", vjust = 0, ...)
 
 geom_bracket(mapping = NULL, data = NULL, stat = "bracket",
   position = "identity", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, label = NULL, y.position = NULL, xmin = NULL,
-  xmax = NULL, step.increase = 0, tip.length = 0.03, size = 0.3,
-  label.size = 3.88, family = "", vjust = 0, ...)
+  xmax = NULL, step.increase = 0, step.group.by = NULL,
+  tip.length = 0.03, size = 0.3, label.size = 3.88, family = "",
+  vjust = 0, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or
@@ -67,6 +68,9 @@ brackets}
 
 \item{step.increase}{numeric vector with the increase in fraction of total
 height for every additional comparison to minimize overlap.}
+
+\item{step.group.by}{a variable name for grouping brackets before adding
+step.increase. Useful to group bracket by facet panel.}
 
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column}

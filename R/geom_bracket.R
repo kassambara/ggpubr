@@ -52,6 +52,8 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #' @param vjust move the text up or down relative to the bracket
 #' @param step.increase numeric vector with the increase in fraction of total
 #'   height for every additional comparison to minimize overlap.
+#' @param step.group.by a variable name for grouping brackets before adding
+#'   step.increase. Useful to group bracket by facet panel.
 #' @param tip.length numeric vector with the fraction of total height that the
 #'   bar goes down to indicate the precise column
 #' @param na.rm If \code{FALSE} (the default), removes missing values with a
@@ -114,7 +116,7 @@ stat_bracket <- function(mapping = NULL, data = NULL,
                          position = "identity", na.rm = FALSE, show.legend = NA,
                          inherit.aes = TRUE,
                          label = NULL, y.position=NULL, xmin = NULL, xmax = NULL,
-                         step.increase = 0, tip.length = 0.03,
+                         step.increase = 0, step.group.by = NULL,  tip.length = 0.03,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
                          ...) {
   if(! is.null(data) & ! is.null(mapping)){
@@ -127,7 +129,7 @@ stat_bracket <- function(mapping = NULL, data = NULL,
     params = list(
       label=label,
       y.position=y.position,xmin=xmin, xmax=xmax,
-      step.increase=step.increase,
+      step.increase=step.increase, step.group.by = step.group.by,
       tip.length=tip.length, size=size, label.size=label.size,
       family=family, vjust=vjust, na.rm = na.rm, ...)
   )
@@ -182,10 +184,14 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
                          position = "identity", na.rm = FALSE, show.legend = NA,
                          inherit.aes = TRUE,
                          label = NULL, y.position = NULL, xmin = NULL, xmax = NULL,
-                         step.increase = 0, tip.length = 0.03,
+                         step.increase = 0, step.group.by = NULL, tip.length = 0.03,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
                          ...) {
-  data <- build_signif_data(data, label, y.position, xmin, xmax, step.increase, vjust)
+  data <- build_signif_data(
+    data = data, label = label, y.position = y.position,
+    xmin = xmin, xmax = xmax, step.increase = step.increase,
+    step.group.by = step.group.by, vjust = vjust
+    )
   mapping <- build_signif_mapping(mapping, data)
   ggplot2::layer(
     stat = stat, geom = GeomBracket, mapping = mapping,  data = data,
@@ -216,7 +222,15 @@ guess_signif_label_column <- function(data){
 }
 
 build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
-                              xmin = NULL, xmax = NULL, step.increase = 0, vjust = 0){
+                              xmin = NULL, xmax = NULL, step.increase = 0,
+                              step.group.by = NULL, vjust = 0){
+
+  add_step_increase <- function(data, step.increase){
+    comparisons.number <- 0:(nrow(data)-1)
+    step.increase <- step.increase*comparisons.number
+    data <- data %>% mutate(step.increase = !!step.increase)
+    data
+  }
   if(is.null(data)){
     data <- data.frame(
       label = label, y.position = y.position,
@@ -232,10 +246,20 @@ build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
     if(!identical(vjust, 0)) data <- data %>% mutate(vjust = !!vjust)
   }
   # add vjust column if doesn't exist
-  if(!(vjust %in% colnames(data))) data <- data %>% mutate(vjust = !!vjust)
-  comparisons.number <- 0:(nrow(data)-1)
-  step.increase <- step.increase*comparisons.number
-  data <- data %>% mutate(step.increase = !!step.increase)
+  if(!("vjust" %in% colnames(data))) data <- data %>% mutate(vjust = !!vjust)
+
+  if(is.null(step.group.by)){
+    data <- data %>% add_step_increase(step.increase)
+  }
+  else{
+    data <- data %>%
+      dplyr::arrange(!!!syms(c(step.group.by, "y.position"))) %>%
+      group_by(!!!syms(step.group.by)) %>%
+      tidyr::nest() %>%
+      dplyr::mutate(step.increase = purrr::map(data, add_step_increase, !!step.increase)) %>%
+      dplyr::select(-data) %>%
+      tidyr::unnest()
+  }
   data
 }
 
