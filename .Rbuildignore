@@ -6,4 +6,5 @@
 ^\.travis\.yml$
 ^cran-comments\.md$
 ^docs$
+^images$
 ^_pkgdown\.yml$
