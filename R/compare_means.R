@@ -193,9 +193,12 @@ compare_means <- function(formula, data, method = "wilcox.test",
   }
   else{
     grouped.d <- .group_by(data, group.by)
-    pvalues <- purrr::map(grouped.d$data, test.func, formula = formula,
-                          method = method, paired = paired, p.adjust.method = "none",...)
-    res <- grouped.d %>% mutate(p = pvalues) %>%
+    res <- grouped.d %>%
+      mutate(p = purrr::map(
+        data,
+        test.func, formula = formula,
+        method = method, paired = paired, p.adjust.method = "none",...)
+      ) %>%
       dplyr::select_(.dots = c(group.by, "p")) %>%
       tidyr::unnest()
   }
@@ -233,6 +236,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
   by_y <- res %>% group_by(.y.)
   pvalue.adj <- do(by_y, .p.adjust(., method = p.adjust.method))
   res <- res %>%
+    dplyr::ungroup() %>%
     mutate(p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
            method = method.name)
 
