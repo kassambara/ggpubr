@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,10 +110,12 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>stat_pvalue_manual</span>(<span class='no'>data</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p"</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='st'>"y.position"</span>,
+    <pre class="usage"><span class='fu'>stat_pvalue_manual</span>(<span class='no'>data</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='st'>"y.position"</span>,
   <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='st'>"group1"</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='st'>"group2"</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3.88</span>,
-  <span class='kw'>label.size</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>bracket.size</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.03</span>,
-  <span class='kw'>remove.bracket</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>label.size</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>bracket.size</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.03</span>, <span class='kw'>remove.bracket</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>step.increase</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>step.group.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -128,11 +130,11 @@ the y coordinates of the p-values in the plot.</p></td>
     </tr>
     <tr>
       <th>label</th>
-      <td><p>the column containing the label (e.g.: label = "p"). Default
-value is "p", for p-value. Can be also an expression that can be formatted
-by the <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue</a>()</code> package. For example, when specifying
-label = "t-test, p = {p}", the expression {p} will be replaced by its
-value.</p></td>
+      <td><p>the column containing the label (e.g.: label = "p" or label =
+"p.adj"), where <code>p</code> is the p-value. Can be also an expression that can
+be formatted by the <code><a href='https://www.rdocumentation.org/packages/glue/topics/glue'>glue</a>()</code> package. For example, when
+specifying label = "t-test, p = {p}", the expression {p} will be
+replaced by its value.</p></td>
     </tr>
     <tr>
       <th>y.position</th>
@@ -165,6 +167,14 @@ p-value as text (without brackets).</p></td>
       <td><p>Width of the lines of the bracket.</p></td>
     </tr>
     <tr>
+      <th>color</th>
+      <td><p>text and line color. Can be variable name in the data for coloring by groups.</p></td>
+    </tr>
+    <tr>
+      <th>linetype</th>
+      <td><p>linetype. Can be variable name in the data for changing linetype by groups.</p></td>
+    </tr>
+    <tr>
       <th>tip.length</th>
       <td><p>numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column. Default is 0.03.</p></td>
@@ -176,16 +186,35 @@ plot. Considered only in the situation, where comparisons are performed
 against reference group or against "all".</p></td>
     </tr>
     <tr>
+      <th>step.increase</th>
+      <td><p>numeric vector with the increase in fraction of total
+height for every additional comparison to minimize overlap.</p></td>
+    </tr>
+    <tr>
+      <th>step.group.by</th>
+      <td><p>a variable name for grouping brackets before adding
+step.increase. Useful to group bracket by facet panel.</p></td>
+    </tr>
+    <tr>
+      <th>hide.ns</th>
+      <td><p>logical value. If TRUE, hide ns symbol when displaying
+significance levels. Filter is done by checking the column
+<code>p.adj.signif</code>, <code>p.signif</code>, <code>p.adj</code> and <code>p</code>.</p></td>
+    </tr>
+    <tr>
+      <th>vjust</th>
+      <td><p>move the text up or down relative to the bracket. Can be also a
+column name available in the data.</p></td>
+    </tr>
+    <tr>
       <th>position</th>
       <td><p>position adjustment, either as a string, or the result of a
 call to a position adjustment function.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments passed on to <code>layer</code>. These are
-often aesthetics, used to set an aesthetic to a fixed value, like
-<code>color = "red"</code> or <code>size = 3</code>. They may also be parameters
-to the paired geom/stat.</p></td>
+      <td><p>other arguments passed to the function <code><a href='geom_bracket.html'>geom_bracket()</a></code> or
+<code>geom_text()</code></p></td>
     </tr>
     </table>
     
@@ -224,11 +253,11 @@ to the paired geom/stat.</p></td>
 <span class='co'># Add manually p-values from stat.test data</span>
 <span class='co'># First specify the y.position of each comparison</span>
 <span class='no'>stat.test</span> <span class='kw'>&lt;-</span> <span class='no'>stat.test</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>29</span>, <span class='fl'>35</span>, <span class='fl'>39</span>))
-<span class='no'>p</span> + <span class='fu'>stat_pvalue_manual</span>(<span class='no'>stat.test</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: xmin, xmax, annotations, y_position</span></div><div class='img'><img src='stat_pvalue_manual-2.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='fu'><a href='https://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>29</span>, <span class='fl'>35</span>, <span class='fl'>39</span>))
+<span class='no'>p</span> + <span class='fu'>stat_pvalue_manual</span>(<span class='no'>stat.test</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)</div><div class='img'><img src='stat_pvalue_manual-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Customize the label with glue expression</span>
 <span class='co'># (https://github.com/tidyverse/glue)</span>
-<span class='no'>p</span> + <span class='fu'>stat_pvalue_manual</span>(<span class='no'>stat.test</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p = {p.adj}"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: xmin, xmax, annotations, y_position</span></div><div class='img'><img src='stat_pvalue_manual-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p</span> + <span class='fu'>stat_pvalue_manual</span>(<span class='no'>stat.test</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p = {p.adj}"</span>)</div><div class='img'><img src='stat_pvalue_manual-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Grouped bar plots</span>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>

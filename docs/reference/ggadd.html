@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,9 +110,9 @@
 
     <pre class="usage"><span class='fu'>ggadd</span>(<span class='no'>p</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>jitter</span> <span class='kw'>=</span> <span class='fl'>0.2</span>,
-  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dotsize</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>),
-  <span class='kw'>p_geom</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+  <span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dotsize</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>), <span class='kw'>p_geom</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,6 +178,17 @@ when <code>add</code> contains "dotplot".</p></td>
       <td><p>as <code>size</code> but applied only to dotplot.</p></td>
     </tr>
     <tr>
+      <th>linetype</th>
+      <td><p>line type.</p></td>
+    </tr>
+    <tr>
+      <th>show.legend</th>
+      <td><p>logical. Should this layer be included in the legends? NA,
+the default, includes if any aesthetics are mapped. <code>FALSE</code> never includes,
+and TRUE always includes. It can also be a named logical vector to finely
+select the aesthetics to display.</p></td>
+    </tr>
+    <tr>
       <th>error.plot</th>
       <td><p>plot type used to visualize error. Allowed values are one of
 <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
@@ -190,8 +201,9 @@ when <code>add</code> contains "dotplot".</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>a <code>data.frame</code> to be displayed. If <code>NULL</code>, the default, the
-data is inherited from the plot data as specified in the call to <a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a>.</p></td>
+      <td><p>a <code>data.frame</code> to be displayed. If <code>NULL</code>, the default,
+the data is inherited from the plot data as specified in the call to
+<a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a>.</p></td>
     </tr>
     <tr>
       <th>position</th>

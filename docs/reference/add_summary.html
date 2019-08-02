@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -110,8 +110,8 @@
 
     <pre class="usage"><span class='fu'>add_summary</span>(<span class='no'>p</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"pointrange"</span>,
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>))
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>))
 
 <span class='fu'>mean_se_</span>(<span class='no'>x</span>, <span class='kw'>error.limit</span> <span class='kw'>=</span> <span class='st'>"both"</span>)
 
@@ -178,13 +178,25 @@ c("crossbar", "errorbar").</p></td>
       <td><p>numeric value in [0-1] specifying point and line size.</p></td>
     </tr>
     <tr>
+      <th>linetype</th>
+      <td><p>line type.</p></td>
+    </tr>
+    <tr>
+      <th>show.legend</th>
+      <td><p>logical. Should this layer be included in the legends? NA,
+the default, includes if any aesthetics are mapped. <code>FALSE</code> never includes,
+and TRUE always includes. It can also be a named logical vector to finely
+select the aesthetics to display.</p></td>
+    </tr>
+    <tr>
       <th>ci</th>
       <td><p>the percent range of the confidence interval (default is 0.95).</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>a <code>data.frame</code> to be displayed. If <code>NULL</code>, the default, the
-data is inherited from the plot data as specified in the call to <a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a>.</p></td>
+      <td><p>a <code>data.frame</code> to be displayed. If <code>NULL</code>, the default,
+the data is inherited from the plot data as specified in the call to
+<a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a>.</p></td>
     </tr>
     <tr>
       <th>position</th>
@@ -198,9 +210,9 @@ groups.</p></td>
     </tr>
     <tr>
       <th>error.limit</th>
-      <td><p>allowed values are one of ("both", "lower", "upper", "none")
-specifying whether to plot the lower and/or the upper limits of error
-interval.</p></td>
+      <td><p>allowed values are one of ("both", "lower", "upper",
+"none") specifying whether to plot the lower and/or the upper limits of
+error interval.</p></td>
     </tr>
     </table>
     
@@ -209,7 +221,7 @@ interval.</p></td>
     <ul>
 <li><p><code>add_summary</code>: add summary statistics onto a ggplot.</p></li>
 <li><p><code>mean_se_</code>: returns the <code>mean</code> and the error limits defined by the
-<code>standard error</code>. We used the name <code>mean_se_</code>() to avoid masking <code><a href='https://ggplot2.tidyverse.org/reference/mean_se.html'>mean_se</a></code>().</p></li>
+<code>standard error</code>. We used the name <code>mean_se_</code>() to avoid masking <code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/mean_se'>mean_se</a></code>().</p></li>
 <li><p><code>mean_sd</code>: returns the <code>mean</code> and the error limits defined by the
 <code>standard deviation</code>.</p></li>
 <li><p><code>mean_ci</code>: returns the <code>mean</code> and the error limits defined by the
