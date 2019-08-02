@@ -4,11 +4,9 @@
 
 - New function `geom_bracket()` for adding brackets with label annotation to a ggplot. Helpers for adding p-value or significance levels to a plot.
 
-## Major changes
-  
-  
 ## Minor changes
 
+- `compare_means()` has been adapted to tidyr v1.0.0 ([@jennybc, #196](https://github.com/kassambara/ggpubr/pull/196))
 - `geom_exec()` now handles `geom_bracket()` arguments
 - New arguments `vjust`, `hide.ns`, `step.increase`, `step.group.by`, `color` and `linetype` added in `stat_pvalue_manual()`
 - `stat_pvalue_manual()` can now guess automatically the significance label column.
