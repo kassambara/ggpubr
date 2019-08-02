@@ -13,9 +13,5 @@ All packages that I could install passed.
 
 ## Update
 
-This is an update version 0.2.1 (see NEWS.md).
-
-## Resubmission
-
-In this version, I removed broken links from the documentation of ggdotplot() and gghistogram()
+This is an update version 0.2.2 (see NEWS.md).
 
