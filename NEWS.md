@@ -1,4 +1,4 @@
-# ggpubr 0.2.1.999
+# ggpubr 0.2.2
   
 ## New fatures
 
