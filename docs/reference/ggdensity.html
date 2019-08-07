@@ -268,7 +268,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
     <tr>
       <th>...</th>
       <td><p>other arguments to be passed to
-<code><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></code> and <code><a href='ggpar.html'>ggpar</a></code>.</p></td>
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>geom_density</a></code> and <code><a href='ggpar.html'>ggpar</a></code>.</p></td>
     </tr>
     </table>
     
@@ -309,7 +309,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 <span class='co'># Basic density plot</span>
  <span class='co'># Add mean line and marginal rug</span>
 <span class='fu'>ggdensity</span>(<span class='no'>wdata</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"weight"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='ggdensity-1.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: geom_vline(): Ignoring `mapping` because `xintercept` was provided.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: geom_vline(): Ignoring `data` because `xintercept` was provided.</span></div><div class='img'><img src='ggdensity-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Change outline colors by groups ("sex")</span>
 <span class='co'># Use custom palette</span>
 <span class='fu'>ggdensity</span>(<span class='no'>wdata</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"weight"</span>,
