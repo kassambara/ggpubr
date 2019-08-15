@@ -5,7 +5,10 @@
 ## Minor changes
 
 ## Bug fixes
- 
+   
+- `ggpie()` keeps now the default order of labels ([@WortJohn, #203](https://github.com/kassambara/ggpubr/pull/203))
+
+
 # ggpubr 0.2.2
   
 ## New fatures

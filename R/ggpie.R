@@ -84,6 +84,16 @@ ggpie <- function(
   lab.font <- .parse_font(lab.font) %>%
     .check_pie_labfont()
 
+
+  if(length(label) > 1 & length(label) != nrow(data))
+    stop("label should be of the same length as data")
+  else if(length(label) > 1){
+    # 1. Add label column
+    data <- data %>%
+      dplyr::mutate(.label. = label)
+    label <- ".label."
+  }
+
   # We should order the data in desc order. Because,
   # in stacked bar plot the order of factor levels are reversed
   # Very important to have the label in the right place
@@ -99,15 +109,6 @@ ggpie <- function(
     dplyr::mutate(
       .lab.ypos. = cumsum(.x) -0.5*.x -lab.adjust
     )
-
-  if(length(label) > 1 & length(label) != nrow(data))
-    stop("label should be of the same length as data")
-  else if(length(label) > 1){
-    # 1. Add label column
-      data <- data %>%
-        dplyr::mutate(.label. = label)
-      label <- ".label."
-  }
 
   p <- ggplot(data, aes_string(x = "1", y = x)) +
     geom_exec(
