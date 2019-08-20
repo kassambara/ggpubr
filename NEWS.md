@@ -3,6 +3,8 @@
 ## New fatures
 
 ## Minor changes
+  
+- The option `exact = FALSE` is no longer used when computing correlation in `stat_cor()` ([@tiagochst, #205](https://github.com/kassambara/ggpubr/issues/205))
 
 ## Bug fixes
    

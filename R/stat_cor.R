@@ -109,7 +109,7 @@ StatCor<- ggproto("StatCor", Stat,
 # Returns a data frame: estimatel|p.value|method|label
 .cor_test <- function(x, y, method = "pearson", label.sep = ", ", output.type = "expression"){
 
-  .cor <- stats::cor.test(x, y, method = method, exact = FALSE, use = "complete.obs")
+  .cor <- suppressWarnings(stats::cor.test(x, y, method = method,  use = "complete.obs"))
   estimate <- p.value <- p <- r <- rr <-  NULL
   z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method) %>%
     mutate(
@@ -121,7 +121,6 @@ StatCor<- ggproto("StatCor", Stat,
 
   # Defining labels
   pval <- .cor$p.value
-
   if(output.type == "expression"){
 
     z <- z %>% dplyr::mutate(
