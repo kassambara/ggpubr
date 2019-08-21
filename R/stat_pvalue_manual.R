@@ -291,7 +291,7 @@ detect_comparison_type <- function(data){
   else if (ngroup1 >= 2 & ngroup2 >= 2){
     type = "pairwise"
   }
-  else if(c("group1", "group2") %in% colnames(data)){
+  else if(all(c("group1", "group2") %in% colnames(data))){
     # filtered data
     type = "pairwise"
   }
