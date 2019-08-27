@@ -13,6 +13,7 @@ reference:
     desc:  Visualize distributions.
     contents:
       - ggdensity
+      - stat_overlay_normal_density
       - gghistogram
       - ggecdf
       - ggqqplot

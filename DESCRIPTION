@@ -106,6 +106,7 @@ Collate:
     'show_point_shapes.R'
     'stat_compare_means.R'
     'stat_mean.R'
+    'stat_overlay_normal_density.R'
     'stat_pvalue_manual.R'
     'stat_regline_equation.R'
     'text_grob.R'
