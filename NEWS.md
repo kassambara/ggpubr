@@ -4,6 +4,7 @@
 
 ## Minor changes
   
+- New function `stat_central_tendency()` to add central tendency measures (mean, median, mode) to density and histogram plots
 - New function `stat_overlay_normal_density()` to overlay normal density plot (with the same mean and SD) to the density distribution of 'x'. 
 - The option `exact = FALSE` is no longer used when computing correlation in `stat_cor()` ([@tiagochst, #205](https://github.com/kassambara/ggpubr/issues/205))
 

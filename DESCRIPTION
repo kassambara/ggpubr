@@ -104,6 +104,7 @@ Collate:
     'set_palette.R'
     'show_line_types.R'
     'show_point_shapes.R'
+    'stat_central_tendency.R'
     'stat_compare_means.R'
     'stat_mean.R'
     'stat_overlay_normal_density.R'
