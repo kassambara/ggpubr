@@ -6,7 +6,8 @@
 \usage{
 stat_overlay_normal_density(mapping = NULL, data = NULL,
   geom = "line", position = "identity", na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE, ...)
+  show.legend = NA, inherit.aes = TRUE, color = "red",
+  linetype = "dashed", ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or
@@ -56,10 +57,16 @@ Overlay normal density plot (with the same mean and SD) to the
   degree of deviance from normality.
 }
 \examples{
-# Load data
+# Simpledensity plot
 data("mtcars")
 ggdensity(mtcars, x = "mpg", fill = "red") +
-  stat_overlay_normal_density(color = "red", linetype = 2)
+  scale_x_continuous(limits = c(-1, 50)) +
+  stat_overlay_normal_density()
+
+# Facet
+data(iris)
+ggdensity(iris, "Sepal.Length", facet.by = "Species") +
+ stat_overlay_normal_density()
 
 }
 \seealso{
