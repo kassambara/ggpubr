@@ -6,8 +6,7 @@
 \usage{
 stat_overlay_normal_density(mapping = NULL, data = NULL,
   geom = "line", position = "identity", na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE, color = "red",
-  linetype = "dashed", ...)
+  show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or
@@ -61,12 +60,17 @@ Overlay normal density plot (with the same mean and SD) to the
 data("mtcars")
 ggdensity(mtcars, x = "mpg", fill = "red") +
   scale_x_continuous(limits = c(-1, 50)) +
-  stat_overlay_normal_density()
+  stat_overlay_normal_density(color = "red", linetype = "dashed")
+
+# Color by groups
+data(iris)
+ggdensity(iris, "Sepal.Length", color = "Species") +
+ stat_overlay_normal_density(aes(color = Species), linetype = "dashed")
+
 
 # Facet
-data(iris)
 ggdensity(iris, "Sepal.Length", facet.by = "Species") +
- stat_overlay_normal_density()
+ stat_overlay_normal_density(color = "red", linetype = "dashed")
 
 }
 \seealso{

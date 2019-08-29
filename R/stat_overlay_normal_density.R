@@ -15,17 +15,22 @@ NULL
 #' data("mtcars")
 #' ggdensity(mtcars, x = "mpg", fill = "red") +
 #'   scale_x_continuous(limits = c(-1, 50)) +
-#'   stat_overlay_normal_density()
+#'   stat_overlay_normal_density(color = "red", linetype = "dashed")
+#'
+#' # Color by groups
+#' data(iris)
+#' ggdensity(iris, "Sepal.Length", color = "Species") +
+#'  stat_overlay_normal_density(aes(color = Species), linetype = "dashed")
+#'
 #'
 #' # Facet
-#' data(iris)
 #' ggdensity(iris, "Sepal.Length", facet.by = "Species") +
-#'  stat_overlay_normal_density()
+#'  stat_overlay_normal_density(color = "red", linetype = "dashed")
 #'
 #' @export
 stat_overlay_normal_density <- function(mapping = NULL, data = NULL, geom = "line",
                     position = "identity", na.rm = FALSE, show.legend = NA,
-                    inherit.aes = TRUE, color = "red", linetype = "dashed", ...) {
+                    inherit.aes = TRUE,  ...) {
   if(is.null(mapping)){
     mapping <- ggplot2::aes(y = NULL)
   }else{
@@ -34,7 +39,7 @@ stat_overlay_normal_density <- function(mapping = NULL, data = NULL, geom = "lin
   layer(
     stat = StatOverlayNormalDensity, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, color = color, linetype = linetype, ...)
+    params = list(na.rm = na.rm,  ...)
   )
 }
 
