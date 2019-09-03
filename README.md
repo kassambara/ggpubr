@@ -1,5 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://api.travis-ci.org/kassambara/ggpubr.png)](https://travis-ci.org/kassambara/ggpubr) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggpubr)](https://cran.r-project.org/package=ggpubr) [![Downloads](https://cranlogs.r-pkg.org/badges/ggpubr)](https://cran.r-project.org/package=ggpubr) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr)
+[![Build Status](https://api.travis-ci.org/kassambara/ggpubr.png)](https://travis-ci.org/kassambara/ggpubr) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggpubr)](https://cran.r-project.org/package=ggpubr) [![Downloads](https://cranlogs.r-pkg.org/badges/ggpubr)](https://cran.r-project.org/package=ggpubr) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
 
 ggpubr: 'ggplot2' Based Publication Ready Plots
 ===============================================
