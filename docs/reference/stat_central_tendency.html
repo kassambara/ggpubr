@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Draw group mean points — stat_mean • ggpubr</title>
+<title>Add Central Tendency Measures to a GGPLot — stat_central_tendency • ggpubr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,16 @@
 
 
 
-<meta property="og:title" content="Draw group mean points — stat_mean" />
+<meta property="og:title" content="Add Central Tendency Measures to a GGPLot — stat_central_tendency" />
 
-<meta property="og:description" content="Draw the mean point of each group." />
+<meta property="og:description" content="Add central tendency measures (mean, median, mode) to density
+  and histogram plots created using ggplots.
+Note that, normally, the mode is used for categorical data where we wish to
+  know which is the most common category. Therefore, we can have have two or
+  more values that share the highest frequency. This might be problematic for
+  continuous variable.
+For continuous variable, we can consider using mean or median as the
+  measures of the central tendency." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -97,20 +104,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Draw group mean points</h1>
+    <h1>Add Central Tendency Measures to a GGPLot</h1>
     
-    <div class="hidden name"><code>stat_mean.Rd</code></div>
+    <div class="hidden name"><code>stat_central_tendency.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Draw the mean point of each group.</p>
+    <p>Add central tendency measures (mean, median, mode) to density
+  and histogram plots created using ggplots.</p>
+<p>Note that, normally, the mode is used for categorical data where we wish to
+  know which is the most common category. Therefore, we can have have two or
+  more values that share the highest frequency. This might be problematic for
+  continuous variable.</p>
+<p>For continuous variable, we can consider using mean or median as the
+  measures of the central tendency.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>stat_mean</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"point"</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>stat_central_tendency</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"line"</span>,
+  <span class='st'>"point"</span>), <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"mode"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,27 +180,42 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. <code>borders()</code>.</p></td>
     </tr>
     <tr>
+      <th>type</th>
+      <td><p>the type of central tendency measure to be used. Possible values
+include: <code>"mean", "median", "mode"</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>other arguments to pass to <code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></code>.</p></td>
+      <td><p>other arguments to pass to <code><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='stat_conf_ellipse.html'>stat_conf_ellipse</a></code>, <code><a href='stat_chull.html'>stat_chull</a></code> and
-  <code><a href='ggscatter.html'>ggscatter</a></code></p></div>
+    <div class='dont-index'><p><code><a href='ggdensity.html'>ggdensity</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load data</span>
+    <pre class="examples"><div class='input'><span class='co'># Simple density plot</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>"mtcars"</span>)
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span>
-<span class='no'>df</span>$<span class='no'>cyl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>as.factor</a></span>(<span class='no'>df</span>$<span class='no'>cyl</span>)
-
-<span class='co'># Scatter plot with ellipses and group mean points</span>
-<span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
-   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)+
- <span class='fu'>stat_mean</span>(<span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>cyl</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='no'>cyl</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='img'><img src='stat_mean-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>mtcars</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"red"</span>) +
+  <span class='fu'>scale_x_continuous</span>(<span class='kw'>limits</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>50</span>)) +
+  <span class='fu'>stat_central_tendency</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>)</div><div class='img'><img src='stat_central_tendency-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Color by groups</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>iris</span>)
+<span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Species"</span>) +
+  <span class='fu'>stat_central_tendency</span>(<span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>Species</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='stat_central_tendency-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Use geom = "point" for central tendency</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>iris</span>)
+<span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Species"</span>) +
+  <span class='fu'>stat_central_tendency</span>(
+     <span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>Species</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"median"</span>,
+     <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>
+     )</div><div class='img'><img src='stat_central_tendency-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Facet</span>
+<span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"Species"</span>) +
+  <span class='fu'>stat_central_tendency</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>) +
+  <span class='fu'>stat_central_tendency</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"median"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='stat_central_tendency-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

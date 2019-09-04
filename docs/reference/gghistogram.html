@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -329,7 +329,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 <span class='co'># Basic density plot</span>
 <span class='co'># Add mean line and marginal rug</span>
 <span class='fu'>gghistogram</span>(<span class='no'>wdata</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"weight"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Using `bins = 30` by default. Pick better value with the argument `bins`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: geom_vline(): Ignoring `mapping` because `xintercept` was provided.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: geom_vline(): Ignoring `data` because `xintercept` was provided.</span></div><div class='img'><img src='gghistogram-1.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Using `bins = 30` by default. Pick better value with the argument `bins`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Using both `xintercept` and `mapping` may not have the desired result as mapping is overwritten if `xintercept` is specified</span></div><div class='img'><img src='gghistogram-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Change outline colors by groups ("sex")</span>
 <span class='co'># Use custom color palette</span>
 <span class='fu'>gghistogram</span>(<span class='no'>wdata</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"weight"</span>,

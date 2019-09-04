@@ -163,6 +163,9 @@
     <loc>https://rpkgs.datanovia.com/ggpubr/reference/show_point_shapes.html</loc>
   </url>
   <url>
+    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_central_tendency.html</loc>
+  </url>
+  <url>
     <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_chull.html</loc>
   </url>
   <url>
@@ -176,6 +179,9 @@
   </url>
   <url>
     <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_mean.html</loc>
+  </url>
+  <url>
+    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_overlay_normal_density.html</loc>
   </url>
   <url>
     <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_pvalue_manual.html</loc>

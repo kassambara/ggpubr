@@ -1,13 +1,15 @@
-# ggpubr 0.2.2.999
+# ggpubr 0.2.3
   
-## New fatures
-
-## Minor changes
-  
+## New features
+   
 - New function `stat_central_tendency()` to add central tendency measures (mean, median, mode) to density and histogram plots
 - New function `stat_overlay_normal_density()` to overlay normal density plot (with the same mean and SD) to the density distribution of 'x'. 
+  
+## Minor changes
+  
 - The option `exact = FALSE` is no longer used when computing correlation in `stat_cor()` ([@tiagochst, #205](https://github.com/kassambara/ggpubr/issues/205))
-
+  
+  
 ## Bug fixes
    
 - `ggpie()` keeps now the default order of labels ([@WortJohn, #203](https://github.com/kassambara/ggpubr/pull/203))
