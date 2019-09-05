@@ -1,6 +1,9 @@
 # ggpubr 0.2.3.999
 
 
+## Minor change
+   
+- unnest adapted to tidyr 1.0.0
 
 # ggpubr 0.2.3
   

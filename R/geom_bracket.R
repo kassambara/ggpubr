@@ -258,7 +258,7 @@ build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
       tidyr::nest() %>%
       dplyr::mutate(step.increase = purrr::map(data, add_step_increase, !!step.increase)) %>%
       dplyr::select(-data) %>%
-      tidyr::unnest()
+      unnest(cols = "step.increase")
   }
   data
 }
