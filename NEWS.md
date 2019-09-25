@@ -4,6 +4,7 @@
 ## Minor change
    
 - unnest adapted to tidyr 1.0.0
+- `stat_pvalue_manual()` can now handle an rstatix test result containing only one group column.
 
 # ggpubr 0.2.3
   

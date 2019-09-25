@@ -113,7 +113,7 @@ stat_pvalue_manual <- function(
   if(hide.ns){
     data <- remove_ns(data)
   }
-  asserttat_group_columns_exists(data)
+  data <- asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)
   all.x.is.missing <- is.null(x) & missing(xmin) & missing(xmax)
   if(all(data$group1 == "all") & all.x.is.missing){
@@ -237,8 +237,15 @@ stat_pvalue_manual <- function(
 asserttat_group_columns_exists <- function(data){
   groups.exist <- all(c("group1", "group2") %in% colnames(data))
   if(!groups.exist){
-    stop("data should contain group1 and group2 columns")
+    if(inherits(data, "rstatix_test") & "group" %in% colnames(data)){
+      data$group1 <- "all"
+      data$group2 <- data$group
+    }
+    else{
+      stop("data should contain group1 and group2 columns")
+    }
   }
+  invisible(data)
 }
 
 # get validate p-value y-position
