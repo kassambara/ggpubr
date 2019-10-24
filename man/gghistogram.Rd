@@ -13,7 +13,7 @@ gghistogram(data, x, y = "..count..", combine = FALSE, merge = FALSE,
   add_density = FALSE, label = NULL, font.label = list(size = 11,
   color = "black"), label.select = NULL, repel = FALSE,
   label.rectangle = FALSE, position = position_identity(),
-  ggtheme = theme_pubr(), ...)
+  weight = NULL, ggtheme = theme_pubr(), ...)
 }
 \arguments{
 \item{data}{a data frame}
@@ -112,6 +112,8 @@ text, making it easier to read.}
 call to a position adjustment function. Allowed values include "identity",
 "stack", "dodge".}
 
+\item{weight}{variable used assign weights to each x value.}
+
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....}
@@ -166,6 +168,12 @@ gghistogram(wdata, x = "weight",
    fill = "sex", palette = c("#00AFBB", "#E7B800"),
    add_density = TRUE)
 
+# Plot weighted histogram
+weighted.data <- data.frame(
+   x = sort(runif(1000)),
+   weight = seq(1, 1000)
+)
+gghistogram(weighted.data, x = "x", weight = "weight")
 
 }
 \seealso{
