@@ -21,6 +21,7 @@ NULL
 #' @param position Position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function. Allowed values include "identity",
 #'   "stack", "dodge".
+#' @param weight variable used assign weights to each x value.
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_histogram}} and \code{\link{ggpar}}.
 #' @details The plot can be easily customized using the function ggpar(). Read
@@ -67,6 +68,12 @@ NULL
 #'    fill = "sex", palette = c("#00AFBB", "#E7B800"),
 #'    add_density = TRUE)
 #'
+#' # Plot weighted histogram
+#' weighted.data <- data.frame(
+#'    x = sort(runif(1000)),
+#'    weight = seq(1, 1000)
+#' )
+#' gghistogram(weighted.data, x = "x", weight = "weight")
 #'
 #' @export
 gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE,
@@ -80,7 +87,7 @@ gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE
                         rug = FALSE, add_density = FALSE,
                         label = NULL, font.label = list(size = 11, color = "black"),
                         label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-                        position = position_identity(),
+                        position = position_identity(), weight = NULL,
                         ggtheme = theme_pubr(),
                         ...)
 {
@@ -96,7 +103,7 @@ gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE
     add = add, add.params = add.params, rug = rug, add_density = add_density,
     label = label, font.label = font.label, label.select = label.select,
     repel = repel, label.rectangle = label.rectangle,
-    position = position, ggtheme = ggtheme, ...)
+    position = position, weight = weight, ggtheme = ggtheme, ...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
   if(!missing(y)) .opts$y <- y
@@ -159,7 +166,11 @@ gghistogram_core <- function(data, x, y = "..count..",
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
   # if(add_density) y <- "..density.."
 
-  p <- ggplot(data, aes_string(x, y))
+  if (is.null(weight)) {
+    p <- ggplot(data, aes_string(x, y))
+  } else {
+    p <- ggplot(data, aes_string(x, y, weight = as.name(weight)))
+  }
 
   p <- p +
       geom_exec(geom_histogram, data = data,
