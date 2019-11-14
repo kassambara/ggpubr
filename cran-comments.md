@@ -13,10 +13,5 @@ All packages that I could install passed.
 
 ## Update
 
-This is an update version 0.2.3 (see NEWS.md).
-
-
-## Resubmission
-   
-In this version I fix an invalid URL in the README.md file
+This is an update version 0.2.4 (see NEWS.md).
 

@@ -1,4 +1,4 @@
-# ggpubr 0.2.3.999
+# ggpubr 0.2.4
 
 
 ## Minor change
