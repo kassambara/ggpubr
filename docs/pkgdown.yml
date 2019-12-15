@@ -1,8 +1,5 @@
 pandoc: 1.19.2.1
-pkgdown: 1.3.0
+pkgdown: 1.4.1
 pkgdown_sha: ~
 articles: []
-urls:
-  reference: https://rpkgs.datanovia.com/ggpubr/reference
-  article: https://rpkgs.datanovia.com/ggpubr/articles
 

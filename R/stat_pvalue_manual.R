@@ -169,7 +169,6 @@ stat_pvalue_manual <- function(
     xmax <- NA
     pvalue.geom <- "text"
   }
-
   if(!is.null(xmin)){
     xmin <- data %>% pull(!!xmin)
   }
@@ -225,7 +224,6 @@ stat_pvalue_manual <- function(
     else{
       mapping <- aes(x = xmin, y = y.position, vjust = vjust, label = label)
     }
-
     option <- list(data = data, size = label.size, position = position, ...)
     if(color %in% colnames(data)) mapping$colour <- rlang::ensym(color)
     else option$color <- color

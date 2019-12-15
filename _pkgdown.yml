@@ -1,5 +1,3 @@
-url: https://rpkgs.datanovia.com/ggpubr
-
 templates:
   params:
     bootswatch: lumen

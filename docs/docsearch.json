@@ -2,21 +2,21 @@
   "index_name": "ggpubr",
   "start_urls": [
     {
-      "url": "https://rpkgs.datanovia.com/ggpubr/index.html",
+      "url": "/index.html",
       "selectors_key": "homepage",
       "tags": [
         "homepage"
       ]
     },
     {
-      "url": "https://rpkgs.datanovia.com/ggpubr/reference",
+      "url": "/reference",
       "selectors_key": "reference",
       "tags": [
         "reference"
       ]
     },
     {
-      "url": "https://rpkgs.datanovia.com/ggpubr/articles",
+      "url": "/articles",
       "selectors_key": "articles",
       "tags": [
         "articles"
@@ -30,7 +30,7 @@
     "/articles/index.html"
   ],
   "sitemap_urls": [
-    "https://rpkgs.datanovia.com/ggpubr/sitemap.xml"
+    "/sitemap.xml"
   ],
   "selectors": {
     "homepage": {
@@ -92,3 +92,4 @@
     ]
   }
 }
+
