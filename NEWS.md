@@ -8,7 +8,9 @@
 
 ## Minor changes
 
-
+- `compare_means()` adapted to tidyr v>= 1.0.0 by specifying cols in the unnest() function ([@Youguang, #216](https://github.com/kassambara/ggpubr/issues/216)).
+  
+  
 ## Bug fixes
 
 

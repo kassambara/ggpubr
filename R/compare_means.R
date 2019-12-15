@@ -200,7 +200,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
         method = method, paired = paired, p.adjust.method = "none",...)
       ) %>%
       dplyr::select_(.dots = c(group.by, "p")) %>%
-      tidyr::unnest()
+      unnest(cols = "p")
   }
 
   # Add response variables to the result
