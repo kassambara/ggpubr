@@ -7,7 +7,7 @@
 stat_cor(mapping = NULL, data = NULL, method = "pearson",
   label.sep = ", ", label.x.npc = "left", label.y.npc = "top",
   label.x = NULL, label.y = NULL, output.type = "expression",
-  geom = "text", position = "identity", na.rm = FALSE,
+  digits = 2, geom = "text", position = "identity", na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
@@ -53,6 +53,9 @@ separate the correlation coefficient and the p.value.}
 for absolute positioning of the label. If too short they will be recycled.}
 
 \item{output.type}{character One of "expression", "latex" or "text".}
+
+\item{digits}{integer indicating the number of decimal places (round) or
+significant digits (signif) to be used.}
 
 \item{geom}{The geometric object to use display the data}
 

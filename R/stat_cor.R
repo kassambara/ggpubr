@@ -22,6 +22,8 @@ NULL
 #'@param label.x,label.y \code{numeric} Coordinates (in data units) to be used
 #'  for absolute positioning of the label. If too short they will be recycled.
 #'@param output.type character One of "expression", "latex" or "text".
+#'@param digits integer indicating the number of decimal places (round) or
+#'  significant digits (signif) to be used.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -62,6 +64,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      method = "pearson", label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, output.type = "expression",
+                     digits = 2,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
@@ -70,7 +73,8 @@ stat_cor <- function(mapping = NULL, data = NULL,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
                   label.x = label.x, label.y = label.y, label.sep = label.sep,
-                  method = method, output.type = output.type, parse = parse, na.rm = na.rm, ...)
+                  method = method, output.type = output.type, digits = digits,
+                  parse = parse, na.rm = na.rm, ...)
   )
 }
 
@@ -80,7 +84,7 @@ StatCor<- ggproto("StatCor", Stat,
                   default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
 
                   compute_group = function(data, scales, method, label.x.npc, label.y.npc,
-                                           label.x, label.y, label.sep, output.type)
+                                           label.x, label.y, label.sep, output.type, digits)
                     {
                     if (length(unique(data$x)) < 2) {
                       # Not enough data to perform test
@@ -89,7 +93,7 @@ StatCor<- ggproto("StatCor", Stat,
                     # Returns a data frame with estimate, p.value, label, method
                     .test <- .cor_test(
                       data$x, data$y, method = method, label.sep = label.sep,
-                      output.type = output.type
+                      output.type = output.type, digits = digits
                       )
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
@@ -107,15 +111,15 @@ StatCor<- ggproto("StatCor", Stat,
 # Correlation test
 #::::::::::::::::::::::::::::::::::::::::
 # Returns a data frame: estimatel|p.value|method|label
-.cor_test <- function(x, y, method = "pearson", label.sep = ", ", output.type = "expression"){
+.cor_test <- function(x, y, method = "pearson", label.sep = ", ", output.type = "expression", digits = 2){
 
   .cor <- suppressWarnings(stats::cor.test(x, y, method = method,  use = "complete.obs"))
   estimate <- p.value <- p <- r <- rr <-  NULL
   z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method) %>%
     mutate(
-      r = signif(estimate, 2),
-      rr = signif(estimate^2, 2),
-      p = signif(p.value, 2)
+      r = signif(estimate, digits),
+      rr = signif(estimate^2, digits),
+      p = signif(p.value, digits)
     )
 
 
@@ -133,14 +137,14 @@ StatCor<- ggproto("StatCor", Stat,
                       paste("italic(p)~`=`~", signif(pval, 2)))
     if(label.sep == "\n"){
       # Line break at each comma
-      cortxt <- paste0("atop(italic(R)~`=`~", signif(.cor$estimate, 2),
+      cortxt <- paste0("atop(italic(R)~`=`~", signif(.cor$estimate, digits),
                        ",",  pvaltxt, ")")
     }
     else{
       label.sep <- trimws(label.sep)
       if(label.sep == "") label.sep <- "~"
       else label.sep <- paste0("~`", label.sep, "`~")
-      cortxt <- paste0("italic(R)~`=`~", signif(.cor$estimate, 2),
+      cortxt <- paste0("italic(R)~`=`~", signif(.cor$estimate, digits),
                        label.sep,  pvaltxt)
     }
 
@@ -157,8 +161,8 @@ StatCor<- ggproto("StatCor", Stat,
 
     # Default label
     pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16",
-                      paste("p =", signif(pval, 2)))
-    cortxt <- paste0("R = ", signif(.cor$estimate, 2),
+                      paste("p =", signif(pval, digits)))
+    cortxt <- paste0("R = ", signif(.cor$estimate, digits),
                      label.sep,  pvaltxt)
     z$label <- cortxt
   }

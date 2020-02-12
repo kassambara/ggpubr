@@ -8,6 +8,7 @@
 
 ## Minor changes
 
+- New argument `digits` in the function `stat_cor()`. Integer indicating the number of decimal places (round) or significant digits (signif) to be used ([@raedevan6, #216](https://github.com/kassambara/ggpubr/issues/114)).
 - `compare_means()` adapted to tidyr v>= 1.0.0 by specifying cols in the unnest() function ([@Youguang, #216](https://github.com/kassambara/ggpubr/issues/216)).
   
   
