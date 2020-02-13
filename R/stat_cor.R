@@ -131,7 +131,6 @@ StatCor<- ggproto("StatCor", Stat,
       p = signif(p.value, p.digits)
     )
 
-
   # Defining labels
   pval <- .cor$p.value
 
@@ -144,17 +143,17 @@ StatCor<- ggproto("StatCor", Stat,
     )
     # Default label
     pvaltxt <- ifelse(pval < 2.2e-16, "italic(p)~`<`~2.2e-16",
-                      paste("italic(p)~`=`~", signif(pval, 2)))
+                      paste("italic(p)~`=`~", signif(pval, p.digits)))
     if(label.sep == "\n"){
       # Line break at each comma
-      cortxt <- paste0("atop(italic(R)~`=`~", signif(.cor$estimate, digits),
+      cortxt <- paste0("atop(italic(R)~`=`~", signif(.cor$estimate, r.digits),
                        ",",  pvaltxt, ")")
     }
     else{
       label.sep <- trimws(label.sep)
       if(label.sep == "") label.sep <- "~"
       else label.sep <- paste0("~`", label.sep, "`~")
-      cortxt <- paste0("italic(R)~`=`~", signif(.cor$estimate, digits),
+      cortxt <- paste0("italic(R)~`=`~", signif(.cor$estimate, r.digits),
                        label.sep,  pvaltxt)
     }
 
