@@ -9,7 +9,7 @@
 ## Minor changes
 
 - New arguments `cor.coef.name` in the function `stat_cor()`. Can be one of "R" (pearson coef), "rho" (spearman coef) and "tau" (kendall coef). Uppercase and lowercase are allowed ([@andhamel, #216](https://github.com/kassambara/ggpubr/issues/228)).
-- New argument `digits` in the function `stat_cor()`. Integer indicating the number of decimal places (round) or significant digits (signif) to be used ([@raedevan6, #216](https://github.com/kassambara/ggpubr/issues/114)).
+- New arguments `digits, r.digits, p.digits` in the function `stat_cor()`. Integer indicating the number of decimal places (round) or significant digits (signif) to be used for the correlation coefficient and the p-value ([@raedevan6, #216](https://github.com/kassambara/ggpubr/issues/114)).
 - `compare_means()` adapted to tidyr v>= 1.0.0 by specifying cols in the unnest() function ([@Youguang, #216](https://github.com/kassambara/ggpubr/issues/216)).
   
   

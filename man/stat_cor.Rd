@@ -8,8 +8,9 @@ stat_cor(mapping = NULL, data = NULL, method = "pearson",
   cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
   label.x.npc = "left", label.y.npc = "top", label.x = NULL,
   label.y = NULL, output.type = "expression", digits = 2,
-  geom = "text", position = "identity", na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE, ...)
+  r.digits = digits, p.digits = digits, geom = "text",
+  position = "identity", na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or
@@ -59,8 +60,8 @@ for absolute positioning of the label. If too short they will be recycled.}
 
 \item{output.type}{character One of "expression", "latex" or "text".}
 
-\item{digits}{integer indicating the number of decimal places (round) or
-significant digits (signif) to be used.}
+\item{digits, r.digits, p.digits}{integer indicating the number of decimal places (round) or
+significant digits (signif) to be used for the correlation coefficient and the p-value, respectively..}
 
 \item{geom}{The geometric object to use display the data}
 
