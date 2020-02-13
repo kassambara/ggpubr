@@ -28,8 +28,6 @@ ggparagraph(text, color = NULL, size = NULL, face = NULL,
 
 \item{recording}{a logical value indicating whether a grob is being added to
 the display list or redrawn from the display list.}
-
-\item{...}{other arguments passed to \link[grid]{grob}.}
 }
 \description{
 Draw a paragraph o text. Splits a long text into multiple lines

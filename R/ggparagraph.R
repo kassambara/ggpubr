@@ -11,7 +11,6 @@ NULL
 #'  "bold.italic".
 #' @param family font family
 #' @param lineheight Line height, example: lineheight = 2.
-#'@param ... other arguments passed to \link[grid]{grob}.
 #'@author Alboukadel Kassambara <alboukadel.kassambara@@gmail.com>
 #' @examples
 #' # Density plot
