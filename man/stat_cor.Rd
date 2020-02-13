@@ -5,9 +5,10 @@
 \title{Add Correlation Coefficients with P-values to a Scatter Plot}
 \usage{
 stat_cor(mapping = NULL, data = NULL, method = "pearson",
-  label.sep = ", ", label.x.npc = "left", label.y.npc = "top",
-  label.x = NULL, label.y = NULL, output.type = "expression",
-  digits = 2, geom = "text", position = "identity", na.rm = FALSE,
+  cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
+  label.x.npc = "left", label.y.npc = "top", label.x = NULL,
+  label.y = NULL, output.type = "expression", digits = 2,
+  geom = "text", position = "identity", na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
@@ -34,6 +35,10 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 \item{method}{a character string indicating which correlation coefficient (or
 covariance) is to be computed. One of "pearson" (default), "kendall", or
 "spearman".}
+
+\item{cor.coef.name}{character. Can be one of \code{"R"} (pearson coef),
+\code{"rho"} (spearman coef) and \code{"tau"} (kendall coef).
+Uppercase and lowercase are allowed.}
 
 \item{label.sep}{a character string to separate the terms. Default is ", ", to
 separate the correlation coefficient and the p.value.}

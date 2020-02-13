@@ -7,6 +7,9 @@ NULL
 #'@param method a character string indicating which correlation coefficient (or
 #'  covariance) is to be computed. One of "pearson" (default), "kendall", or
 #'  "spearman".
+#' @param cor.coef.name character. Can be one of \code{"R"} (pearson coef),
+#' \code{"rho"} (spearman coef) and \code{"tau"} (kendall coef).
+#' Uppercase and lowercase are allowed.
 #'@param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the correlation coefficient and the p.value.
 #'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -61,19 +64,21 @@ NULL
 #'
 #'@export
 stat_cor <- function(mapping = NULL, data = NULL,
-                     method = "pearson", label.sep = ", ",
+                     method = "pearson", cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, output.type = "expression",
                      digits = 2,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
+  cor.coef.name = cor.coef.name[1]
   layer(
     stat = StatCor, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
                   label.x = label.x, label.y = label.y, label.sep = label.sep,
                   method = method, output.type = output.type, digits = digits,
+                  cor.coef.name = cor.coef.name,
                   parse = parse, na.rm = na.rm, ...)
   )
 }
@@ -84,7 +89,8 @@ StatCor<- ggproto("StatCor", Stat,
                   default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
 
                   compute_group = function(data, scales, method, label.x.npc, label.y.npc,
-                                           label.x, label.y, label.sep, output.type, digits)
+                                           label.x, label.y, label.sep, output.type, digits,
+                                           cor.coef.name)
                     {
                     if (length(unique(data$x)) < 2) {
                       # Not enough data to perform test
@@ -93,7 +99,8 @@ StatCor<- ggproto("StatCor", Stat,
                     # Returns a data frame with estimate, p.value, label, method
                     .test <- .cor_test(
                       data$x, data$y, method = method, label.sep = label.sep,
-                      output.type = output.type, digits = digits
+                      output.type = output.type, digits = digits,
+                      cor.coef.name
                       )
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
@@ -111,7 +118,8 @@ StatCor<- ggproto("StatCor", Stat,
 # Correlation test
 #::::::::::::::::::::::::::::::::::::::::
 # Returns a data frame: estimatel|p.value|method|label
-.cor_test <- function(x, y, method = "pearson", label.sep = ", ", output.type = "expression", digits = 2){
+.cor_test <- function(x, y, method = "pearson", label.sep = ", ", output.type = "expression", digits = 2,
+                      cor.coef.name = "R"){
 
   .cor <- suppressWarnings(stats::cor.test(x, y, method = method,  use = "complete.obs"))
   estimate <- p.value <- p <- r <- rr <-  NULL
@@ -125,8 +133,9 @@ StatCor<- ggproto("StatCor", Stat,
 
   # Defining labels
   pval <- .cor$p.value
-  if(output.type == "expression"){
 
+  if(output.type == "expression"){
+    cor.coef.name <- paste0("italic(", cor.coef.name, ")")
     z <- z %>% dplyr::mutate(
       r.label = paste("italic(R)", r, sep = "~`=`~"),
       rr.label = paste("italic(R)^2", rr, sep = "~`=`~"),
@@ -166,7 +175,7 @@ StatCor<- ggproto("StatCor", Stat,
                      label.sep,  pvaltxt)
     z$label <- cortxt
   }
-
+  z$r.label <- z$label <- gsub("R", cor.coef.name, z$label)
   z
 }
 
