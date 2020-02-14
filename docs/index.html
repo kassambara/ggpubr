@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -81,93 +81,93 @@
 <ul>
 <li>Install from <a href="https://cran.r-project.org/package=ggpubr">CRAN</a> as follow:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ggpubr"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ggpubr"</span>)</a></code></pre></div>
 <ul>
 <li>Or, install the latest version from <a href="https://github.com/kassambara/ggpubr">GitHub</a> as follow:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install</span>
-<span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(devtools)) <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"kassambara/ggpubr"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Install</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(devtools)) <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"kassambara/ggpubr"</span>)</a></code></pre></div>
 </div>
 <div id="distribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#distribution" class="anchor"></a>Distribution</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggpubr)
-<span class="co">#&gt; Loading required package: ggplot2</span>
-<span class="co">#&gt; Loading required package: magrittr</span>
-<span class="co"># Create some data format</span>
-<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">1234</span>)
-wdata =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
-   <span class="dt">sex =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"F"</span>, <span class="st">"M"</span>), <span class="dt">each=</span><span class="dv">200</span>)),
-   <span class="dt">weight =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">200</span>, <span class="dv">55</span>), <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">200</span>, <span class="dv">58</span>)))
-<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(wdata, <span class="dv">4</span>)
-<span class="co">#&gt;   sex   weight</span>
-<span class="co">#&gt; 1   F 53.79293</span>
-<span class="co">#&gt; 2   F 55.27743</span>
-<span class="co">#&gt; 3   F 56.08444</span>
-<span class="co">#&gt; 4   F 52.65430</span>
-
-<span class="co"># Density plot with mean lines and marginal rug</span>
-<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class="co"># Change outline and fill colors by groups ("sex")</span>
-<span class="co"># Use custom palette</span>
-<span class="kw"><a href="reference/ggdensity.html">ggdensity</a></span>(wdata, <span class="dt">x =</span> <span class="st">"weight"</span>,
-   <span class="dt">add =</span> <span class="st">"mean"</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>,
-   <span class="dt">color =</span> <span class="st">"sex"</span>, <span class="dt">fill =</span> <span class="st">"sex"</span>,
-   <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggpubr)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Loading required package: ggplot2</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Loading required package: magrittr</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># Create some data format</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">1234</span>)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">wdata =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">   <span class="dt">sex =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"F"</span>, <span class="st">"M"</span>), <span class="dt">each=</span><span class="dv">200</span>)),</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">   <span class="dt">weight =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">200</span>, <span class="dv">55</span>), <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">200</span>, <span class="dv">58</span>)))</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(wdata, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;   sex   weight</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 1   F 53.79293</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 2   F 55.27743</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 3   F 56.08444</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 4   F 52.65430</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co"># Density plot with mean lines and marginal rug</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co"># Change outline and fill colors by groups ("sex")</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co"># Use custom palette</span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="kw"><a href="reference/ggdensity.html">ggdensity</a></span>(wdata, <span class="dt">x =</span> <span class="st">"weight"</span>,</a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">   <span class="dt">add =</span> <span class="st">"mean"</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">   <span class="dt">color =</span> <span class="st">"sex"</span>, <span class="dt">fill =</span> <span class="st">"sex"</span>,</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24">   <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</a></code></pre></div>
 <p><img src="tools/README-ggpubr-1.png"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Histogram plot with mean lines and marginal rug</span>
-<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class="co"># Change outline and fill colors by groups ("sex")</span>
-<span class="co"># Use custom color palette</span>
-<span class="kw"><a href="reference/gghistogram.html">gghistogram</a></span>(wdata, <span class="dt">x =</span> <span class="st">"weight"</span>,
-   <span class="dt">add =</span> <span class="st">"mean"</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>,
-   <span class="dt">color =</span> <span class="st">"sex"</span>, <span class="dt">fill =</span> <span class="st">"sex"</span>,
-   <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Histogram plot with mean lines and marginal rug</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># Change outline and fill colors by groups ("sex")</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># Use custom color palette</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw"><a href="reference/gghistogram.html">gghistogram</a></span>(wdata, <span class="dt">x =</span> <span class="st">"weight"</span>,</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">   <span class="dt">add =</span> <span class="st">"mean"</span>, <span class="dt">rug =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">   <span class="dt">color =</span> <span class="st">"sex"</span>, <span class="dt">fill =</span> <span class="st">"sex"</span>,</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">   <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</a></code></pre></div>
 <p><img src="tools/README-ggpubr-2.png"></p>
 </div>
 <div id="box-plots-and-violin-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#box-plots-and-violin-plots" class="anchor"></a>Box plots and violin plots</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load data</span>
-<span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ToothGrowth"</span>)
-df &lt;-<span class="st"> </span>ToothGrowth
-<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(df, <span class="dv">4</span>)
-<span class="co">#&gt;    len supp dose</span>
-<span class="co">#&gt; 1  4.2   VC  0.5</span>
-<span class="co">#&gt; 2 11.5   VC  0.5</span>
-<span class="co">#&gt; 3  7.3   VC  0.5</span>
-<span class="co">#&gt; 4  5.8   VC  0.5</span>
-
-<span class="co"># Box plots with jittered points</span>
-<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class="co"># Change outline colors by groups: dose</span>
-<span class="co"># Use custom color palette</span>
-<span class="co"># Add jitter points and change the shape by groups</span>
- p &lt;-<span class="st"> </span><span class="kw"><a href="reference/ggboxplot.html">ggboxplot</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>,
-                <span class="dt">color =</span> <span class="st">"dose"</span>, <span class="dt">palette =</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
-                <span class="dt">add =</span> <span class="st">"jitter"</span>, <span class="dt">shape =</span> <span class="st">"dose"</span>)
- p</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Load data</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ToothGrowth"</span>)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">df &lt;-<span class="st"> </span>ToothGrowth</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(df, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;    len supp dose</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 1  4.2   VC  0.5</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 2 11.5   VC  0.5</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; 3  7.3   VC  0.5</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; 4  5.8   VC  0.5</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># Box plots with jittered points</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># Change outline colors by groups: dose</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co"># Use custom color palette</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># Add jitter points and change the shape by groups</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"> p &lt;-<span class="st"> </span><span class="kw"><a href="reference/ggboxplot.html">ggboxplot</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>,</a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">                <span class="dt">color =</span> <span class="st">"dose"</span>, <span class="dt">palette =</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">                <span class="dt">add =</span> <span class="st">"jitter"</span>, <span class="dt">shape =</span> <span class="st">"dose"</span>)</a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"> p</a></code></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-1.png"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> 
- <span class="co"># Add p-values comparing groups</span>
- <span class="co"># Specify the comparisons you want</span>
-my_comparisons &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>( <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"0.5"</span>, <span class="st">"1"</span>), <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1"</span>, <span class="st">"2"</span>), <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"0.5"</span>, <span class="st">"2"</span>) )
-p <span class="op">+</span><span class="st"> </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons)<span class="op">+</span><span class="st"> </span><span class="co"># Add pairwise comparisons p-value</span>
-<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                   <span class="co"># Add global p-value</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"> </a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"> <span class="co"># Add p-values comparing groups</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"> <span class="co"># Specify the comparisons you want</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">my_comparisons &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>( <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"0.5"</span>, <span class="st">"1"</span>), <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1"</span>, <span class="st">"2"</span>), <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"0.5"</span>, <span class="st">"2"</span>) )</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">p <span class="op">+</span><span class="st"> </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons)<span class="op">+</span><span class="st"> </span><span class="co"># Add pairwise comparisons p-value</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                   <span class="co"># Add global p-value</span></a></code></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
- 
-<span class="co"># Violin plots with box plots inside</span>
-<span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class="co"># Change fill color by groups: dose</span>
-<span class="co"># add boxplot with white fill color</span>
-<span class="kw"><a href="reference/ggviolin.html">ggviolin</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>, <span class="dt">fill =</span> <span class="st">"dose"</span>,
-         <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
-         <span class="dt">add =</span> <span class="st">"boxplot"</span>, <span class="dt">add.params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">fill =</span> <span class="st">"white"</span>))<span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons, <span class="dt">label =</span> <span class="st">"p.signif"</span>)<span class="op">+</span><span class="st"> </span><span class="co"># Add significance levels</span>
-<span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                                      <span class="co"># Add global the p-value </span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"> </a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># Violin plots with box plots inside</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># Change fill color by groups: dose</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># add boxplot with white fill color</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw"><a href="reference/ggviolin.html">ggviolin</a></span>(df, <span class="dt">x =</span> <span class="st">"dose"</span>, <span class="dt">y =</span> <span class="st">"len"</span>, <span class="dt">fill =</span> <span class="st">"dose"</span>,</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">         <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">         <span class="dt">add =</span> <span class="st">"boxplot"</span>, <span class="dt">add.params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">fill =</span> <span class="st">"white"</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">comparisons =</span> my_comparisons, <span class="dt">label =</span> <span class="st">"p.signif"</span>)<span class="op">+</span><span class="st"> </span><span class="co"># Add significance levels</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="dt">label.y =</span> <span class="dv">50</span>)                                      <span class="co"># Add global the p-value </span></a></code></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-3.png"></p>
 </div>
 <div id="bar-plots" class="section level2">
@@ -177,45 +177,45 @@ p <span class="op">+</span><span class="st"> </span><span class="kw"><a href="re
 <h3 class="hasAnchor">
 <a href="#demo-data-set" class="anchor"></a>Demo data set</h3>
 <p>Load and prepare data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load data</span>
-<span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"mtcars"</span>)
-dfm &lt;-<span class="st"> </span>mtcars
-<span class="co"># Convert the cyl variable to a factor</span>
-dfm<span class="op">$</span>cyl &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(dfm<span class="op">$</span>cyl)
-<span class="co"># Add the name colums</span>
-dfm<span class="op">$</span>name &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(dfm)
-<span class="co"># Inspect the data</span>
-<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"cyl"</span>)])
-<span class="co">#&gt;                                name    wt  mpg cyl</span>
-<span class="co">#&gt; Mazda RX4                 Mazda RX4 2.620 21.0   6</span>
-<span class="co">#&gt; Mazda RX4 Wag         Mazda RX4 Wag 2.875 21.0   6</span>
-<span class="co">#&gt; Datsun 710               Datsun 710 2.320 22.8   4</span>
-<span class="co">#&gt; Hornet 4 Drive       Hornet 4 Drive 3.215 21.4   6</span>
-<span class="co">#&gt; Hornet Sportabout Hornet Sportabout 3.440 18.7   8</span>
-<span class="co">#&gt; Valiant                     Valiant 3.460 18.1   6</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Load data</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"mtcars"</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">dfm &lt;-<span class="st"> </span>mtcars</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># Convert the cyl variable to a factor</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">dfm<span class="op">$</span>cyl &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(dfm<span class="op">$</span>cyl)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># Add the name colums</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">dfm<span class="op">$</span>name &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(dfm)</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co"># Inspect the data</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"cyl"</span>)])</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;                                name    wt  mpg cyl</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Mazda RX4                 Mazda RX4 2.620 21.0   6</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; Mazda RX4 Wag         Mazda RX4 Wag 2.875 21.0   6</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; Datsun 710               Datsun 710 2.320 22.8   4</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; Hornet 4 Drive       Hornet 4 Drive 3.215 21.4   6</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; Hornet Sportabout Hornet Sportabout 3.440 18.7   8</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; Valiant                     Valiant 3.460 18.1   6</span></a></code></pre></div>
 </div>
 <div id="ordered-bar-plots" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ordered-bar-plots" class="anchor"></a>Ordered bar plots</h3>
 <p>Change the fill color by the grouping variable “cyl”. Sorting will be done globally, but not by groups.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
-          <span class="dt">fill =</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span>
-          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
-          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
-          <span class="dt">sort.val =</span> <span class="st">"desc"</span>,          <span class="co"># Sort the value in dscending order</span>
-          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span>
-          <span class="dt">x.text.angle =</span> <span class="dv">90</span>           <span class="co"># Rotate vertically x axis texts</span>
-          )</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">          <span class="dt">fill =</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">          <span class="dt">sort.val =</span> <span class="st">"desc"</span>,          <span class="co"># Sort the value in dscending order</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">          <span class="dt">x.text.angle =</span> <span class="dv">90</span>           <span class="co"># Rotate vertically x axis texts</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">          )</a></code></pre></div>
 <p><img src="tools/README-ordered-bar-plots-1.png"></p>
 <p>Sort bars inside each group. Use the argument <strong>sort.by.groups = TRUE</strong>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
-          <span class="dt">fill =</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span>
-          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
-          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
-          <span class="dt">sort.val =</span> <span class="st">"asc"</span>,           <span class="co"># Sort the value in dscending order</span>
-          <span class="dt">sort.by.groups =</span> <span class="ot">TRUE</span>,      <span class="co"># Sort inside each group</span>
-          <span class="dt">x.text.angle =</span> <span class="dv">90</span>           <span class="co"># Rotate vertically x axis texts</span>
-          )</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">          <span class="dt">fill =</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">          <span class="dt">sort.val =</span> <span class="st">"asc"</span>,           <span class="co"># Sort the value in dscending order</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">          <span class="dt">sort.by.groups =</span> <span class="ot">TRUE</span>,      <span class="co"># Sort inside each group</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">          <span class="dt">x.text.angle =</span> <span class="dv">90</span>           <span class="co"># Rotate vertically x axis texts</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">          )</a></code></pre></div>
 <p><img src="tools/README-ordered-bar-plots-by-groups-1.png"></p>
 </div>
 <div id="deviation-graphs" class="section level3">
@@ -223,45 +223,45 @@ dfm<span class="op">$</span>name &lt;-<span class="st"> </span><span class="kw">
 <a href="#deviation-graphs" class="anchor"></a>Deviation graphs</h3>
 <p>The deviation graph shows the deviation of quantitatives values to a reference value. In the R code below, we’ll plot the mpg z-score from the mtcars dataset.</p>
 <p>Calculate the z-score of the mpg data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculate the z-score of the mpg data</span>
-dfm<span class="op">$</span>mpg_z &lt;-<span class="st"> </span>(dfm<span class="op">$</span>mpg <span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(dfm<span class="op">$</span>mpg))<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(dfm<span class="op">$</span>mpg)
-dfm<span class="op">$</span>mpg_grp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(dfm<span class="op">$</span>mpg_z <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">"low"</span>, <span class="st">"high"</span>), 
-                     <span class="dt">levels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"low"</span>, <span class="st">"high"</span>))
-<span class="co"># Inspect the data</span>
-<span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"mpg_z"</span>, <span class="st">"mpg_grp"</span>, <span class="st">"cyl"</span>)])
-<span class="co">#&gt;                                name    wt  mpg      mpg_z mpg_grp cyl</span>
-<span class="co">#&gt; Mazda RX4                 Mazda RX4 2.620 21.0  0.1508848    high   6</span>
-<span class="co">#&gt; Mazda RX4 Wag         Mazda RX4 Wag 2.875 21.0  0.1508848    high   6</span>
-<span class="co">#&gt; Datsun 710               Datsun 710 2.320 22.8  0.4495434    high   4</span>
-<span class="co">#&gt; Hornet 4 Drive       Hornet 4 Drive 3.215 21.4  0.2172534    high   6</span>
-<span class="co">#&gt; Hornet Sportabout Hornet Sportabout 3.440 18.7 -0.2307345     low   8</span>
-<span class="co">#&gt; Valiant                     Valiant 3.460 18.1 -0.3302874     low   6</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Calculate the z-score of the mpg data</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">dfm<span class="op">$</span>mpg_z &lt;-<span class="st"> </span>(dfm<span class="op">$</span>mpg <span class="op">-</span><span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(dfm<span class="op">$</span>mpg))<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(dfm<span class="op">$</span>mpg)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">dfm<span class="op">$</span>mpg_grp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(dfm<span class="op">$</span>mpg_z <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">"low"</span>, <span class="st">"high"</span>), </a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">                     <span class="dt">levels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"low"</span>, <span class="st">"high"</span>))</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co"># Inspect the data</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(dfm[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"name"</span>, <span class="st">"wt"</span>, <span class="st">"mpg"</span>, <span class="st">"mpg_z"</span>, <span class="st">"mpg_grp"</span>, <span class="st">"cyl"</span>)])</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;                                name    wt  mpg      mpg_z mpg_grp cyl</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; Mazda RX4                 Mazda RX4 2.620 21.0  0.1508848    high   6</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; Mazda RX4 Wag         Mazda RX4 Wag 2.875 21.0  0.1508848    high   6</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; Datsun 710               Datsun 710 2.320 22.8  0.4495434    high   4</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt; Hornet 4 Drive       Hornet 4 Drive 3.215 21.4  0.2172534    high   6</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; Hornet Sportabout Hornet Sportabout 3.440 18.7 -0.2307345     low   8</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; Valiant                     Valiant 3.460 18.1 -0.3302874     low   6</span></a></code></pre></div>
 <p>Create an ordered barplot, colored according to the level of mpg:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,
-          <span class="dt">fill =</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span>
-          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
-          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
-          <span class="dt">sort.val =</span> <span class="st">"asc"</span>,           <span class="co"># Sort the value in ascending order</span>
-          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span>
-          <span class="dt">x.text.angle =</span> <span class="dv">90</span>,          <span class="co"># Rotate vertically x axis texts</span>
-          <span class="dt">ylab =</span> <span class="st">"MPG z-score"</span>,
-          <span class="dt">xlab =</span> <span class="ot">FALSE</span>,
-          <span class="dt">legend.title =</span> <span class="st">"MPG Group"</span>
-          )</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">          <span class="dt">fill =</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">          <span class="dt">sort.val =</span> <span class="st">"asc"</span>,           <span class="co"># Sort the value in ascending order</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">          <span class="dt">x.text.angle =</span> <span class="dv">90</span>,          <span class="co"># Rotate vertically x axis texts</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">          <span class="dt">ylab =</span> <span class="st">"MPG z-score"</span>,</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">          <span class="dt">xlab =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">          <span class="dt">legend.title =</span> <span class="st">"MPG Group"</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">          )</a></code></pre></div>
 <p><img src="tools/README-deviation-graphs-1.png"></p>
 <p>Rotate the plot: use rotate = TRUE and sort.val = “desc”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,
-          <span class="dt">fill =</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span>
-          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
-          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
-          <span class="dt">sort.val =</span> <span class="st">"desc"</span>,          <span class="co"># Sort the value in descending order</span>
-          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span>
-          <span class="dt">x.text.angle =</span> <span class="dv">90</span>,          <span class="co"># Rotate vertically x axis texts</span>
-          <span class="dt">ylab =</span> <span class="st">"MPG z-score"</span>,
-          <span class="dt">legend.title =</span> <span class="st">"MPG Group"</span>,
-          <span class="dt">rotate =</span> <span class="ot">TRUE</span>,
-          <span class="dt">ggtheme =</span> <span class="kw">theme_minimal</span>()
-          )</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="reference/ggbarplot.html">ggbarplot</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">          <span class="dt">fill =</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">          <span class="dt">color =</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">          <span class="dt">palette =</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">          <span class="dt">sort.val =</span> <span class="st">"desc"</span>,          <span class="co"># Sort the value in descending order</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">          <span class="dt">sort.by.groups =</span> <span class="ot">FALSE</span>,     <span class="co"># Don't sort inside each group</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">          <span class="dt">x.text.angle =</span> <span class="dv">90</span>,          <span class="co"># Rotate vertically x axis texts</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">          <span class="dt">ylab =</span> <span class="st">"MPG z-score"</span>,</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9">          <span class="dt">legend.title =</span> <span class="st">"MPG Group"</span>,</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">          <span class="dt">rotate =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">          <span class="dt">ggtheme =</span> <span class="kw">theme_minimal</span>()</a>
+<a class="sourceLine" id="cb13-12" data-line-number="12">          )</a></code></pre></div>
 <p><img src="tools/README-deviation-graphs-horizontal-1.png"></p>
 </div>
 </div>
@@ -273,13 +273,13 @@ dfm<span class="op">$</span>mpg_grp &lt;-<span class="st"> </span><span class="k
 <a href="#lollipop-chart" class="anchor"></a>Lollipop chart</h3>
 <p>Lollipop chart is an alternative to bar plots, when you have a large set of values to visualize.</p>
 <p>Lollipop chart colored by the grouping variable “cyl”:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
-           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
-           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
-           <span class="dt">sorting =</span> <span class="st">"ascending"</span>,                        <span class="co"># Sort value in descending order</span>
-           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span>
-           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
-           )</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">           <span class="dt">sorting =</span> <span class="st">"ascending"</span>,                        <span class="co"># Sort value in descending order</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">           )</a></code></pre></div>
 <p><img src="tools/README-lollipop-chart-1.png"></p>
 <ul>
 <li>Sort in decending order. <strong>sorting = “descending”</strong>.</li>
@@ -288,55 +288,55 @@ dfm<span class="op">$</span>mpg_grp &lt;-<span class="st"> </span><span class="k
 <li>Set <strong>dot.size</strong> to 6.</li>
 <li>Add mpg values as label. <strong>label = “mpg”</strong> or <strong>label = round(dfm$mpg)</strong>.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
-           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
-           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
-           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
-           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span>
-           <span class="dt">rotate =</span> <span class="ot">TRUE</span>,                                <span class="co"># Rotate vertically</span>
-           <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span>
-           <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span>
-           <span class="dt">label =</span> <span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(dfm<span class="op">$</span>mpg),                        <span class="co"># Add mpg values as dot labels</span>
-           <span class="dt">font.label =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, 
-                             <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
-           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
-           )</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">           <span class="dt">rotate =</span> <span class="ot">TRUE</span>,                                <span class="co"># Rotate vertically</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">           <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">           <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">           <span class="dt">label =</span> <span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(dfm<span class="op">$</span>mpg),                        <span class="co"># Add mpg values as dot labels</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">           <span class="dt">font.label =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, </a>
+<a class="sourceLine" id="cb15-11" data-line-number="11">                             <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12">           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13">           )</a></code></pre></div>
 <p><img src="tools/README-lollipop-chart-rotate-1.png"></p>
 <p>Deviation graph:</p>
 <ul>
 <li>Use y = “mpg_z”</li>
 <li>Change segment color and size: add.params = list(color = “lightgray”, size = 2)</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,
-           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
-           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
-           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
-           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span>
-           <span class="dt">add.params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">color =</span> <span class="st">"lightgray"</span>, <span class="dt">size =</span> <span class="dv">2</span>), <span class="co"># Change segment color and size</span>
-           <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span>
-           <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span>
-           <span class="dt">label =</span> <span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(dfm<span class="op">$</span>mpg_z,<span class="dv">1</span>),                        <span class="co"># Add mpg values as dot labels</span>
-           <span class="dt">font.label =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, 
-                             <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
-           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
-           )<span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">"lightgray"</span>)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg_z"</span>,</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">           <span class="dt">add =</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">           <span class="dt">add.params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">color =</span> <span class="st">"lightgray"</span>, <span class="dt">size =</span> <span class="dv">2</span>), <span class="co"># Change segment color and size</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">           <span class="dt">group =</span> <span class="st">"cyl"</span>,                                <span class="co"># Order by groups</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">           <span class="dt">dot.size =</span> <span class="dv">6</span>,                                 <span class="co"># Large dot size</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">           <span class="dt">label =</span> <span class="kw"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(dfm<span class="op">$</span>mpg_z,<span class="dv">1</span>),                        <span class="co"># Add mpg values as dot labels</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">           <span class="dt">font.label =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">color =</span> <span class="st">"white"</span>, <span class="dt">size =</span> <span class="dv">9</span>, </a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">                             <span class="dt">vjust =</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">           )<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>, <span class="dt">linetype =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">"lightgray"</span>)</a></code></pre></div>
 <p><img src="tools/README-lollipop-chart-deviation-1.png"></p>
 </div>
 <div id="clevelands-dot-plot" class="section level3">
 <h3 class="hasAnchor">
 <a href="#clevelands-dot-plot" class="anchor"></a>Cleveland’s dot plot</h3>
 <p>Color y text by groups. Use y.text.col = TRUE.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,
-           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
-           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
-           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
-           <span class="dt">rotate =</span> <span class="ot">TRUE</span>,                                <span class="co"># Rotate vertically</span>
-           <span class="dt">dot.size =</span> <span class="dv">2</span>,                                 <span class="co"># Large dot size</span>
-           <span class="dt">y.text.col =</span> <span class="ot">TRUE</span>,                            <span class="co"># Color y text by groups</span>
-           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
-           )<span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/ggdotchart.html">theme_cleveland</a></span>()                                      <span class="co"># Add dashed grids</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="reference/ggdotchart.html">ggdotchart</a></span>(dfm, <span class="dt">x =</span> <span class="st">"name"</span>, <span class="dt">y =</span> <span class="st">"mpg"</span>,</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">           <span class="dt">color =</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">           <span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">           <span class="dt">sorting =</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">           <span class="dt">rotate =</span> <span class="ot">TRUE</span>,                                <span class="co"># Rotate vertically</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">           <span class="dt">dot.size =</span> <span class="dv">2</span>,                                 <span class="co"># Large dot size</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">           <span class="dt">y.text.col =</span> <span class="ot">TRUE</span>,                            <span class="co"># Color y text by groups</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">           <span class="dt">ggtheme =</span> <span class="kw"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9">           )<span class="op">+</span></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="reference/ggdotchart.html">theme_cleveland</a></span>()                                      <span class="co"># Add dashed grids</span></a></code></pre></div>
 <p><img src="tools/README-cleveland-dot-plots-1.png"></p>
 </div>
 </div>

@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -117,10 +117,12 @@
     </div>
 
     <pre class="usage"><span class='fu'>stat_cor</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-  <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
-  <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output.type</span> <span class='kw'>=</span> <span class='st'>"expression"</span>,
-  <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>cor.coef.name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"R"</span>, <span class='st'>"rho"</span>, <span class='st'>"tau"</span>), <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>,
+  <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output.type</span> <span class='kw'>=</span> <span class='st'>"expression"</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>r.digits</span> <span class='kw'>=</span> <span class='no'>digits</span>, <span class='kw'>p.digits</span> <span class='kw'>=</span> <span class='no'>digits</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,6 +155,12 @@ covariance) is to be computed. One of "pearson" (default), "kendall", or
 "spearman".</p></td>
     </tr>
     <tr>
+      <th>cor.coef.name</th>
+      <td><p>character. Can be one of <code>"R"</code> (pearson coef),
+<code>"rho"</code> (spearman coef) and <code>"tau"</code> (kendall coef).
+Uppercase and lowercase are allowed.</p></td>
+    </tr>
+    <tr>
       <th>label.sep</th>
       <td><p>a character string to separate the terms. Default is ", ", to
 separate the correlation coefficient and the p.value.</p></td>
@@ -181,6 +189,11 @@ for absolute positioning of the label. If too short they will be recycled.</p></
     <tr>
       <th>output.type</th>
       <td><p>character One of "expression", "latex" or "text".</p></td>
+    </tr>
+    <tr>
+      <th>digits, r.digits, p.digits</th>
+      <td><p>integer indicating the number of decimal places (round) or
+significant digits (signif) to be used for the correlation coefficient and the p-value, respectively..</p></td>
     </tr>
     <tr>
       <th>geom</th>
