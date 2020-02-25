@@ -175,7 +175,8 @@ StatCor<- ggproto("StatCor", Stat,
                      label.sep,  pvaltxt)
     z$label <- cortxt
   }
-  z$r.label <- z$label <- gsub("R", cor.coef.name, z$label)
+  z$r.label <- gsub("R", cor.coef.name, z$r.label)
+  z$label <- gsub("R", cor.coef.name, z$label)
   z
 }
 
