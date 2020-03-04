@@ -7,7 +7,10 @@
 ## Minor changes
 
 ## Bug fixes
-
+   
+- Now, Barplots are correctly labelled when custom labels are specified by users ([@sekharcu, #234](https://github.com/kassambara/ggpubr/issues/234))
+  
+  
 # ggpubr 0.2.5
 
 ## Minor changes

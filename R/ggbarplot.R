@@ -321,7 +321,9 @@ ggbarplot_core <- function(data, x, y,
      .lab <- y
      add.label <- label
    } else {
-     .lab <- label
+     # Add user specified labels as data column
+     data_sum$.ulabel. <- label
+     .lab <- ".ulabel."
      add.label <- TRUE
    }
 
@@ -333,7 +335,6 @@ ggbarplot_core <- function(data, x, y,
        else if(.lab[1] %in% colnames(data_sum))
          data_sum[, .lab] <- dplyr::pull(data_sum, .lab) %>%
            round(digits = lab.nb.digits)
-
      }
 
       # pos <- "identity"
@@ -352,7 +353,6 @@ ggbarplot_core <- function(data, x, y,
                            fontface = "plain", position = position, group = group)
      }
      else{
-
      p <- p + geom_exec(geom_text, data = data_sum, label = .lab,
                          vjust = lab.vjust,  hjust = lab.hjust, size = lab.size, color = lab.col,
                          fontface = "plain", position = position)
