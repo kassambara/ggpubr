@@ -251,25 +251,18 @@ ggbarplot_core <- function(data, x, y,
   }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 
-  errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
   if(any(.summary_functions() %in% add)) {
     data_sum <- desc_statby(data, measure.var = y, grps = grouping.vars)
-
     summary.funcs <- intersect(.summary_functions(), add)
     if(length(summary.funcs) > 1)
       stop("Only one summary function is allowed. ",
            "Choose one of ", .collapse(.summary_functions(), sep = ", "))
-
-    .center <- summary.funcs %>%
-      strsplit("_", fixed = TRUE) %>%
-      unlist() %>% .[1]
+    .center <- .get_errorbar_center_func(summary.funcs)
 
     add <- setdiff(add, .center)
     names(data_sum)[which(names(data_sum) == .center)] <- y
-    # data_sum[, x] <- as.factor(data_sum[, x])
     if(inherits(xx, c("character", "numeric")))
       data_sum[, x] <- .select_vec(data_sum, x) %>% as.factor()
-
   }
   else data_sum <- data
 
@@ -308,12 +301,35 @@ ggbarplot_core <- function(data, x, y,
                 size = size, width = width, ...)
 
   # Add errors
-  if(inherits(position, "PositionStack")) add.position <- "identity"
+  add.params <- add.params %>% .add_item(p = p, error.plot = error.plot)
+  is.stacked.position <- inherits(position, "PositionStack")
+  stack.groups <- unique(c(x, facet.by))
+  nb.bars.by.xposition <- data_sum %>%
+    group_by(!!!syms(stack.groups)) %>%
+    dplyr::count() %>%
+    dplyr::pull(.data$n) %>%
+    max()
+  if(is.stacked.position) add.position <- "identity"
   else add.position <- position
+  if(is.stacked.position & nb.bars.by.xposition >=2) {
+    p <- add.params %>%
+      .add_item(add = .remove_errorbar_func(add), position = add.position) %>%
+      do.call(ggadd, .)
+    if(any(.errorbar_functions() %in% add)){
+      p <- p + .geom_stacked_errorbar(
+        data_sum, x, y,
+        color = add.params$color, fill = add.params$fill,
+        group = add.params$group, facet.by = facet.by,
+        func = .get_summary_func(add), error.plot = error.plot
+      )
+    }
+  }
+  else {
+    p <- add.params %>%
+      .add_item(add = add, position = add.position) %>%
+      do.call(ggadd, .)
+  }
 
-  p <- add.params %>%
-    .add_item(p = p, add = add, error.plot = error.plot, position = add.position) %>%
-    do.call(ggadd, .)
 
    # Add labels
    add.label <- FALSE
@@ -366,3 +382,80 @@ ggbarplot_core <- function(data, x, y,
   p
 }
 
+# Stacked error bar ----------------------------
+.geom_stacked_errorbar <- function(data_sum, x, y, color = NULL, fill = NULL, facet.by = NULL, group = NULL,
+                                  func = "mean_se", error.plot = "errorbar"){
+  stack.groups <- unique(c(x, facet.by))
+  legend.var <- intersect(unique(c(color, fill, group)), colnames(data_sum))
+  error <- .get_errorbar_error_func(func)
+  error.value <- data_sum %>% dplyr::pull(!!error)
+  desc <- dplyr::desc
+  errorbar.position <- data_sum %>%
+    group_by(!!!syms(stack.groups)) %>%
+    dplyr::arrange(!!sym(x), desc(!!sym(legend.var))) %>%
+    dplyr::mutate(
+      y = cumsum(!!sym(y)),
+      ymin = .data$y - !!sym(error),
+      ymax = .data$y + !!sym(error)
+      ) %>%
+    dplyr::ungroup()
+  geom_error <- .get_geom_error_function(error.plot)
+
+  args <- geom_exec(
+    data = errorbar.position, color = color,
+    group = group,
+    x = x, ymin = "ymin", ymax = "ymax"
+  )
+  mapping <- args$mapping
+  option <- args$option
+  if(error.plot == "errorbar") option$width <- 0.15
+  option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
+  do.call(geom_error, option)
+}
+
+
+.get_geom_error_function <- function(error.plot = "errorbar"){
+  error.plot <- error.plot[1]
+  geom_func <- ggplot2::geom_errorbar
+  if(error.plot %in% c("pointrange", "lower_pointrange", "upper_pointrange"))
+    geom_func <- ggplot2::geom_pointrange
+  else if(error.plot %in% c("linerange", "lower_linerange", "upper_linerange"))
+    geom_func <- ggplot2::geom_linerange
+  else if(error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar"))
+    geom_func <- ggplot2::geom_errorbar
+  geom_func
+}
+
+.is_stacked <- function(p){
+  inherits(p$layers[[1]]$position, "PositionStack")
+}
+
+# remove "mean_se", "mean_sd", etc
+.remove_errorbar_func <- function(add){
+  setdiff(add, .errorbar_functions())
+}
+# return "mean_se"
+.get_summary_func <- function(add){
+  intersect(.errorbar_functions(), add)
+}
+
+
+# Returns: mean or median
+.get_errorbar_center_func <- function(func = "mean_se"){
+  . <- NULL
+  func %>%
+    strsplit("_", fixed = TRUE) %>%
+    unlist() %>% .[1]
+}
+
+# Returns se, sd, iqr
+.get_errorbar_error_func <- function(func = "mean_se"){
+  res <- func %>%
+    strsplit("_", fixed = TRUE) %>%
+    unlist()
+  if(length(res) >= 2){
+    res <- res[2]
+  }
+  else res <- NULL
+  res
+}

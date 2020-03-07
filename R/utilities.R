@@ -12,7 +12,7 @@ NULL
 #' @importFrom grid drawDetails
 #' @importFrom rlang !!
 #' @importFrom rlang !!!
-#' @importFrom rlang syms
+#' @importFrom rlang syms .data
 
 
 
@@ -571,6 +571,9 @@ p
 .summary_functions <- function(){
   c("mean", "mean_se", "mean_sd", "mean_ci",
     "mean_range", "median", "median_iqr", "median_mad", "median_range")
+}
+.errorbar_functions <- function(){
+  setdiff(.summary_functions(), c("mean", "median"))
 }
 
 
