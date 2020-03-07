@@ -2,8 +2,11 @@
   
   
 ## New features
-
-
+  
+  
+- `ggbarplot()` now supports stacked barplots with error bars ([#245](https://github.com/kassambara/ggpubr/pull/245)).
+   
+   
 ## Minor changes
 
 ## Bug fixes
