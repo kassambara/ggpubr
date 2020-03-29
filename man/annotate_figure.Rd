@@ -4,10 +4,18 @@
 \alias{annotate_figure}
 \title{Annotate Arranged Figure}
 \usage{
-annotate_figure(p, top = NULL, bottom = NULL, left = NULL,
-  right = NULL, fig.lab = NULL, fig.lab.pos = c("top.left", "top",
-  "top.right", "bottom.left", "bottom", "bottom.right"), fig.lab.size,
-  fig.lab.face)
+annotate_figure(
+  p,
+  top = NULL,
+  bottom = NULL,
+  left = NULL,
+  right = NULL,
+  fig.lab = NULL,
+  fig.lab.pos = c("top.left", "top", "top.right", "bottom.left", "bottom",
+    "bottom.right"),
+  fig.lab.size,
+  fig.lab.face
+)
 }
 \arguments{
 \item{p}{(arranged) ggplots.}
@@ -51,7 +59,7 @@ dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 figure <- ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 annotate_figure(figure,
                top = text_grob("Visualizing Tooth Growth", color = "red", face = "bold", size = 14),
-               bottom = text_grob("Data source: \\n ToothGrowth data set", color = "blue",
+               bottom = text_grob("Data source: \n ToothGrowth data set", color = "blue",
                                   hjust = 1, x = 1, face = "italic", size = 10),
                left = text_grob("Figure arranged using ggpubr", color = "green", rot = 90),
                right = "I'm done, thanks :-)!",

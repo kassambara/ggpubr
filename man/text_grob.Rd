@@ -4,9 +4,19 @@
 \alias{text_grob}
 \title{Create a Text Graphical object}
 \usage{
-text_grob(label, just = "centre", hjust = NULL, vjust = NULL,
-  rot = 0, color = "black", face = "plain", size = NULL,
-  lineheight = NULL, family = NULL, ...)
+text_grob(
+  label,
+  just = "centre",
+  hjust = NULL,
+  vjust = NULL,
+  rot = 0,
+  color = "black",
+  face = "plain",
+  size = NULL,
+  lineheight = NULL,
+  family = NULL,
+  ...
+)
 }
 \arguments{
 \item{label}{A character or \link{expression} vector.  Other
@@ -54,7 +64,7 @@ text <- paste("iris data set gives the measurements in cm",
              "of the variables sepal length and width",
              "and petal length and width, respectively,",
              "for 50 flowers from each of 3 species of iris.",
-             "The species are Iris setosa, versicolor, and virginica.", sep = "\\n")
+             "The species are Iris setosa, versicolor, and virginica.", sep = "\n")
 
 # Create a text grob
 tgrob <- text_grob(text, face = "italic", color = "steelblue")

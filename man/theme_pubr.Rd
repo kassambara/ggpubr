@@ -8,9 +8,14 @@
 \alias{clean_theme}
 \title{Publication ready theme}
 \usage{
-theme_pubr(base_size = 12, base_family = "", border = FALSE,
-  margin = TRUE, legend = c("top", "bottom", "left", "right", "none"),
-  x.text.angle = 0)
+theme_pubr(
+  base_size = 12,
+  base_family = "",
+  border = FALSE,
+  margin = TRUE,
+  legend = c("top", "bottom", "left", "right", "none"),
+  x.text.angle = 0
+)
 
 theme_pubclean(base_size = 12, base_family = "", flip = FALSE)
 

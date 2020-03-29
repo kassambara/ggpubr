@@ -4,11 +4,23 @@
 \alias{ggarrange}
 \title{Arrange Multiple ggplots}
 \usage{
-ggarrange(..., plotlist = NULL, ncol = NULL, nrow = NULL,
-  labels = NULL, label.x = 0, label.y = 1, hjust = -0.5,
-  vjust = 1.5, font.label = list(size = 14, color = "black", face =
-  "bold", family = NULL), align = c("none", "h", "v", "hv"),
-  widths = 1, heights = 1, legend = NULL, common.legend = FALSE)
+ggarrange(
+  ...,
+  plotlist = NULL,
+  ncol = NULL,
+  nrow = NULL,
+  labels = NULL,
+  label.x = 0,
+  label.y = 1,
+  hjust = -0.5,
+  vjust = 1.5,
+  font.label = list(size = 14, color = "black", face = "bold", family = NULL),
+  align = c("none", "h", "v", "hv"),
+  widths = 1,
+  heights = 1,
+  legend = NULL,
+  common.legend = FALSE
+)
 }
 \arguments{
 \item{...}{list of plots to be arranged into the grid. The plots can be

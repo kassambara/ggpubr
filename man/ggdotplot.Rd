@@ -4,15 +4,37 @@
 \alias{ggdotplot}
 \title{Dot plot}
 \usage{
-ggdotplot(data, x, y, combine = FALSE, merge = FALSE,
-  color = "black", fill = "lightgray", palette = NULL,
-  title = NULL, xlab = NULL, ylab = NULL, facet.by = NULL,
-  panel.labs = NULL, short.panel.labs = TRUE, size = NULL,
-  binwidth = NULL, select = NULL, remove = NULL, order = NULL,
-  add = "mean_se", add.params = list(), error.plot = "pointrange",
-  label = NULL, font.label = list(size = 11, color = "black"),
-  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  ggtheme = theme_pubr(), ...)
+ggdotplot(
+  data,
+  x,
+  y,
+  combine = FALSE,
+  merge = FALSE,
+  color = "black",
+  fill = "lightgray",
+  palette = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  facet.by = NULL,
+  panel.labs = NULL,
+  short.panel.labs = TRUE,
+  size = NULL,
+  binwidth = NULL,
+  select = NULL,
+  remove = NULL,
+  order = NULL,
+  add = "mean_se",
+  add.params = list(),
+  error.plot = "pointrange",
+  label = NULL,
+  font.label = list(size = 11, color = "black"),
+  label.select = NULL,
+  repel = FALSE,
+  label.rectangle = FALSE,
+  ggtheme = theme_pubr(),
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}

@@ -4,16 +4,39 @@
 \alias{gghistogram}
 \title{Histogram plot}
 \usage{
-gghistogram(data, x, y = "..count..", combine = FALSE, merge = FALSE,
-  color = "black", fill = NA, palette = NULL, size = NULL,
-  linetype = "solid", alpha = 0.5, bins = NULL, binwidth = NULL,
-  title = NULL, xlab = NULL, ylab = NULL, facet.by = NULL,
-  panel.labs = NULL, short.panel.labs = TRUE, add = c("none", "mean",
-  "median"), add.params = list(linetype = "dashed"), rug = FALSE,
-  add_density = FALSE, label = NULL, font.label = list(size = 11,
-  color = "black"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, position = position_identity(),
-  ggtheme = theme_pubr(), ...)
+gghistogram(
+  data,
+  x,
+  y = "..count..",
+  combine = FALSE,
+  merge = FALSE,
+  color = "black",
+  fill = NA,
+  palette = NULL,
+  size = NULL,
+  linetype = "solid",
+  alpha = 0.5,
+  bins = NULL,
+  binwidth = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  facet.by = NULL,
+  panel.labs = NULL,
+  short.panel.labs = TRUE,
+  add = c("none", "mean", "median"),
+  add.params = list(linetype = "dashed"),
+  rug = FALSE,
+  add_density = FALSE,
+  label = NULL,
+  font.label = list(size = 11, color = "black"),
+  label.select = NULL,
+  repel = FALSE,
+  label.rectangle = FALSE,
+  position = position_identity(),
+  ggtheme = theme_pubr(),
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}

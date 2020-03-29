@@ -4,11 +4,13 @@
 \name{diff_express}
 \alias{diff_express}
 \title{Differential gene expression analysis results}
-\format{A data frame with 36028 rows and 5 columns. \describe{
+\format{
+A data frame with 36028 rows and 5 columns. \describe{
   \item{\code{name}}{gene names} \item{\code{baseMean}}{mean expression
   signal across all samples} \item{\code{log2FoldChange}}{log2 fold change}
   \item{\code{padj}}{Adjusted p-value}\item{\code{detection_call}}{a numeric
-  vector specifying whether the genes is expressed (value = 1) or not (value = 0).}}}
+  vector specifying whether the genes is expressed (value = 1) or not (value = 0).}}
+}
 \usage{
 data("diff_express")
 }

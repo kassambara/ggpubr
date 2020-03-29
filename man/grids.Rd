@@ -4,8 +4,7 @@
 \alias{grids}
 \title{Add Grids to a ggplot}
 \usage{
-grids(axis = c("xy", "x", "y"), color = "grey92", size = NULL,
-  linetype = NULL)
+grids(axis = c("xy", "x", "y"), color = "grey92", size = NULL, linetype = NULL)
 }
 \arguments{
 \item{axis}{axis for which grid should be added. Allowed values include \code{c("xy", "x", "y")}.}

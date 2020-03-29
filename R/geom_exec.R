@@ -3,7 +3,6 @@
 #'   functions in ggplot2. Useful only when you want to call a geom_* function
 #'   without carrying about the arguments to put in aes(). Basic users of ggpubr
 #'   don't need this function.
-#' @inheritParams ggrepel::geom_text_repel
 #' @param geomfunc a ggplot2 function (e.g.: geom_point)
 #' @param data a data frame to be used for mapping
 #' @param position Position adjustment, either as a string, or the result of a

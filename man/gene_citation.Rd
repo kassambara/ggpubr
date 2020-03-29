@@ -4,8 +4,10 @@
 \name{gene_citation}
 \alias{gene_citation}
 \title{Gene Citation Index}
-\format{A data frame with 66 rows and 2 columns. \describe{
- \item{\code{gene}}{gene names} \item{\code{citation_index}}{mean citation index} }}
+\format{
+A data frame with 66 rows and 2 columns. \describe{
+ \item{\code{gene}}{gene names} \item{\code{citation_index}}{mean citation index} }
+}
 \usage{
 data("gene_citation")
 }

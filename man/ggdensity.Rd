@@ -4,15 +4,35 @@
 \alias{ggdensity}
 \title{Density plot}
 \usage{
-ggdensity(data, x, y = "..density..", combine = FALSE, merge = FALSE,
-  color = "black", fill = NA, palette = NULL, size = NULL,
-  linetype = "solid", alpha = 0.5, title = NULL, xlab = NULL,
-  ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, add = c("none", "mean", "median"),
-  add.params = list(linetype = "dashed"), rug = FALSE, label = NULL,
-  font.label = list(size = 11, color = "black"), label.select = NULL,
-  repel = FALSE, label.rectangle = FALSE, ggtheme = theme_pubr(),
-  ...)
+ggdensity(
+  data,
+  x,
+  y = "..density..",
+  combine = FALSE,
+  merge = FALSE,
+  color = "black",
+  fill = NA,
+  palette = NULL,
+  size = NULL,
+  linetype = "solid",
+  alpha = 0.5,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  facet.by = NULL,
+  panel.labs = NULL,
+  short.panel.labs = TRUE,
+  add = c("none", "mean", "median"),
+  add.params = list(linetype = "dashed"),
+  rug = FALSE,
+  label = NULL,
+  font.label = list(size = 11, color = "black"),
+  label.select = NULL,
+  repel = FALSE,
+  label.rectangle = FALSE,
+  ggtheme = theme_pubr(),
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}

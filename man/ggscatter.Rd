@@ -4,22 +4,56 @@
 \alias{ggscatter}
 \title{Scatter plot}
 \usage{
-ggscatter(data, x, y, combine = FALSE, merge = FALSE,
-  color = "black", fill = "lightgray", palette = NULL, shape = 19,
-  size = 2, point = TRUE, rug = FALSE, title = NULL, xlab = NULL,
-  ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, add = c("none", "reg.line", "loess"),
-  add.params = list(), conf.int = FALSE, conf.int.level = 0.95,
-  fullrange = FALSE, ellipse = FALSE, ellipse.level = 0.95,
-  ellipse.type = "norm", ellipse.alpha = 0.1,
-  ellipse.border.remove = FALSE, mean.point = FALSE,
+ggscatter(
+  data,
+  x,
+  y,
+  combine = FALSE,
+  merge = FALSE,
+  color = "black",
+  fill = "lightgray",
+  palette = NULL,
+  shape = 19,
+  size = 2,
+  point = TRUE,
+  rug = FALSE,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  facet.by = NULL,
+  panel.labs = NULL,
+  short.panel.labs = TRUE,
+  add = c("none", "reg.line", "loess"),
+  add.params = list(),
+  conf.int = FALSE,
+  conf.int.level = 0.95,
+  fullrange = FALSE,
+  ellipse = FALSE,
+  ellipse.level = 0.95,
+  ellipse.type = "norm",
+  ellipse.alpha = 0.1,
+  ellipse.border.remove = FALSE,
+  mean.point = FALSE,
   mean.point.size = ifelse(is.numeric(size), 2 * size, size),
-  star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
-  label = NULL, font.label = c(12, "plain"), font.family = "",
-  label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-  cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson",
-  cor.coef.coord = c(NULL, NULL), cor.coef.size = 4, ggp = NULL,
-  show.legend.text = NA, ggtheme = theme_pubr(), ...)
+  star.plot = FALSE,
+  star.plot.lty = 1,
+  star.plot.lwd = NULL,
+  label = NULL,
+  font.label = c(12, "plain"),
+  font.family = "",
+  label.select = NULL,
+  repel = FALSE,
+  label.rectangle = FALSE,
+  cor.coef = FALSE,
+  cor.coeff.args = list(),
+  cor.method = "pearson",
+  cor.coef.coord = c(NULL, NULL),
+  cor.coef.size = 4,
+  ggp = NULL,
+  show.legend.text = NA,
+  ggtheme = theme_pubr(),
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}
@@ -197,7 +231,7 @@ ggscatter(df, x = "wt", y = "mpg",
    add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
    conf.int = TRUE, # Add confidence interval
    cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-   cor.coeff.args = list(method = "pearson", label.x = 3, label.sep = "\\n")
+   cor.coeff.args = list(method = "pearson", label.x = 3, label.sep = "\n")
    )
 
 # loess method: local regression fitting

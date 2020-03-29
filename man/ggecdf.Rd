@@ -4,10 +4,24 @@
 \alias{ggecdf}
 \title{Empirical cumulative density function}
 \usage{
-ggecdf(data, x, combine = FALSE, merge = FALSE, color = "black",
-  palette = NULL, size = NULL, linetype = "solid", title = NULL,
-  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, ggtheme = theme_pubr(), ...)
+ggecdf(
+  data,
+  x,
+  combine = FALSE,
+  merge = FALSE,
+  color = "black",
+  palette = NULL,
+  size = NULL,
+  linetype = "solid",
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  facet.by = NULL,
+  panel.labs = NULL,
+  short.panel.labs = TRUE,
+  ggtheme = theme_pubr(),
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}

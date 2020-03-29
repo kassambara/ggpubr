@@ -4,16 +4,41 @@
 \alias{ggboxplot}
 \title{Box plot}
 \usage{
-ggboxplot(data, x, y, combine = FALSE, merge = FALSE,
-  color = "black", fill = "white", palette = NULL, title = NULL,
-  xlab = NULL, ylab = NULL, bxp.errorbar = FALSE,
-  bxp.errorbar.width = 0.4, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, linetype = "solid", size = NULL,
-  width = 0.7, notch = FALSE, select = NULL, remove = NULL,
-  order = NULL, add = "none", add.params = list(),
-  error.plot = "pointrange", label = NULL, font.label = list(size =
-  11, color = "black"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, ggtheme = theme_pubr(), ...)
+ggboxplot(
+  data,
+  x,
+  y,
+  combine = FALSE,
+  merge = FALSE,
+  color = "black",
+  fill = "white",
+  palette = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  bxp.errorbar = FALSE,
+  bxp.errorbar.width = 0.4,
+  facet.by = NULL,
+  panel.labs = NULL,
+  short.panel.labs = TRUE,
+  linetype = "solid",
+  size = NULL,
+  width = 0.7,
+  notch = FALSE,
+  select = NULL,
+  remove = NULL,
+  order = NULL,
+  add = "none",
+  add.params = list(),
+  error.plot = "pointrange",
+  label = NULL,
+  font.label = list(size = 11, color = "black"),
+  label.select = NULL,
+  repel = FALSE,
+  label.rectangle = FALSE,
+  ggtheme = theme_pubr(),
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}

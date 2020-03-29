@@ -10,30 +10,61 @@
 \alias{table_cell_bg}
 \title{Draw a Textual Table}
 \usage{
-ggtexttable(x, rows = rownames(x), cols = colnames(x), vp = NULL,
-  theme = ttheme(), ...)
+ggtexttable(
+  x,
+  rows = rownames(x),
+  cols = colnames(x),
+  vp = NULL,
+  theme = ttheme(),
+  ...
+)
 
-ttheme(base_style = "default", base_size = 11, base_colour = "black",
-  padding = unit(c(4, 4), "mm"), colnames.style = colnames_style(size =
-  base_size), rownames.style = rownames_style(size = base_size),
-  tbody.style = tbody_style(size = base_size))
+ttheme(
+  base_style = "default",
+  base_size = 11,
+  base_colour = "black",
+  padding = unit(c(4, 4), "mm"),
+  colnames.style = colnames_style(size = base_size),
+  rownames.style = rownames_style(size = base_size),
+  tbody.style = tbody_style(size = base_size)
+)
 
-colnames_style(color = "black", face = "bold", size = 12,
-  fill = "grey80", linewidth = 1, linecolor = "white",
-  parse = FALSE, ...)
+colnames_style(
+  color = "black",
+  face = "bold",
+  size = 12,
+  fill = "grey80",
+  linewidth = 1,
+  linecolor = "white",
+  parse = FALSE,
+  ...
+)
 
-rownames_style(color = "black", face = "italic", size = 12,
-  fill = NA, linewidth = 1, linecolor = "white", parse = FALSE,
-  ...)
+rownames_style(
+  color = "black",
+  face = "italic",
+  size = 12,
+  fill = NA,
+  linewidth = 1,
+  linecolor = "white",
+  parse = FALSE,
+  ...
+)
 
-tbody_style(color = "black", face = "plain", size = 12,
-  fill = c("grey95", "grey90"), linewidth = 1, linecolor = "white",
-  parse = FALSE, ...)
+tbody_style(
+  color = "black",
+  face = "plain",
+  size = 12,
+  fill = c("grey95", "grey90"),
+  linewidth = 1,
+  linecolor = "white",
+  parse = FALSE,
+  ...
+)
 
 table_cell_font(tab, row, column, face = NULL, size = NULL)
 
-table_cell_bg(tab, row, column, fill = NULL, color = NULL,
-  linewidth = NULL)
+table_cell_bg(tab, row, column, fill = NULL, color = NULL, linewidth = NULL)
 }
 \arguments{
 \item{x}{a \code{data.frame} or \code{matrix}.}

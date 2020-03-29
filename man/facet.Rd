@@ -4,12 +4,21 @@
 \alias{facet}
 \title{Facet a ggplot into Multiple Panels}
 \usage{
-facet(p, facet.by, nrow = NULL, ncol = NULL, scales = "fixed",
-  short.panel.labs = TRUE, panel.labs = NULL,
+facet(
+  p,
+  facet.by,
+  nrow = NULL,
+  ncol = NULL,
+  scales = "fixed",
+  short.panel.labs = TRUE,
+  panel.labs = NULL,
   panel.labs.background = list(color = NULL, fill = NULL),
-  panel.labs.font = list(face = NULL, color = NULL, size = NULL, angle =
-  NULL), panel.labs.font.x = panel.labs.font,
-  panel.labs.font.y = panel.labs.font, strip.position = "top", ...)
+  panel.labs.font = list(face = NULL, color = NULL, size = NULL, angle = NULL),
+  panel.labs.font.x = panel.labs.font,
+  panel.labs.font.y = panel.labs.font,
+  strip.position = "top",
+  ...
+)
 }
 \arguments{
 \item{p}{a ggplot}

@@ -4,9 +4,18 @@
 \alias{ggexport}
 \title{Export ggplots}
 \usage{
-ggexport(..., plotlist = NULL, filename = NULL, ncol = NULL,
-  nrow = NULL, width = 480, height = 480, pointsize = 12,
-  res = NA, verbose = TRUE)
+ggexport(
+  ...,
+  plotlist = NULL,
+  filename = NULL,
+  ncol = NULL,
+  nrow = NULL,
+  width = 480,
+  height = 480,
+  pointsize = 12,
+  res = NA,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{...}{list of plots to be arranged into the grid. The plots can be either

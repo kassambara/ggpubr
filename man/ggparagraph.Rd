@@ -5,8 +5,14 @@
 \alias{drawDetails.splitText}
 \title{Draw a Paragraph of Text}
 \usage{
-ggparagraph(text, color = NULL, size = NULL, face = NULL,
-  family = NULL, lineheight = NULL)
+ggparagraph(
+  text,
+  color = NULL,
+  size = NULL,
+  face = NULL,
+  family = NULL,
+  lineheight = NULL
+)
 
 \method{drawDetails}{splitText}(x, recording)
 }

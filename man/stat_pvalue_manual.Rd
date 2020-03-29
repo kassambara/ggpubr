@@ -4,12 +4,27 @@
 \alias{stat_pvalue_manual}
 \title{Add Manually P-values to a ggplot}
 \usage{
-stat_pvalue_manual(data, label = NULL, y.position = "y.position",
-  xmin = "group1", xmax = "group2", x = NULL, size = 3.88,
-  label.size = size, bracket.size = 0.3, color = "black",
-  linetype = 1, tip.length = 0.03, remove.bracket = FALSE,
-  step.increase = 0, step.group.by = NULL, hide.ns = FALSE,
-  vjust = 0, position = "identity", ...)
+stat_pvalue_manual(
+  data,
+  label = NULL,
+  y.position = "y.position",
+  xmin = "group1",
+  xmax = "group2",
+  x = NULL,
+  size = 3.88,
+  label.size = size,
+  bracket.size = 0.3,
+  color = "black",
+  linetype = 1,
+  tip.length = 0.03,
+  remove.bracket = FALSE,
+  step.increase = 0,
+  step.group.by = NULL,
+  hide.ns = FALSE,
+  vjust = 0,
+  position = "identity",
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame containing statitistical test results. The expected

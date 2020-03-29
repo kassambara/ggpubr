@@ -4,9 +4,17 @@
 \alias{compare_means}
 \title{Comparison of Means}
 \usage{
-compare_means(formula, data, method = "wilcox.test", paired = FALSE,
-  group.by = NULL, ref.group = NULL, symnum.args = list(),
-  p.adjust.method = "holm", ...)
+compare_means(
+  formula,
+  data,
+  method = "wilcox.test",
+  paired = FALSE,
+  group.by = NULL,
+  ref.group = NULL,
+  symnum.args = list(),
+  p.adjust.method = "holm",
+  ...
+)
 }
 \arguments{
 \item{formula}{a formula of the form \code{x ~ group} where \code{x} is a

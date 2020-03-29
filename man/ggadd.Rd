@@ -4,11 +4,27 @@
 \alias{ggadd}
 \title{Add Summary Statistics or a Geom onto a ggplot}
 \usage{
-ggadd(p, add = NULL, color = "black", fill = "white", group = 1,
-  width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2,
-  binwidth = NULL, dotsize = size, linetype = 1, show.legend = NA,
-  error.plot = "pointrange", ci = 0.95, data = NULL,
-  position = position_dodge(0.8), p_geom = "")
+ggadd(
+  p,
+  add = NULL,
+  color = "black",
+  fill = "white",
+  group = 1,
+  width = 1,
+  shape = 19,
+  size = NULL,
+  alpha = 1,
+  jitter = 0.2,
+  binwidth = NULL,
+  dotsize = size,
+  linetype = 1,
+  show.legend = NA,
+  error.plot = "pointrange",
+  ci = 0.95,
+  data = NULL,
+  position = position_dodge(0.8),
+  p_geom = ""
+)
 }
 \arguments{
 \item{p}{a ggplot}

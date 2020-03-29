@@ -14,7 +14,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{mutate}}, \code{\link[dplyr]{group_by}}}
+  \item{dplyr}{\code{\link[dplyr]{group_by}}, \code{\link[dplyr]{mutate}}}
 
   \item{ggsignif}{\code{\link[ggsignif]{geom_signif}}}
 

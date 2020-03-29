@@ -11,10 +11,22 @@
 \alias{median_range}
 \title{Add Summary Statistics onto a ggplot.}
 \usage{
-add_summary(p, fun = "mean_se", error.plot = "pointrange",
-  color = "black", fill = "white", group = 1, width = NULL,
-  shape = 19, size = 1, linetype = 1, show.legend = NA,
-  ci = 0.95, data = NULL, position = position_dodge(0.8))
+add_summary(
+  p,
+  fun = "mean_se",
+  error.plot = "pointrange",
+  color = "black",
+  fill = "white",
+  group = 1,
+  width = NULL,
+  shape = 19,
+  size = 1,
+  linetype = 1,
+  show.legend = NA,
+  ci = 0.95,
+  data = NULL,
+  position = position_dodge(0.8)
+)
 
 mean_se_(x, error.limit = "both")
 

@@ -4,17 +4,43 @@
 \alias{ggline}
 \title{Line plot}
 \usage{
-ggline(data, x, y, group = 1, numeric.x.axis = FALSE,
-  combine = FALSE, merge = FALSE, color = "black", palette = NULL,
-  linetype = "solid", plot_type = c("b", "l", "p"), size = 0.5,
-  shape = 19, point.size = size, point.color = color, title = NULL,
-  xlab = NULL, ylab = NULL, facet.by = NULL, panel.labs = NULL,
-  short.panel.labs = TRUE, select = NULL, remove = NULL,
-  order = NULL, add = "none", add.params = list(),
-  error.plot = "errorbar", label = NULL, font.label = list(size = 11,
-  color = "black"), label.select = NULL, repel = FALSE,
-  label.rectangle = FALSE, show.line.label = FALSE,
-  ggtheme = theme_pubr(), ...)
+ggline(
+  data,
+  x,
+  y,
+  group = 1,
+  numeric.x.axis = FALSE,
+  combine = FALSE,
+  merge = FALSE,
+  color = "black",
+  palette = NULL,
+  linetype = "solid",
+  plot_type = c("b", "l", "p"),
+  size = 0.5,
+  shape = 19,
+  point.size = size,
+  point.color = color,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  facet.by = NULL,
+  panel.labs = NULL,
+  short.panel.labs = TRUE,
+  select = NULL,
+  remove = NULL,
+  order = NULL,
+  add = "none",
+  add.params = list(),
+  error.plot = "errorbar",
+  label = NULL,
+  font.label = list(size = 11, color = "black"),
+  label.select = NULL,
+  repel = FALSE,
+  label.rectangle = FALSE,
+  show.line.label = FALSE,
+  ggtheme = theme_pubr(),
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}
