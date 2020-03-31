@@ -8,7 +8,9 @@ NULL
 #'  direct more attention to the data.  \item \strong{labs_pubr()}: Format only
 #'  plot labels to a publication ready style \item \strong{theme_classic2()}:
 #'  Create a classic theme with axis lines. \item \strong{clean_theme()}: Remove
-#'  axis lines, ticks, texts and titles. }
+#'  axis lines, ticks, texts and titles. \item \strong{clean_table_theme()}:
+#'  Clean the the theme of a table, such as those created by
+#'  \code{\link{ggsummarytable}()}}.
 #'@param base_size base font size
 #'@param base_family base font family
 #'@param border logical value. Default is FALSE. If TRUE, add panel border.
@@ -23,7 +25,8 @@ NULL
 #'  instance use legend = c(0.8, 0.2).
 #'@param x.text.angle Rotation angle of x axis tick labels. Default value is 0.
 #'  Use 90 for vertical text.
-#'@param flip logical. If TRUE, grid lines are added to y axis instead of x axis.
+#'@param flip logical. If TRUE, grid lines are added to y axis instead of x
+#'  axis.
 #' @examples
 #' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'    geom_point(aes(color = gear))
@@ -157,5 +160,15 @@ clean_theme <- function()
     axis.title.x = element_blank(),
     axis.title.y = element_blank()
   )
+}
+
+#' @export
+#' @rdname theme_pubr
+clean_table_theme <- function ()
+{
+  theme(axis.line.x = element_blank(), axis.line.y = element_blank(),
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(), axis.title.x = element_blank(),
+        axis.title.y = element_blank())
 }
 

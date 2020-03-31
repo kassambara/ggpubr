@@ -3,9 +3,11 @@ NULL
 #' @import ggplot2
 #' @importFrom magrittr %>%
 #' @importFrom dplyr group_by_
-#' @importFrom dplyr group_by
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr group_by mutate mutate_if group_nest
+#' @importFrom purrr map2 map
+#' @importFrom tidyr unite
 #' @importFrom dplyr arrange_
-#' @importFrom dplyr mutate
 #' @importFrom dplyr do
 #' @importFrom dplyr summarise
 #' @importFrom dplyr everything

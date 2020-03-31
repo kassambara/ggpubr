@@ -3,12 +3,20 @@
   
 ## New features
   
-  
+- New functions:
+    - `ggsummarystats()` to create  a GGPLOT with summary stats table under the plot.
+    - `clean_table_theme()` to clean the the theme of a table, such as those created by `ggsummarytable()`
 - `ggbarplot()` now supports stacked barplots with error bars ([#245](https://github.com/kassambara/ggpubr/pull/245)).
    
+
    
 ## Minor changes
-
+   
+- New arguments:
+    - `labeller` to the function `facet()`
+    - `position` in `get_legend()` to specify legend position
+    - `legend.grob` in `ggarrange()` to specify a common legend you want to add onto the combined plot.
+  
 ## Bug fixes
    
 - Now, Barplots are correctly labelled when custom labels are specified by users ([@sekharcu, #234](https://github.com/kassambara/ggpubr/issues/234))

@@ -13,6 +13,10 @@ NULL
 #'@param short.panel.labs logical value. Default is TRUE. If TRUE, create short
 #'  labels for panels by omitting variable names; in other words panels will be
 #'  labelled only by variable grouping levels.
+#'@param labeller Character vector. An alternative to the argument
+#'  \code{short.panel.labs}. Possible values are one of "label_both" (panel
+#'  labelled by both grouping variable names and levels) and "label_value"
+#'  (panel labelled with only grouping levels).
 #'@param panel.labs a list of one or two character vectors to modify facet panel
 #'  labels. For example, panel.labs = list(sex = c("Male", "Female")) specifies
 #'  the labels for the "sex" variable. For two grouping variables, you can use
@@ -30,8 +34,8 @@ NULL
 #'@param panel.labs.font.x,panel.labs.font.y same as panel.labs.font but for
 #'  only x and y direction, respectively.
 #'@param strip.position (used only in \code{facet_wrap()}). By default, the
-#'  labels are displayed on the top of the plot. Using \code{strip.position} it is
-#'  possible to place the labels on either of the four sides by setting
+#'  labels are displayed on the top of the plot. Using \code{strip.position} it
+#'  is possible to place the labels on either of the four sides by setting
 #'  \code{strip.position = c("top", "bottom", "left", "right")}
 #'@param ... not used
 #' @examples
@@ -50,7 +54,7 @@ NULL
 #'@rdname facet
 #'@export
 facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
-                  scales = "fixed", short.panel.labs = TRUE,
+                  scales = "fixed", short.panel.labs = TRUE, labeller = "label_value",
                   panel.labs = NULL,
                   panel.labs.background = list(color = NULL, fill = NULL),
                   panel.labs.font = list(face = NULL, color = NULL, size = NULL, angle = NULL),
@@ -62,20 +66,27 @@ facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
 
   if(length(facet.by) > 2)
     stop("facet.by should be of length 1 or 2.")
+  if(!missing(labeller)){
+    if(labeller == "label_value")
+      short.panel.labs = TRUE
+    else if(labeller == "label_both")
+      short.panel.labs = FALSE
+    else stop("Don't support the following labeller: ", labeller, call. = FALSE)
+  }
 
   panel.labs.background <- .compact(panel.labs.background)
   panel.labs.font.x <- .compact(panel.labs.font.x)
   panel.labs.font.y <- .compact(panel.labs.font.y)
 
-  .labeller <- NULL
+  .labeller <- "label_value"
 
-  if(!is.null(panel.labs))
+  if(!is.null(panel.labs)){
     .labeller <- .create_labeller(p$data, panel.labs)
-
-  if(is.null(.labeller)){
-    .labeller <- "label_value"
-    if(!short.panel.labs) .labeller <- label_both
   }
+  else if(!short.panel.labs) {
+    .labeller <- label_both
+  }
+
 
   if(length(facet.by) == 1){
     facet.formula <- paste0("~", facet.by) %>% stats::as.formula()

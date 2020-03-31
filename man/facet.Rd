@@ -11,6 +11,7 @@ facet(
   ncol = NULL,
   scales = "fixed",
   short.panel.labs = TRUE,
+  labeller = "label_value",
   panel.labs = NULL,
   panel.labs.background = list(color = NULL, fill = NULL),
   panel.labs.font = list(face = NULL, color = NULL, size = NULL, angle = NULL),
@@ -36,6 +37,11 @@ free ("free"), or free in one dimension ("free_x", "free_y").}
 labels for panels by omitting variable names; in other words panels will be
 labelled only by variable grouping levels.}
 
+\item{labeller}{Character vector. An alternative to the argument
+\code{short.panel.labs}. Possible values are one of "label_both" (panel
+labelled by both grouping variable names and levels) and "label_value"
+(panel labelled with only grouping levels).}
+
 \item{panel.labs}{a list of one or two character vectors to modify facet panel
 labels. For example, panel.labs = list(sex = c("Male", "Female")) specifies
 the labels for the "sex" variable. For two grouping variables, you can use
@@ -57,8 +63,8 @@ face/style (e.g.: "plain", "bold", "italic", "bold.italic") and the color
 only x and y direction, respectively.}
 
 \item{strip.position}{(used only in \code{facet_wrap()}). By default, the
-labels are displayed on the top of the plot. Using \code{strip.position} it is
-possible to place the labels on either of the four sides by setting
+labels are displayed on the top of the plot. Using \code{strip.position} it
+is possible to place the labels on either of the four sides by setting
 \code{strip.position = c("top", "bottom", "left", "right")}}
 
 \item{...}{not used}
