@@ -28,6 +28,7 @@ reference:
       - ggpie
       - ggdonutchart
       - ggdotchart
+      - ggsummarystats
   - title: Plot Two Continuous Variables
     desc: Scatter plots
     contents:

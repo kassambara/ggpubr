@@ -7,6 +7,7 @@
 \alias{mutate}
 \alias{group_by}
 \alias{geom_signif}
+\alias{get_summary_stats}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -19,5 +20,7 @@ below to see their documentation.
   \item{ggsignif}{\code{\link[ggsignif]{geom_signif}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
+
+  \item{rstatix}{\code{\link[rstatix]{get_summary_stats}}}
 }}
 

@@ -33,12 +33,16 @@ Imports:
     gridExtra,
     glue,
     polynom,
-    rlang
+    rlang,
+    rstatix (>= 0.4.0),
+    tibble
 Suggests:
     grDevices,
     knitr,
     RColorBrewer,
     gtable
+Remotes:
+    kassambara/rstatix
 URL: https://rpkgs.datanovia.com/ggpubr/
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 7.1.0
@@ -92,6 +96,7 @@ Collate:
     'ggscatter.R'
     'ggscatterhist.R'
     'ggstripchart.R'
+    'ggsummarystats.R'
     'ggtext.R'
     'ggtexttable.R'
     'ggviolin.R'
