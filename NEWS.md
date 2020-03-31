@@ -4,7 +4,7 @@
 ## New features
   
 - New functions:
-    - `ggsummarystats()` to create  a GGPLOT with summary stats table under the plot.
+    - `ggsummarystats()` to create  a GGPLOT with summary stats table under the plot ( [#251](https://github.com/kassambara/ggpubr/pull/251)).
     - `clean_table_theme()` to clean the the theme of a table, such as those created by `ggsummarytable()`
 - `ggbarplot()` now supports stacked barplots with error bars ([#245](https://github.com/kassambara/ggpubr/pull/245)).
    
