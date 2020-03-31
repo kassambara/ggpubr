@@ -35,6 +35,9 @@ NULL
 #'   legend = "none".
 #' @param common.legend logical value. Default is FALSE. If TRUE, a common
 #'   unique legend will be created for arranged plots.
+#' @param legend.grob a legend grob as returned by the function
+#'   \code{\link{get_legend}()}. If provided, it will be used as the common
+#'   legend.
 #' @return return an object of class \code{ggarrange}, which is a ggplot or a
 #'   list of ggplot.
 #' @author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
@@ -68,7 +71,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       font.label = list(size = 14, color = "black", face = "bold", family = NULL),
                       align = c("none", "h", "v", "hv"),
                       widths = 1, heights = 1,
-                      legend = NULL, common.legend = FALSE )
+                      legend = NULL, common.legend = FALSE, legend.grob = NULL )
   {
 
   plots <- c(list(...), plotlist)
@@ -79,6 +82,8 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   nrow <- page.layout$nrow
   nb.plots.per.page <- .nbplots_per_page(ncol, nrow)
 
+  if(!is.null(legend.grob))
+    common.legend <- TRUE
   if(is.null(legend) & common.legend)
     legend <- "top"
   legend <- .check_legend(legend)
@@ -88,9 +93,9 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
       function(x) {if(!is.null(x)) x + theme(legend.position = legend) else x}
       )
 
-  leg <- NULL
   if(common.legend){
-    leg <- get_legend(plots)
+    if(is.null(legend.grob))
+      legend.grob <- get_legend(plots)
     plots <- purrr::map(
       plots,
       function(x) {if(!is.null(x)) x + theme(legend.position = "none") else x}
@@ -115,7 +120,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
               label_x = .lab$label.x, label_y = .lab$label.y,
               hjust = .lab$hjust, vjust = .lab$vjust, align = align,
               rel_widths = widths, rel_heights = heights,
-              legend = legend, common.legend.grob = leg
+              legend = legend, common.legend.grob = legend.grob
               )
 
 
@@ -203,4 +208,3 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
     hjust = hjust, vjust = vjust
   )
 }
-

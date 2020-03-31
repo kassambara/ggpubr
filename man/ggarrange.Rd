@@ -19,7 +19,8 @@ ggarrange(
   widths = 1,
   heights = 1,
   legend = NULL,
-  common.legend = FALSE
+  common.legend = FALSE,
+  legend.grob = NULL
 )
 }
 \arguments{
@@ -72,6 +73,10 @@ legend = "none".}
 
 \item{common.legend}{logical value. Default is FALSE. If TRUE, a common
 unique legend will be created for arranged plots.}
+
+\item{legend.grob}{a legend grob as returned by the function
+\code{\link{get_legend}()}. If provided, it will be used as the common
+legend.}
 }
 \value{
 return an object of class \code{ggarrange}, which is a ggplot or a
