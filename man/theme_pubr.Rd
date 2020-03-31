@@ -6,6 +6,7 @@
 \alias{labs_pubr}
 \alias{theme_classic2}
 \alias{clean_theme}
+\alias{clean_table_theme}
 \title{Publication ready theme}
 \usage{
 theme_pubr(
@@ -24,6 +25,8 @@ labs_pubr(base_size = 14, base_family = "")
 theme_classic2(base_size = 12, base_family = "")
 
 clean_theme()
+
+clean_table_theme()
 }
 \arguments{
 \item{base_size}{base font size}
@@ -46,7 +49,8 @@ instance use legend = c(0.8, 0.2).}
 \item{x.text.angle}{Rotation angle of x axis tick labels. Default value is 0.
 Use 90 for vertical text.}
 
-\item{flip}{logical. If TRUE, grid lines are added to y axis instead of x axis.}
+\item{flip}{logical. If TRUE, grid lines are added to y axis instead of x
+axis.}
 }
 \description{
 \itemize{ \item \strong{theme_pubr()}: Create a publication ready
@@ -54,7 +58,9 @@ Use 90 for vertical text.}
  direct more attention to the data.  \item \strong{labs_pubr()}: Format only
  plot labels to a publication ready style \item \strong{theme_classic2()}:
  Create a classic theme with axis lines. \item \strong{clean_theme()}: Remove
- axis lines, ticks, texts and titles. }
+ axis lines, ticks, texts and titles. \item \strong{clean_table_theme()}:
+ Clean the the theme of a table, such as those created by
+ \code{\link{ggsummarytable}()}}.
 }
 \examples{
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
