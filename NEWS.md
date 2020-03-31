@@ -13,6 +13,7 @@
 ## Minor changes
    
 - New arguments:
+    - `labeller` to the function `facet()`
     - `position` in `get_legend()` to specify legend position
     - `legend.grob` in `ggarrange()` to specify a common legend you want to add onto the combined plot.
   

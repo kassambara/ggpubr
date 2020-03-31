@@ -20,6 +20,10 @@ NULL
 #'   facet.by}.
 #' @param free.panels logical. If TRUE, create free plot panels when the
 #'   argument \code{facet.by} is specified.
+#'@param labeller Character vector. An alternative to the argument
+#'  \code{short.panel.labs}. Possible values are one of "label_both" (panel
+#'  labelled by both grouping variable names and levels) and "label_value"
+#'  (panel labelled with only grouping levels).
 #' @param ... other arguments passed to the function \code{\link{ggpar}()},
 #'   \code{\link{facet}()} or \code{\link{ggarrange}()} when printing the plot.
 #' @examples
@@ -75,11 +79,20 @@ NULL
 #'
 #' # Facet
 #' #::::::::::::::::::::::::::::::::::::::::::::::::
+#'
 #' ggsummarystats(
 #'   df, x = "dose", y = "len",
 #'   ggfunc = ggboxplot, add = "jitter",
 #'   color = "dose", palette = "npg",
 #'   facet.by = c("supp", "qc")
+#' )
+#'  # Specify labeller
+#' ggsummarystats(
+#'   df, x = "dose", y = "len",
+#'   ggfunc = ggboxplot, add = "jitter",
+#'   color = "dose", palette = "npg",
+#'   facet.by = c("supp", "qc"),
+#'   labeller = "label_both"
 #' )
 #'
 #' # Free panels
@@ -87,13 +100,15 @@ NULL
 #'   df, x = "dose", y = "len",
 #'   ggfunc = ggboxplot, add = "jitter",
 #'   color = "dose", palette = "npg",
-#'   facet.by = c("supp", "qc"), free.panels = TRUE
+#'   facet.by = c("supp", "qc"),
+#'   free.panels = TRUE, labeller = "label_both"
 #' )
 #'
 #' @describeIn ggsummarystats Create a table of summary stats
 #' @export
 ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", palette = NULL,
-                           facet.by = NULL, position = "identity", ggtheme = theme_pubr(), ...) {
+                           facet.by = NULL, labeller = "label_value",  position = "identity",
+                           ggtheme = theme_pubr(), ...) {
   if (missing(ggtheme) & !is.null(facet.by)) {
     ggtheme <- theme_pubr(border = TRUE)
   }
@@ -121,7 +136,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
       position = position
     )
   p <- ggpar(p, ggtheme = ggtheme, palette = palette, xlab = x, ...)
-  if (!is.null(facet.by)) p <- facet(p, facet.by = facet.by, ...)
+  if (!is.null(facet.by)) p <- facet(p, facet.by = facet.by, labeller = labeller,  ...)
   p + rremove("ylab")
 }
 
@@ -131,7 +146,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
 ggsummarystats <- function(data, x, y, summaries = c("n", "median", "iqr"),
                            ggfunc = ggboxplot,
                            color = "black", fill = "white", palette = NULL,
-                           facet.by = NULL, free.panels = FALSE,
+                           facet.by = NULL, free.panels = FALSE, labeller = "label_value",
                            heights = c(0.80, 0.20), ggtheme = theme_pubr(), ...) {
   if (missing(ggtheme) & !is.null(facet.by)) {
     ggtheme <- theme_pubr(border = TRUE)
@@ -202,7 +217,7 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
                                 ggfunc = ggboxplot,
                                 color = "black", fill = "white", palette = NULL,
                                 ggtheme = theme_pubr(), heights = c(0.80, 0.20),
-                                facet.by = NULL, free.panels = FALSE, ...) {
+                                facet.by = NULL, free.panels = FALSE, labeller = "label_value",  ...) {
   groups <- c(x, color, fill, facet.by) %>%
     unique() %>%
     intersect(colnames(data))
@@ -217,13 +232,15 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
     data,
     x = x, y = y, color = color, fill = fill,
     palette = palette,
-    ggtheme = ggtheme, facet.by = facet.by, ...
+    ggtheme = ggtheme,
+    facet.by = facet.by, labeller = labeller, ...
   )
   summary.plot <- ggsummarytable(
     summary.stats,
     x = x, y = summaries,
     color = color, palette = palette, legend = "none",
-    ggtheme = ggtheme, facet.by = table.facet.by
+    ggtheme = ggtheme,
+    facet.by = table.facet.by, labeller = labeller
   ) +
     clean_table_theme()
 
@@ -236,10 +253,15 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
 }
 
 
-ggsummarystats_free_facet <- function(data, x, y, facet.by, ...) {
+ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller =  "label_value",  ...)
+  {
+  labeller_func <- switch (labeller,
+    label_both = rstatix::df_label_both,
+    label_value = rstatix::df_label_value
+  )
   groups <- facet.by
   data.grouped <- data %>%
-    df_split_by(vars = groups, label_col = "panel") %>%
+    df_split_by(vars = groups, label_col = "panel", labeller = labeller_func) %>%
     mutate(
       plots = map(data, ggsummarystats_core, x = x, y = y, facet.by = "panel", ...)
     )

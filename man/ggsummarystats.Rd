@@ -16,6 +16,7 @@ ggsummarytable(
   color = "black",
   palette = NULL,
   facet.by = NULL,
+  labeller = "label_value",
   position = "identity",
   ggtheme = theme_pubr(),
   ...
@@ -32,6 +33,7 @@ ggsummarystats(
   palette = NULL,
   facet.by = NULL,
   free.panels = FALSE,
+  labeller = "label_value",
   heights = c(0.8, 0.2),
   ggtheme = theme_pubr(),
   ...
@@ -64,6 +66,11 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 
 \item{facet.by}{character vector, of length 1 or 2, specifying grouping
 variables for faceting the plot into multiple panels. Should be in the data.}
+
+\item{labeller}{Character vector. An alternative to the argument
+\code{short.panel.labs}. Possible values are one of "label_both" (panel
+labelled by both grouping variable names and levels) and "label_value"
+(panel labelled with only grouping levels).}
 
 \item{position}{Position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
@@ -161,11 +168,20 @@ ggsummarystats(
 
 # Facet
 #::::::::::::::::::::::::::::::::::::::::::::::::
+
 ggsummarystats(
   df, x = "dose", y = "len",
   ggfunc = ggboxplot, add = "jitter",
   color = "dose", palette = "npg",
   facet.by = c("supp", "qc")
+)
+ # Specify labeller
+ggsummarystats(
+  df, x = "dose", y = "len",
+  ggfunc = ggboxplot, add = "jitter",
+  color = "dose", palette = "npg",
+  facet.by = c("supp", "qc"),
+  labeller = "label_both"
 )
 
 # Free panels
@@ -173,7 +189,8 @@ ggsummarystats(
   df, x = "dose", y = "len",
   ggfunc = ggboxplot, add = "jitter",
   color = "dose", palette = "npg",
-  facet.by = c("supp", "qc"), free.panels = TRUE
+  facet.by = c("supp", "qc"),
+  free.panels = TRUE, labeller = "label_both"
 )
 
 }
