@@ -4,10 +4,14 @@
 \alias{get_legend}
 \title{Extract Legends from a ggplot object}
 \usage{
-get_legend(p)
+get_legend(p, position = NULL)
 }
 \arguments{
 \item{p}{an object of class ggplot or a list of ggplots. If p is a list, only the first legend is returned.}
+
+\item{position}{character specifying legend position. Allowed values are one of
+c("top", "bottom", "left", "right", "none"). To remove the legend use
+legend = "none".}
 }
 \value{
 an object of class gtable.
