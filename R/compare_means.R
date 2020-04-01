@@ -131,7 +131,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   # Keep only variables of interest
   data <- data %>%
-    dplyr::select_(.dots = c(group.by, group, variables))
+    df_select(vars = c(group.by, group, variables))
 
   # Case of formula with multiple variables
   #   1. Gather the data
@@ -199,7 +199,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
         test.func, formula = formula,
         method = method, paired = paired, p.adjust.method = "none",...)
       ) %>%
-      dplyr::select_(.dots = c(group.by, "p")) %>%
+      df_select(vars = c(group.by, "p")) %>%
       unnest(cols = "p")
   }
 
@@ -208,7 +208,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
   if(!c(".y." %in% colnames(res)))
     res <- res %>%
     dplyr::mutate(.y. = variables) %>%
-    dplyr::select_(.dots = c(group.by, ".y.", "dplyr::everything()"))
+    dplyr::select(!!!syms(c(group.by, ".y.")), dplyr::everything())
 
   # Select only reference groups if any
   #::::::::::::::::::::::::::::::::::::::::::::::::::::::::

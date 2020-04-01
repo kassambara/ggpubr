@@ -2,12 +2,11 @@
 NULL
 #' @import ggplot2
 #' @importFrom magrittr %>%
-#' @importFrom dplyr group_by_
+#' @importFrom rstatix df_group_by df_nest_by df_select df_arrange
 #' @importFrom tibble as_tibble
-#' @importFrom dplyr group_by mutate mutate_if group_nest
+#' @importFrom dplyr group_by mutate mutate_if group_nest arrange desc
 #' @importFrom purrr map2 map
 #' @importFrom tidyr unite
-#' @importFrom dplyr arrange_
 #' @importFrom dplyr do
 #' @importFrom dplyr summarise
 #' @importFrom dplyr everything
@@ -804,8 +803,8 @@ p
   grouping.vars <- c(x, grouping.vars) %>%
     unique()
   df %>%
-    arrange_(.dots = c(grouping.vars, y)) %>%
-    group_by_(.dots = grouping.vars) %>%
+    df_arrange(vars = c(grouping.vars, y)) %>%
+    df_group_by(vars = grouping.vars) %>%
     do(utils::tail(., n))
 }
 
@@ -815,8 +814,8 @@ p
   grouping.vars <- c(x, grouping.vars) %>%
     unique()
   df %>%
-    arrange_(.dots = c(grouping.vars, y)) %>%
-    group_by_(.dots = grouping.vars) %>%
+    df_arrange(vars = c(grouping.vars, y)) %>%
+    df_group_by(vars = grouping.vars) %>%
     do(utils::head(., n))
 }
 

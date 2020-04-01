@@ -360,7 +360,7 @@ ggbarplot_core <- function(data, x, y,
        .in <- which(.cols %in% names(data))
        lab.fill <- color.var <- .cols[.in]
        data_sum <- data_sum %>%
-         dplyr::arrange_(.dots = list(x, paste0("desc(", color.var, ")")))
+         dplyr::arrange(!!!syms(x), desc(!!!syms(color.var)))
 
        group <- intersect(.cols, names(data))[1]# You should specify group for dodging text
 

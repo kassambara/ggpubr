@@ -102,7 +102,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   if(.is_density_plot){
 
 
-   # by_panel <- hist.data %>% group_by_(.dots = "PANEL")
+
     lab_data <- .hist_label_data(p, grouping.vars = list(...)$facet.by, x = x)
     y <- "lab.y"
 
@@ -241,19 +241,17 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
 
 
   data <- p$data %>%
-    dplyr::group_by_(.dots = grouping.vars) %>%
-    tidyr::nest()
+    df_nest_by(vars = grouping.vars)
 
   hist.data <- hist.data %>%
-    dplyr::group_by_(.dots = "PANEL") %>%
-    tidyr::nest() %>%
+    df_nest_by(vars = "PANEL") %>%
     .$data
 
   data <- data %>% mutate(hist.data = hist.data)
   lab.data <- purrr::map2(data$hist.data, data$data, .hist_label_y, x)
 
   data <- data %>% mutate(lab.data  = lab.data ) %>%
-    dplyr::select_(.dots = c( "lab.data", grouping.vars)) %>%
+    df_select(vars = c( "lab.data", grouping.vars)) %>%
     tidyr::unnest()
 
   data

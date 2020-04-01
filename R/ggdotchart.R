@@ -166,9 +166,9 @@ ggdotchart_core <- function(data, x, y, group = NULL,
   y.sort <- y
   if(sorting == "descending") y.sort <- paste0("desc(", y, ")")
   if(is.null(group))
-    data <- dplyr::arrange_(data, .dots = y.sort)
+    data <- dplyr::arrange(data, !!!syms(y.sort))
   else if(group != 1)
-    data <- dplyr::arrange_(data, .dots = c(group, y.sort))
+    data <- dplyr::arrange(data, !!!syms(c(group, y.sort)))
 
   data[, x] <- factor(data[, x], levels = unique(as.vector(data[, x])))
 

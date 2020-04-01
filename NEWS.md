@@ -16,6 +16,7 @@
     - `labeller` to the function `facet()`
     - `position` in `get_legend()` to specify legend position
     - `legend.grob` in `ggarrange()` to specify a common legend you want to add onto the combined plot.
+- Maintenance adaptation to dplyr new version by removing deprecated functions, such as group_by_, select_, arrange_, etc
   
 ## Bug fixes
    

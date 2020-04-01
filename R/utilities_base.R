@@ -44,8 +44,8 @@
   . <- NULL # used in pipes
 
   # Grouping the data ==> list of data sets
-  grouped.d <- dplyr::group_by_(.data = data, .dots = grouping.vars) %>%
-    tidyr::nest()
+  grouped.d <- data %>%
+    df_nest_by(vars = grouping.vars)
 
   # Defining names for the list of data sets.
   # names = combination of the levels of the grouping variables

@@ -41,7 +41,7 @@ desc_statby <- function(data, measure.var, grps, ci = 0.95){
 
   . <- NULL
   data %>% as.data.frame() %>%
-    group_by_(.dots = grps) %>%
+    df_group_by(vars = grps) %>%
     do(.summary(.[, measure.var], ci = ci)) %>%
     as.data.frame()
 }
