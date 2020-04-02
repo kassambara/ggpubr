@@ -34,6 +34,14 @@ is_pkg_version_sup<- function(pkg, version){
   cc
 }
 
+keep_only_tbl_df_classes <- function(x){
+  toremove <- setdiff(class(x), c("tbl_df", "tbl", "data.frame"))
+  if(length(toremove) > 0){
+    class(x) <- setdiff(class(x), toremove)
+  }
+  x
+}
+
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Execute a geom_* function from ggplot2
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

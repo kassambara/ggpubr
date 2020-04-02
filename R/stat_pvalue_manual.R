@@ -273,6 +273,7 @@ asserttat_group_columns_exists <- function(data){
 # useful only when positionning the label of grouped bars
 add_ctr_rows <- function(data, ref.group){
   xmin <- NULL
+  data <- keep_only_tbl_df_classes(data)
   ctr <- data %>%
     dplyr::distinct(xmin, .keep_all = TRUE) %>%
     mutate(group2 = ref.group) %>%
