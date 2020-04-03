@@ -16,8 +16,7 @@ LazyData: TRUE
 Encoding: UTF-8
 Depends:
     R (>= 3.1.0),
-    ggplot2,
-    magrittr
+    ggplot2
 Imports:
     ggrepel,
     grid,
@@ -35,7 +34,8 @@ Imports:
     polynom,
     rlang,
     rstatix (>= 0.4.0),
-    tibble
+    tibble,
+    magrittr
 Suggests:
     grDevices,
     knitr,
