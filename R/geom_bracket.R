@@ -41,6 +41,8 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #'   adding p-value or significance levels to a plot.
 #' @param label character vector with alternative label, if not null test is
 #'   ignored
+#' @param type the label type. Can be one of "text" and "expression" (for
+#'   parsing plotmath expression).
 #' @param xmin numeric vector with the positions of the left sides of the
 #'   brackets
 #' @param xmax numeric vector with the positions of the right sides of the
@@ -81,6 +83,14 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #'     label = "t-test, p < 0.05", tip.length = c(0.2, 0.02)
 #'   )
 #'
+#' #Using plotmath expression
+#' ggboxplot(df, x = "dose", y = "len") +
+#'  geom_bracket(
+#'    xmin = "0.5", xmax = "1", y.position = 30,
+#'    label = "list(~italic(p)<=0.001)", type = "expression",
+#'    tip.length = c(0.2, 0.02)
+#'  )
+#'
 #' # Specify multiple brackets manually
 #' ggboxplot(df, x = "dose", y = "len") +
 #'   geom_bracket(
@@ -115,7 +125,7 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 stat_bracket <- function(mapping = NULL, data = NULL,
                          position = "identity", na.rm = FALSE, show.legend = NA,
                          inherit.aes = TRUE,
-                         label = NULL, y.position=NULL, xmin = NULL, xmax = NULL,
+                         label = NULL, type = c("text", "expression"), y.position=NULL, xmin = NULL, xmax = NULL,
                          step.increase = 0, step.group.by = NULL,  tip.length = 0.03,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
                          ...) {
@@ -123,11 +133,12 @@ stat_bracket <- function(mapping = NULL, data = NULL,
     if(! "x" %in% names(data)) mapping$x <- 1
     if(! "y" %in% names(data)) mapping$y <- 1
   }
+  type <- match.arg(type)
   ggplot2::layer(
     stat = StatBracket, data = data, mapping = mapping, geom = "bracket",
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
-      label=label,
+      label=label, type = type,
       y.position=y.position,xmin=xmin, xmax=xmax,
       step.increase=step.increase, step.group.by = step.group.by,
       tip.length=tip.length, size=size, label.size=label.size,
@@ -146,11 +157,15 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
                                 # draw_key = function(...){grid::nullGrob()},
                                 # for legend:
                                 draw_key = draw_key_path,
-                                draw_group = function(data, panel_params, coord) {
+                                draw_group = function(data, panel_params, coord, type = "text") {
+                                  lab <- as.character(data$annotation)
+                                  if(type == "expression"){
+                                    lab <- parse_as_expression(lab)
+                                  }
                                   coords <- coord$transform(data, panel_params)
                                   grid::gList(
                                     grid::textGrob(
-                                      label = as.character(coords$annotation),
+                                      label = lab,
                                       x = mean(c(coords$x[1], tail(coords$xend, n=1))),
                                       y = max(c(coords$y, coords$yend))+0.01,
                                       default.units = "native",
@@ -183,10 +198,11 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
 geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
                          position = "identity", na.rm = FALSE, show.legend = NA,
                          inherit.aes = TRUE,
-                         label = NULL, y.position = NULL, xmin = NULL, xmax = NULL,
+                         label = NULL, type = c("text", "expression"), y.position = NULL, xmin = NULL, xmax = NULL,
                          step.increase = 0, step.group.by = NULL, tip.length = 0.03,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
                          ...) {
+  type <- match.arg(type)
   data <- build_signif_data(
     data = data, label = label, y.position = y.position,
     xmin = xmin, xmax = xmax, step.increase = step.increase,
@@ -197,6 +213,7 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
     stat = stat, geom = GeomBracket, mapping = mapping,  data = data,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
+      type = type,
       tip.length = tip.length,
       size = size, label.size = label.size,
       family=family, na.rm = na.rm, ...
@@ -295,4 +312,16 @@ build_signif_mapping <- function(mapping, data){
     mapping$y <- mapping$y.position
   }
   mapping
+}
+
+
+# Source: https://github.com/tidyverse/ggplot2/issues/2864
+parse_as_expression <- function(text) {
+  stopifnot(is.character(text))
+  out <- vector("expression", length(text))
+  for (i in seq_along(text)) {
+    expr <- parse(text = text[[i]])
+    out[[i]] <- if (length(expr) == 0) NA else expr[[1]]
+  }
+  out
 }

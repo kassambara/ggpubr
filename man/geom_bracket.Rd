@@ -13,6 +13,7 @@ stat_bracket(
   show.legend = NA,
   inherit.aes = TRUE,
   label = NULL,
+  type = c("text", "expression"),
   y.position = NULL,
   xmin = NULL,
   xmax = NULL,
@@ -35,6 +36,7 @@ geom_bracket(
   show.legend = NA,
   inherit.aes = TRUE,
   label = NULL,
+  type = c("text", "expression"),
   y.position = NULL,
   xmin = NULL,
   xmax = NULL,
@@ -88,6 +90,9 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
 \item{label}{character vector with alternative label, if not null test is
 ignored}
+
+\item{type}{the label type. Can be one of "text" and "expression" (for
+parsing plotmath expression).}
 
 \item{y.position}{numeric vector with the y positions of the brackets}
 
@@ -143,6 +148,14 @@ ggboxplot(df, x = "dose", y = "len") +
     xmin = "0.5", xmax = "1", y.position = 30,
     label = "t-test, p < 0.05", tip.length = c(0.2, 0.02)
   )
+
+#Using plotmath expression
+ggboxplot(df, x = "dose", y = "len") +
+ geom_bracket(
+   xmin = "0.5", xmax = "1", y.position = 30,
+   label = "list(~italic(p)<=0.001)", type = "expression",
+   tip.length = c(0.2, 0.02)
+ )
 
 # Specify multiple brackets manually
 ggboxplot(df, x = "dose", y = "len") +
