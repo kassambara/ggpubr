@@ -13,7 +13,7 @@
 ## Minor changes
    
 - New arguments:
-    - `type` in `geom_bracket()` to specify label type. Can be "text" or "expression" (for parsing plotmath expression)
+    - `type` in `geom_bracket()` to specify label type. Can be "text" or "expression" (for parsing plotmath expression); [#253](https://github.com/kassambara/ggpubr/issues/253).
     - `labeller` to the function `facet()`
     - `position` in `get_legend()` to specify legend position
     - `legend.grob` in `ggarrange()` to specify a common legend you want to add onto the combined plot.
