@@ -242,7 +242,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   res %>%
     mutate(p.adj = signif(p.adj, digits = 2)) %>%
-    dplyr::tbl_df()
+    tibble::as_tibble()
 }
 
 
