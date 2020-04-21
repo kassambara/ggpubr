@@ -28,6 +28,7 @@ NULL
 #'  allowed values include: i) one of c('right', 'left', 'center', 'centre',
 #'  'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
 #'  'middle') for y-axis.}
+#'@param vjust move the text up or down relative to the bracket.
 #'@param tip.length numeric vector with the fraction of total height that the
 #'  bar goes down to indicate the precise column. Default is 0.03. Can be of
 #'  same length as the number of comparisons to adjust specifically the tip
@@ -100,7 +101,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                      method = NULL, paired = FALSE, method.args = list(), ref.group = NULL,
                      comparisons = NULL, hide.ns = FALSE, label.sep = ", ",
                      label = NULL, label.x.npc = "left", label.y.npc = "top",
-                     label.x = NULL, label.y = NULL, tip.length = 0.03,
+                     label.x = NULL, label.y = NULL, vjust = 0, tip.length = 0.03,
                      bracket.size = 0.3, step.increase = 0,
                      symnum.args = list(),
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
@@ -144,7 +145,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                           test = method, test.args = method.args,
                           step_increase = step.increase, size = bracket.size, textsize = size, color = color,
                           map_signif_level = map_signif_level, tip_length = tip.length,
-                          data = data)
+                          data = data, vjust = vjust)
   }
 
   else{
@@ -157,7 +158,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                     method = method, method.args = method.args,
                     paired = paired, ref.group = ref.group,
                     symnum.args = symnum.args,
-                    hide.ns = hide.ns, na.rm = na.rm, ...)
+                    hide.ns = hide.ns, na.rm = na.rm, vjust = vjust,...)
     )
 
   }

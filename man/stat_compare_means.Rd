@@ -19,6 +19,7 @@ stat_compare_means(
   label.y.npc = "top",
   label.x = NULL,
   label.y = NULL,
+  vjust = 0,
   tip.length = 0.03,
   bracket.size = 0.3,
   step.increase = 0,
@@ -94,6 +95,8 @@ allowed values include: i) one of c('right', 'left', 'center', 'centre',
 
 \item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
+
+\item{vjust}{move the text up or down relative to the bracket.}
 
 \item{tip.length}{numeric vector with the fraction of total height that the
  bar goes down to indicate the precise column. Default is 0.03. Can be of

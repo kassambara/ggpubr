@@ -13,6 +13,7 @@
 ## Minor changes
    
 - New arguments:
+    - `vjsut` in `stat_compare_means()` to move the text up or down relative to the bracket.
     - `type` in `geom_bracket()` to specify label type. Can be "text" or "expression" (for parsing plotmath expression); [#253](https://github.com/kassambara/ggpubr/issues/253).
     - `labeller` to the function `facet()`
     - `position` in `get_legend()` to specify legend position
