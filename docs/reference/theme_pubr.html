@@ -48,8 +48,10 @@ theme_classic2():
  Create a classic theme with axis lines.
 clean_theme(): Remove
  axis lines, ticks, texts and titles.
-
-" />
+clean_table_theme():
+ Clean the the theme of a table, such as those created by
+ ggsummarytable()
+." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -81,7 +83,7 @@ clean_theme(): Remove
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -135,14 +137,21 @@ clean_theme(): Remove
  Create a classic theme with axis lines.</p></li>
 <li><p><strong>clean_theme()</strong>: Remove
  axis lines, ticks, texts and titles.</p></li>
-</ul>
-
+<li><p><strong>clean_table_theme()</strong>:
+ Clean the the theme of a table, such as those created by
+ <code><a href='ggsummarystats.html'>ggsummarytable</a>()</code></p></li>
+</ul><p>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>theme_pubr</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"top"</span>, <span class='st'>"bottom"</span>, <span class='st'>"left"</span>, <span class='st'>"right"</span>, <span class='st'>"none"</span>),
-  <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+    <pre class="usage"><span class='fu'>theme_pubr</span>(
+  <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"top"</span>, <span class='st'>"bottom"</span>, <span class='st'>"left"</span>, <span class='st'>"right"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='fl'>0</span>
+)
 
 <span class='fu'>theme_pubclean</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>flip</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
@@ -150,7 +159,9 @@ clean_theme(): Remove
 
 <span class='fu'>theme_classic2</span>(<span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>base_family</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
-<span class='fu'>clean_theme</span>()</pre>
+<span class='fu'>clean_theme</span>()
+
+<span class='fu'>clean_table_theme</span>()</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,7 +200,8 @@ Use 90 for vertical text.</p></td>
     </tr>
     <tr>
       <th>flip</th>
-      <td><p>logical. If TRUE, grid lines are added to y axis instead of x axis.</p></td>
+      <td><p>logical. If TRUE, grid lines are added to y axis instead of x
+axis.</p></td>
     </tr>
     </table>
     

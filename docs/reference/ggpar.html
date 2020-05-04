@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -114,21 +114,49 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ggpar</span>(<span class='no'>p</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gradient.cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xscale</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>,
-  <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>), <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
-  <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.xtickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>,
-  <span class='kw'>font.ytickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>, <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>y.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='no'>x.text.angle</span>,
-  <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='no'>y.text.angle</span>, <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"vertical"</span>, <span class='st'>"horizontal"</span>, <span class='st'>"reverse"</span>),
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ggpar</span>(
+  <span class='no'>p</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>gradient.cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.submain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.caption</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xscale</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
+  <span class='kw'>yscale</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"log2"</span>, <span class='st'>"log10"</span>, <span class='st'>"sqrt"</span>),
+  <span class='kw'>format.scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legend.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ticks</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>tickslab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>font.tickslab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.xtickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>,
+  <span class='kw'>font.ytickslab</span> <span class='kw'>=</span> <span class='no'>font.tickslab</span>,
+  <span class='kw'>x.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>y.text.angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xtickslab.rt</span> <span class='kw'>=</span> <span class='no'>x.text.angle</span>,
+  <span class='kw'>ytickslab.rt</span> <span class='kw'>=</span> <span class='no'>y.text.angle</span>,
+  <span class='kw'>xticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>yticks.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"vertical"</span>, <span class='st'>"horizontal"</span>, <span class='st'>"reverse"</span>),
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

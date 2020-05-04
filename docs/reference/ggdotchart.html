@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -114,16 +114,40 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ggdotchart</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dot.size</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ascending"</span>, <span class='st'>"descending"</span>),
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"segment"</span>), <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>x.text.col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>), <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>ggdotchart</span>(
+  <span class='no'>data</span>,
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>dot.size</span> <span class='kw'>=</span> <span class='no'>size</span>,
+  <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ascending"</span>, <span class='st'>"descending"</span>),
+  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"segment"</span>),
+  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>x.text.col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>remove</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>),
+  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(),
+  <span class='no'>...</span>
+)
 
 <span class='fu'>theme_cleveland</span>(<span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
@@ -343,7 +367,8 @@ and <code><a href='ggpar.html'>ggpar</a></code>.</p></td>
    <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
    <span class='kw'>sorting</span> <span class='kw'>=</span> <span class='st'>"descending"</span>,
    <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_bw</span>(),
-   <span class='kw'>y.text.col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span> )</div><div class='img'><img src='ggdotchart-2.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>y.text.col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span> )</div><div class='output co'>#&gt; <span class='warning'>Warning: Vectorized input to `element_text()` is not officially supported.</span>
+#&gt; <span class='warning'>Results may be unexpected or may change in future versions of ggplot2.</span></div><div class='img'><img src='ggdotchart-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Plot with multiple groups</span>
 <span class='co'># +++++++++++++++++++++</span>

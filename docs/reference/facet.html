@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -116,12 +116,22 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>facet</span>(<span class='no'>p</span>, <span class='no'>facet.by</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
-  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>facet</span>(
+  <span class='no'>p</span>,
+  <span class='no'>facet.by</span>,
+  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scales</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
+  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>labeller</span> <span class='kw'>=</span> <span class='st'>"label_value"</span>,
+  <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>panel.labs.background</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
-  <span class='kw'>panel.labs.font</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>angle</span> <span class='kw'>=</span>
-  <span class='kw'>NULL</span>), <span class='kw'>panel.labs.font.x</span> <span class='kw'>=</span> <span class='no'>panel.labs.font</span>,
-  <span class='kw'>panel.labs.font.y</span> <span class='kw'>=</span> <span class='no'>panel.labs.font</span>, <span class='kw'>strip.position</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>panel.labs.font</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
+  <span class='kw'>panel.labs.font.x</span> <span class='kw'>=</span> <span class='no'>panel.labs.font</span>,
+  <span class='kw'>panel.labs.font.y</span> <span class='kw'>=</span> <span class='no'>panel.labs.font</span>,
+  <span class='kw'>strip.position</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,6 +160,13 @@ free ("free"), or free in one dimension ("free_x", "free_y").</p></td>
       <td><p>logical value. Default is TRUE. If TRUE, create short
 labels for panels by omitting variable names; in other words panels will be
 labelled only by variable grouping levels.</p></td>
+    </tr>
+    <tr>
+      <th>labeller</th>
+      <td><p>Character vector. An alternative to the argument
+<code>short.panel.labs</code>. Possible values are one of "label_both" (panel
+labelled by both grouping variable names and levels) and "label_value"
+(panel labelled with only grouping levels).</p></td>
     </tr>
     <tr>
       <th>panel.labs</th>
@@ -183,8 +200,8 @@ only x and y direction, respectively.</p></td>
     <tr>
       <th>strip.position</th>
       <td><p>(used only in <code>facet_wrap()</code>). By default, the
-labels are displayed on the top of the plot. Using <code>strip.position</code> it is
-possible to place the labels on either of the four sides by setting
+labels are displayed on the top of the plot. Using <code>strip.position</code> it
+is possible to place the labels on either of the four sides by setting
 <code>strip.position = c("top", "bottom", "left", "right")</code></p></td>
     </tr>
     <tr>

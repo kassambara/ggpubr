@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -122,11 +122,24 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ggarrange</span>(<span class='no'>...</span>, <span class='kw'>plotlist</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>hjust</span> <span class='kw'>=</span> -<span class='fl'>0.5</span>,
-  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>14</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span>
-  <span class='st'>"bold"</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='kw'>NULL</span>), <span class='kw'>align</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>),
-  <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>common.legend</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ggarrange</span>(
+  <span class='no'>...</span>,
+  <span class='kw'>plotlist</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>hjust</span> <span class='kw'>=</span> -<span class='fl'>0.5</span>,
+  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>14</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='kw'>NULL</span>),
+  <span class='kw'>align</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>),
+  <span class='kw'>widths</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>common.legend</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>legend.grob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,6 +223,12 @@ legend = "none".</p></td>
       <th>common.legend</th>
       <td><p>logical value. Default is FALSE. If TRUE, a common
 unique legend will be created for arranged plots.</p></td>
+    </tr>
+    <tr>
+      <th>legend.grob</th>
+      <td><p>a legend grob as returned by the function
+<code><a href='get_legend.html'>get_legend</a>()</code>. If provided, it will be used as the common
+legend.</p></td>
     </tr>
     </table>
     

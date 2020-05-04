@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -116,19 +116,30 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>stat_regline_equation</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>y</span> ~ <span class='no'>x</span>,
-  <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output.type</span> <span class='kw'>=</span> <span class='st'>"expression"</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>stat_regline_equation</span>(
+  <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>y</span> ~ <span class='no'>x</span>,
+  <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>,
+  <span class='kw'>label.y.npc</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
+  <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>output.type</span> <span class='kw'>=</span> <span class='st'>"expression"</span>,
+  <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
+  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mapping</th>
-      <td><p>Set of aesthetic mappings created by <code>aes()</code> or
-<code>aes_()</code>. If specified and <code>inherit.aes = TRUE</code> (the
+      <td><p>Set of aesthetic mappings created by <code><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes()</a></code> or
+<code><a href='https://ggplot2.tidyverse.org/reference/aes_.html'>aes_()</a></code>. If specified and <code>inherit.aes = TRUE</code> (the
 default), it is combined with the default mapping at the top level of the
 plot. You must supply <code>mapping</code> if there is no plot mapping.</p></td>
     </tr>
@@ -137,10 +148,10 @@ plot. You must supply <code>mapping</code> if there is no plot mapping.</p></td>
       <td><p>The data to be displayed in this layer. There are three
 options:</p>
 <p>If <code>NULL</code>, the default, the data is inherited from the plot
-data as specified in the call to <code>ggplot()</code>.</p>
+data as specified in the call to <code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot()</a></code>.</p>
 <p>A <code>data.frame</code>, or other object, will override the plot
 data. All objects will be fortified to produce a data frame. See
-<code>fortify()</code> for which variables will be created.</p>
+<code><a href='https://ggplot2.tidyverse.org/reference/fortify.html'>fortify()</a></code> for which variables will be created.</p>
 <p>A <code>function</code> will be called with a single argument,
 the plot data. The return value must be a <code>data.frame</code>, and
 will be used as the layer data. A <code>function</code> can be created
@@ -202,7 +213,7 @@ display.</p></td>
       <td><p>If <code>FALSE</code>, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. <code>borders()</code>.</p></td>
+the default plot specification, e.g. <code><a href='https://ggplot2.tidyverse.org/reference/borders.html'>borders()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -247,7 +258,7 @@ the default plot specification, e.g. <code>borders()</code>.</p></td>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>mtcars</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>) +
   <span class='fu'><a href='stat_cor.html'>stat_cor</a></span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>34</span>) +
-  <span class='fu'>stat_regline_equation</span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>32</span>)</div><div class='img'><img src='stat_regline_equation-1.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'>stat_regline_equation</span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>32</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_regline_equation-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Groupped scatter plot</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
@@ -258,7 +269,7 @@ the default plot specification, e.g. <code>borders()</code>.</p></td>
   ) +
   <span class='fu'>facet_wrap</span>(~<span class='no'>Species</span>) +
   <span class='fu'><a href='stat_cor.html'>stat_cor</a></span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>4.4</span>) +
-  <span class='fu'>stat_regline_equation</span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>4.2</span>)</div><div class='img'><img src='stat_regline_equation-2.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'>stat_regline_equation</span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>4.2</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_regline_equation-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Polynomial equation</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 

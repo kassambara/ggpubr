@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -114,9 +114,17 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>compare_means</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"wilcox.test"</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>symnum.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>p.adjust.method</span> <span class='kw'>=</span> <span class='st'>"holm"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>compare_means</span>(
+  <span class='no'>formula</span>,
+  <span class='no'>data</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"wilcox.test"</span>,
+  <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>symnum.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>p.adjust.method</span> <span class='kw'>=</span> <span class='st'>"holm"</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

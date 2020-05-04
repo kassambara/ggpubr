@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_legend</span>(<span class='no'>p</span>)</pre>
+    <pre class="usage"><span class='fu'>get_legend</span>(<span class='no'>p</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -122,6 +122,12 @@
     <tr>
       <th>p</th>
       <td><p>an object of class ggplot or a list of ggplots. If p is a list, only the first legend is returned.</p></td>
+    </tr>
+    <tr>
+      <th>position</th>
+      <td><p>character specifying legend position. Allowed values are one of
+c("top", "bottom", "left", "right", "none"). To remove the legend use
+legend = "none".</p></td>
     </tr>
     </table>
     

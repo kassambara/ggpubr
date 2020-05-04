@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -114,22 +114,56 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ggscatter</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>point</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"reg.line"</span>, <span class='st'>"loess"</span>),
-  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>fullrange</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ellipse.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ellipse.type</span> <span class='kw'>=</span> <span class='st'>"norm"</span>, <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>ellipse.border.remove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>ggscatter</span>(
+  <span class='no'>data</span>,
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>combine</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"lightgray"</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>point</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>rug</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>panel.labs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>short.panel.labs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"reg.line"</span>, <span class='st'>"loess"</span>),
+  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>conf.int.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>fullrange</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ellipse.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ellipse.type</span> <span class='kw'>=</span> <span class='st'>"norm"</span>,
+  <span class='kw'>ellipse.alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
+  <span class='kw'>ellipse.border.remove</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>mean.point</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>mean.point.size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>is.numeric</a></span>(<span class='no'>size</span>), <span class='fl'>2</span> * <span class='no'>size</span>, <span class='no'>size</span>),
-  <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>), <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cor.coeff.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-  <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>), <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show.legend.text</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>star.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>star.plot.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>star.plot.lwd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>),
+  <span class='kw'>font.family</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>repel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cor.coeff.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>cor.method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
+  <span class='kw'>cor.coef.coord</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>),
+  <span class='kw'>cor.coef.size</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>ggp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>show.legend.text</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(),
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -419,10 +453,10 @@ and <code><a href='ggpar.html'>ggpar</a></code>.</p></td>
    <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='co'># Add confidence interval</span>
    <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='co'># Add correlation coefficient. see ?stat_cor</span>
    <span class='kw'>cor.coeff.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)
-   )</div><div class='img'><img src='ggscatter-1.png' alt='' width='700' height='433' /></div><div class='input'>
+   )</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='ggscatter-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># loess method: local regression fitting</span>
 <span class='fu'>ggscatter</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"loess"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='ggscatter-2.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"loess"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='ggscatter-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Control point size by continuous variable values ("qsec")</span>
 <span class='fu'>ggscatter</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,

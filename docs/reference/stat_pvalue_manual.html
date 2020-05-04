@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -116,12 +116,27 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>stat_pvalue_manual</span>(<span class='no'>data</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='st'>"y.position"</span>,
-  <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='st'>"group1"</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='st'>"group2"</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3.88</span>,
-  <span class='kw'>label.size</span> <span class='kw'>=</span> <span class='no'>size</span>, <span class='kw'>bracket.size</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.03</span>, <span class='kw'>remove.bracket</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>step.increase</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>step.group.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>stat_pvalue_manual</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='st'>"y.position"</span>,
+  <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='st'>"group1"</span>,
+  <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='st'>"group2"</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>3.88</span>,
+  <span class='kw'>label.size</span> <span class='kw'>=</span> <span class='no'>size</span>,
+  <span class='kw'>bracket.size</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.03</span>,
+  <span class='kw'>remove.bracket</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>step.increase</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>step.group.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>hide.ns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,7 +153,7 @@ the y coordinates of the p-values in the plot.</p></td>
       <th>label</th>
       <td><p>the column containing the label (e.g.: label = "p" or label =
 "p.adj"), where <code>p</code> is the p-value. Can be also an expression that can
-be formatted by the <code><a href='https://rdrr.io/pkg/glue/man/glue.html'>glue</a>()</code> package. For example, when
+be formatted by the <code><a href='https://glue.tidyverse.org/reference/glue.html'>glue</a>()</code> package. For example, when
 specifying label = "t-test, p = {p}", the expression {p} will be
 replaced by its value.</p></td>
     </tr>

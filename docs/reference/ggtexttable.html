@@ -77,7 +77,7 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -132,30 +132,61 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
     
     </div>
 
-    <pre class="usage"><span class='fu'>ggtexttable</span>(<span class='no'>x</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>x</span>), <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>x</span>), <span class='kw'>vp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(), <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>ggtexttable</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>rows</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>x</span>),
+  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>x</span>),
+  <span class='kw'>vp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(),
+  <span class='no'>...</span>
+)
 
-<span class='fu'>ttheme</span>(<span class='kw'>base_style</span> <span class='kw'>=</span> <span class='st'>"default"</span>, <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>base_colour</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>4</span>), <span class='st'>"mm"</span>), <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>size</span> <span class='kw'>=</span>
-  <span class='no'>base_size</span>), <span class='kw'>rownames.style</span> <span class='kw'>=</span> <span class='fu'>rownames_style</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>base_size</span>),
-  <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>base_size</span>))
+<span class='fu'>ttheme</span>(
+  <span class='kw'>base_style</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
+  <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>11</span>,
+  <span class='kw'>base_colour</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>4</span>), <span class='st'>"mm"</span>),
+  <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>base_size</span>),
+  <span class='kw'>rownames.style</span> <span class='kw'>=</span> <span class='fu'>rownames_style</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>base_size</span>),
+  <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='no'>base_size</span>)
+)
 
-<span class='fu'>colnames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"grey80"</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>colnames_style</span>(
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"grey80"</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)
 
-<span class='fu'>rownames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"italic"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)
+<span class='fu'>rownames_style</span>(
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"italic"</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)
 
-<span class='fu'>tbody_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"grey95"</span>, <span class='st'>"grey90"</span>), <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>tbody_style</span>(
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"plain"</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"grey95"</span>, <span class='st'>"grey90"</span>),
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>parse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)
 
 <span class='fu'>table_cell_font</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>table_cell_bg</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>table_cell_bg</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -116,12 +116,24 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ggmaplot</span>(<span class='no'>data</span>, <span class='kw'>fdr</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>fc</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>genenames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>detection_call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>,
-  <span class='st'>"black"</span>), <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#B31B21"</span>, <span class='st'>"#1465AC"</span>,
-  <span class='st'>"darkgray"</span>), <span class='kw'>top</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>select.top.method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"padj"</span>, <span class='st'>"fc"</span>),
-  <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Log2 mean expression"</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Log2 fold change"</span>, <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ggmaplot</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>fdr</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+  <span class='kw'>fc</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
+  <span class='kw'>genenames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>detection_call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>, <span class='st'>"black"</span>),
+  <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#B31B21"</span>, <span class='st'>"#1465AC"</span>, <span class='st'>"darkgray"</span>),
+  <span class='kw'>top</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>select.top.method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"padj"</span>, <span class='st'>"fc"</span>),
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Log2 mean expression"</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Log2 fold change"</span>,
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(),
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
