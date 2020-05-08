@@ -365,7 +365,12 @@ p
 .set_ticksby <- function(p, xticks.by = NULL, yticks.by = NULL)
 {
   if(!is.null(yticks.by)) {
-    p <- p + scale_y_continuous(breaks = get_breaks(by = yticks.by))
+    # Forcing ymin to start at 0 when distribution plot
+    gg_mapping <- .get_gg_xy_variables(p)
+    is_density_plot <-  gg_mapping["y"] %in% c("..count..", "..density..", "..ecdf..")
+    ymin <- NULL
+    if(is_density_plot) ymin <- 0
+    p <- p + scale_y_continuous(breaks = get_breaks(by = yticks.by, from = ymin))
   }
   else if(!is.null(xticks.by)) {
     p <- p + scale_x_continuous(breaks = get_breaks(by = xticks.by))
