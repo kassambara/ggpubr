@@ -78,6 +78,7 @@ reference:
       - rremove
       - grids
       - axis_scale
+      - get_breaks
       - get_legend
   - title: Arrange and Export Multiple ggplots
     contents:

@@ -1,13 +1,18 @@
 # ggpubr 0.3.0.999
    
 ## New features
-
+   
+- New function `get_breaks()` added to easily create breaks for numeric axes. Can be used to increase the number of x and y ticks by specifying the option `n`. It's also possible to control axis breaks by specifying a step between ticks. For example, if by = 5, a tick mark is shown on every 5 ([@Chitanda-Satou, #258](https://github.com/kassambara/ggpubr/issues/258)).
+   
 ## Major changes
 
 ## Minor changes
 
 ## Bug fixes
    
+   
+- Now, `gghistogram()` supports the paramter `yticks.by` ([@Chitanda-Satou, #258](https://github.com/kassambara/ggpubr/issues/258)).
+
    
 # ggpubr 0.3.0
   

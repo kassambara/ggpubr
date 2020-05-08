@@ -363,23 +363,16 @@ p
 # Set ticks by
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_ticksby <- function(p, xticks.by = NULL, yticks.by = NULL)
-  {
-    .data <- p$data
-    # .mapping <- as.character(p$mapping)
-    .mapping <- .get_gg_xy_variables(p)
-
-    if(!is.null(yticks.by)) {
-      y <- .data[, .mapping["y"]]
-      ybreaks <- seq(0, max(y, na.rm = TRUE), by = yticks.by)
-      p <- p + scale_y_continuous(breaks = ybreaks)
-    }
-    else if(!is.null(xticks.by)) {
-      x <- .data[, .mapping["x"]]
-      xbreaks <- seq(0, max(x, na.rm = TRUE), by = xticks.by)
-      p <- p + scale_x_continuous(breaks = xbreaks)
-    }
-    p
+{
+  if(!is.null(yticks.by)) {
+    p <- p + scale_y_continuous(breaks = get_breaks(by = yticks.by))
+  }
+  else if(!is.null(xticks.by)) {
+    p <- p + scale_x_continuous(breaks = get_breaks(by = xticks.by))
+  }
+  p
 }
+
 
 
 

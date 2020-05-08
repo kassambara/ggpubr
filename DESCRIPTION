@@ -63,6 +63,7 @@ Collate:
     'gene_citation.R'
     'geom_bracket.R'
     'geom_exec.R'
+    'get_breaks.R'
     'get_legend.R'
     'get_palette.R'
     'ggadd.R'
