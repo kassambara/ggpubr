@@ -32,7 +32,7 @@ ggadd(
 \item{add}{character vector specifying other plot elements to be added.
 Allowed values are one or the combination of: "none", "dotplot", "jitter",
 "boxplot", "point", "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
-"median", "median_iqr", "median_mad", "median_range".}
+"median", "median_iqr", "median_hilow", "median_q1q3", "median_mad", "median_range".}
 
 \item{color}{point or outline color.}
 

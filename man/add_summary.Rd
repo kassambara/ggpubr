@@ -7,6 +7,8 @@
 \alias{mean_ci}
 \alias{mean_range}
 \alias{median_iqr}
+\alias{median_hilow_}
+\alias{median_q1q3}
 \alias{median_mad}
 \alias{median_range}
 \title{Add Summary Statistics onto a ggplot.}
@@ -38,6 +40,10 @@ mean_range(x, error.limit = "both")
 
 median_iqr(x, error.limit = "both")
 
+median_hilow_(x, ci = 0.95, error.limit = "both")
+
+median_q1q3(x, error.limit = "both")
+
 median_mad(x, error.limit = "both")
 
 median_range(x, error.limit = "both")
@@ -48,7 +54,7 @@ median_range(x, error.limit = "both")
 \item{fun}{a function that is given the complete data and should return a data
 frame with variables ymin, y, and ymax. Allowed values are one of: "mean",
 "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr",
-"median_mad", "median_range".}
+"median_hilow", "median_q1q3", "median_mad", "median_range".}
 
 \item{error.plot}{plot type used to visualize error. Allowed values are one of
 \code{c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
@@ -117,6 +123,20 @@ add summary statistics onto a ggplot.
 \item \code{median_iqr}: returns the \code{median} and the error limits
 defined by the \code{interquartile range}.
 
+\item \code{median_hilow_}: computes the sample median and a selected pair of
+outer quantiles having equal tail areas. This function is a reformatted
+version of \code{Hmisc::smedian.hilow()}. The confidence limits are computed
+as follow: \code{lower.limits = (1-ci)/2} percentiles; \code{upper.limits =
+(1+ci)/2} percentiles. By default (\code{ci = 0.95}), the 2.5th and the
+97.5th percentiles are used as the lower and the upper confidence limits,
+respectively. If you want to use the 25th and the 75th percentiles as the
+confidence limits, then specify \code{ci = 0.5} or use the function
+\code{median_q1q3()}.
+
+\item \code{median_q1q3}: computes the sample median and, the 25th and 75th
+percentiles. Wrapper around the function \code{median_hilow_()} using
+\code{ci = 0.5}.
+
 \item \code{median_mad}: returns the \code{median} and the error limits
 defined by the \code{median absolute deviation}.
 
@@ -130,7 +150,7 @@ defined by the \code{range = max - min}.
 p <- ggviolin(ToothGrowth, x = "dose", y = "len", add = "none")
 p
 
-# Add median_iqr
+# Add mean_sd
 add_summary(p, "mean_sd")
 
 

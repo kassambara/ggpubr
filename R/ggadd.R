@@ -7,7 +7,7 @@ NULL
 #'@param add character vector specifying other plot elements to be added.
 #'  Allowed values are one or the combination of: "none", "dotplot", "jitter",
 #'  "boxplot", "point", "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
-#'  "median", "median_iqr", "median_mad", "median_range".
+#'  "median", "median_iqr", "median_hilow", "median_q1q3", "median_mad", "median_range".
 #'@param color point or outline color.
 #'@param fill fill color. Used only when \code{error.plot = "crossbar"}.
 #'@param group grouping variable. Allowed values are 1 (for one group) or a
@@ -65,9 +65,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   if(length(center) == 2)
     stop("Use mean or mdedian, but not both at the same time.")
   # Adding error bars
-  errors <- c("mean_se", "mean_sd", "mean_ci", "mean_range",
-              "median_iqr", "median_mad", "median_range")
-  errors <- intersect(errors, add)
+  errors <- intersect(.errorbar_functions(), add)
   if(length(errors) > 1)
     stop("Choose only one of these: ", .collapse(errors, sep = ", "))
 

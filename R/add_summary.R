@@ -6,7 +6,7 @@ NULL
 #'@param fun a function that is given the complete data and should return a data
 #'  frame with variables ymin, y, and ymax. Allowed values are one of: "mean",
 #'  "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr",
-#'  "median_mad", "median_range".
+#'  "median_hilow", "median_q1q3", "median_mad", "median_range".
 #'@param error.plot plot type used to visualize error. Allowed values are one of
 #'  \code{c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
 #'  "lower_errorbar", "upper_pointrange", "lower_pointrange", "upper_linerange",
@@ -44,7 +44,7 @@ NULL
 #'p <- ggviolin(ToothGrowth, x = "dose", y = "len", add = "none")
 #'p
 #'
-#'# Add median_iqr
+#'# Add mean_sd
 #'add_summary(p, "mean_sd")
 #'
 #'
@@ -58,11 +58,10 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
   {
 
   if(is.null(data)) data <- p$data
-  if(fun == "mean_se")
-    fun <- "mean_se_"
+  if(fun == "mean_se") fun <- "mean_se_"
+  else if(fun == "median_hilow") fun <- "median_hilow_"
 
-  allowed.fun <- c("mean", "median", "mean_se", "mean_se_", "mean_sd", "mean_ci", "mean_range",
-                   "median_iqr", "median_mad", "median_range")
+  allowed.fun <- .summary_functions()
   if(!(fun %in% allowed.fun))
     stop("Don't support ", fun, ". Possibilities for the argument fun are: ",
          .collapse(allowed.fun, sep = ", "))
@@ -119,7 +118,9 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
             color = color,  geom = geom, size = size, linetype = linetype,
             show.legend = show.legend, data = data, position = position,
             fun.args = list(error.limit = error.limit), group = group)
-  if(fun == "mean_ci") opts$fun.args$ci <- ci
+  if(fun %in% c("mean_ci", "median_hilow_")){
+    opts$fun.args$ci <- ci
+  }
 
   # Specific option
   #::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -212,6 +213,41 @@ median_iqr <- function(x, error.limit = "both"){
     ymax = .median + .iqr
   ) %>% .format_error(error.limit)
 }
+
+#' @describeIn add_summary computes the sample median and a selected pair of
+#'   outer quantiles having equal tail areas. This function is a reformatted
+#'   version of \code{Hmisc::smedian.hilow()}. The confidence limits are computed
+#'   as follow: \code{lower.limits = (1-ci)/2} percentiles; \code{upper.limits =
+#'   (1+ci)/2} percentiles. By default (\code{ci = 0.95}), the 2.5th and the
+#'   97.5th percentiles are used as the lower and the upper confidence limits,
+#'   respectively. If you want to use the 25th and the 75th percentiles as the
+#'   confidence limits, then specify \code{ci = 0.5} or use the function
+#'   \code{median_q1q3()}.
+#' @export
+median_hilow_ <- function(x, ci = 0.95, error.limit = "both"){
+  quant <- stats::quantile(
+    x,
+    probs = c(0.5, (1 - ci)/2, (1 + ci)/2),
+    na.rm = TRUE
+    )
+  names(quant) <- c("median", "lower", "upper")
+  data.frame(
+    y = quant["median"],
+    ymin = quant["lower"],
+    ymax = quant["upper"]
+  ) %>%
+    .format_error(error.limit)
+}
+
+#' @describeIn add_summary computes the sample median and, the 25th and 75th
+#'   percentiles. Wrapper around the function \code{median_hilow_()} using
+#'   \code{ci = 0.5}.
+#' @export
+median_q1q3 <- function(x, error.limit = "both"){
+  median_hilow_(x, ci = 0.5, error.limit = error.limit)
+}
+
+
 
 #' @describeIn add_summary returns the \code{median} and the error limits
 #'   defined by the \code{median absolute deviation}.

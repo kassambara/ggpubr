@@ -41,7 +41,7 @@ ggerrorplot(
 
 \item{desc_stat}{descriptive statistics to be used for visualizing errors. Default value is "mean_se".
 Allowed values are one of , "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
-"median", "median_iqr", "median_mad", "median_range"; see \code{\link{desc_statby}} for more details.}
+"median", "median_iqr", "median_hilow", "median_q1q3", "median_mad", "median_range"; see \code{\link{desc_statby}} for more details.}
 
 \item{combine}{logical value. Default is FALSE. Used only when y is a vector
 containing multiple variables to plot. If TRUE, create a multi-panel plot by
@@ -96,7 +96,7 @@ labelled only by variable grouping levels.}
 \item{add}{character vector for adding another plot element (e.g.: dot plot or
 error bars). Allowed values are one or the combination of: "none",
 "dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
-"mean_ci", "mean_range", "median", "median_iqr", "median_mad",
+"mean_ci", "mean_range", "median", "median_iqr", "median_hilow", "median_q1q3", "median_mad",
 "median_range"; see ?desc_statby for more details.}
 
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the

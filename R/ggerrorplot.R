@@ -9,7 +9,7 @@ NULL
 #'@param color,fill outline and fill colors.
 #'@param desc_stat descriptive statistics to be used for visualizing errors. Default value is "mean_se".
 #'Allowed values are one of , "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
-#'"median", "median_iqr", "median_mad", "median_range"; see \code{\link{desc_statby}} for more details.
+#'"median", "median_iqr", "median_hilow", "median_q1q3", "median_mad", "median_range"; see \code{\link{desc_statby}} for more details.
 #'@param ... other arguments to be passed to be passed to ggpar().
 #'@details The plot can be easily customized using the function ggpar(). Read
 #'   ?ggpar for changing: \itemize{ \item main title and axis labels: main,
