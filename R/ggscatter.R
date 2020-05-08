@@ -266,6 +266,7 @@ ggscatter_core <- function(data, x, y,
   if(add %in% c("reg.line", "loess")){
     add <- ifelse(add == "reg.line", stats::lm, stats::loess)
     if(is.null(add.params$linetype)) add.params$linetype <- "solid"
+    if(conf.int == FALSE) add.params$fill <- "lightgray"
 
     .args <- .geom_exec(NULL, data = data,
                         se = conf.int, level = conf.int.level,
