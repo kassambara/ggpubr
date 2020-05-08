@@ -19,7 +19,7 @@
 #' # Generate 5 breaks for a variable x
 #' get_breaks(n = 5)(x = 1:100)
 #'
-#' # Generate break using increasing step
+#' # Generate breaks using an increasing step
 #' get_breaks(by = 10)(x = 1:100)
 #'
 #' # Combine with ggplot scale_xx functions
@@ -29,7 +29,7 @@
 #' p <- ggscatter(mtcars, x = "wt", y = "mpg")
 #' p
 #'
-#' # Increase the number of x axis ticks
+#' # Increase the number of ticks
 #' p +
 #'  scale_x_continuous(breaks = get_breaks(n = 10)) +
 #'  scale_y_continuous(breaks = get_breaks(n = 10))
