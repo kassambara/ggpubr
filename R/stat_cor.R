@@ -133,49 +133,47 @@ StatCor<- ggproto("StatCor", Stat,
 
   # Defining labels
   pval <- .cor$p.value
+  r.name <- "R"
+  rr.name <- "R2"
+  p.name <- "p"
+  sep <-  " = "
+  if(output.type == "expression"){
+    r.name <- "italic(R)"
+    rr.name <- "italic(R)^2"
+    p.name <- "italic(p)"
+    sep <-  "~`=`~"
+    cor.coef.name <- paste0("italic(", cor.coef.name, ")")
+  }
+
+  z <- z %>%
+    dplyr::mutate(
+    r.label = paste(r.name, r, sep = sep),
+    rr.label = paste(rr.name, rr, sep = sep),
+    p.label = paste(p.name, p, sep = sep)
+  )
 
   if(output.type == "expression"){
-    cor.coef.name <- paste0("italic(", cor.coef.name, ")")
-    z <- z %>% dplyr::mutate(
-      r.label = paste("italic(R)", r, sep = "~`=`~"),
-      rr.label = paste("italic(R)^2", rr, sep = "~`=`~"),
-      p.label = paste("italic(p)", p, sep = "~`=`~")
-    )
     # Default label
-    pvaltxt <- ifelse(pval < 2.2e-16, "italic(p)~`<`~2.2e-16",
-                      paste("italic(p)~`=`~", signif(pval, p.digits)))
+    pvaltxt <- ifelse(z$p.value < 2.2e-16, "italic(p)~`<`~2.2e-16",
+                      paste("italic(p)~`=`~", z$p))
     if(label.sep == "\n"){
       # Line break at each comma
-      cortxt <- paste0("atop(italic(R)~`=`~", signif(.cor$estimate, r.digits),
-                       ",",  pvaltxt, ")")
+      cortxt <- paste0("atop(italic(R)~`=`~", z$r, ",",  pvaltxt, ")")
     }
     else{
       label.sep <- trimws(label.sep)
       if(label.sep == "") label.sep <- "~"
       else label.sep <- paste0("~`", label.sep, "`~")
-      cortxt <- paste0("italic(R)~`=`~", signif(.cor$estimate, r.digits),
-                       label.sep,  pvaltxt)
+      cortxt <- paste0("italic(R)~`=`~", z$r, label.sep,  pvaltxt)
     }
-
-    z$label <- cortxt
-
   }
   else if (output.type %in% c("latex", "tex", "text")){
-
-    z <- z %>% dplyr::mutate(
-      r.label = paste("R", r, sep = " = "),
-      rr.label = paste("R2", rr, sep = " = "),
-      p.label = paste("p", p, sep = "=")
-    )
-
-    # Default label
-    pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16",
-                      paste("p =", signif(pval, p.digits)))
-    cortxt <- paste0("R = ", signif(.cor$estimate, r.digits),
-                     label.sep,  pvaltxt)
-    z$label <- cortxt
+    pvaltxt <- ifelse(pval < 2.2e-16, "p < 2.2e-16", paste("p =", z$r))
+    cortxt <- paste0("R = ", z$r, label.sep,  pvaltxt)
   }
+  z$label <- cortxt
   z$r.label <- gsub("R", cor.coef.name, z$r.label)
+  z$rr.label <- gsub("R", cor.coef.name, z$rr.label)
   z$label <- gsub("R", cor.coef.name, z$label)
   z
 }
