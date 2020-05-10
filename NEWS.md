@@ -15,7 +15,8 @@
     - An S3 printing method is now available for an object of class ggscatterhist. The printing method displays the arranged final figure.
 
 ## Minor changes
-   
+
+- In `ggadd()` the `fill` argument is considered for jitter points only when the point shape is in 21:25 ([@atakanekiz, #148](https://github.com/kassambara/ggpubr/issues/148)).
 - New argument `stroke` supported in `ggscatter()` and in `ggline()`. Used only for shapes 21-24 to control the thickness of points border ([@bioguy2018, #258](https://github.com/kassambara/ggpubr/issues/236)).
 - the `stat_cor()` function code has been simplified. New arguments `p.accuracy` and `r.accuracy` added; a real value specifying the number of decimal places of precision for the p-value and the correlation coefficient, respectively. Default is NULL. Use (e.g.) 0.01 to show 2 decimal places of precision ([@garthtarr, #186](https://github.com/kassambara/ggpubr/issues/186), [@raedevan6, #114](https://github.com/kassambara/ggpubr/issues/114), [#270](https://github.com/kassambara/ggpubr/issues/270)). 
   
