@@ -39,6 +39,15 @@ NULL
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #'@seealso \code{\link{ggscatter}}
+#' @section Computed variables:
+#'   \describe{ \item{r}{correlation coefficient}
+#'   \item{rr}{correlation coefficient squared}
+#'   \item{r.label}{formatted label for the correlation coefficient}
+#'   \item{rr.label}{formatted label for the squared correlation coefficient}
+#'   \item{p.label}{label for the p-value}
+#'   \item{label}{default labeldisplayed by \code{stat_cor()}}
+#'   }
+#'
 #' @examples
 #' # Load data
 #' data("mtcars")
@@ -54,6 +63,9 @@ NULL
 #'    )
 #' # Add correlation coefficient
 #' sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
+#'
+#' # Show only the r.label but not the p.label
+#' sp + stat_cor(aes(label = ..r.label..), label.x = 3)
 #'
 #'# Use R2 instead of R
 #'ggscatter(df, x = "wt", y = "mpg", add = "reg.line") +
