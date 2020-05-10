@@ -141,6 +141,11 @@ sp <- ggscatter(df, x = "wt", y = "mpg",
 # Add correlation coefficient
 sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
 
+# Specify the number of decimal places of precision for p and r
+# Using 3 decimal places for the p-value and
+# 2 decimal places for the correlation coefficient (r)
+sp + stat_cor(p.accuracy = 0.001, r.accuracy = 0.01)
+
 # Show only the r.label but not the p.label
 sp + stat_cor(aes(label = ..r.label..), label.x = 3)
 
