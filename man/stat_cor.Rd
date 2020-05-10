@@ -18,6 +18,8 @@ stat_cor(
   digits = 2,
   r.digits = digits,
   p.digits = digits,
+  r.accuracy = NULL,
+  p.accuracy = NULL,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -52,8 +54,8 @@ covariance) is to be computed. One of "pearson" (default), "kendall", or
 "spearman".}
 
 \item{cor.coef.name}{character. Can be one of \code{"R"} (pearson coef),
-\code{"rho"} (spearman coef) and \code{"tau"} (kendall coef).
-Uppercase and lowercase are allowed.}
+\code{"rho"} (spearman coef) and \code{"tau"} (kendall coef). Uppercase and
+lowercase are allowed.}
 
 \item{label.sep}{a character string to separate the terms. Default is ", ", to
 separate the correlation coefficient and the p.value.}
@@ -72,10 +74,19 @@ separate the correlation coefficient and the p.value.}
 \item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
 
-\item{output.type}{character One of "expression", "latex" or "text".}
+\item{output.type}{character One of "expression", "latex", "tex" or "text".}
 
-\item{digits, r.digits, p.digits}{integer indicating the number of decimal places (round) or
-significant digits (signif) to be used for the correlation coefficient and the p-value, respectively..}
+\item{digits, r.digits, p.digits}{integer indicating the number of decimal
+places (round) or significant digits (signif) to be used for the correlation
+coefficient and the p-value, respectively..}
+
+\item{r.accuracy}{a real value specifying the number of decimal places of
+precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01
+to show 2 decimal places of precision. If specified, then \code{r.digits} is ignored.}
+
+\item{p.accuracy}{a real value specifying the number of decimal places of
+precision for the p-value. Default is NULL. Use (e.g.) 0.0001
+to show 4 decimal places of precision. If specified, then \code{p.digits} is ignored.}
 
 \item{geom}{The geometric object to use display the data}
 
