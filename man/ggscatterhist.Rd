@@ -2,6 +2,7 @@
 % Please edit documentation in R/ggscatterhist.R
 \name{ggscatterhist}
 \alias{ggscatterhist}
+\alias{print.ggscatterhist}
 \title{Scatter Plot with Marginal Histograms}
 \usage{
 ggscatterhist(
@@ -27,13 +28,24 @@ ggscatterhist(
   ylab = NULL,
   legend = "top",
   ggtheme = theme_pubr(),
+  print = TRUE,
+  ...
+)
+
+\method{print}{ggscatterhist}(
+  x,
+  margin.space = FALSE,
+  main.plot.size = 2,
+  margin.plot.size = 1,
+  title = NULL,
+  legend = "top",
   ...
 )
 }
 \arguments{
 \item{data}{a data frame}
 
-\item{x}{x and y variables for drawing.}
+\item{x}{an object of class \code{ggscatterhist}.}
 
 \item{y}{x and y variables for drawing.}
 
@@ -58,16 +70,18 @@ outlines.}
 
 \item{linetype}{line type ("solid", "dashed", ...)}
 
-\item{bins}{Number of histogram bins. Defaults to 30. Pick a better value
-that fit to your data.}
+\item{bins}{Number of histogram bins. Defaults to 30. Pick a better value that
+fit to your data.}
 
 \item{margin.plot}{the type of the marginal plot. Default is "hist".}
 
 \item{margin.params}{parameters to be applied to the marginal plots.}
 
-\item{margin.ggtheme}{the theme of the marginal plot. Default is \code{\link[ggplot2]{theme_void}()}.}
+\item{margin.ggtheme}{the theme of the marginal plot. Default is
+\code{\link[ggplot2]{theme_void}()}.}
 
-\item{margin.space}{logical value. If TRUE, adds space between the main plot and the marginal plot.}
+\item{margin.space}{logical value. If TRUE, adds space between the main plot
+and the marginal plot.}
 
 \item{main.plot.size}{the width of the main plot. Default is 2.}
 
@@ -81,14 +95,26 @@ hide xlab.}
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}
 
-\item{legend}{specify the legend position. Allowed values include: "top", "bottom", "left", "right".}
+\item{legend}{specify the legend position. Allowed values include: "top",
+"bottom", "left", "right".}
 
-\item{ggtheme}{the theme to be used for the scatter plot. Default is \code{\link{theme_pubr}()}.}
+\item{ggtheme}{the theme to be used for the scatter plot. Default is
+\code{\link{theme_pubr}()}.}
+
+\item{print}{logical value. If \code{TRUE} (default), print the plot.}
 
 \item{...}{other arguments passed to the function \code{\link{ggscatter}()}.}
 }
+\value{
+an object of class \code{ggscatterhist}, which is list of ggplots,
+ including the following elements: \itemize{\item sp: main scatter plot;
+ \item xplot: marginal x-axis plot; \item yplot: marginal y-axis plot. }.
+
+ User can modify each of plot before printing.
+}
 \description{
-Create a scatter plot with marginal histograms, density plots or box plots.
+Create a scatter plot with marginal histograms, density plots or
+ box plots.
 }
 \examples{
 # Basic scatter plot with marginal density plot
@@ -113,4 +139,12 @@ ggscatterhist(
  margin.plot = "boxplot",
  ggtheme = theme_bw()
 )
+
+# Add vertical and horizontal line to a ggscatterhist
+plots <- ggscatterhist(iris, x = "Sepal.Length", y = "Sepal.Width", print = FALSE)
+plots$sp <- plots$sp +
+ geom_hline(yintercept = 3, linetype = "dashed", color = "blue") +
+ geom_vline(xintercept = 6, linetype = "dashed", color = "red")
+plots
+
 }
