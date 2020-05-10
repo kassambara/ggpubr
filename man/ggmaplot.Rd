@@ -17,6 +17,7 @@ ggmaplot(
   palette = c("#B31B21", "#1465AC", "darkgray"),
   top = 15,
   select.top.method = c("padj", "fc"),
+  label.select = NULL,
   main = NULL,
   xlab = "Log2 mean expression",
   ylab = "Log2 fold change",
@@ -71,6 +72,8 @@ hide to gene labels.}
 values include "padj" and "fc" for selecting by adjusted p values or fold
 changes, respectively.}
 
+\item{label.select}{character vector specifying some labels to show.}
+
 \item{main}{plot main title.}
 
 \item{xlab}{character vector specifying x axis labels. Use xlab = FALSE to
@@ -116,4 +119,14 @@ ggmaplot(diff_express, main = expression("Group 1" \%->\% "Group 2"),
    font.legend = "bold",
    font.main = "bold",
    ggtheme = ggplot2::theme_minimal())
+
+# Select specific genes to show
+# set top = 0, then specify genes using label.select argument
+ggmaplot(diff_express, main = expression("Group 1" \%->\% "Group 2"),
+         fdr = 0.05, fc = 2, size = 0.4,
+         genenames = as.vector(diff_express$name),
+         ggtheme = ggplot2::theme_minimal(),
+         top = 0, label.select = c("BUB1", "CD83")
+)
+
 }

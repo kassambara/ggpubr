@@ -34,6 +34,7 @@ NULL
 #'@param select.top.method methods to be used for selecting top genes. Allowed
 #'  values include "padj" and "fc" for selecting by adjusted p values or fold
 #'  changes, respectively.
+#' @param label.select character vector specifying some labels to show.
 #'@param ... other arguments to be passed to \code{\link{ggpar}}.
 #'@return returns a ggplot.
 #' @examples
@@ -60,12 +61,23 @@ NULL
 #'    font.legend = "bold",
 #'    font.main = "bold",
 #'    ggtheme = ggplot2::theme_minimal())
+#'
+#' # Select specific genes to show
+#' # set top = 0, then specify genes using label.select argument
+#' ggmaplot(diff_express, main = expression("Group 1" %->% "Group 2"),
+#'          fdr = 0.05, fc = 2, size = 0.4,
+#'          genenames = as.vector(diff_express$name),
+#'          ggtheme = ggplot2::theme_minimal(),
+#'          top = 0, label.select = c("BUB1", "CD83")
+#' )
+#'
 #'@export
 ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
                      detection_call = NULL, size = NULL, alpha = 1,
                      font.label = c(12, "plain", "black"), label.rectangle = FALSE,
                      palette = c("#B31B21", "#1465AC", "darkgray"),
                      top = 15, select.top.method = c("padj", "fc"),
+                     label.select = NULL,
                      main = NULL, xlab = "Log2 mean expression",  ylab = "Log2 fold change",
                      ggtheme = theme_classic(),...)
 {
@@ -118,9 +130,17 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   if(select.top.method == "padj") data <- data[order(data$padj), ]
   else if(select.top.method == "fc") data <- data[order(abs(data$lfc), decreasing = TRUE), ]
   # select data for top genes
-  labs_data <- stats::na.omit(data)
-  labs_data <- subset(labs_data, padj <= fdr & name!="" & abs(lfc) >= log2(fc))
+  complete_data <- stats::na.omit(data)
+  labs_data <- subset(complete_data, padj <= fdr & name!="" & abs(lfc) >= log2(fc))
   labs_data <- utils::head(labs_data, top)
+  # Select some specific labels to show
+  if(!is.null(label.select)){
+    selected_labels  <- complete_data %>%
+      subset(complete_data$name  %in% label.select, drop = FALSE)
+    labs_data <- dplyr::bind_rows(labs_data, selected_labels) %>%
+      dplyr::distinct(.data$name, .keep_all = TRUE)
+  }
+
 
   font.label <- .parse_font(font.label)
   font.label$size <- ifelse(is.null(font.label$size), 12, font.label$size)
