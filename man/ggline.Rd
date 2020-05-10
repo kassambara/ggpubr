@@ -18,6 +18,7 @@ ggline(
   plot_type = c("b", "l", "p"),
   size = 0.5,
   shape = 19,
+  stroke = NULL,
   point.size = size,
   point.color = color,
   title = NULL,
@@ -80,6 +81,8 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 outlines.}
 
 \item{shape}{point shapes.}
+
+\item{stroke}{point stroke. Used only for shapes 21-24 to control the thickness of points border.}
 
 \item{point.size}{point size.}
 

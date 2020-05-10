@@ -29,6 +29,8 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     "x", "y", "color", "colour", "linetype", "fill", "size", "shape", "width",
     "alpha", "na.rm", "lwd", "pch", "cex", "position", "stat", "geom",
     "show.legend", "inherit.aes", "fun.args", "fontface",
+    # point
+    "stroke",
     # boxplot
     "outlier.colour", "outlier.shape", "outlier.size",
     "outlier.stroke", "notch", "notchwidth", "varwidth",

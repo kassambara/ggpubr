@@ -14,6 +14,7 @@ NULL
 #' @param plot_type plot type. Allowed values are one of "b" for both line and point;
 #' "l" for line only; and "p" for point only. Default is "b".
 #' @param shape point shapes.
+#' @param stroke point stroke. Used only for shapes 21-24 to control the thickness of points border.
 #' @param show.line.label logical value. If TRUE, shows line labels.
 #' @param point.size point size.
 #' @param point.color point color.
@@ -123,7 +124,8 @@ ggline<- function(data, x, y, group = 1,
                   color = "black", palette = NULL,
                   linetype = "solid",
                   plot_type = c("b", "l", "p"),
-                  size = 0.5, shape = 19, point.size = size, point.color = color,
+                  size = 0.5, shape = 19, stroke = NULL,
+                  point.size = size, point.color = color,
                   title = NULL, xlab = NULL, ylab = NULL,
                   facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                   select = NULL, remove = NULL, order = NULL,
@@ -145,7 +147,7 @@ ggline<- function(data, x, y, group = 1,
     combine = combine, merge = merge,
     color = color, palette = palette,
     linetype = linetype, plot_type = plot_type,
-    size = size,  shape = shape,
+    size = size,  shape = shape, stroke = stroke,
     point.size = point.size, point.color = point.color,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
@@ -183,7 +185,7 @@ ggline_core <- function(data, x, y, group = 1,
                   color = "black", fill = "white", palette = NULL,
                   linetype = "solid",
                   plot_type = c("b", "l", "p"),
-                  size = 0.5, shape = 19,
+                  size = 0.5, shape = 19, stroke = NULL,
                   point.size = size, point.color = color,
                   title = NULL, xlab = NULL, ylab = NULL,
                   select = NULL, order = NULL,
@@ -279,7 +281,7 @@ ggline_core <- function(data, x, y, group = 1,
     p <- p +
     geom_exec(geom_point, data = data_sum,
                color = point.color, shape = shape,
-               size = 1.2+point.size)
+               size = 1.2+point.size, stroke = stroke)
     # Adjust shape when ngroups > 6, to avoid ggplot warnings
     p <-.scale_point_shape(p, data_sum, shape)
   }
