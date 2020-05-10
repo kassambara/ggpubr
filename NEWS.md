@@ -11,7 +11,10 @@
 ## Major changes
 
 ## Minor changes
-
+   
+- the `stat_cor()` function code has been simplified. New arguments `p.accuracy` and `r.accuracy` added; a real value specifying the number of decimal places of precision for the p-value and the correlation coefficient, respectively. Default is NULL. Use (e.g.) 0.01 to show 2 decimal places of precision ([@garthtarr, #186](https://github.com/kassambara/ggpubr/issues/186), [@raedevan6, #114](https://github.com/kassambara/ggpubr/issues/114), [#270](https://github.com/kassambara/ggpubr/issues/270)). 
+  
+  
 ## Bug fixes
    
 - `ggscatter()`: When `conf.int = FALSE`, fill color is set to "lightgray" for the regression line confidence band ([@zhan6073, #111](https://github.com/kassambara/ggpubr/issues/111)).
