@@ -1,38 +1,41 @@
 #' @include utilities.R ggpar.R
 NULL
-#' MA-plot from means and log fold changes
-#' @description Make MA-plot which is a scatter plot of log2 fold changes (on
-#'   the y-axis) versus the mean expression signal (on the x-axis).
-#' @inheritParams ggboxplot
-#' @inheritParams ggpar
-#' @param data an object of class DESeqResults, get_diff, DE_Results, matrix or
-#'   data frame containing the columns baseMean, log2FoldChange, and padj. Rows
-#'   are genes. \itemize{ \item baseMean: the mean expression of genes in the
-#'   two groups. \item log2FoldChange: the log2 fold changes of group 2 compared
-#'   to group 1 \item padj: the adjusted p-value of the used statiscal test. }
-#' @param fdr Accepted false discovery rate for considering genes as
-#'   differentially expressed.
-#' @param fc the fold change threshold. Only genes with a fold change >= fc and
-#'   padj <= fdr are considered as significantly differentially expressed.
-#' @param genenames a character vector of length nrow(data) specifying gene
-#'   names corresponding to each row. Used for point labels.
-#' @param detection_call a numeric vector with length = nrow(data), specifying
-#'   if the genes is expressed (value = 1) or not (value = 0). For example
-#'   detection_call = c(1, 1, 0, 1, 0, 1). Default is NULL. If detection_call
-#'   column is available in data, it will be used.
-#' @param size points size.
-#' @param font.label a vector of length 3 indicating respectively the size
-#'   (e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
-#'   the color (e.g.: "red") of point labels. For example \emph{font.label =
-#'   c(14, "bold", "red")}.
-#' @param label.rectangle logical value. If TRUE, add rectangle underneath the
-#'   text, making it easier to read.
-#' @param top the number of top genes to be shown on the plot. Use top = 0 to hide to gene labels.
-#' @param select.top.method methods to be used for selecting top genes. Allowed
-#'   values include "padj" and "fc" for selecting by adjusted p values or fold
-#'   changes, respectively.
-#' @param ... other arguments to be passed to \code{\link{ggpar}}.
-#' @return returns a ggplot.
+#'MA-plot from means and log fold changes
+#'@description Make MA-plot which is a scatter plot of log2 fold changes (on the
+#'  y-axis) versus the mean expression signal (on the x-axis).
+#'@inheritParams ggboxplot
+#'@inheritParams ggpar
+#'@param data an object of class DESeqResults, get_diff, DE_Results, matrix or
+#'  data frame containing the columns baseMean, log2FoldChange, and padj. Rows
+#'  are genes. \itemize{ \item baseMean: the mean expression of genes in the two
+#'  groups. \item log2FoldChange: the log2 fold changes of group 2 compared to
+#'  group 1 \item padj: the adjusted p-value of the used statiscal test. }
+#'@param fdr Accepted false discovery rate for considering genes as
+#'  differentially expressed.
+#'@param fc the fold change threshold. Only genes with a fold change >= fc and
+#'  padj <= fdr are considered as significantly differentially expressed.
+#'@param genenames a character vector of length nrow(data) specifying gene names
+#'  corresponding to each row. Used for point labels.
+#'@param detection_call a numeric vector with length = nrow(data), specifying if
+#'  the genes is expressed (value = 1) or not (value = 0). For example
+#'  detection_call = c(1, 1, 0, 1, 0, 1). Default is NULL. If detection_call
+#'  column is available in data, it will be used.
+#'@param size points size.
+#'@param alpha numeric value betwenn 0 an 1 specifying point alpha for
+#'  controlling transparency. For example, use alpha = 0.5.
+#'@param font.label a vector of length 3 indicating respectively the size (e.g.:
+#'  14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
+#'  color (e.g.: "red") of point labels. For example \emph{font.label = c(14,
+#'  "bold", "red")}.
+#'@param label.rectangle logical value. If TRUE, add rectangle underneath the
+#'  text, making it easier to read.
+#'@param top the number of top genes to be shown on the plot. Use top = 0 to
+#'  hide to gene labels.
+#'@param select.top.method methods to be used for selecting top genes. Allowed
+#'  values include "padj" and "fc" for selecting by adjusted p values or fold
+#'  changes, respectively.
+#'@param ... other arguments to be passed to \code{\link{ggpar}}.
+#'@return returns a ggplot.
 #' @examples
 #' data(diff_express)
 #'
@@ -57,9 +60,9 @@ NULL
 #'    font.legend = "bold",
 #'    font.main = "bold",
 #'    ggtheme = ggplot2::theme_minimal())
-#' @export
+#'@export
 ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
-                     detection_call = NULL, size = NULL,
+                     detection_call = NULL, size = NULL, alpha = 1,
                      font.label = c(12, "plain", "black"), label.rectangle = FALSE,
                      palette = c("#B31B21", "#1465AC", "darkgray"),
                      top = 15, select.top.method = c("padj", "fc"),
@@ -128,7 +131,7 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   set.seed(42)
   mean <- lfc <- sig <- name <- padj <-  NULL
   p <- ggplot(data, aes(x = log2(mean+1), y = lfc)) +
-    geom_point(aes(color = sig), size = size)
+    geom_point(aes(color = sig), size = size, alpha = alpha)
 
   if(label.rectangle){
     p <- p + ggrepel::geom_label_repel(data = labs_data, mapping = aes(label = name),
