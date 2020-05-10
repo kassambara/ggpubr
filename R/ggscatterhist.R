@@ -1,23 +1,34 @@
 #' @include utilities.R
 NULL
-#' Scatter Plot with Marginal Histograms
-#' @description Create a scatter plot with marginal histograms, density plots or box plots.
-#' @inheritParams ggscatter
-#' @param main.plot.size the width of the main plot. Default is 2.
-#' @param margin.plot.size the width of the marginal plot. Default is 1.
-#' @param group a grouping variable. Change points color and shape by groups if
-#'   the options \code{color} and \code{shape} are missing. Should be also
-#'   specified when you want to create a marginal box plot that is grouped.
-#' @param margin.plot the type of the marginal plot. Default is "hist".
-#' @param margin.params parameters to be applied to the marginal plots.
-#' @param margin.ggtheme the theme of the marginal plot. Default is \code{\link[ggplot2]{theme_void}()}.
-#' @param margin.space logical value. If TRUE, adds space between the main plot and the marginal plot.
-#' @param bins Number of histogram bins. Defaults to 30. Pick a better value
-#'   that fit to your data.
-#' @param linetype line type ("solid", "dashed", ...)
-#' @param legend specify the legend position. Allowed values include: "top", "bottom", "left", "right".
-#' @param ggtheme the theme to be used for the scatter plot. Default is \code{\link{theme_pubr}()}.
-#' @param ... other arguments passed to the function \code{\link{ggscatter}()}.
+#'Scatter Plot with Marginal Histograms
+#'@description Create a scatter plot with marginal histograms, density plots or
+#'  box plots.
+#'@inheritParams ggscatter
+#'@param main.plot.size the width of the main plot. Default is 2.
+#'@param margin.plot.size the width of the marginal plot. Default is 1.
+#'@param group a grouping variable. Change points color and shape by groups if
+#'  the options \code{color} and \code{shape} are missing. Should be also
+#'  specified when you want to create a marginal box plot that is grouped.
+#'@param margin.plot the type of the marginal plot. Default is "hist".
+#'@param margin.params parameters to be applied to the marginal plots.
+#'@param margin.ggtheme the theme of the marginal plot. Default is
+#'  \code{\link[ggplot2]{theme_void}()}.
+#'@param margin.space logical value. If TRUE, adds space between the main plot
+#'  and the marginal plot.
+#'@param bins Number of histogram bins. Defaults to 30. Pick a better value that
+#'  fit to your data.
+#'@param linetype line type ("solid", "dashed", ...)
+#'@param legend specify the legend position. Allowed values include: "top",
+#'  "bottom", "left", "right".
+#'@param ggtheme the theme to be used for the scatter plot. Default is
+#'  \code{\link{theme_pubr}()}.
+#'@param print logical value. If \code{TRUE} (default), print the plot.
+#'@param ... other arguments passed to the function \code{\link{ggscatter}()}.
+#'@return an object of class \code{ggscatterhist}, which is list of ggplots,
+#'  including the following elements: \itemize{\item sp: main scatter plot;
+#'  \item xplot: marginal x-axis plot; \item yplot: marginal y-axis plot. }.
+#'
+#'  User can modify each of plot before printing.
 #'
 #' @examples
 #' # Basic scatter plot with marginal density plot
@@ -42,7 +53,15 @@ NULL
 #'  margin.plot = "boxplot",
 #'  ggtheme = theme_bw()
 #')
-#' @export
+#'
+#'# Add vertical and horizontal line to a ggscatterhist
+#'plots <- ggscatterhist(iris, x = "Sepal.Length", y = "Sepal.Width", print = FALSE)
+#'plots$sp <- plots$sp +
+#'  geom_hline(yintercept = 3, linetype = "dashed", color = "blue") +
+#'  geom_vline(xintercept = 6, linetype = "dashed", color = "red")
+#'plots
+#'
+#'@export
 ggscatterhist <- function(
   data, x, y, group = NULL,
   color = "black", fill = NA, palette = NULL,
@@ -55,7 +74,8 @@ ggscatterhist <- function(
   main.plot.size = 2,
   margin.plot.size = 1,
   title = NULL, xlab = NULL, ylab = NULL,
-  legend = "top", ggtheme = theme_pubr(), ...
+  legend = "top", ggtheme = theme_pubr(),
+  print = TRUE, ...
 )
 {
 
@@ -149,12 +169,33 @@ ggscatterhist <- function(
   yplot <- yplot + margin.ggtheme + clean_theme() + rremove("legend") +
     theme(plot.margin = grid::unit(c(0,0,0,0), "cm"))
 
+  plots <- list(sp = sp, xplot = xplot, yplot = yplot)
+  class(plots) <- c("ggscatterhist",  "list")
+  if(print){
+    res <- print(
+      plots, margin.space = margin.space,
+      main.plot.size = main.plot.size, margin.plot.size = margin.plot.size,
+      title = title, legend = legend
+      )
+  }
+  invisible(plots)
+}
+
+#' @method print ggscatterhist
+#' @param x an object of class \code{ggscatterhist}.
+#' @rdname ggscatterhist
+#' @export
+print.ggscatterhist <- function(x, margin.space = FALSE, main.plot.size = 2,
+                                margin.plot.size = 1, title = NULL, legend = "top", ...){
+
+  sp <- x$sp
+  xplot <- x$xplot
+  yplot <- x$yplot
+  .legend <- get_legend(sp)
 
   if(margin.space){
-
     common.legend <- FALSE
     if(!is.null(.legend)) common.legend = TRUE
-
     sp <- sp + theme(
       plot.title = element_blank(),
       plot.subtitle = element_blank()
@@ -166,24 +207,21 @@ ggscatterhist <- function(
       heights = c(margin.plot.size, main.plot.size),
       common.legend = common.legend, legend = legend
     )
-
-    if(!is.null(title))
+    if(!is.null(title)){
       fig <- annotate_figure(
         fig,
         top = text_grob(title, color = "black", size = 13, face = "bold")
       )
+    }
   }
   else{
-
-    # fig <- cowplot::insert_xaxis_grob(sp, xplot, grid::unit(margin.plot.size/5, "null"), position = "top")
-    # fig <- cowplot::insert_yaxis_grob(fig, yplot, grid::unit(margin.plot.size/5, "null"), position = "right")
+    if(!is.null(title)) sp <- sp + ggtitle(title)
     fig <- .insert_xaxis_grob(sp, xplot, grid::unit(margin.plot.size/5, "null"), position = "top")
     fig <- .insert_yaxis_grob(fig, yplot, grid::unit(margin.plot.size/5, "null"), position = "right")
     fig <- cowplot::ggdraw(fig)
   }
-
-  fig
-
+  print(fig)
+  invisible(fig)
 }
 
 

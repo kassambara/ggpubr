@@ -9,6 +9,10 @@
 
    
 ## Major changes
+   
+- The following enhancement has been added to `ggscatterhist()` ([@juliechevalier, #176](https://github.com/kassambara/ggpubr/issues/176)):
+    - the output of `ggscatterhist()` is now a list of ggplots, containing the main scatter plot (`sp`) and the marginal plots (`xplot` and `yplot`), which can be customized by the end user using the standard ggplot verbs
+    - An S3 printing method is now available for an object of class ggscatterhist. The printing method displays the arranged final figure.
 
 ## Minor changes
    
