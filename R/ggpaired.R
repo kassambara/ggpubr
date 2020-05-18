@@ -129,7 +129,8 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
   p <- ggplot(data, aes_string(x = x, y = y)) +
     geom_exec(geom_boxplot, data = data, color = color, fill = fill, width = width,
               position = position)+
-    geom_line(aes(group= id),  color = line.color, size = line.size, position = position )+
+    geom_exec(geom_line, data = data, group = "id",
+              color = line.color, size = line.size, position = position) +
     geom_exec(geom_point, data = data, color = color, size = point.size,
               position = position)
 

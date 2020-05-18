@@ -16,6 +16,7 @@
 
 ## Minor changes
 
+- `geom_exec()` used in `ggpaired()` to add lines between paired points.
 - new arguments added in `ggmaplot()`:
     - `alpha` for controlling point transparency/density ([@apcamargo, #152](https://github.com/kassambara/ggpubr/issues/152)).
     - `label.select` to select specific genes to show on the plot ([@apastore, #70](https://github.com/kassambara/ggpubr/issues/70))
