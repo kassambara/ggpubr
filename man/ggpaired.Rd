@@ -18,6 +18,7 @@ ggpaired(
   point.size = 1.2,
   line.size = 0.5,
   line.color = "black",
+  linetype = "solid",
   title = NULL,
   xlab = "Condition",
   ylab = "Value",
@@ -64,6 +65,8 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 \item{point.size, line.size}{point and line size, respectively.}
 
 \item{line.color}{line color.}
+
+\item{linetype}{line type.}
 
 \item{title}{plot main title.}
 

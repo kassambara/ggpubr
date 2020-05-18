@@ -15,6 +15,7 @@ NULL
 #'@param fill box plot fill color. To change fill color by conditions, use fill
 #'  = "condition".
 #'@param line.color line color.
+#'@param linetype line type.
 #'@param point.size,line.size point and line size, respectively.
 #'@param width box plot width.
 #'@param ... other arguments to be passed to be passed to \link{ggpar}().
@@ -39,6 +40,7 @@ NULL
 ggpaired <- function(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
                      color = "black", fill = "white", palette = NULL,
                      width = 0.5, point.size = 1.2, line.size = 0.5, line.color = "black",
+                     linetype = "solid",
                      title = NULL, xlab = "Condition", ylab = "Value",
                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                      label = NULL, font.label = list(size = 11, color = "black"),
@@ -70,7 +72,8 @@ ggpaired <- function(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
   .opts <- list(
     id = id,
     color = color, fill = fill, palette = palette,
-    width = width, point.size = point.size, line.size = line.size, line.color = line.color,
+    width = width, point.size = point.size,
+    line.size = line.size, line.color = line.color, linetype = linetype,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     label = label, font.label = font.label, label.select = label.select,
@@ -103,7 +106,7 @@ ggpaired <- function(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
 ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
                       color = "black", fill = "white", palette = NULL,
                       width = 0.5, point.size = 1.2, line.size = 0.5, line.color = "black",
-                      title = NULL, xlab = "Condition", ylab = "Value",
+                      linetype = "solid", title = NULL, xlab = "Condition", ylab = "Value",
                       ggtheme = theme_pubr(),
                         ...)
 {
@@ -130,7 +133,8 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
     geom_exec(geom_boxplot, data = data, color = color, fill = fill, width = width,
               position = position)+
     geom_exec(geom_line, data = data, group = "id",
-              color = line.color, size = line.size, position = position) +
+              color = line.color, size = line.size, linetype = linetype,
+              position = position) +
     geom_exec(geom_point, data = data, color = color, size = point.size,
               position = position)
 

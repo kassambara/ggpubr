@@ -16,6 +16,7 @@
 
 ## Minor changes
 
+- New argument `linetype` in `ggpaired()`.
 - `geom_exec()` used in `ggpaired()` to add lines between paired points.
 - new arguments added in `ggmaplot()`:
     - `alpha` for controlling point transparency/density ([@apcamargo, #152](https://github.com/kassambara/ggpubr/issues/152)).
