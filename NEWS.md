@@ -16,6 +16,7 @@
 
 ## Minor changes
 
+- The option `width` is now considered in `ggadd()` for plotting error bars ([#278](https://github.com/kassambara/ggpubr/issues/278)).
 - New argument `linetype` in `ggpaired()`.
 - `geom_exec()` used in `ggpaired()` to add lines between paired points.
 - new arguments added in `ggmaplot()`:

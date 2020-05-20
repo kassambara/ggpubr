@@ -139,13 +139,14 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   if(!.is_empty(center))
     p <- p %>% add_summary(fun = center, color = color, shape = shape,
                   position = position, size = size, group = group)
-
   # Add erors
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   if(!.is_empty(errors)){
-    if(error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar"))
-      width <- 0.1
-    else if(error.plot == "crossbar" & .geom(p) == "violin") width = 0.2
+    if(missing(width)){
+      if(error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar"))
+        width <- 0.1
+      else if(error.plot == "crossbar" & .geom(p) == "violin") width = 0.2
+    }
     p <- p %>% add_summary(errors, error.plot = error.plot, color = color, shape = shape,
                   position = position, size = size, width = width, ci = ci, group = group,
                   linetype = linetype, show.legend = show.legend)

@@ -130,7 +130,6 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
   else if(geom == "errorbar"){
     if(missing(width)) opts$width = 0.1
     else opts$width = width
-    opts$width <- 0.15
   }
 
   opts %>% .update_plot(p)
