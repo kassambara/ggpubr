@@ -16,6 +16,7 @@
 
 ## Minor changes
 
+- New argument `numeric.x.axis` added in `ggerrorplot()`; logical value, If TRUE, x axis will be treated as numeric. Default is FALSE ([#280](https://github.com/kassambara/ggpubr/issues/280)).
 - The option `width` is now considered in `ggadd()` for plotting error bars ([#278](https://github.com/kassambara/ggpubr/issues/278)).
 - New argument `linetype` in `ggpaired()`.
 - `geom_exec()` used in `ggpaired()` to add lines between paired points.

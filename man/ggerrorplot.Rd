@@ -9,6 +9,7 @@ ggerrorplot(
   x,
   y,
   desc_stat = "mean_se",
+  numeric.x.axis = FALSE,
   combine = FALSE,
   merge = FALSE,
   color = "black",
@@ -42,6 +43,8 @@ ggerrorplot(
 \item{desc_stat}{descriptive statistics to be used for visualizing errors. Default value is "mean_se".
 Allowed values are one of , "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
 "median", "median_iqr", "median_hilow", "median_q1q3", "median_mad", "median_range"; see \code{\link{desc_statby}} for more details.}
+
+\item{numeric.x.axis}{logical. If TRUE, x axis will be treated as numeric. Default is FALSE.}
 
 \item{combine}{logical value. Default is FALSE. Used only when y is a vector
 containing multiple variables to plot. If TRUE, create a multi-panel plot by
@@ -91,7 +94,7 @@ labelled only by variable grouping levels.}
 
 \item{remove}{character vector specifying which items to remove from the plot.}
 
-\item{order}{character vector specifying the order of items.}
+\item{order}{character vector specifying the order of items. Considered only when x axis is a factor variable.}
 
 \item{add}{character vector for adding another plot element (e.g.: dot plot or
 error bars). Allowed values are one or the combination of: "none",
