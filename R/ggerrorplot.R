@@ -90,6 +90,7 @@ ggerrorplot <- function(data, x, y, desc_stat = "mean_se",
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
     desc_stat = desc_stat,
+    numeric.x.axis = numeric.x.axis,
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
     size = size, width = width,
