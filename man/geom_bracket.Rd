@@ -20,6 +20,7 @@ stat_bracket(
   step.increase = 0,
   step.group.by = NULL,
   tip.length = 0.03,
+  bracket.nudge.y = 0,
   size = 0.3,
   label.size = 3.88,
   family = "",
@@ -43,6 +44,7 @@ geom_bracket(
   step.increase = 0,
   step.group.by = NULL,
   tip.length = 0.03,
+  bracket.nudge.y = 0,
   size = 0.3,
   label.size = 3.88,
   family = "",
@@ -110,6 +112,10 @@ step.increase. Useful to group bracket by facet panel.}
 
 \item{tip.length}{numeric vector with the fraction of total height that the
 bar goes down to indicate the precise column}
+
+\item{bracket.nudge.y}{Vertical adjustment to nudge brackets by. Useful to
+move up or move down the bracket. If positive value, brackets will be moved
+up; if negative value, brackets are moved down.}
 
 \item{size}{change the width of the lines of the bracket}
 

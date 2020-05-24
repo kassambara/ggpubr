@@ -13,7 +13,7 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
                                   y.scale.range <- yrange[2] - yrange[1]
                                   xmin <- data$xmin
                                   xmax <- data$xmax
-                                  y.position <- data$y.position + (y.scale.range*data$step.increase)
+                                  y.position <- data$y.position + (y.scale.range*data$step.increase) + data$bracket.nudge.y
                                   label <- data$label
                                   if(is.character(xmin)){
                                     xmin <- scales$x$map(xmin)
@@ -54,6 +54,9 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #' @param vjust move the text up or down relative to the bracket
 #' @param step.increase numeric vector with the increase in fraction of total
 #'   height for every additional comparison to minimize overlap.
+#' @param bracket.nudge.y Vertical adjustment to nudge brackets by. Useful to
+#'   move up or move down the bracket. If positive value, brackets will be moved
+#'   up; if negative value, brackets are moved down.
 #' @param step.group.by a variable name for grouping brackets before adding
 #'   step.increase. Useful to group bracket by facet panel.
 #' @param tip.length numeric vector with the fraction of total height that the
@@ -127,6 +130,7 @@ stat_bracket <- function(mapping = NULL, data = NULL,
                          inherit.aes = TRUE,
                          label = NULL, type = c("text", "expression"), y.position=NULL, xmin = NULL, xmax = NULL,
                          step.increase = 0, step.group.by = NULL,  tip.length = 0.03,
+                         bracket.nudge.y = 0,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
                          ...) {
   if(! is.null(data) & ! is.null(mapping)){
@@ -140,7 +144,7 @@ stat_bracket <- function(mapping = NULL, data = NULL,
     params = list(
       label=label, type = type,
       y.position=y.position,xmin=xmin, xmax=xmax,
-      step.increase=step.increase, step.group.by = step.group.by,
+      step.increase=step.increase, bracket.nudge.y = bracket.nudge.y, step.group.by = step.group.by,
       tip.length=tip.length, size=size, label.size=label.size,
       family=family, vjust=vjust, na.rm = na.rm, ...)
   )
@@ -152,7 +156,7 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
                                 default_aes = ggplot2::aes(
                                   shape = 19, colour = "black", label.size = 3.88, angle = 0, hjust = 0.5,
                                   vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3,
-                                  xmin = NULL, xmax = NULL, label = NULL, y.position = NULL, step.increase = 0 # Added to avoid aesthetics warning
+                                  xmin = NULL, xmax = NULL, label = NULL, y.position = NULL, step.increase = 0, bracket.nudge.y = 0 # Added to avoid aesthetics warning
                                   ),
                                 # draw_key = function(...){grid::nullGrob()},
                                 # for legend:
@@ -199,14 +203,14 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
                          position = "identity", na.rm = FALSE, show.legend = NA,
                          inherit.aes = TRUE,
                          label = NULL, type = c("text", "expression"), y.position = NULL, xmin = NULL, xmax = NULL,
-                         step.increase = 0, step.group.by = NULL, tip.length = 0.03,
+                         step.increase = 0, step.group.by = NULL, tip.length = 0.03, bracket.nudge.y = 0,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
                          ...) {
   type <- match.arg(type)
   data <- build_signif_data(
     data = data, label = label, y.position = y.position,
     xmin = xmin, xmax = xmax, step.increase = step.increase,
-    step.group.by = step.group.by, vjust = vjust
+    bracket.nudge.y = bracket.nudge.y, step.group.by = step.group.by, vjust = vjust
     )
   mapping <- build_signif_mapping(mapping, data)
   ggplot2::layer(
@@ -240,7 +244,7 @@ guess_signif_label_column <- function(data){
 
 build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
                               xmin = NULL, xmax = NULL, step.increase = 0,
-                              step.group.by = NULL, vjust = 0){
+                              bracket.nudge.y = 0, step.group.by = NULL, vjust = 0){
 
   add_step_increase <- function(data, step.increase){
     comparisons.number <- 0:(nrow(data)-1)
@@ -264,6 +268,7 @@ build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
   }
   # add vjust column if doesn't exist
   if(!("vjust" %in% colnames(data))) data <- data %>% mutate(vjust = !!vjust)
+  if(!("bracket.nudge.y" %in% colnames(data))) data <- data %>% mutate(bracket.nudge.y = !!bracket.nudge.y)
 
   if(is.null(step.group.by)){
     data <- data %>% add_step_increase(step.increase)
@@ -305,6 +310,7 @@ build_signif_mapping <- function(mapping, data){
   if(is.null(mapping$group)) mapping$group <- 1:nrow(data)
   if(is.null(mapping$step.increase)) mapping$step.increase <- data$step.increase
   if(is.null(mapping$vjust)) mapping$vjust <- data$vjust
+  if(is.null(mapping$bracket.nudge.y)) mapping$bracket.nudge.y <- data$bracket.nudge.y
   if(! "x" %in% names(mapping)){
     mapping$x <- mapping$xmin
   }

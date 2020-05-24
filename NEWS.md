@@ -16,6 +16,7 @@
 
 ## Minor changes
 
+- New argument `bracket.nudge.y` added in `stat_pvalue_manual()` and `geom_bracket()`. Vertical adjustment to nudge brackets by. Useful to move up or move down the bracket. If positive value, brackets will be moved up; if negative value, brackets are moved down.
 - New argument `numeric.x.axis` added in `ggerrorplot()`; logical value, If TRUE, x axis will be treated as numeric. Default is FALSE ([#280](https://github.com/kassambara/ggpubr/issues/280)).
 - The option `width` is now considered in `ggadd()` for plotting error bars ([#278](https://github.com/kassambara/ggpubr/issues/278)).
 - New argument `linetype` in `ggpaired()`.
