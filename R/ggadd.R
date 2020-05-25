@@ -82,7 +82,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
     color <- .map$colour
   if(missing(fill) & !is.null(.map$fill))
     fill <- .map$fill
-  ngrps <- intersect(names(data), c(.map$x, fill, color)) %>%
+  ngrps <- intersect(names(data), c(.map$x, fill, color, group)) %>%
     length() # number of grouping variables
 
   # Amount of jittering when add = "jitter"

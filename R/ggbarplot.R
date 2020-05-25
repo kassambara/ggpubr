@@ -248,6 +248,7 @@ ggbarplot_core <- function(data, x, y,
   if(is.null(add.params$fill)) add.params$fill <- "white"
   if(is.null(add.params$group)){
     if(fill %in% names(data)) add.params$group <- fill
+    else if(color %in% names(data)) add.params$group <- color
   }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 
