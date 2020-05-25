@@ -117,8 +117,9 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
       .update_plot(p)
   }
   if ( "jitter" %in% add ){
-    if(!(shape %in% 21:25)) common.opts$fill <- NULL
-    p <- common.opts %>%
+    jitter.opts <- common.opts
+    if(!(shape %in% 21:25)) jitter.opts$fill <- NULL
+    p <- jitter.opts %>%
       .add_item(geomfunc = geom_jitter, position = jitter, shape = shape) %>%
       .update_plot(p)
   }
