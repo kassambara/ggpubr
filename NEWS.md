@@ -16,6 +16,7 @@
 
 ## Minor changes
 
+- Now `ggscaterhist()` takes into account the argument `position` in `margin.params` when marginal plot is a histogram (#286). 
 - `ggbarplot()` enhanced to better handle the creation of dodged bar plots combined with jitter points ([@aherholt, #176](https://github.com/kassambara/ggpubr/issues/282))
 - New argument `bracket.nudge.y` added in `stat_pvalue_manual()` and `geom_bracket()`. Vertical adjustment to nudge brackets by. Useful to move up or move down the bracket. If positive value, brackets will be moved up; if negative value, brackets are moved down ([#281](https://github.com/kassambara/ggpubr/issues/281)).
 - New argument `numeric.x.axis` added in `ggerrorplot()`; logical value, If TRUE, x axis will be treated as numeric. Default is FALSE ([#280](https://github.com/kassambara/ggpubr/issues/280)).

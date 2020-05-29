@@ -91,8 +91,11 @@ ggscatterhist <- function(
     margin.params, data, color, fill, linetype
   )
   if(margin.plot == "histogram") {
+    if(is.null(margin.params$position)){
+      margin.params$position <-  "identity"
+    }
     margin.params <- margin.params %>%
-      .add_item(bins = bins, position = "identity")
+      .add_item(bins = bins)
   }
 
   if(!is.null(group)){
