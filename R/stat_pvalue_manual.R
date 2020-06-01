@@ -109,7 +109,7 @@ stat_pvalue_manual <- function(
   data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
   size = 3.88, label.size = size, bracket.size = 0.3,
-  bracket.nudge.y = 0,
+  bracket.nudge.y = 0, bracket.shorten = 0,
   color = "black", linetype = 1, tip.length = 0.03,
   remove.bracket = FALSE, step.increase = 0, step.group.by = NULL,
   hide.ns = FALSE, vjust = 0, position = "identity", ...
@@ -215,8 +215,8 @@ stat_pvalue_manual <- function(
       label = "label", y.position = "y.position", vjust = "vjust",
       group = 1:nrow(data),  tip.length =  tip.length,
       label.size = label.size, size = bracket.size,
-      bracket.nudge.y = bracket.nudge.y, color = color,
-      linetype = linetype, step.increase = step.increase,
+      bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
+      color = color, linetype = linetype, step.increase = step.increase,
       step.group.by = step.group.by, position = position, ...
     )
   }

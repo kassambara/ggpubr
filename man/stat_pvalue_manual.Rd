@@ -15,6 +15,7 @@ stat_pvalue_manual(
   label.size = size,
   bracket.size = 0.3,
   bracket.nudge.y = 0,
+  bracket.shorten = 0,
   color = "black",
   linetype = 1,
   tip.length = 0.03,
@@ -61,6 +62,8 @@ p-value as text (without brackets).}
 \item{bracket.nudge.y}{Vertical adjustment to nudge brackets by. Useful to
 move up or move down the bracket. If positive value, brackets will be moved
 up; if negative value, brackets are moved down.}
+
+\item{bracket.shorten}{a small numeric value in [0-1] for shortening the with of bracket.}
 
 \item{color}{text and line color. Can be variable name in the data for coloring by groups.}
 
