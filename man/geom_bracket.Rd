@@ -51,6 +51,7 @@ geom_bracket(
   label.size = 3.88,
   family = "",
   vjust = 0,
+  coord.flip = FALSE,
   ...
 )
 }
@@ -119,7 +120,8 @@ bar goes down to indicate the precise column}
 move up or move down the bracket. If positive value, brackets will be moved
 up; if negative value, brackets are moved down.}
 
-\item{bracket.shorten}{a small numeric value in [0-1] for shortening the with of bracket.}
+\item{bracket.shorten}{a small numeric value in [0-1] for shortening the with
+of bracket.}
 
 \item{size}{change the width of the lines of the bracket}
 
@@ -136,6 +138,12 @@ geom/stat.}
 
 \item{stat}{The statistical transformation to use on the data for this
 layer, as a string.}
+
+\item{coord.flip}{logical. If \code{TRUE}, flip x and y coordinates so that
+horizontal becomes vertical, and vertical, horizontal. When adding the
+p-values to a horizontal ggplot (generated using
+\code{\link[ggplot2]{coord_flip}()}), you need to specify the option
+\code{coord.flip = TRUE}.}
 }
 \description{
 add brackets with label annotation to a ggplot. Helpers for

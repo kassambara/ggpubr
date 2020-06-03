@@ -58,13 +58,19 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #' @param bracket.nudge.y Vertical adjustment to nudge brackets by. Useful to
 #'   move up or move down the bracket. If positive value, brackets will be moved
 #'   up; if negative value, brackets are moved down.
-#' @param bracket.shorten a small numeric value in [0-1] for shortening the with of bracket.
+#' @param bracket.shorten a small numeric value in [0-1] for shortening the with
+#'   of bracket.
 #' @param step.group.by a variable name for grouping brackets before adding
 #'   step.increase. Useful to group bracket by facet panel.
 #' @param tip.length numeric vector with the fraction of total height that the
 #'   bar goes down to indicate the precise column
 #' @param na.rm If \code{FALSE} (the default), removes missing values with a
 #'   warning.  If \code{TRUE} silently removes missing values.
+#' @param coord.flip logical. If \code{TRUE}, flip x and y coordinates so that
+#'   horizontal becomes vertical, and vertical, horizontal. When adding the
+#'   p-values to a horizontal ggplot (generated using
+#'   \code{\link[ggplot2]{coord_flip}()}), you need to specify the option
+#'   \code{coord.flip = TRUE}.
 #' @param ... other arguments passed on to \code{\link{layer}}. These are often
 #'   aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'   "red"} or \code{size = 3}. They may also be parameters to the paired
@@ -157,7 +163,7 @@ stat_bracket <- function(mapping = NULL, data = NULL,
 GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
                                 required_aes = c("x", "xend", "y", "yend", "annotation"),
                                 default_aes = ggplot2::aes(
-                                  shape = 19, colour = "black", label.size = 3.88, angle = 0, hjust = 0.5,
+                                  shape = 19, colour = "black", label.size = 3.88, angle = NULL, hjust = 0.5,
                                   vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3,
                                   xmin = NULL, xmax = NULL, label = NULL, y.position = NULL, step.increase = 0,
                                   bracket.nudge.y = 0, bracket.shorten = 0 # Added to avoid aesthetics warning
@@ -165,20 +171,31 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
                                 # draw_key = function(...){grid::nullGrob()},
                                 # for legend:
                                 draw_key = draw_key_path,
-                                draw_group = function(data, panel_params, coord, type = "text") {
+                                draw_group = function(data, panel_params, coord, type = "text",
+                                                      coord.flip = FALSE) {
                                   lab <- as.character(data$annotation)
                                   if(type == "expression"){
                                     lab <- parse_as_expression(lab)
                                   }
                                   coords <- coord$transform(data, panel_params)
+                                  label.x <- mean(c(coords$x[1], tail(coords$xend, n=1)))
+                                  label.y <- max(c(coords$y, coords$yend))+0.01
+                                  label.angle <- coords$angle
+                                  if(coord.flip){
+                                    label.y <- mean(c(coords$y[1], tail(coords$yend, n=1)))
+                                    label.x <- max(c(coords$x, coords$xend))+0.01
+                                    if(is.null(label.angle)) label.angle <- -90
+                                  }
+                                  if(is.null(label.angle)) label.angle <- 0
+
                                   grid::gList(
                                     grid::textGrob(
                                       label = lab,
-                                      x = mean(c(coords$x[1], tail(coords$xend, n=1))),
-                                      y = max(c(coords$y, coords$yend))+0.01,
+                                      x = label.x,
+                                      y = label.y,
                                       default.units = "native",
                                       hjust = coords$hjust, vjust = coords$vjust,
-                                      rot = coords$angle,
+                                      rot = label.angle,
                                       gp = grid::gpar(
                                         col = scales::alpha(coords$colour, coords$alpha),
                                         fontsize = coords$label.size * ggplot2::.pt,
@@ -210,6 +227,7 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
                          step.increase = 0, step.group.by = NULL, tip.length = 0.03,
                          bracket.nudge.y = 0, bracket.shorten = 0,
                          size = 0.3, label.size = 3.88, family="", vjust = 0,
+                         coord.flip = FALSE,
                          ...) {
   type <- match.arg(type)
   data <- build_signif_data(
@@ -226,7 +244,8 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
       type = type,
       tip.length = tip.length,
       size = size, label.size = label.size,
-      family=family, na.rm = na.rm, ...
+      family = family, na.rm = na.rm, coord.flip = coord.flip,
+      ...
     )
   )
 }

@@ -92,7 +92,10 @@ significance levels. Filter is done by checking the column
 column name available in the data.}
 
 \item{coord.flip}{logical. If \code{TRUE}, flip x and y coordinates so that
-horizontal becomes vertical, and vertical, horizontal.}
+horizontal becomes vertical, and vertical, horizontal. When adding the
+p-values to a horizontal ggplot (generated using
+\code{\link[ggplot2]{coord_flip}()}), you need to specify the option
+\code{coord.flip = TRUE}.}
 
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
