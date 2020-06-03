@@ -44,6 +44,7 @@ ggscatter(
   label.select = NULL,
   repel = FALSE,
   label.rectangle = FALSE,
+  parse = FALSE,
   cor.coef = FALSE,
   cor.coeff.args = list(),
   cor.method = "pearson",
@@ -174,6 +175,9 @@ text labels or not.}
 
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
+
+\item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
+displayed as described in \code{?plotmath}.}
 
 \item{cor.coef}{logical value. If TRUE, correlation coefficient with the
 p-value will be added to the plot.}

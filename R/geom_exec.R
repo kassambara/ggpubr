@@ -42,7 +42,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # error
     "ymin", "ymax", "xmin", "xmax",
     # text
-    "label", "hjust", "vjust", "fontface", "angle", "family",
+    "label", "hjust", "vjust", "fontface", "angle", "family", "parse",
     # text.repel
     "segment.size", "force",
     # smooth

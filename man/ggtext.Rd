@@ -18,6 +18,7 @@ ggtext(
   label.select = NULL,
   repel = FALSE,
   label.rectangle = FALSE,
+  parse = FALSE,
   grouping.vars = NULL,
   position = "identity",
   ggp = NULL,
@@ -48,9 +49,9 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 
 \item{family}{character vector specifying font family.}
 
-\item{show.legend}{logical. Should text be included in the legends? NA,
-the default, includes if any aesthetics are mapped. FALSE never includes,
-and TRUE always includes.}
+\item{show.legend}{logical. Should text be included in the legends? NA, the
+default, includes if any aesthetics are mapped. FALSE never includes, and
+TRUE always includes.}
 
 \item{label.select}{can be of two formats: \itemize{ \item a character vector
 specifying some labels to show. \item a list containing one or the
@@ -66,6 +67,9 @@ text labels or not.}
 
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
+
+\item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
+displayed as described in \code{?plotmath}.}
 
 \item{grouping.vars}{grouping variables to sort the data by, when the user
 wants to display the top n up/down labels.}
