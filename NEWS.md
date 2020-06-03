@@ -35,6 +35,7 @@
   
 ## Bug fixes
    
+- `ggpar()` arguments are correctly applied using `ggpie()` (#277).
 - `ggscatter()`: When `conf.int = FALSE`, fill color is set to "lightgray" for the regression line confidence band ([@zhan6073, #111](https://github.com/kassambara/ggpubr/issues/111)).
 - Now, `gghistogram()` supports the paramter `yticks.by` ([@Chitanda-Satou, #258](https://github.com/kassambara/ggpubr/issues/258)).
 

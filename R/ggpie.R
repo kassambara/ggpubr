@@ -124,7 +124,7 @@ ggpie <- function(
     coord_polar(
       theta = "y", start = 0
       ) +
-    ggtheme + .remove_axis()
+    .remove_axis()
 
   # Annotate pie slice
   #:::::::::::::::::::::::::::::::::::
