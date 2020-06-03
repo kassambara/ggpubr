@@ -7,6 +7,7 @@ NULL
 #'@description Add manually p-values to a ggplot, such as box blots, dot plots
 #'  and stripcharts. Frequently asked questions are available on \href{https://www.datanovia.com/en/blog/tag/ggpubr/}{Datanovia ggpubr FAQ page}, for example:
 #'  \itemize{
+#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-basic-ggplots/}{How to Add P-Values onto Basic GGPLOTS}
 #'  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-adjusted-p-values-to-a-multi-panel-ggplot/}{How to Add Adjusted P-values to a Multi-Panel GGPlot}
 #'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-to-ggplot-facets/}{How to Add P-values to GGPLOT Facets}
 #'  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-p-values-generated-elsewhere-to-a-ggplot/}{How to Add P-Values Generated Elsewhere to a GGPLOT}
@@ -112,7 +113,7 @@ stat_pvalue_manual <- function(
   bracket.nudge.y = 0, bracket.shorten = 0,
   color = "black", linetype = 1, tip.length = 0.03,
   remove.bracket = FALSE, step.increase = 0, step.group.by = NULL,
-  hide.ns = FALSE, vjust = 0, position = "identity", ...
+  hide.ns = FALSE, vjust = 0, coord.flip = FALSE, position = "identity", ...
 )
 {
   if(is.null(label)){
@@ -217,7 +218,7 @@ stat_pvalue_manual <- function(
       label.size = label.size, size = bracket.size,
       bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
       color = color, linetype = linetype, step.increase = step.increase,
-      step.group.by = step.group.by, position = position, ...
+      step.group.by = step.group.by, coord.flip = coord.flip, position = position, ...
     )
   }
   else{

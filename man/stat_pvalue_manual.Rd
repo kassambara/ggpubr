@@ -24,6 +24,7 @@ stat_pvalue_manual(
   step.group.by = NULL,
   hide.ns = FALSE,
   vjust = 0,
+  coord.flip = FALSE,
   position = "identity",
   ...
 )
@@ -63,7 +64,8 @@ p-value as text (without brackets).}
 move up or move down the bracket. If positive value, brackets will be moved
 up; if negative value, brackets are moved down.}
 
-\item{bracket.shorten}{a small numeric value in [0-1] for shortening the with of bracket.}
+\item{bracket.shorten}{a small numeric value in [0-1] for shortening the with
+of bracket.}
 
 \item{color}{text and line color. Can be variable name in the data for coloring by groups.}
 
@@ -89,6 +91,9 @@ significance levels. Filter is done by checking the column
 \item{vjust}{move the text up or down relative to the bracket. Can be also a
 column name available in the data.}
 
+\item{coord.flip}{logical. If \code{TRUE}, flip x and y coordinates so that
+horizontal becomes vertical, and vertical, horizontal.}
+
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
 
@@ -99,6 +104,7 @@ call to a position adjustment function.}
 Add manually p-values to a ggplot, such as box blots, dot plots
  and stripcharts. Frequently asked questions are available on \href{https://www.datanovia.com/en/blog/tag/ggpubr/}{Datanovia ggpubr FAQ page}, for example:
  \itemize{
+ \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-basic-ggplots/}{How to Add P-Values onto Basic GGPLOTS}
  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-adjusted-p-values-to-a-multi-panel-ggplot/}{How to Add Adjusted P-values to a Multi-Panel GGPlot}
  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-to-ggplot-facets/}{How to Add P-values to GGPLOT Facets}
  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-p-values-generated-elsewhere-to-a-ggplot/}{How to Add P-Values Generated Elsewhere to a GGPLOT}
