@@ -25,6 +25,9 @@
 - The option `width` is now considered in `ggadd()` for plotting error bars ([#278](https://github.com/kassambara/ggpubr/issues/278)).
 - New argument `linetype` in `ggpaired()`.
 - `geom_exec()` used in `ggpaired()` to add lines between paired points.
+- `ggmaplot()` now supports two input formats (#198):
+    1. baseMean | log2FoldChange|padj: Here, we'll use log2(baseMean) as the x-axis variable
+    2. baseMeanLog2 | log2FoldChange|padj: here, baseMeanLog2 is assumed to be the mean of logged values; so we'll use it as x-axis variable without any transformation. 
 - new arguments added in `ggmaplot()`:
     - `alpha` for controlling point transparency/density ([@apcamargo, #152](https://github.com/kassambara/ggpubr/issues/152)).
     - `label.select` to select specific genes to show on the plot ([@apastore, #70](https://github.com/kassambara/ggpubr/issues/70))
@@ -383,7 +386,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
    
 - Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
 
-- `ggmaplot()` now handles situations, wehre there is only upregulated, or downlegulated gnes.
+- `ggmaplot()` now handles situations, where there is only upregulated, or downlegulated gnes.
   
 
 # ggpubr 0.1.2

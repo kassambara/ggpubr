@@ -1,15 +1,30 @@
 #' @include utilities.R ggpar.R
 NULL
 #'MA-plot from means and log fold changes
-#'@description Make MA-plot which is a scatter plot of log2 fold changes (on the
-#'  y-axis) versus the mean expression signal (on the x-axis).
+#'@description Make MA-plot which is a scatter plot of log2 fold changes (M, on
+#'  the y-axis) versus the average expression signal (A, on the x-axis). \code{M
+#'  = log2(x/y)} and \code{A = (log2(x) + log2(y))/2 = log2(xy)*1/2}, where x
+#'  and y are respectively the mean of the two groups being compared.
 #'@inheritParams ggboxplot
 #'@inheritParams ggpar
 #'@param data an object of class DESeqResults, get_diff, DE_Results, matrix or
-#'  data frame containing the columns baseMean, log2FoldChange, and padj. Rows
-#'  are genes. \itemize{ \item baseMean: the mean expression of genes in the two
-#'  groups. \item log2FoldChange: the log2 fold changes of group 2 compared to
-#'  group 1 \item padj: the adjusted p-value of the used statiscal test. }
+#'  data frame containing the columns baseMean (or baseMeanLog2),
+#'  log2FoldChange, and padj. Rows are genes.
+#'
+#'  Two possible formats are accepted for the input data: \itemize{ \item 1/
+#'  \code{baseMean | log2FoldChange | padj}. This is a typical output from
+#'  DESeq2 pipeline. Here, we'll use log2(baseMean) as the x-axis variable.
+#'  \item 2/ \code{baseMeanLog2 | log2FoldChange | padj}. Here, baseMeanLog2 is
+#'  assumed to be the mean of logged values; so we'll use it as the x-axis
+#'  variable without any transformation. This is the real A in MA plot. In other
+#'  words, it is the average of two log-scales values: \code{A = (log2(x) +
+#'  log2(y))/2 = log2(xy)*1/2} }
+#'
+#'  Terminology:
+#'
+#'  \itemize{ \item baseMean: the mean expression of genes in the two groups.
+#'  \item log2FoldChange: the log2 fold changes of group 2 compared to group 1
+#'  \item padj: the adjusted p-value of the used statiscal test. }
 #'@param fdr Accepted false discovery rate for considering genes as
 #'  differentially expressed.
 #'@param fc the fold change threshold. Only genes with a fold change >= fc and
@@ -34,7 +49,7 @@ NULL
 #'@param select.top.method methods to be used for selecting top genes. Allowed
 #'  values include "padj" and "fc" for selecting by adjusted p values or fold
 #'  changes, respectively.
-#' @param label.select character vector specifying some labels to show.
+#'@param label.select character vector specifying some labels to show.
 #'@param ... other arguments to be passed to \code{\link{ggpar}}.
 #'@return returns a ggplot.
 #' @examples
@@ -95,6 +110,14 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
 
   # Legend position
   if(is.null(list(...)$legend)) legend <- c(0.12, 0.9)
+  # If basemean logged, we'll leave it as is, otherwise log2 transform
+  is.basemean.logged <- "baseMeanLog2" %in% colnames(data)
+  if(is.basemean.logged){
+    data$baseMean <- data$baseMeanLog2
+  }
+  else if("baseMean" %in% colnames(data)){
+    data$baseMean <- log2(data$baseMean +1)
+  }
 
   # Check data format
   ss <- base::setdiff(c("baseMean", "log2FoldChange", "padj"), colnames(data))
@@ -150,7 +173,7 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   # Plot
   set.seed(42)
   mean <- lfc <- sig <- name <- padj <-  NULL
-  p <- ggplot(data, aes(x = log2(mean+1), y = lfc)) +
+  p <- ggplot(data, aes(x = mean, y = lfc)) +
     geom_point(aes(color = sig), size = size, alpha = alpha)
 
   if(label.rectangle){
@@ -168,7 +191,7 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
                              size = font.label$size/3, color = font.label$color)
   }
 
-  p <- p + scale_x_continuous(breaks=seq(0, max(log2(data$mean+1)), 2))+
+  p <- p + scale_x_continuous(breaks=seq(0, max(data$mean), 2))+
     labs(x = xlab, y = ylab, title = main, color = "")+ # to remove legend title use color = ""
     geom_hline(yintercept = c(0, -log2(fc), log2(fc)), linetype = c(1, 2, 2),
                color = c("black", "black", "black"))

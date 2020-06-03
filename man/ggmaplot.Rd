@@ -27,10 +27,23 @@ ggmaplot(
 }
 \arguments{
 \item{data}{an object of class DESeqResults, get_diff, DE_Results, matrix or
-data frame containing the columns baseMean, log2FoldChange, and padj. Rows
-are genes. \itemize{ \item baseMean: the mean expression of genes in the two
-groups. \item log2FoldChange: the log2 fold changes of group 2 compared to
-group 1 \item padj: the adjusted p-value of the used statiscal test. }}
+ data frame containing the columns baseMean (or baseMeanLog2),
+ log2FoldChange, and padj. Rows are genes.
+
+ Two possible formats are accepted for the input data: \itemize{ \item 1/
+ \code{baseMean | log2FoldChange | padj}. This is a typical output from
+ DESeq2 pipeline. Here, we'll use log2(baseMean) as the x-axis variable.
+ \item 2/ \code{baseMeanLog2 | log2FoldChange | padj}. Here, baseMeanLog2 is
+ assumed to be the mean of logged values; so we'll use it as the x-axis
+ variable without any transformation. This is the real A in MA plot. In other
+ words, it is the average of two log-scales values: \code{A = (log2(x) +
+ log2(y))/2 = log2(xy)*1/2} }
+
+ Terminology:
+
+ \itemize{ \item baseMean: the mean expression of genes in the two groups.
+ \item log2FoldChange: the log2 fold changes of group 2 compared to group 1
+ \item padj: the adjusted p-value of the used statiscal test. }}
 
 \item{fdr}{Accepted false discovery rate for considering genes as
 differentially expressed.}
@@ -92,8 +105,10 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 returns a ggplot.
 }
 \description{
-Make MA-plot which is a scatter plot of log2 fold changes (on the
- y-axis) versus the mean expression signal (on the x-axis).
+Make MA-plot which is a scatter plot of log2 fold changes (M, on
+ the y-axis) versus the average expression signal (A, on the x-axis). \code{M
+ = log2(x/y)} and \code{A = (log2(x) + log2(y))/2 = log2(xy)*1/2}, where x
+ and y are respectively the mean of the two groups being compared.
 }
 \examples{
 data(diff_express)
