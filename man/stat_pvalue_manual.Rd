@@ -113,6 +113,7 @@ Add manually p-values to a ggplot, such as box blots, dot plots
  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-p-values-generated-elsewhere-to-a-ggplot/}{How to Add P-Values Generated Elsewhere to a GGPLOT}
  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-a-grouped-ggplot-using-the-ggpubr-r-package/}{How to Add P-Values onto a Grouped GGPLOT using the GGPUBR R Package}
  \item \href{https://www.datanovia.com/en/blog/how-to-create-stacked-bar-plots-with-error-bars-and-p-values/}{How to Create Stacked Bar Plots with Error Bars and P-values}
+ \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-horizontal-ggplots/}{How to Add P-Values onto Horizontal GGPLOTS}
  }
 }
 \examples{
