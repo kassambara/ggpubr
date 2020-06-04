@@ -16,7 +16,7 @@ ggdotchart(
   shape = 19,
   size = NULL,
   dot.size = size,
-  sorting = c("ascending", "descending"),
+  sorting = c("ascending", "descending", "none"),
   add = c("none", "segment"),
   add.params = list(),
   x.text.col = TRUE,
@@ -67,7 +67,7 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 \item{dot.size}{numeric value specifying the dot size.}
 
 \item{sorting}{a character vector for sorting into ascending or descending
-order. Allowed values are one of "descending" and "ascending". Partial
+order. Allowed values are one of "descending", "ascending" and "none". Partial
 match are allowed (e.g. sorting = "desc" or "asc"). Default is
 "descending".}
 
