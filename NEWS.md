@@ -17,6 +17,7 @@
 
 ## Minor changes
 
+- New argument `weight` added in `gghistogram()` for creating a weighted histogram (#215)
 - Now `ggscaterhist()` takes into account the argument `position` in `margin.params` when marginal plot is a histogram (#286). 
 - `ggbarplot()` enhanced to better handle the creation of dodged bar plots combined with jitter points ([@aherholt, #176](https://github.com/kassambara/ggpubr/issues/282))
 - New argument `bracket.shorten` added in `stat_pvalue_manual()` and `geom_bracket()`. a small numeric value in [0-1] for shortening the with of bracket (#285).

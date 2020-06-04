@@ -51,7 +51,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # straightline
     "xintercept", "yintercept",
     # histograms
-    "bins",
+    "bins", "weight",
     # rug
     "sides",
     # segment

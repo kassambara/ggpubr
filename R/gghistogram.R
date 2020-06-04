@@ -5,6 +5,7 @@ NULL
 #' @inheritParams ggboxplot
 #' @param x variable to be drawn.
 #' @param y one of "..density.." or "..count..".
+#' @param weight a variable name available in the input data for creating a weighted histogram.
 #' @param color,fill histogram line color and fill color.
 #' @param linetype line type. See \code{\link{show_line_types}}.
 #' @param alpha numeric value specifying fill color transparency. Value should
@@ -67,10 +68,11 @@ NULL
 #'    fill = "sex", palette = c("#00AFBB", "#E7B800"),
 #'    add_density = TRUE)
 #'
-#'
+#' # Weighted histogram
+#' gghistogram(iris, x = "Sepal.Length", weight = "Petal.Length")
 #' @export
 gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE,
-                        color = "black", fill = NA, palette = NULL,
+                        weight = NULL, color = "black", fill = NA, palette = NULL,
                         size = NULL, linetype = "solid", alpha = 0.5,
                         bins = NULL, binwidth = NULL,
                         title = NULL, xlab = NULL, ylab = NULL,
@@ -91,7 +93,7 @@ gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
     linetype = linetype, size = size, alpha = alpha, bins = bins, binwidth = binwidth,
-    title = title, xlab = xlab, ylab = ylab,
+    weight = weight, title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     add = add, add.params = add.params, rug = rug, add_density = add_density,
     label = label, font.label = font.label, label.select = label.select,
@@ -123,7 +125,7 @@ gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE
 
 }
 
-gghistogram_core <- function(data, x, y = "..count..",
+gghistogram_core <- function(data, x, y = "..count..", weight = NULL,
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
                       bins = NULL, binwidth = NULL,
@@ -165,7 +167,7 @@ gghistogram_core <- function(data, x, y = "..count..",
       geom_exec(geom_histogram, data = data,
                  color = color, fill = fill, size = size,
                  linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
-                 position = position, ...)
+                 weight = weight, position = position, ...)
 
   # Add mean/median
   if(add %in% c("mean", "median")){

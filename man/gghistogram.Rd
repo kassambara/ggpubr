@@ -10,6 +10,7 @@ gghistogram(
   y = "..count..",
   combine = FALSE,
   merge = FALSE,
+  weight = NULL,
   color = "black",
   fill = NA,
   palette = NULL,
@@ -54,6 +55,8 @@ a vector containing multiple variables to plot. If TRUE, merge multiple y
 variables in the same plotting area. Allowed values include also "asis"
 (TRUE) and "flip". If merge = "flip", then y variables are used as x tick
 labels and the x variable is used as grouping variable.}
+
+\item{weight}{a variable name available in the input data for creating a weighted histogram.}
 
 \item{color, fill}{histogram line color and fill color.}
 
@@ -189,7 +192,8 @@ gghistogram(wdata, x = "weight",
    fill = "sex", palette = c("#00AFBB", "#E7B800"),
    add_density = TRUE)
 
-
+# Weighted histogram
+gghistogram(iris, x = "Sepal.Length", weight = "Petal.Length")
 }
 \seealso{
 \code{\link{ggdensity}} and \code{\link{ggpar}}
