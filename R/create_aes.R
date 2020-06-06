@@ -44,20 +44,28 @@ create_aes.parse <- function(.list){
 }
 
 parse_expression <- function(x){
-  if(is.character(x) & !is_numeric_char(x)){
+  if(is_parsable_aes(x)){
     x <- parse(text = x)[[1]]
   }
   x
 }
 
 to_name <- function(x){
-  if(is.character(x) & !is_numeric_char(x)){
+  if(is_parsable_aes(x)){
     x <- as.name(x)
   }
   x
 }
 
-# return TRUE for 1, 2, "1", "2", etc
+# Check if parsable aesthetic
+is_parsable_aes <- function(x){
+  is.character(x) & (!is_numeric_char(x)) & (length(x) == 1)
+}
+
+# Check if x is a numeric string "1", "2"
+# return TRUE for "1", "2", etc
 is_numeric_char <- function(x){
-  grepl("^[[:digit:]]+$", x)
+  if(is.character(x)) res <- grepl("^[[:digit:]]+$", x)
+  else res <- FALSE
+  res
 }
