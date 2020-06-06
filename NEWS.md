@@ -2,6 +2,8 @@
    
 ## New features
    
+- ggpubr functions updated to handle non-standard column names, for example ("A-A") (#229).
+- New function `create_aes()` added to create aes mapping from a list. Makes programming easy with ggplot2 (#229).
 - New argument `coord.flip` added to support adding p-values onto horizontal ggplots (#179). When adding the p-values to a horizontal ggplot (generated using `coord_flip()`), you need to specify the option `coord.flip = TRUE`.
 - New errorbar functions - `median_hilow_()` and `median_q1q3()` -  added ([@davidlorenz, #209](https://github.com/kassambara/ggpubr/issues/209)):
     - `median_hilow_()`: computes the sample median and a selected pair of outer quantiles having equal tail areas. This function is a reformatted version of `Hmisc::smedian.hilow()`. The confidence limits are computed as follow: `lower.limits = (1-ci)/2` percentiles; `upper.limits = (1+ci)/2` percentiles. By default (`ci = 0.95`), the 2.5th and the 97.5th percentiles are used as the lower and the upper confidence limits, respectively. If you want to use the 25th and the 75th percentiles as the confidence limits, then specify `ci = 0.5` or use the function `median_q1q3()`.

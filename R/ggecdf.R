@@ -86,7 +86,7 @@ ggecdf_core <- function(data, x, y = "..ecdf..",
                       ...)
 {
 
-  p <- ggplot(data, aes_string(x))
+  p <- ggplot(data, create_aes(list(x = x)))
 
   p <- p +
       geom_exec(stat_ecdf, data = data,

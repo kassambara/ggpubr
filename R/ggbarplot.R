@@ -293,7 +293,7 @@ ggbarplot_core <- function(data, x, y,
   # Main plot
   #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.95
-  p <- ggplot(data, aes_string(x, y))
+  p <- ggplot(data, create_aes(list(x = x, y = y)))
   p <- p +
       geom_exec(geom_bar, data = data_sum,
                 stat = "identity",
@@ -410,7 +410,7 @@ ggbarplot_core <- function(data, x, y,
   mapping <- args$mapping
   option <- args$option
   if(error.plot == "errorbar") option$width <- 0.15
-  option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
+  option[["mapping"]] <- create_aes(mapping)
   do.call(geom_error, option)
 }
 

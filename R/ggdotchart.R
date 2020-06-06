@@ -180,7 +180,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
 
   data[, x] <- factor(data[, x], levels = unique(as.vector(data[, x])))
 
-  p <- ggplot(data, aes_string(x = x, y =y))
+  p <- ggplot(data, create_aes(list(x = x, y = y)))
 
   if(add == "segments"){
     seg.opts <- geom_exec(data = data, color = color,
@@ -213,7 +213,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
     # if(!is.null(add.params$size))
     #   option$size <- add.params$size
 
-    option[["mapping"]] <- do.call(aes_string, mapping)
+    option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_linerange, option)
   }
 

@@ -57,6 +57,7 @@ Collate:
     'bgcolor.R'
     'border.R'
     'compare_means.R'
+    'create_aes.R'
     'diff_express.R'
     'facet.R'
     'font.R'

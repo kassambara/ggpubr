@@ -33,15 +33,31 @@ create_aes <- function(.list, parse = FALSE){
 # Ref:  https://rpubs.com/hadley/97970
 # Parse as name. If x_var is "a + b", as.name() will turn it into a variable called `a + b`.
 create_aes.name <- function(.list){
-  .list <- .list %>%
-    purrr::map(function(.list) as.name(.list))
+  .list <- .list %>% purrr::map(function(x) to_name(x))
   do.call(ggplot2::aes, .list)
 }
 
 # Parse an expression. If x_var is "a + b", parse() will turn it into the function call a + b
 create_aes.parse <- function(.list){
-  .list <- .list %>% purrr:: map(function(x) parse(text = x)[[1]])
+  .list <- .list %>% purrr:: map(function(x) parse_expression(x))
   do.call(ggplot2::aes, .list)
 }
 
+parse_expression <- function(x){
+  if(is.character(x) & !is_numeric_char(x)){
+    x <- parse(text = x)[[1]]
+  }
+  x
+}
 
+to_name <- function(x){
+  if(is.character(x) & !is_numeric_char(x)){
+    x <- as.name(x)
+  }
+  x
+}
+
+# return TRUE for 1, 2, "1", "2", etc
+is_numeric_char <- function(x){
+  grepl("^[[:digit:]]+$", x)
+}

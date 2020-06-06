@@ -110,7 +110,7 @@ ggpie <- function(
       .lab.ypos. = cumsum(.x) -0.5*.x -lab.adjust
     )
 
-  p <- ggplot(data, aes_string(x = "1", y = x)) +
+  p <- ggplot(data, create_aes(list(x = "1", y = x))) +
     geom_exec(
       geom_bar, data,  stat = "identity",
       fill = fill, color = color, size = size
@@ -139,7 +139,7 @@ ggpie <- function(
     # Compute the cumulative sum as label ypos
     if(lab.pos == "in"){
      p <- p + geom_text(
-       aes_string(y = ".lab.ypos.", label = label),
+       create_aes(list(y = ".lab.ypos.", label = label)),
        size = lab.font$size, fontface = lab.font$face,
        colour = lab.font$color, family = font.family
       )+
@@ -172,7 +172,7 @@ ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust 
   if(is.null(lab.font)) lab.font <- list(size = 5, face = "bold", color = "black")
 
 
-  p <- ggplot(data, aes_string(x = 1, y = x))+
+  p <- ggplot(data, create_aes(list(x = 1, y = x)))+
     .geom_exec(geom_bar, data,  stat = "identity", fill = fill, color = color, size = size)
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, font.family = font.family, ...)
 

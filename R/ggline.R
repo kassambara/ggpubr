@@ -240,7 +240,7 @@ ggline_core <- function(data, x, y, group = 1,
     if(is.null(add.params$group)) add.params$group <- group[1]
   }
 
-  p <- ggplot(data, aes_string(x, y))
+  p <- ggplot(data, create_aes(list(x = x, y = y)))
 
   # Add other geom or summary
   #:::::::::::::::::::::::::::::::::::::::
@@ -273,7 +273,7 @@ ggline_core <- function(data, x, y, group = 1,
     mapping <- line_args$mapping
     mapping[["group"]] <- group
     option <- line_args$option
-    option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
+    option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_line, option)
   }
 

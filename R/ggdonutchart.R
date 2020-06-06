@@ -109,7 +109,7 @@ ggdonutchart <- function(
       label <- ".label."
   }
 
-  p <- ggplot(data, aes_string(x = 2, y = x)) +
+  p <- ggplot(data, create_aes(list(x = 2, y = x))) +
     geom_exec(
       geom_bar, data,  stat = "identity",
       fill = fill, color = color, size = size
@@ -138,7 +138,7 @@ ggdonutchart <- function(
     # Compute the cumulative sum as label ypos
     if(lab.pos == "in"){
      p <- p + geom_text(
-       aes_string(y = ".lab.ypos.", label = label),
+       create_aes(list(y = ".lab.ypos.", label = label)),
        size = lab.font$size, fontface = lab.font$face,
        colour = lab.font$color, family = font.family
       )+

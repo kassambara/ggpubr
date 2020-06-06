@@ -85,7 +85,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     label <- "label.xx"
   }
 
-  if(is.null(ggp)) p <- ggplot(data, aes_string(x, y))
+  if(is.null(ggp)) p <- ggplot(data, create_aes(list(x = x, y = y)))
   else p <- ggp
 
   # Add textual annotation

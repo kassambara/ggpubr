@@ -175,7 +175,7 @@ ggballoonplot <- function(
     }
   }
 
-  p <- ggplot(data, aes_string(x, y)) +
+  p <- ggplot(data, create_aes(list(x = x, y = y))) +
     geom_exec(
     geom_point, data = data,
     size = size, fill = fill, shape = shape,

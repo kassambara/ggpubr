@@ -158,7 +158,7 @@ ggstripchart_core <- function(data, x, y,
   if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
   . <- NULL
 
-  p <- ggplot(data, aes_string(x, y))
+  p <- ggplot(data, create_aes(list(x = x, y = y)))
   if("none" %in% add) add <- "none"
 
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)

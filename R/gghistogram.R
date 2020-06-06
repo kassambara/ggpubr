@@ -161,7 +161,7 @@ gghistogram_core <- function(data, x, y = "..count..", weight = NULL,
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
   # if(add_density) y <- "..density.."
 
-  p <- ggplot(data, aes_string(x, y))
+  p <- ggplot(data, create_aes(list(x = x, y = y)))
 
   p <- p +
       geom_exec(geom_histogram, data = data,
@@ -186,7 +186,7 @@ gghistogram_core <- function(data, x, y = "..count..", weight = NULL,
     mapping <- .args$mapping
     mapping[["y"]] <- 0
     option <- .args$option
-    option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
+    option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_rug, option)
   }
 

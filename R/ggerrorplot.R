@@ -149,7 +149,7 @@ ggerrorplot_core <- function(data, x, y, desc_stat = "mean_se",
 
   add <- setdiff(add, desc_stat)
   if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.8
-  p <- ggplot(data, aes_string(x, y))
+  p <- ggplot(data, create_aes(list(x = x, y = y)))
   add.params <- add.params %>%
     .add_item(add = add, data = data, error.plot = error.plot, ci = ci, position = position, p = p)
   p <- do.call(ggadd, add.params)

@@ -154,7 +154,7 @@ ggviolin_core <- function(data, x, y,
 
   pms <- .violin_params(...)
 
-  p <- ggplot(data, aes_string(x, y)) +
+  p <- ggplot(data, create_aes(list(x = x, y = y))) +
       geom_exec(geom_violin, data = data,
                 color = color, fill = fill, linetype = linetype,
                 trim = trim, size = size, width = width, alpha = alpha,

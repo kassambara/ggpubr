@@ -21,7 +21,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
   params <- list(...)
 
   mapping <-
-    list() # option to pass to mapping aes() or aes_string()
+    list() # option to pass to mapping aes()
   option <- list() # option to the geom_*()
 
   allowed_options <- c(
@@ -95,7 +95,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
    res <- list(option = option, mapping = mapping)
   }
   else{
-    option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
+    option[["mapping"]] <- create_aes(mapping)
     res <- do.call(geomfunc, option)
   }
   res

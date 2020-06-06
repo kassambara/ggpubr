@@ -201,7 +201,7 @@ ggboxplot_core <- function(data, x, y,
 
   if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
 
-  p <- ggplot(data, aes_string(x, y))
+  p <- ggplot(data, create_aes(list(x = x, y = y)))
   if(bxp.errorbar){
     p <- p + stat_boxplot(geom = "errorbar", width = bxp.errorbar.width)
   }

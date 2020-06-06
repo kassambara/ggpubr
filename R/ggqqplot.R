@@ -116,7 +116,7 @@ ggqqplot_core <- function(data, x, y = "..qq..",
   if(is.null(add.params$size)) add.params$size <- size
   if(is.null(add.params$linetype)) add.params$linetype <- "solid"
 
-  p <- ggplot(data, aes_string(sample = x))
+  p <- ggplot(data, create_aes(list(sample = x)))
 
   p <- p +
       geom_exec(stat_qq, data = data,

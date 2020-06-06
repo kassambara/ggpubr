@@ -93,6 +93,8 @@ reference:
       - ggadd
       - get_palette
       - as_ggplot
+      - geom_exec
+      - create_aes
   - title: Data
     contents:
       - diff_express

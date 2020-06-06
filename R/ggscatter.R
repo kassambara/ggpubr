@@ -247,7 +247,7 @@ ggscatter_core <- function(data, x, y,
   font.label$color <- ifelse(is.null(font.label$color), color, font.label$color)
   font.label$face <- ifelse(is.null(font.label$face), "plain", font.label$face)
 
-  if(is.null(ggp)) p <- ggplot(data, aes_string(x, y))
+  if(is.null(ggp)) p <- ggplot(data, create_aes(list(x = x, y = y)))
   else p <- ggp
 
   if(point) p <- p +
@@ -282,7 +282,7 @@ ggscatter_core <- function(data, x, y,
     mapping <- .args$mapping
     option <- .args$option
     option[["method"]] <- add
-    option[["mapping"]] <- do.call(ggplot2::aes_string, mapping)
+    option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_smooth, option)
   }
 
@@ -420,14 +420,14 @@ ggscatter_core <- function(data, x, y,
                                 alpha = 0.1, level = 0.95, ellipse.border.remove = FALSE){
   grp_levels <- levels(data[, grp_name])
   if(length(grp_levels) == 1) {
-    mapping <- aes_string(x = x, y = y)
+    mapping <- create_aes(list(x = x, y = y))
     stat_conf_ellipse(mapping = mapping, data = data,
                color = color, fill = fill, alpha = alpha,
                level = level, geom = "polygon")
   }
   else {
-    mapping = aes_string(x = x, y = y, colour = grp_name, fill = grp_name)
-    if(ellipse.border.remove ) mapping = aes_string(x = x, y = y,  fill = grp_name)
+    mapping = create_aes(list(x = x, y = y, colour = grp_name, fill = grp_name))
+    if(ellipse.border.remove ) mapping = create_aes(list(x = x, y = y, colour = NULL, fill = grp_name))
     stat_conf_ellipse(mapping = mapping, data = data,
                           level = level, alpha = alpha,
                           geom = 'polygon')
@@ -442,15 +442,15 @@ ggscatter_core <- function(data, x, y,
   {
   grp_levels <- levels(data[, grp_name])
   if(length(grp_levels) == 1){
-    mapping <- aes_string(x = x, y = y)
+    mapping <- create_aes(list(x = x, y = y))
     ggplot2::stat_ellipse(mapping = mapping, data = data,
                          level = level, type = type,
                          colour = color, fill = fill, alpha = alpha,
                          geom = 'polygon')
   }
   else{
-  mapping = aes_string(x = x, y = y, colour = grp_name, group = grp_name, fill = grp_name)
-  if(ellipse.border.remove) mapping = aes_string(x = x, y = y, colour = NULL, group = grp_name, fill = grp_name)
+  mapping = create_aes(list(x = x, y = y, colour = grp_name, group = grp_name, fill = grp_name))
+  if(ellipse.border.remove) mapping = create_aes(list(x = x, y = y, group = grp_name, fill = grp_name))
   ggplot2::stat_ellipse(mapping = mapping, data = data,
                        level = level, type = type, alpha = alpha,
                        geom = 'polygon')
