@@ -840,7 +840,7 @@ p
                      add = "none", add.params = list(),
                      label = NULL, font.label = list(size = 11, color = "black"),
                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-                     parse = FALSE,
+                     font.family = "", parse = FALSE,
                      ggtheme = theme_pubr(),
                      fun_name = "", group = 1, # used only by ggline
                      show.legend.text = NA,
@@ -977,7 +977,7 @@ p
       .add_item(data = data, x = opts$x, y = opts$y,
                 label = label, label.select = label.select,
                 repel = repel, label.rectangle = label.rectangle,
-                parse = parse,
+                family = font.family, parse = parse,
                 ggtheme = NULL,
                 grouping.vars = grouping.vars, facet.by = facet.by, position = geom.text.position,
                 show.legend = show.legend.text)
