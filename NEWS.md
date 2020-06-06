@@ -43,6 +43,7 @@
   
 ## Bug fixes
    
+- `ggtextable()` now supports further customization when theme is specified (#283).
 - the argument `font.family` is now correctly handled by `ggscatter()` (#149)
 - `ggpar()` arguments are correctly applied using `ggpie()` (#277).
 - `ggscatter()`: When `conf.int = FALSE`, fill color is set to "lightgray" for the regression line confidence band ([@zhan6073, #111](https://github.com/kassambara/ggpubr/issues/111)).

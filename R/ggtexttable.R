@@ -54,6 +54,9 @@ NULL
 #' # Blank theme
 #' ggtexttable(df, rows = NULL, theme = ttheme("blank"))
 #'
+#' # light theme
+#' ggtexttable(df, rows = NULL, theme = ttheme("light"))
+#'
 #' # classic theme
 #' ggtexttable(df, rows = NULL, theme = ttheme("classic"))
 #'
@@ -161,21 +164,19 @@ ttheme <- function(base_style = "default", base_size = 11, base_colour = "black"
 {
 
   style <- tstyle(base_style, size = base_size)
-
   if(!is.null(style)){
-    colnames.style <- style$colnames.style
-    rownames.style  <- style$rownames.style
-    tbody.style <- style$tbody.style
+    if(missing(colnames.style)) colnames.style <- style$colnames.style
+    if(missing(rownames.style)) rownames.style  <- style$rownames.style
+    if(missing(tbody.style)) tbody.style <- style$tbody.style
   }
-
 
   .ttheme <- gridExtra::ttheme_default(base_size = base_size,
                                       base_colour = base_colour,
                                        padding = padding)
+
   .ttheme$colhead <- do.call(.add_item, c(list(.list = .ttheme$colhead), colnames.style))
   .ttheme$rowhead <- do.call(.add_item, c(list(.list = .ttheme$rowhead), rownames.style))
   .ttheme$core <- do.call(.add_item, c(list(.list = .ttheme$core), tbody.style))
-
   attr(.ttheme, "style") <- base_style
 
   .ttheme

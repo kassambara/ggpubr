@@ -148,6 +148,9 @@ ggtexttable(df, rows = NULL)
 # Blank theme
 ggtexttable(df, rows = NULL, theme = ttheme("blank"))
 
+# light theme
+ggtexttable(df, rows = NULL, theme = ttheme("light"))
+
 # classic theme
 ggtexttable(df, rows = NULL, theme = ttheme("classic"))
 
