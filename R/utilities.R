@@ -16,6 +16,14 @@ NULL
 #' @importFrom rlang syms .data
 
 
+required_package <- function(pkg){
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop(
+      pkg, " package needed to be installed before using this function. ",
+      "Type this in R: install.packages('", pkg, "')"
+    )
+  }
+}
 
 # Unnesting, adapt to tidyr 1.0.0
 unnest <- function(data, cols = "data", ...){

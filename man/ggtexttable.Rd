@@ -8,6 +8,14 @@
 \alias{tbody_style}
 \alias{table_cell_font}
 \alias{table_cell_bg}
+\alias{tab_cell_crossout}
+\alias{tab_ncol}
+\alias{tab_nrow}
+\alias{tab_add_hline}
+\alias{tab_add_vline}
+\alias{tab_add_border}
+\alias{tbody_add_border}
+\alias{thead_add_border}
 \title{Draw a Textual Table}
 \usage{
 ggtexttable(
@@ -64,7 +72,84 @@ tbody_style(
 
 table_cell_font(tab, row, column, face = NULL, size = NULL)
 
-table_cell_bg(tab, row, column, fill = NULL, color = NULL, linewidth = NULL)
+table_cell_bg(
+  tab,
+  row,
+  column,
+  fill = NULL,
+  color = NULL,
+  linewidth = NULL,
+  alpha = NULL
+)
+
+tab_cell_crossout(
+  tab,
+  row,
+  column,
+  linetype = 1,
+  linewidth = 1,
+  linecolor = "black",
+  reduce.size.by = 0
+)
+
+tab_ncol(tab)
+
+tab_nrow(tab)
+
+tab_add_hline(
+  tab,
+  at.row = 2:tab_nrow(tab),
+  row.side = c("bottom", "top"),
+  from.column = 1,
+  to.column = tab_ncol(tab),
+  linetype = 1,
+  linewidth = 1,
+  linecolor = "black"
+)
+
+tab_add_vline(
+  tab,
+  at.column = 2:tab_ncol(tab),
+  col.side = c("left", "right"),
+  from.row = 1,
+  to.row = tab_nrow(tab),
+  linetype = 1,
+  linewidth = 1,
+  linecolor = "black"
+)
+
+tab_add_border(
+  tab,
+  from.row = 2,
+  to.row = tab_nrow(tab),
+  from.column = 1,
+  to.column = tab_ncol(tab),
+  linetype = 1,
+  linewidth = 1,
+  linecolor = "black"
+)
+
+tbody_add_border(
+  tab,
+  from.row = 2,
+  to.row = tab_nrow(tab),
+  from.column = 1,
+  to.column = tab_ncol(tab),
+  linetype = 1,
+  linewidth = 1,
+  linecolor = "black"
+)
+
+thead_add_border(
+  tab,
+  from.row = 1,
+  to.row = 1,
+  from.column = 1,
+  to.column = tab_ncol(tab),
+  linetype = 1,
+  linewidth = 1,
+  linecolor = "black"
+)
 }
 \arguments{
 \item{x}{a \code{data.frame} or \code{matrix}.}
@@ -121,9 +206,32 @@ values for face include c("plain", "bold", "italic", "bold.italic").}
 
 \item{parse}{logical, default behaviour for parsing text as plotmath}
 
-\item{tab}{an object of class ggtexttable.}
+\item{tab}{an object from \code{ggtexttable} or from \code{gridExtra::tableGrob()}.}
 
 \item{row, column}{an integer specifying the row and the column numbers for the cell of interest.}
+
+\item{alpha}{numeric value specifying fill color transparency.
+Value should be in [0, 1], where 0 is full transparency and 1 is no transparency.}
+
+\item{linetype}{line type}
+
+\item{reduce.size.by}{Numeric value in [0, 1] to reduce the size by.}
+
+\item{at.row}{a numeric vector of row indexes; for example \code{at.row = c(1, 2)}.}
+
+\item{row.side}{row side to which the horinzotal line should be added. Can be one of \code{c("bottom", "top")}.}
+
+\item{from.column}{integer indicating the column from which to start drawing the horizontal line.}
+
+\item{to.column}{integer indicating the column to which the horizontal line should end.}
+
+\item{at.column}{a numeric vector of column indexes; for example \code{at.column = c(1, 2)}.}
+
+\item{col.side}{column side to which the vertical line should be added. Can be one of \code{c("left", "right")}.}
+
+\item{from.row}{integer indicating the row from which to start drawing the horizontal line.}
+
+\item{to.row}{integer indicating the row to which the vertical line should end.}
 }
 \value{
 an object of class ggplot.
@@ -135,6 +243,11 @@ Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
  to customize the table row names, column names and body.
  \item \code{table_cell_font()}: access to a table cell for changing the text font (size and face).
  \item \code{table_cell_bg()}: access to a table cell for changing the background (fill, color, linewidth).
+ \item \code{table_cell_crossout()}: cross out a table cell.
+ \item \code{tab_ncol(), tab_nrow()}: returns, respectively, the number of columns and rows in a ggtexttable.
+ \item \code{tab_add_hline()}: Creates horizontal lines or separators at the top or the bottom side of a given specified row.
+ \item \code{tab_add_vline()}: Creates vertical lines or separators at the right or the left side of a given specified column.
+ \item \code{tab_add_border(), tbody_add_border(), thead_add_border()}: Add borders to table; tbody is for table body and thead is for table head.
   }
 }
 \examples{
