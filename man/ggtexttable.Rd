@@ -70,7 +70,7 @@ tbody_style(
   ...
 )
 
-table_cell_font(tab, row, column, face = NULL, size = NULL)
+table_cell_font(tab, row, column, face = NULL, size = NULL, color = NULL)
 
 table_cell_bg(
   tab,
@@ -243,7 +243,7 @@ Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
  to customize the table row names, column names and body.
  \item \code{table_cell_font()}: access to a table cell for changing the text font (size and face).
  \item \code{table_cell_bg()}: access to a table cell for changing the background (fill, color, linewidth).
- \item \code{table_cell_crossout()}: cross out a table cell.
+ \item \code{tab_cell_crossout()}: cross out a table cell.
  \item \code{tab_ncol(), tab_nrow()}: returns, respectively, the number of columns and rows in a ggtexttable.
  \item \code{tab_add_hline()}: Creates horizontal lines or separators at the top or the bottom side of a given specified row.
  \item \code{tab_add_vline()}: Creates vertical lines or separators at the right or the left side of a given specified column.
@@ -263,6 +263,10 @@ ggtexttable(df, rows = NULL, theme = ttheme("blank"))
 
 # light theme
 ggtexttable(df, rows = NULL, theme = ttheme("light"))
+
+# Column names border only
+ggtexttable(df, rows = NULL, theme = ttheme("blank")) \%>\%
+ tab_add_hline(at.row = 1:2, row.side = "top", linewidth = 2)
 
 # classic theme
 ggtexttable(df, rows = NULL, theme = ttheme("classic"))

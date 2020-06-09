@@ -72,6 +72,10 @@ NULL
 #' # light theme
 #' ggtexttable(df, rows = NULL, theme = ttheme("light"))
 #'
+#' # Column names border only
+#' ggtexttable(df, rows = NULL, theme = ttheme("blank")) %>%
+#'  tab_add_hline(at.row = 1:2, row.side = "top", linewidth = 2)
+#'
 #' # classic theme
 #' ggtexttable(df, rows = NULL, theme = ttheme("classic"))
 #'
@@ -123,6 +127,13 @@ NULL
 #'tab <- table_cell_bg(tab, row = 4, column = 3, linewidth = 5,
 #'                     fill="darkolivegreen1", color = "darkolivegreen4")
 #'tab
+#'
+#'# Change table cells background and font for column 3,
+#'# Spaning from row 2 to the last row in the data
+#'ggtexttable(df, rows = NULL, theme = ttheme("classic")) %>%
+#'  table_cell_bg(row = 2:(nrow(df)+1), column = 3, fill = "darkblue") %>%
+#'  table_cell_font(row = 2:(nrow(df) +1), column = 3, face = "italic", color = "white")
+#'
 #'
 #'
 #' # Combine density plot and summary table
@@ -250,13 +261,13 @@ tbody_style <- function(color = "black", face = "plain", size = 12,
 #' @rdname ggtexttable
 #' @param tab an object from \code{ggtexttable} or from \code{gridExtra::tableGrob()}.
 #' @param row,column an integer specifying the row and the column numbers for the cell of interest.
-table_cell_font <- function(tab, row, column, face = NULL, size = NULL)
+table_cell_font <- function(tab, row, column, face = NULL, size = NULL, color = NULL)
 {
   tabGrob <- get_tablegrob(tab)
   cells <- expand.grid(row = row, column = column)
   for(i in 1:nrow(cells)){
     tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], "core-fg")
-    tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(fontface = face, fontsize = size)
+    tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(fontface = face, fontsize = size, col = color)
   }
   tab_return_same_class_as_input(tabGrob, input = tab)
 }
