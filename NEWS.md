@@ -8,6 +8,7 @@
     - `tab_add_hline()`: Creates horizontal lines or separators at the top or the bottom side of a given specified row.
     - `tab_add_vline()`: Creates vertical lines or separators at the right or the left side of a given specified column.
     - `tab_add_border(), tbody_add_border(), thead_add_border()`: Add borders to table; tbody is for table body and thead is for table head.
+    - `tab_add_title()` and `tab_add_footnote()` to add titles and footnotes (#243).
 - ggpubr functions updated to handle non-standard column names, for example ("A-A") (#229).
 - New function `create_aes()` added to create aes mapping from a list. Makes programming easy with ggplot2 (#229).
 - New argument `coord.flip` added to support adding p-values onto horizontal ggplots (#179). When adding the p-values to a horizontal ggplot (generated using `coord_flip()`), you need to specify the option `coord.flip = TRUE`.

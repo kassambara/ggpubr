@@ -12,6 +12,7 @@ NULL
 #'  \item \code{tab_add_hline()}: Creates horizontal lines or separators at the top or the bottom side of a given specified row.
 #'  \item \code{tab_add_vline()}: Creates vertical lines or separators at the right or the left side of a given specified column.
 #'  \item \code{tab_add_border(), tbody_add_border(), thead_add_border()}: Add borders to table; tbody is for table body and thead is for table head.
+#'  \item \code{tab_add_title(),tab_add_footnote()}: Add title, subtitle and footnote to a table.
 #'   }
 #'@inheritParams gridExtra::tableGrob
 #'@param x a \code{data.frame} or \code{matrix}.
@@ -49,7 +50,7 @@ NULL
 #' @param to.column integer indicating the column to which the horizontal line should end.
 #' @param linetype line type
 #' @param at.column a numeric vector of column indexes; for example \code{at.column = c(1, 2)}.
-#' @param col.side column side to which the vertical line should be added. Can be one of \code{c("left", "right")}.
+#' @param column.side column side to which the vertical line should be added. Can be one of \code{c("left", "right")}.
 #' @param from.row integer indicating the row from which to start drawing the horizontal line.
 #' @param to.row integer indicating the row to which the vertical line should end.
 #'@param ... extra parameters for text justification, e.g.: hjust and x. Default
@@ -130,10 +131,50 @@ NULL
 #'
 #'# Change table cells background and font for column 3,
 #'# Spaning from row 2 to the last row in the data
-#'ggtexttable(df, rows = NULL, theme = ttheme("classic")) %>%
-#'  table_cell_bg(row = 2:(nrow(df)+1), column = 3, fill = "darkblue") %>%
-#'  table_cell_font(row = 2:(nrow(df) +1), column = 3, face = "italic", color = "white")
+#'tab <- ggtexttable(df, rows = NULL, theme = ttheme("classic"))
+#'tab %>%
+#'  table_cell_bg(row = 2:tab_nrow(tab), column = 3, fill = "darkblue") %>%
+#'  table_cell_font(row = 2:tab_nrow(tab), column = 3, face = "italic", color = "white")
 #'
+#'# Add separators and borders
+#'# :::::::::::::::::::::::::::::::::::::::::::::::::::
+#'# Table with blank theme
+#'tab <- ggtexttable(df, theme = ttheme("blank"), rows = NULL)
+#'# Add horizontal and vertical lines
+#'tab %>%
+#'  tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) %>%
+#'  tab_add_hline(at.row = c(7), row.side = "bottom", linewidth = 3, linetype = 1) %>%
+#'  tab_add_vline(at.column = 2:tab_ncol(tab), column.side = "left", from.row = 2, linetype = 2)
+#'
+#'# Add borders to table body and header
+#'# Cross out some cells
+#'tab %>%
+#'  tbody_add_border() %>%
+#'  thead_add_border() %>%
+#'  tab_cell_crossout(
+#'    row = c(2, 4), column = 3, linecolor = "red",
+#'    reduce.size.by = 0.6
+#'  )
+#'
+#'# Add titles andd footnote
+#'# :::::::::::::::::::::::::::::::::::::::::::::::::::
+#'# Add titles and footnote
+#'# Wrap subtitle into multiple lines using strwrap()
+#'main.title <- "Edgar Anderson's Iris Data"
+#'subtitle <- paste0(
+#' "This famous (Fisher's or Anderson's) iris data set gives the measurements",
+#' " in centimeters of the variables sepal length and width and petal length and width,",
+#'  " respectively, for 50 flowers from each of 3 species of iris.",
+#'  " The species are Iris setosa, versicolor, and virginica."
+#') %>%
+#'  strwrap(width = 80) %>%
+#'  paste(collapse = "\n")
+#'
+#'tab <- ggtexttable(head(iris), theme = ttheme("light"))
+#'tab %>%
+#'  tab_add_title(text = subtitle, face = "plain", size = 10) %>%
+#'  tab_add_title(text = main.title, face = "bold", padding = unit(0.1, "line")) %>%
+#'  tab_add_footnote(text = "*Table created using ggpubr", size = 10, face = "italic")
 #'
 #'
 #' # Combine density plot and summary table
@@ -166,7 +207,7 @@ ggtexttable <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL,
   if(style == "minimal"){
     # minimal = blank theme + left vertical line
     res <- tab_add_vline(
-      res, at.column = 2:tab_ncol(res), col.side = "left",
+      res, at.column = 2:tab_ncol(res), column.side = "left",
       from.row = 2, to.row = tab_nrow(res)
       )
   }
@@ -380,15 +421,15 @@ tab_hline <- function(row.side = c("bottom", "top"), linetype = 1, linewidth = 1
 
 #' @export
 #' @rdname ggtexttable
-tab_add_vline <- function(tab, at.column = 2:tab_ncol(tab), col.side = c("left", "right"),
+tab_add_vline <- function(tab, at.column = 2:tab_ncol(tab), column.side = c("left", "right"),
                           from.row = 1, to.row = tab_nrow(tab),
                           linetype = 1, linewidth = 1, linecolor = "black"){
   required_package("gtable")
-  col.side <- match.arg(col.side)
+  column.side <- match.arg(column.side)
   tabgrob <- get_tablegrob(tab)
   separators <- replicate(
     n = length(at.column),
-    tab_vline(col.side = col.side, linetype = linetype, linewidth = linewidth, linecolor = linecolor),
+    tab_vline(column.side = column.side, linetype = linetype, linewidth = linewidth, linecolor = linecolor),
     simplify = FALSE
   )
   tabgrob <- gtable::gtable_add_grob(
@@ -399,10 +440,10 @@ tab_add_vline <- function(tab, at.column = 2:tab_ncol(tab), col.side = c("left",
   tab_return_same_class_as_input(tabgrob, input = tab)
 }
 # Create vline at the left or the right side of a given column
-tab_vline <- function(col.side = c("left", "right"), linetype = 1, linewidth = 1, linecolor = "black"){
-  col.side <- match.arg(col.side)
+tab_vline <- function(column.side = c("left", "right"), linetype = 1, linewidth = 1, linecolor = "black"){
+  column.side <- match.arg(column.side)
   x0 <- x1 <- unit(0, "npc")
-  if(col.side == "right") x0 <- x1 <- unit(1, "npc")
+  if(column.side == "right") x0 <- x1 <- unit(1, "npc")
   grid::segmentsGrob(
     x0 = x0, x1 = x1,
     y0 = unit(0, "npc"), y1 = unit(1, "npc"),
@@ -452,6 +493,66 @@ thead_add_border <- function(tab, from.row = 1, to.row = 1,
   )
 }
 
+#' @export
+#' @rdname ggtexttable
+#' @param text text to be added as title or footnote.
+tab_add_title <- function(tab, text,  face = NULL, size = NULL, color = NULL,
+                      family = NULL, padding = unit(1.5,"line"),
+                      just = "left", hjust = NULL, vjust = NULL){
+  required_package("gtable")
+  tabgrob <- get_tablegrob(tab)
+  text <- grid::textGrob(
+    text, x = 0.02, just = just, hjust = hjust, vjust = vjust,
+    gp = grid::gpar(fontsize = size, fontface = face, fontfamily = family, col = color)
+    )
+  # Add row at the top
+  tabgrob <- gtable::gtable_add_rows(
+    tabgrob, heights = grid::grobHeight(text) + padding,
+    pos = 0
+    )
+  tabgrob <- gtable::gtable_add_grob(
+    tabgrob, list(text),
+    t = 1, b = 1, l = 1, r = ncol(tabgrob)
+    )
+  tab_return_same_class_as_input(tabgrob, input = tab)
+}
+
+
+#' @export
+#' @rdname ggtexttable
+#' @param text text to be added as title or footnote.
+#' @param family font family
+#' @param just The justification of the text relative to its (x, y) location. If
+#'   there are two values, the first value specifies horizontal justification
+#'   and the second value specifies vertical justification. Possible string
+#'   values are: "left", "right", "centre", "center", "bottom", and "top". For
+#'   numeric values, 0 means left (bottom) alignment and 1 means right (top)
+#'   alignment.
+#' @param hjust A numeric vector specifying horizontal justification. If
+#'   specified, overrides the just setting.
+#' @param vjust A numeric vector specifying vertical justification. If
+#'   specified, overrides the just setting.
+#'
+tab_add_footnote <- function(tab, text,  face = NULL, size = NULL, color = NULL,
+                          family = NULL, padding = unit(1.5,"line"),
+                          just = "right", hjust = NULL, vjust = NULL){
+  required_package("gtable")
+  tabgrob <- get_tablegrob(tab)
+  text <- grid::textGrob(
+    text, x = 0.95, just = just, hjust = hjust, vjust = vjust,
+    gp = grid::gpar(fontsize = size, fontface = face, fontfamily = family, col = color)
+  )
+  # Add row at the bottom
+  tabgrob <- gtable::gtable_add_rows(
+    tabgrob, heights = grid::grobHeight(text) + padding,
+    pos = -1
+  )
+  tabgrob <- gtable::gtable_add_grob(
+    tabgrob, list(text),
+    t = nrow(tabgrob), b = nrow(tabgrob), l = 1, r = ncol(tabgrob)
+  )
+  tab_return_same_class_as_input(tabgrob, input = tab)
+}
 
 
 #::::::::::::::::::::::::::::::::::::::::

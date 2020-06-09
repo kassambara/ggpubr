@@ -16,6 +16,8 @@
 \alias{tab_add_border}
 \alias{tbody_add_border}
 \alias{thead_add_border}
+\alias{tab_add_title}
+\alias{tab_add_footnote}
 \title{Draw a Textual Table}
 \usage{
 ggtexttable(
@@ -110,7 +112,7 @@ tab_add_hline(
 tab_add_vline(
   tab,
   at.column = 2:tab_ncol(tab),
-  col.side = c("left", "right"),
+  column.side = c("left", "right"),
   from.row = 1,
   to.row = tab_nrow(tab),
   linetype = 1,
@@ -149,6 +151,32 @@ thead_add_border(
   linetype = 1,
   linewidth = 1,
   linecolor = "black"
+)
+
+tab_add_title(
+  tab,
+  text,
+  face = NULL,
+  size = NULL,
+  color = NULL,
+  family = NULL,
+  padding = unit(1.5, "line"),
+  just = "left",
+  hjust = NULL,
+  vjust = NULL
+)
+
+tab_add_footnote(
+  tab,
+  text,
+  face = NULL,
+  size = NULL,
+  color = NULL,
+  family = NULL,
+  padding = unit(1.5, "line"),
+  just = "right",
+  hjust = NULL,
+  vjust = NULL
 )
 }
 \arguments{
@@ -227,11 +255,28 @@ Value should be in [0, 1], where 0 is full transparency and 1 is no transparency
 
 \item{at.column}{a numeric vector of column indexes; for example \code{at.column = c(1, 2)}.}
 
-\item{col.side}{column side to which the vertical line should be added. Can be one of \code{c("left", "right")}.}
+\item{column.side}{column side to which the vertical line should be added. Can be one of \code{c("left", "right")}.}
 
 \item{from.row}{integer indicating the row from which to start drawing the horizontal line.}
 
 \item{to.row}{integer indicating the row to which the vertical line should end.}
+
+\item{text}{text to be added as title or footnote.}
+
+\item{family}{font family}
+
+\item{just}{The justification of the text relative to its (x, y) location. If
+there are two values, the first value specifies horizontal justification
+and the second value specifies vertical justification. Possible string
+values are: "left", "right", "centre", "center", "bottom", and "top". For
+numeric values, 0 means left (bottom) alignment and 1 means right (top)
+alignment.}
+
+\item{hjust}{A numeric vector specifying horizontal justification. If
+specified, overrides the just setting.}
+
+\item{vjust}{A numeric vector specifying vertical justification. If
+specified, overrides the just setting.}
 }
 \value{
 an object of class ggplot.
@@ -248,6 +293,7 @@ Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
  \item \code{tab_add_hline()}: Creates horizontal lines or separators at the top or the bottom side of a given specified row.
  \item \code{tab_add_vline()}: Creates vertical lines or separators at the right or the left side of a given specified column.
  \item \code{tab_add_border(), tbody_add_border(), thead_add_border()}: Add borders to table; tbody is for table body and thead is for table head.
+ \item \code{tab_add_title(),tab_add_footnote()}: Add title, subtitle and footnote to a table.
   }
 }
 \examples{
@@ -319,6 +365,53 @@ tab <- table_cell_font(tab, row = 3, column = 2,
 tab <- table_cell_bg(tab, row = 4, column = 3, linewidth = 5,
                     fill="darkolivegreen1", color = "darkolivegreen4")
 tab
+
+# Change table cells background and font for column 3,
+# Spaning from row 2 to the last row in the data
+tab <- ggtexttable(df, rows = NULL, theme = ttheme("classic"))
+tab \%>\%
+ table_cell_bg(row = 2:tab_nrow(tab), column = 3, fill = "darkblue") \%>\%
+ table_cell_font(row = 2:tab_nrow(tab), column = 3, face = "italic", color = "white")
+
+# Add separators and borders
+# :::::::::::::::::::::::::::::::::::::::::::::::::::
+# Table with blank theme
+tab <- ggtexttable(df, theme = ttheme("blank"), rows = NULL)
+# Add horizontal and vertical lines
+tab \%>\%
+ tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) \%>\%
+ tab_add_hline(at.row = c(7), row.side = "bottom", linewidth = 3, linetype = 1) \%>\%
+ tab_add_vline(at.column = 2:tab_ncol(tab), column.side = "left", from.row = 2, linetype = 2)
+
+# Add borders to table body and header
+# Cross out some cells
+tab \%>\%
+ tbody_add_border() \%>\%
+ thead_add_border() \%>\%
+ tab_cell_crossout(
+   row = c(2, 4), column = 3, linecolor = "red",
+   reduce.size.by = 0.6
+ )
+
+# Add titles andd footnote
+# :::::::::::::::::::::::::::::::::::::::::::::::::::
+# Add titles and footnote
+# Wrap subtitle into multiple lines using strwrap()
+main.title <- "Edgar Anderson's Iris Data"
+subtitle <- paste0(
+"This famous (Fisher's or Anderson's) iris data set gives the measurements",
+" in centimeters of the variables sepal length and width and petal length and width,",
+ " respectively, for 50 flowers from each of 3 species of iris.",
+ " The species are Iris setosa, versicolor, and virginica."
+) \%>\%
+ strwrap(width = 80) \%>\%
+ paste(collapse = "\n")
+
+tab <- ggtexttable(head(iris), theme = ttheme("light"))
+tab \%>\%
+ tab_add_title(text = subtitle, face = "plain", size = 10) \%>\%
+ tab_add_title(text = main.title, face = "bold", padding = unit(0.1, "line")) \%>\%
+ tab_add_footnote(text = "*Table created using ggpubr", size = 10, face = "italic")
 
 
 # Combine density plot and summary table
