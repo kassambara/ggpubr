@@ -28,6 +28,7 @@ https://community.rstudio.com/t/how-to-combine-two-separate-legends-side-by-side
 
 ## Minor changes
 
+- New argument `position` in `ggline()` to make position "dodged" (#52).
 - New argument `outlier.shape` in ggboxplot(). Default is 19. To hide outlier, specify outlier.shape = NA. When jitter is added, then outliers will be automatically hidden. 
 - Sorting can be now disabled in `ggdotchart()` using the option `sorting = "none"` (#115, #223).
 - New argument `weight` added in `gghistogram()` for creating a weighted histogram (#215)

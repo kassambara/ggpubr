@@ -39,6 +39,7 @@ ggline(
   repel = FALSE,
   label.rectangle = FALSE,
   show.line.label = FALSE,
+  position = "identity",
   ggtheme = theme_pubr(),
   ...
 )
@@ -157,6 +158,9 @@ text labels or not.}
 text, making it easier to read.}
 
 \item{show.line.label}{logical value. If TRUE, shows line labels.}
+
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
