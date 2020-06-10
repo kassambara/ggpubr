@@ -29,6 +29,9 @@ NULL
 #'  outlines.
 #'@param width numeric value between 0 and 1 specifying box width.
 #'@inheritParams ggplot2::geom_boxplot
+#'@param outlier.shape point shape of outlier. Default is 19. To hide outlier,
+#'  specify \code{outlier.shape = NA}. When jitter is added, then outliers will
+#'  be automatically hidden.
 #'@inheritParams facet
 #'@inheritParams ggpar
 #'@inheritParams ggtext
@@ -38,8 +41,9 @@ NULL
 #'@param add character vector for adding another plot element (e.g.: dot plot or
 #'  error bars). Allowed values are one or the combination of: "none",
 #'  "dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
-#'  "mean_ci", "mean_range", "median", "median_iqr", "median_hilow", "median_q1q3", "median_mad",
-#'  "median_range"; see ?desc_statby for more details.
+#'  "mean_ci", "mean_range", "median", "median_iqr", "median_hilow",
+#'  "median_q1q3", "median_mad", "median_range"; see ?desc_statby for more
+#'  details.
 #'@param add.params parameters (color, shape, size, fill, linetype) for the
 #'  argument 'add'; e.g.: add.params = list(color = "red").
 #'@param error.plot plot type used to visualize error. Allowed values are one of
@@ -142,6 +146,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       bxp.errorbar = FALSE, bxp.errorbar.width = 0.4,
                       facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                       linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
+                      outlier.shape = 19,
                       select = NULL, remove = NULL, order = NULL,
                       add = "none", add.params = list(),
                       error.plot = "pointrange",
@@ -158,7 +163,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     title = title, xlab = xlab, ylab = ylab,
     bxp.errorbar = bxp.errorbar, bxp.errorbar.width = bxp.errorbar.width,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    linetype = linetype, size = size, width = width,  notch = notch,
+    linetype = linetype, size = size, width = width,  notch = notch, outlier.shape = outlier.shape,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
@@ -191,6 +196,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 ggboxplot_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
                       linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
+                      outlier.shape = 19,
                       title = NULL, xlab = NULL, ylab = NULL,
                       bxp.errorbar = FALSE, bxp.errorbar.width = 0.4,
                       add = "none", add.params = list(),
@@ -200,6 +206,7 @@ ggboxplot_core <- function(data, x, y,
 {
 
   if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+  if("jitter" %in% add) outlier.shape <- NA
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
   if(bxp.errorbar){
@@ -209,6 +216,7 @@ ggboxplot_core <- function(data, x, y,
   p <- p + geom_exec(geom_boxplot, data = data,
               color = color, fill = fill, linetype = linetype,
               size = size, width = width, notch = notch,
+              outlier.shape = outlier.shape,
               position = position_dodge(0.8), size = size,...)
 
   # Add

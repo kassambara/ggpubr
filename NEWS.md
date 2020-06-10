@@ -1,7 +1,9 @@
 # ggpubr 0.3.0.999
    
+https://community.rstudio.com/t/how-to-combine-two-separate-legends-side-by-side/9480/5
+
 ## New features
-   
+
 - New functions added to customize `ggtexttable()` (#125, #129 and #283):
     - `tab_cell_crossout()`: cross out a table cell.
     - `tab_ncol(), tab_nrow()`: returns, respectively, the number of columns and rows in a ggtexttable.
@@ -26,6 +28,7 @@
 
 ## Minor changes
 
+- New argument `outlier.shape` in ggboxplot(). Default is 19. To hide outlier, specify outlier.shape = NA. When jitter is added, then outliers will be automatically hidden. 
 - Sorting can be now disabled in `ggdotchart()` using the option `sorting = "none"` (#115, #223).
 - New argument `weight` added in `gghistogram()` for creating a weighted histogram (#215)
 - Now `ggscaterhist()` takes into account the argument `position` in `margin.params` when marginal plot is a histogram (#286). 
