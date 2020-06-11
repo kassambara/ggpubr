@@ -7,6 +7,9 @@ NULL
 #'@param method a character string indicating which correlation coefficient (or
 #'  covariance) is to be computed. One of "pearson" (default), "kendall", or
 #'  "spearman".
+#'@param alternative a character string specifying the alternative hypothesis,
+#'  must be one of "two.sided" (default), "greater" or "less". You can specify
+#'  just the initial letter.
 #'@param cor.coef.name character. Can be one of \code{"R"} (pearson coef),
 #'  \code{"rho"} (spearman coef) and \code{"tau"} (kendall coef). Uppercase and
 #'  lowercase are allowed.
@@ -30,23 +33,21 @@ NULL
 #'  coefficient and the p-value, respectively..
 #'@param r.accuracy a real value specifying the number of decimal places of
 #'  precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01
-#'  to show 2 decimal places of precision. If specified, then \code{r.digits} is ignored.
+#'  to show 2 decimal places of precision. If specified, then \code{r.digits} is
+#'  ignored.
 #'@param p.accuracy a real value specifying the number of decimal places of
-#'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001
-#'  to show 4 decimal places of precision. If specified, then \code{p.digits} is ignored.
+#'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
+#'  decimal places of precision. If specified, then \code{p.digits} is ignored.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #'@seealso \code{\link{ggscatter}}
-#' @section Computed variables:
-#'   \describe{ \item{r}{correlation coefficient}
-#'   \item{rr}{correlation coefficient squared}
-#'   \item{r.label}{formatted label for the correlation coefficient}
-#'   \item{rr.label}{formatted label for the squared correlation coefficient}
-#'   \item{p.label}{label for the p-value}
-#'   \item{label}{default labeldisplayed by \code{stat_cor()}}
-#'   }
+#'@section Computed variables: \describe{ \item{r}{correlation coefficient}
+#'  \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
+#'  for the correlation coefficient} \item{rr.label}{formatted label for the
+#'  squared correlation coefficient} \item{p.label}{label for the p-value}
+#'  \item{label}{default labeldisplayed by \code{stat_cor()}} }
 #'
 #' @examples
 #' # Load data
@@ -88,7 +89,8 @@ NULL
 #'
 #'@export
 stat_cor <- function(mapping = NULL, data = NULL,
-                     method = "pearson", cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
+                     method = "pearson", alternative = "two.sided",
+                     cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
@@ -102,7 +104,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
                   label.x = label.x, label.y = label.y, label.sep = label.sep,
-                  method = method, output.type = output.type, digits = digits,
+                  method = method, alternative = alternative, output.type = output.type, digits = digits,
                   r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
                   p.accuracy = p.accuracy, cor.coef.name = cor.coef.name,
                   parse = parse, na.rm = na.rm, ...)
@@ -114,7 +116,7 @@ StatCor<- ggproto("StatCor", Stat,
                   required_aes = c("x", "y"),
                   default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
 
-                  compute_group = function(data, scales, method, label.x.npc, label.y.npc,
+                  compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep, output.type, digits,
                                            r.digits, p.digits, r.accuracy, p.accuracy, cor.coef.name)
                     {
@@ -124,8 +126,8 @@ StatCor<- ggproto("StatCor", Stat,
                     }
                     # Returns a data frame with estimate, p.value, label, method
                     .test <- .cor_test(
-                      data$x, data$y, method = method, label.sep = label.sep,
-                      output.type = output.type, digits = digits,
+                      data$x, data$y, method = method, alternative = alternative,
+                      label.sep = label.sep, output.type = output.type, digits = digits,
                       r.digits = r.digits, p.digits = p.digits,
                       r.accuracy = r.accuracy, p.accuracy = p.accuracy,
                       cor.coef.name = cor.coef.name
@@ -146,7 +148,8 @@ StatCor<- ggproto("StatCor", Stat,
 # Correlation test
 #::::::::::::::::::::::::::::::::::::::::
 # Returns a data frame: estimatel|p.value|method|label
-.cor_test <- function(x, y, method = "pearson", label.sep = ", ", output.type = "expression",
+.cor_test <- function(x, y, method = "pearson", alternative = "two.sided",
+                      label.sep = ", ", output.type = "expression",
                       digits = 2, r.digits = digits, p.digits = digits,
                       r.accuracy = NULL, p.accuracy = NULL,
                       cor.coef.name = "R"){
@@ -161,7 +164,10 @@ StatCor<- ggproto("StatCor", Stat,
   }
 
   # Correlation analyses
-  .cor <- suppressWarnings(stats::cor.test(x, y, method = method,  use = "complete.obs"))
+  .cor <- suppressWarnings(stats::cor.test(
+    x, y, method = method,  alternative = alternative,
+    use = "complete.obs"
+    ))
   estimate <- p.value <- p <- r <- rr <-  NULL
   z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method) %>%
     mutate(

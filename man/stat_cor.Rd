@@ -8,6 +8,7 @@ stat_cor(
   mapping = NULL,
   data = NULL,
   method = "pearson",
+  alternative = "two.sided",
   cor.coef.name = c("R", "rho", "tau"),
   label.sep = ", ",
   label.x.npc = "left",
@@ -53,6 +54,10 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 covariance) is to be computed. One of "pearson" (default), "kendall", or
 "spearman".}
 
+\item{alternative}{a character string specifying the alternative hypothesis,
+must be one of "two.sided" (default), "greater" or "less". You can specify
+just the initial letter.}
+
 \item{cor.coef.name}{character. Can be one of \code{"R"} (pearson coef),
 \code{"rho"} (spearman coef) and \code{"tau"} (kendall coef). Uppercase and
 lowercase are allowed.}
@@ -82,11 +87,12 @@ coefficient and the p-value, respectively..}
 
 \item{r.accuracy}{a real value specifying the number of decimal places of
 precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01
-to show 2 decimal places of precision. If specified, then \code{r.digits} is ignored.}
+to show 2 decimal places of precision. If specified, then \code{r.digits} is
+ignored.}
 
 \item{p.accuracy}{a real value specifying the number of decimal places of
-precision for the p-value. Default is NULL. Use (e.g.) 0.0001
-to show 4 decimal places of precision. If specified, then \code{p.digits} is ignored.}
+precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
+decimal places of precision. If specified, then \code{p.digits} is ignored.}
 
 \item{geom}{The geometric object to use display the data}
 
@@ -115,14 +121,11 @@ Add correlation coefficients with p-values to a scatter plot. Can
  be also used to add `R2`.
 }
 \section{Computed variables}{
-
-  \describe{ \item{r}{correlation coefficient}
-  \item{rr}{correlation coefficient squared}
-  \item{r.label}{formatted label for the correlation coefficient}
-  \item{rr.label}{formatted label for the squared correlation coefficient}
-  \item{p.label}{label for the p-value}
-  \item{label}{default labeldisplayed by \code{stat_cor()}}
-  }
+ \describe{ \item{r}{correlation coefficient}
+ \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
+ for the correlation coefficient} \item{rr.label}{formatted label for the
+ squared correlation coefficient} \item{p.label}{label for the p-value}
+ \item{label}{default labeldisplayed by \code{stat_cor()}} }
 }
 
 \examples{
