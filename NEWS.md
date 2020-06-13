@@ -55,6 +55,7 @@ https://community.rstudio.com/t/how-to-combine-two-separate-legends-side-by-side
   
 ## Bug fixes
    
+- `annotate_figure()` manual updated to show how to use of superscript/subscript in the axis labels (#165). 
 - `ggtextable()` now supports further customization when theme is specified (#283).
 - the argument `font.family` is now correctly handled by `ggscatter()` (#149)
 - `ggpar()` arguments are correctly applied using `ggpie()` (#277).
