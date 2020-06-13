@@ -62,7 +62,7 @@ annotate_figure(figure,
                bottom = text_grob("Data source: \n ToothGrowth data set", color = "blue",
                                   hjust = 1, x = 1, face = "italic", size = 10),
                left = text_grob("Figure arranged using ggpubr", color = "green", rot = 90),
-               right = text_grob(bquote("Superscript/subscript: ("*kg~NH[3]~ha^-1~yr^-1*")"), rot = 90),
+               right = text_grob(bquote("Superscript: ("*kg~NH[3]~ha^-1~yr^-1*")"), rot = 90),
                fig.lab = "Figure 1", fig.lab.face = "bold"
 )
 
