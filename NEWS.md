@@ -28,6 +28,7 @@ To DO: merging two legends in ggarrange, discussion: https://community.rstudio.c
 
 ## Minor changes
 
+- Now, when creating a box plot with error bars, color and fill argiments are taken into account in the errorbar function (#105).
 - New argument `alternative` supported in `stat_cor()` (#276).
 - New argument `position` in `ggline()` to make position "dodged" (#52).
 - New argument `outlier.shape` in ggboxplot(). Default is 19. To hide outlier, specify outlier.shape = NA. When jitter is added, then outliers will be automatically hidden. 
