@@ -81,4 +81,27 @@
   res
 }
 
+# Evaluate an expression using trycatch with a scalar return value.
+# Returns the default value, if an error is caught.
+# The error is still reported via print.
+#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.get_or_else <- function(expr, default = 0) {
+  stopifnot(length(default) == 1)
+  val <- tryCatch(
+    expr,
+    error = function(e) {
+      print(paste("Using default of", default, "due to error:", e))
+    }
+  )
+  if (length(val)) {
+    if (is.list(val)) {
+      val <- default
+    } else {
+      val[!is.finite(val)] <- default
+    }
+  } else {
+    val <- default
+  }
+  return(val)
+}
 

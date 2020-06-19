@@ -44,6 +44,9 @@ NULL
 #'
 #'  Note that, when the \code{formula} contains multiple variables, the p-value
 #'  adjustment is done independently for each variable.
+#'@param p.error.default.value default value for cases, where a p-value can
+#'  not be calculated, for example if groups do not contain enough sample values.
+#'
 #'@return return a data frame with the following columns:
 #'\itemize{
 #'\item \code{.y.}: the y variable used in the test.
@@ -104,7 +107,9 @@ NULL
 compare_means <- function(formula, data, method = "wilcox.test",
                           paired = FALSE,
                           group.by = NULL, ref.group = NULL,
-                          symnum.args = list(), p.adjust.method = "holm", ...)
+                          symnum.args = list(), p.adjust.method = "holm",
+                          p.error.default.value = 0,
+                          ...)
 {
 
   . <- NULL
@@ -189,7 +194,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   if(is.null(group.by)){
     res <- test.func(formula = formula, data = data, method = method,
-                     paired = paired, p.adjust.method = "none", ...)
+                     paired = paired, p.adjust.method = "none",
+                     p.error.default.value = p.error.default.value, ...)
   }
   else{
     grouped.d <- .group_by(data, group.by)
@@ -197,7 +203,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
       mutate(p = purrr::map(
         data,
         test.func, formula = formula,
-        method = method, paired = paired, p.adjust.method = "none",...)
+        method = method, paired = paired, p.adjust.method = "none",
+        p.error.default.value = p.error.default.value, ...)
       ) %>%
       df_select(vars = c(group.by, "p")) %>%
       unnest(cols = "p")
@@ -308,6 +315,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .test_pairwise <- function(data, formula, method = "wilcox.test",
                            paired = FALSE, pool.sd = !paired,
+                           p.error.default.value = 0,
                            ...)
 {
 
@@ -338,7 +346,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     test.opts$pool.sd <- pool.sd
   }
 
-  pvalues <- suppressWarnings(do.call(test, test.opts)$p.value) %>%
+  pvalues <- .get_or_else(suppressWarnings(do.call(test, test.opts)$p.value), p.error.default.value) %>%
     as.data.frame()
   group1 <- group2 <- p <- NULL
   pvalues$group2 <- rownames(pvalues)
@@ -352,18 +360,18 @@ compare_means <- function(formula, data, method = "wilcox.test",
 # Compare multiple groups
 #::::::::::::::::::::::::::::::::::::::::::::::::::
 
-.test_multigroups <- function(data, formula, method = c("anova", "kruskal.test"), ...){
+.test_multigroups <- function(data, formula, method = c("anova", "kruskal.test"), p.error.default.value = 0, ...){
 
   method <- match.arg(method)
   . <- NULL
 
   if(method == "anova")
-    pvalue <- stats::lm(formula, data = data) %>%
+    pvalue <- .get_or_else(stats::lm(formula, data = data) %>%
     stats::anova(.) %>%
     .$`Pr(>F)` %>%
-    .[1]
+    .[1], 0)
   else if(method == "kruskal.test"){
-    pvalue <- stats::kruskal.test(formula, data = data)$p.value
+    pvalue <- .get_or_else(stats::kruskal.test(formula, data = data)$p.value, p.error.default.value)
   }
 
   data.frame(p = pvalue)
