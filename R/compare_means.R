@@ -346,7 +346,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     test.opts$pool.sd <- pool.sd
   }
 
-  pvalues <- .get_or_else(suppressWarnings(do.call(test, test.opts)$p.value), p.error.default.value) %>%
+  pvalues <- suppressWarnings(.get_or_else(do.call(test, test.opts)$p.value), p.error.default.value) %>%
     as.data.frame()
   group1 <- group2 <- p <- NULL
   pvalues$group2 <- rownames(pvalues)
