@@ -346,7 +346,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     test.opts$pool.sd <- pool.sd
   }
 
-  pvalues <- suppressWarnings(.get_or_else(do.call(test, test.opts)$p.value), p.error.default.value) %>%
+  pvalues <- suppressWarnings(.get_or_else(do.call(test, test.opts)$p.value, p.error.default.value)) %>%
     as.data.frame()
   group1 <- group2 <- p <- NULL
   pvalues$group2 <- rownames(pvalues)
@@ -369,7 +369,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     pvalue <- .get_or_else(stats::lm(formula, data = data) %>%
     stats::anova(.) %>%
     .$`Pr(>F)` %>%
-    .[1], 0)
+    .[1], p.error.default.value)
   else if(method == "kruskal.test"){
     pvalue <- .get_or_else(stats::kruskal.test(formula, data = data)$p.value, p.error.default.value)
   }
