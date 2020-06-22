@@ -212,12 +212,17 @@ ggboxplot_core <- function(data, x, y,
   if(bxp.errorbar){
     if(fill %in% colnames(data)){
       # Important, so that the fill grouping is taken into account in the errorbar
-      p <- ggplot(data, create_aes(list(x = x, y = y, fill = fill)))
+      p <- p + geom_exec(
+        geomfunc = stat_boxplot, data = data, geom = "errorbar", width = bxp.errorbar.width,
+        color = color, fill = fill, linetype = linetype, position = position_dodge(0.8)
+      )
     }
-    p <- p + geom_exec(
-      geomfunc = stat_boxplot, data = data, geom = "errorbar", width = bxp.errorbar.width,
-     color = color, linetype = linetype, position = position_dodge(0.8)
-     )
+    else{
+      p <- p + geom_exec(
+        geomfunc = stat_boxplot, data = data, geom = "errorbar", width = bxp.errorbar.width,
+        color = color, linetype = linetype, position = position_dodge(0.8)
+      )
+    }
   }
 
   p <- p + geom_exec(geom_boxplot, data = data,
