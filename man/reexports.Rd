@@ -3,7 +3,6 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{\%>\%}
 \alias{mutate}
 \alias{group_by}
 \alias{geom_signif}
@@ -18,8 +17,6 @@ below to see their documentation.
   \item{dplyr}{\code{\link[dplyr]{group_by}}, \code{\link[dplyr]{mutate}}}
 
   \item{ggsignif}{\code{\link[ggsignif]{geom_signif}}}
-
-  \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
   \item{rstatix}{\code{\link[rstatix]{get_summary_stats}}}
 }}

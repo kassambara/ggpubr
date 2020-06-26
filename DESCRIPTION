@@ -118,3 +118,4 @@ Collate:
     'text_grob.R'
     'theme_pubr.R'
     'theme_transparent.R'
+    'utils-pipe.R'

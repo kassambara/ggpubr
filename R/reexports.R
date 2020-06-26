@@ -1,6 +1,3 @@
-#' @importFrom magrittr %>%
-#' @export
-magrittr::`%>%`
 #' @importFrom dplyr mutate
 #' @export
 dplyr::mutate
