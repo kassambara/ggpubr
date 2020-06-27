@@ -7,6 +7,8 @@
 
 ## Minor changes
 
+- Now, the x-axis tick label names correctly align with the corresponding ticks when the rotation angle of the texts is set to 90. This is automatically achieved by setting internally `vjust = 0.5` (#301).
+
 ## Bug fixes
 
 
