@@ -73,7 +73,7 @@ to the paired geom/stat.}
 }
 \description{
 Plot confidence ellipses around barycenters. The method for
-  computing confidence ellipses has been modified from FactoMineR::coord.ellipse.
+  computing confidence ellipses has been modified from \code{FactoMineR::coord.ellipse()}.
 }
 \examples{
 # Load data

@@ -59,7 +59,7 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 \item{type}{the type of central tendency measure to be used. Possible values
 include: \code{"mean", "median", "mode"}.}
 
-\item{...}{other arguments to pass to \code{\link[ggplot2]{geom_line}}.}
+\item{...}{other arguments to pass to \code{\link[ggplot2:geom_path]{geom_line}}.}
 }
 \description{
 Add central tendency measures (mean, median, mode) to density

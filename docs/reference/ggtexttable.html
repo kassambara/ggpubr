@@ -8,23 +8,29 @@
 
 <title>Draw a Textual Table — ggtexttable • ggpubr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -34,8 +40,8 @@
 
   
   <script src="../extra.js"></script>
-<meta property="og:title" content="Draw a Textual Table — ggtexttable" />
 
+<meta property="og:title" content="Draw a Textual Table — ggtexttable" />
 <meta property="og:description" content="Draw a textual table.
 ggtexttable(): draw
  a textual table.
@@ -44,9 +50,15 @@ rownames_style(), colnames_style(), tbody_style(): helper functions
  to customize the table row names, column names and body.
 table_cell_font(): access to a table cell for changing the text font (size and face).
 table_cell_bg(): access to a table cell for changing the background (fill, color, linewidth).
+tab_cell_crossout(): cross out a table cell.
+tab_ncol(), tab_nrow(): returns, respectively, the number of columns and rows in a ggtexttable.
+tab_add_hline(): Creates horizontal lines or separators at the top or the bottom side of a given specified row.
+tab_add_vline(): Creates vertical lines or separators at the right or the left side of a given specified column.
+tab_add_border(), tbody_add_border(), thead_add_border(): Add borders to table; tbody is for table body and thead is for table head.
+tab_add_title(),tab_add_footnote(): Add title, subtitle and footnote to a table.
 
 " />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -63,7 +75,7 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +89,7 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -96,9 +108,13 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kassambara/ggpubr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -113,12 +129,11 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Draw a Textual Table</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/kassambara/ggpubr/blob/master/R/ggtexttable.R'><code>R/ggtexttable.R</code></a></small>
     <div class="hidden name"><code>ggtexttable.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Draw a textual table.</p><ul>
 <li><p><code>ggtexttable()</code>: draw
  a textual table.</p></li>
@@ -127,9 +142,14 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
  to customize the table row names, column names and body.</p></li>
 <li><p><code>table_cell_font()</code>: access to a table cell for changing the text font (size and face).</p></li>
 <li><p><code>table_cell_bg()</code>: access to a table cell for changing the background (fill, color, linewidth).</p></li>
+<li><p><code>tab_cell_crossout()</code>: cross out a table cell.</p></li>
+<li><p><code>tab_ncol(), tab_nrow()</code>: returns, respectively, the number of columns and rows in a ggtexttable.</p></li>
+<li><p><code>tab_add_hline()</code>: Creates horizontal lines or separators at the top or the bottom side of a given specified row.</p></li>
+<li><p><code>tab_add_vline()</code>: Creates vertical lines or separators at the right or the left side of a given specified column.</p></li>
+<li><p><code>tab_add_border(), tbody_add_border(), thead_add_border()</code>: Add borders to table; tbody is for table body and thead is for table head.</p></li>
+<li><p><code>tab_add_title(),tab_add_footnote()</code>: Add title, subtitle and footnote to a table.</p></li>
 </ul>
 
-    
     </div>
 
     <pre class="usage"><span class='fu'>ggtexttable</span>(
@@ -184,10 +204,113 @@ table_cell_bg(): access to a table cell for changing the background (fill, color
   <span class='no'>...</span>
 )
 
-<span class='fu'>table_cell_font</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>table_cell_font</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>table_cell_bg</span>(<span class='no'>tab</span>, <span class='no'>row</span>, <span class='no'>column</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+<span class='fu'>table_cell_bg</span>(
+  <span class='no'>tab</span>,
+  <span class='no'>row</span>,
+  <span class='no'>column</span>,
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
+
+<span class='fu'>tab_cell_crossout</span>(
+  <span class='no'>tab</span>,
+  <span class='no'>row</span>,
+  <span class='no'>column</span>,
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>reduce.size.by</span> <span class='kw'>=</span> <span class='fl'>0</span>
+)
+
+<span class='fu'>tab_ncol</span>(<span class='no'>tab</span>)
+
+<span class='fu'>tab_nrow</span>(<span class='no'>tab</span>)
+
+<span class='fu'>tab_add_hline</span>(
+  <span class='no'>tab</span>,
+  <span class='kw'>at.row</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fu'>tab_nrow</span>(<span class='no'>tab</span>),
+  <span class='kw'>row.side</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bottom"</span>, <span class='st'>"top"</span>),
+  <span class='kw'>from.column</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>to.column</span> <span class='kw'>=</span> <span class='fu'>tab_ncol</span>(<span class='no'>tab</span>),
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"black"</span>
+)
+
+<span class='fu'>tab_add_vline</span>(
+  <span class='no'>tab</span>,
+  <span class='kw'>at.column</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fu'>tab_ncol</span>(<span class='no'>tab</span>),
+  <span class='kw'>column.side</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"left"</span>, <span class='st'>"right"</span>),
+  <span class='kw'>from.row</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>to.row</span> <span class='kw'>=</span> <span class='fu'>tab_nrow</span>(<span class='no'>tab</span>),
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"black"</span>
+)
+
+<span class='fu'>tab_add_border</span>(
+  <span class='no'>tab</span>,
+  <span class='kw'>from.row</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>to.row</span> <span class='kw'>=</span> <span class='fu'>tab_nrow</span>(<span class='no'>tab</span>),
+  <span class='kw'>from.column</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>to.column</span> <span class='kw'>=</span> <span class='fu'>tab_ncol</span>(<span class='no'>tab</span>),
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"black"</span>
+)
+
+<span class='fu'>tbody_add_border</span>(
+  <span class='no'>tab</span>,
+  <span class='kw'>from.row</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>to.row</span> <span class='kw'>=</span> <span class='fu'>tab_nrow</span>(<span class='no'>tab</span>),
+  <span class='kw'>from.column</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>to.column</span> <span class='kw'>=</span> <span class='fu'>tab_ncol</span>(<span class='no'>tab</span>),
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"black"</span>
+)
+
+<span class='fu'>thead_add_border</span>(
+  <span class='no'>tab</span>,
+  <span class='kw'>from.row</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>to.row</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>from.column</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>to.column</span> <span class='kw'>=</span> <span class='fu'>tab_ncol</span>(<span class='no'>tab</span>),
+  <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"black"</span>
+)
+
+<span class='fu'>tab_add_title</span>(
+  <span class='no'>tab</span>,
+  <span class='no'>text</span>,
+  <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>family</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1.5</span>, <span class='st'>"line"</span>),
+  <span class='kw'>just</span> <span class='kw'>=</span> <span class='st'>"left"</span>,
+  <span class='kw'>hjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
+
+<span class='fu'>tab_add_footnote</span>(
+  <span class='no'>tab</span>,
+  <span class='no'>text</span>,
+  <span class='kw'>face</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>family</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>1.5</span>, <span class='st'>"line"</span>),
+  <span class='kw'>just</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
+  <span class='kw'>hjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -281,18 +404,89 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
     </tr>
     <tr>
       <th>tab</th>
-      <td><p>an object of class ggtexttable.</p></td>
+      <td><p>an object from <code>ggtexttable</code> or from <code><a href='https://rdrr.io/pkg/gridExtra/man/tableGrob.html'>gridExtra::tableGrob()</a></code>.</p></td>
     </tr>
     <tr>
       <th>row, column</th>
       <td><p>an integer specifying the row and the column numbers for the cell of interest.</p></td>
     </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>numeric value specifying fill color transparency.
+Value should be in [0, 1], where 0 is full transparency and 1 is no transparency.</p></td>
+    </tr>
+    <tr>
+      <th>linetype</th>
+      <td><p>line type</p></td>
+    </tr>
+    <tr>
+      <th>reduce.size.by</th>
+      <td><p>Numeric value in [0, 1] to reduce the size by.</p></td>
+    </tr>
+    <tr>
+      <th>at.row</th>
+      <td><p>a numeric vector of row indexes; for example <code>at.row = c(1, 2)</code>.</p></td>
+    </tr>
+    <tr>
+      <th>row.side</th>
+      <td><p>row side to which the horinzotal line should be added. Can be one of <code><a href='https://rdrr.io/r/base/c.html'>c("bottom", "top")</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>from.column</th>
+      <td><p>integer indicating the column from which to start drawing the horizontal line.</p></td>
+    </tr>
+    <tr>
+      <th>to.column</th>
+      <td><p>integer indicating the column to which the horizontal line should end.</p></td>
+    </tr>
+    <tr>
+      <th>at.column</th>
+      <td><p>a numeric vector of column indexes; for example <code>at.column = c(1, 2)</code>.</p></td>
+    </tr>
+    <tr>
+      <th>column.side</th>
+      <td><p>column side to which the vertical line should be added. Can be one of <code><a href='https://rdrr.io/r/base/c.html'>c("left", "right")</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>from.row</th>
+      <td><p>integer indicating the row from which to start drawing the horizontal line.</p></td>
+    </tr>
+    <tr>
+      <th>to.row</th>
+      <td><p>integer indicating the row to which the vertical line should end.</p></td>
+    </tr>
+    <tr>
+      <th>text</th>
+      <td><p>text to be added as title or footnote.</p></td>
+    </tr>
+    <tr>
+      <th>family</th>
+      <td><p>font family</p></td>
+    </tr>
+    <tr>
+      <th>just</th>
+      <td><p>The justification of the text relative to its (x, y) location. If
+there are two values, the first value specifies horizontal justification
+and the second value specifies vertical justification. Possible string
+values are: "left", "right", "centre", "center", "bottom", and "top". For
+numeric values, 0 means left (bottom) alignment and 1 means right (top)
+alignment.</p></td>
+    </tr>
+    <tr>
+      <th>hjust</th>
+      <td><p>A numeric vector specifying horizontal justification. If
+specified, overrides the just setting.</p></td>
+    </tr>
+    <tr>
+      <th>vjust</th>
+      <td><p>A numeric vector specifying vertical justification. If
+specified, overrides the just setting.</p></td>
+    </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>an object of class ggplot.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># data</span>
@@ -303,12 +497,17 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
 <span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='img'><img src='ggtexttable-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Blank theme</span>
 <span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"blank"</span>))</div><div class='img'><img src='ggtexttable-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># light theme</span>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"light"</span>))</div><div class='img'><img src='ggtexttable-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Column names border only</span>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"blank"</span>)) <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_add_hline</span>(<span class='kw'>at.row</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>row.side</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='ggtexttable-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># classic theme</span>
-<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"classic"</span>))</div><div class='img'><img src='ggtexttable-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"classic"</span>))</div><div class='img'><img src='ggtexttable-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># minimal theme</span>
-<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"minimal"</span>))</div><div class='img'><img src='ggtexttable-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"minimal"</span>))</div><div class='img'><img src='ggtexttable-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Medium blue (mBlue) theme</span>
-<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"mBlue"</span>))</div><div class='img'><img src='ggtexttable-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"mBlue"</span>))</div><div class='img'><img src='ggtexttable-7.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Customize the table as you want</span>
 <span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -316,7 +515,7 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
              <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"#8cc257"</span>),
              <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#e8f3de"</span>, <span class='st'>"#d3e8bb"</span>))
            )
-)</div><div class='img'><img src='ggtexttable-6.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='img'><img src='ggtexttable-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Use RColorBrewer palette</span>
 <span class='co'># Provide as many fill color as there are rows in the table body, here nrow = 6</span>
 <span class='fu'>ggtexttable</span>(<span class='no'>df</span>,
@@ -324,7 +523,7 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
              <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>),
              <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='get_palette.html'>get_palette</a></span>(<span class='st'>"RdBu"</span>, <span class='fl'>6</span>))
            )
-)</div><div class='img'><img src='ggtexttable-7.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='img'><img src='ggtexttable-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Text justification</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Default is "centre" for the body and header, and "right" for the row names.</span>
@@ -337,7 +536,7 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
              <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"#8cc257"</span>),
              <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='no'>tbody.style</span>
            )
-)</div><div class='img'><img src='ggtexttable-8.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='img'><img src='ggtexttable-10.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Access and modify the font and</span>
 <span class='co'># the background of table cells</span>
 <span class='co'># :::::::::::::::::::::::::::::::::::::::::::::</span>
@@ -347,7 +546,50 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
                       <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>)
 <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>table_cell_bg</span>(<span class='no'>tab</span>, <span class='kw'>row</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>column</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>5</span>,
                     <span class='kw'>fill</span><span class='kw'>=</span><span class='st'>"darkolivegreen1"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"darkolivegreen4"</span>)
-<span class='no'>tab</span></div><div class='img'><img src='ggtexttable-9.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>tab</span></div><div class='img'><img src='ggtexttable-11.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Change table cells background and font for column 3,</span>
+<span class='co'># Spaning from row 2 to the last row in the data</span>
+<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"classic"</span>))
+<span class='no'>tab</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'>table_cell_bg</span>(<span class='kw'>row</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fu'>tab_nrow</span>(<span class='no'>tab</span>), <span class='kw'>column</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"darkblue"</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>table_cell_font</span>(<span class='kw'>row</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fu'>tab_nrow</span>(<span class='no'>tab</span>), <span class='kw'>column</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"italic"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"white"</span>)</div><div class='img'><img src='ggtexttable-12.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Add separators and borders</span>
+<span class='co'># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='co'># Table with blank theme</span>
+<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>ggtexttable</span>(<span class='no'>df</span>, <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"blank"</span>), <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='co'># Add horizontal and vertical lines</span>
+<span class='no'>tab</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_add_hline</span>(<span class='kw'>at.row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>row.side</span> <span class='kw'>=</span> <span class='st'>"top"</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_add_hline</span>(<span class='kw'>at.row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7</span>), <span class='kw'>row.side</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>, <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_add_vline</span>(<span class='kw'>at.column</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fu'>tab_ncol</span>(<span class='no'>tab</span>), <span class='kw'>column.side</span> <span class='kw'>=</span> <span class='st'>"left"</span>, <span class='kw'>from.row</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='ggtexttable-13.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Add borders to table body and header</span>
+<span class='co'># Cross out some cells</span>
+<span class='no'>tab</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'>tbody_add_border</span>() <span class='kw'>%&gt;%</span>
+ <span class='fu'>thead_add_border</span>() <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_cell_crossout</span>(
+   <span class='kw'>row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>), <span class='kw'>column</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>linecolor</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
+   <span class='kw'>reduce.size.by</span> <span class='kw'>=</span> <span class='fl'>0.6</span>
+ )</div><div class='img'><img src='ggtexttable-14.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Add titles andd footnote</span>
+<span class='co'># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
+<span class='co'># Add titles and footnote</span>
+<span class='co'># Wrap subtitle into multiple lines using strwrap()</span>
+<span class='no'>main.title</span> <span class='kw'>&lt;-</span> <span class='st'>"Edgar Anderson's Iris Data"</span>
+<span class='no'>subtitle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(
+<span class='st'>"This famous (Fisher's or Anderson's) iris data set gives the measurements"</span>,
+<span class='st'>" in centimeters of the variables sepal length and width and petal length and width,"</span>,
+ <span class='st'>" respectively, for 50 flowers from each of 3 species of iris."</span>,
+ <span class='st'>" The species are Iris setosa, versicolor, and virginica."</span>
+) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='https://rdrr.io/r/base/strwrap.html'>strwrap</a></span>(<span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>80</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)
+
+<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>ggtexttable</span>(<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>iris</span>), <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"light"</span>))
+<span class='no'>tab</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_add_title</span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='no'>subtitle</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_add_title</span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='no'>main.title</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"bold"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.1</span>, <span class='st'>"line"</span>)) <span class='kw'>%&gt;%</span>
+ <span class='fu'>tab_add_footnote</span>(<span class='kw'>text</span> <span class='kw'>=</span> <span class='st'>"*Table created using ggpubr"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>face</span> <span class='kw'>=</span> <span class='st'>"italic"</span>)</div><div class='img'><img src='ggtexttable-15.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Combine density plot and summary table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::</span>
@@ -366,19 +608,13 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
 <span class='co'># Arrange the plots on the same page</span>
 <span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>density.p</span>, <span class='no'>stable.p</span>,
          <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><div class='img'><img src='ggtexttable-10.png' alt='' width='700' height='433' /></div><div class='input'>
+         <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><div class='img'><img src='ggtexttable-16.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -389,7 +625,7 @@ values for face include c("plain", "bold", "italic", "bold.italic").</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

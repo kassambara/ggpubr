@@ -1,6 +1,5 @@
-# ggpubr 0.3.0.999
+# ggpubr 0.4.0
   
-To DO: merging two legends in ggarrange, discussion: https://community.rstudio.com/t/how-to-combine-two-separate-legends-side-by-side/9480/5
 
 ## New features
 

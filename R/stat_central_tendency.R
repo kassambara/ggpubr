@@ -13,7 +13,7 @@ NULL
 #'   For continuous variable, we can consider using mean or median as the
 #'   measures of the central tendency.
 #' @inheritParams ggplot2::layer
-#' @param ... other arguments to pass to \code{\link[ggplot2]{geom_line}}.
+#' @param ... other arguments to pass to \code{\link[ggplot2:geom_path]{geom_line}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning.
 #'   If TRUE silently removes missing values.
 #' @param type the type of central tendency measure to be used. Possible values

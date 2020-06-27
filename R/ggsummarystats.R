@@ -4,7 +4,7 @@ NULL
 #' GGPLOT with Summary Stats Table Under the Plot
 #'
 #' @description Create a ggplot with summary stats (n, median, mean, iqr) table
-#'   under the plot.
+#'   under the plot. Read more: \href{https://www.datanovia.com/en/blog/how-to-create-a-beautiful-plots-in-r-with-summary-statistics-labels/}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
 #' @inheritParams ggboxplot
 #' @param digits integer indicating the number of decimal places (round) to be
 #'   used.
@@ -79,29 +79,13 @@ NULL
 #'
 #' # Facet
 #' #::::::::::::::::::::::::::::::::::::::::::::::::
-#'
-#' ggsummarystats(
-#'   df, x = "dose", y = "len",
-#'   ggfunc = ggboxplot, add = "jitter",
-#'   color = "dose", palette = "npg",
-#'   facet.by = c("supp", "qc")
-#' )
-#'  # Specify labeller
+#' # Specify free.panels = TRUE for free panels
 #' ggsummarystats(
 #'   df, x = "dose", y = "len",
 #'   ggfunc = ggboxplot, add = "jitter",
 #'   color = "dose", palette = "npg",
 #'   facet.by = c("supp", "qc"),
 #'   labeller = "label_both"
-#' )
-#'
-#' # Free panels
-#' ggsummarystats(
-#'   df, x = "dose", y = "len",
-#'   ggfunc = ggboxplot, add = "jitter",
-#'   color = "dose", palette = "npg",
-#'   facet.by = c("supp", "qc"),
-#'   free.panels = TRUE, labeller = "label_both"
 #' )
 #'
 #' @describeIn ggsummarystats Create a table of summary stats

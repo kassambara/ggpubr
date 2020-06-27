@@ -2,7 +2,7 @@
 NULL
 #' Plot confidence ellipses.
 #' @description Plot confidence ellipses around barycenters. The method for
-#'   computing confidence ellipses has been modified from FactoMineR::coord.ellipse.
+#'   computing confidence ellipses has been modified from \code{FactoMineR::coord.ellipse()}.
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::stat_ellipse
 #' @param level confidence level used to construct the ellipses. By

@@ -41,7 +41,7 @@ NULL
 #'@param step.increase numeric vector with the increase in fraction of total
 #'  height for every additional comparison to minimize overlap.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
-#'  \code{\link[ggplot2]{geom_label}}.
+#'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #'@seealso \code{\link{compare_means}}

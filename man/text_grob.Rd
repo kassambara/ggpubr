@@ -50,14 +50,14 @@ text_grob(
 
 \item{family}{font family.}
 
-\item{...}{other arguments passed to \link[grid]{textGrob}.}
+\item{...}{other arguments passed to \link[grid:grid.text]{textGrob}.}
 }
 \value{
 a text grob.
 }
 \description{
 Create easily a customized text grob (graphical object). Wrapper around
-  \code{\link[grid]{textGrob}}.
+  \code{\link[grid:grid.text]{textGrob}}.
 }
 \examples{
 text <- paste("iris data set gives the measurements in cm",

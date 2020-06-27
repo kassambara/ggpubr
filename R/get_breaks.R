@@ -1,8 +1,8 @@
 #' Easy Break Creation for Numeric Axes
 #'
 #' @description Creates breaks for numeric axes to be used in the functions
-#'   \code{\link[ggplot2]{scale_x_continuous}()} and
-#'   \code{\link[ggplot2]{scale_y_continuous}()}. Can be used to increase the
+#'   \code{\link[ggplot2:scale_continuous]{scale_x_continuous}()} and
+#'   \code{\link[ggplot2:scale_continuous]{scale_y_continuous}()}. Can be used to increase the
 #'   number of x and y ticks by specifying the option \code{n}. It's also
 #'   possible to control axis breaks by specifying a step between ticks.  For
 #'   example, if \code{by = 5}, a tick mark is shown on every 5.

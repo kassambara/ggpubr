@@ -8,23 +8,29 @@
 
 <title>Add Correlation Coefficients with P-values to a Scatter Plot — stat_cor • ggpubr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -34,11 +40,11 @@
 
   
   <script src="../extra.js"></script>
-<meta property="og:title" content="Add Correlation Coefficients with P-values to a Scatter Plot — stat_cor" />
 
+<meta property="og:title" content="Add Correlation Coefficients with P-values to a Scatter Plot — stat_cor" />
 <meta property="og:description" content="Add correlation coefficients with p-values to a scatter plot. Can
  be also used to add `R2`." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -55,7 +61,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -69,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -88,9 +94,13 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kassambara/ggpubr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -105,21 +115,20 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add Correlation Coefficients with P-values to a Scatter Plot</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/kassambara/ggpubr/blob/master/R/stat_cor.R'><code>R/stat_cor.R</code></a></small>
     <div class="hidden name"><code>stat_cor.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Add correlation coefficients with p-values to a scatter plot. Can
  be also used to add `R2`.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>stat_cor</span>(
   <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
+  <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two.sided"</span>,
   <span class='kw'>cor.coef.name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"R"</span>, <span class='st'>"rho"</span>, <span class='st'>"tau"</span>),
   <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>", "</span>,
   <span class='kw'>label.x.npc</span> <span class='kw'>=</span> <span class='st'>"left"</span>,
@@ -130,6 +139,8 @@
   <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>r.digits</span> <span class='kw'>=</span> <span class='no'>digits</span>,
   <span class='kw'>p.digits</span> <span class='kw'>=</span> <span class='no'>digits</span>,
+  <span class='kw'>r.accuracy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>p.accuracy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
   <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
   <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -137,7 +148,7 @@
   <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='no'>...</span>
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -169,10 +180,16 @@ covariance) is to be computed. One of "pearson" (default), "kendall", or
 "spearman".</p></td>
     </tr>
     <tr>
+      <th>alternative</th>
+      <td><p>a character string specifying the alternative hypothesis,
+must be one of "two.sided" (default), "greater" or "less". You can specify
+just the initial letter.</p></td>
+    </tr>
+    <tr>
       <th>cor.coef.name</th>
       <td><p>character. Can be one of <code>"R"</code> (pearson coef),
-<code>"rho"</code> (spearman coef) and <code>"tau"</code> (kendall coef).
-Uppercase and lowercase are allowed.</p></td>
+<code>"rho"</code> (spearman coef) and <code>"tau"</code> (kendall coef). Uppercase and
+lowercase are allowed.</p></td>
     </tr>
     <tr>
       <th>label.sep</th>
@@ -202,12 +219,26 @@ for absolute positioning of the label. If too short they will be recycled.</p></
     </tr>
     <tr>
       <th>output.type</th>
-      <td><p>character One of "expression", "latex" or "text".</p></td>
+      <td><p>character One of "expression", "latex", "tex" or "text".</p></td>
     </tr>
     <tr>
       <th>digits, r.digits, p.digits</th>
-      <td><p>integer indicating the number of decimal places (round) or
-significant digits (signif) to be used for the correlation coefficient and the p-value, respectively..</p></td>
+      <td><p>integer indicating the number of decimal
+places (round) or significant digits (signif) to be used for the correlation
+coefficient and the p-value, respectively..</p></td>
+    </tr>
+    <tr>
+      <th>r.accuracy</th>
+      <td><p>a real value specifying the number of decimal places of
+precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01
+to show 2 decimal places of precision. If specified, then <code>r.digits</code> is
+ignored.</p></td>
+    </tr>
+    <tr>
+      <th>p.accuracy</th>
+      <td><p>a real value specifying the number of decimal places of
+precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
+decimal places of precision. If specified, then <code>p.digits</code> is ignored.</p></td>
     </tr>
     <tr>
       <th>geom</th>
@@ -244,11 +275,20 @@ the default plot specification, e.g. <code><a href='https://ggplot2.tidyverse.or
 <code><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_label</a></code>.</p></td>
     </tr>
     </table>
-    
+
+    <h2 class="hasAnchor" id="computed-variables"><a class="anchor" href="#computed-variables"></a>Computed variables</h2>
+
+    <p></p><dl'>
+<dt>r</dt><dd><p>correlation coefficient</p></dd>
+ <dt>rr</dt><dd><p>correlation coefficient squared</p></dd> <dt>r.label</dt><dd><p>formatted label
+ for the correlation coefficient</p></dd> <dt>rr.label</dt><dd><p>formatted label for the
+ squared correlation coefficient</p></dd> <dt>p.label</dt><dd><p>label for the p-value</p></dd>
+ <dt>label</dt><dd><p>default labeldisplayed by <code>stat_cor()</code></p></dd> 
+</dl>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='ggscatter.html'>ggscatter</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Load data</span>
@@ -265,30 +305,30 @@ the default plot specification, e.g. <code><a href='https://ggplot2.tidyverse.or
    )
 <span class='co'># Add correlation coefficient</span>
 <span class='no'>sp</span> + <span class='fu'>stat_cor</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>30</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_cor-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Specify the number of decimal places of precision for p and r</span>
+<span class='co'># Using 3 decimal places for the p-value and</span>
+<span class='co'># 2 decimal places for the correlation coefficient (r)</span>
+<span class='no'>sp</span> + <span class='fu'>stat_cor</span>(<span class='kw'>p.accuracy</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='kw'>r.accuracy</span> <span class='kw'>=</span> <span class='fl'>0.01</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_cor-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Show only the r.label but not the p.label</span>
+<span class='no'>sp</span> + <span class='fu'>stat_cor</span>(<span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>..r.label..</span>), <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_cor-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Use R2 instead of R</span>
 <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>) +
  <span class='fu'>stat_cor</span>(
    <span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='no'>..rr.label..</span>, <span class='no'>..p.label..</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"~`,`~"</span>)),
   <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>
-)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_cor-2.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_cor-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Color by groups and facet</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='no'>sp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
    <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"cyl"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>,
    <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>sp</span> + <span class='fu'>stat_cor</span>(<span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>cyl</span>), <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_cor-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>sp</span> + <span class='fu'>stat_cor</span>(<span class='fu'>aes</span>(<span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>cyl</span>), <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='stat_cor-5.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -299,7 +339,7 @@ the default plot specification, e.g. <code><a href='https://ggplot2.tidyverse.or
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -29,7 +29,7 @@ NULL
 #'
 #'  \itemize{ \item \code{"convex"}: plot convex hull of a set o points. \item
 #'  \code{"confidence"}: plot confidence ellipses arround group mean points as
-#'  \code{\link[FactoMineR]{coord.ellipse}()}[in FactoMineR]. \item \code{"t"}:
+#'  \code{FactoMineR::coord.ellipse()}. \item \code{"t"}:
 #'  assumes a multivariate t-distribution. \item \code{"norm"}: assumes a
 #'  multivariate normal distribution. \item \code{"euclid"}: draws a circle with
 #'  the radius equal to level, representing the euclidean distance from the

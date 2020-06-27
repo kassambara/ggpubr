@@ -55,7 +55,7 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
-\item{...}{other arguments to pass to \code{\link[ggplot2]{geom_line}}.}
+\item{...}{other arguments to pass to \code{\link[ggplot2:geom_path]{geom_line}}.}
 }
 \description{
 Overlay normal density plot (with the same mean and SD) to the

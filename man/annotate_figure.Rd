@@ -35,7 +35,7 @@ include: "plain", "bold", "italic", "bold.italic".}
 }
 \description{
 Annotate figures including: i) ggplots, ii) arranged ggplots from
- \code{\link{ggarrange}()}, \code{\link[gridExtra]{grid.arrange}()} and
+ \code{\link{ggarrange}()}, \code{\link[gridExtra:arrangeGrob]{grid.arrange}()} and
  \code{\link[cowplot]{plot_grid}()}.
 }
 \examples{

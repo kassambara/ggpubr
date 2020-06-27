@@ -21,7 +21,7 @@ NULL
 #'  for absolute positioning of the label. If too short they will be recycled.
 #'@param output.type character One of "expression", "latex" or "text".
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
-#'  \code{\link[ggplot2]{geom_label}}.
+#'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #'@seealso \code{\link{ggscatter}}

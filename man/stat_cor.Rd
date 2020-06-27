@@ -114,7 +114,7 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2]{geom_text}} or
-\code{\link[ggplot2]{geom_label}}.}
+\code{\link[ggplot2:geom_text]{geom_label}}.}
 }
 \description{
 Add correlation coefficients with p-values to a scatter plot. Can

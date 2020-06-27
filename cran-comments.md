@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.3.2
+* local OS X install, R 3.6.0
 * win-builder 
 * Travis
 
@@ -13,5 +13,5 @@ All packages that I could install passed.
 
 ## Update
 
-This is an update version 0.3.0 (see NEWS.md).
+This is an update version 0.4.0 (see NEWS.md).
 

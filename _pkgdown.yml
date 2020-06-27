@@ -86,6 +86,10 @@ reference:
       - ggexport
       - annotate_figure
       - background_image
+  - title: Make Programming Easy with GGPlot2
+    contents:
+      - geom_exec
+      - create_aes
   - title: Helpers
     contents:
       - facet
@@ -93,8 +97,6 @@ reference:
       - ggadd
       - get_palette
       - as_ggplot
-      - geom_exec
-      - create_aes
   - title: Data
     contents:
       - diff_express

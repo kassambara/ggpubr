@@ -8,23 +8,29 @@
 
 <title>Function reference • ggpubr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -34,7 +40,9 @@
 
   
   <script src="../extra.js"></script>
+
 <meta property="og:title" content="Function reference" />
+
 
 
 
@@ -51,7 +59,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -65,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -84,9 +92,13 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kassambara/ggpubr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -118,6 +130,11 @@
           <p class="section-desc"><p>Visualize distributions.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -156,6 +173,11 @@
           <p class="section-desc"><p>Visualize data distributions by groups.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -230,6 +252,11 @@
           <p class="section-desc"><p>Scatter plots</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -251,7 +278,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="ggscatterhist.html">ggscatterhist()</a></code> </p>
+          <p><code><a href="ggscatterhist.html">ggscatterhist()</a></code> <code><a href="ggscatterhist.html">print(<i>&lt;ggscatterhist&gt;</i>)</a></code> </p>
         </td>
         <td><p>Scatter Plot with Marginal Histograms</p></td>
       </tr>
@@ -262,6 +289,11 @@
           <p class="section-desc"><p>Paired data</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -276,6 +308,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -308,10 +345,15 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
-          <p><code><a href="ggtexttable.html">ggtexttable()</a></code> <code><a href="ggtexttable.html">ttheme()</a></code> <code><a href="ggtexttable.html">colnames_style()</a></code> <code><a href="ggtexttable.html">rownames_style()</a></code> <code><a href="ggtexttable.html">tbody_style()</a></code> <code><a href="ggtexttable.html">table_cell_font()</a></code> <code><a href="ggtexttable.html">table_cell_bg()</a></code> </p>
+          <p><code><a href="ggtexttable.html">ggtexttable()</a></code> <code><a href="ggtexttable.html">ttheme()</a></code> <code><a href="ggtexttable.html">colnames_style()</a></code> <code><a href="ggtexttable.html">rownames_style()</a></code> <code><a href="ggtexttable.html">tbody_style()</a></code> <code><a href="ggtexttable.html">table_cell_font()</a></code> <code><a href="ggtexttable.html">table_cell_bg()</a></code> <code><a href="ggtexttable.html">tab_cell_crossout()</a></code> <code><a href="ggtexttable.html">tab_ncol()</a></code> <code><a href="ggtexttable.html">tab_nrow()</a></code> <code><a href="ggtexttable.html">tab_add_hline()</a></code> <code><a href="ggtexttable.html">tab_add_vline()</a></code> <code><a href="ggtexttable.html">tab_add_border()</a></code> <code><a href="ggtexttable.html">tbody_add_border()</a></code> <code><a href="ggtexttable.html">thead_add_border()</a></code> <code><a href="ggtexttable.html">tab_add_title()</a></code> <code><a href="ggtexttable.html">tab_add_footnote()</a></code> </p>
         </td>
         <td><p>Draw a Textual Table</p></td>
       </tr><tr>
@@ -334,6 +376,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -348,6 +395,11 @@
           <p class="section-desc"><p>Plotting data obtained from genomic data analyses.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -362,6 +414,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -382,6 +439,11 @@
           <p class="section-desc"><p>Change graphical parameters such as, titles, legend, colors, axis limits, scale transformation (log, sqrt), axis ticks and plot orientation (vertical, horizontal).</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -463,6 +525,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="get_breaks.html">get_breaks()</a></code> </p>
+        </td>
+        <td><p>Easy Break Creation for Numeric Axes</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="get_legend.html">get_legend()</a></code> </p>
         </td>
         <td><p>Extract Legends from a ggplot object</p></td>
@@ -474,6 +542,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -502,10 +575,40 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
+          <h2 id="section-make-programming-easy-with-ggplot-" class="hasAnchor"><a href="#section-make-programming-easy-with-ggplot-" class="anchor"></a>Make Programming Easy with GGPlot2</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="geom_exec.html">geom_exec()</a></code> </p>
+        </td>
+        <td><p>Execute ggplot2 functions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_aes.html">create_aes()</a></code> </p>
+        </td>
+        <td><p>Create Aes Mapping from a List</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
           <h2 id="section-helpers" class="hasAnchor"><a href="#section-helpers" class="anchor"></a>Helpers</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -515,7 +618,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="add_summary.html">add_summary()</a></code> <code><a href="add_summary.html">mean_se_()</a></code> <code><a href="add_summary.html">mean_sd()</a></code> <code><a href="add_summary.html">mean_ci()</a></code> <code><a href="add_summary.html">mean_range()</a></code> <code><a href="add_summary.html">median_iqr()</a></code> <code><a href="add_summary.html">median_mad()</a></code> <code><a href="add_summary.html">median_range()</a></code> </p>
+          <p><code><a href="add_summary.html">add_summary()</a></code> <code><a href="add_summary.html">mean_se_()</a></code> <code><a href="add_summary.html">mean_sd()</a></code> <code><a href="add_summary.html">mean_ci()</a></code> <code><a href="add_summary.html">mean_range()</a></code> <code><a href="add_summary.html">median_iqr()</a></code> <code><a href="add_summary.html">median_hilow_()</a></code> <code><a href="add_summary.html">median_q1q3()</a></code> <code><a href="add_summary.html">median_mad()</a></code> <code><a href="add_summary.html">median_range()</a></code> </p>
         </td>
         <td><p>Add Summary Statistics onto a ggplot.</p></td>
       </tr><tr>
@@ -544,6 +647,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -564,6 +672,11 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -605,24 +718,10 @@
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-plot-one-variable-x-continuous">Plot One Variable - X, Continuous</a></li>
-      <li><a href="#section-plot-two-vriables-x-and-y-discrete-x-and-continuous-y">Plot Two Vriables - X and Y, Discrete X and Continuous Y</a></li>
-      <li><a href="#section-plot-two-continuous-variables">Plot Two Continuous Variables</a></li>
-      <li><a href="#section-plot-paired-data">Plot Paired Data</a></li>
-      <li><a href="#section-comparing-means-and-adding-p-values">Comparing Means and Adding p-values</a></li>
-      <li><a href="#section-plot-tables-and-paragraphs">Plot Tables and Paragraphs</a></li>
-      <li><a href="#section-contingency-table">Contingency table</a></li>
-      <li><a href="#section-genomics">Genomics</a></li>
-      <li><a href="#section-themes">Themes</a></li>
-      <li><a href="#section-graphical-parameters">Graphical Parameters</a></li>
-      <li><a href="#section-arrange-and-export-multiple-ggplots">Arrange and Export Multiple ggplots</a></li>
-      <li><a href="#section-helpers">Helpers</a></li>
-      <li><a href="#section-data">Data</a></li>
-      <li><a href="#section-others">Others</a></li>
-    </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -633,7 +732,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

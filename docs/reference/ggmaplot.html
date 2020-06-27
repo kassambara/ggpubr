@@ -8,23 +8,29 @@
 
 <title>MA-plot from means and log fold changes — ggmaplot • ggpubr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -34,11 +40,13 @@
 
   
   <script src="../extra.js"></script>
-<meta property="og:title" content="MA-plot from means and log fold changes — ggmaplot" />
 
-<meta property="og:description" content="Make MA-plot which is a scatter plot of log2 fold changes (on
-  the y-axis) versus the mean expression signal (on the x-axis)." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="MA-plot from means and log fold changes — ggmaplot" />
+<meta property="og:description" content="Make MA-plot which is a scatter plot of log2 fold changes (M, on
+ the y-axis) versus the average expression signal (A, on the x-axis). M
+ = log2(x/y) and A = (log2(x) + log2(y))/2 = log2(xy)*1/2, where x
+ and y are respectively the mean of the two groups being compared." />
+
 
 
 
@@ -55,7 +63,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -69,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -88,9 +96,13 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kassambara/ggpubr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -105,15 +117,15 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>MA-plot from means and log fold changes</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/kassambara/ggpubr/blob/master/R/ggmaplot.R'><code>R/ggmaplot.R</code></a></small>
     <div class="hidden name"><code>ggmaplot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Make MA-plot which is a scatter plot of log2 fold changes (on
-  the y-axis) versus the mean expression signal (on the x-axis).</p>
-    
+    <p>Make MA-plot which is a scatter plot of log2 fold changes (M, on
+ the y-axis) versus the average expression signal (A, on the x-axis). <code>M
+ = log2(x/y)</code> and <code>A = (log2(x) + log2(y))/2 = log2(xy)*1/2</code>, where x
+ and y are respectively the mean of the two groups being compared.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ggmaplot</span>(
@@ -123,30 +135,43 @@
   <span class='kw'>genenames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>detection_call</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='st'>"plain"</span>, <span class='st'>"black"</span>),
   <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#B31B21"</span>, <span class='st'>"#1465AC"</span>, <span class='st'>"darkgray"</span>),
   <span class='kw'>top</span> <span class='kw'>=</span> <span class='fl'>15</span>,
   <span class='kw'>select.top.method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"padj"</span>, <span class='st'>"fc"</span>),
+  <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Log2 mean expression"</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Log2 fold change"</span>,
   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_classic</span>(),
   <span class='no'>...</span>
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
       <td><p>an object of class DESeqResults, get_diff, DE_Results, matrix or
-data frame containing the columns baseMean, log2FoldChange, and padj. Rows
-are genes.</p><ul>
-<li><p>baseMean: the mean expression of genes in the
-two groups.</p></li>
-<li><p>log2FoldChange: the log2 fold changes of group 2 compared
-to group 1</p></li>
+ data frame containing the columns baseMean (or baseMeanLog2),
+ log2FoldChange, and padj. Rows are genes.</p>
+<p>Two possible formats are accepted for the input data:</p><ul>
+<li><p>1/
+ <code>baseMean | log2FoldChange | padj</code>. This is a typical output from
+ DESeq2 pipeline. Here, we'll use log2(baseMean) as the x-axis variable.</p></li>
+<li><p>2/ <code>baseMeanLog2 | log2FoldChange | padj</code>. Here, baseMeanLog2 is
+ assumed to be the mean of logged values; so we'll use it as the x-axis
+ variable without any transformation. This is the real A in MA plot. In other
+ words, it is the average of two log-scales values: <code>A = (log2(x) +
+ log2(y))/2 = log2(xy)*1/2</code></p></li>
+</ul>
+
+<p>Terminology:</p>
+<p></p><ul>
+<li><p>baseMean: the mean expression of genes in the two groups.</p></li>
+<li><p>log2FoldChange: the log2 fold changes of group 2 compared to group 1</p></li>
 <li><p>padj: the adjusted p-value of the used statiscal test.</p></li>
 </ul></td>
     </tr>
@@ -162,13 +187,13 @@ padj &lt;= fdr are considered as significantly differentially expressed.</p></td
     </tr>
     <tr>
       <th>genenames</th>
-      <td><p>a character vector of length nrow(data) specifying gene
-names corresponding to each row. Used for point labels.</p></td>
+      <td><p>a character vector of length nrow(data) specifying gene names
+corresponding to each row. Used for point labels.</p></td>
     </tr>
     <tr>
       <th>detection_call</th>
-      <td><p>a numeric vector with length = nrow(data), specifying
-if the genes is expressed (value = 1) or not (value = 0). For example
+      <td><p>a numeric vector with length = nrow(data), specifying if
+the genes is expressed (value = 1) or not (value = 0). For example
 detection_call = c(1, 1, 0, 1, 0, 1). Default is NULL. If detection_call
 column is available in data, it will be used.</p></td>
     </tr>
@@ -177,11 +202,16 @@ column is available in data, it will be used.</p></td>
       <td><p>points size.</p></td>
     </tr>
     <tr>
+      <th>alpha</th>
+      <td><p>numeric value betwenn 0 an 1 specifying point alpha for
+controlling transparency. For example, use alpha = 0.5.</p></td>
+    </tr>
+    <tr>
       <th>font.label</th>
-      <td><p>a vector of length 3 indicating respectively the size
-(e.g.: 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and
-the color (e.g.: "red") of point labels. For example <em>font.label =
-c(14, "bold", "red")</em>.</p></td>
+      <td><p>a vector of length 3 indicating respectively the size (e.g.:
+14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
+color (e.g.: "red") of point labels. For example <em>font.label = c(14,
+"bold", "red")</em>.</p></td>
     </tr>
     <tr>
       <th>label.rectangle</th>
@@ -198,13 +228,18 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
     </tr>
     <tr>
       <th>top</th>
-      <td><p>the number of top genes to be shown on the plot. Use top = 0 to hide to gene labels.</p></td>
+      <td><p>the number of top genes to be shown on the plot. Use top = 0 to
+hide to gene labels.</p></td>
     </tr>
     <tr>
       <th>select.top.method</th>
       <td><p>methods to be used for selecting top genes. Allowed
 values include "padj" and "fc" for selecting by adjusted p values or fold
 changes, respectively.</p></td>
+    </tr>
+    <tr>
+      <th>label.select</th>
+      <td><p>character vector specifying some labels to show.</p></td>
     </tr>
     <tr>
       <th>main</th>
@@ -231,11 +266,10 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
       <td><p>other arguments to be passed to <code><a href='ggpar.html'>ggpar</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>returns a ggplot.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>diff_express</span>)
@@ -259,18 +293,21 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
    <span class='kw'>font.label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bold"</span>, <span class='fl'>11</span>), <span class='kw'>label.rectangle</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
    <span class='kw'>font.legend</span> <span class='kw'>=</span> <span class='st'>"bold"</span>,
    <span class='kw'>font.main</span> <span class='kw'>=</span> <span class='st'>"bold"</span>,
-   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span>())</div><div class='img'><img src='ggmaplot-2.png' alt='' width='700' height='433' /></div></pre>
+   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span>())</div><div class='img'><img src='ggmaplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Select specific genes to show</span>
+<span class='co'># set top = 0, then specify genes using label.select argument</span>
+<span class='fu'>ggmaplot</span>(<span class='no'>diff_express</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='st'>"Group 1"</span> <span class='kw'>%-&gt;%</span> <span class='st'>"Group 2"</span>),
+         <span class='kw'>fdr</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>fc</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+         <span class='kw'>genenames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span>(<span class='no'>diff_express</span>$<span class='no'>name</span>),
+         <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span>(),
+         <span class='kw'>top</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>label.select</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BUB1"</span>, <span class='st'>"CD83"</span>)
+)</div><div class='img'><img src='ggmaplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -281,7 +318,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

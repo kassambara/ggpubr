@@ -8,15 +8,15 @@ as_ggplot(x)
 }
 \arguments{
 \item{x}{an object of class gtable or grob as returned by the functions
-\code{\link[gridExtra]{arrangeGrob}()} and
-\code{\link[gridExtra]{grid.arrange}()}.}
+\code{\link[gridExtra:arrangeGrob]{arrangeGrob}()} and
+\code{\link[gridExtra:arrangeGrob]{grid.arrange}()}.}
 }
 \value{
 an object of class ggplot.
 }
 \description{
-Transform the output of \code{\link[gridExtra]{arrangeGrob}()}
-  and \code{\link[gridExtra]{grid.arrange}()} to a an object of class ggplot.
+Transform the output of \code{\link[gridExtra:arrangeGrob]{arrangeGrob}()}
+  and \code{\link[gridExtra:arrangeGrob]{grid.arrange}()} to a an object of class ggplot.
 }
 \examples{
 # Creat some plots

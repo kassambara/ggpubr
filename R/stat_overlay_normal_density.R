@@ -6,7 +6,7 @@ NULL
 #'   density distribution of 'x'. This is useful for visually inspecting the
 #'   degree of deviance from normality.
 #' @inheritParams ggplot2::layer
-#' @param ... other arguments to pass to \code{\link[ggplot2]{geom_line}}.
+#' @param ... other arguments to pass to \code{\link[ggplot2:geom_path]{geom_line}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning.
 #'   If TRUE silently removes missing values.
 #' @seealso \code{\link{ggdensity}}

@@ -8,23 +8,29 @@
 
 <title>Scatter Plot with Marginal Histograms — ggscatterhist • ggpubr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -34,10 +40,11 @@
 
   
   <script src="../extra.js"></script>
-<meta property="og:title" content="Scatter Plot with Marginal Histograms — ggscatterhist" />
 
-<meta property="og:description" content="Create a scatter plot with marginal histograms, density plots or box plots." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Scatter Plot with Marginal Histograms — ggscatterhist" />
+<meta property="og:description" content="Create a scatter plot with marginal histograms, density plots or
+ box plots." />
+
 
 
 
@@ -54,7 +61,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -68,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -87,9 +94,13 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/kassambara/ggpubr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -104,14 +115,13 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Scatter Plot with Marginal Histograms</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/kassambara/ggpubr/blob/master/R/ggscatterhist.R'><code>R/ggscatterhist.R</code></a></small>
     <div class="hidden name"><code>ggscatterhist.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Create a scatter plot with marginal histograms, density plots or box plots.</p>
-    
+    <p>Create a scatter plot with marginal histograms, density plots or
+ box plots.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ggscatterhist</span>(
@@ -137,9 +147,21 @@
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>legend</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(),
+  <span class='kw'>print</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)
+
+<span class='co'># S3 method for ggscatterhist</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>margin.space</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>main.plot.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>margin.plot.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
   <span class='no'>...</span>
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -149,7 +171,7 @@
     </tr>
     <tr>
       <th>x</th>
-      <td><p>x and y variables for drawing.</p></td>
+      <td><p>an object of class <code>ggscatterhist</code>.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -192,8 +214,8 @@ outlines.</p></td>
     </tr>
     <tr>
       <th>bins</th>
-      <td><p>Number of histogram bins. Defaults to 30. Pick a better value
-that fit to your data.</p></td>
+      <td><p>Number of histogram bins. Defaults to 30. Pick a better value that
+fit to your data.</p></td>
     </tr>
     <tr>
       <th>margin.plot</th>
@@ -205,11 +227,13 @@ that fit to your data.</p></td>
     </tr>
     <tr>
       <th>margin.ggtheme</th>
-      <td><p>the theme of the marginal plot. Default is <code><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_void</a>()</code>.</p></td>
+      <td><p>the theme of the marginal plot. Default is
+<code>theme_void()</code>.</p></td>
     </tr>
     <tr>
       <th>margin.space</th>
-      <td><p>logical value. If TRUE, adds space between the main plot and the marginal plot.</p></td>
+      <td><p>logical value. If TRUE, adds space between the main plot
+and the marginal plot.</p></td>
     </tr>
     <tr>
       <th>main.plot.size</th>
@@ -235,18 +259,32 @@ hide ylab.</p></td>
     </tr>
     <tr>
       <th>legend</th>
-      <td><p>specify the legend position. Allowed values include: "top", "bottom", "left", "right".</p></td>
+      <td><p>specify the legend position. Allowed values include: "top",
+"bottom", "left", "right".</p></td>
     </tr>
     <tr>
       <th>ggtheme</th>
-      <td><p>the theme to be used for the scatter plot. Default is <code><a href='theme_pubr.html'>theme_pubr</a>()</code>.</p></td>
+      <td><p>the theme to be used for the scatter plot. Default is
+<code><a href='theme_pubr.html'>theme_pubr</a>()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>print</th>
+      <td><p>logical value. If <code>TRUE</code> (default), print the plot.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>other arguments passed to the function <code><a href='ggscatter.html'>ggscatter</a>()</code>.</p></td>
     </tr>
     </table>
-    
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an object of class <code>ggscatterhist</code>, which is list of ggplots,
+ including the following elements:</p><ul>
+<li><p>xplot: marginal x-axis plot;</p></li>
+<li><p>yplot: marginal y-axis plot.</p></li>
+</ul><p>.</p>
+<p>User can modify each of plot before printing.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Basic scatter plot with marginal density plot</span>
@@ -268,16 +306,19 @@ hide ylab.</p></td>
  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>, <span class='st'>"#FC4E07"</span>),
  <span class='kw'>margin.plot</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>,
  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_bw</span>()
-)</div><div class='img'><img src='ggscatterhist-3.png' alt='' width='700' height='433' /></div></pre>
+)</div><div class='img'><img src='ggscatterhist-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Add vertical and horizontal line to a ggscatterhist</span>
+<span class='no'>plots</span> <span class='kw'>&lt;-</span> <span class='fu'>ggscatterhist</span>(<span class='no'>iris</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Sepal.Width"</span>, <span class='kw'>print</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>plots</span>$<span class='no'>sp</span> <span class='kw'>&lt;-</span> <span class='no'>plots</span>$<span class='no'>sp</span> +
+ <span class='fu'>geom_hline</span>(<span class='kw'>yintercept</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>) +
+ <span class='fu'>geom_vline</span>(<span class='kw'>xintercept</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"red"</span>)
+<span class='no'>plots</span></div><div class='img'><img src='ggscatterhist-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -288,7 +329,7 @@ hide ylab.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

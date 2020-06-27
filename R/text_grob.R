@@ -3,7 +3,7 @@ NULL
 
 #' Create a Text Graphical object
 #' @description Create easily a customized text grob (graphical object). Wrapper around
-#'   \code{\link[grid]{textGrob}}.
+#'   \code{\link[grid:grid.text]{textGrob}}.
 #' @inheritParams grid::grid.text
 #' @param color text font color.
 #' @param face font face. Allowed values include one of \code{"plain", "bold",
@@ -11,7 +11,7 @@ NULL
 #' @param size font size (e.g.: size = 12)
 #' @param lineheight line height (e.g.: lineheight = 2).
 #' @param family font family.
-#' @param ... other arguments passed to \link[grid]{textGrob}.
+#' @param ... other arguments passed to \link[grid:grid.text]{textGrob}.
 #' @return  a text grob.
 #' @examples
 #'text <- paste("iris data set gives the measurements in cm",

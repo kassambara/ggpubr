@@ -1,8 +1,8 @@
 Package: ggpubr
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots
-Version: 0.3.0.999
-Date: 2020-05-03
+Version: 0.4.0
+Date: 2020-06-27
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"))
 Description: The 'ggplot2' package is excellent and flexible for elegant data
@@ -33,7 +33,7 @@ Imports:
     glue,
     polynom,
     rlang,
-    rstatix (>= 0.4.0),
+    rstatix (>= 0.6.0),
     tibble,
     magrittr
 Suggests:
@@ -118,4 +118,5 @@ Collate:
     'text_grob.R'
     'theme_pubr.R'
     'theme_transparent.R'
+    'utils-geom-signif.R'
     'utils-pipe.R'

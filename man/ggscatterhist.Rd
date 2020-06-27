@@ -78,7 +78,7 @@ fit to your data.}
 \item{margin.params}{parameters to be applied to the marginal plots.}
 
 \item{margin.ggtheme}{the theme of the marginal plot. Default is
-\code{\link[ggplot2]{theme_void}()}.}
+\code{\link[ggplot2:ggtheme]{theme_void}()}.}
 
 \item{margin.space}{logical value. If TRUE, adds space between the main plot
 and the marginal plot.}

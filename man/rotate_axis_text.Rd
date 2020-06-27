@@ -18,7 +18,7 @@ rotate_y_text(angle = 90, hjust = NULL, vjust = NULL, ...)
 \item{vjust}{vertical justification (in [0, 1]).}
 
 \item{...}{other arguments to pass to the function
-\code{\link[ggplot2]{element_text}()}.}
+\code{\link[ggplot2:element]{element_text}()}.}
 }
 \description{
 Rotate the x-axis text (tick mark labels).
