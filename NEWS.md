@@ -3,6 +3,8 @@
 
 ## New features
 
+- New functions to convert character vector coordinates into NPC (normalized parent coordinates) and data coordinates: `as_npc()`, `npc_to_data_coordinates()` and `get_coord()`. 
+
 ## Major changes
 
 ## Minor changes

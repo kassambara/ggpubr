@@ -90,6 +90,11 @@ reference:
     contents:
       - geom_exec
       - create_aes
+  - title: Coordinates
+    contents:
+      - as_npc
+      - npc_to_data_coord
+      - get_coord
   - title: Helpers
     contents:
       - facet
