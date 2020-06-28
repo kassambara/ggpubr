@@ -10,3 +10,4 @@
 ^docs$
 ^images$
 ^_pkgdown\.yml$
+^TODO\.Rmd$
