@@ -37,6 +37,10 @@ get_coord <- function(group = 1L, data.ranges = NULL, coord = NULL, npc = "left"
                       step = 0.1, margin.npc = 0.05){
 
   if(!is.null(coord)){
+    if(!is.numeric(group)){
+      stop("get_coord: 'group' should be numeric. ",
+           "Current class is: ", class(group))
+    }
     # If coords are too short, they are recycled.
     coord <- ifelse(length(coord) >= group, coord[group], coord[1])
     return(coord)
@@ -54,3 +58,5 @@ get_coord <- function(group = 1L, data.ranges = NULL, coord = NULL, npc = "left"
   }
   coord
 }
+
+
