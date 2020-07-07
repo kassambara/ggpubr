@@ -123,7 +123,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
 
     if(.is_p.signif_in_mapping(mapping) | (label %in% "p.signif"))
       {
-      map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, "ns"=1)
+      map_signif_level <- c("****"=0.0001, "***"=0.001, "**"=0.01,  "*"=0.05, "ns"=Inf)
       if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)
     }
 
