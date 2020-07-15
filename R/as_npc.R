@@ -10,7 +10,7 @@
 #'   overlaps.
 #' @param step numeric value in [0-1]. The step size for shifting coordinates
 #'   in npc units. Considered as horizontal step for x-axis and vertical step
-#'   for y-axis.
+#'   for y-axis. For y-axis, the step value can be negative to reverse the order of groups.
 #' @param margin.npc numeric [0-1] The margin added towards the nearest
 #'   plotting area edge when converting character coordinates into npc.
 #' @param axis the concerned axis . Should be one of \code{c("xy", "x", "y")}.
@@ -50,8 +50,8 @@ as_npc <- function(value, group = 1L, step = 0.1, margin.npc = 0.05, axis = c("x
   if (any(group > 1L) & step != 0) {
     value <- value + (group - 1L) * step * ifelse(value < 0.5, 1, -1)
   }
-  value <- ifelse(value > 1, 1, value)
-  value <- ifelse(value < 0, 0, value)
+  #value <- ifelse(value > 1, 1, value)
+  #value <- ifelse(value < 0, 0, value)
   value
 }
 

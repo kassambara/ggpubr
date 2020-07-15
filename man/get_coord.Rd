@@ -32,7 +32,7 @@ specified.}
 
 \item{step}{numeric value in [0-1]. The step size for shifting coordinates
 in npc units. Considered as horizontal step for x-axis and vertical step
-for y-axis.}
+for y-axis. For y-axis, the step value can be negative to reverse the order of groups.}
 
 \item{margin.npc}{numeric [0-1] The margin added towards the nearest
 plotting area edge when converting character coordinates into npc.}
