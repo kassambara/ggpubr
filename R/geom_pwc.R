@@ -72,6 +72,13 @@ NULL
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
+#'@param hide.ns can be logical value or a character vector.
+#'\itemize{
+#' \item Case when logical value. If TRUE, hide ns symbol when displaying
+#'  significance levels. Filter is done by checking the column
+#'  \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
+#'  \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
+#'  }
 #'@param na.rm If \code{FALSE} (the default), removes missing values with a
 #'  warning.  If \code{TRUE} silently removes missing values.
 #'@param coord.flip logical. If \code{TRUE}, flip x and y coordinates so that
@@ -101,7 +108,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      step.increase = 0.12, tip.length = 0.03,
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
-                     symnum.args = list(),
+                     symnum.args = list(), hide.ns = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, parse = FALSE, ...) {
 
@@ -123,7 +130,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       family=family, vjust=vjust, hjust = hjust, na.rm = na.rm,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
-      parse = parse, ...)
+      hide.ns = hide.ns, parse = parse, ...)
   )
 }
 
@@ -150,7 +157,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                                      tip.length, stat.label, y.position, step.increase,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
                                                      p.adjust.method, p.adjust.by,
-                                                     symnum.args, group.by, dodge) {
+                                                     symnum.args, hide.ns, group.by, dodge) {
 
                               # Compute the statistical tests
                               df <- data %>% mutate(x = as.factor(.data$x))
@@ -221,6 +228,15 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 keep_only_tbl_df_classes() %>%
                                 add_stat_label(label = stat.label)
 
+                              # Hide NS
+                              if(is.logical(hide.ns)){
+                                if(hide.ns) stat.test <- remove_ns(stat.test)
+                              }
+                              else if (is.character(hide.ns)){
+                                if(hide.ns == "p") stat.test <- stat.test %>% filter(.data$p <= 0.05)
+                                else if(hide.ns == "p.adj") stat.test <- stat.test %>% filter(.data$p.adj <= 0.05)
+                              }
+
                               # Grouped bracket colors
                               # When data is grouped by legend variable and
                               # stat test is computed between x variable groups
@@ -235,7 +251,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               }
 
                               # Bracket groups, used for spacing vertically brackets
-                              bracket.group = 1:nrow(stat.test)
+                              bracket.group <- 1
+                              if(nrow(stat.test) > 1) bracket.group <- 1:nrow(stat.test)
                               if(is.grouped.plots){
                                 if(grouping.var == "x"){
                                   nb.comparisons.by.group <- stat.test %>%
@@ -249,9 +266,11 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               }
 
                               # Parameters for customizing brackets
+                              group <- 1
+                              if(nrow(stat.test) > 1) group <- 1:nrow(stat.test)
                               stat.test <- stat.test %>%
                                 mutate(
-                                  group =  1:nrow(stat.test),
+                                  group =  group,
                                   bracket.group = bracket.group,
                                   step.increase = step.increase,
                                   bracket.nudge.y = bracket.nudge.y,
@@ -303,7 +322,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
                      coord.flip = FALSE, p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
-                     symnum.args = list(), position = "identity", na.rm = FALSE,
+                     symnum.args = list(), hide.ns = FALSE, position = "identity", na.rm = FALSE,
                      show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
   p.adjust.by <- match.arg(p.adjust.by)
   if(missing(parse) & is_plotmath_expression(label)){
@@ -324,7 +343,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       family = family, na.rm = na.rm, coord.flip = coord.flip,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
-      group.by = group.by, dodge = dodge,
+      hide.ns = hide.ns, group.by = group.by, dodge = dodge,
       parse = parse,
       ...
     )
@@ -431,7 +450,7 @@ get_pwc_label_coords <- function(coords, coord.flip = FALSE){
     )
 }
 
-# Get the pairewise comparison stat function
+# Get the pairwise comparison stat function
 # returns a list(method, method.args)
 get_pwc_stat_function <- function(method, method.args){
   if(is.character(method)){

@@ -27,6 +27,7 @@ stat_pwc(
   p.adjust.method = "holm",
   p.adjust.by = c("group", "panel"),
   symnum.args = list(),
+  hide.ns = FALSE,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -59,6 +60,7 @@ geom_pwc(
   p.adjust.method = "holm",
   p.adjust.by = c("group", "panel"),
   symnum.args = list(),
+  hide.ns = FALSE,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -174,6 +176,14 @@ independently. P-values are adjusted by panel when \code{p.adjust.by =
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }}
+
+\item{hide.ns}{can be logical value or a character vector.
+\itemize{
+\item Case when logical value. If TRUE, hide ns symbol when displaying
+ significance levels. Filter is done by checking the column
+ \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
+ \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
+ }}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
