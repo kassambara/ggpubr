@@ -7,9 +7,8 @@ NULL
 #'@param method a character string indicating which method to be used for
 #'  pairwise comparisons. Default is \code{"wilcox_test"}. Allowed methods
 #'  include pairwise comparisons methods implemented in the \code{rstatix} R
-#'  package. These methods are: \code{"wilcox_test", "wilcoxon", "t_test",
-#'  "sign_test", "dunn_test", "emmeans_test", "emmeans", "tukey_hsd",
-#'  "games_howell_test" and "games_howell"}.
+#'  package. These methods are: \code{"wilcox_test", "t_test", "sign_test",
+#'  "dunn_test", "emmeans_test", "tukey_hsd", "games_howell_test"}.
 #'@param method.args a list of additional arguments used for the test method.
 #'  For example one might use \code{method.args = list(alternative = "greater")}
 #'  for wilcoxon test.
@@ -33,9 +32,10 @@ NULL
 #'  test is performed between the x-groups for each legend level. }
 #'@param dodge dodge width for grouped ggplot/test. Default is 0.8. It's used to
 #'  dodge the brackets position when \code{group.by = "legend.var"}.
-#'@param bracket.nudge.y Vertical adjustment to nudge brackets by. Useful to
-#'  move up or move down the bracket. If positive value, brackets will be moved
-#'  up; if negative value, brackets are moved down.
+#'@param bracket.nudge.y Vertical adjustment to nudge brackets by (in fraction
+#'  of the total height). Useful to move up or move down the bracket. If
+#'  positive value, brackets will be moved up; if negative value, brackets are
+#'  moved down.
 #'@param bracket.shorten a small numeric value in [0-1] for shortening the width
 #'  of bracket.
 #'@param bracket.group.by (optional); a variable name for grouping brackets
@@ -53,13 +53,16 @@ NULL
 #'@param p.adjust.method method for adjusting p values (see
 #'  \code{\link[stats]{p.adjust}}).  Has impact only in a situation, where
 #'  multiple pairwise tests are performed; or when there are multiple grouping
-#'  variables. Allowed values include "holm", "hochberg", "hommel",
-#'  "bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
-#'  value (not recommended), use p.adjust.method = "none".
+#'  variables. Ignored when the specified method is \code{"tukey_hsd"} or
+#'  \code{"games_howell_test"} because they come with internal p adjustment
+#'  method. Allowed values include "holm", "hochberg", "hommel", "bonferroni",
+#'  "BH", "BY", "fdr", "none". If you don't want to adjust the p value (not
+#'  recommended), use p.adjust.method = "none".
 #'@param p.adjust.by possible value is one of \code{c("group", "panel")}.
 #'  Default is \code{"group"}: for a grouped data, if pairwise test is
 #'  performed, then the p-values are adjusted for each group level
-#'  independently. P-values are adjusted by panel when \code{p.adjust.by = "panel"}.
+#'  independently. P-values are adjusted by panel when \code{p.adjust.by =
+#'  "panel"}.
 #'@param symnum.args a list of arguments to pass to the function
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 #'  example, \code{symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
@@ -76,7 +79,7 @@ NULL
 #'  p-values to a horizontal ggplot (generated using
 #'  \code{\link[ggplot2]{coord_flip}()}), you need to specify the option
 #'  \code{coord.flip = TRUE}.
-#' @param parse logical for parsing plotmath expression.
+#'@param parse logical for parsing plotmath expression.
 #'@param ... other arguments passed on to \code{\link{layer}}. These are often
 #'  aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'  "red"} or \code{size = 3}. They may also be parameters to the paired
@@ -90,7 +93,7 @@ NULL
 #'@export
 stat_pwc <- function(mapping = NULL, data = NULL,
                      method = "wilcox_test", method.args = list(),
-                     label = "{method}, p = {p.format}",
+                     label = "p.format",
                      y.position = NULL,
                      group.by = NULL, dodge = 0.8,
                      bracket.nudge.y = 0.05, bracket.shorten = 0,
@@ -112,7 +115,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       method = method, method.args = method.args,
-      stat.label = fortify_label(label),
+      stat.label = label,
       y.position = y.position, group.by = group.by, dodge = dodge,
       bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
       bracket.group.by = bracket.group.by, step.increase = step.increase,
@@ -181,6 +184,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 # Case of one comparison of two groups
                                 stat.test <- stat.test %>% rstatix::adjust_pvalue(method = p.adjust.method)
                               }
+
                               # Adjust all the p-values in a given panel
                               # no matter the grouping
                               if(p.adjust.by == "panel"){
@@ -216,7 +220,6 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 add_stat_n() %>%
                                 keep_only_tbl_df_classes() %>%
                                 add_stat_label(label = stat.label)
-                              print(stat.test)
 
                               # Grouped bracket colors
                               # When data is grouped by legend variable and
@@ -312,7 +315,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       method = method, method.args = method.args,
-      stat.label = fortify_label(label),
+      stat.label = label,
       y.position = y.position,
       bracket.nudge.y = bracket.nudge.y,
       bracket.shorten = bracket.shorten, bracket.group.by = bracket.group.by,
@@ -436,10 +439,11 @@ get_pwc_stat_function <- function(method, method.args){
     method <- gsub(pattern = ".", replacement = "_", method, fixed = TRUE)
     if(method == "wilcoxon") method <- "wilcox_test"
     else if(method == "emmeans") method <- "emmeans_test"
+    else if(method == "games_howell") method <- "games_howell_test"
     allowed.methods <- c(
       "wilcox_test", "wilcoxon", "t_test", "sign_test",
       "dunn_test", "emmeans_test", "emmeans", "tukey_hsd",
-      "games_howell_test", "games_howell"
+      "games_howell_test"
     )
     if(!(method %in% allowed.methods)){
       stop(

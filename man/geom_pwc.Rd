@@ -10,7 +10,7 @@ stat_pwc(
   data = NULL,
   method = "wilcox_test",
   method.args = list(),
-  label = "{method}, p = {p.format}",
+  label = "p.format",
   y.position = NULL,
   group.by = NULL,
   dodge = 0.8,
@@ -91,9 +91,8 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 \item{method}{a character string indicating which method to be used for
 pairwise comparisons. Default is \code{"wilcox_test"}. Allowed methods
 include pairwise comparisons methods implemented in the \code{rstatix} R
-package. These methods are: \code{"wilcox_test", "wilcoxon", "t_test",
-"sign_test", "dunn_test", "emmeans_test", "emmeans", "tukey_hsd",
-"games_howell_test" and "games_howell"}.}
+package. These methods are: \code{"wilcox_test", "t_test", "sign_test",
+"dunn_test", "emmeans_test", "tukey_hsd", "games_howell_test"}.}
 
 \item{method.args}{a list of additional arguments used for the test method.
 For example one might use \code{method.args = list(alternative = "greater")}
@@ -123,9 +122,10 @@ test is performed between the x-groups for each legend level. }}
 \item{dodge}{dodge width for grouped ggplot/test. Default is 0.8. It's used to
 dodge the brackets position when \code{group.by = "legend.var"}.}
 
-\item{bracket.nudge.y}{Vertical adjustment to nudge brackets by. Useful to
-move up or move down the bracket. If positive value, brackets will be moved
-up; if negative value, brackets are moved down.}
+\item{bracket.nudge.y}{Vertical adjustment to nudge brackets by (in fraction
+of the total height). Useful to move up or move down the bracket. If
+positive value, brackets will be moved up; if negative value, brackets are
+moved down.}
 
 \item{bracket.shorten}{a small numeric value in [0-1] for shortening the width
 of bracket.}
@@ -153,14 +153,17 @@ bar goes down to indicate the precise column/}
 \item{p.adjust.method}{method for adjusting p values (see
 \code{\link[stats]{p.adjust}}).  Has impact only in a situation, where
 multiple pairwise tests are performed; or when there are multiple grouping
-variables. Allowed values include "holm", "hochberg", "hommel",
-"bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
-value (not recommended), use p.adjust.method = "none".}
+variables. Ignored when the specified method is \code{"tukey_hsd"} or
+\code{"games_howell_test"} because they come with internal p adjustment
+method. Allowed values include "holm", "hochberg", "hommel", "bonferroni",
+"BH", "BY", "fdr", "none". If you don't want to adjust the p value (not
+recommended), use p.adjust.method = "none".}
 
 \item{p.adjust.by}{possible value is one of \code{c("group", "panel")}.
 Default is \code{"group"}: for a grouped data, if pairwise test is
 performed, then the p-values are adjusted for each group level
-independently. P-values are adjusted by panel when \code{p.adjust.by = "panel"}.}
+independently. P-values are adjusted by panel when \code{p.adjust.by =
+"panel"}.}
 
 \item{symnum.args}{a list of arguments to pass to the function
  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For

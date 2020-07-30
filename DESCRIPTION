@@ -40,7 +40,8 @@ Suggests:
     grDevices,
     knitr,
     RColorBrewer,
-    gtable
+    gtable,
+    testthat
 Remotes:
   kassambara/rstatix
 URL: https://rpkgs.datanovia.com/ggpubr/

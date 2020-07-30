@@ -46,16 +46,19 @@ contains_p_signif <- function(label){
 contains_twoequal_signs <- function(label){
   grepl("==", label)
 }
+replace_simple_by_double_equals <- function(label){
+  if(!contains_twoequal_signs(label)){
+    label <- gsub("=", "==", label)
+  }
+  label
+}
+
 escape_psignif_asteriks <- function(label){
-  # Escaping asteriks (special plotmath symbols) in p.signif by adding quote
-  label <- gsub(pattern = "\\}\\{p.signif}", replacement = "}*`{p.signif}`", x = label)
-  label <- gsub(pattern = "\\}\\{p.adj.signif}", replacement = "}*`{p.adj.signif}`", x = label)
-
-  label <- gsub(pattern = "~\\{p.signif\\}", replacement = "~`{p.signif}`", x = label)
-  label <- gsub(pattern = "~\\{p.adj.signif\\}", replacement = "~`{p.adj.signif}`", x = label)
-
-  label <- gsub(pattern = "=+?\\s+?\\{p.signif}", replacement = "== `{p.signif}`", x = label)
-  label <- gsub(pattern = "=+?\\s+?\\{p.adj.signif}", replacement = "== `{p.adj.signif}`", x = label)
+  # Escaping asteriks (special plotmath symbols) in p.signif or p.adj.signif by adding quote
+  label <- gsub(pattern = "\\}\\{(p.*.signif)\\}", replacement = "}*`{\\1}`", x = label)
+  # p signif preceded with space
+  label <- gsub(pattern = "~\\{(p.*.signif)\\}", replacement = "~`{\\1}`", x = label)
+  label <- gsub(pattern = "=+?\\s+?\\{(p.*.signif)}", replacement = "== `{\\1}`", x = label)
   label
 }
 
@@ -71,6 +74,7 @@ fortify_label <- function(label){
     }
     if(contains_p_signif(label)) label <- escape_psignif_asteriks(label)
   }
+  print(label)
   label
 }
 
@@ -80,13 +84,14 @@ fortify_label <- function(label){
 # description: the description of the stat test, for example: "Anova"
 # label: can be p, p.signif, p.adj or glue expression
 add_stat_label <- function (stat.test,  label = NULL){
+  is_plotmath <- FALSE
   if(is.null(label)){
     stat.test$label <- add_p(stat.test$p.format)
   }
   else{
-    if(is_plotmath_expression(label)){
-      label <- gsub(pattern = "eta2[g]", replacement = "eta[g]^2", x = label, fixed = TRUE)
-      label <- gsub(pattern = "eta2[p]", replacement = "eta[p]^2", x = label, fixed = TRUE)
+    is_plotmath <- is_plotmath_expression(label)
+    if(is_plotmath){
+      label <- fortify_plotmath(label)
     }
     if(is_glue_expression(label)){
       stat.test <- stat.test %>% mutate(label = glue(label))
@@ -101,8 +106,35 @@ add_stat_label <- function (stat.test,  label = NULL){
       stat.test$label <- as.character(stat.test[[label]])
     }
   }
-  stat.test$label <- gsub(pattern = "=+\\s?<", replacement = "< ", stat.test$label )
+  label <- gsub(pattern = "=+(\\s+)?<", replacement = "<\\1", stat.test$label )
+  if(is_plotmath){
+    label <- gsub(pattern = "\\s", replacement = "~", label)
+    label <- gsub(pattern = "~==~", replacement = "~`=`~", label )
+    label <- gsub(pattern = "~<~", replacement = "~`<`~", label )
+  }
+  stat.test$label <- label
+  print(stat.test$label)
   stat.test
+}
+
+fortify_plotmath <- function(label){
+  label <- gsub(pattern = "~", replacement = " ", x = label, fixed = TRUE)
+  if(!starts_with_list(label)) label <- paste0("list(", label, ")")
+  if(contains_p_signif(label)){
+    # Escape p signif stars
+    label <- gsub(pattern = "\\}\\{p.signif\\}", replacement = "}*`{p.signif}`", x = label)
+    label <- gsub(pattern = "\\}\\{p.adj.signif\\}", replacement = "}*`{p.adj.signif}`", x = label)
+    # Escape p signif stars preceded by space
+    label <- gsub(pattern = "\\s\\{p.signif\\}", replacement = " `{p.signif}`", x = label)
+    label <- gsub(pattern = "\\s\\{p.adj.signif\\}", replacement = " `{p.adj.signif}`", x = label)
+    # Escape p signif stars preceded by equal signs
+    label <- gsub(pattern = "=(\\s+)?\\{p.signif}", replacement = "=\\1`{p.signif}`", x = label)
+    label <- gsub(pattern = "=(\\s+)?\\{p.adj.signif}", replacement = "=\\1`{p.adj.signif}`", x = label)
+  }
+  label <- gsub(pattern = "eta2[g]", replacement = "eta[g]^2", x = label, fixed = TRUE)
+  label <- gsub(pattern = "eta2[p]", replacement = "eta[p]^2", x = label, fixed = TRUE)
+  label <- replace_simple_by_double_equals(label)
+  label
 }
 
 # Add p prefix
