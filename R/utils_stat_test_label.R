@@ -74,7 +74,6 @@ fortify_label <- function(label){
     }
     if(contains_p_signif(label)) label <- escape_psignif_asteriks(label)
   }
-  print(label)
   label
 }
 
@@ -113,7 +112,6 @@ add_stat_label <- function (stat.test,  label = NULL){
     label <- gsub(pattern = "~<~", replacement = "~`<`~", label )
   }
   stat.test$label <- label
-  print(stat.test$label)
   stat.test
 }
 
