@@ -73,6 +73,8 @@ NULL
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
 #'@param hide.ns can be logical value or a character vector.
+#'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
+#'  plot.
 #'\itemize{
 #' \item Case when logical value. If TRUE, hide ns symbol when displaying
 #'  significance levels. Filter is done by checking the column
@@ -316,13 +318,14 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 #' @export
 geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      method = "wilcox_test", method.args = list(),
-                     label = "{method}, p = {p.format}",
+                     label = "p.format",
                      y.position = NULL, group.by = NULL, dodge = 0.8,
                      step.increase = 0.12,  tip.length = 0.03,
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
                      coord.flip = FALSE, p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
-                     symnum.args = list(), hide.ns = FALSE, position = "identity", na.rm = FALSE,
+                     symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
+                     position = "identity", na.rm = FALSE,
                      show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
   p.adjust.by <- match.arg(p.adjust.by)
   if(missing(parse) & is_plotmath_expression(label)){
@@ -335,7 +338,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
     params = list(
       method = method, method.args = method.args,
       stat.label = label,
-      y.position = y.position,
+      y.position = y.position, group.by = group.by, dodge = dodge,
       bracket.nudge.y = bracket.nudge.y,
       bracket.shorten = bracket.shorten, bracket.group.by = bracket.group.by,
       step.increase = step.increase, tip.length = tip.length,
@@ -343,7 +346,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       family = family, na.rm = na.rm, coord.flip = coord.flip,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
-      hide.ns = hide.ns, group.by = group.by, dodge = dodge,
+      hide.ns = hide.ns, remove.bracket = remove.bracket,
       parse = parse,
       ...
     )
@@ -362,37 +365,16 @@ GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
                             # for legend:
                             draw_key = draw_key_path,
                             draw_panel = function(data, panel_params, coord,
-                                                  coord.flip = FALSE, parse) {
+                                                  coord.flip = FALSE, parse = FALSE,
+                                                  remove.bracket = FALSE) {
 
-
-
-                              lab <- as.character(data$label)
-                              if(parse){
-                                lab <- parse_as_expression(lab)
-                              }
                               coords <- coord$transform(data, panel_params)
-
-                              label_coords <- get_pwc_label_coords(coords, coord.flip = coord.flip )
-                              label.x <- label_coords$x
-                              label.y <- label_coords$y
-                              label.angle <- label_coords$angle
-
+                              if(remove.bracket){
+                                text_grob <- get_text_grob(data, coords, coord.flip = coord.flip, parse = parse)
+                                return(text_grob)
+                              }
                               grid::gList(
-                                grid::textGrob(
-                                  lab,
-                                  x = label.x,
-                                  y = label.y,
-                                  default.units = "native",
-                                  hjust = coords$hjust, vjust = coords$vjust,
-                                  rot = label.angle,
-                                  gp = grid::gpar(
-                                    col = scales::alpha(coords$colour, coords$alpha),
-                                    fontsize = coords$label.size * ggplot2::.pt,
-                                    fontfamily = coords$family,
-                                    fontface = coords$fontface,
-                                    lineheight = coords$lineheight
-                                  )
-                                ),
+                                get_text_grob(data, coords, coord.flip = coord.flip, parse = parse),
                                 grid::segmentsGrob(
                                   coords$x, coords$y,
                                   default.units = "native",
@@ -407,8 +389,27 @@ GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
                             }
 )
 
-
-
+# Text grob ------------------------------
+get_text_grob <- function(data, coords, coord.flip = FALSE, parse = FALSE){
+  lab <- as.character(data$label)
+  if(parse) lab <- parse_as_expression(lab)
+  label_coords <- get_pwc_label_coords(coords, coord.flip = coord.flip )
+  grid::textGrob(
+    lab,
+    x = label_coords$x,
+    y = label_coords$y,
+    default.units = "native",
+    hjust = coords$hjust, vjust = coords$vjust,
+    rot = label_coords$angle,
+    gp = grid::gpar(
+      col = scales::alpha(coords$colour, coords$alpha),
+      fontsize = coords$label.size * ggplot2::.pt,
+      fontfamily = coords$family,
+      fontface = coords$fontface,
+      lineheight = coords$lineheight
+    )
+  )
+}
 
 # Source: https://github.com/tidyverse/ggplot2/issues/2864
 parse_as_expression <- function(text) {
@@ -442,7 +443,7 @@ get_pwc_label_coords <- function(coords, coord.flip = FALSE){
   }
   data <- NULL
   coords %>%
-    rstatix::df_nest_by(vars = "group") %>%
+    rstatix::df_nest_by(vars = c("group", "bracket.group")) %>%
     dplyr::transmute(
       x = unlist(map(data, get_label_x)),
       y = unlist(map(data, get_label_y)),

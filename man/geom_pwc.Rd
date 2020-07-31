@@ -42,7 +42,7 @@ geom_pwc(
   stat = "pwc",
   method = "wilcox_test",
   method.args = list(),
-  label = "{method}, p = {p.format}",
+  label = "p.format",
   y.position = NULL,
   group.by = NULL,
   dodge = 0.8,
@@ -61,6 +61,7 @@ geom_pwc(
   p.adjust.by = c("group", "panel"),
   symnum.args = list(),
   hide.ns = FALSE,
+  remove.bracket = FALSE,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -177,13 +178,7 @@ independently. P-values are adjusted by panel when \code{p.adjust.by =
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }}
 
-\item{hide.ns}{can be logical value or a character vector.
-\itemize{
-\item Case when logical value. If TRUE, hide ns symbol when displaying
- significance levels. Filter is done by checking the column
- \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
- \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
- }}
+\item{hide.ns}{can be logical value or a character vector.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -217,6 +212,15 @@ horizontal becomes vertical, and vertical, horizontal. When adding the
 p-values to a horizontal ggplot (generated using
 \code{\link[ggplot2]{coord_flip}()}), you need to specify the option
 \code{coord.flip = TRUE}.}
+
+\item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
+ plot.
+\itemize{
+\item Case when logical value. If TRUE, hide ns symbol when displaying
+ significance levels. Filter is done by checking the column
+ \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
+ \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
+ }}
 }
 \description{
 add pairwise comparison p-values to a ggplot such as box plots,
