@@ -32,6 +32,9 @@ NULL
 #'  test is performed between the x-groups for each legend level. }
 #'@param dodge dodge width for grouped ggplot/test. Default is 0.8. It's used to
 #'  dodge the brackets position when \code{group.by = "legend.var"}.
+#'@param stack logical value. Default is FALSE; should be set to TRUE for
+#'  stacked bar plots or line plots. If TRUE, then the brackets are
+#'  automatically removed and the \code{dodge} value is set to zero.
 #'@param bracket.nudge.y Vertical adjustment to nudge brackets by (in fraction
 #'  of the total height). Useful to move up or move down the bracket. If
 #'  positive value, brackets will be moved up; if negative value, brackets are
@@ -74,13 +77,11 @@ NULL
 #'  \item \code{****}:  p <= 0.0001 }
 #'@param hide.ns can be logical value or a character vector.
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
-#'  plot.
-#'\itemize{
-#' \item Case when logical value. If TRUE, hide ns symbol when displaying
-#'  significance levels. Filter is done by checking the column
-#'  \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
-#'  \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
-#'  }
+#'  plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
+#'  displaying significance levels. Filter is done by checking the column
+#'  \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}. \item Case
+#'  when character value. Possible values are "p" or "p.adj", for filtering out
+#'  non significant. }
 #'@param na.rm If \code{FALSE} (the default), removes missing values with a
 #'  warning.  If \code{TRUE} silently removes missing values.
 #'@param coord.flip logical. If \code{TRUE}, flip x and y coordinates so that
@@ -319,7 +320,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      method = "wilcox_test", method.args = list(),
                      label = "p.format",
-                     y.position = NULL, group.by = NULL, dodge = 0.8,
+                     y.position = NULL, group.by = NULL, dodge = 0.8, stack = FALSE,
                      step.increase = 0.12,  tip.length = 0.03,
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
@@ -332,6 +333,10 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
     parse <- TRUE
   }
   bracket.group.by <- match.arg(bracket.group.by)
+  if(stack){
+    dodge <- 0
+    remove.bracket <- TRUE
+  }
   ggplot2::layer(
     stat = stat, geom = GeomPwc, mapping = mapping,  data = data,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,

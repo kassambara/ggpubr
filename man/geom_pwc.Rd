@@ -46,6 +46,7 @@ geom_pwc(
   y.position = NULL,
   group.by = NULL,
   dodge = 0.8,
+  stack = FALSE,
   step.increase = 0.12,
   tip.length = 0.03,
   bracket.nudge.y = 0.05,
@@ -207,6 +208,10 @@ geom/stat.}
 \item{stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
+\item{stack}{logical value. Default is FALSE; should be set to TRUE for
+stacked bar plots or line plots. If TRUE, then the brackets are
+automatically removed and the \code{dodge} value is set to zero.}
+
 \item{coord.flip}{logical. If \code{TRUE}, flip x and y coordinates so that
 horizontal becomes vertical, and vertical, horizontal. When adding the
 p-values to a horizontal ggplot (generated using
@@ -214,13 +219,11 @@ p-values to a horizontal ggplot (generated using
 \code{coord.flip = TRUE}.}
 
 \item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
- plot.
-\itemize{
-\item Case when logical value. If TRUE, hide ns symbol when displaying
- significance levels. Filter is done by checking the column
- \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
- \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
- }}
+plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
+displaying significance levels. Filter is done by checking the column
+\code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}. \item Case
+when character value. Possible values are "p" or "p.adj", for filtering out
+non significant. }}
 }
 \description{
 add pairwise comparison p-values to a ggplot such as box plots,
