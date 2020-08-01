@@ -334,8 +334,9 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
   }
   bracket.group.by <- match.arg(bracket.group.by)
   if(stack){
+    # for stacked bar plots/line plots
     dodge <- 0
-    remove.bracket <- TRUE
+    if (group.by == "x.var") remove.bracket <- TRUE
   }
   ggplot2::layer(
     stat = stat, geom = GeomPwc, mapping = mapping,  data = data,
