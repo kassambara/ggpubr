@@ -84,11 +84,6 @@ NULL
 #'  non significant. }
 #'@param na.rm If \code{FALSE} (the default), removes missing values with a
 #'  warning.  If \code{TRUE} silently removes missing values.
-#'@param coord.flip logical. If \code{TRUE}, flip x and y coordinates so that
-#'  horizontal becomes vertical, and vertical, horizontal. When adding the
-#'  p-values to a horizontal ggplot (generated using
-#'  \code{\link[ggplot2]{coord_flip}()}), you need to specify the option
-#'  \code{coord.flip = TRUE}.
 #'@param parse logical for parsing plotmath expression.
 #'@param ... other arguments passed on to \code{\link{layer}}. These are often
 #'  aesthetics, used to set an aesthetic to a fixed value, like \code{color =
@@ -143,7 +138,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               if(length(params$tip.length) == 1) params$tip.length <- rep(params$tip.length, max(length(params$xmin), 1) * 2)
                               if(length(params$tip.length) == length(params$xmin)) params$tip.length <- rep(params$tip.length, each=2)
 
-                              # Statistical test methods
+                              # Statistical test methods functions and arguments
                               method <- params$method
                               method.args <- params$method.args
                               if(is.null(method.args$p.adjust.method)){
@@ -152,11 +147,9 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               pwc_func <- get_pwc_stat_function(method, method.args)
                               params$method <- pwc_func$method
                               params$method.args <- pwc_func$method.args
-
                               return(params)
                             },
-
-                            compute_panel = function(data, scales, method, method.args,
+                            compute_panel = function(self, data, scales, method, method.args,
                                                      tip.length, stat.label, y.position, step.increase,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
                                                      p.adjust.method, p.adjust.by,
@@ -324,7 +317,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      step.increase = 0.12,  tip.length = 0.03,
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
-                     coord.flip = FALSE, p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
+                     p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      position = "identity", na.rm = FALSE,
                      show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
@@ -349,7 +342,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       bracket.shorten = bracket.shorten, bracket.group.by = bracket.group.by,
       step.increase = step.increase, tip.length = tip.length,
       size = size, label.size = label.size,
-      family = family, na.rm = na.rm, hjust = hjust, vjust = vjust, coord.flip = coord.flip,
+      family = family, na.rm = na.rm, hjust = hjust, vjust = vjust,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
       hide.ns = hide.ns, remove.bracket = remove.bracket,
@@ -371,10 +364,11 @@ GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
                             # for legend:
                             draw_key = draw_key_path,
                             draw_panel = function(data, panel_params, coord,
-                                                  coord.flip = FALSE, parse = FALSE,
+                                                  parse = FALSE,
                                                   remove.bracket = FALSE) {
 
                               coords <- coord$transform(data, panel_params)
+                              coord.flip <- inherits(coord, "CoordFlip")
                               if(remove.bracket){
                                 text_grob <- get_text_grob(data, coords, coord.flip = coord.flip, parse = parse)
                                 return(text_grob)

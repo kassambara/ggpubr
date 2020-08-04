@@ -57,7 +57,6 @@ geom_pwc(
   family = "",
   vjust = 0,
   hjust = 0.5,
-  coord.flip = FALSE,
   p.adjust.method = "holm",
   p.adjust.by = c("group", "panel"),
   symnum.args = list(),
@@ -211,12 +210,6 @@ layer, as a string.}
 \item{stack}{logical value. Default is FALSE; should be set to TRUE for
 stacked bar plots or line plots. If TRUE, then the brackets are
 automatically removed and the \code{dodge} value is set to zero.}
-
-\item{coord.flip}{logical. If \code{TRUE}, flip x and y coordinates so that
-horizontal becomes vertical, and vertical, horizontal. When adding the
-p-values to a horizontal ggplot (generated using
-\code{\link[ggplot2]{coord_flip}()}), you need to specify the option
-\code{coord.flip = TRUE}.}
 
 \item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
 plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
