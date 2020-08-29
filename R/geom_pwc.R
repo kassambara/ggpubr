@@ -124,7 +124,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      step.increase = 0.12, tip.length = 0.03,
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
-                     symnum.args = list(), hide.ns = FALSE,
+                     symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, parse = FALSE, ...) {
 
@@ -134,6 +134,14 @@ stat_pwc <- function(mapping = NULL, data = NULL,
   }
   if(is.null(group.by)) group.by <- "x.var"
   bracket.group.by <- match.arg(bracket.group.by)
+
+  if(!is.null(ref.group)){
+    if(ref.group %in% c("all", ".all.")){
+      if(missing(step.increase)) step.increase <- 0
+      remove.bracket <- TRUE
+    }
+  }
+
   ggplot2::layer(
     stat = StatPwc, data = data, mapping = mapping, geom = "pwc",
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -144,6 +152,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
       bracket.group.by = bracket.group.by, step.increase = step.increase,
       tip.length = tip.length, size=size, label.size=label.size,
+      remove.bracket = remove.bracket,
       family=family, vjust=vjust, hjust = hjust, na.rm = na.rm,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
@@ -374,6 +383,14 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
     dodge <- 0
     if (group.by == "x.var") remove.bracket <- TRUE
   }
+
+  if(!is.null(ref.group)){
+    if(ref.group %in% c("all", ".all.")){
+      if(missing(step.increase)) step.increase <- 0
+      remove.bracket <- TRUE
+    }
+  }
+
   ggplot2::layer(
     stat = stat, geom = GeomPwc, mapping = mapping,  data = data,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,

@@ -29,6 +29,7 @@ stat_pwc(
   p.adjust.by = c("group", "panel"),
   symnum.args = list(),
   hide.ns = FALSE,
+  remove.bracket = FALSE,
   position = "identity",
   na.rm = FALSE,
   show.legend = NA,
@@ -201,6 +202,13 @@ independently. P-values are adjusted by panel when \code{p.adjust.by =
 
 \item{hide.ns}{can be logical value or a character vector.}
 
+\item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
+plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
+displaying significance levels. Filter is done by checking the column
+\code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}. \item Case
+when character value. Possible values are "p" or "p.adj", for filtering out
+non significant. }}
+
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
@@ -231,13 +239,6 @@ layer, as a string.}
 \item{stack}{logical value. Default is FALSE; should be set to TRUE for
 stacked bar plots or line plots. If TRUE, then the brackets are
 automatically removed and the \code{dodge} value is set to zero.}
-
-\item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
-plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
-displaying significance levels. Filter is done by checking the column
-\code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}. \item Case
-when character value. Possible values are "p" or "p.adj", for filtering out
-non significant. }}
 }
 \description{
 add pairwise comparison p-values to a ggplot such as box plots,
