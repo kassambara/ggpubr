@@ -12,6 +12,24 @@ NULL
 #'@param method.args a list of additional arguments used for the test method.
 #'  For example one might use \code{method.args = list(alternative = "greater")}
 #'  for wilcoxon test.
+#'@param ref.group a character string or a numeric value specifying the
+#'  reference group. If specified, for a given grouping variable, each of the
+#'  group levels will be compared to the reference group (i.e. control group).
+#'
+#'  \code{ref.group} can be also \code{"all"}. In this case, each of the
+#'  grouping variable levels is compared to all (i.e. basemean).
+#'
+#'  Allowed values can be: \itemize{ \item \strong{numeric value}: specifying
+#'  the rank of the reference group. For example, use \code{ref.group = 1} when
+#'  the first group is the reference; use \code{ref.group = 2} when the second
+#'  group is the reference, and so on. This works for all situations, including
+#'  i) when comparisons are performed between x-axis groups and ii) when
+#'  comparisons are performed between legend groups. \item \strong{character
+#'  value}: this is supported only when comparison is performed between x-axis
+#'  groups. For example, you can use \code{ref.group = "ctrl"} instead of using
+#'  the numeric rank value of the "ctrl" group. \item \strong{"all"}: In this
+#'  case, each of the grouping variable levels is compared to all (i.e.
+#'  basemean). }
 #'@param label character string specifying label. Can be: \itemize{ \item the
 #'  column containing the label (e.g.: \code{label = "p"} or \code{label =
 #'  "p.adj"}), where \code{p} is the p-value. Other possible values are
@@ -97,7 +115,7 @@ NULL
 #'@rdname geom_pwc
 #'@export
 stat_pwc <- function(mapping = NULL, data = NULL,
-                     method = "wilcox_test", method.args = list(),
+                     method = "wilcox_test", method.args = list(), ref.group = NULL,
                      label = "p.format",
                      y.position = NULL,
                      group.by = NULL, dodge = 0.8,
@@ -114,12 +132,13 @@ stat_pwc <- function(mapping = NULL, data = NULL,
   if(missing(parse) & is_plotmath_expression(label)){
     parse <- TRUE
   }
+  if(is.null(group.by)) group.by <- "x.var"
   bracket.group.by <- match.arg(bracket.group.by)
   ggplot2::layer(
     stat = StatPwc, data = data, mapping = mapping, geom = "pwc",
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
-      method = method, method.args = method.args,
+      method = method, method.args = method.args, ref.group = ref.group,
       stat.label = label,
       y.position = y.position, group.by = group.by, dodge = dodge,
       bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
@@ -149,7 +168,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               params$method.args <- pwc_func$method.args
                               return(params)
                             },
-                            compute_panel = function(self, data, scales, method, method.args,
+                            compute_panel = function(self, data, scales, method, method.args, ref.group,
                                                      tip.length, stat.label, y.position, step.increase,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
                                                      p.adjust.method, p.adjust.by,
@@ -161,7 +180,6 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               formula <- y ~ x
                               grouping.var <- NULL
                               if(is.grouped.plots){
-                                if(is.null(group.by)) group.by <- "x.var"
                                 if(group.by == "legend.var"){
                                   grouping.var <- "group"
                                   formula <- y ~ x
@@ -172,6 +190,30 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 }
                                 df <- df %>% rstatix::df_group_by(vars = grouping.var)
                               }
+
+                              # Comparison against reference group
+                              if(!is.null(ref.group)) {
+                                if(!(ref.group %in% c(".all.", "all"))){
+                                  # grouped plots where comparisons are performed between legend groups
+                                  if(is.grouped.plots & group.by == "x.var"){
+                                    if(is.character(ref.group)){
+                                      stop(
+                                        "ref.group should be a numeric value indicating the rank of the ",
+                                        "legend group to be used as the reference. \n",
+                                        "For example, use ref.group = 1 when the first group is the reference; \n",
+                                        "use ref.group = 2 when the second group is the reference and so on.",
+                                        call. = FALSE
+                                        )
+                                    }
+                                  }
+                                  # Basic plot
+                                  else if(is.character(ref.group)){
+                                      ref.group <- scales$x$map(ref.group) %>% as.character()
+                                  }
+                                }
+                                method.args <- method.args %>% .add_item(ref.group = ref.group)
+                              }
+
                               method.args <- method.args %>% .add_item(data = df, formula = formula)
                               stat.test <- do.call(method, method.args)
 
@@ -311,7 +353,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 #' @rdname geom_pwc
 #' @export
 geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
-                     method = "wilcox_test", method.args = list(),
+                     method = "wilcox_test", method.args = list(), ref.group = NULL,
                      label = "p.format",
                      y.position = NULL, group.by = NULL, dodge = 0.8, stack = FALSE,
                      step.increase = 0.12,  tip.length = 0.03,
@@ -336,7 +378,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
     stat = stat, geom = GeomPwc, mapping = mapping,  data = data,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
-      method = method, method.args = method.args,
+      method = method, method.args = method.args, ref.group = ref.group,
       stat.label = label,
       y.position = y.position, group.by = group.by, dodge = dodge,
       bracket.nudge.y = bracket.nudge.y,

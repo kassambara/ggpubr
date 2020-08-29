@@ -10,6 +10,7 @@ stat_pwc(
   data = NULL,
   method = "wilcox_test",
   method.args = list(),
+  ref.group = NULL,
   label = "p.format",
   y.position = NULL,
   group.by = NULL,
@@ -42,6 +43,7 @@ geom_pwc(
   stat = "pwc",
   method = "wilcox_test",
   method.args = list(),
+  ref.group = NULL,
   label = "p.format",
   y.position = NULL,
   group.by = NULL,
@@ -100,6 +102,25 @@ package. These methods are: \code{"wilcox_test", "t_test", "sign_test",
 \item{method.args}{a list of additional arguments used for the test method.
 For example one might use \code{method.args = list(alternative = "greater")}
 for wilcoxon test.}
+
+\item{ref.group}{a character string or a numeric value specifying the
+ reference group. If specified, for a given grouping variable, each of the
+ group levels will be compared to the reference group (i.e. control group).
+
+ \code{ref.group} can be also \code{"all"}. In this case, each of the
+ grouping variable levels is compared to all (i.e. basemean).
+
+ Allowed values can be: \itemize{ \item \strong{numeric value}: specifying
+ the rank of the reference group. For example, use \code{ref.group = 1} when
+ the first group is the reference; use \code{ref.group = 2} when the second
+ group is the reference, and so on. This works for all situations, including
+ i) when comparisons are performed between x-axis groups and ii) when
+ comparisons are performed between legend groups. \item \strong{character
+ value}: this is supported only when comparison is performed between x-axis
+ groups. For example, you can use \code{ref.group = "ctrl"} instead of using
+ the numeric rank value of the "ctrl" group. \item \strong{"all"}: In this
+ case, each of the grouping variable levels is compared to all (i.e.
+ basemean). }}
 
 \item{label}{character string specifying label. Can be: \itemize{ \item the
 column containing the label (e.g.: \code{label = "p"} or \code{label =
