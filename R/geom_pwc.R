@@ -623,9 +623,11 @@ get_grouped_x_position<- function(data, x, group, dodge = 0.8){
   data <- data.frame(x = data[[x]], group = data[[group]]) %>%
     dplyr::distinct(.data$x, .data$group)
   x.position <- as_numeric_group(data$x)
-  group.ranks <- as_numeric_group(data$group)
+  # group.ranks <- as_numeric_group(data$group)
   # Compute grouped x coords
-  n <- length(unique(data$group))
+  # n <- length(unique(data$group))
+  n <- get_ngroup_by_xposition(x.position)
+  group.ranks <- unique(n) %>% purrr::map(function(x) 1:x) %>% unlist()
   x_coords <-  (((dodge - dodge*n) / (2*n)) + ((group.ranks - 1) * (dodge / n))) + x.position
   names(x_coords) <- paste(data$x, data$group, sep = "_")
   x_coords
@@ -651,5 +653,15 @@ as_numeric_group <- function(x){
   grp <- x %>% as.factor() %>% as.numeric()
   names(grp) <- x
   grp
+}
+
+# Returns a named numeric vector
+# c(1, 1, 2, 2, 2) -> c(`1` = 2, `1` = 2, `2` = 3, `2` = 3, `2` = 3)
+get_ngroup_by_xposition <- function(x.position){
+   # count for each levels
+   n <- x.position %>% as.factor() %>% summary(maxsum = Inf)
+   # reorder as x.position
+   n <- n[as.character(x.position)]
+   n
 }
 
