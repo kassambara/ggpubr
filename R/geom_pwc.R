@@ -199,28 +199,15 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 }
                                 df <- df %>% rstatix::df_group_by(vars = grouping.var)
                               }
+                              is.comparisons.between.legend.grps <- is.grouped.plots & group.by == "x.var"
 
                               # Comparison against reference group
+                              ref.group.id <- get_ref_group_id(
+                                scales = scales, ref.group = ref.group,
+                                is.comparisons.between.legend.grps = is.comparisons.between.legend.grps
+                                )
                               if(!is.null(ref.group)) {
-                                if(!(ref.group %in% c(".all.", "all"))){
-                                  # grouped plots where comparisons are performed between legend groups
-                                  if(is.grouped.plots & group.by == "x.var"){
-                                    if(is.character(ref.group)){
-                                      stop(
-                                        "ref.group should be a numeric value indicating the rank of the ",
-                                        "legend group to be used as the reference. \n",
-                                        "For example, use ref.group = 1 when the first group is the reference; \n",
-                                        "use ref.group = 2 when the second group is the reference and so on.",
-                                        call. = FALSE
-                                        )
-                                    }
-                                  }
-                                  # Basic plot
-                                  else if(is.character(ref.group)){
-                                      ref.group <- scales$x$map(ref.group) %>% as.character()
-                                  }
-                                }
-                                method.args <- method.args %>% .add_item(ref.group = ref.group)
+                                method.args <- method.args %>% .add_item(ref.group = ref.group.id)
                               }
 
                               method.args <- method.args %>% .add_item(data = df, formula = formula)
@@ -568,6 +555,30 @@ get_pwc_stat_function <- function(method, method.args){
   )
 }
 
+# Get ref group rank id for comparison against reference
+get_ref_group_id <- function(scales, ref.group = NULL, is.comparisons.between.legend.grps = FALSE){
+  if(!is.null(ref.group)) {
+    if(!(ref.group %in% c(".all.", "all"))){
+      # Grouped plots
+      if(is.comparisons.between.legend.grps){
+        if(is.character(ref.group)){
+          stop(
+            "ref.group should be a numeric value indicating the rank of the ",
+            "legend group to be used as the reference. \n",
+            "For example, use ref.group = 1 when the first group is the reference; \n",
+            "use ref.group = 2 when the second group is the reference and so on.",
+            call. = FALSE
+          )
+        }
+      }
+      # Basic plot: comparison between x-axis groups
+      else if(is.character(ref.group)){
+        ref.group <- scales$x$map(ref.group) %>% as.character()
+      }
+    }
+  }
+  ref.group
+}
 
 # stat.test: rstatix test
 # x: x variable
