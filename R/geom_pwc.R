@@ -181,7 +181,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                                      tip.length, stat.label, y.position, step.increase,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
                                                      p.adjust.method, p.adjust.by,
-                                                     symnum.args, hide.ns, group.by, dodge) {
+                                                     symnum.args, hide.ns, group.by, dodge, remove.bracket) {
 
                               # Compute the statistical tests
                               df <- data %>% mutate(x = as.factor(.data$x))
@@ -274,6 +274,14 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 add_stat_n() %>%
                                 keep_only_tbl_df_classes() %>%
                                 add_stat_label(label = stat.label)
+
+                              if(!is.null(ref.group)){
+                                if(!(ref.group %in% c(".all.", "all"))){
+                                  # when comparisons against reference group
+                                  if(remove.bracket) stat.test$xmin <- stat.test$xmax
+                                }
+                              }
+
 
                               # Hide NS
                               if(is.logical(hide.ns)){
