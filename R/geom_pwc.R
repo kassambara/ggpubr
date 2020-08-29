@@ -326,6 +326,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
     parse <- TRUE
   }
   bracket.group.by <- match.arg(bracket.group.by)
+  if(is.null(group.by)) group.by <- "x.var"
   if(stack){
     # for stacked bar plots/line plots
     dodge <- 0
