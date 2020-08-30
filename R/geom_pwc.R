@@ -264,7 +264,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 
                               if(!is.null(ref.group)){
                                 if(!(ref.group %in% c(".all.", "all"))){
-                                  # when comparisons against reference group
+                                  # when comparisons is done against reference group
                                   if(remove.bracket) stat.test$xmin <- stat.test$xmax
                                 }
                               }
