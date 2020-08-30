@@ -269,7 +269,6 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 }
                               }
 
-
                               # Hide NS
                               if(is.logical(hide.ns)){
                                 if(hide.ns) stat.test <- remove_ns(stat.test)
@@ -577,7 +576,7 @@ get_ref_group_id <- function(scales, ref.group = NULL, is.comparisons.between.le
       }
     }
   }
-  ref.group
+  as.character(ref.group)
 }
 
 # stat.test: rstatix test
@@ -657,15 +656,21 @@ add_x_position <- function(stat.test, x, group = NULL, dodge = 0.8){
 # data is a dataframe containing the x and the group columns
 get_grouped_x_position<- function(data, x, group, dodge = 0.8){
   data <- data.frame(x = data[[x]], group = data[[group]]) %>%
-    dplyr::distinct(.data$x, .data$group)
-  x.position <- as_numeric_group(data$x)
-  # group.ranks <- as_numeric_group(data$group)
-  # Compute grouped x coords
-  # n <- length(unique(data$group))
-  n <- get_ngroup_by_xposition(x.position)
-  group.ranks <- unique(n) %>% purrr::map(function(x) 1:x) %>% unlist()
-  x_coords <-  (((dodge - dodge*n) / (2*n)) + ((group.ranks - 1) * (dodge / n))) + x.position
-  names(x_coords) <- paste(data$x, data$group, sep = "_")
+    dplyr::distinct(.data$x, .data$group) %>%
+    dplyr::arrange(.data$x, .data$group)
+  data$x.position <- as_numeric_group(data$x)
+  # Add group.ranks and ngroups at x position
+  data <- data %>%
+    rstatix::df_nest_by(vars = "x") %>%
+    mutate(
+      data = map(.data$data, function(data){data$group.ranks = 1:nrow(data); data}),
+      n = unlist(map(.data$data, nrow))
+    ) %>%
+      tidyr::unnest(cols = "data")
+  # Compute x coords
+  d <- data
+  x_coords <-  (((dodge - dodge*d$n) / (2*d$n)) + ((d$group.ranks - 1) * (dodge / d$n))) + d$x.position
+  names(x_coords) <- paste(d$x, d$group, sep = "_")
   x_coords
 }
 
@@ -691,13 +696,4 @@ as_numeric_group <- function(x){
   grp
 }
 
-# Returns a named numeric vector
-# c(1, 1, 2, 2, 2) -> c(`1` = 2, `1` = 2, `2` = 3, `2` = 3, `2` = 3)
-get_ngroup_by_xposition <- function(x.position){
-   # count for each levels
-   n <- x.position %>% as.factor() %>% summary(maxsum = Inf)
-   # reorder as x.position
-   n <- n[as.character(x.position)]
-   n
-}
 

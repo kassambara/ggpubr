@@ -240,3 +240,61 @@ test_that("Grouped plots: 3 groups at x position. Pairwise comparisons against a
   expect_equal(label_coords, label_coords_expected)
 })
 
+
+test_that("Grouped plots: test that geom_pwc() works with different number of groups at each x pos.", {
+  # https://github.com/kassambara/ggpubr/issues/326
+  demo_data <- data.frame(
+    stringsAsFactors = FALSE,
+    Study = c("A","A","A","A","A","A",
+              "A","A","A","A","B","B","B","B","B","B","B","B",
+              "B","B","C","C","C","C","C","C","C","C","C",
+              "C","C","C","C","C","C","D","D","D","D","D",
+              "D","D","D","D","D","D","D","D","D","D"),
+    Studytype = c("X","X","X","X","X","X",
+                  "X","X","X","X","X","X","X","X","X","X","X","X",
+                  "X","X","Y","Y","Y","Y","Y","Y","Y","Y","Y",
+                  "Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y",
+                  "Y","Y","Y","Y","Y","Y","Y","Y","Y","Y"),
+    Values = c(4469L,4797L,5101L,5397L,
+               4542L,2780L,4326L,3396L,3657L,3199L,9221L,10176L,
+               9277L,10500L,9707L,7406L,7756L,7601L,7586L,7353L,
+               1811L,1485L,3003L,1629L,2495L,4207L,4265L,3629L,
+               4157L,3495L,2075L,2112L,2973L,3086L,2943L,5664L,6690L,
+               3538L,5741L,7880L,5848L,6390L,6569L,6114L,6520L,
+               7389L,6843L,7611L,6621L,7340L),
+    Group = as.factor(c("CTR",
+                        "CTR","CTR","CTR","CTR","Dis1","Dis1","Dis1",
+                        "Dis1","Dis1","CTR","CTR","CTR","CTR",
+                        "CTR","Dis1","Dis1","Dis1","Dis1","Dis1",
+                        "CTR","CTR","CTR","CTR","CTR","Dis2","Dis2",
+                        "Dis2","Dis2","Dis2","Dis3","Dis3",
+                        "Dis3","Dis3","Dis3","CTR","CTR","CTR","CTR",
+                        "CTR","Dis2","Dis2","Dis2","Dis2","Dis2",
+                        "Dis3","Dis3","Dis3","Dis3","Dis3"))
+  )
+  bxp <- ggboxplot(demo_data, x = "Study", y = "Values", fill = "Group") +
+    geom_pwc(aes(group = Group), dodge = 0.8, label = "p", ref.group = 1)
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+  label_coords <- as.data.frame(get_pwc_label_coords(stat.test))
+  label_coords$x <- round(label_coords$x, 2)
+  label_coords$y <- round(label_coords$y, 2)
+  label_coords_expected <- data.frame(
+    x = c(1, 2, 2.87, 3, 3.87, 4),
+    y = c(10950.76, 10950.76, 10950.76, 12032.56, 10950.76, 12032.56),
+    angle = c(0, 0, 0, 0, 0, 0)
+  )
+
+  stat.test$x <- round(stat.test$x, 2)
+  stat.test$xend <- round(stat.test$xend, 2)
+  stat.test$y <- round(stat.test$y, 2)
+  stat.test$yend <- round(stat.test$yend, 2)
+
+  expect_equal(stat.test$group, c(1L, 2L, 3L, 4L, 5L, 6L, 1L, 2L, 3L, 4L, 5L, 6L, 1L, 2L, 3L, 4L, 5L, 6L))
+  expect_equal(stat.test$bracket.group, c(1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 1L, 2L))
+  expect_equal(as.numeric(stat.test$x), c(0.8, 1.8, 2.73, 2.73, 3.73, 3.73, 0.8, 1.8, 2.73, 2.73, 3.73, 3.73, 1.2, 2.2, 3, 3.27, 4, 4.27))
+  expect_equal(as.numeric(stat.test$xend), c(0.8, 1.8, 2.73, 2.73, 3.73, 3.73, 1.2, 2.2, 3, 3.27, 4, 4.27, 1.2, 2.2, 3, 3.27, 4, 4.27))
+  expect_equal(stat.test$y, c(10680.3, 10680.3, 10680.3, 11762.1, 10680.3, 11762.1, 10950.75, 10950.75, 10950.75, 12032.55, 10950.75, 12032.55, 10950.75, 10950.75, 10950.75, 12032.55, 10950.75, 12032.55))
+  expect_equal(stat.test$yend, c(10950.75, 10950.75, 10950.75, 12032.55, 10950.75, 12032.55, 10950.75, 10950.75, 10950.75, 12032.55, 10950.75, 12032.55, 10680.3, 10680.3, 10680.3, 11762.1, 10680.3, 11762.1))
+  expect_equal(label_coords, label_coords_expected)
+})
