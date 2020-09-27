@@ -606,9 +606,10 @@ add_x_position <- function(stat.test, x = NULL, group = NULL, dodge = 0.8){
   # Data preparation
   if(is_rstatix_test) {
     data <- attr(stat.test, "args")$data
-    if(is.basic & is.null(x)){
+    if(is.basic & is.null(x))
       x <- rstatix:::get_formula_right_hand_side(.attributes$args$formula)
-    }
+    else if(is.grouped.by.x & is.null(group))
+      group <- rstatix:::get_formula_right_hand_side(.attributes$args$formula)
   }
   else if(is.basic){
     data <- data.frame(x = groups, stringsAsFactors = FALSE)
