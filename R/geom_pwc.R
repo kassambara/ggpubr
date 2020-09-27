@@ -583,11 +583,12 @@ get_ref_group_id <- function(scales, ref.group = NULL, is.comparisons.between.le
 # x: x variable
 # group: group variable (legend variable)
 # add_grouped_x_coords (stat.test, data, x = "x", group = "group", dodge = 0.8)
-add_x_position <- function(stat.test, x, group = NULL, dodge = 0.8){
+add_x_position <- function(stat.test, x = NULL, group = NULL, dodge = 0.8){
 
   # Checking
   groups.exist <- all(c("group1", "group2") %in% colnames(stat.test))
   if(!groups.exist) stop("data should contain group1 and group2 columns")
+  .attributes <- rstatix:::get_test_attributes(stat.test)
   if(any(stat.test$group1 %in% c("all", ".all."))) {
     # case when ref.group = "all"
     stat.test$group1 <- stat.test$group2
@@ -605,6 +606,9 @@ add_x_position <- function(stat.test, x, group = NULL, dodge = 0.8){
   # Data preparation
   if(is_rstatix_test) {
     data <- attr(stat.test, "args")$data
+    if(is.basic & is.null(x)){
+      x <- rstatix:::get_formula_right_hand_side(.attributes$args$formula)
+    }
   }
   else if(is.basic){
     data <- data.frame(x = groups, stringsAsFactors = FALSE)
@@ -642,11 +646,11 @@ add_x_position <- function(stat.test, x, group = NULL, dodge = 0.8){
       # so the data is grouped by x position
       xmin_id <- paste(stat.test[[x]], stat.test$group1, sep = "_")
       xmax_id <- paste(stat.test[[x]], stat.test$group2, sep = "_")
-      stat.test$x <- as_numeric_group(stat.test[[x]])
+      stat.test$x <- unname(as_numeric_group(stat.test[[x]]))
     }
   }
-  stat.test$xmin <- x_coords[xmin_id]
-  stat.test$xmax <- x_coords[xmax_id]
+  stat.test$xmin <- unname(x_coords[xmin_id])
+  stat.test$xmax <- unname(x_coords[xmax_id])
   if(is.null.model) stat.test$xmax <- stat.test$xmin
   stat.test
 }
