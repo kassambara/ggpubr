@@ -583,29 +583,28 @@ get_ref_group_id <- function(scales, ref.group = NULL, is.comparisons.between.le
 # x: x variable
 # group: group variable (legend variable)
 # add_grouped_x_coords (stat.test, data, x = "x", group = "group", dodge = 0.8)
-add_x_position <- function(stat.test, x = NULL, group = NULL, dodge = 0.8){
+add_x_position <- function(test, x = NULL, group = NULL, dodge = 0.8){
 
   # Checking
-  groups.exist <- all(c("group1", "group2") %in% colnames(stat.test))
-  if(!groups.exist) stop("data should contain group1 and group2 columns")
-  .attributes <- rstatix:::get_test_attributes(stat.test)
-  if(any(stat.test$group1 %in% c("all", ".all."))) {
+  rstatix:::asserttat_group_columns_exists(test)
+  .attributes <- rstatix:::get_test_attributes(test)
+  if(any(test$group1 %in% c("all", ".all."))) {
     # case when ref.group = "all"
-    stat.test$group1 <- stat.test$group2
+    test$group1 <- test$group2
   }
-  groups <- c(as.character(stat.test$group1), as.character(stat.test$group2)) %>%
+  groups <- c(as.character(test$group1), as.character(test$group2)) %>%
     unique() %>%
     setdiff(c("all", ".all."))   # case when ref.group = "all"
 
-  is_rstatix_test <- inherits(stat.test, "rstatix_test")
-  is.null.model <- ("null model" %in% stat.test$group2) & all(stat.test$group1 %in% 1)
-  is.grouped.by.legend <- stat.test %>% is_stat_test_grouped_by(group)
-  is.grouped.by.x <- stat.test %>% is_stat_test_grouped_by(x)
+  is_rstatix_test <- inherits(test, "rstatix_test")
+  is.null.model <- ("null model" %in% test$group2) & all(test$group1 %in% 1)
+  is.grouped.by.legend <- test %>% is_stat_test_grouped_by(group)
+  is.grouped.by.x <- test %>% is_stat_test_grouped_by(x)
   is.basic <- !is.grouped.by.x & !is.grouped.by.legend
 
   # Data preparation
   if(is_rstatix_test) {
-    data <- attr(stat.test, "args")$data
+    data <- attr(test, "args")$data
     if(is.basic & is.null(x))
       x <- rstatix:::get_formula_right_hand_side(.attributes$args$formula)
     else if(is.grouped.by.x & is.null(group))
@@ -617,9 +616,9 @@ add_x_position <- function(stat.test, x = NULL, group = NULL, dodge = 0.8){
   }
   else{
     if(is.grouped.by.x)
-      data <- expand.grid(x = unique(stat.test[[x]]), group = groups)
+      data <- expand.grid(x = unique(test[[x]]), group = groups)
     else if(is.grouped.by.legend)
-      data <- expand.grid(x = groups, group = stat.test[[group]])
+      data <- expand.grid(x = groups, group = test[[group]])
     colnames(data) <- c(x, group)
   }
   if(is.null.model) {
@@ -630,30 +629,30 @@ add_x_position <- function(stat.test, x = NULL, group = NULL, dodge = 0.8){
   # Add xmin and x max
   if(is.basic){
     x_coords <- as_numeric_group(data[[x]])
-    xmin_id <- as.character(stat.test$group1)
-    xmax_id <- as.character(stat.test$group2)
+    xmin_id <- as.character(test$group1)
+    xmax_id <- as.character(test$group2)
   }
   else{
     x_coords <- get_grouped_x_position(data, x = x, group = group, dodge = dodge)
     if(is.grouped.by.legend){
       # Add x position to stat test when the test is grouped by the legend variable
       # Case when you group by legend and pairwise compare between x-axis groups
-      xmin_id <- paste(stat.test$group1, stat.test[[group]], sep = "_")
-      xmax_id <- paste(stat.test$group2, stat.test[[group]], sep = "_")
+      xmin_id <- paste(test$group1, test[[group]], sep = "_")
+      xmax_id <- paste(test$group2, test[[group]], sep = "_")
     }
     else if(is.grouped.by.x){
       # Add x position to stat test when the test is grouped by the x variable
       # Case when you pairwise compare legend groups at each x-axis position,
       # so the data is grouped by x position
-      xmin_id <- paste(stat.test[[x]], stat.test$group1, sep = "_")
-      xmax_id <- paste(stat.test[[x]], stat.test$group2, sep = "_")
-      stat.test$x <- unname(as_numeric_group(stat.test[[x]]))
+      xmin_id <- paste(test[[x]], test$group1, sep = "_")
+      xmax_id <- paste(test[[x]], test$group2, sep = "_")
+      test$x <- unname(as_numeric_group(test[[x]]))
     }
   }
-  stat.test$xmin <- unname(x_coords[xmin_id])
-  stat.test$xmax <- unname(x_coords[xmax_id])
-  if(is.null.model) stat.test$xmax <- stat.test$xmin
-  stat.test
+  test$xmin <- unname(x_coords[xmin_id])
+  test$xmax <- unname(x_coords[xmax_id])
+  if(is.null.model) test$xmax <- test$xmin
+  test %>% rstatix:::set_test_attributes(.attributes)
 }
 
 
@@ -678,9 +677,6 @@ get_grouped_x_position<- function(data, x, group, dodge = 0.8){
   names(x_coords) <- paste(d$x, d$group, sep = "_")
   x_coords
 }
-
-
-
 
 # Check if a stat test is grouped by a given variable
 is_stat_test_grouped_by <- function(test, x = NULL){
