@@ -8,6 +8,7 @@ NULL
 #' @inheritParams ggboxplot
 #' @param digits integer indicating the number of decimal places (round) to be
 #'   used.
+#' @param table.font.size the summary table font size.
 #' @param position Position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function.
 #' @param summaries summary stats to display in the table. Possible values are
@@ -131,7 +132,8 @@ ggsummarystats <- function(data, x, y, summaries = c("n", "median", "iqr"),
                            ggfunc = ggboxplot,
                            color = "black", fill = "white", palette = NULL,
                            facet.by = NULL, free.panels = FALSE, labeller = "label_value",
-                           heights = c(0.80, 0.20), ggtheme = theme_pubr(), ...) {
+                           heights = c(0.80, 0.20), digits = 0, table.font.size = 3,
+                           ggtheme = theme_pubr(), ...) {
   if (missing(ggtheme) & !is.null(facet.by)) {
     ggtheme <- theme_pubr(border = TRUE)
   }
@@ -201,7 +203,8 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
                                 ggfunc = ggboxplot,
                                 color = "black", fill = "white", palette = NULL,
                                 ggtheme = theme_pubr(), heights = c(0.80, 0.20),
-                                facet.by = NULL, free.panels = FALSE, labeller = "label_value",  ...) {
+                                facet.by = NULL, free.panels = FALSE, labeller = "label_value",
+                                digits = 0, table.font.size = 3,...) {
   groups <- c(x, color, fill, facet.by) %>%
     unique() %>%
     intersect(colnames(data))
@@ -224,7 +227,8 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
     x = x, y = summaries,
     color = color, palette = palette, legend = "none",
     ggtheme = ggtheme,
-    facet.by = table.facet.by, labeller = labeller
+    facet.by = table.facet.by, labeller = labeller,
+    digits = digits, size = table.font.size
   ) +
     clean_table_theme()
 

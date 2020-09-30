@@ -35,6 +35,8 @@ ggsummarystats(
   free.panels = FALSE,
   labeller = "label_value",
   heights = c(0.8, 0.2),
+  digits = 0,
+  table.font.size = 3,
   ggtheme = theme_pubr(),
   ...
 )
@@ -99,6 +101,8 @@ argument \code{facet.by} is specified.}
 
 \item{heights}{a numeric vector of length 2, specifying the heights of the
 main and the summary table, respectively.}
+
+\item{table.font.size}{the summary table font size.}
 
 \item{legend}{character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use
