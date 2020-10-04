@@ -1,4 +1,4 @@
-#' @include utilities.R
+#' @include utilities.R utils_stat_test_label.R
 NULL
 
 #'Add Pairwise Comparisons P-values to a GGPlot
@@ -25,8 +25,7 @@ NULL
 #'  group is the reference, and so on. This works for all situations, including
 #'  i) when comparisons are performed between x-axis groups and ii) when
 #'  comparisons are performed between legend groups. \item \strong{character
-#'  value}: this is supported only when comparison is performed between x-axis
-#'  groups. For example, you can use \code{ref.group = "ctrl"} instead of using
+#'  value}: For example, you can use \code{ref.group = "ctrl"} instead of using
 #'  the numeric rank value of the "ctrl" group. \item \strong{"all"}: In this
 #'  case, each of the grouping variable levels is compared to all (i.e.
 #'  basemean). }
@@ -142,6 +141,11 @@ stat_pwc <- function(mapping = NULL, data = NULL,
     }
   }
 
+  # Keep legend variable in memory, we'll be useful to guess ref.group id
+  # related question: https://stackoverflow.com/questions/63640543/how-to-access-to-a-legend-group-id-inside-a-ggplot2-extension
+  legend.var <- aes_get_group(mapping)
+  if(!is.null(legend.var)) mapping$legend.var <- as.name(legend.var)
+
   ggplot2::layer(
     stat = StatPwc, data = data, mapping = mapping, geom = "pwc",
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -203,7 +207,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 
                               # Comparison against reference group
                               ref.group.id <- get_ref_group_id(
-                                scales = scales, ref.group = ref.group,
+                                scales = scales, data = df, ref.group = ref.group,
                                 is.comparisons.between.legend.grps = is.comparisons.between.legend.grps
                                 )
                               if(!is.null(ref.group)) {
@@ -385,6 +389,11 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
     }
   }
 
+  # Keep legend variable in memory, we'll be useful to guess ref.group id
+  # related question: https://stackoverflow.com/questions/63640543/how-to-access-to-a-legend-group-id-inside-a-ggplot2-extension
+  legend.var <- aes_get_group(mapping)
+  if(!is.null(legend.var)) mapping$legend.var <- as.name(legend.var)
+
   ggplot2::layer(
     stat = stat, geom = GeomPwc, mapping = mapping,  data = data,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -412,7 +421,8 @@ GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
                             required_aes = c("x", "xend", "y", "yend", "label"),
                             default_aes = ggplot2::aes(
                               shape = 19, colour = "black", label.size = 3.88, angle = NA, hjust = 0.5,
-                              vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3
+                              vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3,
+                              legend.var = NA
                             ),
                             # draw_key = function(...){grid::nullGrob()},
                             # for legend:
@@ -505,6 +515,7 @@ get_pwc_label_coords <- function(coords, coord.flip = FALSE){
     )
 }
 
+# Statistical tests --------------------------------------------------
 # Get the pairwise comparison stat function
 # returns a list(method, method.args)
 get_pwc_stat_function <- function(method, method.args){
@@ -554,28 +565,56 @@ get_pwc_stat_function <- function(method, method.args){
   )
 }
 
-# Get ref group rank id for comparison against reference
-get_ref_group_id <- function(scales, ref.group = NULL, is.comparisons.between.legend.grps = FALSE){
-  if(!is.null(ref.group)) {
-    if(!(ref.group %in% c(".all.", "all"))){
-      # Grouped plots
-      if(is.comparisons.between.legend.grps){
-        if(is.character(ref.group)){
-          stop(
-            "ref.group should be a numeric value indicating the rank of the ",
-            "legend group to be used as the reference. \n",
-            "For example, use ref.group = 1 when the first group is the reference; \n",
-            "use ref.group = 2 when the second group is the reference and so on.",
-            call. = FALSE
-          )
-        }
+# Get ref group rank id for comparison against reference -------------------------------------
+# param scales: ggproto scales
+# param data: ggproto data
+# param ref.group: group name
+# Returns 1 (for the first group), 2 for the second group
+get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.between.legend.grps = FALSE){
+  if(is.null(ref.group)) return(NULL)
+  else if(ref.group %in% c(".all.", "all")) return(ref.group)
+  # Grouped plots
+  if(is.comparisons.between.legend.grps){
+    if(is.character(ref.group)){
+      if("legend.var" %in% colnames(data)){
+        ref.group <- get_group_id(data$legend.var, ref.group)
+        if(is.na(ref.group)) stop("The ref.group ('", ref.group, "') doesn't exist.", call. = FALSE)
       }
-      # Basic plot: comparison between x-axis groups
-      else if(is.character(ref.group)){
-        ref.group <- scales$x$map(ref.group) %>% as.character()
+      else{
+        stop(
+          "ref.group should be a numeric value indicating the rank of the ",
+          "legend group to be used as the reference. \n",
+          "For example, use ref.group = 1 when the first group is the reference; \n",
+          "use ref.group = 2 when the second group is the reference and so on.",
+          call. = FALSE
+        )
       }
     }
   }
+  # Basic plot: comparison between x-axis groups
+  else if(is.character(ref.group)){
+    ref.group <- scales$x$map(ref.group) %>% as.character()
+  }
   as.character(ref.group)
 }
+
+
+
+# Extract group name from mapping, aes
+aes_get_group <- function(mapping){
+  group <- NULL
+  if(!is.null(mapping)){
+    if(!is.null(mapping$group)) group <- rlang::as_label(mapping$group)
+  }
+  group
+}
+
+# x a factor
+# group a level
+get_group_id <- function(x, group){
+  ids <- x %>% as.factor() %>% as.numeric()
+  names(ids) <- x
+  unname(ids[group]) %>% unique()
+}
+
 

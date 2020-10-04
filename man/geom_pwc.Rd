@@ -117,8 +117,7 @@ for wilcoxon test.}
  group is the reference, and so on. This works for all situations, including
  i) when comparisons are performed between x-axis groups and ii) when
  comparisons are performed between legend groups. \item \strong{character
- value}: this is supported only when comparison is performed between x-axis
- groups. For example, you can use \code{ref.group = "ctrl"} instead of using
+ value}: For example, you can use \code{ref.group = "ctrl"} instead of using
  the numeric rank value of the "ctrl" group. \item \strong{"all"}: In this
  case, each of the grouping variable levels is compared to all (i.e.
  basemean). }}
