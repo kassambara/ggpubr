@@ -82,6 +82,44 @@ test_that("add_stat_label works with plotmath: Escaping stars in p.signif/p.adj.
 })
 
 
+test_that("add_stat_label works with ANOVA stats label formats", {
+  res.aov <- data.frame(
+    stringsAsFactors = FALSE,
+    check.names = FALSE,
+    Effect = c("x"),
+    DFn = c(2),
+    DFd = c(57),
+    F = c(29.543),
+    p = c(1.57e-09),
+    `p<.05` = c("*"),
+    ges = c(0.509),
+    p.adj = c(1.57e-09),
+    p.signif = c("****"),
+    p.adj.signif = c("****"),
+    p.format = c("<0.0001"),
+    p.adj.format = c("<0.0001"),
+    n = c(60L),
+    method = c("Anova")
+  )
+  res.italic <- add_stat_label(res.aov, label = get_anova_test_label_template("as_italic"))
+  res.detailed <- add_stat_label(res.aov, label = get_anova_test_label_template("as_detailed"))
+  res.detailed.italic <- add_stat_label(res.aov, label = get_anova_test_label_template("as_detailed_italic"))
+  res.detailed.expression <- add_stat_label(res.aov, label = get_anova_test_label_template("as_detailed_expression"))
+  res.plotmath <- add_stat_label(res.aov, label = "bold(Anova), italic(F)({DFn}, {DFd}) = {F}, eta2[g] = {ges}, italic(p) = {p.format}{p.signif}, italic(n) = {n}")
+  res.rounding <- add_stat_label(res.aov, label = "Anova, italic(F)({DFn}, {DFd}) = {round(F, 1)}, eta2[g] = {round(ges, 1)}, italic(p) = {p.format}{p.signif}, italic(n) = {n}")
+  # Custom p format
+  custom_p_format <- function(p) {rstatix::p_format(p, accuracy = 0.0001, digits = 3, leading.zero = FALSE)}
+  res.customp <- add_stat_label(res.aov, label = "Anova, italic(p) = {custom_p_format(p)}{p.signif}")
+
+  expect_equal(res.italic$label, "list(Anova,~italic(p)~`<`~0.0001)")
+  expect_equal(res.detailed$label, "Anova, F(2, 57) = 29.543, eta2[g] = 0.509, p < 0.0001, n = 60")
+  expect_equal(res.detailed.italic$label, "list(Anova,~italic(F)(2,~57)~`=`~29.543,~eta[g]^2~`=`~0.509,~italic(p)~`<`~0.0001,~italic(n)~`=`~60)")
+  expect_equal(res.detailed.expression$label,"list(Anova,~italic(F)(2,~57)~`=`~29.543,~eta[g]^2~`=`~0.509,~italic(p)~`<`~0.0001,~italic(n)~`=`~60)")
+  expect_equal(res.plotmath$label, "list(bold(Anova),~italic(F)(2,~57)~`=`~29.543,~eta[g]^2~`=`~0.509,~italic(p)~`<`~0.0001*`****`,~italic(n)~`=`~60)")
+  expect_equal(res.rounding$label, "list(Anova,~italic(F)(2,~57)~`=`~29.5,~eta[g]^2~`=`~0.5,~italic(p)~`<`~0.0001*`****`,~italic(n)~`=`~60)")
+  expect_equal(res.customp$label, "list(Anova,~italic(p)~`<`~.0001*`****`)")
+})
+
 
 
 

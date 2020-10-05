@@ -63,20 +63,6 @@ escape_psignif_asteriks <- function(label){
 }
 
 
-fortify_label <- function(label){
-  if(is_plotmath_expression(label)){
-    if(!starts_with_list(label)) label <- paste0("list(", label, ")")
-    #label <- gsub(pattern = "=", replacement = "`=`", label)
-   # label <- gsub(pattern = "\\s", replacement = "~", label)
-    if(!contains_twoequal_signs(label)){
-      label <- gsub(pattern = "\\s+=\\s+", replacement = "~`=`~", label)
-      label <- gsub(pattern = "~=~", replacement = "~`=`~", label)
-    }
-    if(contains_p_signif(label)) label <- escape_psignif_asteriks(label)
-  }
-  label
-}
-
 
 # Get statistical test label to be displayed -------------------
 # stat.test: statistical test output

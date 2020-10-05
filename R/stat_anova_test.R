@@ -120,7 +120,7 @@ stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within 
       between = between, within = within,
       type = type, effect.size = effect.size, error = error,
       correction = correction,
-      na.rm = na.rm, stat.label = fortify_label(label),
+      na.rm = na.rm, stat.label = label,
       label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),
