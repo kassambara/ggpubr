@@ -199,7 +199,7 @@ independently. P-values are adjusted by panel when \code{p.adjust.by =
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }}
 
-\item{hide.ns}{can be logical value or a character vector.}
+\item{hide.ns}{can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).}
 
 \item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
 plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when

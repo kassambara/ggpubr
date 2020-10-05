@@ -92,7 +92,7 @@ NULL
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
-#'@param hide.ns can be logical value or a character vector.
+#'@param hide.ns can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
 #'  displaying significance levels. Filter is done by checking the column
@@ -210,7 +210,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 scales = scales, data = df, ref.group = ref.group,
                                 is.comparisons.between.legend.grps = is.comparisons.between.legend.grps
                                 )
-                              if(!is.null(ref.group)) {
+                              if(!is.null(ref.group.id)) {
                                 method.args <- method.args %>% .add_item(ref.group = ref.group.id)
                               }
 
@@ -273,14 +273,9 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 }
                               }
 
-                              # Hide NS
-                              if(is.logical(hide.ns)){
-                                if(hide.ns) stat.test <- remove_ns(stat.test)
-                              }
-                              else if (is.character(hide.ns)){
-                                if(hide.ns == "p") stat.test <- stat.test %>% filter(.data$p <= 0.05)
-                                else if(hide.ns == "p.adj") stat.test <- stat.test %>% filter(.data$p.adj <= 0.05)
-                              }
+                              # Hide NS if hide.ns not null
+                              stat.test <- rstatix::remove_ns(stat.test, col = hide.ns)
+
 
                               # Grouped bracket colors
                               # When data is grouped by legend variable and
@@ -616,5 +611,3 @@ get_group_id <- function(x, group){
   names(ids) <- x
   unname(ids[group]) %>% unique()
 }
-
-
