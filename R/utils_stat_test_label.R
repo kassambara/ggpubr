@@ -41,10 +41,10 @@ is_plotmath_expression <- function(label){
 # if label is plotmath expression, then
 # fortify it in case users miss something
 contains_p_signif <- function(label){
-  grepl("p*\\.signif", label)
+  any(grepl("p*\\.signif", label))
 }
 contains_twoequal_signs <- function(label){
-  grepl("==", label)
+  any(grepl("==", label))
 }
 replace_simple_by_double_equals <- function(label){
   if(!contains_twoequal_signs(label)){
@@ -93,6 +93,7 @@ add_stat_label <- function (stat.test,  label = NULL){
   }
   label <- gsub(pattern = "=+(\\s+)?<", replacement = "<\\1", stat.test$label )
   if(is_plotmath){
+    label <- replace_simple_by_double_equals(label)
     label <- gsub(pattern = "\\s", replacement = "~", label)
     label <- gsub(pattern = "~==~", replacement = "~`=`~", label )
     label <- gsub(pattern = "~<~", replacement = "~`<`~", label )
@@ -117,7 +118,6 @@ fortify_plotmath <- function(label){
   }
   label <- gsub(pattern = "eta2[g]", replacement = "eta[g]^2", x = label, fixed = TRUE)
   label <- gsub(pattern = "eta2[p]", replacement = "eta[p]^2", x = label, fixed = TRUE)
-  label <- replace_simple_by_double_equals(label)
   label
 }
 
