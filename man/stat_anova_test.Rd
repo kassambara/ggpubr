@@ -20,7 +20,7 @@ stat_anova_test(
   label.y = NULL,
   step.increase = 0.1,
   p.adjust.method = "holm",
-  symnum.args = list(),
+  significance = list(),
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -130,9 +130,8 @@ variables. Allowed values include "holm", "hochberg",
 "hommel", "bonferroni", "BH", "BY", "fdr", "none". If you don't want to
 adjust the p value (not recommended), use p.adjust.method = "none".}
 
-\item{symnum.args}{a list of arguments to pass to the function
- \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
- example, \code{symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
+\item{significance}{a list of arguments specifying the signifcance cutpoints and symbols. For
+ example, \code{significance <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
  0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
 
  In other words, we use the following convention for symbols indicating
@@ -172,3 +171,19 @@ text up or down. }}
 Add one-way and two-way ANOVA test p-values to a ggplot, such as
  box blots, dot plots and stripcharts.
 }
+\section{Computed variables}{
+ \itemize{ \item{DFn}: Degrees of Freedom in the numerator (i.e. DF effect).
+ \item{DFd}:	Degrees of Freedom in the denominator (i.e., DF error).
+ \item{ges}:	Generalized Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "ges"}.
+ \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "pes"}.
+ \item{F}:	F-value.
+ \item{p}:	p-value.
+ \item{p.adj}: Adjusted p-values.
+ \item{p.signif}: P-value significance.
+ \item{p.adj.signif}: Adjusted p-value significance.
+ \item{p.format}: Formated p-value.
+ \item{p.adj.format}: Formated adjusted p-value.
+ \item{n}: number of samples.
+  }
+}
+

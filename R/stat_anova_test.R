@@ -46,9 +46,8 @@ NULL
 #'  variables. Allowed values include "holm", "hochberg",
 #'  "hommel", "bonferroni", "BH", "BY", "fdr", "none". If you don't want to
 #'  adjust the p value (not recommended), use p.adjust.method = "none".
-#'@param symnum.args a list of arguments to pass to the function
-#'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
-#'  example, \code{symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
+#'@param significance a list of arguments specifying the signifcance cutpoints and symbols. For
+#'  example, \code{significance <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
 #'  0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
 #'
 #'  In other words, we use the following convention for symbols indicating
@@ -92,6 +91,20 @@ NULL
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #'
+#'@section Computed variables: \itemize{ \item{DFn}: Degrees of Freedom in the numerator (i.e. DF effect).
+#'  \item{DFd}:	Degrees of Freedom in the denominator (i.e., DF error).
+#'  \item{ges}:	Generalized Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "ges"}.
+#'  \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "pes"}.
+#'  \item{F}:	F-value.
+#'  \item{p}:	p-value.
+#'  \item{p.adj}: Adjusted p-values.
+#'  \item{p.signif}: P-value significance.
+#'  \item{p.adj.signif}: Adjusted p-value significance.
+#'  \item{p.format}: Formated p-value.
+#'  \item{p.adj.format}: Formated adjusted p-value.
+#'  \item{n}: number of samples.
+#'   }
+#'
 #'@export
 stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within = NULL,
                             type = NULL, effect.size = "ges", error = NULL,
@@ -99,7 +112,7 @@ stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within 
                             label = "{method}, p = {p.format}",
                             label.x.npc = "left", label.y.npc = "top",
                             label.x = NULL, label.y = NULL, step.increase = 0.1,
-                            p.adjust.method = "holm", symnum.args = list(),
+                            p.adjust.method = "holm", significance = list(),
                             geom = "text", position = "identity",  na.rm = FALSE, show.legend = FALSE,
                             inherit.aes = TRUE, parse = FALSE,  ...) {
 
@@ -125,7 +138,7 @@ stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within 
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),
       step.increase = step.increase, p.adjust.method = p.adjust.method,
-      symnum.args = fortify_signif_symbols_encoding(symnum.args), ...
+      significance = fortify_signif_symbols_encoding(significance), ...
     )
   )
 }
@@ -149,7 +162,7 @@ StatAnovaTest <- ggproto("StatAnovaTest", Stat,
                          compute_panel = function(data, scales, between, within, type, effect.size,error,
                                                   correction, p.adjust.method,
                                                   stat.label, label.x.npc, label.y.npc, label.x, label.y,
-                                                  symnum.args, is.group.specified, step.increase){
+                                                  significance, is.group.specified, step.increase){
                            p <- p.adj <- x <- NULL
                            if(length(within) == 1 & is.null(between)){
                              # One-way repeated measures ANOVA
@@ -208,7 +221,7 @@ StatAnovaTest <- ggproto("StatAnovaTest", Stat,
                              }
                            }
 
-                           sy <- symnum.args
+                           sy <- significance
                            stat.test <- stat.test %>%
                              rstatix::adjust_pvalue(method = p.adjust.method) %>%
                              rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
