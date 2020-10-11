@@ -4,7 +4,6 @@ context("test-geom_pwc")
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
 df$group <- factor(rep(c("grp1", "grp2"), 30))
-head(df, 3)
 
 
 # Basic plots -----------------------------------
