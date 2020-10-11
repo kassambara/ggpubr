@@ -39,15 +39,15 @@ test_that("add_stat_label works with plotmath: Usage of simple equal '='", {
   simple_equals_tilde <- add_stat_label(stat.test, label = "italic(p)~=~{p.format}{p.signif}")
   expect_equal(
     simple_equals$label,
-    c("list(italic(p)<0.0001*`****`)", "list(italic(p)<0.0001*`****`)", "list(italic(p)==0.00018*`***`)")
+    c("list(italic(p)<'0.0001'*`****`)", "list(italic(p)<'0.0001'*`****`)", "list(italic(p)=='0.00018'*`***`)")
     )
   expect_equal(
     simple_equals_space$label,
-    c("list(italic(p)~`<`~0.0001*`****`)", "list(italic(p)~`<`~0.0001*`****`)", "list(italic(p)~`=`~0.00018*`***`)")
+    c("list(italic(p)~`<`~'0.0001'*`****`)", "list(italic(p)~`<`~'0.0001'*`****`)", "list(italic(p)~`=`~'0.00018'*`***`)")
   )
   expect_equal(
     simple_equals_tilde$label,
-    c("list(italic(p)~`<`~0.0001*`****`)", "list(italic(p)~`<`~0.0001*`****`)", "list(italic(p)~`=`~0.00018*`***`)")
+    c("list(italic(p)~`<`~'0.0001'*`****`)", "list(italic(p)~`<`~'0.0001'*`****`)", "list(italic(p)~`=`~'0.00018'*`***`)")
   )
 })
 
@@ -61,15 +61,15 @@ test_that("add_stat_label works with plotmath: Escaping stars in p.signif/p.adj.
   stars_equals_space <- add_stat_label(stat.test, label = "italic(p) = {p.signif}")
   expect_equal(
     stars$label,
-    c("list(italic(p)<0.0001*`****`)", "list(italic(p)<0.0001*`****`)", "list(italic(p)==0.00018*`***`)")
+    c("list(italic(p)<'0.0001'*`****`)", "list(italic(p)<'0.0001'*`****`)", "list(italic(p)=='0.00018'*`***`)")
   )
   expect_equal(
     stars_space$label,
-    c("list(italic(p)<0.0001~`****`)", "list(italic(p)<0.0001~`****`)", "list(italic(p)==0.00018~`***`)")
+    c("list(italic(p)<'0.0001'~`****`)", "list(italic(p)<'0.0001'~`****`)", "list(italic(p)=='0.00018'~`***`)")
   )
   expect_equal(
     stars_tilde$label,
-    c("list(italic(p)<0.0001~`****`)", "list(italic(p)<0.0001~`****`)", "list(italic(p)==0.00018~`***`)")
+    c("list(italic(p)<'0.0001'~`****`)", "list(italic(p)<'0.0001'~`****`)", "list(italic(p)=='0.00018'~`***`)")
   )
   expect_equal(
     stars_equals$label,
@@ -111,13 +111,13 @@ test_that("add_stat_label works with ANOVA stats label formats", {
   custom_p_format <- function(p) {rstatix::p_format(p, accuracy = 0.0001, digits = 3, leading.zero = FALSE)}
   res.customp <- add_stat_label(res.aov, label = "Anova, italic(p) = {custom_p_format(p)}{p.signif}")
 
-  expect_equal(res.italic$label, "list(Anova,~italic(p)~`<`~0.0001)")
+  expect_equal(res.italic$label, "list(Anova,~italic(p)~`<`~'0.0001')")
   expect_equal(res.detailed$label, "Anova, F(2, 57) = 29.543, eta2[g] = 0.509, p < 0.0001, n = 60")
-  expect_equal(res.detailed.italic$label, "list(Anova,~italic(F)(2,~57)~`=`~29.543,~eta[g]^2~`=`~0.509,~italic(p)~`<`~0.0001,~italic(n)~`=`~60)")
-  expect_equal(res.detailed.expression$label,"list(Anova,~italic(F)(2,~57)~`=`~29.543,~eta[g]^2~`=`~0.509,~italic(p)~`<`~0.0001,~italic(n)~`=`~60)")
-  expect_equal(res.plotmath$label, "list(bold(Anova),~italic(F)(2,~57)~`=`~29.543,~eta[g]^2~`=`~0.509,~italic(p)~`<`~0.0001*`****`,~italic(n)~`=`~60)")
-  expect_equal(res.rounding$label, "list(Anova,~italic(F)(2,~57)~`=`~29.5,~eta[g]^2~`=`~0.5,~italic(p)~`<`~0.0001*`****`,~italic(n)~`=`~60)")
-  expect_equal(res.customp$label, "list(Anova,~italic(p)~`<`~.0001*`****`)")
+  expect_equal(res.detailed.italic$label, "list(Anova,~italic(F)('2',~'57')~`=`~'29.543',~eta[g]^'2'~`=`~'0.509',~italic(p)~`<`~'0.0001',~italic(n)~`=`~'60')")
+  expect_equal(res.detailed.expression$label,"list(Anova,~italic(F)('2',~'57')~`=`~'29.543',~eta[g]^'2'~`=`~'0.509',~italic(p)~`<`~'0.0001',~italic(n)~`=`~'60')")
+  expect_equal(res.plotmath$label, "list(bold(Anova),~italic(F)('2',~'57')~`=`~'29.543',~eta[g]^'2'~`=`~'0.509',~italic(p)~`<`~'0.0001'*`****`,~italic(n)~`=`~'60')")
+  expect_equal(res.rounding$label, "list(Anova,~italic(F)('2',~'57')~`=`~'29.5',~eta[g]^'2'~`=`~'0.5',~italic(p)~`<`~'0.0001'*`****`,~italic(n)~`=`~'60')")
+  expect_equal(res.customp$label, "list(Anova,~italic(p)~`<`~'.0001'*`****`)")
 })
 
 

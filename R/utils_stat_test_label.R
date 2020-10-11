@@ -97,6 +97,9 @@ add_stat_label <- function (stat.test,  label = NULL){
     label <- gsub(pattern = "\\s", replacement = "~", label)
     label <- gsub(pattern = "~==~", replacement = "~`=`~", label )
     label <- gsub(pattern = "~<~", replacement = "~`<`~", label )
+    # Make sure that decimal values will be displayed asis in character when parsed by ggplot
+    # Add quote around numeric values
+    label <- gsub("([0-9.-]+)", "'\\1'", label)
   }
   stat.test$label <- label
   stat.test
