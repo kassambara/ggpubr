@@ -108,8 +108,7 @@ test_that("add_stat_label works with ANOVA stats label formats", {
   res.plotmath <- add_stat_label(res.aov, label = "bold(Anova), italic(F)({DFn}, {DFd}) = {F}, eta2[g] = {ges}, italic(p) = {p.format}{p.signif}, italic(n) = {n}")
   res.rounding <- add_stat_label(res.aov, label = "Anova, italic(F)({DFn}, {DFd}) = {round(F, 1)}, eta2[g] = {round(ges, 1)}, italic(p) = {p.format}{p.signif}, italic(n) = {n}")
   # Custom p format
-  custom_p_format <- function(p) {rstatix::p_format(p, accuracy = 0.0001, digits = 3, leading.zero = FALSE)}
-  res.customp <- add_stat_label(res.aov, label = "Anova, italic(p) = {custom_p_format(p)}{p.signif}")
+  res.customp <- add_stat_label(res.aov, label = "Anova, italic(p) = {rstatix::p_format(p,  accuracy = 0.0001, digits = 3, leading.zero = FALSE)}{p.signif}")
 
   expect_equal(res.italic$label, "list(Anova,~italic(p)~`<`~'0.0001')")
   expect_equal(res.detailed$label, "Anova, F(2, 57) = 29.543, eta2[g] = 0.509, p < 0.0001, n = 60")
