@@ -56,14 +56,14 @@ for \strong{independent measures test}. Possible values include: \itemize{
 \item \code{"x"}: default for comparing the x-axis variable groups. \item
 \code{"group"}: for grouped plots. Can be used to compare legend variable
 groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-Can be used to compute the significance of a two-way interaction model. }}
+Can be used to compute the significance of a two-way interaction ANOVA model. }}
 
 \item{within}{(optional) within-subject factor variables. Can be specified for
 \strong{repeated-measures test}. Possible values include: \itemize{ \item
 \code{"x"}: default for comparing the x-axis variable groups. \item
 \code{"group"}: for grouped plots. Can be used to compare legend variable
 groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-Can be used to compute the significance of a two-way interaction model. }}
+Can be used to compute the significance of a two-way interaction ANOVA model. }}
 
 \item{type}{the type of sums of squares for ANOVA. Allowed values are either
 1, 2 or 3. \code{type = 2} is the default because this will yield identical

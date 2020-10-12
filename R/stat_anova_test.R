@@ -10,13 +10,13 @@ NULL
 #'  \item \code{"x"}: default for comparing the x-axis variable groups. \item
 #'  \code{"group"}: for grouped plots. Can be used to compare legend variable
 #'  groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-#'  Can be used to compute the significance of a two-way interaction model. }
+#'  Can be used to compute the significance of a two-way interaction ANOVA model. }
 #'@param within (optional) within-subject factor variables. Can be specified for
 #'  \strong{repeated-measures test}. Possible values include: \itemize{ \item
 #'  \code{"x"}: default for comparing the x-axis variable groups. \item
 #'  \code{"group"}: for grouped plots. Can be used to compare legend variable
 #'  groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-#'  Can be used to compute the significance of a two-way interaction model. }
+#'  Can be used to compute the significance of a two-way interaction ANOVA model. }
 #'@param type the type of sums of squares for ANOVA. Allowed values are either
 #'  1, 2 or 3. \code{type = 2} is the default because this will yield identical
 #'  ANOVA results as type = 1 when data are balanced but type = 2 will
@@ -293,6 +293,22 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                              stat.test <- rstatix::kruskal_test(df, .formula)
                              stat.test$statistic <- round(stat.test$statistic, 2)
                            }
+                           else if(method == "welch_anova_test"){
+                             .formula <- paste0("y ~", between) %>% as.formula()
+                             method.name <- "Welch Anova"
+                             stat.test <- rstatix::welch_anova_test(df, .formula)
+                             stat.test$statistic <- round(stat.test$statistic, 2)
+                           }
+                           else if(method == "friedman_test"){
+                             if(is.null(within)) stop("The argument 'within' is required.")
+                             if(is.null(wid)) stop("The argument 'wid' is required.")
+                             .formula <- paste0("y ~", within, " | ", wid) %>% as.formula()
+                             method.name <- "Friedman test"
+                             stat.test <- rstatix::friedman_test(df, .formula)
+                             stat.test$statistic <- round(stat.test$statistic, 2)
+                           }
+                           else stop("Don't support the method: ", method, call. = FALSE)
+
                            # Prepare the output for visualization
                            if(is_two_way){
                              stat.test <- get_interaction_row(stat.test)
