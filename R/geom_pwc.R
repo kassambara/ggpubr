@@ -1,4 +1,4 @@
-#' @include utilities.R utils_stat_test_label.R
+#' @include utilities.R utils_stat_test_label.R utils-aes.R
 NULL
 
 #'Add Pairwise Comparisons P-values to a GGPlot
@@ -593,16 +593,6 @@ get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.betw
   as.character(ref.group)
 }
 
-
-
-# Extract group name from mapping, aes
-aes_get_group <- function(mapping){
-  group <- NULL
-  if(!is.null(mapping)){
-    if(!is.null(mapping$group)) group <- rlang::as_label(mapping$group)
-  }
-  group
-}
 
 # x a factor
 # group a level
