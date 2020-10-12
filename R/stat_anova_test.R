@@ -127,11 +127,12 @@ stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within 
   correction <-  match.arg(correction)
 
   layer(
-    stat = StatAnovaTest, data = data, mapping = mapping, geom = geom,
+    stat = StatCompareMultipleMeans, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
+      method = "anova_test",
+      method.args = list(type = type, effect.size = effect.size, error = error),
       between = between, within = within,
-      type = type, effect.size = effect.size, error = error,
       correction = correction,
       na.rm = na.rm, stat.label = label,
       label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
@@ -143,23 +144,23 @@ stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within 
   )
 }
 
-StatAnovaTest <- ggproto("StatAnovaTest", Stat,
+
+StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                          required_aes = c("x", "y"),
                          default_aes = aes(wid = NULL),
 
                          setup_params = function(data, params){
                            if(!is.null(params$within) & is.null(data$wid)){
-                            stop(
-                              "The variable `wid` (sample id) is required when the argument `within` is specified (repeated measures).\n",
-                              "Specify it using aes(wid = id_col_name), where id_col_name is the column containing ids.",
-                              call. = FALSE
-                            )
+                             stop(
+                               "The variable `wid` (sample id) is required when the argument `within` is specified (repeated measures).\n",
+                               "Specify it using aes(wid = id_col_name), where id_col_name is the column containing ids.",
+                               call. = FALSE
+                             )
                            }
                            return(params)
                          },
 
-
-                         compute_panel = function(data, scales, between, within, type, effect.size,error,
+                         compute_panel = function(data, scales, method, method.args, between, within,
                                                   correction, p.adjust.method,
                                                   stat.label, label.x.npc, label.y.npc, label.x, label.y,
                                                   significance, is.group.specified, step.increase){
@@ -191,12 +192,19 @@ StatAnovaTest <- ggproto("StatAnovaTest", Stat,
                              df <- df %>% rstatix::df_group_by(vars = group)
                            }
 
-                           stat.test <- suppressMessages(rstatix::anova_test(
-                             df, dv = "y", between = between,
-                             within = within, wid = wid, type = type,
-                             effect.size = effect.size, error = error
-                           )) %>%
-                             rstatix::get_anova_table(correction = correction)
+                           if(method == "anova_test"){
+                             method.args <- method.args %>%
+                               .add_item(data = df, dv = "y", between = between, within = within, wid = wid)
+                             stat.test <- do.call(rstatix::anova_test, method.args) %>%
+                               rstatix::get_anova_table(correction = correction)
+                             method.name <- "Anova"
+                           }
+                           else if(method == "kruskal_test"){
+                             .formula <- paste0("y ~", between) %>% as.formula()
+                             method.name <- "Kruskal-Wallis"
+                             stat.test <- rstatix::kruskal_test(data, .formula)
+                             stat.test$statistic <- round(stat.test$statistic, 2)
+                           }
 
                            # Prepare the output for visualization
                            if(is_two_way){
@@ -229,8 +237,9 @@ StatAnovaTest <- ggproto("StatAnovaTest", Stat,
                              rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4) %>%
                              add_stat_n() %>%
                              keep_only_tbl_df_classes() %>%
-                             tibble::add_column(method = "Anova") %>%
+                             mutate(method = method.name) %>%
                              add_stat_label(label = stat.label)
+
 
                            stat.test$x <- get_coord(
                              data.ranges = scales$x$dimension(),
@@ -249,6 +258,7 @@ StatAnovaTest <- ggproto("StatAnovaTest", Stat,
                            stat.test
                          }
 )
+
 
 # Returns arguments for the tests
 # data: layer data

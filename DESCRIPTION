@@ -120,6 +120,7 @@ Collate:
     'stat_anova_test.R'
     'stat_central_tendency.R'
     'stat_compare_means.R'
+    'stat_kruskal_test.R'
     'stat_mean.R'
     'stat_overlay_normal_density.R'
     'stat_pvalue_manual.R'

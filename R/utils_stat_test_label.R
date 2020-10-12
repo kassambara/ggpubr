@@ -100,6 +100,8 @@ add_stat_label <- function (stat.test,  label = NULL){
     # Make sure that decimal values will be displayed asis in character when parsed by ggplot
     # Add quote around numeric values
     label <- gsub("([0-9.-]+)", "'\\1'", label)
+    # Escape minus in text
+    label <- gsub("Kruskal'-'Wallis", "'Kruskal-Wallis'", label)
   }
   stat.test$label <- label
   stat.test
