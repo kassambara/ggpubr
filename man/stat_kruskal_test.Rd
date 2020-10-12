@@ -51,7 +51,7 @@ for \strong{independent measures test}. Possible values include: \itemize{
 \item \code{"x"}: default for comparing the x-axis variable groups. \item
 \code{"group"}: for grouped plots. Can be used to compare legend variable
 groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-Can be used to compute the significance of a two-way interaction model. }}
+Can be used to compute the significance of a two-way interaction ANOVA model. }}
 
 \item{label}{the column containing the label (e.g.: label = "p" or label =
 "p.adj"), where \code{p} is the p-value. Can be also an expression that can
@@ -133,7 +133,7 @@ Add Kruskal-Wallis test p-values to a ggplot, such as
 }
 \section{Computed variables}{
  \itemize{
- \item{statistic}:	the kruskal-wallis rank sum statistic used to compute the p-value.
+ \item{statistic}:	the Kruskal-Wallis rank sum chi-squared statistic used to compute the p-value.
  \item{p}:	p-value.
  \item{p.adj}: Adjusted p-values.
  \item{p.signif}: P-value significance.

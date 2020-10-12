@@ -8,7 +8,7 @@ NULL
 #'@inheritParams stat_anova_test
 #'
 #'@section Computed variables: \itemize{
-#'  \item{statistic}:	the kruskal-wallis rank sum statistic used to compute the p-value.
+#'  \item{statistic}:	the Kruskal-Wallis rank sum chi-squared statistic used to compute the p-value.
 #'  \item{p}:	p-value.
 #'  \item{p.adj}: Adjusted p-values.
 #'  \item{p.signif}: P-value significance.
