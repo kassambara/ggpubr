@@ -168,7 +168,7 @@ right and \item \code{vjust}: vertical justification of the text. Move the
 text up or down. }}
 }
 \description{
-Add one-way and two-way ANOVA test p-values to a ggplot, such as
+Adds automatically one-way and two-way ANOVA test p-values to a ggplot, such as
  box blots, dot plots and stripcharts.
 }
 \section{Computed variables}{
@@ -187,3 +187,92 @@ Add one-way and two-way ANOVA test p-values to a ggplot, such as
   }
 }
 
+\examples{
+# Data preparation
+#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# Transform `dose` into factor variable
+df <- ToothGrowth
+df$dose <- as.factor(df$dose)
+# Add individuals id
+df$id <- rep(1:10, 6)
+# Add a random grouping variable
+set.seed(123)
+df$group <- sample(factor(rep(c("grp1", "grp2", "grp3"), 20)))
+df$len <- ifelse(df$group == "grp2", df$len+2, df$len)
+df$len <- ifelse(df$group == "grp3", df$len+7, df$len)
+head(df, 3)
+
+
+# Basic boxplot
+#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# Create a basic boxplot
+# Add 5\% and 10\% space to the plot bottom and the top, respectively
+bxp <- ggboxplot(df, x = "dose", y = "len") +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+
+# Add the p-value to the boxplot
+bxp + stat_anova_test()
+
+# Change the label position
+# Using coordinates in data units
+bxp + stat_anova_test(label.x = "1", label.y = 10, hjust = 0)
+
+# Format the p-value differently
+custom_p_format <- function(p) {
+  rstatix::p_format(p, accuracy = 0.0001, digits = 3, leading.zero = FALSE)
+}
+bxp + stat_anova_test(
+  label = "Anova, italic(p) = {custom_p_format(p)}{p.signif}"
+)
+
+# Show a detailed label in italic
+bxp + stat_anova_test(label = "as_detailed_italic")
+
+
+# Faceted plots
+#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# Create a ggplot facet
+bxp <- ggboxplot(df, x = "dose", y = "len", facet.by = "supp") +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+# Add p-values
+bxp + stat_anova_test()
+
+
+# Grouped plots
+#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+bxp2 <- ggboxplot(df, x = "group", y = "len", color = "dose", palette = "npg")
+
+# For each x-position, computes tests between legend groups
+bxp2 + stat_anova_test(aes(group = dose), label = "p = {p.format}{p.signif}")
+
+#  For each legend group, computes tests between x variable groups
+bxp2 + stat_anova_test(aes(group = dose, color = dose), between = "x")
+
+
+# Two-way ANOVA: Independent measures
+#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# Visualization: box plots with p-values
+# Two-way interaction p-values between x and legend (group) variables
+bxp3 <- ggboxplot(
+  df, x = "supp", y = "len",
+  color = "dose", palette = "jco"
+)
+bxp3 + stat_anova_test(aes(group = dose),  between = c("x", "group"))
+
+
+# One-way repeatead measures ANOVA
+#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
+ggboxplot(df, x = "dose", y = "len") +
+  stat_anova_test(aes(wid = id), within = "x")
+
+# Two-way repeatead measures ANOVA
+#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+df$id <- as.factor(rep(1:10, 6))
+ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
+  stat_anova_test(aes(wid = id, group = supp), within = c("x", "group"))
+
+# Grouped one-way repeated measures ANOVA
+ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
+  stat_anova_test(aes(wid = id, group = supp, color = supp), within = "x")
+}
