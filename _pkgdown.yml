@@ -45,6 +45,11 @@ reference:
       - compare_means
       - stat_compare_means
       - stat_pvalue_manual
+      - stat_anova_test
+      - stat_kruskal_test
+      - stat_welch_anova_test
+      - stat_friedman_test
+      - geom_pwc
       - geom_bracket
   - title: Plot Tables and Paragraphs
     contents:
