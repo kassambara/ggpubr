@@ -21,7 +21,7 @@ NULL
 #'  geom_point()
 #'
 #' @export
-create_aes <- function(.list, parse = FALSE){
+create_aes <- function(.list, parse = TRUE){
   if(parse){
     return(create_aes.parse(.list))
   } else{

@@ -7,6 +7,7 @@
 
 ## Minor changes
 
+- Default of the function `create_aes()` is now to parse its input, which can be an expression (#348).
 - Arguments (`digits` and `table.font.size`) added to `ggsummarystats()` for changing the summary table decimal place and text size (#341).
 - Now, the x-axis tick label names correctly align with the corresponding ticks when the rotation angle of the texts is set to 90. This is automatically achieved by setting internally `vjust = 0.5` (#301).
 
