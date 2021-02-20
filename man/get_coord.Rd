@@ -20,7 +20,7 @@ overlaps.}
 \item{data.ranges}{a numeric vector of length 2 containing the data ranges
 (minimum and the maximum). Should be specified only when \code{coord =
 NULL} and \code{npc} is specified. Used to convert \code{npc} to data
-coordinates.}
+coordinates. Considered only when the argument \code{npc} is specified.}
 
 \item{coord}{data coordinates (i.e., either x or y coordinates).}
 
@@ -28,7 +28,7 @@ coordinates.}
 character, should be one of c('right', 'left', 'bottom', 'top', 'center',
 'centre', 'middle'). Note that, the \code{data.ranges}, \code{step} and
 \code{margin.npc}, arguments are considered only when \code{npc} is
-specified.}
+specified. The option \code{npc} is ignored when the argument \code{coord} is specified.}
 
 \item{step}{numeric value in [0-1]. The step size for shifting coordinates
 in npc units. Considered as horizontal step for x-axis and vertical step
@@ -49,7 +49,7 @@ Checks and returns selected coordinates from multiple input
   of coordinates specified by the user. For example, in the function
   \code{stat_cor()}, users can specify either the option \code{label.x} (data
   coordinates) or \code{label.x.npc} (npc coordinates); those coordinates are
-  passed to \code{get_coord()}, which will make some cheking and then return
+  passed to \code{get_coord()}, which will make some checking and then return
   a unique coordinates for the label position.
 }
 \examples{
@@ -60,6 +60,14 @@ get_coord(data.ranges = c(2, 20), npc = 0.1)
 # When coord is specified, no transformation is performed
 # because this is assumed to be a data coordinate
 get_coord(coord = 5)
+
+# For grouped plots
+res_top <- get_coord(
+  data.ranges = c(4.2, 36.4), group = c(1, 2, 3),
+  npc = "top", step = -0.1, margin.npc = 0
+)
+res_top
+
 }
 \seealso{
 \code{\link{as_npc}}, \code{\link{npc_to_data_coord}}.
