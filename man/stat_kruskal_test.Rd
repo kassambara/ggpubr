@@ -51,7 +51,8 @@ for \strong{independent measures test}. Possible values include: \itemize{
 \item \code{"x"}: default for comparing the x-axis variable groups. \item
 \code{"group"}: for grouped plots. Can be used to compare legend variable
 groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-Can be used to compute the significance of a two-way interaction ANOVA model. }}
+Can be used to compute the significance of a two-way interaction ANOVA
+model. }}
 
 \item{label}{the column containing the label (e.g.: label = "p" or label =
 "p.adj"), where \code{p} is the p-value. Can be also an expression that can
@@ -89,13 +90,14 @@ height for every additional comparison to minimize overlap.}
 \item{p.adjust.method}{method for adjusting p values (see
 \code{\link[stats]{p.adjust}}).  Has impact only in a situation, where
 multiple pairwise tests are performed; or when there are multiple grouping
-variables. Allowed values include "holm", "hochberg",
-"hommel", "bonferroni", "BH", "BY", "fdr", "none". If you don't want to
-adjust the p value (not recommended), use p.adjust.method = "none".}
+variables. Allowed values include "holm", "hochberg", "hommel",
+"bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
+value (not recommended), use p.adjust.method = "none".}
 
-\item{significance}{a list of arguments specifying the signifcance cutpoints and symbols. For
- example, \code{significance <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
- 0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
+\item{significance}{a list of arguments specifying the signifcance cutpoints
+ and symbols. For example, \code{significance <- list(cutpoints = c(0,
+ 0.0001, 0.001, 0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",
+ "ns"))}.
 
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item

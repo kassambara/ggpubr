@@ -1,8 +1,8 @@
 #' @include utilities.R utils_stat_test_label.R
 NULL
 #'Add Anova Test P-values to a GGPlot
-#'@description Adds automatically one-way and two-way ANOVA test p-values to a ggplot, such as
-#'  box blots, dot plots and stripcharts.
+#'@description Adds automatically one-way and two-way ANOVA test p-values to a
+#'  ggplot, such as box blots, dot plots and stripcharts.
 #'@inheritParams ggplot2::layer
 #'@inheritParams stat_pvalue_manual
 #'@param between (optional) between-subject factor variables. Can be specified
@@ -10,13 +10,17 @@ NULL
 #'  \item \code{"x"}: default for comparing the x-axis variable groups. \item
 #'  \code{"group"}: for grouped plots. Can be used to compare legend variable
 #'  groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-#'  Can be used to compute the significance of a two-way interaction ANOVA model. }
+#'  Can be used to compute the significance of a two-way interaction ANOVA
+#'  model. }
+#'@param wid (factor) column name containing individuals/subjects identifier.
+#'  Should be unique per individual. Required only for repeated measure tests.
 #'@param within (optional) within-subject factor variables. Can be specified for
 #'  \strong{repeated-measures test}. Possible values include: \itemize{ \item
 #'  \code{"x"}: default for comparing the x-axis variable groups. \item
 #'  \code{"group"}: for grouped plots. Can be used to compare legend variable
 #'  groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-#'  Can be used to compute the significance of a two-way interaction ANOVA model. }
+#'  Can be used to compute the significance of a two-way interaction ANOVA
+#'  model. }
 #'@param type the type of sums of squares for ANOVA. Allowed values are either
 #'  1, 2 or 3. \code{type = 2} is the default because this will yield identical
 #'  ANOVA results as type = 1 when data are balanced but type = 2 will
@@ -43,12 +47,13 @@ NULL
 #'@param p.adjust.method method for adjusting p values (see
 #'  \code{\link[stats]{p.adjust}}).  Has impact only in a situation, where
 #'  multiple pairwise tests are performed; or when there are multiple grouping
-#'  variables. Allowed values include "holm", "hochberg",
-#'  "hommel", "bonferroni", "BH", "BY", "fdr", "none". If you don't want to
-#'  adjust the p value (not recommended), use p.adjust.method = "none".
-#'@param significance a list of arguments specifying the signifcance cutpoints and symbols. For
-#'  example, \code{significance <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
-#'  0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
+#'  variables. Allowed values include "holm", "hochberg", "hommel",
+#'  "bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
+#'  value (not recommended), use p.adjust.method = "none".
+#'@param significance a list of arguments specifying the signifcance cutpoints
+#'  and symbols. For example, \code{significance <- list(cutpoints = c(0,
+#'  0.0001, 0.001, 0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",
+#'  "ns"))}.
 #'
 #'  In other words, we use the following convention for symbols indicating
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
@@ -91,19 +96,16 @@ NULL
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #'
-#'@section Computed variables: \itemize{ \item{DFn}: Degrees of Freedom in the numerator (i.e. DF effect).
-#'  \item{DFd}:	Degrees of Freedom in the denominator (i.e., DF error).
-#'  \item{ges}:	Generalized Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "ges"}.
-#'  \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "pes"}.
-#'  \item{F}:	F-value.
-#'  \item{p}:	p-value.
-#'  \item{p.adj}: Adjusted p-values.
-#'  \item{p.signif}: P-value significance.
-#'  \item{p.adj.signif}: Adjusted p-value significance.
-#'  \item{p.format}: Formated p-value.
-#'  \item{p.adj.format}: Formated adjusted p-value.
-#'  \item{n}: number of samples.
-#'   }
+#'@section Computed variables: \itemize{ \item{DFn}: Degrees of Freedom in the
+#'  numerator (i.e. DF effect). \item{DFd}:	Degrees of Freedom in the
+#'  denominator (i.e., DF error). \item{ges}:	Generalized Eta-Squared measure of
+#'  effect size. Computed only when the option \code{effect.size = "ges"}.
+#'  \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when
+#'  the option \code{effect.size = "pes"}. \item{F}:	F-value. \item{p}:	p-value.
+#'  \item{p.adj}: Adjusted p-values. \item{p.signif}: P-value significance.
+#'  \item{p.adj.signif}: Adjusted p-value significance. \item{p.format}:
+#'  Formated p-value. \item{p.adj.format}: Formated adjusted p-value. \item{n}:
+#'  number of samples. }
 #'
 #' @examples
 #' # Data preparation
@@ -194,7 +196,7 @@ NULL
 #' ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
 #'   stat_anova_test(aes(wid = id, group = supp, color = supp), within = "x")
 #'@export
-stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within = NULL,
+stat_anova_test <- function(mapping = NULL, data = NULL, wid = NULL, between = NULL, within = NULL,
                             type = NULL, effect.size = "ges", error = NULL,
                             correction = c("auto", "GG", "HF", "none"),
                             label = "{method}, p = {p.format}",
@@ -213,6 +215,11 @@ stat_anova_test <- function(mapping = NULL, data = NULL, between = NULL, within 
     parse <- TRUE
   }
   correction <-  match.arg(correction)
+
+  if(!is.null(wid)){
+    if(!is.null(mapping)) mapping$wid <- as.name(wid)
+    else mapping <- create_aes(list(wid = wid))
+  }
 
   layer(
     stat = StatCompareMultipleMeans, data = data, mapping = mapping, geom = geom,

@@ -7,6 +7,7 @@
 stat_anova_test(
   mapping = NULL,
   data = NULL,
+  wid = NULL,
   between = NULL,
   within = NULL,
   type = NULL,
@@ -51,19 +52,24 @@ the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
+\item{wid}{(factor) column name containing individuals/subjects identifier.
+Should be unique per individual. Required only for repeated measure tests.}
+
 \item{between}{(optional) between-subject factor variables. Can be specified
 for \strong{independent measures test}. Possible values include: \itemize{
 \item \code{"x"}: default for comparing the x-axis variable groups. \item
 \code{"group"}: for grouped plots. Can be used to compare legend variable
 groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-Can be used to compute the significance of a two-way interaction ANOVA model. }}
+Can be used to compute the significance of a two-way interaction ANOVA
+model. }}
 
 \item{within}{(optional) within-subject factor variables. Can be specified for
 \strong{repeated-measures test}. Possible values include: \itemize{ \item
 \code{"x"}: default for comparing the x-axis variable groups. \item
 \code{"group"}: for grouped plots. Can be used to compare legend variable
 groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-Can be used to compute the significance of a two-way interaction ANOVA model. }}
+Can be used to compute the significance of a two-way interaction ANOVA
+model. }}
 
 \item{type}{the type of sums of squares for ANOVA. Allowed values are either
 1, 2 or 3. \code{type = 2} is the default because this will yield identical
@@ -126,13 +132,14 @@ can be negative to reverse the order of groups.}
 \item{p.adjust.method}{method for adjusting p values (see
 \code{\link[stats]{p.adjust}}).  Has impact only in a situation, where
 multiple pairwise tests are performed; or when there are multiple grouping
-variables. Allowed values include "holm", "hochberg",
-"hommel", "bonferroni", "BH", "BY", "fdr", "none". If you don't want to
-adjust the p value (not recommended), use p.adjust.method = "none".}
+variables. Allowed values include "holm", "hochberg", "hommel",
+"bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
+value (not recommended), use p.adjust.method = "none".}
 
-\item{significance}{a list of arguments specifying the signifcance cutpoints and symbols. For
- example, \code{significance <- list(cutpoints = c(0, 0.0001, 0.001, 0.01,
- 0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
+\item{significance}{a list of arguments specifying the signifcance cutpoints
+ and symbols. For example, \code{significance <- list(cutpoints = c(0,
+ 0.0001, 0.001, 0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",
+ "ns"))}.
 
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
@@ -168,23 +175,20 @@ right and \item \code{vjust}: vertical justification of the text. Move the
 text up or down. }}
 }
 \description{
-Adds automatically one-way and two-way ANOVA test p-values to a ggplot, such as
- box blots, dot plots and stripcharts.
+Adds automatically one-way and two-way ANOVA test p-values to a
+ ggplot, such as box blots, dot plots and stripcharts.
 }
 \section{Computed variables}{
- \itemize{ \item{DFn}: Degrees of Freedom in the numerator (i.e. DF effect).
- \item{DFd}:	Degrees of Freedom in the denominator (i.e., DF error).
- \item{ges}:	Generalized Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "ges"}.
- \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when the option \code{effect.size = "pes"}.
- \item{F}:	F-value.
- \item{p}:	p-value.
- \item{p.adj}: Adjusted p-values.
- \item{p.signif}: P-value significance.
- \item{p.adj.signif}: Adjusted p-value significance.
- \item{p.format}: Formated p-value.
- \item{p.adj.format}: Formated adjusted p-value.
- \item{n}: number of samples.
-  }
+ \itemize{ \item{DFn}: Degrees of Freedom in the
+ numerator (i.e. DF effect). \item{DFd}:	Degrees of Freedom in the
+ denominator (i.e., DF error). \item{ges}:	Generalized Eta-Squared measure of
+ effect size. Computed only when the option \code{effect.size = "ges"}.
+ \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when
+ the option \code{effect.size = "pes"}. \item{F}:	F-value. \item{p}:	p-value.
+ \item{p.adj}: Adjusted p-values. \item{p.signif}: P-value significance.
+ \item{p.adj.signif}: Adjusted p-value significance. \item{p.format}:
+ Formated p-value. \item{p.adj.format}: Formated adjusted p-value. \item{n}:
+ number of samples. }
 }
 
 \examples{

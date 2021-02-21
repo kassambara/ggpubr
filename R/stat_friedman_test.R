@@ -86,7 +86,7 @@ NULL
 #' )
 #'
 #' @export
-stat_friedman_test <- function(mapping = NULL, data = NULL, within = NULL,
+stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, within = NULL,
                             label = "{method}, p = {p.format}",
                             label.x.npc = "left", label.y.npc = "top",
                             label.x = NULL, label.y = NULL, step.increase = 0.1,
@@ -103,6 +103,11 @@ stat_friedman_test <- function(mapping = NULL, data = NULL, within = NULL,
   if(is.null(within)){
     if(is.null(group)) within <- "x"
     else within <- "group"
+  }
+
+  if(!is.null(wid)){
+    if(!is.null(mapping)) mapping$wid <- as.name(wid)
+    else mapping <- create_aes(list(wid = wid))
   }
 
   layer(
