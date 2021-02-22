@@ -33,7 +33,7 @@ Imports:
     glue,
     polynom,
     rlang (>= 0.4.6),
-    rstatix (>= 0.6.0),
+    rstatix (>= 0.7.0),
     tibble,
     magrittr
 Suggests:
