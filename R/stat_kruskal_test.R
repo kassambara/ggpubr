@@ -75,10 +75,10 @@ NULL
 #' bxp2 + stat_kruskal_test(aes(group = dose), label = "p = {p.format}{p.signif}")
 #'
 #' #  For each legend group, computes tests between x variable groups
-#' bxp2 + stat_kruskal_test(aes(group = dose, color = dose), between = "x")
+#' bxp2 + stat_kruskal_test(aes(group = dose, color = dose), group.by = "legend.var")
 #'
 #' @export
-stat_kruskal_test <- function(mapping = NULL, data = NULL, between = NULL,
+stat_kruskal_test <- function(mapping = NULL, data = NULL, group.by = NULL,
                             label = "{method}, p = {p.format}",
                             label.x.npc = "left", label.y.npc = "top",
                             label.x = NULL, label.y = NULL, step.increase = 0.1,
@@ -96,8 +96,8 @@ stat_kruskal_test <- function(mapping = NULL, data = NULL, between = NULL,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       method = "kruskal_test",
+      group.by = group.by,
       method.args = list(),
-      between = between, within = NULL,
       correction = "none",
       na.rm = na.rm, stat.label = label,
       label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,

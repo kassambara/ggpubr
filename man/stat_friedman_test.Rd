@@ -8,7 +8,7 @@ stat_friedman_test(
   mapping = NULL,
   data = NULL,
   wid = NULL,
-  within = NULL,
+  group.by = NULL,
   label = "{method}, p = {p.format}",
   label.x.npc = "left",
   label.y.npc = "top",
@@ -48,15 +48,16 @@ will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{wid}{(factor) column name containing individuals/subjects identifier.
-Should be unique per individual. Required only for repeated measure tests.}
+Should be unique per individual. Required only for repeated measure tests
+(\code{"one_way_repeated", "two_way_repeated", "friedman_test", etc}).}
 
-\item{within}{(optional) within-subject factor variables. Can be specified for
-\strong{repeated-measures test}. Possible values include: \itemize{ \item
-\code{"x"}: default for comparing the x-axis variable groups. \item
-\code{"group"}: for grouped plots. Can be used to compare legend variable
-groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-Can be used to compute the significance of a two-way interaction ANOVA
-model. }}
+\item{group.by}{(optional) character vector specifying the grouping variable;
+it should be used only for grouped plots. Possible values are : \itemize{
+\item \code{"x.var"}: Group by the x-axis variable and perform the test
+between legend groups. In other words, the p-value is compute between legend
+groups at each x position \item \code{"legend.var"}: Group by the legend
+variable and perform the test between x-axis groups. In other words, the
+test is performed between the x-groups for each legend level. }}
 
 \item{label}{the column containing the label (e.g.: label = "p" or label =
 "p.adj"), where \code{p} is the p-value. Can be also an expression that can

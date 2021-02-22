@@ -37,7 +37,7 @@ test_that("stat_anova_test works for grouped plots: grouped by x position", {
 
 test_that("stat_anova_test works for grouped plots: grouped by legend variable", {
   bxp <- ggboxplot(df, x = "group", y = "len", color = "dose") +
-    stat_anova_test(aes(group = dose), label = "{p.format}", between = "x")
+    stat_anova_test(aes(group = dose), label = "{p.format}", group.by = "legend.var")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   expect_equal(as.numeric(stat.test$x), c(0.73, 0.73, 0.73))
@@ -50,7 +50,7 @@ test_that("stat_anova_test works for grouped plots: grouped by legend variable",
 test_that("stat_anova_test works for one-way repeated measure anova", {
   df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
   bxp <- ggboxplot(df, x = "dose", y = "len") +
-    stat_anova_test(aes(wid = id), within = "x")
+    stat_anova_test(wid = "id", method = "one_way_repeated")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   expect_equal(as.numeric(stat.test$x), 1)
@@ -59,10 +59,26 @@ test_that("stat_anova_test works for one-way repeated measure anova", {
 })
 
 
-test_that("stat_anova_test works for grouped one-way repeated measure anova", {
+test_that("stat_anova_test works for grouped one-way repeated measure anova: group by x var", {
   df$id <- as.factor(rep(1:10, 6))
   bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
-    stat_anova_test(aes(wid = id, group = supp, color = supp), within = "x")
+    stat_anova_test(aes(group = supp, color = supp),
+                    label = "p",
+                    method = "one_way_repeated",
+                    wid = "id", group.by = "x.var")
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+  expect_equal(as.numeric(stat.test$x), c(1, 2, 3))
+  expect_equal(as.numeric(stat.test$y), c(36.4, 36.4, 36.4))
+  expect_equal(stat.test$label, c("0.016", "0.05", "0.848"))
+})
+
+test_that("stat_anova_test works for grouped one-way repeated measure anova: group by legend var", {
+  df$id <- as.factor(rep(1:10, 6))
+  bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
+    stat_anova_test(aes(group = supp, color = supp),
+                    method = "one_way_repeated",
+                    wid = "id", group.by = "legend.var")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   expect_equal(as.numeric(stat.test$x), c(0.8, 0.8))
@@ -73,7 +89,7 @@ test_that("stat_anova_test works for grouped one-way repeated measure anova", {
 test_that("stat_anova_test works for two-way repeated measure anova", {
   df$id <- as.factor(rep(1:10, 6))
   bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
-    stat_anova_test(aes(wid = id, group = supp), within = c("x", "group"))
+    stat_anova_test(aes(group = supp), method = "two_way_repeated", wid = "id")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   expect_equal(as.numeric(stat.test$x), 0.8)
@@ -156,7 +172,7 @@ test_that("stat_anova_test works for two-way mixed anova", {
 
   # two way
   bxp <- ggboxplot(anxiety, x = "group", y = "score", color = "time") +
-    stat_anova_test(aes(wid = id, group = time), between = "x", within = "group")
+    stat_anova_test(aes(group = time), method = "two_way_mixed", wid = "id")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   res_mixed_anova <- data.frame(
@@ -170,7 +186,7 @@ test_that("stat_anova_test works for two-way mixed anova", {
 
   # Effect of group: Group by time and compute anova between x groups
   bxp <- ggboxplot(anxiety, x = "group", y = "score", color = "time") +
-    stat_anova_test(aes(group = time, color = time), between = "x")
+    stat_anova_test(aes(group = time, color = time), method = "one_way", group.by = "legend.var")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   res_group_effect <- data.frame(
@@ -188,7 +204,7 @@ test_that("stat_anova_test works for two-way mixed anova", {
 
   # Effect of time: group by x  groups and perform the test within group (here time)
   bxp <- ggboxplot(anxiety, x = "group", y = "score", color = "time") +
-    stat_anova_test(aes(group = time, wid = id), within = "group")
+    stat_anova_test(aes(group = time),  method = "one_way_repeated", wid = "id", group.by = "x.var")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   res_time_effect <- data.frame(

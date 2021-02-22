@@ -5,22 +5,19 @@ NULL
 #'  ggplot, such as box blots, dot plots and stripcharts.
 #'@inheritParams ggplot2::layer
 #'@inheritParams stat_pvalue_manual
-#'@param between (optional) between-subject factor variables. Can be specified
-#'  for \strong{independent measures test}. Possible values include: \itemize{
-#'  \item \code{"x"}: default for comparing the x-axis variable groups. \item
-#'  \code{"group"}: for grouped plots. Can be used to compare legend variable
-#'  groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-#'  Can be used to compute the significance of a two-way interaction ANOVA
-#'  model. }
+#'@param method ANOVA test methods. Possible values are one of
+#'  \code{c("one_way", "one_way_repeated", "two_way", "two_way_repeated",
+#'  "two_way_mixed")}.
 #'@param wid (factor) column name containing individuals/subjects identifier.
-#'  Should be unique per individual. Required only for repeated measure tests.
-#'@param within (optional) within-subject factor variables. Can be specified for
-#'  \strong{repeated-measures test}. Possible values include: \itemize{ \item
-#'  \code{"x"}: default for comparing the x-axis variable groups. \item
-#'  \code{"group"}: for grouped plots. Can be used to compare legend variable
-#'  groups at each x-position. \item \code{c("x", "group")}: for grouped plots.
-#'  Can be used to compute the significance of a two-way interaction ANOVA
-#'  model. }
+#'  Should be unique per individual. Required only for repeated measure tests
+#'  (\code{"one_way_repeated", "two_way_repeated", "friedman_test", etc}).
+#'@param group.by (optional) character vector specifying the grouping variable;
+#'  it should be used only for grouped plots. Possible values are : \itemize{
+#'  \item \code{"x.var"}: Group by the x-axis variable and perform the test
+#'  between legend groups. In other words, the p-value is compute between legend
+#'  groups at each x position \item \code{"legend.var"}: Group by the legend
+#'  variable and perform the test between x-axis groups. In other words, the
+#'  test is performed between the x-groups for each legend level. }
 #'@param type the type of sums of squares for ANOVA. Allowed values are either
 #'  1, 2 or 3. \code{type = 2} is the default because this will yield identical
 #'  ANOVA results as type = 1 when data are balanced but type = 2 will
@@ -166,7 +163,7 @@ NULL
 #' bxp2 + stat_anova_test(aes(group = dose), label = "p = {p.format}{p.signif}")
 #'
 #' #  For each legend group, computes tests between x variable groups
-#' bxp2 + stat_anova_test(aes(group = dose, color = dose), between = "x")
+#' bxp2 + stat_anova_test(aes(group = dose, color = dose), group.by = "legend.var")
 #'
 #'
 #' # Two-way ANOVA: Independent measures
@@ -177,26 +174,29 @@ NULL
 #'   df, x = "supp", y = "len",
 #'   color = "dose", palette = "jco"
 #' )
-#' bxp3 + stat_anova_test(aes(group = dose),  between = c("x", "group"))
+#' bxp3 + stat_anova_test(aes(group = dose),  method = "two_way")
 #'
 #'
 #' # One-way repeatead measures ANOVA
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
 #' ggboxplot(df, x = "dose", y = "len") +
-#'   stat_anova_test(aes(wid = id), within = "x")
+#'   stat_anova_test(method = "one_way_repeated", wid = "id")
 #'
 #' # Two-way repeatead measures ANOVA
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' df$id <- as.factor(rep(1:10, 6))
 #' ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
-#'   stat_anova_test(aes(wid = id, group = supp), within = c("x", "group"))
+#'   stat_anova_test(aes(group = supp), method = "two_way_repeated", wid = "id")
 #'
 #' # Grouped one-way repeated measures ANOVA
 #' ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
-#'   stat_anova_test(aes(wid = id, group = supp, color = supp), within = "x")
+#'   stat_anova_test(aes(group = supp, color = supp),
+#'   method = "one_way_repeated", wid = "id", group.by = "legend.var")
 #'@export
-stat_anova_test <- function(mapping = NULL, data = NULL, wid = NULL, between = NULL, within = NULL,
+stat_anova_test <- function(mapping = NULL, data = NULL,
+                            method = c("one_way", "one_way_repeated", "two_way", "two_way_repeated", "two_way_mixed"),
+                            wid = NULL, group.by = NULL,
                             type = NULL, effect.size = "ges", error = NULL,
                             correction = c("auto", "GG", "HF", "none"),
                             label = "{method}, p = {p.format}",
@@ -215,6 +215,7 @@ stat_anova_test <- function(mapping = NULL, data = NULL, wid = NULL, between = N
     parse <- TRUE
   }
   correction <-  match.arg(correction)
+  method <- match.arg(method)
 
   if(!is.null(wid)){
     if(!is.null(mapping)) mapping$wid <- as.name(wid)
@@ -225,9 +226,9 @@ stat_anova_test <- function(mapping = NULL, data = NULL, wid = NULL, between = N
     stat = StatCompareMultipleMeans, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
-      method = "anova_test",
+      method = method,
       method.args = list(type = type, effect.size = effect.size, error = error),
-      between = between, within = within,
+      group.by = group.by,
       correction = correction,
       na.rm = na.rm, stat.label = label,
       label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
@@ -245,22 +246,30 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                          default_aes = aes(wid = NULL),
 
                          setup_params = function(data, params){
-                           if(!is.null(params$within) & is.null(data$wid)){
-                             stop(
-                               "The variable `wid` (sample id) is required when the argument `within` is specified (repeated measures).\n",
-                               "Specify it using aes(wid = id_col_name), where id_col_name is the column containing ids.",
-                               call. = FALSE
-                             )
+
+                           # Initialize parameters
+                           methods_for_repeated_measures <- c(
+                             "one_way_repeated", "two_way_repeated", "two_way_mixed",
+                             "friedman_test"
+                           )
+                           if(params$method %in% methods_for_repeated_measures){
+                             if(is.null(data$wid)){
+                               stop(
+                                 "The argument `wid` (sample id) is required for repeated measures tests.\n",
+                                 "Specify it using wid = 'id_col_name', where id_col_name is the column containing ids.",
+                                 call. = FALSE
+                               )
+                             }
                            }
                            return(params)
                          },
 
-                         compute_panel = function(data, scales, method, method.args, between, within,
+                         compute_panel = function(data, scales, method, method.args, group.by,
                                                   correction, p.adjust.method,
                                                   stat.label, label.x.npc, label.y.npc, label.x, label.y,
                                                   significance, is.group.specified, step.increase){
                            p <- p.adj <- x <- NULL
-                           if(length(within) == 1 & is.null(between)){
+                           if(method %in% c("one_way_repeated", "friedman_test")){
                              # One-way repeated measures ANOVA
                              if(!is.group.specified) data$group <- data$x
                            }
@@ -269,17 +278,18 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                            is.grouped.plots <- contains_multiple_grouping_vars(df)
 
 
-                           nb_vars <- unique(c(between, within)) %>% length()
-                           is_two_way <- nb_vars >= 2
-                           # label group id. Used to shift coordinates to avoid overlaps.
-                           x.group <- y.group <-  1
-
                            # Statistical test parameters
-                           test_args <- get_test_args(data, between, within)
+                           # test_args <- get_test_args(data, between, within)
+                           test_args <- get_test_args(data, method = method, group.by = group.by)
                            wid <- test_args$wid
                            between <- test_args$between
                            within <- test_args$within
                            group <- test_args$group
+
+                           nb_vars <- unique(c(between, within)) %>% length()
+                           is_two_way <- nb_vars >= 2
+                           # label group id. Used to shift coordinates to avoid overlaps.
+                           x.group <- y.group <-  1
 
                            # Run statistical tests
                            df <- df %>% rstatix::convert_as_factor(vars = c(between, within))
@@ -287,7 +297,8 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
                              df <- df %>% rstatix::df_group_by(vars = group)
                            }
 
-                           if(method == "anova_test"){
+                           anova_methods <- c("one_way", "one_way_repeated", "two_way", "two_way_repeated", "two_way_mixed")
+                           if(method %in% anova_methods){
                              method.args <- method.args %>%
                                .add_item(data = df, dv = "y", between = between, within = within, wid = wid)
                              stat.test <- do.call(rstatix::anova_test, method.args) %>%
@@ -372,47 +383,83 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
 
 # Returns arguments for the tests
 # data: layer data
-# between: independent test grouping variable
-# within: repeated measures grouping variables
-get_test_args <- function(data, between = NULL, within = NULL){
+get_test_args <- function(data, method = "one_way", group.by = NULL){
   # Sample within id (considered for repeated measures)
-  wid <- NULL
+  wid <- between <- within <- group <-  NULL
   if("wid" %in% colnames(data)) wid <- "wid"
-  # Test type: one-way or two-way
-  nb_vars <- unique(c(between, within)) %>% length()
-  is_two_way <- nb_vars >= 2
   # Grouped or not grouped plots
   is_grouped_plots <- data %>% contains_multiple_grouping_vars()
 
-  results <- list(dv = "y", between = between, within = within, wid = wid)
-  if(is_two_way){
-    # There is no possible grouping by panel
-    results <- results %>% .add_item(group = NULL)
-  }
-  else{
-    # Grouped one-way
+  if(method %in% c("one_way", "kruskal_test", "welch_anova_test")){
+    between <- "x"
     if(is_grouped_plots){
-      if(is.null(between) & is.null(within)){
-        # Default is to group by x and perform test by legend groups
-        results <- results %>% .add_item(group = "x", between = "group")
+      if(is.null(group.by)) group.by = "x.var"
+      # Group by x axis variable and compute test between legend variable groups
+      if(group.by == "x.var") {
+        group <- "x"
+        between <-"group"
       }
-      else if(!is.null(between)){
-        if(between == "x") results$group <- "group"
-        else if(between == "group") results$group <- "x"
+      # Group by legend variable and compute test between x axis groups
+      else if (group.by == "legend.var") {
+        group <- "group"
+        between <- "x"
       }
-      else if (!is.null(within)){
-        if(within == "x") results$group <- "group"
-        else if(within == "group") results$group <- "x"
-      }
-    }
-    # Standard One-way
-    else{
-      if(is.null(between) & is.null(within)) results$between <- "x"
-      results <- results %>% .add_item(group = NULL)
     }
   }
-  results
+  else if(method %in% c("one_way_repeated", "friedman_test")){
+    within <- "x"
+    if(is_grouped_plots){
+      if(is.null(group.by)) group.by = "x.var"
+      # Group by x axis variable and compute test between legend variable groups
+      if(group.by == "x.var") {
+        group <- "x"
+        within <-"group"
+      }
+      # Group by legend variable and compute test between x axis groups
+      else if (group.by == "legend.var") {
+        group <- "group"
+        within <- "x"
+      }
+    }
+  }
+  else if(method == "two_way"){
+    between <- c("x", "group")
+  }
+  else if(method == "two_way_repeated"){
+    within <- c("x", "group")
+  }
+  else if(method == "two_way_mixed"){
+    # Auto-detect between- and within-subjects variables
+    # ID should be unique for one of the grouping variable
+    # It's unique for the within-ss variable when data is in a wide format
+    wid.freq.group <- data %>%
+      dplyr::group_by(.data$group) %>%
+      dplyr::count(.data$wid) %>%
+      dplyr::pull(.data$n) %>%
+      unique()
+    wid.freq.x <- data %>%
+      dplyr::group_by(.data$x) %>%
+      dplyr::count(.data$wid) %>%
+      dplyr::pull(.data$n) %>%
+      unique()
+    if(!(all(wid.freq.group == 1) | all(wid.freq.x == 1))){
+      stop("This is not a mixed design. Check your data.", call. = FALSE)
+    }
+
+    if(all(wid.freq.group == 1)){
+      within <- "group"
+      between <- "x"
+    }
+    else if(all(wid.freq.x == 1)){
+      within <- "x"
+      between <- "group"
+    }
+  } # end two-way-mixed
+
+  list(dv = "y", between = between, within = within, wid = wid, group = group)
+
 }
+
 
 
 # Take the last row of the ANOVA table

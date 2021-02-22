@@ -86,7 +86,7 @@ NULL
 #' )
 #'
 #' @export
-stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, within = NULL,
+stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, group.by = NULL,
                             label = "{method}, p = {p.format}",
                             label.x.npc = "left", label.y.npc = "top",
                             label.x = NULL, label.y = NULL, step.increase = 0.1,
@@ -97,12 +97,6 @@ stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, within =
   label <- get_friedman_test_label_template(label)
   if(missing(parse) & is_plotmath_expression(label)){
     parse <- TRUE
-  }
-
-  group <- aes_get_group(mapping)
-  if(is.null(within)){
-    if(is.null(group)) within <- "x"
-    else within <- "group"
   }
 
   if(!is.null(wid)){
@@ -116,7 +110,7 @@ stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, within =
     params = list(
       method = "friedman_test",
       method.args = list(),
-      between = NULL, within = within,
+      group.by = group.by,
       correction = "none",
       na.rm = na.rm, stat.label = label,
       label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
