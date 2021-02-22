@@ -121,5 +121,33 @@ test_that("add_stat_label works with ANOVA stats label formats", {
 
 
 
+test_that("add_stat_label works with Kruskal-Wallis stats label formats", {
+  res <- data.frame(
+  stringsAsFactors = FALSE,
+                 x = c("1"),
+                 y = c(36.4),
+                 n = c(60L),
+         statistic = c(31.21),
+                df = c(2L),
+                 p = c(1.67e-07),
+            method = c("Kruskal-Wallis"),
+             p.adj = c(1.67e-07),
+          p.signif = c("****"),
+      p.adj.signif = c("****"),
+          p.format = c("<0.0001"),
+      p.adj.format = c("<0.0001")
+   )
+  res.italic <- add_stat_label(res, label = get_kruskal_test_label_template("as_italic"))
+  res.detailed <- add_stat_label(res, label = get_kruskal_test_label_template("as_detailed"))
+  res.detailed.italic <- add_stat_label(res, label = get_kruskal_test_label_template("as_detailed_italic"))
+  res.detailed.expression <- add_stat_label(res, label = get_kruskal_test_label_template("as_detailed_expression"))
+
+  expect_equal(res.italic$label, "list('Kruskal-Wallis',~italic(p)~`<`~'0.0001')")
+  expect_equal(res.detailed$label, "Kruskal-Wallis, X2(2) = 31.21, p < 0.0001, n = 60")
+  expect_equal(res.detailed.italic$label, "list('Kruskal-Wallis',~italic(chi)^'2'~('2')~`=`~'31.21',~italic(p)~`<`~'0.0001',~italic(n)~`=`~'60')")
+  expect_equal(res.detailed.expression$label,"list('Kruskal-Wallis',~italic(chi)^'2'('2')~`=`~'31.21',~italic(p)~`<`~'0.0001',~italic(n)~`=`~'60')")
+})
+
+
 
 
