@@ -381,16 +381,10 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
 # Get formula variables
 .formula_left_variables <- function(formula){
-  . <- NULL
-  x <- deparse(formula[[2]]) %>%
-    gsub("c\\(|\\)|\\s", "", .) %>%
-    strsplit(",") %>%
-    unlist()
-  x
+  all.vars(formula[[2]])
 }
 .formula_right_variables <- function(formula){
-  group <- attr(stats::terms(formula), "term.labels") %>%
-    gsub("^`|`$", "", .)
+  group <- all.vars(formula[[3]])
   if(.is_empty(group)) group <- "1"
   group
 }
