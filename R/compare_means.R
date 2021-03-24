@@ -279,8 +279,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
 {
   test <- match.fun(method)
 
-  x <- deparse(formula[[2]])
-  group <- attr(stats::terms(formula), "term.labels")
+  x <- all.vars(formula[[2]])
+  group <- all.vars(formula[[3]])
 
   if(.is_empty(group)) # Case of null model
     test.opts <- list(x = .select_vec(data, x), ...)
@@ -311,8 +311,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
                            ...)
 {
 
-  x <- deparse(formula[[2]])
-  group <- attr(stats::terms(formula), "term.labels")
+  x <- all.vars(formula[[2]])
+  group <- all.vars(formula[[3]])
 
   # One sample test
   if(.is_empty(group)){
