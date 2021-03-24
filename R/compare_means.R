@@ -375,8 +375,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # ex formula = c(GATA3, XBP1, DEPDC1) ~ group
 .is_multi_formula <- function(formula){
-  x <- grep(",", formula)
-  !.is_empty(x)
+  length(all.vars(formula[[2]])) > 1
 }
 
 # Get formula variables
