@@ -45,7 +45,7 @@ create_aes.parse <- function(.list){
 
 parse_expression <- function(x){
   if(is_parsable_aes(x)){
-    x <- parse(text = x)[[1]]
+    x <- parse(text = glue::backtick(x))[[1]]
   }
   x
 }
