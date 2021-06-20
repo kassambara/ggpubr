@@ -43,7 +43,7 @@ Suggests:
     gtable
 URL: https://rpkgs.datanovia.com/ggpubr/
 BugReports: https://github.com/kassambara/ggpubr/issues
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Collate:
     'utilities_color.R'
     'utilities_base.R'
