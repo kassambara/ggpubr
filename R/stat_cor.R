@@ -171,7 +171,7 @@ StatCor<- ggproto("StatCor", Stat,
 
   # Correlation analyses
   .cor <- suppressWarnings(stats::cor.test(
-    x_vec, y_vec, method = method,  alternative = alternative,
+    x, y, method = method,  alternative = alternative,
     use = "complete.obs"
     ))
   estimate <- p.value <- p <- r <- rr <-  NULL
