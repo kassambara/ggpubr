@@ -1,8 +1,8 @@
 #' @include utilities.R utilities_label.R
 NULL
 #'Add Correlation Coefficients with P-values to a Scatter Plot
-#'@description Add correlation coefficients with p-values to a scatter plot. Can
-#'  be also used to add `R2`.
+#'@description Add correlation coefficients with p-values or confidence
+#'  intervals to a scatter plot. Can be also used to add `R2`.
 #'@inheritParams ggplot2::layer
 #'@param method a character string indicating which correlation coefficient (or
 #'  covariance) is to be computed. One of "pearson" (default), "kendall", or
@@ -38,6 +38,11 @@ NULL
 #'@param p.accuracy a real value specifying the number of decimal places of
 #'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 #'  decimal places of precision. If specified, then \code{p.digits} is ignored.
+#'  This can also be used to specify the number of decimal places of precision
+#'  for the lower and upper bound of the confidence interval.
+#'@param conf.int If TRUE (default is FALSE), a 95% confidence interval is
+#'  printed instead of the p-value. Use \code{p.accuracy} to specify the number
+#'  of decimal places of precision.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -94,7 +99,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
-                     r.accuracy = NULL, p.accuracy = NULL,
+                     r.accuracy = NULL, p.accuracy = NULL, conf.int = FALSE,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
@@ -106,7 +111,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                   label.x = label.x, label.y = label.y, label.sep = label.sep,
                   method = method, alternative = alternative, output.type = output.type, digits = digits,
                   r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
-                  p.accuracy = p.accuracy, cor.coef.name = cor.coef.name,
+                  p.accuracy = p.accuracy, conf.int = conf.int, cor.coef.name = cor.coef.name,
                   parse = parse, na.rm = na.rm, ...)
   )
 }
@@ -118,7 +123,8 @@ StatCor<- ggproto("StatCor", Stat,
 
                   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep, output.type, digits,
-                                           r.digits, p.digits, r.accuracy, p.accuracy, cor.coef.name)
+                                           r.digits, p.digits, r.accuracy, p.accuracy, conf.int,
+                                           cor.coef.name)
                     {
                     if (length(unique(data$x)) < 2) {
                       # Not enough data to perform test
@@ -130,7 +136,7 @@ StatCor<- ggproto("StatCor", Stat,
                       label.sep = label.sep, output.type = output.type, digits = digits,
                       r.digits = r.digits, p.digits = p.digits,
                       r.accuracy = r.accuracy, p.accuracy = p.accuracy,
-                      cor.coef.name = cor.coef.name
+                      conf.int = conf.int, cor.coef.name = cor.coef.name
                       )
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
@@ -151,7 +157,7 @@ StatCor<- ggproto("StatCor", Stat,
 .cor_test <- function(x, y, method = "pearson", alternative = "two.sided",
                       label.sep = ", ", output.type = "expression",
                       digits = 2, r.digits = digits, p.digits = digits,
-                      r.accuracy = NULL, p.accuracy = NULL,
+                      r.accuracy = NULL, p.accuracy = NULL, conf.int = FALSE,
                       cor.coef.name = "R"){
   # Overwritting digits by accuracy, if specified
   if(!is.null(p.accuracy)){
@@ -169,11 +175,14 @@ StatCor<- ggproto("StatCor", Stat,
     use = "complete.obs"
     ))
   estimate <- p.value <- p <- r <- rr <-  NULL
-  z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method) %>%
+  z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method,
+                  lower = .cor$conf.int[1], upper = .cor$conf.int[2]) %>%
     mutate(
       r = signif(estimate, r.digits),
       rr = signif(estimate^2, r.digits),
-      p = signif(p.value, p.digits)
+      p = signif(p.value, p.digits),
+      lower = signif(lower, p.digits),
+      upper = signif(upper, p.digits)
     )
 
   # Defining p and r labels
@@ -189,7 +198,8 @@ StatCor<- ggproto("StatCor", Stat,
         cor.coef.name = cor.coef.name, type = output.type
         ),
       p.label = get_p_label(
-        p, accuracy = p.accuracy, type = output.type
+        p, accuracy = p.accuracy, type = output.type, conf.int = conf.int,
+        lower = lower, upper = upper
         )
   )
 
@@ -216,7 +226,8 @@ StatCor<- ggproto("StatCor", Stat,
 
 
 # Formatting R and P ----------------------
-get_p_label <- function(x, accuracy = 0.0001, type = "expression"){
+get_p_label <- function(x, accuracy = 0.0001, type = "expression",
+                        conf.int = FALSE, lower = NULL, upper = NULL){
   if(is.null(accuracy)){
     label <- ifelse(x < 2.2e-16, "p < 2.2e-16", paste0("p = ", x))
   }
@@ -234,6 +245,9 @@ get_p_label <- function(x, accuracy = 0.0001, type = "expression"){
   if(type == "expression"){
     label <- gsub(pattern = "p = ", replacement = "italic(p)~`=`~", x = label, fixed = TRUE)
     label <- gsub(pattern = "p < ", replacement = "italic(p)~`<`~", x = label, fixed = TRUE)
+  }
+  if(conf.int){
+    label <- paste0("`95% CI: (",lower, ', ', upper, ')`')
   }
   label
 }
