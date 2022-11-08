@@ -176,7 +176,7 @@ NULL
 #' )
 #' bxp3 + stat_anova_test(aes(group = dose),  method = "two_way")
 #'
-#'
+#'\dontrun{
 #' # One-way repeatead measures ANOVA
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
@@ -193,6 +193,7 @@ NULL
 #' ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
 #'   stat_anova_test(aes(group = supp, color = supp),
 #'   method = "one_way_repeated", wid = "id", group.by = "legend.var")
+#'  }
 #'@export
 stat_anova_test <- function(mapping = NULL, data = NULL,
                             method = c("one_way", "one_way_repeated", "two_way", "two_way_repeated", "two_way_mixed"),

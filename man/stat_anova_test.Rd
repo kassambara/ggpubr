@@ -261,7 +261,7 @@ bxp3 <- ggboxplot(
 )
 bxp3 + stat_anova_test(aes(group = dose),  method = "two_way")
 
-
+\dontrun{
 # One-way repeatead measures ANOVA
 #\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
@@ -278,4 +278,5 @@ ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
 ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
   stat_anova_test(aes(group = supp, color = supp),
   method = "one_way_repeated", wid = "id", group.by = "legend.var")
+ }
 }
