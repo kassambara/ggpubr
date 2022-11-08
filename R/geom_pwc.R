@@ -112,6 +112,99 @@ NULL
 #' df$dose <- factor(df$dose)
 #'
 #'@rdname geom_pwc
+#'@examples
+#' # Data preparation
+#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # Transform `dose` into factor variable
+#' df <- ToothGrowth
+#' df$dose <- as.factor(df$dose)
+#' # Add a random grouping variable
+#' df$group <- factor(rep(c("grp1", "grp2"), 30))
+#' head(df, 3)
+#'
+#'
+#' # Two groups by x position
+#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#'
+#' # Create a box plot
+#' # Add 10% spaces between the p-value labels and the plot border
+#' bxp <- ggboxplot(
+#'   df, x = "dose", y = "len",
+#'   color = "supp", palette = c("#00AFBB", "#E7B800")
+#' ) +
+#'  scale_y_continuous(expand = expansion(mult = c(0.05, 0.10)))
+#'
+#'
+#' # Add p-values onto the box plots
+#' # label can be "p.format"  or "p.adj.format"
+#' bxp + geom_pwc(
+#'   aes(group = supp), tip.length = 0,
+#'   method = "t_test", label = "p.format"
+#' )
+#'
+#' # Show adjusted p-values and significance levels
+#' # Hide ns (non-significant)
+#' bxp + geom_pwc(
+#'   aes(group = supp), tip.length = 0,
+#'   method = "t_test", label = "{p.adj.format}{p.adj.signif}",
+#'   p.adjust.method = "bonferroni", p.adjust.by = "panel",
+#'   hide.ns = TRUE
+#' )
+#'
+#' # Complex cases
+#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # 1. Add p-values of OJ vs VC at each dose group
+#' bxp.complex <- bxp +
+#'   geom_pwc(
+#'     aes(group = supp), tip.length = 0,
+#'     method = "t_test", label = "p.adj.format",
+#'     p.adjust.method = "bonferroni", p.adjust.by = "panel"
+#'   )
+#' # 2. Add pairwise comparisons between dose levels
+#' # Nudge up the brackets by 20% of the total height
+#' bxp.complex <- bxp.complex +
+#'   geom_pwc(
+#'     method = "t_test", label = "p.adj.format",
+#'     p.adjust.method = "bonferroni",
+#'     bracket.nudge.y = 0.2
+#'   )
+#' # 3. Display the plot
+#' bxp.complex
+#'
+#'
+#' # Three groups by x position
+#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#'
+#' # Simple plots
+#' #_____________________________________
+#'
+#' # Box plots with p-values
+#' bxp <- ggboxplot(
+#'   df, x = "supp", y = "len", fill = "dose",
+#'   palette = "npg"
+#' )
+#' bxp +
+#'   geom_pwc(
+#'     aes(group = dose), tip.length = 0,
+#'     method = "t_test", label = "p.adj.format",
+#'     bracket.nudge.y = -0.08
+#'   ) +
+#'   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+#'
+#' # Bar plots with p-values
+#' bp <- ggbarplot(
+#'   df, x = "supp", y = "len", fill = "dose",
+#'   palette = "npg", add = "mean_sd",
+#'   position = position_dodge(0.8)
+#' )
+#' bp +
+#'   geom_pwc(
+#'     aes(group = dose), tip.length = 0,
+#'     method = "t_test", label = "p.adj.format",
+#'     bracket.nudge.y = -0.08
+#'   ) +
+#'   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+#'
 #'@export
 stat_pwc <- function(mapping = NULL, data = NULL,
                      method = "wilcox_test", method.args = list(), ref.group = NULL,
