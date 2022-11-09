@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -287,11 +287,27 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 #&gt; 3   F 56.08444
 #&gt; 4   F 52.65430</div><div class='input'>
 <span class='co'># Basic QQ plot</span>
-<span class='fu'>ggqqplot</span>(<span class='no'>wdata</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"weight"</span>)</div><div class='img'><img src='ggqqplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggqqplot</span>(<span class='no'>wdata</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"weight"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The following aesthetics were dropped during statistical transformation: <span style='color: #00BB00;'>sample</span></span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> This can happen when ggplot fails to infer the correct grouping structure in</span>
+#&gt; <span class='warning'>  the data.</span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> Did you forget to specify a `group` aesthetic or to convert a numerical</span>
+#&gt; <span class='warning'>  variable into a factor?</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The following aesthetics were dropped during statistical transformation: <span style='color: #00BB00;'>sample</span></span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> This can happen when ggplot fails to infer the correct grouping structure in</span>
+#&gt; <span class='warning'>  the data.</span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> Did you forget to specify a `group` aesthetic or to convert a numerical</span>
+#&gt; <span class='warning'>  variable into a factor?</span></div><div class='img'><img src='ggqqplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Change colors and shape by groups ("sex")</span>
 <span class='co'># Use custom palette</span>
 <span class='fu'>ggqqplot</span>(<span class='no'>wdata</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"weight"</span>,
-   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"sex"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>))</div><div class='img'><img src='ggqqplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"sex"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: The following aesthetics were dropped during statistical transformation: <span style='color: #00BB00;'>sample</span></span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> This can happen when ggplot fails to infer the correct grouping structure in</span>
+#&gt; <span class='warning'>  the data.</span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> Did you forget to specify a `group` aesthetic or to convert a numerical</span>
+#&gt; <span class='warning'>  variable into a factor?</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The following aesthetics were dropped during statistical transformation: <span style='color: #00BB00;'>sample</span></span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> This can happen when ggplot fails to infer the correct grouping structure in</span>
+#&gt; <span class='warning'>  the data.</span>
+#&gt; <span class='warning'><span style='color: #00BBBB;'>ℹ</span> Did you forget to specify a `group` aesthetic or to convert a numerical</span>
+#&gt; <span class='warning'>  variable into a factor?</span></div><div class='img'><img src='ggqqplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -352,8 +352,10 @@ text, making it easier to read.</p></td>
     </tr>
     <tr>
       <th>position</th>
-      <td><p>Position adjustment, either as a string, or the result of
-a call to a position adjustment function.</p></td>
+      <td><p>Position adjustment, either as a string naming the adjustment
+(e.g. <code>"jitter"</code> to use <code>position_jitter</code>), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.</p></td>
     </tr>
     <tr>
       <th>ggtheme</th>
@@ -462,7 +464,8 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean_se"</span>, <span class='st'>"jitter"</span>))</div><div class='img'><img src='ggline-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Add dot and errors (mean_se)</span>
 <span class='fu'>ggline</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean_se"</span>, <span class='st'>"dotplot"</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"steelblue"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggline-9.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean_se"</span>, <span class='st'>"dotplot"</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"steelblue"</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggline-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Add violin and errors (mean_se)</span>
 <span class='fu'>ggline</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean_se"</span>, <span class='st'>"violin"</span>), <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"steelblue"</span>)</div><div class='img'><img src='ggline-10.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -476,7 +479,8 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean_se"</span>, <span class='st'>"jitter"</span>), <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>))</div><div class='img'><img src='ggline-12.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Add dot plot</span>
 <span class='fu'>ggline</span>(<span class='no'>df3</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean_se"</span>, <span class='st'>"dotplot"</span>), <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggline-13.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean_se"</span>, <span class='st'>"dotplot"</span>), <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>))</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggline-13.png' alt='' width='700' height='433' /></div><div class='input'>
 
 </div></pre>
   </div>

@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -283,8 +283,10 @@ se, ....</p></td>
     </tr>
     <tr>
       <th>position</th>
-      <td><p>Position adjustment, either as a string, or the result of
-a call to a position adjustment function.</p></td>
+      <td><p>Position adjustment, either as a string naming the adjustment
+(e.g. <code>"jitter"</code> to use <code>position_jitter</code>), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.</p></td>
     </tr>
     <tr>
       <th>ggtheme</th>
@@ -345,11 +347,11 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 <span class='co'># Change error.plot to "errorbar" and add mean point</span>
 <span class='co'># Visualize the mean of each group</span>
 <span class='fu'>ggerrorplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"errorbar"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.ymin` is deprecated. Use `fun.min` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.ymax` is deprecated. Use `fun.max` instead.</span></div><div class='img'><img src='ggerrorplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"errorbar"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The `fun.y` argument of `stat_summary()` is deprecated as of ggplot2 3.3.0.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The `fun.ymin` argument of `stat_summary()` is deprecated as of ggplot2 3.3.0.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The `fun.ymax` argument of `stat_summary()` is deprecated as of ggplot2 3.3.0.</span></div><div class='img'><img src='ggerrorplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Horizontal plot</span>
 <span class='fu'>ggerrorplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"errorbar"</span>,
- <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='st'>"horizontal"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.y` is deprecated. Use `fun` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.ymin` is deprecated. Use `fun.min` instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `fun.ymax` is deprecated. Use `fun.max` instead.</span></div><div class='img'><img src='ggerrorplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='st'>"horizontal"</span>)</div><div class='img'><img src='ggerrorplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Change error.plot to "crossbar"</span>
 <span class='fu'>ggerrorplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
@@ -360,7 +362,8 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>)</div><div class='img'><img src='ggerrorplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Add dot and errors (mean_se)</span>
 <span class='fu'>ggerrorplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"dotplot"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggerrorplot-7.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"dotplot"</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggerrorplot-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Multiple groups with error bars and jitter point</span>
 <span class='fu'>ggerrorplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Paired"</span>,

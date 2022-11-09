@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -284,26 +284,26 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
                    <span class='kw'>Value</span><span class='kw'>=</span><span class='no'>datavals</span> )
 
 <span class='no'>car_data</span></div><div class='output co'>#&gt;         Car  Color Value
-#&gt; 1       bmw    red  86.2
-#&gt; 2   renault    red 193.5
-#&gt; 3  mercedes    red 104.2
-#&gt; 4      seat    red 107.8
-#&gt; 5       bmw  white 202.9
-#&gt; 6   renault  white 127.7
-#&gt; 7  mercedes  white  24.1
-#&gt; 8      seat  white  58.8
-#&gt; 9       bmw silver  73.3
-#&gt; 10  renault silver 173.4
-#&gt; 11 mercedes silver 121.6
-#&gt; 12     seat silver 124.0
-#&gt; 13      bmw  green 106.6
-#&gt; 14  renault  green  66.6
-#&gt; 15 mercedes  green 207.2
-#&gt; 16     seat  green 129.9</div><div class='input'>
+#&gt; 1       bmw    red  66.4
+#&gt; 2   renault    red  86.2
+#&gt; 3  mercedes    red 193.5
+#&gt; 4      seat    red 104.2
+#&gt; 5       bmw  white 107.8
+#&gt; 6   renault  white 202.9
+#&gt; 7  mercedes  white 127.7
+#&gt; 8      seat  white  24.1
+#&gt; 9       bmw silver  58.8
+#&gt; 10  renault silver  73.3
+#&gt; 11 mercedes silver 173.4
+#&gt; 12     seat silver 121.6
+#&gt; 13      bmw  green 124.0
+#&gt; 14  renault  green 106.6
+#&gt; 15 mercedes  green  66.6
+#&gt; 16     seat  green 207.2</div><div class='input'>
 <span class='fu'>ggballoonplot</span>(<span class='no'>car_data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Car"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Color"</span>,
               <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"Value"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"Value"</span>) +
    <span class='fu'>scale_fill_gradientn</span>(<span class='kw'>colors</span> <span class='kw'>=</span> <span class='no'>my_cols</span>) +
-  <span class='fu'>guides</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='ggballoonplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'>guides</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2 3.3.4.</span></div><div class='img'><img src='ggballoonplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Grouped frequency table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::::::::::::::::::</span>

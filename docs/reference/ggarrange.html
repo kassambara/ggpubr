@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -266,8 +266,10 @@ legend.</p></td>
 
 <span class='co'># Arrange</span>
 <span class='co'># ::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggarrange-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Use a common legend for multiple plots</span>
-<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>,  <span class='kw'>common.legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggarrange-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggarrange-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Use a common legend for multiple plots</span>
+<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>,  <span class='kw'>common.legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggarrange-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 </div></pre>
   </div>

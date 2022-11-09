@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -465,10 +465,10 @@ and <code><a href='ggpar.html'>ggpar</a></code>.</p></td>
    <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='co'># Add confidence interval</span>
    <span class='kw'>cor.coef</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='co'># Add correlation coefficient. see ?stat_cor</span>
    <span class='kw'>cor.coeff.args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)
-   )</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='ggscatter-1.png' alt='' width='700' height='433' /></div><div class='input'>
+   )</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula = 'y ~ x'</span></div><div class='img'><img src='ggscatter-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># loess method: local regression fitting</span>
 <span class='fu'>ggscatter</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"loess"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='ggscatter-2.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"loess"</span>, <span class='kw'>conf.int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula = 'y ~ x'</span></div><div class='img'><img src='ggscatter-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Control point size by continuous variable values ("qsec")</span>
 <span class='fu'>ggscatter</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>,

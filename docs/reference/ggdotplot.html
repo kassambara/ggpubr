@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -360,18 +360,22 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 <span class='co'># Basic plot with summary statistics : mean_sd</span>
 <span class='co'># +++++++++++++++++++++++++++</span>
 <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_sd"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggdotplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_sd"</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggdotplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Change error.plot to "crossbar"</span>
 <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_sd"</span>, <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.5</span>),
- <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"crossbar"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggdotplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>error.plot</span> <span class='kw'>=</span> <span class='st'>"crossbar"</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggdotplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Add box plot</span>
 <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggdotplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggdotplot-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Add violin + mean_sd</span>
 <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
- <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"violin"</span>, <span class='st'>"mean_sd"</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggdotplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
+ <span class='kw'>add</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"violin"</span>, <span class='st'>"mean_sd"</span>))</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggdotplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Change colors</span>
 <span class='co'># +++++++++++++++++++++++++++</span>
@@ -380,13 +384,15 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
  <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='st'>"dose"</span>, <span class='st'>"len"</span>,
      <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>,
       <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>,
-      <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>, <span class='st'>"#FC4E07"</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggdotplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
+      <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>, <span class='st'>"#FC4E07"</span>))</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggdotplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Plot with multiple groups</span>
 <span class='co'># +++++++++++++++++++++</span>
 <span class='co'># Change color by a second group : "supp"</span>
 <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='st'>"dose"</span>, <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>,
-    <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>))</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggdotplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
+    <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>))</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggdotplot-6.png' alt='' width='700' height='433' /></div><div class='input'>
 
 </div></pre>
   </div>

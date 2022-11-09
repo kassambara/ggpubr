@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -152,6 +152,8 @@
   <span class='kw'>free.panels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>labeller</span> <span class='kw'>=</span> <span class='st'>"label_value"</span>,
   <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.8</span>, <span class='fl'>0.2</span>),
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>table.font.size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(),
   <span class='no'>...</span>
 )
@@ -256,6 +258,10 @@ argument <code>facet.by</code> is specified.</p></td>
 main and the summary table, respectively.</p></td>
     </tr>
     <tr>
+      <th>table.font.size</th>
+      <td><p>the summary table font size.</p></td>
+    </tr>
+    <tr>
       <th>legend</th>
       <td><p>character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use
@@ -296,12 +302,12 @@ legend = "none".</p></td>
 <span class='no'>summary.stats</span> <span class='kw'>&lt;-</span> <span class='no'>df</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>dose</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/rstatix/man/get_summary_stats.html'>get_summary_stats</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"common"</span>)
-<span class='no'>summary.stats</span></div><div class='output co'>#&gt; # A tibble: 3 x 11
+<span class='no'>summary.stats</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 11</span>
 #&gt;   dose  variable     n   min   max median   iqr  mean    sd    se    ci
-#&gt;   &lt;fct&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 0.5   len         20   4.2  21.5   9.85  5.03  10.6  4.5  1.01   2.11
-#&gt; 2 1     len         20  13.6  27.3  19.2   7.12  19.7  4.42 0.987  2.07
-#&gt; 3 2     len         20  18.5  33.9  26.0   4.3   26.1  3.77 0.844  1.77</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> 0.5   len         20   4.2  21.5   9.85  5.03  10.6  4.5  1.01   2.11
+#&gt; <span style='color: #BCBCBC;'>2</span> 1     len         20  13.6  27.3  19.2   7.12  19.7  4.42 0.987  2.07
+#&gt; <span style='color: #BCBCBC;'>3</span> 2     len         20  18.5  33.9  26.0   4.3   26.1  3.77 0.844  1.77</div><div class='input'>
 <span class='co'># Visualize summary table</span>
 <span class='fu'>ggsummarytable</span>(
   <span class='no'>summary.stats</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"n"</span>, <span class='st'>"median"</span>, <span class='st'>"iqr"</span>),

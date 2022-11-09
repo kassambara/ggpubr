@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -185,7 +185,7 @@ in <code><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></code> and in 
       <td><p>a list of arguments to pass to the function
  <code><a href='https://rdrr.io/r/stats/symnum.html'>symnum</a></code> for symbolic number coding of p-values. For
  example, <code>symnum.args &lt;- list(cutpoints = c(0, 0.0001, 0.001,
- 0.01, 0.05, 1), symbols = c("****", "***", "**", "*",  "ns"))</code>.</p>
+ 0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))</code>.</p>
 <p>In other words, we use the following convention for symbols indicating
  statistical significance:</p><ul>
 <li><p><code>ns</code>: p &gt; 0.05</p></li>
@@ -234,64 +234,64 @@ Available only when <code>method = "t.test"</code> or <code>method = "wilcox.tes
 
 <span class='co'># One-sample test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='fl'>1</span>, <span class='no'>df</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
-#&gt;   .y.   group1 group2            p    p.adj p.format p.signif method  
-#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
-#&gt; 1 len        1 null model 1.66e-11 1.70e-11 1.7e-11  ****     Wilcoxon</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='fl'>1</span>, <span class='no'>df</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 8</span>
+#&gt;   .y.   group1 group2            p   p.adj p.format p.signif method  
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span> len        1 null model 1.66<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> 1.7<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-11</span> 1.7e-11  ****     Wilcoxon</div><div class='input'>
 <span class='co'># Two-samples unpaired test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 8</span>
 #&gt;   .y.   group1 group2      p p.adj p.format p.signif method  
-#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
-#&gt; 1 len   OJ     VC     0.0645 0.064 0.064    ns       Wilcoxon</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span> len   OJ     VC     0.064<span style='text-decoration: underline;'>5</span> 0.064 0.064    ns       Wilcoxon</div><div class='input'>
 <span class='co'># Two-samples paired test</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 8
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 8</span>
 #&gt;   .y.   group1 group2       p  p.adj p.format p.signif method  
-#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
-#&gt; 1 len   OJ     VC     0.00431 0.0043 0.0043   **       Wilcoxon</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span> len   OJ     VC     0.004<span style='text-decoration: underline;'>31</span> 0.004<span style='text-decoration: underline;'>3</span> 0.0043   **       Wilcoxon</div><div class='input'>
 <span class='co'># Compare supp levels after grouping the data by "dose"</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 9
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>supp</span>, <span class='no'>df</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 9</span>
 #&gt;    dose .y.   group1 group2       p p.adj p.format p.signif method  
-#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
-#&gt; 1   0.5 len   OJ     VC     0.0232  0.046 0.023    *        Wilcoxon
-#&gt; 2   1   len   OJ     VC     0.00403 0.012 0.004    **       Wilcoxon
-#&gt; 3   2   len   OJ     VC     1       1     1.000    ns       Wilcoxon</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span>   0.5 len   OJ     VC     0.023<span style='text-decoration: underline;'>2</span>  0.046 0.023    *        Wilcoxon
+#&gt; <span style='color: #BCBCBC;'>2</span>   1   len   OJ     VC     0.004<span style='text-decoration: underline;'>03</span> 0.012 0.004    **       Wilcoxon
+#&gt; <span style='color: #BCBCBC;'>3</span>   2   len   OJ     VC     1       1     1.000    ns       Wilcoxon</div><div class='input'>
 <span class='co'># pairwise comparisons</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># As dose contains more thant two levels ==&gt;</span>
 <span class='co'># pairwise test is automatically performed.</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 8
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 8</span>
 #&gt;   .y.   group1 group2            p      p.adj p.format p.signif method  
-#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
-#&gt; 1 len   0.5    1      0.00000702   0.000014   7.0e-06  ****     Wilcoxon
-#&gt; 2 len   0.5    2      0.0000000841 0.00000025 8.4e-08  ****     Wilcoxon
-#&gt; 3 len   1      2      0.000177     0.00018    0.00018  ***      Wilcoxon</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span> len   0.5    1      0.000<span style='text-decoration: underline;'>007</span>02   0.000<span style='text-decoration: underline;'>014</span>   7.0e-06  ****     Wilcoxon
+#&gt; <span style='color: #BCBCBC;'>2</span> len   0.5    2      0.000<span style='text-decoration: underline;'>000</span>084<span style='text-decoration: underline;'>1</span> 0.000<span style='text-decoration: underline;'>000</span>25 8.4e-08  ****     Wilcoxon
+#&gt; <span style='color: #BCBCBC;'>3</span> len   1      2      0.000<span style='text-decoration: underline;'>177</span>     0.000<span style='text-decoration: underline;'>18</span>    0.00018  ***      Wilcoxon</div><div class='input'>
 <span class='co'># Comparison against reference group</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 8
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 8</span>
 #&gt;   .y.   group1 group2            p      p.adj p.format p.signif method  
-#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
-#&gt; 1 len   0.5    1      0.00000702   0.000007   7.0e-06  ****     Wilcoxon
-#&gt; 2 len   0.5    2      0.0000000841 0.00000017 8.4e-08  ****     Wilcoxon</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span> len   0.5    1      0.000<span style='text-decoration: underline;'>007</span>02   0.000<span style='text-decoration: underline;'>007</span>   7.0e-06  ****     Wilcoxon
+#&gt; <span style='color: #BCBCBC;'>2</span> len   0.5    2      0.000<span style='text-decoration: underline;'>000</span>084<span style='text-decoration: underline;'>1</span> 0.000<span style='text-decoration: underline;'>000</span>17 8.4e-08  ****     Wilcoxon</div><div class='input'>
 <span class='co'># Comparison against all</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>".all."</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 8
-#&gt;   .y.   group1 group2         p    p.adj p.format p.signif method  
-#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   
-#&gt; 1 len   .all.  0.5    0.0000508 0.000150 5.1e-05  ****     Wilcoxon
-#&gt; 2 len   .all.  1      0.764     0.76     0.76404  ns       Wilcoxon
-#&gt; 3 len   .all.  2      0.000179  0.00036  0.00018  ***      Wilcoxon</div><div class='input'>
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>".all."</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 8</span>
+#&gt;   .y.   group1 group2         p   p.adj p.format p.signif method  
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span> len   .all.  0.5    0.000<span style='text-decoration: underline;'>050</span>8 0.000<span style='text-decoration: underline;'>15</span> 5.1e-05  ****     Wilcoxon
+#&gt; <span style='color: #BCBCBC;'>2</span> len   .all.  1      0.764     0.76    0.76404  ns       Wilcoxon
+#&gt; <span style='color: #BCBCBC;'>3</span> len   .all.  2      0.000<span style='text-decoration: underline;'>179</span>  0.000<span style='text-decoration: underline;'>36</span> 0.00018  ***      Wilcoxon</div><div class='input'>
 <span class='co'># Anova and kruskal.test</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
-#&gt;   .y.          p    p.adj p.format p.signif method
-#&gt;   &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; 
-#&gt; 1 len   9.53e-16 9.50e-16 9.5e-16  ****     Anova </div><div class='input'><span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kruskal.test"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
+<span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
+#&gt;   .y.          p   p.adj p.format p.signif method
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>1</span> len   9.53<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span> 9.5<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span> 9.5e-16  ****     Anova </div><div class='input'><span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>df</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kruskal.test"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
 #&gt;   .y.               p        p.adj p.format p.signif method        
-#&gt;   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;         
-#&gt; 1 len   0.00000000148 0.0000000015 1.5e-09  ****     Kruskal-Wallis</div></pre>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         
+#&gt; <span style='color: #BCBCBC;'>1</span> len   0.000<span style='text-decoration: underline;'>000</span>001<span style='text-decoration: underline;'>48</span> 0.000<span style='text-decoration: underline;'>000</span>001<span style='text-decoration: underline;'>5</span> 1.5e-09  ****     Kruskal-Wallis</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

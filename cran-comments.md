@@ -13,5 +13,5 @@ All packages that I could install passed.
 
 ## Update
 
-This is an update version 0.4.0 (see NEWS.md).
+This is an update version 0.5.0 (see NEWS.md).
 

@@ -84,7 +84,7 @@ How to Add P-Values onto Horizontal GGPLOTS
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -258,9 +258,12 @@ step.increase. Useful to group bracket by facet panel.</p></td>
     </tr>
     <tr>
       <th>hide.ns</th>
-      <td><p>logical value. If TRUE, hide ns symbol when displaying
-significance levels. Filter is done by checking the column
-<code>p.adj.signif</code>, <code>p.signif</code>, <code>p.adj</code> and <code>p</code>.</p></td>
+      <td><p>can be logical value or a character vector.</p><ul>
+<li><p>Case when logical value. If TRUE, hide ns symbol when displaying
+ significance levels. Filter is done by checking the column
+ <code>p.adj.signif</code>, <code>p.signif</code>, <code>p.adj</code> and <code>p</code>.</p></li>
+<li><p>Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>vjust</th>
@@ -298,12 +301,12 @@ call to a position adjustment function.</p></td>
  <span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ToothGrowth</span>,
  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>
 )
-<span class='no'>stat.test</span></div><div class='output co'>#&gt; # A tibble: 3 x 8
-#&gt;   .y.   group1 group2        p    p.adj p.format p.signif method
-#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; 
-#&gt; 1 len   0.5    1      1.27e- 7 2.50e- 7 1.3e-07  ****     T-test
-#&gt; 2 len   0.5    2      4.40e-14 1.30e-13 4.4e-14  ****     T-test
-#&gt; 3 len   1      2      1.91e- 5 1.90e- 5 1.9e-05  ****     T-test</div><div class='input'>
+<span class='no'>stat.test</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 8</span>
+#&gt;   .y.   group1 group2        p   p.adj p.format p.signif method
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>1</span> len   0.5    1      1.27<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 7</span> 2.5<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 7</span> 1.3e-07  ****     T-test
+#&gt; <span style='color: #BCBCBC;'>2</span> len   0.5    2      4.40<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span> 1.3<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-13</span> 4.4e-14  ****     T-test
+#&gt; <span style='color: #BCBCBC;'>3</span> len   1      2      1.91<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 5</span> 1.9<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 5</span> 1.9e-05  ****     T-test</div><div class='input'>
 <span class='co'># Create a simple box plot</span>
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>)
 <span class='no'>p</span></div><div class='img'><img src='stat_pvalue_manual-1.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -312,12 +315,12 @@ call to a position adjustment function.</p></td>
  <span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ToothGrowth</span>,
  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>
 )
-<span class='no'>stat.test</span></div><div class='output co'>#&gt; # A tibble: 3 x 8
-#&gt;   .y.   group1 group2        p    p.adj p.format p.signif method
-#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; 
-#&gt; 1 len   0.5    1      1.27e- 7 2.50e- 7 1.3e-07  ****     T-test
-#&gt; 2 len   0.5    2      4.40e-14 1.30e-13 4.4e-14  ****     T-test
-#&gt; 3 len   1      2      1.91e- 5 1.90e- 5 1.9e-05  ****     T-test</div><div class='input'>
+<span class='no'>stat.test</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 8</span>
+#&gt;   .y.   group1 group2        p   p.adj p.format p.signif method
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>1</span> len   0.5    1      1.27<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 7</span> 2.5<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 7</span> 1.3e-07  ****     T-test
+#&gt; <span style='color: #BCBCBC;'>2</span> len   0.5    2      4.40<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span> 1.3<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-13</span> 4.4e-14  ****     T-test
+#&gt; <span style='color: #BCBCBC;'>3</span> len   1      2      1.91<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 5</span> 1.9<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 5</span> 1.9e-05  ****     T-test</div><div class='input'>
 <span class='co'># Add manually p-values from stat.test data</span>
 <span class='co'># First specify the y.position of each comparison</span>
 <span class='no'>stat.test</span> <span class='kw'>&lt;-</span> <span class='no'>stat.test</span> <span class='kw'>%&gt;%</span>
@@ -335,13 +338,13 @@ call to a position adjustment function.</p></td>
   <span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ToothGrowth</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>ref.group</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>
 )
-<span class='no'>stat.test</span></div><div class='output co'>#&gt; # A tibble: 4 x 9
+<span class='no'>stat.test</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 9</span>
 #&gt;   supp  .y.   group1 group2            p      p.adj p.format p.signif method
-#&gt;   &lt;fct&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt; 
-#&gt; 1 VC    len   0.5    1      0.000000681  0.000002   6.8e-07  ****     T-test
-#&gt; 2 VC    len   0.5    2      0.0000000468 0.00000019 4.7e-08  ****     T-test
-#&gt; 3 OJ    len   0.5    1      0.0000878    0.000088   8.8e-05  ****     T-test
-#&gt; 4 OJ    len   0.5    2      0.00000132   0.0000026  1.3e-06  ****     T-test</div><div class='input'><span class='co'># Plot</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> 
+#&gt; <span style='color: #BCBCBC;'>1</span> VC    len   0.5    1      0.000<span style='text-decoration: underline;'>000</span>681  0.000<span style='text-decoration: underline;'>002</span>   6.8e-07  ****     T-test
+#&gt; <span style='color: #BCBCBC;'>2</span> VC    len   0.5    2      0.000<span style='text-decoration: underline;'>000</span>046<span style='text-decoration: underline;'>8</span> 0.000<span style='text-decoration: underline;'>000</span>19 4.7e-08  ****     T-test
+#&gt; <span style='color: #BCBCBC;'>3</span> OJ    len   0.5    1      0.000<span style='text-decoration: underline;'>087</span>8    0.000<span style='text-decoration: underline;'>088</span>   8.8e-05  ****     T-test
+#&gt; <span style='color: #BCBCBC;'>4</span> OJ    len   0.5    2      0.000<span style='text-decoration: underline;'>001</span>32   0.000<span style='text-decoration: underline;'>002</span>6  1.3e-06  ****     T-test</div><div class='input'><span class='co'># Plot</span>
 <span class='no'>bp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggbarplot.html'>ggbarplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
                 <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>,
                 <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_sd"</span>, <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"dose"</span>),

@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 The 'ggpubr' package provides some easy-to-use functions for creating and customizing 'ggplot2'- based publication ready plots. 
      
      
-Find out more at https://rpkgs.datanovia.com/ggpubr.
+Find out more at https://rpkgs.datanovia.com/ggpubr/.
    
 ## Installation and loading
     
@@ -329,7 +329,7 @@ ggdotchart(dfm, x = "name", y = "mpg",
    
 ## More
 
-Find out more at https://rpkgs.datanovia.com/ggpubr.
+Find out more at https://rpkgs.datanovia.com/ggpubr/.
   
   
 ## Blog posts

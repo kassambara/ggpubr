@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggpubr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -405,7 +405,8 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 <span class='co'># Add dots</span>
 <span class='co'># ++++++++++++++++++++++++++</span>
 <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
-   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"dotplot"</span>)</div><div class='output co'>#&gt; <span class='message'>`stat_bindot()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='ggboxplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
+   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"dotplot"</span>)</div><div class='output co'>#&gt; <span class='message'>Bin width defaults to 1/30 of the range of the data. Pick better value with</span>
+#&gt; <span class='message'>`binwidth`.</span></div><div class='img'><img src='ggboxplot-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Add jitter points and change the shape by groups</span>
 <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
    <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)</div><div class='img'><img src='ggboxplot-5.png' alt='' width='700' height='433' /></div><div class='input'>
