@@ -32,15 +32,18 @@ Imports:
     gridExtra,
     glue,
     polynom,
-    rlang,
-    rstatix (>= 0.6.0),
+    rlang (>= 0.4.6),
+    rstatix (>= 0.7.0),
     tibble,
     magrittr
 Suggests:
     grDevices,
     knitr,
     RColorBrewer,
-    gtable
+    gtable,
+    testthat
+Remotes:
+  kassambara/rstatix
 URL: https://rpkgs.datanovia.com/ggpubr/
 BugReports: https://github.com/kassambara/ggpubr/issues
 RoxygenNote: 7.1.0
@@ -52,6 +55,7 @@ Collate:
     'add_summary.R'
     'annotate_figure.R'
     'as_ggplot.R'
+    'as_npc.R'
     'axis_scale.R'
     'background_image.R'
     'bgcolor.R'
@@ -64,7 +68,11 @@ Collate:
     'gene_citation.R'
     'geom_bracket.R'
     'geom_exec.R'
+    'utils-aes.R'
+    'utils_stat_test_label.R'
+    'geom_pwc.R'
     'get_breaks.R'
+    'get_coord.R'
     'get_legend.R'
     'get_palette.R'
     'ggadd.R'
@@ -102,6 +110,7 @@ Collate:
     'ggviolin.R'
     'gradient_color.R'
     'grids.R'
+    'npc_to_data_coord.R'
     'reexports.R'
     'rotate.R'
     'rotate_axis_text.R'
@@ -109,12 +118,16 @@ Collate:
     'set_palette.R'
     'show_line_types.R'
     'show_point_shapes.R'
+    'stat_anova_test.R'
     'stat_central_tendency.R'
     'stat_compare_means.R'
+    'stat_friedman_test.R'
+    'stat_kruskal_test.R'
     'stat_mean.R'
     'stat_overlay_normal_density.R'
     'stat_pvalue_manual.R'
     'stat_regline_equation.R'
+    'stat_welch_anova_test.R'
     'text_grob.R'
     'theme_pubr.R'
     'theme_transparent.R'

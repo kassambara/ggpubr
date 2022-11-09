@@ -93,5 +93,5 @@ StatConfEllipse <- ggproto("StatConfEllipse", Stat,
   if (bary)
   mat.cov = mat.cov/nrow(tab)
   res <- .ellipse(mat.cov, centre = center, level = level, npoints = npoint)
-  return(res)
+  return(data.frame(res, stringsAsFactors = FALSE))
 }

@@ -84,9 +84,13 @@ height for every additional comparison to minimize overlap.}
 \item{step.group.by}{a variable name for grouping brackets before adding
 step.increase. Useful to group bracket by facet panel.}
 
-\item{hide.ns}{logical value. If TRUE, hide ns symbol when displaying
-significance levels. Filter is done by checking the column
-\code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.}
+\item{hide.ns}{can be logical value or a character vector.
+\itemize{
+\item Case when logical value. If TRUE, hide ns symbol when displaying
+ significance levels. Filter is done by checking the column
+ \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
+ \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
+ }}
 
 \item{vjust}{move the text up or down relative to the bracket. Can be also a
 column name available in the data.}

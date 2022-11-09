@@ -7,7 +7,7 @@ NULL
 #' @importFrom dplyr group_by mutate mutate_if group_nest arrange desc
 #' @importFrom purrr map2 map
 #' @importFrom tidyr unite
-#' @importFrom dplyr do
+#' @importFrom dplyr do select distinct
 #' @importFrom dplyr summarise
 #' @importFrom dplyr everything
 #' @importFrom grid drawDetails
