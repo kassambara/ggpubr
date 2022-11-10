@@ -324,7 +324,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 <span class='co'># Basic box plot</span>
 <span class='co'># +++++++++++++++++++++++++++</span>
 
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>)
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>)
 
 <span class='co'># Change the plot orientation: horizontal</span>
 <span class='fu'>ggpar</span>(<span class='no'>p</span>, <span class='kw'>orientation</span> <span class='kw'>=</span> <span class='st'>"horiz"</span>)</div><div class='img'><img src='ggpar-1.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -348,7 +348,7 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
 <span class='co'># ++++++++++++++++++++++</span>
 
 <span class='co'># Change outline colors by groups: dose</span>
- <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='st'>"dose"</span>, <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)
+ <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='st'>"dose"</span>, <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)
  <span class='no'>p2</span></div><div class='img'><img src='ggpar-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Use custom color palette</span>
 <span class='fu'>ggpar</span>(<span class='no'>p2</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>, <span class='st'>"#FC4E07"</span>))</div><div class='img'><img src='ggpar-6.png' alt='' width='700' height='433' /></div><div class='input'>

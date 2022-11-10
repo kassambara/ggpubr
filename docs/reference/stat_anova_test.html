@@ -405,65 +405,69 @@ text up or down.</p></li>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='co'># Create a basic boxplot</span>
 <span class='co'># Add 5% and 10% space to the plot bottom and the top, respectively</span>
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>scale_y_continuous</span>(<span class='kw'>expand</span> <span class='kw'>=</span> <span class='fu'>expansion</span>(<span class='kw'>mult</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>, <span class='fl'>0.1</span>)))
 
 <span class='co'># Add the p-value to the boxplot</span>
 <span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>()</div><div class='img'><img src='stat_anova_test-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Change the label position</span>
 <span class='co'># Using coordinates in data units</span>
-<span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='st'>"1"</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='img'><img src='stat_anova_test-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='st'>"1"</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>hjust</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+}
+
 <span class='co'># Format the p-value differently</span>
 <span class='no'>custom_p_format</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>p</span>) {
   <span class='kw pkg'>rstatix</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rstatix/man/p_value.html'>p_format</a></span>(<span class='no'>p</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>0.0001</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>leading.zero</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 }
 <span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>(
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Anova, italic(p) = {custom_p_format(p)}{p.signif}"</span>
-)</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_multiple_means()`</span></div><div class='img'><img src='stat_anova_test-3.png' alt='' width='700' height='433' /></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='warning'>Warning: Computation failed in `stat_compare_multiple_means()`</span></div><div class='img'><img src='stat_anova_test-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Show a detailed label in italic</span>
-<span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"as_detailed_italic"</span>)</div><div class='img'><img src='stat_anova_test-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"as_detailed_italic"</span>)</div><div class='img'><img src='stat_anova_test-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Faceted plots</span>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='co'># Create a ggplot facet</span>
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>) +
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>) +
   <span class='fu'>scale_y_continuous</span>(<span class='kw'>expand</span> <span class='kw'>=</span> <span class='fu'>expansion</span>(<span class='kw'>mult</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>, <span class='fl'>0.1</span>)))
 <span class='co'># Add p-values</span>
-<span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>()</div><div class='img'><img src='stat_anova_test-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>bxp</span> + <span class='fu'>stat_anova_test</span>()</div><div class='img'><img src='stat_anova_test-4.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Grouped plots</span>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-<span class='no'>bxp2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"group"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)
+<span class='no'>bxp2</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"group"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>)
 
 <span class='co'># For each x-position, computes tests between legend groups</span>
-<span class='no'>bxp2</span> + <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>dose</span>), <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p = {p.format}{p.signif}"</span>)</div><div class='img'><img src='stat_anova_test-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>bxp2</span> + <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>dose</span>), <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p = {p.format}{p.signif}"</span>)</div><div class='img'><img src='stat_anova_test-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>#  For each legend group, computes tests between x variable groups</span>
-<span class='no'>bxp2</span> + <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>dose</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>dose</span>), <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"legend.var"</span>)</div><div class='img'><img src='stat_anova_test-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>bxp2</span> + <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>dose</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>dose</span>), <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"legend.var"</span>)</div><div class='img'><img src='stat_anova_test-6.png' alt='' width='700' height='433' /></div><div class='input'>
 
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Two-way ANOVA: Independent measures</span>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='co'># Visualization: box plots with p-values</span>
 <span class='co'># Two-way interaction p-values between x and legend (group) variables</span>
-<span class='no'>bxp3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(
+<span class='no'>bxp3</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(
   <span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>
 )
-<span class='no'>bxp3</span> + <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>dose</span>),  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"two_way"</span>)</div><div class='img'><img src='stat_anova_test-8.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>bxp3</span> + <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>dose</span>),  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"two_way"</span>)
+
 <span class='co'># One-way repeatead measures ANOVA</span>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='no'>df</span>$<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>3</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>11</span>:<span class='fl'>20</span>, <span class='fl'>3</span>)))
-<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>stat_anova_test</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"one_way_repeated"</span>, <span class='kw'>wid</span> <span class='kw'>=</span> <span class='st'>"id"</span>)
 
 <span class='co'># Two-way repeatead measures ANOVA</span>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='no'>df</span>$<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>6</span>))
-<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>) +
+<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>) +
   <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>supp</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"two_way_repeated"</span>, <span class='kw'>wid</span> <span class='kw'>=</span> <span class='st'>"id"</span>)
 
 <span class='co'># Grouped one-way repeated measures ANOVA</span>
-<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>) +
+<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>) +
   <span class='fu'>stat_anova_test</span>(<span class='fu'>aes</span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>supp</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>supp</span>),
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"one_way_repeated"</span>, <span class='kw'>wid</span> <span class='kw'>=</span> <span class='st'>"id"</span>, <span class='kw'>group.by</span> <span class='kw'>=</span> <span class='st'>"legend.var"</span>)
  }</div></pre>

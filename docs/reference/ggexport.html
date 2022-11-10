@@ -142,7 +142,7 @@
       <th>...</th>
       <td><p>list of plots to be arranged into the grid. The plots can be either
 ggplot2 plot objects, arbitrary gtables or an object of class
-<code><a href='ggarrange.html'>ggarrange</a></code>.</p></td>
+<code>ggarrange</code>.</p></td>
     </tr>
     <tr>
       <th>plotlist</th>
@@ -192,20 +192,20 @@ plots.</p></td>
 <span class='no'>df</span>$<span class='no'>dose</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='no'>df</span>$<span class='no'>dose</span>)
 
 <span class='co'># Box plot</span>
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 <span class='co'># Dot plot</span>
-<span class='no'>dp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggdotplot.html'>ggdotplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+<span class='no'>dp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 <span class='co'># Density plot</span>
-<span class='no'>dens</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
+<span class='no'>dens</span> <span class='kw'>&lt;-</span> <span class='fu'>ggdensity</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 
 <span class='co'># Export to pdf</span>
-<span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>ggexport</span>(<span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"test.pdf"</span>)
 
 <span class='co'># Export to png</span>
-<span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>ggarrange</span>(<span class='no'>bxp</span>, <span class='no'>dp</span>, <span class='no'>dens</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>ggexport</span>(<span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"test.png"</span>)
  }</div></pre>
   </div>

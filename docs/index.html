@@ -118,7 +118,7 @@
 <span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="co"># Change outline and fill colors by groups ("sex")</span>
 <span class="co"># Use custom palette</span>
-<span class="fu"><a href="reference/ggdensity.html">ggdensity</a></span>(<span class="no">wdata</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"weight"</span>,
+<span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggdensity.html">ggdensity</a></span>(<span class="no">wdata</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"weight"</span>,
    <span class="kw">add</span> <span class="kw">=</span> <span class="st">"mean"</span>, <span class="kw">rug</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
    <span class="kw">color</span> <span class="kw">=</span> <span class="st">"sex"</span>, <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"sex"</span>,
    <span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</pre></div>
@@ -127,7 +127,7 @@
 <span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="co"># Change outline and fill colors by groups ("sex")</span>
 <span class="co"># Use custom color palette</span>
-<span class="fu"><a href="reference/gghistogram.html">gghistogram</a></span>(<span class="no">wdata</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"weight"</span>,
+<span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/gghistogram.html">gghistogram</a></span>(<span class="no">wdata</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"weight"</span>,
    <span class="kw">add</span> <span class="kw">=</span> <span class="st">"mean"</span>, <span class="kw">rug</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
    <span class="kw">color</span> <span class="kw">=</span> <span class="st">"sex"</span>, <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"sex"</span>,
    <span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</pre></div>
@@ -151,7 +151,7 @@
 <span class="co"># Change outline colors by groups: dose</span>
 <span class="co"># Use custom color palette</span>
 <span class="co"># Add jitter points and change the shape by groups</span>
- <span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ggboxplot.html">ggboxplot</a></span>(<span class="no">df</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"dose"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"len"</span>,
+ <span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggboxplot.html">ggboxplot</a></span>(<span class="no">df</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"dose"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"len"</span>,
                 <span class="kw">color</span> <span class="kw">=</span> <span class="st">"dose"</span>, <span class="kw">palette</span> <span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
                 <span class="kw">add</span> <span class="kw">=</span> <span class="st">"jitter"</span>, <span class="kw">shape</span> <span class="kw">=</span> <span class="st">"dose"</span>)
  <span class="no">p</span></pre></div>
@@ -160,8 +160,8 @@
  <span class="co"># Add p-values comparing groups</span>
  <span class="co"># Specify the comparisons you want</span>
 <span class="no">my_comparisons</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>( <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"0.5"</span>, <span class="st">"1"</span>), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1"</span>, <span class="st">"2"</span>), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"0.5"</span>, <span class="st">"2"</span>) )
-<span class="no">p</span> + <span class="fu"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">comparisons</span> <span class="kw">=</span> <span class="no">my_comparisons</span>)+ <span class="co"># Add pairwise comparisons p-value</span>
-  <span class="fu"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">label.y</span> <span class="kw">=</span> <span class="fl">50</span>)                   <span class="co"># Add global p-value</span></pre></div>
+<span class="no">p</span> + <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">comparisons</span> <span class="kw">=</span> <span class="no">my_comparisons</span>)+ <span class="co"># Add pairwise comparisons p-value</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">label.y</span> <span class="kw">=</span> <span class="fl">50</span>)                   <span class="co"># Add global p-value</span></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png"></p>
 <div class="sourceCode" id="cb7"><pre class="r">
 
@@ -169,11 +169,11 @@
 <span class="co"># :::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class="co"># Change fill color by groups: dose</span>
 <span class="co"># add boxplot with white fill color</span>
-<span class="fu"><a href="reference/ggviolin.html">ggviolin</a></span>(<span class="no">df</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"dose"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"len"</span>, <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"dose"</span>,
+<span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggviolin.html">ggviolin</a></span>(<span class="no">df</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"dose"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"len"</span>, <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"dose"</span>,
          <span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>),
          <span class="kw">add</span> <span class="kw">=</span> <span class="st">"boxplot"</span>, <span class="kw">add.params</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="st">"white"</span>))+
-  <span class="fu"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">comparisons</span> <span class="kw">=</span> <span class="no">my_comparisons</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="st">"p.signif"</span>)+ <span class="co"># Add significance levels</span>
-  <span class="fu"><a href="reference/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">label.y</span> <span class="kw">=</span> <span class="fl">50</span>)                                      <span class="co"># Add global the p-value </span></pre></div>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">comparisons</span> <span class="kw">=</span> <span class="no">my_comparisons</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="st">"p.signif"</span>)+ <span class="co"># Add significance levels</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html">stat_compare_means</a></span>(<span class="kw">label.y</span> <span class="kw">=</span> <span class="fl">50</span>)                                      <span class="co"># Add global the p-value </span></pre></div>
 <p><img src="tools/README-ggpubr-box-plot-dot-plots-strip-charts-3.png"></p>
 </div>
 <div id="bar-plots" class="section level2">
@@ -204,7 +204,7 @@
 <h3 class="hasAnchor">
 <a href="#ordered-bar-plots" class="anchor"></a>Ordered bar plots</h3>
 <p>Change the fill color by the grouping variable “cyl”. Sorting will be done globally, but not by groups.</p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="reference/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
+<div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
           <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span>
           <span class="kw">color</span> <span class="kw">=</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
           <span class="kw">palette</span> <span class="kw">=</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
@@ -214,7 +214,7 @@
           )</pre></div>
 <p><img src="tools/README-ordered-bar-plots-1.png"></p>
 <p>Sort bars inside each group. Use the argument <strong>sort.by.groups = TRUE</strong>.</p>
-<div class="sourceCode" id="cb10"><pre class="r"><span class="fu"><a href="reference/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
+<div class="sourceCode" id="cb10"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
           <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"cyl"</span>,               <span class="co"># change fill color by cyl</span>
           <span class="kw">color</span> <span class="kw">=</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
           <span class="kw">palette</span> <span class="kw">=</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
@@ -243,7 +243,7 @@
 <span class="co">#&gt; Hornet Sportabout Hornet Sportabout 3.440 18.7 -0.2307345     low   8</span>
 <span class="co">#&gt; Valiant                     Valiant 3.460 18.1 -0.3302874     low   6</span></pre></div>
 <p>Create an ordered barplot, colored according to the level of mpg:</p>
-<div class="sourceCode" id="cb12"><pre class="r"><span class="fu"><a href="reference/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg_z"</span>,
+<div class="sourceCode" id="cb12"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg_z"</span>,
           <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span>
           <span class="kw">color</span> <span class="kw">=</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
           <span class="kw">palette</span> <span class="kw">=</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
@@ -256,7 +256,7 @@
           )</pre></div>
 <p><img src="tools/README-deviation-graphs-1.png"></p>
 <p>Rotate the plot: use rotate = TRUE and sort.val = “desc”</p>
-<div class="sourceCode" id="cb13"><pre class="r"><span class="fu"><a href="reference/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg_z"</span>,
+<div class="sourceCode" id="cb13"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggbarplot.html">ggbarplot</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg_z"</span>,
           <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"mpg_grp"</span>,           <span class="co"># change fill color by mpg_level</span>
           <span class="kw">color</span> <span class="kw">=</span> <span class="st">"white"</span>,            <span class="co"># Set bar border colors to white</span>
           <span class="kw">palette</span> <span class="kw">=</span> <span class="st">"jco"</span>,            <span class="co"># jco journal color palett. see ?ggpar</span>
@@ -279,12 +279,12 @@
 <a href="#lollipop-chart" class="anchor"></a>Lollipop chart</h3>
 <p>Lollipop chart is an alternative to bar plots, when you have a large set of values to visualize.</p>
 <p>Lollipop chart colored by the grouping variable “cyl”:</p>
-<div class="sourceCode" id="cb14"><pre class="r"><span class="fu"><a href="reference/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
+<div class="sourceCode" id="cb14"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
            <span class="kw">color</span> <span class="kw">=</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
            <span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
            <span class="kw">sorting</span> <span class="kw">=</span> <span class="st">"ascending"</span>,                        <span class="co"># Sort value in descending order</span>
            <span class="kw">add</span> <span class="kw">=</span> <span class="st">"segments"</span>,                             <span class="co"># Add segments from y = 0 to dots</span>
-           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
            )</pre></div>
 <p><img src="tools/README-lollipop-chart-1.png"></p>
 <ul>
@@ -294,7 +294,7 @@
 <li>Set <strong>dot.size</strong> to 6.</li>
 <li>Add mpg values as label. <strong>label = “mpg”</strong> or <strong>label = round(dfm$mpg)</strong>.</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="r"><span class="fu"><a href="reference/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
+<div class="sourceCode" id="cb15"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
            <span class="kw">color</span> <span class="kw">=</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
            <span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
            <span class="kw">sorting</span> <span class="kw">=</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
@@ -305,7 +305,7 @@
            <span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">dfm</span>$<span class="no">mpg</span>),                        <span class="co"># Add mpg values as dot labels</span>
            <span class="kw">font.label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">color</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">size</span> <span class="kw">=</span> <span class="fl">9</span>,
                              <span class="kw">vjust</span> <span class="kw">=</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
-           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
            )</pre></div>
 <p><img src="tools/README-lollipop-chart-rotate-1.png"></p>
 <p>Deviation graph:</p>
@@ -313,7 +313,7 @@
 <li>Use y = “mpg_z”</li>
 <li>Change segment color and size: add.params = list(color = “lightgray”, size = 2)</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="r"><span class="fu"><a href="reference/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg_z"</span>,
+<div class="sourceCode" id="cb16"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg_z"</span>,
            <span class="kw">color</span> <span class="kw">=</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
            <span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
            <span class="kw">sorting</span> <span class="kw">=</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
@@ -324,7 +324,7 @@
            <span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">dfm</span>$<span class="no">mpg_z</span>,<span class="fl">1</span>),                        <span class="co"># Add mpg values as dot labels</span>
            <span class="kw">font.label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">color</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">size</span> <span class="kw">=</span> <span class="fl">9</span>,
                              <span class="kw">vjust</span> <span class="kw">=</span> <span class="fl">0.5</span>),               <span class="co"># Adjust label parameters</span>
-           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
            )+
   <span class="fu">geom_hline</span>(<span class="kw">yintercept</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">linetype</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="st">"lightgray"</span>)</pre></div>
 <p><img src="tools/README-lollipop-chart-deviation-1.png"></p>
@@ -333,16 +333,16 @@
 <h3 class="hasAnchor">
 <a href="#clevelands-dot-plot" class="anchor"></a>Cleveland’s dot plot</h3>
 <p>Color y text by groups. Use y.text.col = TRUE.</p>
-<div class="sourceCode" id="cb17"><pre class="r"><span class="fu"><a href="reference/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
+<div class="sourceCode" id="cb17"><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggdotchart.html">ggdotchart</a></span>(<span class="no">dfm</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="st">"name"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"mpg"</span>,
            <span class="kw">color</span> <span class="kw">=</span> <span class="st">"cyl"</span>,                                <span class="co"># Color by groups</span>
            <span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>, <span class="st">"#FC4E07"</span>), <span class="co"># Custom color palette</span>
            <span class="kw">sorting</span> <span class="kw">=</span> <span class="st">"descending"</span>,                       <span class="co"># Sort value in descending order</span>
            <span class="kw">rotate</span> <span class="kw">=</span> <span class="fl">TRUE</span>,                                <span class="co"># Rotate vertically</span>
            <span class="kw">dot.size</span> <span class="kw">=</span> <span class="fl">2</span>,                                 <span class="co"># Large dot size</span>
            <span class="kw">y.text.col</span> <span class="kw">=</span> <span class="fl">TRUE</span>,                            <span class="co"># Color y text by groups</span>
-           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="reference/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
+           <span class="kw">ggtheme</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/theme_pubr.html">theme_pubr</a></span>()                        <span class="co"># ggplot2 theme</span>
            )+
-  <span class="fu"><a href="reference/ggdotchart.html">theme_cleveland</a></span>()                                      <span class="co"># Add dashed grids</span></pre></div>
+  <span class="fu"><a href="https://rdrr.io/pkg/ggpubr/man/ggdotchart.html">theme_cleveland</a></span>()                                      <span class="co"># Add dashed grids</span></pre></div>
 <p><img src="tools/README-cleveland-dot-plots-1.png"></p>
 </div>
 </div>
