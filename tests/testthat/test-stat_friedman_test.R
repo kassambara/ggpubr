@@ -33,6 +33,9 @@ test_that("stat_friedman_test works for grouped plot: group by x var", {
                     label = "p.format", wid = "id", group.by = "x.var")
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
+  # Replace possible "1." (with trailing dot) by "1"
+  # this trailing dot appear only on linux
+  stat.test$label <- gsub(pattern = "^1\\.$", replacement = "1", stat.test$label)
   expect_equal(as.numeric(stat.test$x), c(1, 2, 3))
   expect_equal(as.numeric(stat.test$y), c(36.4, 36.4, 36.4))
   expect_equal(stat.test$label, c("0.011", "0.058", "1"))
