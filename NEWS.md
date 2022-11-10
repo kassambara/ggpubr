@@ -423,7 +423,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 
 - Now, the argument `palette` Can be also a numeric vector of length(groups); in this case a basic color palette is created using the function `grDevices::palette()`.
    
-# Bug fixes
+## Bug fixes
    
 - Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
 
