@@ -14,4 +14,4 @@ All packages that I could install passed.
   
 This is a resubmission of version 0.5.0 . In this version I have:
 
-* fixed an issue in test-stat_friedman_test.R
+* fixed the following issue in 'NEWS.md': Cannot extract version info from the following section titles:Bug fixes
