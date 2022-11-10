@@ -10,8 +10,8 @@ There were no ERRORs, WARNINGs or NOTEs.
 I have also run R CMD check on downstream dependencies of ggpubr. 
 All packages that I could install passed.
 
+## Resubmission
+  
+This is a resubmission of version 0.5.0 . In this version I have:
 
-## Update
-
-This is an update version 0.5.0 (see NEWS.md).
-
+* fixed an issue in test-stat_friedman_test.R
