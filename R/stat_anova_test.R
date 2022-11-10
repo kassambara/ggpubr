@@ -130,9 +130,11 @@ NULL
 #' # Add the p-value to the boxplot
 #' bxp + stat_anova_test()
 #'
+#'\dontrun{
 #' # Change the label position
 #' # Using coordinates in data units
 #' bxp + stat_anova_test(label.x = "1", label.y = 10, hjust = 0)
+#' }
 #'
 #' # Format the p-value differently
 #' custom_p_format <- function(p) {
@@ -166,6 +168,7 @@ NULL
 #' bxp2 + stat_anova_test(aes(group = dose, color = dose), group.by = "legend.var")
 #'
 #'
+#'\dontrun{
 #' # Two-way ANOVA: Independent measures
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # Visualization: box plots with p-values
@@ -176,7 +179,6 @@ NULL
 #' )
 #' bxp3 + stat_anova_test(aes(group = dose),  method = "two_way")
 #'
-#'\dontrun{
 #' # One-way repeatead measures ANOVA
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
