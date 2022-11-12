@@ -45,6 +45,10 @@ create_aes.parse <- function(.list){
 
 parse_expression <- function(x){
   if(is_parsable_aes(x)){
+    # if contains space, just add backsticks using as.name()
+    if(contains_space(x)){
+      if(!is_math_string(x)) return(as.name(x))
+    }
     x <- parse(text = x)[[1]]
   }
   x
@@ -68,4 +72,27 @@ is_numeric_char <- function(x){
   if(is.character(x)) res <- grepl("^[[:digit:]]+$", x)
   else res <- FALSE
   res
+}
+
+
+
+# Fortify variable name----------------------------
+fortify_variable_name <- function(x){
+  if(contains_space(x)){
+    if(!is_math_string(x)){
+
+    }
+  }
+}
+
+# Check if string contains space
+contains_space <- function(x){
+  grepl("\\s", x)
+}
+
+# Check if text contains mathematical operators
+is_math_string <- function(x){
+  operators <- unlist(lapply( c("Arith","Compare","Math"), methods::getGroupMembers ))
+  contains_math_operators <- unlist(lapply(operators, grepl, x, fixed = TRUE))
+  any(contains_math_operators)
 }

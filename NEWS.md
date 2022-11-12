@@ -10,7 +10,10 @@
 ## Minor changes
 
 - `stat_conf_ellipse`: ensure stat returns a data.frame for compatibility with ggplot2 v>=3.4.0
-- Default of the function `create_aes()` is now to parse its input, which can be an expression (#348).
+- `create_aes()`:
+    - Default is now to parse its input, which can be an expression (#348).
+    - Supports space in column names like "Dimension 1"
+    - Unittest added
 - Arguments (`digits` and `table.font.size`) added to `ggsummarystats()` for changing the summary table decimal place and text size (#341).
 - In `stat_pvalue_manual()` the argument `hide.ns` can be either a logical value (TRUE or FALSE) or a character value ("p" or "p.adj" for filtering out non significant by p-value or adjusted p-values).
 - Now, the x-axis tick label names correctly align with the corresponding ticks when the rotation angle of the texts is set to 90. This is automatically achieved by setting internally `vjust = 0.5` (#301).
