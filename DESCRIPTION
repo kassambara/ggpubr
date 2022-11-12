@@ -35,7 +35,8 @@ Imports:
     rlang (>= 0.4.6),
     rstatix (>= 0.7.0),
     tibble,
-    magrittr
+    magrittr,
+    methods
 Suggests:
     grDevices,
     knitr,
@@ -94,7 +95,9 @@ Collate:
     'ggmaplot.R'
     'ggpaired.R'
     'ggparagraph.R'
+    'ggpubr-package.R'
     'ggpubr_args.R'
+    'ggpubr_options.R'
     'ggqqplot.R'
     'utilities_label.R'
     'stat_cor.R'

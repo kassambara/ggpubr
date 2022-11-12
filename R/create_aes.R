@@ -22,6 +22,9 @@ NULL
 #'
 #' @export
 create_aes <- function(.list, parse = TRUE){
+  if(missing(parse)){
+    parse <- base::getOption("ggpubr.parse_aes", default = TRUE)
+  }
   if(parse){
     return(create_aes.parse(.list))
   } else{
