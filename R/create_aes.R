@@ -93,9 +93,14 @@ contains_space <- function(x){
   grepl("\\s", x)
 }
 
+extract_text_inside_parenthesis <- function(x){
+  regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=TRUE))[[1]]
+}
 # Check if text contains mathematical operators
 is_math_string <- function(x){
-  operators <- unlist(lapply( c("Arith","Compare","Math"), methods::getGroupMembers ))
+  # operators <- unlist(lapply( c("Arith","Compare","Math"), methods::getGroupMembers ))
+  operators <- c("+", "-", "*", "^", "%%", "%/%", "/", "==", ">", "<", "!=", "<=", ">=")
   contains_math_operators <- unlist(lapply(operators, grepl, x, fixed = TRUE))
-  any(contains_math_operators)
+  contains_parentheses <- grepl(pattern = "\\(.*\\)", x)
+  any(c(contains_math_operators, contains_parentheses))
 }

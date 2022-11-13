@@ -35,8 +35,7 @@ Imports:
     rlang (>= 0.4.6),
     rstatix (>= 0.7.0),
     tibble,
-    magrittr,
-    methods
+    magrittr
 Suggests:
     grDevices,
     knitr,
