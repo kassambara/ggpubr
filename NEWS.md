@@ -25,6 +25,9 @@
 - Unit tests added for`ggshistogram()` to make sure that it works when:
     - using `after_stat()`,
     - using after_stat() with trailing space inside parentheses.
+- Unit tests added for`ggscatter()` to make sure that:
+    - it works when there is spaces in variable names
+    - it can handle non-standard column names when `ggpubr.parse_aes` global option is set to FALSE (#229)
     
 
 
