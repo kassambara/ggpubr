@@ -9,6 +9,7 @@
 
 ## Minor changes
 
+- Minimum ggplot2 version needed is set to 3.4.0
 - `stat_conf_ellipse`: ensure stat returns a data.frame for compatibility with ggplot2 v>=3.4.0
 - `create_aes()`:
     - Default is now to parse its input, which can be an expression (#348).
