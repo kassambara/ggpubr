@@ -185,7 +185,7 @@ stat_compare_means(label.y = 45)     # Add global Anova p-value
 ggboxplot(ToothGrowth, x = "dose", y = "len",
     color = "dose", palette = "npg")+
 stat_compare_means(method = "anova", label.y = 40)+ # Add global p-value
-stat_compare_means(aes(label = ..p.signif..),
+stat_compare_means(aes(label = after_stat(p.signif)),
                   method = "t.test", ref.group = "0.5")
 
 # Multiple grouping variables
@@ -197,7 +197,7 @@ p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
               facet.by = "dose", short.panel.labs = FALSE)
 # Use only p.format as label. Remove method name.
 p + stat_compare_means(
- aes(label = paste0("p = ", ..p.format..))
+ aes(label = paste0("p = ", after_stat(p.format)))
 )
 
 }

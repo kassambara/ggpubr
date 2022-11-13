@@ -81,7 +81,7 @@ NULL
 #' ggboxplot(ToothGrowth, x = "dose", y = "len",
 #'     color = "dose", palette = "npg")+
 #' stat_compare_means(method = "anova", label.y = 40)+ # Add global p-value
-#' stat_compare_means(aes(label = ..p.signif..),
+#' stat_compare_means(aes(label = after_stat(p.signif)),
 #'                   method = "t.test", ref.group = "0.5")
 #'
 #' # Multiple grouping variables
@@ -93,7 +93,7 @@ NULL
 #'               facet.by = "dose", short.panel.labs = FALSE)
 #'# Use only p.format as label. Remove method name.
 #'p + stat_compare_means(
-#'  aes(label = paste0("p = ", ..p.format..))
+#'  aes(label = paste0("p = ", after_stat(p.format)))
 #')
 #'
 #'@export
@@ -285,10 +285,11 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
   res <- FALSE
   if(!is.null(mapping)){
     if(!is.null(mapping$label)){
-      .label <- as.character(mapping$label)
-      res <- "..p.signif.." %in% .label
+      .label <- rlang::as_label(mapping$label)
+      res <- grepl(pattern = "p\\.signif", .label)
     }
   }
+  print(res)
   return(res)
 }
 
@@ -296,12 +297,12 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
 .update_mapping <- function (mapping, label){
 
   allowed.label <- list(
-    "p.signif" = quote(..p.signif..),
-    "..p.signif.." = quote(..p.signif..),
-    "p.format" = quote(paste0("p = ",..p.format..)),
-    "..p.format.." = quote(paste0("p = ",..p.format..)),
-    "p" = quote(paste0("p = ",..p.format..)),
-    "..p.." = quote(paste0("p = ",..p.format..))
+    "p.signif" = quote(after_stat(p.signif)),
+    "..p.signif.." = quote(after_stat(p.signif)),
+    "p.format" = quote(after_stat(paste0("p = ", p.format))),
+    "..p.format.." = quote(after_stat(paste0("p = ", p.format))),
+    "p" = quote(after_stat(paste0("p = ", p.format))),
+    "..p.." = quote(after_stat(paste0("p = ", p.format)))
   )
 
   if(!is.null(label)){
@@ -329,5 +330,33 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
 }
 
 
+# The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0.
+# after_stat(p.signif) should be used. This function makes automatic
+# conversion if user specified ..p.signif..
+#
+# NOT USED FUNCTION
+convert_label_dotdot_notation_to_after_stat <- function(mapping){
+  if(!is.null(mapping) ){
+    label <- mapping$label
+    if(!is.null(mapping$label)){
+      label <-  rlang::as_label(mapping$label)
+      label <- gsub(
+        pattern = "..p.signif..", replacement = "after_stat(p.signif)",
+        x = label, fixed = TRUE
+        )
+      label <- gsub(
+        pattern = "..p.format..", replacement = "after_stat(p.format)",
+        x = label, fixed = TRUE
+      )
+      label <- gsub(
+        pattern = "..p..", replacement = "after_stat(p)",
+        x = label, fixed = TRUE
+      )
+      mapping$label <- parse(text = label)[[1]]
+    }
+
+  }
+  mapping
+}
 
 

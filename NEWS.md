@@ -14,6 +14,9 @@
 
 - Minimum ggplot2 version needed is set to 3.4.0
 - `stat_conf_ellipse`: ensure stat returns a data.frame for compatibility with ggplot2 v>=3.4.0
+- `stat_compare_means()`:  
+    - Unit tests added
+    - Updated to use `after_stat(p.signif)` as the dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0 (#509).
 - `create_aes()`:
     - Default is now to parse its input, which can be an expression (#348). If you want ggpubr to handle non-standard column names (#229), like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
     - Supports space in column names like "Dimension 1"
