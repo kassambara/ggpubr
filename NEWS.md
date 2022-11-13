@@ -5,6 +5,9 @@
 
 - New functions `stat_anova_test()`, `stat_kruskal_test()`, `stat_welch_anova_test()`, `stat_friedman_test()` and `geom_pwc()` added. These are flexible function to add p-values onto ggplot with more options. The function `geom_pwc()` is for adding pairwise comparisons p-values to a ggplot; supportted statistical methods include "wilcox_test", "t_test", "sign_test", "dunn_test", "emmeans_test", "tukey_hsd" and "games_howell_test". 
 - New functions to convert character vector coordinates into NPC (normalized parent coordinates) and data coordinates: `as_npc()`, `npc_to_data_coordinates()` and `get_coord()`. 
+- Global options:
+    - New function `ggpubr_options()` to display allowed global options in ggpubr
+    - New available package options: `ggpubr.parse_aes`. logical indicating whether to parse or not the aesthetics variables names. Default is `TRUE`. For example, if you want ggpubr to handle non-standard column names, like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
 
 
 ## Minor changes
@@ -12,13 +15,17 @@
 - Minimum ggplot2 version needed is set to 3.4.0
 - `stat_conf_ellipse`: ensure stat returns a data.frame for compatibility with ggplot2 v>=3.4.0
 - `create_aes()`:
-    - Default is now to parse its input, which can be an expression (#348).
+    - Default is now to parse its input, which can be an expression (#348). If you want ggpubr to handle non-standard column names (#229), like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
     - Supports space in column names like "Dimension 1"
     - Unittest added
 - Arguments (`digits` and `table.font.size`) added to `ggsummarystats()` for changing the summary table decimal place and text size (#341).
 - In `stat_pvalue_manual()` the argument `hide.ns` can be either a logical value (TRUE or FALSE) or a character value ("p" or "p.adj" for filtering out non significant by p-value or adjusted p-values).
 - Now, the x-axis tick label names correctly align with the corresponding ticks when the rotation angle of the texts is set to 90. This is automatically achieved by setting internally `vjust = 0.5` (#301).
 - `Capital NS.` is no longer displayed by `stat_compare_means()` (#171)
+- Unit tests added for`ggshistogram()` to make sure that it works when:
+    - using `after_stat()`,
+    - using after_stat() with trailing space inside parentheses.
+    
 
 
 
