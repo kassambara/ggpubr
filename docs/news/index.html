@@ -149,6 +149,8 @@
 </ul>
 </li>
 <li>
+<code><a href="../reference/ggdensity.html">ggdensity()</a></code> and <code><a href="../reference/gghistogram.html">gghistogram()</a></code>: dot-dot notation (<code>..density..</code>, <code>..count..</code>) replaced by <code>after_stat(density)</code> and <code>after_stat(count)</code>, respectively for compatibility with ggplot2 3.4.0.</li>
+<li>
 <code><a href="../reference/create_aes.html">create_aes()</a></code>:
 <ul>
 <li>Default is now to parse its input, which can be an expression (<a href='https://github.com/kassambara/ggpubr/issues/348'>#348</a>). If you want ggpubr to handle non-standard column names (<a href='https://github.com/kassambara/ggpubr/issues/229'>#229</a>), like A-A, without parsing, then set this option to FALSE using <code><a href="https://rdrr.io/r/base/options.html">options(ggpubr.parse_aes = FALSE)</a></code>.</li>

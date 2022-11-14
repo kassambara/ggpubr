@@ -14,5 +14,4 @@ All packages that I could install passed.
   
 This is a resubmission of version 0.5.0 . In this version I have:
 
-* fixed the following issue in 'NEWS.md': Cannot extract version info from the following section titles:Bug fixes
-* simplified the examples in `stat_anova_test`, so that the execution < 10s
+* fixed issues so that the downstream dependencies `BinMat` passed R CMD check
