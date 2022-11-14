@@ -7,7 +7,7 @@
 gghistogram(
   data,
   x,
-  y = "..count..",
+  y = "count",
   combine = FALSE,
   merge = FALSE,
   weight = NULL,
@@ -44,7 +44,7 @@ gghistogram(
 
 \item{x}{variable to be drawn.}
 
-\item{y}{one of "..density.." or "..count..".}
+\item{y}{one of "density" or "count".}
 
 \item{combine}{logical value. Default is FALSE. Used only when y is a vector
 containing multiple variables to plot. If TRUE, create a multi-panel plot by

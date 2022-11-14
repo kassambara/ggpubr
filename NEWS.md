@@ -17,6 +17,7 @@
 - `stat_compare_means()`:  
     - Unit tests added
     - Updated to use `after_stat(p.signif)` as the dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0 (#509).
+- `ggdensity()` and `gghistogram()`: dot-dot notation (`..density..`, `..count..`) replaced by `after_stat(density)` and `after_stat(count)`, respectively for compatibility with ggplot2 3.4.0.
 - `create_aes()`:
     - Default is now to parse its input, which can be an expression (#348). If you want ggpubr to handle non-standard column names (#229), like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
     - Supports space in column names like "Dimension 1"

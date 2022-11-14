@@ -4,7 +4,7 @@ NULL
 #' @description Create a histogram plot.
 #' @inheritParams ggboxplot
 #' @param x variable to be drawn.
-#' @param y one of "..density.." or "..count..".
+#' @param y one of "density" or "count".
 #' @param weight a variable name available in the input data for creating a weighted histogram.
 #' @param color,fill histogram line color and fill color.
 #' @param linetype line type. See \code{\link{show_line_types}}.
@@ -71,7 +71,7 @@ NULL
 #' # Weighted histogram
 #' gghistogram(iris, x = "Sepal.Length", weight = "Petal.Length")
 #' @export
-gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE,
+gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
                         weight = NULL, color = "black", fill = NA, palette = NULL,
                         size = NULL, linetype = "solid", alpha = 0.5,
                         bins = NULL, binwidth = NULL,
@@ -125,7 +125,7 @@ gghistogram <- function(data, x, y = "..count..", combine = FALSE, merge = FALSE
 
 }
 
-gghistogram_core <- function(data, x, y = "..count..", weight = NULL,
+gghistogram_core <- function(data, x, y = "count", weight = NULL,
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
                       bins = NULL, binwidth = NULL,
@@ -160,6 +160,9 @@ gghistogram_core <- function(data, x, y = "..count..", weight = NULL,
   if(is.null(add.params$size)) add.params$size <- size
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
   # if(add_density) y <- "..density.."
+
+  if (y %in% c("..density..", "density")) y <- "after_stat(density)"
+  else if (y %in% c("..count..", "count")) y <- "after_stat(count)"
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 
