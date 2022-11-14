@@ -12,6 +12,7 @@
 
 ## Minor changes
 
+- Minimum rstatix version needed is set to 0.7.1
 - Minimum ggplot2 version needed is set to 3.4.0
 - `stat_conf_ellipse`: ensure stat returns a data.frame for compatibility with ggplot2 v>=3.4.0
 - `stat_compare_means()`:  
