@@ -463,7 +463,7 @@ automatically removed and the <code>dodge</code> value is set to zero.</p></td>
 
 <span class='co'># Create a box plot</span>
 <span class='co'># Add 10% spaces between the p-value labels and the plot border</span>
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(
   <span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#00AFBB"</span>, <span class='st'>"#E7B800"</span>)
 ) +
@@ -511,7 +511,7 @@ automatically removed and the <code>dodge</code> value is set to zero.</p></td>
 <span class='co'>#_____________________________________</span>
 
 <span class='co'># Box plots with p-values</span>
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(
   <span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>,
   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>
 )
@@ -523,7 +523,7 @@ automatically removed and the <code>dodge</code> value is set to zero.</p></td>
   ) +
   <span class='fu'>scale_y_continuous</span>(<span class='kw'>expand</span> <span class='kw'>=</span> <span class='fu'>expansion</span>(<span class='kw'>mult</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.1</span>)))</div><div class='img'><img src='geom_pwc-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Bar plots with p-values</span>
-<span class='no'>bp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggbarplot</span>(
+<span class='no'>bp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggbarplot.html'>ggbarplot</a></span>(
   <span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>,
   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"npg"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"mean_sd"</span>,
   <span class='kw'>position</span> <span class='kw'>=</span> <span class='fu'>position_dodge</span>(<span class='fl'>0.8</span>)

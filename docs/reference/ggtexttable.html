@@ -521,7 +521,7 @@ specified, overrides the just setting.</p></td>
 <span class='fu'>ggtexttable</span>(<span class='no'>df</span>,
            <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(
              <span class='kw'>colnames.style</span> <span class='kw'>=</span> <span class='fu'>colnames_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"white"</span>),
-             <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>get_palette</span>(<span class='st'>"RdBu"</span>, <span class='fl'>6</span>))
+             <span class='kw'>tbody.style</span> <span class='kw'>=</span> <span class='fu'>tbody_style</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'><a href='get_palette.html'>get_palette</a></span>(<span class='st'>"RdBu"</span>, <span class='fl'>6</span>))
            )
 )</div><div class='img'><img src='ggtexttable-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Text justification</span>
@@ -594,19 +594,19 @@ specified, overrides the just setting.</p></td>
 <span class='co'># Combine density plot and summary table</span>
 <span class='co'>#:::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Density plot of "Sepal.Length"</span>
-<span class='no'>density.p</span> <span class='kw'>&lt;-</span> <span class='fu'>ggdensity</span>(<span class='no'>iris</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>,
+<span class='no'>density.p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>iris</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>,
                       <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"Species"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 
 <span class='co'># Draw the summary table of Sepal.Length</span>
 <span class='co'># Descriptive statistics by groups</span>
-<span class='no'>stable</span> <span class='kw'>&lt;-</span> <span class='fu'>desc_statby</span>(<span class='no'>iris</span>, <span class='kw'>measure.var</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>,
+<span class='no'>stable</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='desc_statby.html'>desc_statby</a></span>(<span class='no'>iris</span>, <span class='kw'>measure.var</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>,
                      <span class='kw'>grps</span> <span class='kw'>=</span> <span class='st'>"Species"</span>)
 <span class='no'>stable</span> <span class='kw'>&lt;-</span> <span class='no'>stable</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Species"</span>, <span class='st'>"length"</span>, <span class='st'>"mean"</span>, <span class='st'>"sd"</span>)]
 <span class='no'>stable.p</span> <span class='kw'>&lt;-</span> <span class='fu'>ggtexttable</span>(<span class='no'>stable</span>, <span class='kw'>rows</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
                        <span class='kw'>theme</span> <span class='kw'>=</span> <span class='fu'>ttheme</span>(<span class='st'>"mOrange"</span>))
 
 <span class='co'># Arrange the plots on the same page</span>
-<span class='fu'>ggarrange</span>(<span class='no'>density.p</span>, <span class='no'>stable.p</span>,
+<span class='fu'><a href='ggarrange.html'>ggarrange</a></span>(<span class='no'>density.p</span>, <span class='no'>stable.p</span>,
          <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
          <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0.5</span>))</div><div class='img'><img src='ggtexttable-16.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>

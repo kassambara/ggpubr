@@ -321,46 +321,46 @@ p-values to a horizontal ggplot (generated using
 <span class='no'>df</span>$<span class='no'>dose</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>df</span>$<span class='no'>dose</span>)
 
 <span class='co'># Add bracket with labels</span>
-<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>geom_bracket</span>(
     <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='st'>"1"</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fl'>30</span>,
     <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"t-test, p &lt; 0.05"</span>
   )</div><div class='img'><img src='geom_bracket-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Customize bracket tip.length tip.length</span>
-<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>geom_bracket</span>(
     <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='st'>"1"</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fl'>30</span>,
     <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"t-test, p &lt; 0.05"</span>, <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.02</span>)
   )</div><div class='img'><img src='geom_bracket-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>#Using plotmath expression</span>
-<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
  <span class='fu'>geom_bracket</span>(
    <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='st'>"0.5"</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='st'>"1"</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fl'>30</span>,
    <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"list(~italic(p)&lt;=0.001)"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"expression"</span>,
    <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.02</span>)
  )</div><div class='img'><img src='geom_bracket-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Specify multiple brackets manually</span>
-<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>geom_bracket</span>(
     <span class='kw'>xmin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>),
     <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>30</span>, <span class='fl'>35</span>), <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"***"</span>, <span class='st'>"**"</span>),
     <span class='kw'>tip.length</span> <span class='kw'>=</span> <span class='fl'>0.01</span>
   )</div><div class='img'><img src='geom_bracket-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Compute statistical tests and add p-values</span>
-<span class='no'>stat.test</span> <span class='kw'>&lt;-</span> <span class='fu'>compare_means</span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>ToothGrowth</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>)
-<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='no'>stat.test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='compare_means.html'>compare_means</a></span>(<span class='no'>len</span> ~ <span class='no'>dose</span>, <span class='no'>ToothGrowth</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>)
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>geom_bracket</span>(
     <span class='fu'>aes</span>(<span class='kw'>xmin</span> <span class='kw'>=</span> <span class='no'>group1</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='no'>group2</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='no'>p</span>, <span class='fl'>2</span>)),
     <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>stat.test</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fl'>35</span>
   )</div><div class='img'><img src='geom_bracket-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Increase step length between brackets</span>
-<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>geom_bracket</span>(
     <span class='fu'>aes</span>(<span class='kw'>xmin</span> <span class='kw'>=</span> <span class='no'>group1</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='no'>group2</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='no'>p</span>, <span class='fl'>2</span>)),
     <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>stat.test</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fl'>35</span>, <span class='kw'>step.increase</span> <span class='kw'>=</span> <span class='fl'>0.1</span>
   )</div><div class='img'><img src='geom_bracket-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Or specify the positions of each comparison</span>
-<span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>geom_bracket</span>(
     <span class='fu'>aes</span>(<span class='kw'>xmin</span> <span class='kw'>=</span> <span class='no'>group1</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='no'>group2</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>signif</a></span>(<span class='no'>p</span>, <span class='fl'>2</span>)),
     <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>stat.test</span>, <span class='kw'>y.position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>32</span>, <span class='fl'>35</span>, <span class='fl'>38</span>)

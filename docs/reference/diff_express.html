@@ -141,7 +141,7 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>diff_express</span>)
 
 <span class='co'># Default plot</span>
-<span class='fu'>ggmaplot</span>(<span class='no'>diff_express</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='st'>"Group 1"</span> <span class='kw'>%-&gt;%</span> <span class='st'>"Group 2"</span>),
+<span class='fu'><a href='ggmaplot.html'>ggmaplot</a></span>(<span class='no'>diff_express</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='st'>"Group 1"</span> <span class='kw'>%-&gt;%</span> <span class='st'>"Group 2"</span>),
    <span class='kw'>fdr</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>fc</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
    <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#B31B21"</span>, <span class='st'>"#1465AC"</span>, <span class='st'>"darkgray"</span>),
    <span class='kw'>genenames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span>(<span class='no'>diff_express</span>$<span class='no'>name</span>),
@@ -151,7 +151,7 @@
    <span class='kw'>font.main</span> <span class='kw'>=</span> <span class='st'>"bold"</span>,
    <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span>())</div><div class='img'><img src='diff_express-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Add rectangle around labesl</span>
-<span class='fu'>ggmaplot</span>(<span class='no'>diff_express</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='st'>"Group 1"</span> <span class='kw'>%-&gt;%</span> <span class='st'>"Group 2"</span>),
+<span class='fu'><a href='ggmaplot.html'>ggmaplot</a></span>(<span class='no'>diff_express</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='st'>"Group 1"</span> <span class='kw'>%-&gt;%</span> <span class='st'>"Group 2"</span>),
    <span class='kw'>fdr</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>fc</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
    <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#B31B21"</span>, <span class='st'>"#1465AC"</span>, <span class='st'>"darkgray"</span>),
    <span class='kw'>genenames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/vector.html'>as.vector</a></span>(<span class='no'>diff_express</span>$<span class='no'>name</span>),

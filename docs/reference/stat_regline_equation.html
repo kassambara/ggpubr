@@ -258,26 +258,26 @@ the default plot specification, e.g. <code><a href='https://ggplot2.tidyverse.or
  package).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>ggscatter</code></p></div>
+    <div class='dont-index'><p><code><a href='ggscatter.html'>ggscatter</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Simple scatter plot with correlation coefficient and</span>
 <span class='co'># regression line</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>ggscatter</span>(<span class='no'>mtcars</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>) +
-  <span class='fu'>stat_cor</span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>34</span>) +
+<span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>mtcars</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"wt"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"mpg"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>) +
+  <span class='fu'><a href='stat_cor.html'>stat_cor</a></span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>34</span>) +
   <span class='fu'>stat_regline_equation</span>(<span class='kw'>label.x</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>32</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula = 'y ~ x'</span></div><div class='img'><img src='stat_regline_equation-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Groupped scatter plot</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
-<span class='fu'>ggscatter</span>(
+<span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(
   <span class='no'>iris</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Sepal.Width"</span>,
   <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"Species"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>,
   <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"reg.line"</span>
   ) +
   <span class='fu'>facet_wrap</span>(~<span class='no'>Species</span>) +
-  <span class='fu'>stat_cor</span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>4.4</span>) +
+  <span class='fu'><a href='stat_cor.html'>stat_cor</a></span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>4.4</span>) +
   <span class='fu'>stat_regline_equation</span>(<span class='kw'>label.y</span> <span class='kw'>=</span> <span class='fl'>4.2</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula = 'y ~ x'</span></div><div class='img'><img src='stat_regline_equation-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Polynomial equation</span>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::::::</span>
@@ -299,7 +299,7 @@ the default plot specification, e.g. <code><a href='https://ggplot2.tidyverse.or
     <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>formula</span>
   ) +
   <span class='fu'>theme_bw</span>()
-<span class='fu'>ggpar</span>(<span class='no'>p</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)</div><div class='img'><img src='stat_regline_equation-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='ggpar.html'>ggpar</a></span>(<span class='no'>p</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)</div><div class='img'><img src='stat_regline_equation-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

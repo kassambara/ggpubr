@@ -303,7 +303,7 @@ as described in <code><a href='https://rdrr.io/r/grDevices/plotmath.html'>?plotm
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments passed to the function <code>geom_bracket()</code> or
+      <td><p>other arguments passed to the function <code><a href='geom_bracket.html'>geom_bracket()</a></code> or
 <code>geom_text()</code></p></td>
     </tr>
     </table>
@@ -344,7 +344,7 @@ as described in <code><a href='https://rdrr.io/r/grDevices/plotmath.html'>?plotm
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='co'># Create a basic boxplot</span>
 <span class='co'># Add 5% and 10% space to the plot bottom and the top, respectively</span>
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>) +
   <span class='fu'>scale_y_continuous</span>(<span class='kw'>expand</span> <span class='kw'>=</span> <span class='fu'>expansion</span>(<span class='kw'>mult</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>, <span class='fl'>0.1</span>)))
 
 <span class='co'># Add the p-value to the boxplot</span>
@@ -367,7 +367,7 @@ as described in <code><a href='https://rdrr.io/r/grDevices/plotmath.html'>?plotm
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='co'># Create a ggplot facet</span>
 <span class='no'>df</span>$<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>,<span class='fl'>6</span>)
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>) +
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='st'>"supp"</span>) +
  <span class='fu'>scale_y_continuous</span>(<span class='kw'>expand</span> <span class='kw'>=</span> <span class='fu'>expansion</span>(<span class='kw'>mult</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>, <span class='fl'>0.1</span>)))
 <span class='co'># Add p-values</span>
 <span class='no'>bxp</span> + <span class='fu'>stat_friedman_test</span>(<span class='fu'>aes</span>(<span class='kw'>wid</span> <span class='kw'>=</span> <span class='no'>id</span>))</div><div class='img'><img src='stat_friedman_test-5.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -375,7 +375,7 @@ as described in <code><a href='https://rdrr.io/r/grDevices/plotmath.html'>?plotm
 <span class='co'># Grouped plots</span>
 <span class='co'>#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class='no'>df</span>$<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>,<span class='fl'>6</span>)
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"supp"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 
 <span class='co'># For each legend group, computes tests within x variable groups</span>
 <span class='no'>bxp</span> + <span class='fu'>stat_friedman_test</span>(<span class='fu'>aes</span>(<span class='kw'>wid</span> <span class='kw'>=</span> <span class='no'>id</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>supp</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='no'>supp</span>), <span class='kw'>within</span> <span class='kw'>=</span> <span class='st'>"x"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: `within`</span></div><div class='img'><img src='stat_friedman_test-6.png' alt='' width='700' height='433' /></div><div class='input'>

@@ -153,7 +153,7 @@ when .scale  = "log2" or "log10".</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Basic scatter plots</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cars</span>)
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>ggscatter</span>(<span class='no'>cars</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"speed"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"dist"</span>)
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggscatter.html'>ggscatter</a></span>(<span class='no'>cars</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"speed"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"dist"</span>)
 <span class='no'>p</span></div><div class='img'><img src='axis_scale-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Set log scale</span>
 <span class='no'>p</span> + <span class='fu'>yscale</span>(<span class='st'>"log2"</span>, <span class='kw'>.format</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='axis_scale-2.png' alt='' width='700' height='433' /></div></pre>

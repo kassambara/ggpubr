@@ -235,7 +235,7 @@ unique legend will be created for arranged plots.</p></td>
     <tr>
       <th>legend.grob</th>
       <td><p>a legend grob as returned by the function
-<code>get_legend()</code>. If provided, it will be used as the common
+<code><a href='get_legend.html'>get_legend</a>()</code>. If provided, it will be used as the common
 legend.</p></td>
     </tr>
     </table>
@@ -246,7 +246,7 @@ legend.</p></td>
   list of ggplot.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>annotate_figure()</code></p></div>
+    <div class='dont-index'><p><code><a href='annotate_figure.html'>annotate_figure</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"ToothGrowth"</span>)
@@ -256,13 +256,13 @@ legend.</p></td>
 <span class='co'># Create some plots</span>
 <span class='co'># ::::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Box plot</span>
-<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggboxplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+<span class='no'>bxp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggboxplot.html'>ggboxplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 <span class='co'># Dot plot</span>
-<span class='no'>dp</span> <span class='kw'>&lt;-</span> <span class='fu'>ggdotplot</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
+<span class='no'>dp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggdotplot.html'>ggdotplot</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>,
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 <span class='co'># Density plot</span>
-<span class='no'>dens</span> <span class='kw'>&lt;-</span> <span class='fu'>ggdensity</span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
+<span class='no'>dens</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ggdensity.html'>ggdensity</a></span>(<span class='no'>df</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"jco"</span>)
 
 <span class='co'># Arrange</span>
 <span class='co'># ::::::::::::::::::::::::::::::::::::::::::::::::::</span>

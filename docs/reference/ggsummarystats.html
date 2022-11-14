@@ -135,7 +135,7 @@
   <span class='kw'>facet.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>labeller</span> <span class='kw'>=</span> <span class='st'>"label_value"</span>,
   <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_pubr</span>(),
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(),
   <span class='no'>...</span>
 )
 
@@ -154,7 +154,7 @@
   <span class='kw'>heights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.8</span>, <span class='fl'>0.2</span>),
   <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>table.font.size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'>theme_pubr</span>(),
+  <span class='kw'>ggtheme</span> <span class='kw'>=</span> <span class='fu'><a href='theme_pubr.html'>theme_pubr</a></span>(),
   <span class='no'>...</span>
 )
 
@@ -226,8 +226,8 @@ theme_minimal(), theme_classic(), theme_void(), ....</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments passed to the function <code>ggpar()</code>,
-<code>facet()</code> or <code>ggarrange()</code> when printing the plot.</p></td>
+      <td><p>other arguments passed to the function <code><a href='ggpar.html'>ggpar</a>()</code>,
+<code><a href='facet.html'>facet</a>()</code> or <code><a href='ggarrange.html'>ggarrange</a>()</code> when printing the plot.</p></td>
     </tr>
     <tr>
       <th>summaries</th>
@@ -300,9 +300,9 @@ legend = "none".</p></td>
 <span class='co'>#::::::::::::::::::::::::::::::::::::::::::::::::</span>
 <span class='co'># Compute summary statistics</span>
 <span class='no'>summary.stats</span> <span class='kw'>&lt;-</span> <span class='no'>df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>group_by</span>(<span class='no'>dose</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>get_summary_stats</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"common"</span>)
-<span class='no'>summary.stats</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 11</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>dose</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/rstatix/man/get_summary_stats.html'>get_summary_stats</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"common"</span>)
+<span class='no'>summary.stats</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 × 11</span>
 #&gt;   dose  variable     n   min   max median   iqr  mean    sd    se    ci
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> 0.5   len         20   4.2  21.5   9.85  5.03  10.6  4.5  1.01   2.11
