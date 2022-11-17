@@ -7,6 +7,7 @@
 
 ## Minor changes
 
+- Enable faceting by column names with spaces (#391)
 
 ## Bug fixes
   
