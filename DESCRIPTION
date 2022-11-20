@@ -23,7 +23,7 @@ Imports:
     ggsci,
     stats,
     utils,
-    tidyr,
+    tidyr (>= 1.2.1.9001),
     purrr,
     dplyr (>= 0.7.1),
     cowplot,
@@ -133,3 +133,5 @@ Collate:
     'theme_transparent.R'
     'utils-geom-signif.R'
     'utils-pipe.R'
+Remotes:  
+    tidyverse/tidyr
