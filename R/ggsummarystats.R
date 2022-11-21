@@ -98,6 +98,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
     ggtheme <- theme_pubr(border = TRUE)
   }
   if (is.null(names(y))) names(y) <- y
+  y_values <- as.vector(y)
 
   df <- as.data.frame(data)
   df$x <- df[[x]]
@@ -111,7 +112,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
 
   df <- df %>%
     mutate_if(is.double, round, digits) %>%
-    unite(col = "label", !!!syms(y), sep = "\n") %>%
+    unite(col = "label", !!!syms(y_values), sep = "\n") %>%
     mutate(y = paste(names(y), collapse = "\n"))
   p <- ggplot(data, aes(x, y)) +
     geom_exec(
