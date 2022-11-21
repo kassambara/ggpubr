@@ -111,6 +111,7 @@ reference:
     contents:
       - diff_express
       - gene_citation
+      - gene_expression
   - title: Others
     contents:
       - desc_statby

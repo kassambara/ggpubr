@@ -140,9 +140,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
   #:::::::::::::::::::::::::::::::::::::::::::::::::::::
   # ex: formula = c(GATA3, XBP1, DEPDC1) ~ group
   if(.is_multi_formula(formula)){
-    data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
-                           gather_cols =  variables)
-    data$.y. <- factor(data$.y., levels = unique(data$.y.))
+    data <- df_gather(data, cols = variables, names_to = ".y.", values_to = ".value.") %>%
+      dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
     response.var <- ".value."
     group.by = c(group.by,  ".y.")
     formula <- .collapse(response.var, group, sep = " ~ ") %>% stats::as.formula()
@@ -167,10 +166,9 @@ compare_means <- function(formula, data, method = "wilcox.test",
       # Create a new grouping column gathering group and the .all. columns
       .group.name. <- NULL
       data <- data %>%
-        tidyr::gather_(key_col = ".group.name.", value_col = ".group.",
-               gather_cols = c(".group.", ".all.")) %>%
+        df_gather(cols = c(".group.", ".all."), names_to =  ".group.name.", values_to = ".group.") %>%
         dplyr::select(-.group.name.)
-      data$.group. <- factor(data$.group., levels = c(".all.", group.levs))
+      data[[".group."]] <- factor(data[[".group."]], levels = c(".all.", group.levs))
       group <- ".group."
       formula <- .collapse(response.var, group, sep = " ~ ") %>% stats::as.formula()
 
@@ -399,9 +397,9 @@ compare_means <- function(formula, data, method = "wilcox.test",
   variables <- .formula_left_variables(formula)
   group <- .formula_right_variables(formula)
 
-  data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
-                         gather_cols =  variables)
-  data$.y. <- factor(data$.y., levels = unique(data$.y.))
+  data <- data %>%
+    df_gather(cols = variables, names_to = ".y.", values_to = ".value.") %>%
+    dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
   formula <- .collapse(".value.", group, sep = " ~ ") %>% stats::as.formula()
   group.by = c(group.by, ".y.")
 
