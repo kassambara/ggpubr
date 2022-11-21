@@ -11,7 +11,7 @@ Description: The 'ggplot2' package is excellent and flexible for elegant data
     the syntax is opaque and this raises the level of difficulty for researchers
     with no advanced R programming skills. 'ggpubr' provides some easy-to-use
     functions for creating and customizing 'ggplot2'- based publication ready plots.
-License: GPL-2
+License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
 Depends:
