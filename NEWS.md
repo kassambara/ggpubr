@@ -9,10 +9,10 @@
 
 ## Minor changes
 
+- Replacing deprecated `gather_()` in both internal (`.check_data()`) and exported functions (`compare_means()`) (#513)
 - `stat_compare_means()`: The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0; `after_stat(p.signif)` should be used; updated so that `..p.signif..` is automatically converted into `after_stat()` format without warning for bacward compatibility.
-  
-# conversion if user specified ..p.signif..
 - Enable faceting by column names with spaces (#391)
+
 
 ## Bug fixes
   
