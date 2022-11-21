@@ -317,7 +317,7 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
     mapping <- aes()
     mapping$label <- allowed.label[[label]]
   }
-  mapping
+  convert_label_dotdot_notation_to_after_stat(mapping)
 }
 
 # Hide NS in map_signif_level
@@ -333,8 +333,6 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
 # The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0.
 # after_stat(p.signif) should be used. This function makes automatic
 # conversion if user specified ..p.signif..
-#
-# NOT USED FUNCTION
 convert_label_dotdot_notation_to_after_stat <- function(mapping){
   if(!is.null(mapping) ){
     label <- mapping$label
