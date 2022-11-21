@@ -55,8 +55,10 @@ ggpaired <- function(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
 
   if(!missing(cond1) & !missing(cond2)){
     data <- data %>%
-      tidyr::gather_(key_col = "condition", value_col = "val",
-                     gather_cols = c(cond1, cond2))
+      df_gather(
+        cols = c(cond1, cond2),
+        names_to = "condition", values_to = "val"
+      )
     data$condition<- factor(data$condition, levels = c(cond1, cond2))
     x <- "condition"
     y <- "val"

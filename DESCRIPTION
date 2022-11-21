@@ -133,5 +133,6 @@ Collate:
     'theme_transparent.R'
     'utils-geom-signif.R'
     'utils-pipe.R'
-Remotes:  
+    'utils-tidyr.R'
+Remotes: 
     tidyverse/tidyr

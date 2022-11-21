@@ -673,25 +673,24 @@ p
   #......................................................
   if(is.null(y)) y <- ""
   if(combine & length(y) > 1){
-    data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
-                           gather_cols = y)
-    data[, ".y."] <- factor(data[, ".y."], levels = unique(data[, ".y."]))
+    data <- data %>%
+      df_gather(cols = y, names_to = ".y.", values_to = ".value.") %>%
+      dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
     y <- ".value."
   }
   # Combining x variables: Case of density plot or histograms
   #......................................................
   else if(combine & length(x) > 1 & y[1] %in% c("..density..", "..count..", "..ecdf..", "..qq..")){
-
-    data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
-                           gather_cols = x)
-    data[, ".y."] <- factor(data[, ".y."], levels = unique(data[, ".y."]))
+    data <- data %>%
+      df_gather(cols = x, names_to = ".y.", values_to = ".value.") %>%
+      dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
     x <- ".value."
   }
 
   # If not factor, x elements on the plot should
   # appear in the same order as in the data
-  if(is.character(data[, x]))
-    data[, x] <- factor(data[, x], levels = unique(data[, x]))
+  if(is.character(data[[x]]))
+    data[[x]] <- factor(data[[x]], levels = unique(data[[x]]))
 
   y <- unique(y)
   names(y) <- y
