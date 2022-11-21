@@ -2,6 +2,8 @@
 
 ## New features
 
+- New data added: `gene_expression`
+  
 ## Major changes
 
 

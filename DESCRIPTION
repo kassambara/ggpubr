@@ -64,6 +64,7 @@ Collate:
     'facet.R'
     'font.R'
     'gene_citation.R'
+    'gene_expression.R'
     'geom_bracket.R'
     'geom_exec.R'
     'utils-aes.R'
