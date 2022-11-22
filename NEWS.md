@@ -13,6 +13,7 @@
 - `stat_compare_means()`: The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0; `after_stat(p.signif)` should be used; updated so that `..p.signif..` is automatically converted into `after_stat()` format without warning for bacward compatibility.
 - Enable faceting by column names with spaces (#391)
 - Licence changed to GPL (>= 2) (#482)
+- `desc_statby()` doc updated to clarify the difference between SD (standard deviation) and SE (standard error) (#492)
 
 
 ## Bug fixes
