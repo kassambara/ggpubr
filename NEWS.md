@@ -14,6 +14,7 @@
 - Enable faceting by column names with spaces (#391)
 - Licence changed to GPL (>= 2) (#482)
 - `desc_statby()` doc updated to clarify the difference between SD (standard deviation) and SE (standard error) (#492)
+- The message `geom_smooth() using formula 'y ~ x'` is now turned off in `ggscatter()`(#488)
 
 
 ## Bug fixes

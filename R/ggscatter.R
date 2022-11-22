@@ -282,6 +282,7 @@ ggscatter_core <- function(data, x, y,
     mapping <- .args$mapping
     option <- .args$option
     option[["method"]] <- add
+    option[["formula"]] <- y ~ x
     option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_smooth, option)
   }
