@@ -21,7 +21,7 @@
   device <- .file_ext(filename)
   devices <- list(eps = grDevices::postscript, ps = grDevices::postscript,
                   pdf = grDevices::pdf,
-                  # svg = svglite::svglite,
+                  svg = grDevices::svg,
                   png = grDevices::png,
                   jpg = grDevices::jpeg,
                   jpeg = grDevices::jpeg,
