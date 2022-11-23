@@ -124,3 +124,34 @@ test_that("compare_means works for kruskal.test", {
   expect_equal(results, expected)
 })
 
+
+test_that("compare_means works when grouping variable levels contain group2", {
+  tibble::tribble(
+    ~val,    ~gp,  ~by,
+    923 , 'group4','V1',
+    1252, 'group4','V1',
+    1442, 'group4','V1',
+    1398, 'group2','V1',
+    1858, 'group2','V1',
+    1330, 'group2','V1',
+    2593, 'group2','V1',
+    23 ,  'group4','V2',
+    252,  'group4','V2',
+    442,  'group4','V2',
+    398,  'group2','V2',
+    858,  'group2','V2',
+    330,  'group2','V2',
+    593,  'group2','V2'
+  ) %>% dplyr::mutate(gp=factor(gp, levels = c('group2','group4'))) -> dat
+
+  results <- compare_means(val ~ gp, data = dat, group.by = 'by', paired = F)
+  results <- results %>%
+    dplyr::select(.y., group1, group2, p.format, p.signif, method)
+  expected <- tibble::tribble(
+      ~.y.,  ~group1,  ~group2, ~p.format, ~p.signif,    ~method,
+     "val", "group2", "group4",    "0.23",      "ns", "Wilcoxon",
+     "val", "group2", "group4",    "0.23",      "ns", "Wilcoxon"
+     )
+  expect_equal(results, expected)
+})
+

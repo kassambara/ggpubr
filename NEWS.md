@@ -21,7 +21,7 @@
 
 ## Bug fixes
   
-  
+- `compare_means()`: works now when the grouping variable levels contain the key words group2 or group1 (#450)
 
 # ggpubr 0.5.0
 
