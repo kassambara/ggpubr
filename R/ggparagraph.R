@@ -52,6 +52,8 @@ ggparagraph <- function(text, color = NULL, size = NULL, face = NULL,
 # :::::::::::::::::::::::::::::::::::::::::::
 splitString <- function(text) {
   strings <- strsplit(text, " ")[[1]]
+  if (length(strings) < 2)
+    return(text)
   newstring <- strings[1]
   linewidth <- grid::stringWidth(newstring)
   gapwidth <- grid::stringWidth(" ")
