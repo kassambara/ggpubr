@@ -93,6 +93,6 @@ ggexport <- function(..., plotlist = NULL, filename = NULL, ncol = NULL, nrow = 
   utils::capture.output(print(plots))
   utils::capture.output(grDevices::dev.off())
 
-  message("file saved to ", filename)
+  if(verbose) message("file saved to ", filename)
 }
 
