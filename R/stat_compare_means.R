@@ -289,7 +289,6 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
       res <- grepl(pattern = "p\\.signif", .label)
     }
   }
-  print(res)
   return(res)
 }
 
