@@ -38,6 +38,8 @@ NULL
 #'@param size points size.
 #'@param alpha numeric value betwenn 0 an 1 specifying point alpha for
 #'  controlling transparency. For example, use alpha = 0.5.
+#'@param seed Random seed passed to \code{set.seed}. if
+#'  \code{NA}, set.seed will not be called. Default is 42 for reproducibility.
 #'@param font.label a vector of length 3 indicating respectively the size (e.g.:
 #'  14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
 #'  color (e.g.: "red") of point labels. For example \emph{font.label = c(14,
@@ -89,6 +91,7 @@ NULL
 #'@export
 ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
                      detection_call = NULL, size = NULL, alpha = 1,
+                     seed = 42,
                      font.label = c(12, "plain", "black"), label.rectangle = FALSE,
                      palette = c("#B31B21", "#1465AC", "darkgray"),
                      top = 15, select.top.method = c("padj", "fc"),
@@ -171,7 +174,6 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   font.label$face <- ifelse(is.null(font.label$face), "plain", font.label$face)
 
   # Plot
-  set.seed(42)
   mean <- lfc <- sig <- name <- padj <-  NULL
   p <- ggplot(data, aes(x = mean, y = lfc)) +
     geom_point(aes(color = sig), size = size, alpha = alpha)
@@ -180,14 +182,14 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
     p <- p + ggrepel::geom_label_repel(data = labs_data, mapping = aes(label = name),
                                       box.padding = unit(0.35, "lines"),
                                       point.padding = unit(0.3, "lines"),
-                                      force = 1, fontface = font.label$face,
+                                      force = 1, seed = seed, fontface = font.label$face,
                                       size = font.label$size/3, color = font.label$color)
   }
   else{
      p <- p + ggrepel::geom_text_repel(data = labs_data, mapping = aes(label = name),
                              box.padding = unit(0.35, "lines"),
                              point.padding = unit(0.3, "lines"),
-                             force = 1, fontface = font.label$face,
+                             force = 1, seed = seed, fontface = font.label$face,
                              size = font.label$size/3, color = font.label$color)
   }
 

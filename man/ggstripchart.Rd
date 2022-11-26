@@ -33,7 +33,7 @@ ggstripchart(
   repel = FALSE,
   label.rectangle = FALSE,
   jitter = 0.2,
-  position = position_jitter(jitter),
+  position = position_jitter(jitter, seed = 123),
   ggtheme = theme_pubr(),
   ...
 )

@@ -6,6 +6,7 @@
   
 ## Major changes
 
+- `gadd()`: Restoring back random state after setting seed when adding jittered points. To do so, the seed number is just passed to `position_jitter()` and `position_jitterdodge()`, which preserve the initial random state ( #177 and #349) .
 
 ## Minor changes
 

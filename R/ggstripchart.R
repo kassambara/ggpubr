@@ -100,7 +100,7 @@ ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
                          label = NULL, font.label = list(size = 11, color = "black"),
                          label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                          jitter = 0.2,
-                         position = position_jitter(jitter),
+                         position = position_jitter(jitter, seed = 123),
                          ggtheme = theme_pubr(),
                          ...)
 {
@@ -150,7 +150,7 @@ ggstripchart_core <- function(data, x, y,
                       add.params = list(),
                       error.plot = "pointrange",
                       jitter = 0.2,
-                      position = position_jitter(jitter),
+                      position = position_jitter(jitter, seed = 123),
                       ggtheme = theme_pubr(),
                       ...)
 {
@@ -175,7 +175,6 @@ ggstripchart_core <- function(data, x, y,
       do.call(ggadd, .)
   }
   # Plot jitter
-  set.seed(123)
   p <- p +
       geom_exec(geom_jitter, data = data,
                 color = color, fill = fill, shape = shape,

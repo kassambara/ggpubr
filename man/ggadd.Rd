@@ -15,6 +15,7 @@ ggadd(
   size = NULL,
   alpha = 1,
   jitter = 0.2,
+  seed = 123,
   binwidth = NULL,
   dotsize = size,
   linetype = 1,
@@ -32,7 +33,8 @@ ggadd(
 \item{add}{character vector specifying other plot elements to be added.
 Allowed values are one or the combination of: "none", "dotplot", "jitter",
 "boxplot", "point", "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
-"median", "median_iqr", "median_hilow", "median_q1q3", "median_mad", "median_range".}
+"median", "median_iqr", "median_hilow", "median_q1q3", "median_mad",
+"median_range".}
 
 \item{color}{point or outline color.}
 
@@ -57,6 +59,13 @@ in [0, 1], where 0 is full transparency and 1 is no transparency.}
 \item{jitter}{a numeric value specifying the amount of jittering. Used only
 when \code{add} contains "jitter".}
 
+\item{seed}{A random seed to make the jitter reproducible. Default is `123`. Useful if you need
+to apply the same jitter twice, e.g., for a point and a corresponding label.
+The random seed is reset after jittering. If `NA`, the
+seed is initialized with a random value; this makes sure that two subsequent
+calls start with a different seed. Use NULL to use the current random seed
+and also avoid resetting (the behaviour of ggplot 2.2.1 and earlier).}
+
 \item{binwidth}{numeric value specifying bin width. use value between 0 and 1
 when you have a strong dense dotplot. For example binwidth = 0.2. Used only
 when \code{add} contains "dotplot".}
@@ -66,9 +75,9 @@ when \code{add} contains "dotplot".}
 \item{linetype}{line type.}
 
 \item{show.legend}{logical. Should this layer be included in the legends? NA,
-the default, includes if any aesthetics are mapped. \code{FALSE} never includes,
-and TRUE always includes. It can also be a named logical vector to finely
-select the aesthetics to display.}
+the default, includes if any aesthetics are mapped. \code{FALSE} never
+includes, and TRUE always includes. It can also be a named logical vector to
+finely select the aesthetics to display.}
 
 \item{error.plot}{plot type used to visualize error. Allowed values are one of
 \code{c("pointrange", "linerange", "crossbar", "errorbar", "upper_errorbar",
