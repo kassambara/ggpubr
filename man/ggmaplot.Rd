@@ -12,6 +12,7 @@ ggmaplot(
   detection_call = NULL,
   size = NULL,
   alpha = 1,
+  seed = 42,
   font.label = c(12, "plain", "black"),
   label.rectangle = FALSE,
   palette = c("#B31B21", "#1465AC", "darkgray"),
@@ -63,6 +64,9 @@ column is available in data, it will be used.}
 
 \item{alpha}{numeric value betwenn 0 an 1 specifying point alpha for
 controlling transparency. For example, use alpha = 0.5.}
+
+\item{seed}{Random seed passed to \code{set.seed}. if
+\code{NA}, set.seed will not be called. Default is 42 for reproducibility.}
 
 \item{font.label}{a vector of length 3 indicating respectively the size (e.g.:
 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
