@@ -22,6 +22,7 @@
 
 ## Bug fixes
   
+- `ggmaplot()`: Suppressing ggmaplot warning: *Unlabeled data points (too many overlaps). Consider increasing max.overlaps* (#520)
 - `compare_means()`: works now when the grouping variable levels contain the key words group2 or group1 (#450)
 - `ggparagraph()` : fixing bug about minimum paragraph length (#408)
 - `ggexport()`: the verbose argument is now considered when specifyed by user (#474)

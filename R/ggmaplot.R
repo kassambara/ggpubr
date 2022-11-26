@@ -178,19 +178,23 @@ ggmaplot <- function (data, fdr = 0.05, fc = 1.5, genenames = NULL,
   p <- ggplot(data, aes(x = mean, y = lfc)) +
     geom_point(aes(color = sig), size = size, alpha = alpha)
 
+  max.overlaps = getOption("ggrepel.max.overlaps", default = Inf)
+
   if(label.rectangle){
     p <- p + ggrepel::geom_label_repel(data = labs_data, mapping = aes(label = name),
                                       box.padding = unit(0.35, "lines"),
                                       point.padding = unit(0.3, "lines"),
                                       force = 1, seed = seed, fontface = font.label$face,
-                                      size = font.label$size/3, color = font.label$color)
+                                      size = font.label$size/3, color = font.label$color,
+                                      max.overlaps = max.overlaps)
   }
   else{
      p <- p + ggrepel::geom_text_repel(data = labs_data, mapping = aes(label = name),
                              box.padding = unit(0.35, "lines"),
                              point.padding = unit(0.3, "lines"),
                              force = 1, seed = seed, fontface = font.label$face,
-                             size = font.label$size/3, color = font.label$color)
+                             size = font.label$size/3, color = font.label$color,
+                             max.overlaps = max.overlaps)
   }
 
   p <- p + scale_x_continuous(breaks=seq(0, max(data$mean), 2))+

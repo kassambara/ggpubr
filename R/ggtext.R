@@ -130,6 +130,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   }
 
   if(repel){
+    max.overlaps = getOption("ggrepel.max.overlaps", default = Inf)
     ggfunc <- ggrepel::geom_text_repel
     if(label.rectangle) ggfunc <- ggrepel::geom_label_repel
       p <- p + geom_exec(ggfunc, data = lab_data, x = x, y = y,
@@ -139,7 +140,8 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
                         alpha = alpha, parse = parse,
                         box.padding = unit(0.35, "lines"),
                         point.padding = unit(0.3, "lines"),
-                        force = 1, segment.size = 0.2, seed = 123)
+                        force = 1, segment.size = 0.2, seed = 123,
+                        max.overlaps = max.overlaps )
   }
   else{
     ggfunc <- geom_text
