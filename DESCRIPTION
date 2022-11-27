@@ -18,7 +18,7 @@ Depends:
     R (>= 3.1.0),
     ggplot2 (>= 3.4.0)
 Imports:
-    ggrepel,
+    ggrepel (>= 0.9.2.9999),
     grid,
     ggsci,
     stats,
@@ -135,5 +135,6 @@ Collate:
     'utils-geom-signif.R'
     'utils-pipe.R'
     'utils-tidyr.R'
-Remotes: 
-    tidyverse/tidyr
+Remotes:  
+    tidyverse/tidyr,
+    slowkow/ggrepel

@@ -7,7 +7,9 @@
 ## Major changes
 
 - `gadd()`: Restoring back random state after setting seed when adding jittered points. To do so, the seed number is just passed to `position_jitter()` and `position_jitterdodge()`, which preserve the initial random state ( #177 and #349) .
-
+- `ggpubr` requires now a version of `ggrepel >= 0.9.2.9999`, which restores now the initial random state after set.seed(). see https://github.com/slowkow/ggrepel/issues/228
+  
+  
 ## Minor changes
 
 - `ggexport()`: support added for graphics device svg (#469)
