@@ -33,7 +33,7 @@ Imports:
     glue,
     polynom,
     rlang (>= 0.4.6),
-    rstatix (>= 0.7.1),
+    rstatix (>= 0.7.1.999),
     tibble,
     magrittr
 Suggests:
@@ -137,4 +137,5 @@ Collate:
     'utils-tidyr.R'
 Remotes:  
     tidyverse/tidyr,
-    slowkow/ggrepel
+    slowkow/ggrepel,
+    kassambara/rstatix
