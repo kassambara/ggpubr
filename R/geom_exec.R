@@ -44,7 +44,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # text
     "label", "hjust", "vjust", "fontface", "angle", "family", "parse",
     # text.repel
-    "segment.size", "force", "max.overlaps",
+    "segment.size", "force", "max.overlaps", "seed",
     # smooth
     "se", "level", "fullrange",
     "conf.int.level",
