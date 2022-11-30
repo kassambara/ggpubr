@@ -86,6 +86,10 @@ head(df)
 
 ggpie(df, "value", label = "group")
 
+# Reducing margins around the pie chart
+ggpie(df, "value", label = "group") +
+ theme( plot.margin = unit(c(-.75,-.75,-.75,-.75),"cm"))
+
 
 # Change color
 # ++++++++++++++++++++++++++++++++
