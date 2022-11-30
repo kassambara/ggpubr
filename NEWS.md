@@ -24,6 +24,7 @@
 
 ## Bug fixes
   
+- `ggqqplot()`: the argument `conf.int` is taken into account now when specified (#524). 
 - `ggqqplot()`: Fixing the warning: "The following aesthetics were dropped during statistical transformation: sample" (#523)
 - Requiring `rstatix v >=0.7.1.999` for preserving factor class in `emmeans_test()` (#386)
 - `ggmaplot()`: Suppressing ggmaplot warning: *Unlabeled data points (too many overlaps). Consider increasing max.overlaps* (#520)

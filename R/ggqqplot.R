@@ -61,7 +61,7 @@ ggqqplot <- function(data, x, combine = FALSE, merge = FALSE,
     size = size, shape = shape,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    conf.int.level = conf.int.level,
+    conf.int = conf.int, conf.int.level = conf.int.level,
     ggtheme = ggtheme, ...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
