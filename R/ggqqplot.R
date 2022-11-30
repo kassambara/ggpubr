@@ -177,7 +177,7 @@ StatQQLine <- ggproto("StatQQLine", Stat,
                         fit.value <- qq$intercept + qq$slope * theoretical
                         ymax <- fit.value + zz * SE
                         ymin <- fit.value - zz * SE
-                        data.frame(x = theoretical, y = line, ymin = ymin, ymax = ymax)
+                        data.frame(sample = line, x = theoretical, y = line, ymin = ymin, ymax = ymax)
                       }
 )
 

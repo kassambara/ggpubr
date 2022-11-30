@@ -24,6 +24,7 @@
 
 ## Bug fixes
   
+- `ggqqplot()`: Fixing the warning: "The following aesthetics were dropped during statistical transformation: sample" (#523)
 - Requiring `rstatix v >=0.7.1.999` for preserving factor class in `emmeans_test()` (#386)
 - `ggmaplot()`: Suppressing ggmaplot warning: *Unlabeled data points (too many overlaps). Consider increasing max.overlaps* (#520)
 - `compare_means()`: works now when the grouping variable levels contain the key words group2 or group1 (#450)
