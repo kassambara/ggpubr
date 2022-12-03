@@ -126,7 +126,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   if(!.is_empty(group)){
     group.vals <- .select_vec(data, group)
-    if(!is.factor(group.vals)) data[, group] <- factor(group.vals, levels = unique(group.vals))
+    if(!is.factor(group.vals)) data[[group]] <- factor(group.vals, levels = unique(group.vals))
   }
 
   # Keep only variables of interest
@@ -156,7 +156,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
     else group.levs <- unique(group.vals)
 
     if(ref.group %in% group.levs){
-      data[, group] <- stats::relevel(group.vals, ref.group)
+      data[[group]] <- stats::relevel(group.vals, ref.group)
     }
 
     if(ref.group == ".all."){

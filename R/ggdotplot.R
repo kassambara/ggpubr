@@ -122,7 +122,7 @@ ggdotplot_core <- function(data, x, y,
                       ggtheme = theme_pubr(),
                       ...)
 {
-  if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+  if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
   . <- NULL
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))

@@ -12,6 +12,7 @@
   
 ## Minor changes
 
+- Indexing variable in a data frame: using df[[x]] instead of df[, x] to make sure that the result is a vector even if the `df` is a tibble.
 - `ggexport()`: support added for graphics device svg (#469)
 - `ggpie()` and `ggdonutchart()` now fully reacts to the option `lab.font` (#502)
 - Replacing deprecated `gather_()` in both internal (`.check_data()`) and exported functions (`compare_means()`) (#513)

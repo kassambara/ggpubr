@@ -149,8 +149,7 @@ ggviolin_core <- function(data, x, y,
                       position = position_dodge(0.8),
                      ...)
 {
-
-  if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+  if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
   pms <- .violin_params(...)
 

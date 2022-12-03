@@ -130,7 +130,7 @@ facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
 
   for(variable in variables){
 
-    current.levels <- .levels(data[, variable])
+    current.levels <- .levels(data[[variable]])
     provided.levels <- panel.labs[[variable]]
 
     if(length(current.levels) != length(provided.levels)){

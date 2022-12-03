@@ -174,7 +174,7 @@ ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust 
   # data <- data[order(data[, x]), , drop = FALSE]
   if(fill %in% colnames(data)) {
     fill_d <- dplyr::pull(data, fill)
-    data[, fill] <- factor(fill_d, levels = rev(fill_d))
+    data[[fill]] <- factor(fill_d, levels = rev(fill_d))
   }
 
   if(is.null(lab.font)) lab.font <- list(size = 5, face = "bold", color = "black")
@@ -196,11 +196,11 @@ ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust 
 
   # label each slice at the midle of the slice
   if(!is.null(label)){
-    if(label[1] %in% names(data)) label <- data[, label]
+    if(label[1] %in% names(data)) label <- data[[label]]
 
     if(lab.pos == "out"){
       p <- p + scale_y_continuous(
-        breaks = cumsum(data[, x]) - data[, x]/2,
+        breaks = cumsum(data[[x]]) - data[[x]]/2,
         labels = label
       )
     }

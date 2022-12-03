@@ -113,7 +113,7 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
                         ...)
 {
 
-  if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+  if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
   grouping.vars <- c(x, color, fill) %>%
     unique() %>%

@@ -257,8 +257,8 @@ ggscatter_core <- function(data, x, y,
 
   # Adjust shape when ngroups > 6, to avoid ggplot warnings
   if(shape %in% colnames(data)){
-    ngroups <- length(levels(data[, shape]))
-    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[, shape]))
+    ngroups <- length(levels(data[[shape]]))
+    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[[shape]]))
   }
 
   # Add marginal rug
@@ -301,7 +301,7 @@ ggscatter_core <- function(data, x, y,
     # Case of grouping variable
     else {
       grp_name <- grp
-      data[, grp_name] <- as.factor(data[, grp_name])
+      data[[grp_name]] <- as.factor(data[[grp_name]])
     }
 
     if (ellipse.type == 'convex')
@@ -343,7 +343,7 @@ ggscatter_core <- function(data, x, y,
     lab_data <- data
     # Select some labels to show
     if(!is.null(label.select))
-      lab_data  <- subset(lab_data, lab_data[, label, drop = TRUE] %in% label.select,
+      lab_data  <- subset(lab_data, lab_data[[label]] %in% label.select,
                           drop = FALSE)
 
     if(repel){
@@ -405,7 +405,7 @@ ggscatter_core <- function(data, x, y,
 .convex_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray", alpha = 0.1,
                             ellipse.border.remove = FALSE ){
 
-  grp_levels <- levels(data[, grp_name])
+  grp_levels <- levels(data[[grp_name]])
   if(length(grp_levels) == 1) .geom_exec(geomfunc = stat_chull, data = data,
                                          color = color, fill = fill, alpha = alpha,
                                          geom = "polygon")
@@ -421,7 +421,7 @@ ggscatter_core <- function(data, x, y,
 # Confidence ellipse
 .confidence_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray",
                                 alpha = 0.1, level = 0.95, ellipse.border.remove = FALSE){
-  grp_levels <- levels(data[, grp_name])
+  grp_levels <- levels(data[[grp_name]])
   if(length(grp_levels) == 1) {
     mapping <- create_aes(list(x = x, y = y))
     stat_conf_ellipse(mapping = mapping, data = data,
@@ -443,7 +443,7 @@ ggscatter_core <- function(data, x, y,
 .stat_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray",
                           alpha = 0.1, type = "norm", level = 0.95, ellipse.border.remove = FALSE)
   {
-  grp_levels <- levels(data[, grp_name])
+  grp_levels <- levels(data[[grp_name]])
   if(length(grp_levels) == 1){
     mapping <- create_aes(list(x = x, y = y))
     ggplot2::stat_ellipse(mapping = mapping, data = data,

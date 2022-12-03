@@ -155,7 +155,7 @@ ggstripchart_core <- function(data, x, y,
                       ...)
 {
 
-  if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+  if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
   . <- NULL
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))

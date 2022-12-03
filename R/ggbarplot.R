@@ -230,11 +230,11 @@ ggbarplot_core <- function(data, x, y,
 {
 
   sort.val <- match.arg(sort.val)
-  if(!is.null(order)) data[, x] <- factor(data[, x], levels = order)
+  if(!is.null(order)) data[[x]] <- factor(data[[x]], levels = order)
   else {
     xx <- .select_vec(data, x)
     if(inherits(xx, c("character", "numeric")))
-      data[, x] <- .select_vec(data, x) %>% as.factor()
+      data[[x]] <-  as.factor(data[[x]])
   }
   error.plot = error.plot[1]
   lab.pos <- match.arg(lab.pos)

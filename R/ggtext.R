@@ -219,7 +219,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
 
   }
 
-  else lab_data  <- subset(data, data[, label, drop = TRUE] %in% label.select,
+  else lab_data  <- subset(data, data[[label]] %in% label.select,
                         drop = FALSE)
 
   return(lab_data)

@@ -551,10 +551,10 @@ p
 # Adjust shape when ngroups > 6, to avoid ggplot warnings
 .scale_point_shape <- function(p, data, shape){
   if(shape %in% colnames(data)){
-    grp <- data[, shape]
+    grp <- data[[shape]]
     if(!inherits(grp, "factor")) grp <- as.factor(grp)
-    ngroups <- length(levels(data[, shape]))
-    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[, shape]))
+    ngroups <- length(levels(data[[shape]]))
+    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[[shape]]))
   }
   p
 }
@@ -786,12 +786,12 @@ p
   }
 
   # Item to display
-  x <- opts$data[, opts$x] %>% as.vector()
+  x <- opts$data[[opts$x]] %>% as.vector()
   if(!is.null(select))
     opts$data <- subset(opts$data, x %in% select)
   if(!is.null(remove))
     opts$data <- subset(opts$data, !(x %in% remove))
-  if(!is.null(order)) opts$data[, opts$x] <- factor(opts$data[, opts$x], levels = order)
+  if(!is.null(order)) opts$data[[opts$x]] <- factor(opts$data[[opts$x]], levels = order)
 
   # Add additional options, which can be potentially vectorized
   # when multiple plots
@@ -933,8 +933,8 @@ p
   # NO grouping variable
   if(.is_empty(grouping.vars)) {
     m <- ifelse(add == "mean",
-                mean(data[, x], na.rm = TRUE),
-                stats::median(data[, x], na.rm = TRUE))
+                mean(data[[x]], na.rm = TRUE),
+                stats::median(data[[x]], na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data,
                        xintercept = m, color = color,
                        linetype = linetype, size = size)
