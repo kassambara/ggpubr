@@ -213,8 +213,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     if(!is.null(label.select$criteria)){
       criteria <- gsub("`y`", y, label.select$criteria) %>%
         gsub("`x`", x, .)
-      lab_data <- dplyr::filter_(lab_data, .dots = criteria)
-
+      lab_data <- dplyr::filter(lab_data, !!rlang::parse_expr(criteria))
     }
 
 

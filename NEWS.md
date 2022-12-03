@@ -24,6 +24,7 @@
 
 ## Bug fixes
   
+- `ggtext()`: fix warning "`filter_()` was deprecated in dplyr 0.7.0".
 - `ggqqplot()`: the argument `conf.int` is taken into account now when specified (#524). 
 - `ggqqplot()`: Fixing the warning: "The following aesthetics were dropped during statistical transformation: sample" (#523)
 - Requiring `rstatix v >=0.7.1.999` for preserving factor class in `emmeans_test()` (#386)
