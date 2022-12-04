@@ -184,7 +184,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                                     widths = unit.c(.unit - lwidth, lwidth))
                 )
 
-  p <- cowplot::ggdraw() + cowplot::draw_grob(grid::grobTree(res))
+  p <- as_ggplot(res)
   p
 
 }

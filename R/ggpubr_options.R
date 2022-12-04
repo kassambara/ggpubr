@@ -7,6 +7,7 @@
 #' @export
 ggpubr_options <- function(){
   list(
-    ggpubr.parse_aes = TRUE
+    ggpubr.parse_aes = TRUE,
+    ggpubr.null_device = cowplot::pdf_null_device
   )
 }
