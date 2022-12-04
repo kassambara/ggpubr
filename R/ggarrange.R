@@ -74,6 +74,19 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       legend = NULL, common.legend = FALSE, legend.grob = NULL )
   {
 
+  # Open null device to avoid blank page before plot------
+  # see cowplot:::as_grob.ggplot
+  null_device <- base::getOption("ggpubr.null_device", default = cowplot::pdf_null_device)
+  cur_dev <- grDevices::dev.cur()
+  # Open null device to avoid blank page before plot
+  null_device(width = 6, height = 6)
+  null_dev <- grDevices::dev.cur()
+  on.exit({
+    grDevices::dev.off(null_dev)
+    if (cur_dev > 1) grDevices::dev.set(cur_dev)
+  })
+
+
   plots <- c(list(...), plotlist)
   align <- match.arg(align)
   nb.plots <- length(plots)
@@ -160,7 +173,6 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
 
 .plot_grid <- function(plotlist, legend = "top", common.legend.grob = NULL,  ... ){
 
-
   res <- cowplot::plot_grid(plotlist = plotlist, ...)
   if(is.null(common.legend.grob)) return(res)
   else {
@@ -184,7 +196,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                                     widths = unit.c(.unit - lwidth, lwidth))
                 )
 
-  p <- as_ggplot(res)
+  p <- cowplot::ggdraw() + cowplot::draw_grob(grid::grobTree(res))
   p
 
 }
