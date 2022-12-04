@@ -2,16 +2,25 @@
 
 ## New features
 
+- New function `ggadjust_pvalue()` added to adjust p-values produced by `geom_pwc()` on a ggplot (#522).
 - New data added: `gene_expression`
+- Global options: New available package options: `ggpubr.null_device`, which value should be a function that creates an appropriate null device. These include: `cowplot::pdf_null_device`, `cowplot::png_null_device`, `cowplot::cairo_null_device` and `cowplot::agg_null_device`. Default is `cowplot::pdf_null_device`. This is used in function like `as_ggplot()`, which needs to open a graphics device to render ggplot objects into grid graphics objects. This function is used to open null device for avoiding the display of unnecessary blank page when calling `ggarrange()` or `as_ggplot()` (#306 and #158).  The default option can be changed using, for example, `options(ggpubr.null_device = cowplot::png_null_device)`.
+
   
 ## Major changes
 
 - `gadd()`: Restoring back random state after setting seed when adding jittered points. To do so, the seed number is just passed to `position_jitter()` and `position_jitterdodge()`, which preserve the initial random state ( #177 and #349) .
 - `ggpubr` requires now a version of `ggrepel >= 0.9.2.9999`, which restores now the initial random state after set.seed(). see https://github.com/slowkow/ggrepel/issues/228
+- `ggpubr` requires now a version of `cowplot >= 1.1.1`
+
+    
+
   
   
 ## Minor changes
 
+- `as_ggplot()`: using null_device to avoid blank page #306 and #158
+- `ggarrange()`: uses `as_ggplot()` to render the final arranged plot.
 - Indexing variable in a data frame: using df[[x]] instead of df[, x] to make sure that the result is a vector even if the `df` is a tibble.
 - `ggexport()`: support added for graphics device svg (#469)
 - `ggpie()` and `ggdonutchart()` now fully reacts to the option `lab.font` (#502)

@@ -51,6 +51,7 @@ reference:
       - stat_friedman_test
       - geom_pwc
       - geom_bracket
+      - ggadjust_pvalue
   - title: Plot Tables and Paragraphs
     contents:
       - ggtexttable

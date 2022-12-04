@@ -106,12 +106,28 @@ NULL
 #'  aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'  "red"} or \code{size = 3}. They may also be parameters to the paired
 #'  geom/stat.
+#' @details
+#' \bold{Notes on adjusted p-values and facet}. When using the ggplot facet functions, the p-values are computed and adjusted by panel, without taking into account the other panels. This is by design in ggplot2.
+#'
+#' In this case, when there is only one computed p-value by panel, then using `label = "p"` or `label = "p.adj"` will give the same results using `geom_pwc()`. Again, p-value computation and adjustment in a given facet panel is done independently to the other panels.
+#'
+#' One might want to adjust the p-values of all the facet panels together. There are two solutions for that:
+#'
+#' \itemize{
+#' \item Using \code{\link{ggadjust_pvalue}(p)} after creating the plot \code{p}
+#' \item or adding the adjusted p-value manually using \code{\link{stat_pvalue_manual}()}. Read more at:
+#' \itemize{
+#'   \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-to-ggplot-facets/}{How to Add P-values to GGPLOT Facets}
+#'   \item \href{https://www.datanovia.com/en/blog/add-p-values-to-ggplot-facets-with-different-scales/}{Add P-values to GGPLOT Facets with Different Scales}
+#' }
+#' }
 #'@inheritParams ggplot2::layer
 #' @examples
 #' df <- ToothGrowth
 #' df$dose <- factor(df$dose)
 #'
 #'@rdname geom_pwc
+#' @seealso \code{\link{ggadjust_pvalue}}
 #'@examples
 #' # Data preparation
 #' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
