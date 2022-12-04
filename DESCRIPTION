@@ -26,7 +26,7 @@ Imports:
     tidyr (>= 1.2.1.9001),
     purrr,
     dplyr (>= 0.7.1),
-    cowplot,
+    cowplot (>= 1.1.1),
     ggsignif,
     scales,
     gridExtra,
@@ -75,6 +75,7 @@ Collate:
     'get_legend.R'
     'get_palette.R'
     'ggadd.R'
+    'ggadjust_pvalue.R'
     'ggarrange.R'
     'ggballoonplot.R'
     'ggpar.R'
@@ -135,7 +136,7 @@ Collate:
     'utils-geom-signif.R'
     'utils-pipe.R'
     'utils-tidyr.R'
-Remotes:  
+Remotes: 
     tidyverse/tidyr,
     slowkow/ggrepel,
     kassambara/rstatix
