@@ -14,13 +14,11 @@
 - `ggpubr` requires now a version of `cowplot >= 1.1.1`
 
     
-
-  
   
 ## Minor changes
 
 - `as_ggplot()`: using null_device to avoid blank page #306 and #158
-- `ggarrange()`: uses `as_ggplot()` to render the final arranged plot.
+- `ggarrange()`: using null_device to avoid blank page #306 and #158
 - Indexing variable in a data frame: using df[[x]] instead of df[, x] to make sure that the result is a vector even if the `df` is a tibble.
 - `ggexport()`: support added for graphics device svg (#469)
 - `ggpie()` and `ggdonutchart()` now fully reacts to the option `lab.font` (#502)
