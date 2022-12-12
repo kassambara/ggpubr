@@ -126,7 +126,7 @@ ggpie <- function(
     font.family = font.family, ...
     ) +
     coord_polar(
-      theta = "y", start = 0
+      theta = "y", start = 0, clip = "off"
       ) +
     .remove_axis()
 

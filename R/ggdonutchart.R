@@ -121,7 +121,7 @@ ggdonutchart <- function(
     font.family = font.family, ...
     ) +
     coord_polar(
-      theta = "y", start = 0
+      theta = "y", start = 0, clip = "off"
       ) +
     ggtheme + .remove_axis()
 

@@ -17,6 +17,7 @@
   
 ## Minor changes
 
+- `ggpie()`: setting the default of `clip = "off"` in `coord_polar()` so that `ggpie()` does not crop labels (#429)
 - `as_ggplot()`: using null_device to avoid blank page #306 and #158
 - `ggarrange()`: using null_device to avoid blank page #306 and #158
 - Indexing variable in a data frame: using df[[x]] instead of df[, x] to make sure that the result is a vector even if the `df` is a tibble.
