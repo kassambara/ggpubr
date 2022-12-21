@@ -17,6 +17,7 @@
   
 ## Minor changes
 
+- `ggtexttable()`: doc updated with another example; text justification for individual cells/rows/columns (#335).
 - `ggpie()`: setting the default of `clip = "off"` in `coord_polar()` so that `ggpie()` does not crop labels (#429)
 - `as_ggplot()`: using null_device to avoid blank page #306 and #158
 - `ggarrange()`: using null_device to avoid blank page #306 and #158
