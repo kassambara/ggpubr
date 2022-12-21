@@ -304,6 +304,17 @@ df <- head(iris)
 # Remove row names using rows = NULL
 ggtexttable(df, rows = NULL)
 
+# Text justification for individual cells/rows/columns (#335)
+# First column is left justified i.e., hjust = 0 , x = 0.1
+# Remaining columns are right justified i.e., hjust = 1 , x = 0.9
+table_theme <- ttheme(
+  tbody.style = tbody_style(
+   hjust = as.vector(matrix(c(0, 1, 1, 1, 1), ncol = 5, nrow = nrow(df), byrow = TRUE)),
+   x = as.vector(matrix(c(.1, .9, .9,.9, .9), ncol = 5, nrow = nrow(df), byrow = TRUE))
+ )
+)
+ggtexttable(df, rows = NULL, theme = table_theme)
+
 # Blank theme
 ggtexttable(df, rows = NULL, theme = ttheme("blank"))
 
