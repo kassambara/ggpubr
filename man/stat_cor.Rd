@@ -21,6 +21,7 @@ stat_cor(
   p.digits = digits,
   r.accuracy = NULL,
   p.accuracy = NULL,
+  conf.int = FALSE,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -92,7 +93,13 @@ ignored.}
 
 \item{p.accuracy}{a real value specifying the number of decimal places of
 precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
-decimal places of precision. If specified, then \code{p.digits} is ignored.}
+decimal places of precision. If specified, then \code{p.digits} is ignored.
+This can also be used to specify the number of decimal places of precision
+for the lower and upper bound of the confidence interval.}
+
+\item{conf.int}{If TRUE (default is FALSE), a 95% confidence interval is
+printed instead of the p-value. Use \code{p.accuracy} to specify the number
+of decimal places of precision.}
 
 \item{geom}{The geometric object to use to display the data, either as a
 \code{ggproto} \code{Geom} subclass or as a string naming the geom stripped of the
@@ -121,8 +128,8 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 \code{\link[ggplot2:geom_text]{geom_label}}.}
 }
 \description{
-Add correlation coefficients with p-values to a scatter plot. Can
- be also used to add `R2`.
+Add correlation coefficients with p-values or confidence
+ intervals to a scatter plot. Can be also used to add `R2`.
 }
 \section{Computed variables}{
  \describe{ \item{r}{correlation coefficient}
