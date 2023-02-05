@@ -1,4 +1,4 @@
-# ggpubr 0.5.0.999
+# ggpubr 0.6.0
 
 ## New features
 

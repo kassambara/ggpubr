@@ -34,6 +34,7 @@ reference:
     contents:
       - ggscatter
       - stat_cor
+      - stat_regline_equation
       - stat_stars
       - ggscatterhist
   - title: Plot Paired Data
@@ -108,6 +109,9 @@ reference:
       - ggadd
       - get_palette
       - as_ggplot
+      - ggtext
+      - ggpubr_options
+      - ggpubr_args
   - title: Data
     contents:
       - diff_express

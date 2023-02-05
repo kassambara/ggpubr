@@ -5,7 +5,8 @@ NULL
 #' @inheritParams ggboxplot
 #' @inheritParams facet
 #' @inheritParams ggpar
-#' @param x,y x and y variables for drawing.
+#' @param x x variables for drawing.
+#' @param y y variables for drawing.
 #' @param color,fill point colors.
 #' @param shape point shape. See \code{\link{show_point_shapes}}.
 #' @param point logical value. If TRUE, show points.

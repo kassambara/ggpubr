@@ -1,204 +1,270 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/index.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/add_summary.html</loc>
+    <loc>/ISSUE_TEMPLATE.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/annotate_figure.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/as_ggplot.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/axis_scale.html</loc>
+    <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/background_image.html</loc>
+    <loc>/reference/add_summary.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/bgcolor.html</loc>
+    <loc>/reference/annotate_figure.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/border.html</loc>
+    <loc>/reference/as_ggplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/compare_means.html</loc>
+    <loc>/reference/as_npc.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/desc_statby.html</loc>
+    <loc>/reference/axis_scale.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/diff_express.html</loc>
+    <loc>/reference/background_image.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/facet.html</loc>
+    <loc>/reference/bgcolor.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/font.html</loc>
+    <loc>/reference/border.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/gene_citation.html</loc>
+    <loc>/reference/compare_means.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/geom_bracket.html</loc>
+    <loc>/reference/create_aes.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/geom_exec.html</loc>
+    <loc>/reference/desc_statby.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/get_legend.html</loc>
+    <loc>/reference/diff_express.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/get_palette.html</loc>
+    <loc>/reference/facet.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggadd.html</loc>
+    <loc>/reference/font.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html</loc>
+    <loc>/reference/gene_citation.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggballoonplot.html</loc>
+    <loc>/reference/gene_expression.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggbarplot.html</loc>
+    <loc>/reference/geom_bracket.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html</loc>
+    <loc>/reference/geom_exec.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggdensity.html</loc>
+    <loc>/reference/geom_pwc.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggdonutchart.html</loc>
+    <loc>/reference/geom_signif.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggdotchart.html</loc>
+    <loc>/reference/get_breaks.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggdotplot.html</loc>
+    <loc>/reference/get_coord.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggecdf.html</loc>
+    <loc>/reference/get_legend.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggerrorplot.html</loc>
+    <loc>/reference/get_palette.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggexport.html</loc>
+    <loc>/reference/ggadd.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/gghistogram.html</loc>
+    <loc>/reference/ggadjust_pvalue.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggline.html</loc>
+    <loc>/reference/ggarrange.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggmaplot.html</loc>
+    <loc>/reference/ggballoonplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggpaired.html</loc>
+    <loc>/reference/ggbarplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggpar.html</loc>
+    <loc>/reference/ggboxplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggparagraph.html</loc>
+    <loc>/reference/ggdensity.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggpie.html</loc>
+    <loc>/reference/ggdonutchart.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggpubr_args.html</loc>
+    <loc>/reference/ggdotchart.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggqqplot.html</loc>
+    <loc>/reference/ggdotplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggscatter.html</loc>
+    <loc>/reference/ggecdf.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggscatterhist.html</loc>
+    <loc>/reference/ggerrorplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggstripchart.html</loc>
+    <loc>/reference/ggexport.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggtext.html</loc>
+    <loc>/reference/gghistogram.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggtexttable.html</loc>
+    <loc>/reference/ggline.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/ggviolin.html</loc>
+    <loc>/reference/ggmaplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/gradient_color.html</loc>
+    <loc>/reference/ggpaired.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/grids.html</loc>
+    <loc>/reference/ggpar.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/reexports.html</loc>
+    <loc>/reference/ggparagraph.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/rotate.html</loc>
+    <loc>/reference/ggpie.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/rotate_axis_text.html</loc>
+    <loc>/reference/ggpubr-package.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/rremove.html</loc>
+    <loc>/reference/ggpubr_args.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/set_palette.html</loc>
+    <loc>/reference/ggpubr_options.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/show_line_types.html</loc>
+    <loc>/reference/ggqqplot.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/show_point_shapes.html</loc>
+    <loc>/reference/ggscatter.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_central_tendency.html</loc>
+    <loc>/reference/ggscatterhist.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_chull.html</loc>
+    <loc>/reference/ggstripchart.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html</loc>
+    <loc>/reference/ggsummarystats.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_conf_ellipse.html</loc>
+    <loc>/reference/ggtext.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_cor.html</loc>
+    <loc>/reference/ggtexttable.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_mean.html</loc>
+    <loc>/reference/ggviolin.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_overlay_normal_density.html</loc>
+    <loc>/reference/gradient_color.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_pvalue_manual.html</loc>
+    <loc>/reference/grids.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_regline_equation.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/stat_stars.html</loc>
+    <loc>/reference/npc_to_data_coord.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/text_grob.html</loc>
+    <loc>/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/theme_pubr.html</loc>
+    <loc>/reference/reexports.html</loc>
   </url>
   <url>
-    <loc>https://rpkgs.datanovia.com/ggpubr/reference/theme_transparent.html</loc>
+    <loc>/reference/rotate.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rotate_axis_text.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rremove.html</loc>
+  </url>
+  <url>
+    <loc>/reference/set_palette.html</loc>
+  </url>
+  <url>
+    <loc>/reference/show_line_types.html</loc>
+  </url>
+  <url>
+    <loc>/reference/show_point_shapes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_anova_test.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_central_tendency.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_chull.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_compare_means.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_conf_ellipse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_cor.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_friedman_test.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_kruskal_test.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_mean.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_overlay_normal_density.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_pvalue_manual.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_regline_equation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_stars.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stat_welch_anova_test.html</loc>
+  </url>
+  <url>
+    <loc>/reference/text_grob.html</loc>
+  </url>
+  <url>
+    <loc>/reference/theme_pubr.html</loc>
+  </url>
+  <url>
+    <loc>/reference/theme_transparent.html</loc>
   </url>
 </urlset>

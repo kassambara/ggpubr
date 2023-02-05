@@ -14,7 +14,8 @@ NULL
 #'   \link[grDevices]{palette}.
 #' @param gradient.cols vector of colors to use for n-colour gradient. Allowed
 #'   values include brewer and ggsci color palettes.
-#' @param main,title plot main title.
+#' @param main plot main title.
+#' @param title plot main title.
 #' @param submain,subtitle plot subtitle.
 #' @param caption plot caption.
 #' @param xlab character vector specifying x axis labels. Use xlab = FALSE to

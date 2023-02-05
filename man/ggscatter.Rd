@@ -59,7 +59,9 @@ ggscatter(
 \arguments{
 \item{data}{a data frame}
 
-\item{x, y}{x and y variables for drawing.}
+\item{x}{x variables for drawing.}
+
+\item{y}{y variables for drawing.}
 
 \item{combine}{logical value. Default is FALSE. Used only when y is a vector
 containing multiple variables to plot. If TRUE, create a multi-panel plot by

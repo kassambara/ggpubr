@@ -106,24 +106,24 @@ add summary statistics onto a ggplot.
 }
 \section{Functions}{
 \itemize{
-\item \code{add_summary}: add summary statistics onto a ggplot.
+\item \code{add_summary()}: add summary statistics onto a ggplot.
 
-\item \code{mean_se_}: returns the \code{mean} and the error limits defined by the
+\item \code{mean_se_()}: returns the \code{mean} and the error limits defined by the
 \code{standard error}. We used the name \code{mean_se_}() to avoid masking \code{\link[ggplot2]{mean_se}}().
 
-\item \code{mean_sd}: returns the \code{mean} and the error limits defined by the
+\item \code{mean_sd()}: returns the \code{mean} and the error limits defined by the
 \code{standard deviation}.
 
-\item \code{mean_ci}: returns the \code{mean} and the error limits defined by the
+\item \code{mean_ci()}: returns the \code{mean} and the error limits defined by the
 \code{confidence interval}.
 
-\item \code{mean_range}: returns the \code{mean} and the error limits defined by the
+\item \code{mean_range()}: returns the \code{mean} and the error limits defined by the
 \code{range = max - min}.
 
-\item \code{median_iqr}: returns the \code{median} and the error limits
+\item \code{median_iqr()}: returns the \code{median} and the error limits
 defined by the \code{interquartile range}.
 
-\item \code{median_hilow_}: computes the sample median and a selected pair of
+\item \code{median_hilow_()}: computes the sample median and a selected pair of
 outer quantiles having equal tail areas. This function is a reformatted
 version of \code{Hmisc::smedian.hilow()}. The confidence limits are computed
 as follow: \code{lower.limits = (1-ci)/2} percentiles; \code{upper.limits =
@@ -133,17 +133,17 @@ respectively. If you want to use the 25th and the 75th percentiles as the
 confidence limits, then specify \code{ci = 0.5} or use the function
 \code{median_q1q3()}.
 
-\item \code{median_q1q3}: computes the sample median and, the 25th and 75th
+\item \code{median_q1q3()}: computes the sample median and, the 25th and 75th
 percentiles. Wrapper around the function \code{median_hilow_()} using
 \code{ci = 0.5}.
 
-\item \code{median_mad}: returns the \code{median} and the error limits
+\item \code{median_mad()}: returns the \code{median} and the error limits
 defined by the \code{median absolute deviation}.
 
-\item \code{median_range}: returns the \code{median} and the error limits
+\item \code{median_range()}: returns the \code{median} and the error limits
 defined by the \code{range = max - min}.
-}}
 
+}}
 \examples{
 
 # Basic violin plot

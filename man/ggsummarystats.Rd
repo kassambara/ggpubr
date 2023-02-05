@@ -114,11 +114,11 @@ Create a ggplot with summary stats (n, median, mean, iqr) table
 }
 \section{Functions}{
 \itemize{
-\item \code{ggsummarytable}: Create a table of summary stats
+\item \code{ggsummarytable()}: Create a table of summary stats
 
-\item \code{ggsummarystats}: Create a ggplot with a summary stat table under the plot.
+\item \code{ggsummarystats()}: Create a ggplot with a summary stat table under the plot.
+
 }}
-
 \examples{
 # Data preparation
 #::::::::::::::::::::::::::::::::::::::::::::::::

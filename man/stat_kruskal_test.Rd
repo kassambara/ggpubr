@@ -60,7 +60,7 @@ be formatted by the \code{\link[glue]{glue}()} package. For example, when
 specifying label = "t-test, p = \{p\}", the expression \{p\} will be
 replaced by its value.}
 
-\item{label.x.npc}{can be \code{numeric} or \code{character}
+\item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
 vector of the same length as the number of groups and/or panels. If too
 short they will be recycled. \itemize{ \item If \code{numeric}, value should
 be between 0 and 1. Coordinates to be used for positioning the label,
@@ -69,19 +69,7 @@ allowed values include: i) one of c('right', 'left', 'center', 'centre',
 'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
 'middle') for y-axis.}}
 
-\item{label.y.npc}{can be \code{numeric} or \code{character}
-vector of the same length as the number of groups and/or panels. If too
-short they will be recycled. \itemize{ \item If \code{numeric}, value should
-be between 0 and 1. Coordinates to be used for positioning the label,
-expressed in "normalized parent coordinates". \item If \code{character},
-allowed values include: i) one of c('right', 'left', 'center', 'centre',
-'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
-'middle') for y-axis.}}
-
-\item{label.x}{\code{numeric} Coordinates (in data units) to be used
-for absolute positioning of the label. If too short they will be recycled.}
-
-\item{label.y}{\code{numeric} Coordinates (in data units) to be used
+\item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
 
 \item{step.increase}{numeric vector with the increase in fraction of total

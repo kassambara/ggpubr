@@ -49,19 +49,19 @@ the \code{as_npc()} function is an adaptation from
 }
 \section{Functions}{
 \itemize{
-\item \code{as_npc}: converts x or y coordinate values into npc. Input values
+\item \code{as_npc()}: converts x or y coordinate values into npc. Input values
 should be numeric or one of the following values \code{c('right', 'left',
 'bottom', 'top', 'center', 'centre', 'middle')}.
 
-\item \code{as_npcx}: converts x coordinate values into npc. Input values should
+\item \code{as_npcx()}: converts x coordinate values into npc. Input values should
 be numeric or one of the following values \code{c('right', 'left',
 'center', 'centre', 'middle')}. Wrapper around \code{as_npc(axis = "x")}.
 
-\item \code{as_npcy}: converts y coordinate values into npc. Input values should
+\item \code{as_npcy()}: converts y coordinate values into npc. Input values should
 be numeric or one of the following values \code{c( 'bottom', 'top',
 'center', 'centre', 'middle')}. Wrapper around \code{as_npc(axis = "y")}.
-}}
 
+}}
 \examples{
 as_npc(c("left", "right"))
 as_npc(c("top", "right"))
