@@ -277,8 +277,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
 {
   test <- match.fun(method)
 
-  x <- deparse(formula[[2]])
-  group <- attr(stats::terms(formula), "term.labels")
+  x <- all.vars(formula[[2]])
+  group <- all.vars(formula[[3]])
 
   if(.is_empty(group)) # Case of null model
     test.opts <- list(x = .select_vec(data, x), ...)
@@ -309,8 +309,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
                            ...)
 {
 
-  x <- deparse(formula[[2]])
-  group <- attr(stats::terms(formula), "term.labels")
+  x <- all.vars(formula[[2]])
+  group <- all.vars(formula[[3]])
 
   # One sample test
   if(.is_empty(group)){
@@ -373,21 +373,15 @@ compare_means <- function(formula, data, method = "wilcox.test",
 #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # ex formula = c(GATA3, XBP1, DEPDC1) ~ group
 .is_multi_formula <- function(formula){
-  x <- grep(",", formula)
-  !.is_empty(x)
+  length(all.vars(formula[[2]])) > 1
 }
 
 # Get formula variables
 .formula_left_variables <- function(formula){
-  . <- NULL
-  x <- deparse(formula[[2]]) %>%
-    gsub("c\\(|\\)|\\s", "", .) %>%
-    strsplit(",") %>%
-    unlist()
-  x
+  all.vars(formula[[2]])
 }
 .formula_right_variables <- function(formula){
-  group <- attr(stats::terms(formula), "term.labels")
+  group <- all.vars(formula[[3]])
   if(.is_empty(group)) group <- "1"
   group
 }
@@ -404,7 +398,6 @@ compare_means <- function(formula, data, method = "wilcox.test",
   group.by = c(group.by, ".y.")
 
 }
-
 
 
 
