@@ -33,10 +33,10 @@ stat_compare_means(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
-\code{\link[ggplot2:aes_]{aes_()}}. If specified and \code{inherit.aes = TRUE} (the
-default), it is combined with the default mapping at the top level of the
-plot. You must supply \code{mapping} if there is no plot mapping.}
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
+\code{inherit.aes = TRUE} (the default), it is combined with the default mapping
+at the top level of the plot. You must supply \code{mapping} if there is no plot
+mapping.}
 
 \item{data}{The data to be displayed in this layer. There are three
 options:
@@ -113,16 +113,20 @@ height for every additional comparison to minimize overlap.}
 \item{symnum.args}{a list of arguments to pass to the function
  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
  example, \code{symnum.args <- list(cutpoints = c(0, 0.0001, 0.001,
- 0.01, 0.05, 1), symbols = c("****", "***", "**", "*",  "ns"))}.
+ 0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
 
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }}
 
-\item{geom}{The geometric object to use display the data}
+\item{geom}{The geometric object to use to display the data, either as a
+\code{ggproto} \code{Geom} subclass or as a string naming the geom stripped of the
+\code{geom_} prefix (e.g. \code{"point"} rather than \code{"geom_point"})}
 
-\item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function.}
+\item{position}{Position adjustment, either as a string naming the adjustment
+(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.}
 
 \item{na.rm}{If FALSE (the default), removes missing values with a warning. If
 TRUE silently removes missing values.}
@@ -139,7 +143,7 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2]{geom_text}} or
-\code{\link[ggplot2]{geom_label}}.}
+\code{\link[ggplot2:geom_text]{geom_label}}.}
 }
 \description{
 Add mean comparison p-values to a ggplot, such as box blots, dot
@@ -181,7 +185,7 @@ stat_compare_means(label.y = 45)     # Add global Anova p-value
 ggboxplot(ToothGrowth, x = "dose", y = "len",
     color = "dose", palette = "npg")+
 stat_compare_means(method = "anova", label.y = 40)+ # Add global p-value
-stat_compare_means(aes(label = ..p.signif..),
+stat_compare_means(aes(label = after_stat(p.signif)),
                   method = "t.test", ref.group = "0.5")
 
 # Multiple grouping variables
@@ -193,7 +197,7 @@ p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
               facet.by = "dose", short.panel.labs = FALSE)
 # Use only p.format as label. Remove method name.
 p + stat_compare_means(
- aes(label = paste0("p = ", ..p.format..))
+ aes(label = paste0("p = ", after_stat(p.format)))
 )
 
 }

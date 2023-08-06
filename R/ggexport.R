@@ -63,7 +63,7 @@ ggexport <- function(..., plotlist = NULL, filename = NULL, ncol = NULL, nrow = 
     dev.opts <- dev.opts %>%
     .add_item(width = width, height = height, pointsize = pointsize, res = res)
 
-  if(file.ext %in% c("pdf")){
+  if(file.ext %in% c("pdf", "svg")){
     if(!missing(width)) dev.opts <- dev.opts %>% .add_item(width = width)
     if(!missing(height)) dev.opts <- dev.opts %>% .add_item(height = height)
     if(!missing(pointsize)) dev.opts <- dev.opts %>% .add_item(pointsize = pointsize)
@@ -93,6 +93,6 @@ ggexport <- function(..., plotlist = NULL, filename = NULL, ncol = NULL, nrow = 
   utils::capture.output(print(plots))
   utils::capture.output(grDevices::dev.off())
 
-  message("file saved to ", filename)
+  if(verbose) message("file saved to ", filename)
 }
 

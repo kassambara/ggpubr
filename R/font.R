@@ -2,7 +2,7 @@
 #'
 #'@description Change the appearance of the main title, subtitle, caption, axis
 #'  labels and text, as well as the legend title and texts. Wrapper around
-#'  \code{\link[ggplot2]{element_text}()}.
+#'  \code{\link[ggplot2:element]{element_text}()}.
 #'
 #'@param object character string specifying the plot components. Allowed values
 #'  include: \itemize{ \item \code{"title"} for the main title \item
@@ -23,7 +23,7 @@
 #'  "bold.italic"}).
 #'@param family the font family.
 #'@param ... other arguments to pass to the function
-#'  \code{\link[ggplot2]{element_text}()}.
+#'  \code{\link[ggplot2:element]{element_text}()}.
 #'
 #'@examples
 #'# Load data

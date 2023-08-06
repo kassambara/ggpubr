@@ -61,7 +61,7 @@ ggqqplot <- function(data, x, combine = FALSE, merge = FALSE,
     size = size, shape = shape,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    conf.int.level = conf.int.level,
+    conf.int = conf.int, conf.int.level = conf.int.level,
     ggtheme = ggtheme, ...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
@@ -177,7 +177,7 @@ StatQQLine <- ggproto("StatQQLine", Stat,
                         fit.value <- qq$intercept + qq$slope * theoretical
                         ymax <- fit.value + zz * SE
                         ymin <- fit.value - zz * SE
-                        data.frame(x = theoretical, y = line, ymin = ymin, ymax = ymax)
+                        data.frame(sample = line, x = theoretical, y = line, ymin = ymin, ymax = ymax)
                       }
 )
 

@@ -59,7 +59,9 @@ ggscatter(
 \arguments{
 \item{data}{a data frame}
 
-\item{x, y}{x and y variables for drawing.}
+\item{x}{x variables for drawing.}
+
+\item{y}{y variables for drawing.}
 
 \item{combine}{logical value. Default is FALSE. Used only when y is a vector
 containing multiple variables to plot. If TRUE, create a multi-panel plot by
@@ -135,7 +137,7 @@ probability.}
 
  \itemize{ \item \code{"convex"}: plot convex hull of a set o points. \item
  \code{"confidence"}: plot confidence ellipses arround group mean points as
- \code{\link[FactoMineR]{coord.ellipse}()}[in FactoMineR]. \item \code{"t"}:
+ \code{FactoMineR::coord.ellipse()}. \item \code{"t"}:
  assumes a multivariate t-distribution. \item \code{"norm"}: assumes a
  multivariate normal distribution. \item \code{"euclid"}: draws a circle with
  the radius equal to level, representing the euclidean distance from the

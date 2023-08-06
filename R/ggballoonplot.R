@@ -163,7 +163,7 @@ ggballoonplot <- function(
       label <- .cnames[3]
       # Reverse y levels so that it appears in the right order on the plot
       y.val <- dplyr::pull(data, 2)
-      data[, 2] <- y.val %>% factor(levels = rev(.levels(y.val)))
+      data[[2]] <- y.val %>% factor(levels = rev(.levels(y.val)))
     }
 
     else {

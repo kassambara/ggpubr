@@ -1,6 +1,102 @@
-# ggpubr 0.3.0.999
+# ggpubr 0.6.0.999
+
+## New features
+
+## Major changes
+
+## Minor changes
+
+## Bug fixes
+
+
+
+# ggpubr 0.6.0
+
+## New features
+
+- New function `ggadjust_pvalue()` added to adjust p-values produced by `geom_pwc()` on a ggplot (#522).
+- New data added: `gene_expression`
+- Global options: New available package options: `ggpubr.null_device`, which value should be a function that creates an appropriate null device. These include: `cowplot::pdf_null_device`, `cowplot::png_null_device`, `cowplot::cairo_null_device` and `cowplot::agg_null_device`. Default is `cowplot::pdf_null_device`. This is used in function like `as_ggplot()`, which needs to open a graphics device to render ggplot objects into grid graphics objects. This function is used to open null device for avoiding the display of unnecessary blank page when calling `ggarrange()` or `as_ggplot()` (#306 and #158).  The default option can be changed using, for example, `options(ggpubr.null_device = cowplot::png_null_device)`.
+
   
-To DO: merging two legends in ggarrange, discussion: https://community.rstudio.com/t/how-to-combine-two-separate-legends-side-by-side/9480/5
+## Major changes
+
+- `gadd()`: Restoring back random state after setting seed when adding jittered points. To do so, the seed number is just passed to `position_jitter()` and `position_jitterdodge()`, which preserve the initial random state ( #177 and #349) .
+- `ggpubr` requires now a version of `ggrepel >= 0.9.2.9999`, which restores now the initial random state after set.seed(). see https://github.com/slowkow/ggrepel/issues/228
+- `ggpubr` requires now a version of `cowplot >= 1.1.1`
+
+    
+  
+## Minor changes
+
+- `ggtexttable()`: doc updated with another example; text justification for individual cells/rows/columns (#335).
+- `ggpie()`: setting the default of `clip = "off"` in `coord_polar()` so that `ggpie()` does not crop labels (#429)
+- `as_ggplot()`: using null_device to avoid blank page #306 and #158
+- `ggarrange()`: using null_device to avoid blank page #306 and #158
+- Indexing variable in a data frame: using df[[x]] instead of df[, x] to make sure that the result is a vector even if the `df` is a tibble.
+- `ggexport()`: support added for graphics device svg (#469)
+- `ggpie()` and `ggdonutchart()` now fully reacts to the option `lab.font` (#502)
+- Replacing deprecated `gather_()` in both internal (`.check_data()`) and exported functions (`compare_means()`) (#513)
+- `stat_compare_means()`: The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0; `after_stat(p.signif)` should be used; updated so that `..p.signif..` is automatically converted into `after_stat()` format without warning for bacward compatibility.
+- Enable faceting by column names with spaces (#391)
+- Licence changed to GPL (>= 2) (#482)
+- `desc_statby()` doc updated to clarify the difference between SD (standard deviation) and SE (standard error) (#492)
+- The message `geom_smooth() using formula 'y ~ x'` is now turned off in `ggscatter()`(#488)
+
+
+## Bug fixes
+  
+- `ggtext()`: fix warning "`filter_()` was deprecated in dplyr 0.7.0".
+- `ggqqplot()`: the argument `conf.int` is taken into account now when specified (#524). 
+- `ggqqplot()`: Fixing the warning: "The following aesthetics were dropped during statistical transformation: sample" (#523)
+- Requiring `rstatix v >=0.7.1.999` for preserving factor class in `emmeans_test()` (#386)
+- `ggmaplot()`: Suppressing ggmaplot warning: *Unlabeled data points (too many overlaps). Consider increasing max.overlaps* (#520)
+- `compare_means()`: works now when the grouping variable levels contain the key words group2 or group1 (#450)
+- `ggparagraph()` : fixing bug about minimum paragraph length (#408)
+- `ggexport()`: the verbose argument is now considered when specifyed by user (#474)
+
+# ggpubr 0.5.0
+
+
+## New features
+
+- New functions `stat_anova_test()`, `stat_kruskal_test()`, `stat_welch_anova_test()`, `stat_friedman_test()` and `geom_pwc()` added. These are flexible functions to add p-values onto ggplot with more options. The function `geom_pwc()` is for adding pairwise comparisons p-values to a ggplot; supportted statistical methods include "wilcox_test", "t_test", "sign_test", "dunn_test", "emmeans_test", "tukey_hsd" and "games_howell_test". 
+- New functions to convert character vector coordinates into NPC (normalized parent coordinates) and data coordinates: `as_npc()`, `npc_to_data_coordinates()` and `get_coord()`. 
+- Global options:
+    - New function `ggpubr_options()` to display allowed global options in ggpubr
+    - New available package options: `ggpubr.parse_aes`. logical indicating whether to parse or not the aesthetics variables names. Default is `TRUE`. For example, if you want ggpubr to handle non-standard column names, like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
+
+
+## Minor changes
+
+- Minimum rstatix version needed is set to 0.7.1
+- Minimum ggplot2 version needed is set to 3.4.0
+- `stat_conf_ellipse`: ensure stat returns a data.frame for compatibility with ggplot2 v>=3.4.0
+- `stat_compare_means()`:  
+    - Unit tests added
+    - Updated to use `after_stat(p.signif)` as the dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0 (#509).
+- `ggdensity()` and `gghistogram()`: dot-dot notation (`..density..`, `..count..`) replaced by `after_stat(density)` and `after_stat(count)`, respectively for compatibility with ggplot2 3.4.0.
+- `create_aes()`:
+    - Default is now to parse its input, which can be an expression (#348). If you want ggpubr to handle non-standard column names (#229), like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
+    - Supports space in column names like "Dimension 1"
+    - Unittest added
+- Arguments (`digits` and `table.font.size`) added to `ggsummarystats()` for changing the summary table decimal place and text size (#341).
+- In `stat_pvalue_manual()` the argument `hide.ns` can be either a logical value (TRUE or FALSE) or a character value ("p" or "p.adj" for filtering out non significant by p-value or adjusted p-values).
+- Now, the x-axis tick label names correctly align with the corresponding ticks when the rotation angle of the texts is set to 90. This is automatically achieved by setting internally `vjust = 0.5` (#301).
+- `Capital NS.` is no longer displayed by `stat_compare_means()` (#171)
+- Unit tests added for`ggshistogram()` to make sure that it works when:
+    - using `after_stat()`,
+    - using after_stat() with trailing space inside parentheses.
+- Unit tests added for`ggscatter()` to make sure that:
+    - it works when there is spaces in variable names
+    - it can handle non-standard column names when `ggpubr.parse_aes` global option is set to FALSE (#229)
+    
+
+
+
+
+# ggpubr 0.4.0
+  
 
 ## New features
 
@@ -28,6 +124,7 @@ To DO: merging two legends in ggarrange, discussion: https://community.rstudio.c
 
 ## Minor changes
 
+- Now, when creating a box plot with error bars, color and fill argiments are taken into account in the errorbar function (#105).
 - New argument `alternative` supported in `stat_cor()` (#276).
 - New argument `position` in `ggline()` to make position "dodged" (#52).
 - New argument `outlier.shape` in ggboxplot(). Default is 19. To hide outlier, specify outlier.shape = NA. When jitter is added, then outliers will be automatically hidden. 
@@ -402,7 +499,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 
 - Now, the argument `palette` Can be also a numeric vector of length(groups); in this case a basic color palette is created using the function `grDevices::palette()`.
    
-# Bug fixes
+## Bug fixes
    
 - Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
 

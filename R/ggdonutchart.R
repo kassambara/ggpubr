@@ -74,7 +74,7 @@ NULL
 #'@export
 ggdonutchart <- function(
   data, x, label = x, lab.pos = c("out", "in"), lab.adjust = 0,
-  lab.font = c(4, "bold", "black"), font.family = "",
+  lab.font = c(4, "plain", "black"), font.family = "",
   color = "black", fill = "white", palette = NULL,
   size = NULL, ggtheme = theme_pubr(), ...
   )
@@ -121,7 +121,7 @@ ggdonutchart <- function(
     font.family = font.family, ...
     ) +
     coord_polar(
-      theta = "y", start = 0
+      theta = "y", start = 0, clip = "off"
       ) +
     ggtheme + .remove_axis()
 
@@ -133,7 +133,11 @@ ggdonutchart <- function(
       p <- p + scale_y_continuous(
         breaks = cumsum(.x) - .x/2,
         labels = dplyr::pull(data, label)
-      )
+      ) +
+        ggplot2::theme(axis.text.x = element_text(
+          face = lab.font$face, color = lab.font$color, size = 2.5*lab.font$size,
+          family = font.family
+          ))
     }
     # Compute the cumulative sum as label ypos
     if(lab.pos == "in"){

@@ -10,7 +10,7 @@ ggdonutchart(
   label = x,
   lab.pos = c("out", "in"),
   lab.adjust = 0,
-  lab.font = c(4, "bold", "black"),
+  lab.font = c(4, "plain", "black"),
   font.family = "",
   color = "black",
   fill = "white",

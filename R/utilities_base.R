@@ -21,7 +21,7 @@
   device <- .file_ext(filename)
   devices <- list(eps = grDevices::postscript, ps = grDevices::postscript,
                   pdf = grDevices::pdf,
-                  # svg = svglite::svglite,
+                  svg = grDevices::svg,
                   png = grDevices::png,
                   jpg = grDevices::jpeg,
                   jpeg = grDevices::jpeg,
@@ -105,3 +105,30 @@
   return(val)
 }
 
+# Setting seed with possibility to restore initial random state
+#:::::::::::::::::::::::::::::::::::::::::::::::
+# Ref: https://github.com/florianhartig/DHARMa/blob/master/DHARMa/R/random.R
+# seed numeric value to be used for setting seed
+# return a function named restore_random_state()
+# for restoring intitial random state
+#
+# Examples:
+# seed <- set_seed(123)
+# Restore back initial state
+# seed$restore_random_state()
+ set_seed  <- function(seed){
+    # Record current random state
+    current  <- mget(".Random.seed", envir = .GlobalEnv, ifnotfound = list(NULL))[[1]]
+    restore_random_state <- function(){
+      if(is.null(current)) rm(".Random.seed", envir = .GlobalEnv)
+      else assign(".Random.seed", current , envir = .GlobalEnv)
+    }
+
+    # Setting seed
+    if(is.numeric(seed)) set.seed(seed)
+    # ensuring that RNG has been initialized
+    if (is.null(current)) stats::runif(1)
+
+    # Returning function for restoring state
+    invisible(list(restore_random_state = restore_random_state))
+  }

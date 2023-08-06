@@ -63,7 +63,7 @@ case a basic color palette is created using the function
 \item{gradient.cols}{vector of colors to use for n-colour gradient. Allowed
 values include brewer and ggsci color palettes.}
 
-\item{main, title}{plot main title.}
+\item{main}{plot main title.}
 
 \item{submain, subtitle}{plot subtitle.}
 
@@ -74,6 +74,8 @@ hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}
+
+\item{title}{plot main title.}
 
 \item{font.main, font.submain, font.caption, font.x, font.y}{a vector of length 3
 indicating respectively the size (e.g.: 14), the style (e.g.: "plain",

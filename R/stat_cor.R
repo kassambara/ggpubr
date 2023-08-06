@@ -39,7 +39,7 @@ NULL
 #'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 #'  decimal places of precision. If specified, then \code{p.digits} is ignored.
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
-#'  \code{\link[ggplot2]{geom_label}}.
+#'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #'@seealso \code{\link{ggscatter}}

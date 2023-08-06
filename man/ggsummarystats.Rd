@@ -35,6 +35,8 @@ ggsummarystats(
   free.panels = FALSE,
   labeller = "label_value",
   heights = c(0.8, 0.2),
+  digits = 0,
+  table.font.size = 3,
   ggtheme = theme_pubr(),
   ...
 )
@@ -100,21 +102,23 @@ argument \code{facet.by} is specified.}
 \item{heights}{a numeric vector of length 2, specifying the heights of the
 main and the summary table, respectively.}
 
+\item{table.font.size}{the summary table font size.}
+
 \item{legend}{character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none".}
 }
 \description{
 Create a ggplot with summary stats (n, median, mean, iqr) table
-  under the plot.
+  under the plot. Read more: \href{https://www.datanovia.com/en/blog/how-to-create-a-beautiful-plots-in-r-with-summary-statistics-labels/}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
 }
 \section{Functions}{
 \itemize{
-\item \code{ggsummarytable}: Create a table of summary stats
+\item \code{ggsummarytable()}: Create a table of summary stats
 
-\item \code{ggsummarystats}: Create a ggplot with a summary stat table under the plot.
+\item \code{ggsummarystats()}: Create a ggplot with a summary stat table under the plot.
+
 }}
-
 \examples{
 # Data preparation
 #::::::::::::::::::::::::::::::::::::::::::::::::
@@ -168,29 +172,13 @@ ggsummarystats(
 
 # Facet
 #::::::::::::::::::::::::::::::::::::::::::::::::
-
-ggsummarystats(
-  df, x = "dose", y = "len",
-  ggfunc = ggboxplot, add = "jitter",
-  color = "dose", palette = "npg",
-  facet.by = c("supp", "qc")
-)
- # Specify labeller
+# Specify free.panels = TRUE for free panels
 ggsummarystats(
   df, x = "dose", y = "len",
   ggfunc = ggboxplot, add = "jitter",
   color = "dose", palette = "npg",
   facet.by = c("supp", "qc"),
   labeller = "label_both"
-)
-
-# Free panels
-ggsummarystats(
-  df, x = "dose", y = "len",
-  ggfunc = ggboxplot, add = "jitter",
-  color = "dose", palette = "npg",
-  facet.by = c("supp", "qc"),
-  free.panels = TRUE, labeller = "label_both"
 )
 
 }

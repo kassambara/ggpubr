@@ -4,7 +4,7 @@
 \alias{create_aes}
 \title{Create Aes Mapping from a List}
 \usage{
-create_aes(.list, parse = FALSE)
+create_aes(.list, parse = TRUE)
 }
 \arguments{
 \item{.list}{a list of aesthetic arguments; for example .list = list(x = "dose", y = "len", color = "dose").}

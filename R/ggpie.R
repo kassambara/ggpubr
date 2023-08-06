@@ -42,6 +42,10 @@ NULL
 #'
 #' ggpie(df, "value", label = "group")
 #'
+#' # Reducing margins around the pie chart
+#' ggpie(df, "value", label = "group") +
+#'  theme( plot.margin = unit(c(-.75,-.75,-.75,-.75),"cm"))
+#'
 #'
 #' # Change color
 #' # ++++++++++++++++++++++++++++++++
@@ -74,7 +78,7 @@ NULL
 #'@export
 ggpie <- function(
   data, x, label = x, lab.pos = c("out", "in"), lab.adjust = 0,
-  lab.font = c(4, "bold", "black"), font.family = "",
+  lab.font = c(4, "plain", "black"), font.family = "",
   color = "black", fill = "white", palette = NULL,
   size = NULL, ggtheme = theme_pubr(), ...
   )
@@ -122,7 +126,7 @@ ggpie <- function(
     font.family = font.family, ...
     ) +
     coord_polar(
-      theta = "y", start = 0
+      theta = "y", start = 0, clip = "off"
       ) +
     .remove_axis()
 
@@ -134,7 +138,11 @@ ggpie <- function(
       p <- p + scale_y_continuous(
         breaks = cumsum(.x) - .x/2,
         labels = dplyr::pull(data, label)
-      )
+      ) +
+        ggplot2::theme(axis.text.x = element_text(
+          face = lab.font$face, color = lab.font$color, size = 2.5*lab.font$size,
+          family = font.family
+        ))
     }
     # Compute the cumulative sum as label ypos
     if(lab.pos == "in"){
@@ -166,7 +174,7 @@ ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust 
   # data <- data[order(data[, x]), , drop = FALSE]
   if(fill %in% colnames(data)) {
     fill_d <- dplyr::pull(data, fill)
-    data[, fill] <- factor(fill_d, levels = rev(fill_d))
+    data[[fill]] <- factor(fill_d, levels = rev(fill_d))
   }
 
   if(is.null(lab.font)) lab.font <- list(size = 5, face = "bold", color = "black")
@@ -188,11 +196,11 @@ ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust 
 
   # label each slice at the midle of the slice
   if(!is.null(label)){
-    if(label[1] %in% names(data)) label <- data[, label]
+    if(label[1] %in% names(data)) label <- data[[label]]
 
     if(lab.pos == "out"){
       p <- p + scale_y_continuous(
-        breaks = cumsum(data[, x]) - data[, x]/2,
+        breaks = cumsum(data[[x]]) - data[[x]]/2,
         labels = label
       )
     }
@@ -238,6 +246,6 @@ ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust 
 .check_pie_labfont <- function(lab.font){
   lab.font$size <- ifelse(is.null(lab.font$size), 3.9, lab.font$size)
   lab.font$color <- ifelse(is.null(lab.font$color), "black", lab.font$color)
-  lab.font$face <- ifelse(is.null(lab.font$ace), "plain", lab.font$face)
+  lab.font$face <- ifelse(is.null(lab.font$face), "plain", lab.font$face)
   lab.font
 }

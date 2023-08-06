@@ -4,10 +4,11 @@ NULL
 #' GGPLOT with Summary Stats Table Under the Plot
 #'
 #' @description Create a ggplot with summary stats (n, median, mean, iqr) table
-#'   under the plot.
+#'   under the plot. Read more: \href{https://www.datanovia.com/en/blog/how-to-create-a-beautiful-plots-in-r-with-summary-statistics-labels/}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
 #' @inheritParams ggboxplot
 #' @param digits integer indicating the number of decimal places (round) to be
 #'   used.
+#' @param table.font.size the summary table font size.
 #' @param position Position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function.
 #' @param summaries summary stats to display in the table. Possible values are
@@ -79,29 +80,13 @@ NULL
 #'
 #' # Facet
 #' #::::::::::::::::::::::::::::::::::::::::::::::::
-#'
-#' ggsummarystats(
-#'   df, x = "dose", y = "len",
-#'   ggfunc = ggboxplot, add = "jitter",
-#'   color = "dose", palette = "npg",
-#'   facet.by = c("supp", "qc")
-#' )
-#'  # Specify labeller
+#' # Specify free.panels = TRUE for free panels
 #' ggsummarystats(
 #'   df, x = "dose", y = "len",
 #'   ggfunc = ggboxplot, add = "jitter",
 #'   color = "dose", palette = "npg",
 #'   facet.by = c("supp", "qc"),
 #'   labeller = "label_both"
-#' )
-#'
-#' # Free panels
-#' ggsummarystats(
-#'   df, x = "dose", y = "len",
-#'   ggfunc = ggboxplot, add = "jitter",
-#'   color = "dose", palette = "npg",
-#'   facet.by = c("supp", "qc"),
-#'   free.panels = TRUE, labeller = "label_both"
 #' )
 #'
 #' @describeIn ggsummarystats Create a table of summary stats
@@ -113,6 +98,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
     ggtheme <- theme_pubr(border = TRUE)
   }
   if (is.null(names(y))) names(y) <- y
+  y_values <- as.vector(y)
 
   df <- as.data.frame(data)
   df$x <- df[[x]]
@@ -126,7 +112,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
 
   df <- df %>%
     mutate_if(is.double, round, digits) %>%
-    unite(col = "label", !!!syms(y), sep = "\n") %>%
+    unite(col = "label", !!!syms(y_values), sep = "\n") %>%
     mutate(y = paste(names(y), collapse = "\n"))
   p <- ggplot(data, aes(x, y)) +
     geom_exec(
@@ -147,7 +133,8 @@ ggsummarystats <- function(data, x, y, summaries = c("n", "median", "iqr"),
                            ggfunc = ggboxplot,
                            color = "black", fill = "white", palette = NULL,
                            facet.by = NULL, free.panels = FALSE, labeller = "label_value",
-                           heights = c(0.80, 0.20), ggtheme = theme_pubr(), ...) {
+                           heights = c(0.80, 0.20), digits = 0, table.font.size = 3,
+                           ggtheme = theme_pubr(), ...) {
   if (missing(ggtheme) & !is.null(facet.by)) {
     ggtheme <- theme_pubr(border = TRUE)
   }
@@ -217,7 +204,8 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
                                 ggfunc = ggboxplot,
                                 color = "black", fill = "white", palette = NULL,
                                 ggtheme = theme_pubr(), heights = c(0.80, 0.20),
-                                facet.by = NULL, free.panels = FALSE, labeller = "label_value",  ...) {
+                                facet.by = NULL, free.panels = FALSE, labeller = "label_value",
+                                digits = 0, table.font.size = 3,...) {
   groups <- c(x, color, fill, facet.by) %>%
     unique() %>%
     intersect(colnames(data))
@@ -240,7 +228,8 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
     x = x, y = summaries,
     color = color, palette = palette, legend = "none",
     ggtheme = ggtheme,
-    facet.by = table.facet.by, labeller = labeller
+    facet.by = table.facet.by, labeller = labeller,
+    digits = digits, size = table.font.size
   ) +
     clean_table_theme()
 

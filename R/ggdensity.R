@@ -4,7 +4,7 @@ NULL
 #' @description Create a density plot.
 #' @inheritParams ggboxplot
 #' @param x variable to be drawn.
-#' @param y one of "..density.." or "..count..".
+#' @param y one of "density" or "count".
 #' @param color,fill density line color and fill color.
 #' @param linetype line type. See \code{\link{show_line_types}}.
 #' @param alpha numeric value specifying fill color transparency. Value should
@@ -55,7 +55,7 @@ NULL
 #'
 #'
 #' @export
-ggdensity <- function(data, x, y = "..density..", combine = FALSE, merge = FALSE,
+ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
                       title = NULL, xlab = NULL, ylab = NULL,
@@ -104,7 +104,7 @@ ggdensity <- function(data, x, y = "..density..", combine = FALSE, merge = FALSE
   return(p)
 }
 
-ggdensity_core <- function(data, x, y = "..density..",
+ggdensity_core <- function(data, x, y = "density",
                       color = "black", fill = NA, palette = NULL,
                       size = NULL, linetype = "solid", alpha = 0.5,
                       title = NULL, xlab = NULL, ylab = NULL,
@@ -124,6 +124,8 @@ ggdensity_core <- function(data, x, y = "..density..",
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
+  if (y %in% c("..density..", "density")) y <- "after_stat(density)"
+  else if (y %in% c("..count..", "count")) y <- "after_stat(count)"
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 

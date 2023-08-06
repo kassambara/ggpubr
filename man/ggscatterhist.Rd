@@ -47,15 +47,13 @@ ggscatterhist(
 
 \item{x}{an object of class \code{ggscatterhist}.}
 
-\item{y}{x and y variables for drawing.}
+\item{y}{y variables for drawing.}
 
 \item{group}{a grouping variable. Change points color and shape by groups if
 the options \code{color} and \code{shape} are missing. Should be also
 specified when you want to create a marginal box plot that is grouped.}
 
-\item{color}{point colors.}
-
-\item{fill}{point colors.}
+\item{color, fill}{point colors.}
 
 \item{palette}{the color palette to be used for coloring or filling by groups.
 Allowed values include "grey" for grey color palettes; brewer palettes e.g.
@@ -78,7 +76,7 @@ fit to your data.}
 \item{margin.params}{parameters to be applied to the marginal plots.}
 
 \item{margin.ggtheme}{the theme of the marginal plot. Default is
-\code{\link[ggplot2]{theme_void}()}.}
+\code{\link[ggplot2:ggtheme]{theme_void}()}.}
 
 \item{margin.space}{logical value. If TRUE, adds space between the main plot
 and the marginal plot.}

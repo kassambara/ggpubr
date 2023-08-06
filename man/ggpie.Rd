@@ -10,7 +10,7 @@ ggpie(
   label = x,
   lab.pos = c("out", "in"),
   lab.adjust = 0,
-  lab.font = c(4, "bold", "black"),
+  lab.font = c(4, "plain", "black"),
   font.family = "",
   color = "black",
   fill = "white",
@@ -85,6 +85,10 @@ head(df)
 # ++++++++++++++++++++++++++++++++
 
 ggpie(df, "value", label = "group")
+
+# Reducing margins around the pie chart
+ggpie(df, "value", label = "group") +
+ theme( plot.margin = unit(c(-.75,-.75,-.75,-.75),"cm"))
 
 
 # Change color

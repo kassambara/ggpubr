@@ -30,12 +30,12 @@ or \code{"axis.text"} for both x and y axis texts }}
 \item{family}{the font family.}
 
 \item{...}{other arguments to pass to the function
-\code{\link[ggplot2]{element_text}()}.}
+\code{\link[ggplot2:element]{element_text}()}.}
 }
 \description{
 Change the appearance of the main title, subtitle, caption, axis
  labels and text, as well as the legend title and texts. Wrapper around
- \code{\link[ggplot2]{element_text}()}.
+ \code{\link[ggplot2:element]{element_text}()}.
 }
 \examples{
 # Load data

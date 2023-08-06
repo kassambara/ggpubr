@@ -5,8 +5,11 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^README-.*\.png$
-^\.travis\.yml$
 ^cran-comments\.md$
 ^docs$
 ^images$
 ^_pkgdown\.yml$
+^TODO\.Rmd$
+^\.github$
+^data-raw$
+^ISSUE_TEMPLATE\.md$

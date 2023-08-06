@@ -175,10 +175,10 @@ ggdotchart_core <- function(data, x, y, group = NULL,
       else if(sorting == "ascending")
         data <- arrange(data, !!!syms(c(group, y)))
     }
-    data[, x] <- factor(data[, x], levels = unique(as.vector(data[, x])))
+    data[[x]] <- factor(data[[x]], levels = unique(as.vector(data[[x]])))
   }
 
-  if(!is.factor(data[, x])) data[, x] <- as.factor(data[, x])
+  if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 

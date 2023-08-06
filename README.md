@@ -1,25 +1,39 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://api.travis-ci.org/kassambara/ggpubr.png)](https://travis-ci.org/kassambara/ggpubr) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggpubr)](https://cran.r-project.org/package=ggpubr) [![Downloads](https://cranlogs.r-pkg.org/badges/ggpubr)](https://cran.r-project.org/package=ggpubr) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
 
-ggpubr: 'ggplot2' Based Publication Ready Plots
+[![R-CMD-check](https://github.com/kassambara/ggpubr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kassambara/ggpubr/actions/workflows/R-CMD-check.yaml)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggpubr)](https://cran.r-project.org/package=ggpubr)
+[![Downloads](https://cranlogs.r-pkg.org/badges/ggpubr)](https://cran.r-project.org/package=ggpubr)
+[![Total
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
+
+ggpubr: ‘ggplot2’ Based Publication Ready Plots
 ===============================================
 
-[ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an excellent and flexible package for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a ggplot, the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills.
+[ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an
+excellent and flexible package for elegant data visualization in R.
+However the default generated plots requires some formatting before we
+can send them for publication. Furthermore, to customize a ggplot, the
+syntax is opaque and this raises the level of difficulty for researchers
+with no advanced R programming skills.
 
-The 'ggpubr' package provides some easy-to-use functions for creating and customizing 'ggplot2'- based publication ready plots.
+The ‘ggpubr’ package provides some easy-to-use functions for creating
+and customizing ‘ggplot2’- based publication ready plots.
 
-Find out more at <https://rpkgs.datanovia.com/ggpubr>.
+Find out more at
+<a href="https://rpkgs.datanovia.com/ggpubr/" class="uri">https://rpkgs.datanovia.com/ggpubr/</a>.
 
 Installation and loading
 ------------------------
 
--   Install from [CRAN](https://cran.r-project.org/package=ggpubr) as follow:
+-   Install from [CRAN](https://cran.r-project.org/package=ggpubr) as
+    follow:
 
 ``` r
 install.packages("ggpubr")
 ```
 
--   Or, install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow:
+-   Or, install the latest version from
+    [GitHub](https://github.com/kassambara/ggpubr) as follow:
 
 ``` r
 # Install
@@ -33,7 +47,6 @@ Distribution
 ``` r
 library(ggpubr)
 #> Loading required package: ggplot2
-#> Loading required package: magrittr
 # Create some data format
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
 set.seed(1234)
@@ -154,7 +167,8 @@ head(dfm[, c("name", "wt", "mpg", "cyl")])
 
 ### Ordered bar plots
 
-Change the fill color by the grouping variable "cyl". Sorting will be done globally, but not by groups.
+Change the fill color by the grouping variable “cyl”. Sorting will be
+done globally, but not by groups.
 
 ``` r
 ggbarplot(dfm, x = "name", y = "mpg",
@@ -186,7 +200,9 @@ ggbarplot(dfm, x = "name", y = "mpg",
 
 ### Deviation graphs
 
-The deviation graph shows the deviation of quantitatives values to a reference value. In the R code below, we'll plot the mpg z-score from the mtcars dataset.
+The deviation graph shows the deviation of quantitatives values to a
+reference value. In the R code below, we’ll plot the mpg z-score from
+the mtcars dataset.
 
 Calculate the z-score of the mpg data:
 
@@ -224,7 +240,7 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
 
 ![](tools/README-deviation-graphs-1.png)
 
-Rotate the plot: use rotate = TRUE and sort.val = "desc"
+Rotate the plot: use rotate = TRUE and sort.val = “desc”
 
 ``` r
 ggbarplot(dfm, x = "name", y = "mpg_z",
@@ -248,9 +264,10 @@ Dot charts
 
 ### Lollipop chart
 
-Lollipop chart is an alternative to bar plots, when you have a large set of values to visualize.
+Lollipop chart is an alternative to bar plots, when you have a large set
+of values to visualize.
 
-Lollipop chart colored by the grouping variable "cyl":
+Lollipop chart colored by the grouping variable “cyl”:
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg",
@@ -264,11 +281,12 @@ ggdotchart(dfm, x = "name", y = "mpg",
 
 ![](tools/README-lollipop-chart-1.png)
 
--   Sort in decending order. **sorting = "descending"**.
+-   Sort in decending order. **sorting = “descending”**.
 -   Rotate the plot vertically, using **rotate = TRUE**.
--   Sort the mpg value inside each group by using **group = "cyl"**.
+-   Sort the mpg value inside each group by using **group = “cyl”**.
 -   Set **dot.size** to 6.
--   Add mpg values as label. **label = "mpg"** or **label = round(dfm$mpg)**.
+-   Add mpg values as label. **label = “mpg”** or **label =
+    round(dfm$mpg)**.
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg",
@@ -290,8 +308,9 @@ ggdotchart(dfm, x = "name", y = "mpg",
 
 Deviation graph:
 
--   Use y = "mpg\_z"
--   Change segment color and size: add.params = list(color = "lightgray", size = 2)
+-   Use y = “mpg\_z”
+-   Change segment color and size: add.params = list(color =
+    “lightgray”, size = 2)
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg_z",
@@ -312,7 +331,7 @@ ggdotchart(dfm, x = "name", y = "mpg_z",
 
 ![](tools/README-lollipop-chart-deviation-1.png)
 
-### Cleveland's dot plot
+### Cleveland’s dot plot
 
 Color y text by groups. Use y.text.col = TRUE.
 
@@ -334,9 +353,11 @@ ggdotchart(dfm, x = "name", y = "mpg",
 More
 ----
 
-Find out more at <https://rpkgs.datanovia.com/ggpubr>.
+Find out more at
+<a href="https://rpkgs.datanovia.com/ggpubr/" class="uri">https://rpkgs.datanovia.com/ggpubr/</a>.
 
 Blog posts
 ----------
 
--   A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
+-   A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready
+    Plots](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)

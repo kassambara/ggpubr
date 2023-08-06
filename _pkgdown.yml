@@ -34,6 +34,7 @@ reference:
     contents:
       - ggscatter
       - stat_cor
+      - stat_regline_equation
       - stat_stars
       - ggscatterhist
   - title: Plot Paired Data
@@ -45,7 +46,13 @@ reference:
       - compare_means
       - stat_compare_means
       - stat_pvalue_manual
+      - stat_anova_test
+      - stat_kruskal_test
+      - stat_welch_anova_test
+      - stat_friedman_test
+      - geom_pwc
       - geom_bracket
+      - ggadjust_pvalue
   - title: Plot Tables and Paragraphs
     contents:
       - ggtexttable
@@ -86,6 +93,15 @@ reference:
       - ggexport
       - annotate_figure
       - background_image
+  - title: Make Programming Easy with GGPlot2
+    contents:
+      - geom_exec
+      - create_aes
+  - title: Coordinates
+    contents:
+      - as_npc
+      - npc_to_data_coord
+      - get_coord
   - title: Helpers
     contents:
       - facet
@@ -93,12 +109,14 @@ reference:
       - ggadd
       - get_palette
       - as_ggplot
-      - geom_exec
-      - create_aes
+      - ggtext
+      - ggpubr_options
+      - ggpubr_args
   - title: Data
     contents:
       - diff_express
       - gene_citation
+      - gene_expression
   - title: Others
     contents:
       - desc_statby

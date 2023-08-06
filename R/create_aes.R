@@ -21,7 +21,10 @@ NULL
 #'  geom_point()
 #'
 #' @export
-create_aes <- function(.list, parse = FALSE){
+create_aes <- function(.list, parse = TRUE){
+  if(missing(parse)){
+    parse <- base::getOption("ggpubr.parse_aes", default = TRUE)
+  }
   if(parse){
     return(create_aes.parse(.list))
   } else{
@@ -45,6 +48,10 @@ create_aes.parse <- function(.list){
 
 parse_expression <- function(x){
   if(is_parsable_aes(x)){
+    # if contains space, just add backsticks using as.name()
+    if(contains_space(x)){
+      if(!is_math_string(x)) return(as.name(x))
+    }
     x <- parse(text = x)[[1]]
   }
   x
@@ -68,4 +75,32 @@ is_numeric_char <- function(x){
   if(is.character(x)) res <- grepl("^[[:digit:]]+$", x)
   else res <- FALSE
   res
+}
+
+
+
+# Fortify variable name----------------------------
+fortify_variable_name <- function(x){
+  if(contains_space(x)){
+    if(!is_math_string(x)){
+
+    }
+  }
+}
+
+# Check if string contains space
+contains_space <- function(x){
+  grepl("\\s", x)
+}
+
+extract_text_inside_parenthesis <- function(x){
+  regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=TRUE))[[1]]
+}
+# Check if text contains mathematical operators
+is_math_string <- function(x){
+  # operators <- unlist(lapply( c("Arith","Compare","Math"), methods::getGroupMembers ))
+  operators <- c("+", "-", "*", "^", "%%", "%/%", "/", "==", ">", "<", "!=", "<=", ">=")
+  contains_math_operators <- unlist(lapply(operators, grepl, x, fixed = TRUE))
+  contains_parentheses <- grepl(pattern = "\\(.*\\)", x)
+  any(c(contains_math_operators, contains_parentheses))
 }

@@ -7,7 +7,7 @@ NULL
 #' @importFrom dplyr group_by mutate mutate_if group_nest arrange desc
 #' @importFrom purrr map2 map
 #' @importFrom tidyr unite
-#' @importFrom dplyr do
+#' @importFrom dplyr do select distinct
 #' @importFrom dplyr summarise
 #' @importFrom dplyr everything
 #' @importFrom grid drawDetails
@@ -254,9 +254,10 @@ keep_only_tbl_df_classes <- function(x){
            font.xtickslab = font.tickslab, font.ytickslab = font.tickslab)
   {
 
-    . <- xhjust <- NULL
+    . <- xhjust <- xvjust <- NULL
    if(!is.null(xtickslab.rt)) {
      if(xtickslab.rt > 5) xhjust <- 1
+     if(xtickslab.rt == 90) xvjust <- 0.5
      }
     else xhjust <- NULL
 
@@ -272,7 +273,7 @@ keep_only_tbl_df_classes <- function(x){
     else font.y <- .parse_font(font.ytickslab)
 
     if (tickslab) {
-      xtickslab <- font.x %>% .add_item(hjust = xhjust, angle = xtickslab.rt) %>%
+      xtickslab <- font.x %>% .add_item(hjust = xhjust, vjust = xvjust, angle = xtickslab.rt) %>%
         do.call(element_text, .)
       ytickslab <- font.y %>% .add_item(angle = ytickslab.rt) %>% do.call(element_text, .)
     }
@@ -404,162 +405,6 @@ p
   add.params
 }
 
-# Allowed values for add are one or the combination of: "none",
-#   "dotplot", "jitter", "boxplot", "mean", "mean_se", "mean_sd", "mean_ci", "mean_range",
-#  "median", "median_iqr", "median_mad", "median_range"
-# p_geom character, e.g "geom_line"
-.add <- function(p,
-                 add = NULL,
-                 add.params = list(color = "black", fill = "white", shape = 19, width = 1),
-                 data = NULL, position = position_dodge(0.8),
-                 error.plot = c("pointrange", "linerange", "crossbar", "errorbar",
-                                "upper_errorbar", "lower_errorbar", "upper_pointrange", "lower_pointrange",
-                                "upper_linerange", "lower_linerange"),
-                 p_geom = ""
-                 )
-{
-
-  if(is.null(data)) data <- p$data
-  pms <- add.params
-  if("none" %in% add) add <- "none"
-  error.plot = match.arg(error.plot)
-
-
-  color <- ifelse(is.null(pms$color), "black",pms$color)
-  fill <-  ifelse(is.null(pms$fill), "white", pms$fill)
-  shape <- ifelse(is.null(pms$shape), 19, pms$shape)
-  width <- ifelse(is.null(pms$width), 1, pms$width)
-  shape <- ifelse(is.null(add.params$shape), 19, add.params$shape)
-
- # size <- ifelse(is.null(add.params$size), 1, add.params$size)
-
-
-  # stat summary
-  #.mapping <- as.character(p$mapping)
-  .mapping <- .get_gg_xy_variables(p)
-  x <- .mapping["x"]
-  y <- .mapping["y"]
-
-  errors <- c("mean", "mean_se", "mean_sd", "mean_ci", "mean_range", "median", "median_iqr", "median_mad", "median_range")
-  if(any(errors %in% add)) stat_sum <- desc_statby(data, measure.var = .mapping["y"],
-                                                   grps = intersect(c(.mapping["x"], color, fill), names(data)))
-
-
-
-  if ("boxplot" %in% add) {
-    # size <- ifelse(is.null(add.params$size), 1, add.params$size)
-    p <- p + .geom_exec(geom_boxplot, data = data,
-                        color = color, fill = fill,
-                        position = position, width = width, size = add.params$size)
-  }
-
-  if ("violin" %in% add) {
-    # size <- ifelse(is.null(add.params$size), 1, add.params$size)
-    p <- p + .geom_exec(geom_violin, data = data, trim = FALSE,
-                        color = color, fill = fill,
-                        position = position, width = width, size = add.params$size)
-  }
-
-
-  if ( "dotplot" %in% add ) {
-    dotsize <- ifelse(is.null(add.params$size), 0.9, add.params$size)
-    p <- p + .geom_exec(geom_dotplot, data = data, binaxis = 'y', stackdir = 'center',
-                        color = color, fill = fill, dotsize = dotsize,
-                        position = position, stackratio = 1.2, binwidth = add.params$binwidth)
-
-  }
-  if ( "jitter" %in% add ){
-    set.seed(123)
-    # jitter.size <- ifelse(is.null(add.params$size), 2, add.params$size)
-    ngrps <- length(intersect(names(data), c(.mapping["x"], fill, color)))
-    if(p_geom == "geom_line" | ngrps == 1) .jitter = position_jitter(0.4)
-    else if(ngrps > 1) .jitter <- position_dodge(0.8)
-
-    if(is.null(add.params$jitter)) .jitter = position_jitter(0.4)
-    else if(is.numeric(add.params$jitter))
-      .jitter <- position_jitter(add.params$jitter)
-    else .jitter <- add.params$jitter
-    p <- p + .geom_exec(geom_jitter, data = data,
-                        color = color, fill = fill, shape = shape, size = add.params$size,
-                        position = .jitter )
-
-  }
-
-  if ( "point" %in% add ) {
-    p <- p + .geom_exec(geom_point, data = data,
-                        color = color,  size = add.params$size,
-                        position = position)
-
-  }
-  if ( "line" %in% add ) {
-    p <- p + .geom_exec(geom_line, data = data, group = 1,
-                        color = color,  size = add.params$size,
-                        position = position)
-
-  }
-
-
-  # Add mean or median
-  center <- intersect(c("mean", "median"), add)
-  if(length(center) == 2)
-    stop("Use mean or mdedian, but not both at the same time.")
-    if(length(center) == 1){
-      center.size <- ifelse(is.null(add.params$size), 1, add.params$size)
-      p <- p %>%
-        add_summary(fun = center, color = color, shape = shape,
-                    position = position, size = center.size)
-    }
-
-  # Add errors
-  errors <- c("mean_se", "mean_sd", "mean_ci", "mean_range",  "median_iqr", "median_mad", "median_range")
-  errors <- intersect(errors, add)
-  if(length(errors) >= 2)
-    stop("Choose one these: ", paste(errors, collapse =", "))
-  if(length(errors) == 1){
-    errors <- strsplit(errors, "_", fixed = TRUE)[[1]]
-   .center <- errors[1]
-   .errors <- errors[2]
-    stat_sum$ymin <- stat_sum[, .center] - stat_sum[, .errors]
-    stat_sum$ymax <- stat_sum[, .center] + stat_sum[, .errors]
-    names(stat_sum)[which(names(stat_sum) == .center)] <- y
-    size <- ifelse(is.null(add.params$size), 1, add.params$size)
-
-
-    if(error.plot %in% c("upper_errorbar", "upper_pointrange", "upper_linerange")) {
-      ymin <- y
-      ymax <- "ymax"
-    }
-    else if(error.plot %in% c("lower_errorbar", "lower_pointrange", "lower_linerange")){
-      ymin <- "ymin"
-      ymax <- y
-    }
-    else {
-      ymin <- "ymin"
-      ymax <- "ymax"
-    }
-
-    if(error.plot %in% c("pointrange", "lower_pointrange", "upper_pointrange"))
-      p <- p + .geom_exec(geom_pointrange, data = stat_sum,
-                        color = color, shape = shape, ymin = ymin, ymax = ymax,
-                        position = position, size = size)
-   else if(error.plot %in% c("linerange", "lower_linerange", "upper_linerange"))
-      p <- p + .geom_exec(geom_linerange, data = stat_sum,
-                          color = color,  ymin = ymin, ymax = ymax,
-                          position = position, size = size)
-    else if(error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar"))
-      p <- p + .geom_exec(geom_errorbar, data = stat_sum,
-                          color = color,  ymin = ymin, ymax = ymax,
-                          position = position, size = size, width = 0.2)
-
-    else if(error.plot == "crossbar")
-      p <- p + .geom_exec(geom_crossbar, data = stat_sum, fill = fill,
-                          color = color, ymin = "ymin", ymax = "ymax",
-                          position = position, width = width, size = size)
-  }
-
-  p
-
-}
 
 
 # Calculate the mean and the SD in each group
@@ -672,25 +517,24 @@ p
   #......................................................
   if(is.null(y)) y <- ""
   if(combine & length(y) > 1){
-    data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
-                           gather_cols = y)
-    data[, ".y."] <- factor(data[, ".y."], levels = unique(data[, ".y."]))
+    data <- data %>%
+      df_gather(cols = y, names_to = ".y.", values_to = ".value.") %>%
+      dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
     y <- ".value."
   }
   # Combining x variables: Case of density plot or histograms
   #......................................................
   else if(combine & length(x) > 1 & y[1] %in% c("..density..", "..count..", "..ecdf..", "..qq..")){
-
-    data <- tidyr::gather_(data, key_col = ".y.", value_col = ".value.",
-                           gather_cols = x)
-    data[, ".y."] <- factor(data[, ".y."], levels = unique(data[, ".y."]))
+    data <- data %>%
+      df_gather(cols = x, names_to = ".y.", values_to = ".value.") %>%
+      dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
     x <- ".value."
   }
 
   # If not factor, x elements on the plot should
   # appear in the same order as in the data
-  if(is.character(data[, x]))
-    data[, x] <- factor(data[, x], levels = unique(data[, x]))
+  if(is.character(data[[x]]))
+    data[[x]] <- factor(data[[x]], levels = unique(data[[x]]))
 
   y <- unique(y)
   names(y) <- y
@@ -707,10 +551,10 @@ p
 # Adjust shape when ngroups > 6, to avoid ggplot warnings
 .scale_point_shape <- function(p, data, shape){
   if(shape %in% colnames(data)){
-    grp <- data[, shape]
+    grp <- data[[shape]]
     if(!inherits(grp, "factor")) grp <- as.factor(grp)
-    ngroups <- length(levels(data[, shape]))
-    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[, shape]))
+    ngroups <- length(levels(data[[shape]]))
+    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[[shape]]))
   }
   p
 }
@@ -942,12 +786,12 @@ p
   }
 
   # Item to display
-  x <- opts$data[, opts$x] %>% as.vector()
+  x <- opts$data[[opts$x]] %>% as.vector()
   if(!is.null(select))
     opts$data <- subset(opts$data, x %in% select)
   if(!is.null(remove))
     opts$data <- subset(opts$data, !(x %in% remove))
-  if(!is.null(order)) opts$data[, opts$x] <- factor(opts$data[, opts$x], levels = order)
+  if(!is.null(order)) opts$data[[opts$x]] <- factor(opts$data[[opts$x]], levels = order)
 
   # Add additional options, which can be potentially vectorized
   # when multiple plots
@@ -1089,8 +933,8 @@ p
   # NO grouping variable
   if(.is_empty(grouping.vars)) {
     m <- ifelse(add == "mean",
-                mean(data[, x], na.rm = TRUE),
-                stats::median(data[, x], na.rm = TRUE))
+                mean(data[[x]], na.rm = TRUE),
+                stats::median(data[[x]], na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data,
                        xintercept = m, color = color,
                        linetype = linetype, size = size)

@@ -45,9 +45,13 @@ NULL
 #'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. Considered only in the situation, where comparisons are performed
 #'  against reference group or against "all".
-#'@param hide.ns logical value. If TRUE, hide ns symbol when displaying
+#'@param hide.ns can be logical value or a character vector.
+#'\itemize{
+#' \item Case when logical value. If TRUE, hide ns symbol when displaying
 #'  significance levels. Filter is done by checking the column
 #'  \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}.
+#'  \item Case when character value. Possible values are "p" or "p.adj", for filtering out non significant.
+#'  }
 #'@param vjust move the text up or down relative to the bracket. Can be also a
 #'  column name available in the data.
 #'@param position position adjustment, either as a string, or the result of a
@@ -120,8 +124,14 @@ stat_pvalue_manual <- function(
   if(is.null(label)){
     label <- guess_signif_label_column(data)
   }
-  if(hide.ns){
-    data <- remove_ns(data)
+  # Hide NS
+  if(is.logical(hide.ns)){
+    if(hide.ns) data <- remove_ns(data)
+  }
+  else if (is.character(hide.ns)){
+    filter <- dplyr::filter
+    if(hide.ns == "p") data <- data %>% filter(.data$p <= 0.05)
+    else if(hide.ns == "p.adj") data <- data %>% filter(.data$p.adj <= 0.05)
   }
   data <- asserttat_group_columns_exists(data)
   comparison <- detect_comparison_type(data)

@@ -3,10 +3,8 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{\%>\%}
 \alias{mutate}
 \alias{group_by}
-\alias{geom_signif}
 \alias{get_summary_stats}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -16,10 +14,6 @@ below to see their documentation.
 
 \describe{
   \item{dplyr}{\code{\link[dplyr]{group_by}}, \code{\link[dplyr]{mutate}}}
-
-  \item{ggsignif}{\code{\link[ggsignif]{geom_signif}}}
-
-  \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
   \item{rstatix}{\code{\link[rstatix]{get_summary_stats}}}
 }}

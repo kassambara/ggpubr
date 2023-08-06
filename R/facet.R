@@ -89,12 +89,12 @@ facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
 
 
   if(length(facet.by) == 1){
-    facet.formula <- paste0("~", facet.by) %>% stats::as.formula()
+    facet.formula <- paste0("~", glue::backtick(facet.by)) %>% stats::as.formula()
     p <- p + facet_wrap(facet.formula, nrow = nrow, ncol = ncol, scales = scales, labeller = .labeller,
                         strip.position = strip.position)
   }
   else if(length(facet.by) == 2){
-    facet.formula <- paste(facet.by, collapse = " ~ ") %>% stats::as.formula()
+    facet.formula <- paste(glue::backtick(facet.by), collapse = " ~ ") %>% stats::as.formula()
     p <- p + facet_grid(facet.formula, scales = scales, labeller = .labeller)
   }
 
@@ -130,7 +130,7 @@ facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
 
   for(variable in variables){
 
-    current.levels <- .levels(data[, variable])
+    current.levels <- .levels(data[[variable]])
     provided.levels <- panel.labs[[variable]]
 
     if(length(current.levels) != length(provided.levels)){

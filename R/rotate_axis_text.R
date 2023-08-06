@@ -10,7 +10,7 @@
 #'@param hjust horizontal justification (in [0, 1]).
 #'@param vjust vertical justification (in [0, 1]).
 #'@param ... other arguments to pass to the function
-#'  \code{\link[ggplot2]{element_text}()}.
+#'  \code{\link[ggplot2:element]{element_text}()}.
 #'
 #'@examples
 #'# Load data

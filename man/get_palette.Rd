@@ -9,7 +9,7 @@ get_palette(palette = "default", k)
 \arguments{
 \item{palette}{Color palette. Allowed values include: \itemize{ \item
 \strong{Grey color palettes}: "grey" or "gray"; \item \strong{RColorBrewer
-palettes}, see \code{\link[RColorBrewer]{brewer.pal}} and details section.
+palettes}, see \code{\link[RColorBrewer:ColorBrewer]{brewer.pal}} and details section.
 Examples of palette names include: "RdBu", "Blues", "Dark2", "Set2", ...;
 \item \strong{Custom color palettes}. For example, palette = c("#00AFBB",
 "#E7B800", "#FC4E07"); \item \strong{ggsci scientific journal palettes},

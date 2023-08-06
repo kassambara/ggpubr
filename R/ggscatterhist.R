@@ -12,7 +12,7 @@ NULL
 #'@param margin.plot the type of the marginal plot. Default is "hist".
 #'@param margin.params parameters to be applied to the marginal plots.
 #'@param margin.ggtheme the theme of the marginal plot. Default is
-#'  \code{\link[ggplot2]{theme_void}()}.
+#'  \code{\link[ggplot2:ggtheme]{theme_void}()}.
 #'@param margin.space logical value. If TRUE, adds space between the main plot
 #'  and the marginal plot.
 #'@param bins Number of histogram bins. Defaults to 30. Pick a better value that
