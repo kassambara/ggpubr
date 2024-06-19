@@ -38,6 +38,7 @@ NULL
 #'@param p.accuracy a real value specifying the number of decimal places of
 #'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 #'  decimal places of precision. If specified, then \code{p.digits} is ignored.
+#'@param rmse.unit unit for RMSE
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -47,6 +48,7 @@ NULL
 #'  \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
 #'  for the correlation coefficient} \item{rr.label}{formatted label for the
 #'  squared correlation coefficient} \item{p.label}{label for the p-value}
+#'  \item{rmse.label}{label for the RMSE}
 #'  \item{label}{default labeldisplayed by \code{stat_cor()}} }
 #'
 #' @examples
@@ -94,7 +96,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
-                     r.accuracy = NULL, p.accuracy = NULL,
+                     r.accuracy = NULL, p.accuracy = NULL, rmse.unit = "",
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
                     inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
@@ -107,6 +109,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                   method = method, alternative = alternative, output.type = output.type, digits = digits,
                   r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
                   p.accuracy = p.accuracy, cor.coef.name = cor.coef.name,
+                  rmse.unit = rmse.unit,
                   parse = parse, na.rm = na.rm, ...)
   )
 }
@@ -118,7 +121,7 @@ StatCor<- ggproto("StatCor", Stat,
 
                   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep, output.type, digits,
-                                           r.digits, p.digits, r.accuracy, p.accuracy, cor.coef.name)
+                                           r.digits, p.digits, r.accuracy, p.accuracy, cor.coef.name, rmse.unit)
                     {
                     if (length(unique(data$x)) < 2) {
                       # Not enough data to perform test
@@ -130,7 +133,7 @@ StatCor<- ggproto("StatCor", Stat,
                       label.sep = label.sep, output.type = output.type, digits = digits,
                       r.digits = r.digits, p.digits = p.digits,
                       r.accuracy = r.accuracy, p.accuracy = p.accuracy,
-                      cor.coef.name = cor.coef.name
+                      cor.coef.name = cor.coef.name, rmse.unit = rmse.unit
                       )
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
@@ -152,7 +155,7 @@ StatCor<- ggproto("StatCor", Stat,
                       label.sep = ", ", output.type = "expression",
                       digits = 2, r.digits = digits, p.digits = digits,
                       r.accuracy = NULL, p.accuracy = NULL,
-                      cor.coef.name = "R"){
+                      cor.coef.name = "R", rmse.unit = ""){
   # Overwritting digits by accuracy, if specified
   if(!is.null(p.accuracy)){
     nb_decimal_places <- round(abs(log10(p.accuracy)))
@@ -163,17 +166,24 @@ StatCor<- ggproto("StatCor", Stat,
     r.digits <- nb_decimal_places
   }
 
+  stopifnot(length(rmse.unit) == 1)
+
+
   # Correlation analyses
   .cor <- suppressWarnings(stats::cor.test(
     x, y, method = method,  alternative = alternative,
     use = "complete.obs"
     ))
+  rmse <- Metrics::rmse(x, y)
   estimate <- p.value <- p <- r <- rr <-  NULL
-  z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method) %>%
+  z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value,
+                  rmse.value = rmse,
+                  method = method) %>%
     mutate(
       r = signif(estimate, r.digits),
       rr = signif(estimate^2, r.digits),
-      p = signif(p.value, p.digits)
+      p = signif(p.value, p.digits),
+      rmse = signif(rmse.value, p.digits)
     )
 
   # Defining p and r labels
@@ -190,7 +200,8 @@ StatCor<- ggproto("StatCor", Stat,
         ),
       p.label = get_p_label(
         p, accuracy = p.accuracy, type = output.type
-        )
+        ),
+      rmse.label = get_rmse_label(rmse, type = output.type, rmse.unit = rmse.unit)
   )
 
   # Defining correlation labels
@@ -234,6 +245,22 @@ get_p_label <- function(x, accuracy = 0.0001, type = "expression"){
   if(type == "expression"){
     label <- gsub(pattern = "p = ", replacement = "italic(p)~`=`~", x = label, fixed = TRUE)
     label <- gsub(pattern = "p < ", replacement = "italic(p)~`<`~", x = label, fixed = TRUE)
+  }
+  label
+}
+
+# Formatting rmse  ----------------------
+get_rmse_label <- function(x, type = "expression", rmse.unit = ""){
+  stopifnot(length(rmse.unit) == 1)
+  label <- paste0("RMSE = ", x)
+  if (rmse.unit != "") {
+    label <- paste0(label, " ", rmse.unit)
+  }
+  if(type == "expression"){
+    label <- gsub(pattern = "RMSE = ", replacement = "italic(RMSE)~`=`~", x = label, fixed = TRUE)
+    if (rmse.unit != "") {
+      label <- gsub(pattern = rmse.unit, replacement = paste0("~", rmse.unit), x = label, fixed = TRUE)
+    }
   }
   label
 }
