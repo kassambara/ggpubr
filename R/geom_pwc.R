@@ -78,6 +78,12 @@ NULL
 #'  method. Allowed values include "holm", "hochberg", "hommel", "bonferroni",
 #'  "BH", "BY", "fdr", "none". If you don't want to adjust the p value (not
 #'  recommended), use p.adjust.method = "none".
+#'@param manual.n.comparisons optional numeric value allowing the user to 
+#'  manually specify the number of comparisons used for p-value adjustment. 
+#'  This value must be greater than or equal to the number of tests performed. 
+#'  It is particularly useful when the performed tests represent only a subset 
+#'  of all possible comparisons, ensuring that the correction accounts for the 
+#'  total number of tests in practice.
 #'@param p.adjust.by possible value is one of \code{c("group", "panel")}.
 #'  Default is \code{"group"}: for a grouped data, if pairwise test is
 #'  performed, then the p-values are adjusted for each group level
@@ -332,7 +338,6 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 stat.label <- gsub(pattern = "\\{method\\},\\s?", replacement = "", stat.label)
                               }
                               stat.test$method <- method.name
-
                               # P-value adjustment, formatting and significance
                               if(!("p.adj" %in% colnames(stat.test))){
                                 # Case of one comparison of two groups
