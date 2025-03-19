@@ -213,6 +213,7 @@ ggboxplot_core <- function(data, x, y,
 
   # Calculer le nombre d'observations et la médiane pour chaque groupe
   stats <- data %>%
+    suppressPackageStartupMessages() %>%
     group_by(!!sym(x)) %>%
     summarise(n = n(), median = median(!!sym(y)), .groups = "drop")
 
