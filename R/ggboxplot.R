@@ -24,6 +24,7 @@ NULL
 #'@param bxp.errorbar logical value. If TRUE, shows error bars of box plots.
 #'@param bxp.errorbar.width numeric value specifying the width of box plot error
 #'  bars. Default is 0.4.
+#'@param show.n logical value. If TRUE, displays the number of observations (n) for each group on the plot.
 #'@param linetype line types.
 #'@param size Numeric value (e.g.: size = 1). change the size of points and
 #'  outlines.
@@ -69,7 +70,7 @@ NULL
 #'  scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes: palette
 #'  = "Dark2" or palette = c("gray", "blue", "red") \item legend title, labels
 #'  and position: legend = "right" \item plot orientation : orientation =
-#'  c("vertical", "horizontal", "reverse") }
+#'  c("vertical", "horizontal", "reverse") \item sample size display: show.n = TRUE }
 #'
 #'@section Suggestions for the argument "add": Suggested values are one of
 #'  c("dotplot", "jitter").
@@ -138,6 +139,9 @@ NULL
 #' # fill or color box plot by a second group : "supp"
 #' ggboxplot(df, "dose", "len", color = "supp",
 #'  palette = c("#00AFBB", "#E7B800"))
+#'
+#' # Display number of observations per group
+#' ggboxplot(df, x = "dose", y = "len", show.n = TRUE)
 #'
 #'@export
 ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
