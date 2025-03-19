@@ -209,6 +209,13 @@ ggboxplot_core <- function(data, x, y,
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
   if("jitter" %in% add) outlier.shape <- NA
 
+  library(dplyr)
+
+  # Calculer le nombre d'observations et la médiane pour chaque groupe
+  stats <- data %>%
+    group_by(!!sym(x)) %>%
+    summarise(n = n(), median = median(!!sym(y)), .groups = "drop")
+
   p <- ggplot(data, create_aes(list(x = x, y = y)))
   if(bxp.errorbar){
     if(fill %in% colnames(data)){
@@ -233,14 +240,8 @@ ggboxplot_core <- function(data, x, y,
               position = position_dodge(0.8), size = size,...)
 
   if (show.n) {
-    p <- p + stat_boxplot(
-      aes(label = paste("n = ", ..count..)),  # Nombre d'observations à afficher
-      geom = "text",                         # Affiche le label sous forme de texte
-      vjust = -0.5,                          # Ajuste la position verticale du label
-      size = 4,                              # Taille du texte
-      color = "black",                       # Couleur du texte
-      position = position_dodge(0.8)         # Ajuste la position pour gérer plusieurs groupes
-    )
+    p <- p + geom_text(data = stats, aes(x = !!sym(x), y = median, label = paste("n =", n)),
+                       vjust = -0.5, size = 4, color = "black")
   }
 
 
