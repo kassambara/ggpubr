@@ -152,7 +152,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       error.plot = "pointrange",
                       label = NULL, font.label = list(size = 11, color = "black"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-                      ggtheme = theme_pubr(),...)
+                      ggtheme = theme_pubr(), show.n = FALSE,...)
 {
 
   # Default options
@@ -167,7 +167,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
+    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, show.n = show.n,...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
   if(!missing(y)) .opts$y <- y
@@ -202,6 +202,7 @@ ggboxplot_core <- function(data, x, y,
                       add = "none", add.params = list(),
                       error.plot = "pointrange",
                       ggtheme = theme_pubr(),
+                      show.n = FALSE,
                       ...)
 {
 
@@ -230,6 +231,20 @@ ggboxplot_core <- function(data, x, y,
               size = size, width = width, notch = notch,
               outlier.shape = outlier.shape,
               position = position_dodge(0.8), size = size,...)
+
+  if (show.n) {
+    p <- p + stat_boxplot(
+      aes(label = paste("n = ", ..count..)),  # Nombre d'observations à afficher
+      geom = "text",                         # Affiche le label sous forme de texte
+      vjust = -0.5,                          # Ajuste la position verticale du label
+      size = 4,                              # Taille du texte
+      color = "black",                       # Couleur du texte
+      position = position_dodge(0.8)         # Ajuste la position pour gérer plusieurs groupes
+    )
+  }
+
+
+
 
   # Add
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
