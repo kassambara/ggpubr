@@ -24,7 +24,8 @@ NULL
 #'@param bxp.errorbar logical value. If TRUE, shows error bars of box plots.
 #'@param bxp.errorbar.width numeric value specifying the width of box plot error
 #'  bars. Default is 0.4.
-#'@param show.n logical value. If TRUE, displays the number of observations (n) for each group on the plot.
+#'@param show.n logical value. If TRUE, adds the number of observations per
+#'  group to the plot.
 #'@param linetype line types.
 #'@param size Numeric value (e.g.: size = 1). change the size of points and
 #'  outlines.

@@ -7,6 +7,8 @@ NULL
 #'@inheritParams ggboxplot
 #'@param width violin width.
 #'@param alpha color transparency. Values should be between 0 and 1.
+#'@param show.n logical value. If TRUE, adds the number of observations per
+#'group to the plot.
 #'@inheritParams ggplot2::geom_violin
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_violin}}, \code{\link{ggpar}} and
@@ -17,7 +19,8 @@ NULL
 #'  scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes: palette
 #'  = "Dark2" or palette = c("gray", "blue", "red") \item legend title, labels
 #'  and position: legend = "right" \item plot orientation : orientation =
-#'  c("vertical", "horizontal", "reverse") }
+#'  c("vertical", "horizontal", "reverse") \item sample size display: show.n =
+#'  TRUE}
 #'@seealso \code{\link{ggpar}}
 #' @examples
 #' # Load data
@@ -83,6 +86,9 @@ NULL
 #'ggviolin(df, "dose", "len", color = "supp",
 #'  palette = c("#00AFBB", "#E7B800"), add = "boxplot")
 #'
+#' # Display number of observations per group
+#'ggviolin(df, "dose", "len", show.n = TRUE)
+#'
 #'@export
 ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      color = "black", fill = "white", palette = NULL, alpha = 1,
@@ -96,6 +102,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      label = NULL, font.label = list(size = 11, color = "black"),
                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                      position = position_dodge(0.8), ggtheme = theme_pubr(),
+                     show.n = FALSE,
                      ...)
 {
   # Default options
@@ -109,7 +116,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, position = position, ggtheme = ggtheme, ...)
+    repel = repel, label.rectangle = label.rectangle, position = position, ggtheme = ggtheme, show.n = show.n, ...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
   if(!missing(y)) .opts$y <- y
@@ -147,9 +154,18 @@ ggviolin_core <- function(data, x, y,
                       error.plot = "pointrange",
                       ggtheme = theme_pubr(),
                       position = position_dodge(0.8),
+                      show.n = FALSE,
                      ...)
 {
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
+
+  library(dplyr)
+
+  # Calculer le nombre d'observations et la médiane pour chaque groupe
+  stats <- data %>%
+    suppressPackageStartupMessages() %>%
+    group_by(!!sym(x)) %>%
+    summarise(n = n(), median = median(!!sym(y)), .groups = "drop")
 
   pms <- .violin_params(...)
 
@@ -164,6 +180,10 @@ ggviolin_core <- function(data, x, y,
   #+++++++++++++++++++
   if(is.null(add.params$group)){
     if(fill %in% names(data)) add.params$group <- fill
+  }
+  if (show.n) {
+    p <- p + geom_text(data = stats, aes(x = !!sym(x), y = median, label = paste("n =", n)),
+                       vjust = -0.5, size = 4, color = "black")
   }
    add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
      .add_item(p = p, add = add, error.plot = error.plot, position = position)
