@@ -71,7 +71,8 @@ NULL
 #'  scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes: palette
 #'  = "Dark2" or palette = c("gray", "blue", "red") \item legend title, labels
 #'  and position: legend = "right" \item plot orientation : orientation =
-#'  c("vertical", "horizontal", "reverse") \item sample size display: show.n = TRUE }
+#'  c("vertical", "horizontal", "reverse") \item sample size display: show.n =
+#'  TRUE }
 #'
 #'@section Suggestions for the argument "add": Suggested values are one of
 #'  c("dotplot", "jitter").
@@ -246,7 +247,10 @@ ggboxplot_core <- function(data, x, y,
               position = position_dodge(0.8), size = size,...)
 
   if (show.n) {
-    p <- p + geom_text(data = stats, aes(x = !!sym(x), y = median, label = paste("n =", n)),
+    stats <- stats %>%
+      mutate(max_y = tapply(data[[y]], data[[x]], max)) %>%
+      mutate(y_position = max_y + 0.5)
+    p <- p + geom_text(data = stats, aes(x = !!sym(x), y = y_position, label = paste("n =", n)),
                        vjust = -0.5, size = 4, color = "black")
   }
 

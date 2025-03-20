@@ -10,6 +10,8 @@ NULL
 #' @param position position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function. Used to adjust position for
 #'   multiple groups.
+#' @param show.n logical value. If TRUE, adds the number of observations per
+#'   group to the plot.
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_jitter}}, \code{\link{ggpar}} and
 #'   \code{\link{facet}}.
@@ -19,7 +21,8 @@ NULL
 #'   scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes:
 #'   palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
 #'   labels and position: legend = "right" \item plot orientation : orientation
-#'   = c("vertical", "horizontal", "reverse") }
+#'   = c("vertical", "horizontal", "reverse") \item sample size display: show.n
+#'   = TRUE }
 #'@seealso \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}}
 #'  and \code{\link{ggboxplot}}.
 #' @examples
@@ -86,6 +89,9 @@ NULL
 #' ggstripchart(df, "dose", "len", shape = "supp",
 #'  color = "supp", palette = c("#00AFBB", "#E7B800"),
 #'  add = "boxplot", add.params = list(color = "black") )
+#'
+#' # Display number of observations per group
+#' ggstripchart(df, x = "dose", y = "len", show.n = TRUE)
 #'
 #' @export
 ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
