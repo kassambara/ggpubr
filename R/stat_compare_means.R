@@ -109,10 +109,10 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
 
   if(!is.null(comparisons)){
 
-    method.info <- .method_info(method)
+    method.info <- ggpubr:::.method_info(method)
     method <- method.info$method
 
-    method.args <- .add_item(method.args, paired = paired)
+    method.args <- ggpubr:::.add_item(method.args, paired = paired)
 
     pms <- list(...)
     size <- ifelse(is.null(pms$size), 3.88, pms$size)
@@ -127,7 +127,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
       if(hide.ns) map_signif_level <- .hide_ns(map_signif_level)
     }
 
-    if(!.is_empty(symnum.args)){
+    if(!ggpubr:::.is_empty(symnum.args)){
 
       symnum.args.isok <- length(symnum.args$cutpoints == length(symnum.args$symbols))
       if(!symnum.args.isok)
@@ -145,7 +145,10 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                           test = method, test.args = method.args,
                           step_increase = step.increase, size = bracket.size, textsize = size, color = color,
                           map_signif_level = map_signif_level, tip_length = tip.length,
-                          data = data, vjust = vjust)
+                          data = data, vjust = vjust, ...)
+
+
+
   }
 
   else{
@@ -354,5 +357,3 @@ convert_label_dotdot_notation_to_after_stat <- function(mapping){
   }
   mapping
 }
-
-
