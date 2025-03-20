@@ -237,7 +237,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      bracket.group.by = c("x.var", "legend.var"),
                      step.increase = 0.12, tip.length = 0.03,
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
-                     p.adjust.method = "holm", manuel.n.comparisons = NULL,
+                     p.adjust.method = "holm", manual.n.comparisons = NULL,
                      p.adjust.by = c("group", "panel"),symnum.args = list(), 
                      hide.ns = FALSE, remove.bracket = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
@@ -275,7 +275,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       remove.bracket = remove.bracket,
       family=family, vjust=vjust, hjust = hjust, na.rm = na.rm,
       p.adjust.method = p.adjust.method, 
-      manuel.n.comparisons = manuel.n.comparisons,
+      manual.n.comparisons = manual.n.comparisons,
       p.adjust.by = p.adjust.by, 
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
       hide.ns = hide.ns, parse = parse, ...)
@@ -302,7 +302,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                             compute_panel = function(self, data, scales, method, method.args, ref.group,
                                                      tip.length, stat.label, y.position, step.increase,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
-                                                     p.adjust.method, manuel.n.comparisons,
+                                                     p.adjust.method, manual.n.comparisons,
                                                      p.adjust.by,symnum.args, hide.ns, group.by, dodge, remove.bracket) {
 
                               # Compute the statistical tests
@@ -337,12 +337,12 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               
                               # Compute number of comparisons
                               n.comparaisons <- nrow(stat.test)
-                              if (!is.null(manuel.n.comparisons)) {
-                                if (manuel.n.comparisons < n.comparaisons) {
+                              if (!is.null(manual.n.comparisons)) {
+                                if (manual.n.comparisons < n.comparaisons) {
                                   stop("The value of 'manual.n.comparisons' must be greater than or equal to the number of tests performed.")
                                 }
                               } else {
-                                manuel.n.comparisons <- n.comparaisons
+                                manual.n.comparisons <- n.comparaisons
                               }
 
                               # Add method name
@@ -354,14 +354,14 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               # P-value adjustment, formatting and significance
                               if(!("p.adj" %in% colnames(stat.test))){
                                 # Case of one comparison of two groups
-                                stat.test$p.adj <- p.adjust(stat.test$p, method = p.adjust.method, n = manuel.n.comparisons)
+                                stat.test$p.adj <- p.adjust(stat.test$p, method = p.adjust.method, n = manual.n.comparisons)
                               }
 
                               # Adjust all the p-values in a given panel
                               # no matter the grouping
                               if(p.adjust.by == "panel"){
                                 if("p" %in% colnames(stat.test)){
-                                  stat.test$p.adj <- p.adjust(stat.test$p, method = p.adjust.method, n = manuel.n.comparisons)
+                                  stat.test$p.adj <- p.adjust(stat.test$p, method = p.adjust.method, n = manual.n.comparisons)
                                 }
                                 else{
                                   warning(
@@ -487,7 +487,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      step.increase = 0.12,  tip.length = 0.03,
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
-                     p.adjust.method = "holm", manuel.n.comparisons = NULL,
+                     p.adjust.method = "holm", manual.n.comparisons = NULL,
                      p.adjust.by = c("group", "panel"),symnum.args = list(), 
                      hide.ns = FALSE, remove.bracket = FALSE,
                      position = "identity", na.rm = FALSE,
@@ -529,7 +529,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       size = size, label.size = label.size,
       family = family, na.rm = na.rm, hjust = hjust, vjust = vjust,
       p.adjust.method = p.adjust.method, 
-      manuel.n.comparisons = manuel.n.comparisons,
+      manual.n.comparisons = manual.n.comparisons,
       p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
       hide.ns = hide.ns, remove.bracket = remove.bracket,
