@@ -131,6 +131,10 @@ compare_means(len ~ dose, df, ref.group = ".all.")
 
 # Anova and kruskal.test
 #::::::::::::::::::::::::::::::::::::::::
+# Using 'ref.group' with 'anova' or 'kruskal.test' will generate an error.
+# Thus, the following line will cause an error:
+# compare_means(len ~ dose, df, method = "anova", ref.group = "0.5")
+# Here are correct solutions to use 'anova' or 'kruskal.test' with 'compare_means' :
 compare_means(len ~ dose, df, method = "anova")
 compare_means(len ~ dose, df, method = "kruskal.test")
 }
