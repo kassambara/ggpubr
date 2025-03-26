@@ -21,9 +21,10 @@ NULL
 #'@param paired a logical indicating whether you want a paired test. Used only
 #'  in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.
 #'@param group.by  a character vector containing the name of grouping variables.
-#'@param ref.group a character string specifying the reference group. If
-#'  specified, for a given grouping variable, each of the group levels will be
-#'  compared to the reference group (i.e. control group).
+#'@param ref.group a character string specifying the reference group. Only
+#'  valid for pairwise tests (\code{method = "t.test"} or
+#'  \code{method = "wilcox.test"}). If specified, each level in the grouping
+#'   variable will be compared to the reference group.
 #'
 #'  \code{ref.group} can be also \code{".all."}. In this case, each of the
 #'  grouping variable levels is compared to all (i.e. basemean).
