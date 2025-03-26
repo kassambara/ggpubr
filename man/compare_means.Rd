@@ -45,8 +45,10 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
  specified, for a given grouping variable, each of the group levels will be
  compared to the reference group (i.e. control group).
 
- \code{ref.group} can be also \code{".all."}. In this case, each of the
- grouping variable levels is compared to all (i.e. basemean).}
+ \strong{Note :} This argument is only valid for pairwise comparisons. It is not supported for \code{\link[stats]{anova}} . Attempting to use \code{ref.group} with ANOVA will result in an error.
+
+ \code{ref.group} can also be \code{".all."}, in which case each group is
+ compared to the overall mean.}
 
 \item{symnum.args}{a list of arguments to pass to the function
  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
