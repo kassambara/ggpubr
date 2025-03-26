@@ -164,3 +164,11 @@ test_that("compare_means fails for ref.group with Anova", {
   )
 })
 
+# Here is the test which check the error message concerning the use of kruskal.test with ref.group.
+test_that("compare_means fails for ref.group with kruskal.test", {
+  expect_error(
+    compare_means(len ~ dose, ToothGrowth, method = "kruskal.test", ref.group = "0.5"),
+    "The argument 'ref.group' is only valid for pairwise comparisons.Kruskal compares all groups together and does not support a reference group."
+  )
+})
+
