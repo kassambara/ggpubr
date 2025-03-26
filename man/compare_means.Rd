@@ -29,12 +29,16 @@ compare_means(
 
 \item{method}{the type of test. Default is \link[stats]{wilcox.test}. Allowed
 values include: \itemize{ \item \code{\link[stats]{t.test}} (parametric) and
-\code{\link[stats]{wilcox.test}} (non-parametric). Perform comparison
-between two groups of samples. If the grouping variable contains more than
-two levels, then a pairwise comparison is performed. \item
+\code{\link[stats]{wilcox.test}} (non-parametric). Perform pairwise comparisons
+between two groups. If the grouping variable contains more than
+two levels, then a pairwise comparison is performed.
+\strong{The argument \code{ref.group} can be used only with these methods.}
+\item
 \code{\link[stats]{anova}} (parametric) and
 \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
-test comparing multiple groups. }}
+test comparing multiple groups. \strong{The argument \code{ref.group} is not
+allowed for these methods. Using it with these methods will result in an error.}
+}}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
