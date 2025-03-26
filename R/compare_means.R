@@ -120,6 +120,12 @@ compare_means <- function(formula, data, method = "wilcox.test",
          call. = FALSE)
   }
 
+  if (!is.null(ref.group) && method == 'kruskal.test'){
+    stop("The argument 'ref.group' is only valid for pairwise comparisons.",
+         "Kruskal compares all groups together and does not support a reference group.",
+         call. = FALSE)
+  }
+
   if(.is_empty(symnum.args))
     symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05,  1),
                         symbols = c("****", "***", "**", "*",  "ns"))
