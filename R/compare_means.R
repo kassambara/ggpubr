@@ -113,6 +113,12 @@ compare_means <- function(formula, data, method = "wilcox.test",
   method <- method.info$method
   method.name <- method.info$name
 
+  if (!is.null(ref.group) && method == 'anova'){
+    stop("The argument 'reg.group' is only valid for pairwise comparaisons.",
+         "ANOVA compares all groups together and does not support a reference group.",
+         call. = FALSE)
+  }
+
   if(.is_empty(symnum.args))
     symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05,  1),
                         symbols = c("****", "***", "**", "*",  "ns"))
