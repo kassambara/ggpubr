@@ -45,7 +45,7 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
  specified, for a given grouping variable, each of the group levels will be
  compared to the reference group (i.e. control group).
 
- \strong{Note :} This argument is only valid for pairwise comparisons. It is not supported for \code{\link[stats]{anova}} . Attempting to use \code{ref.group} with ANOVA will result in an error.
+ \strong{Note :} This argument is only valid for pairwise comparisons. It is not supported for \code{\link[stats]{anova}} . Using \code{ref.group} with ANOVA will result in an error.
 
  \code{ref.group} can also be \code{".all."}, in which case each group is
  compared to the overall mean.}
