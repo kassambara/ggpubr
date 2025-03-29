@@ -211,22 +211,22 @@ ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 }
 
 ggbarplot_core <- function(data, x, y,
-                      color = "black", fill = "white", palette = NULL,
-                      size = NULL, width = 0.7,
-                      title = NULL, xlab = NULL, ylab = NULL,
-                      label = FALSE, lab.col = "black", lab.size = 4,
-                      lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
-                      lab.nb.digits = NULL,
-                      select = NULL, order = NULL, facet.by = NULL,
-                      sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
-                      merge = FALSE,
-                      top = Inf,
-                      add = "none",
-                      add.params = list(),
-                      error.plot = "errorbar",
-                      position = position_stack(),
-                      ggtheme = theme_pubr(),
-                      ...)
+                           color = "black", fill = "white", palette = NULL,
+                           size = NULL, width = 0.7,
+                           title = NULL, xlab = NULL, ylab = NULL,
+                           label = FALSE, lab.col = "black", lab.size = 4,
+                           lab.pos = c("out", "in"), lab.vjust = NULL, lab.hjust = NULL,
+                           lab.nb.digits = NULL,
+                           select = NULL, order = NULL, facet.by = NULL,
+                           sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
+                           merge = FALSE,
+                           top = Inf,
+                           add = "none",
+                           add.params = list(),
+                           error.plot = "errorbar",
+                           position = position_stack(),
+                           ggtheme = theme_pubr(),
+                           ...)
 {
 
   sort.val <- match.arg(sort.val)
@@ -295,123 +295,135 @@ ggbarplot_core <- function(data, x, y,
   if(inherits(position, "PositionDodge") & is.null(position$width)) position$width = 0.95
   p <- ggplot(data, create_aes(list(x = x, y = y)))
   p <- p +
-      geom_exec(geom_bar, data = data_sum,
-                stat = "identity",
-                color = color, fill = fill,
-                position = position,
-                size = size, width = width, ...)
+    geom_exec(geom_bar, data = data_sum,
+              stat = "identity",
+              color = color, fill = fill,
+              position = position,
+              size = size, width = width, ...)
 
   # Add errors
-  add.params <- add.params %>% .add_item(p = p, error.plot = error.plot)
-  is.stacked.position <- inherits(position, "PositionStack")
-  stack.groups <- unique(c(x, facet.by))
-  nb.bars.by.xposition <- data_sum %>%
-    group_by(!!!syms(stack.groups)) %>%
-    dplyr::count() %>%
-    dplyr::pull(.data$n) %>%
-    max()
-  if(is.stacked.position) add.position <- "identity"
-  else add.position <- position
-  if(is.stacked.position & nb.bars.by.xposition >=2) {
-    p <- add.params %>%
-      .add_item(add = .remove_errorbar_func(add), position = add.position) %>%
-      do.call(ggadd, .)
-    if(any(.errorbar_functions() %in% add)){
-      p <- p + .geom_stacked_errorbar(
-        data_sum, x, y,
-        color = add.params$color, fill = add.params$fill,
-        group = add.params$group, facet.by = facet.by,
-        func = .get_summary_func(add), error.plot = error.plot
+  if(any(.errorbar_functions() %in% add)) {
+    # Créer un groupe d'interaction explicite pour l'alignement
+    data_sum <- data_sum %>%
+      mutate(interaction_group = interaction(!!sym(x), !!sym(add.params$group)))
+
+    # Calculer les limites d'erreur
+    error_func <- .get_errorbar_error_func(add)
+    data_sum <- data_sum %>%
+      mutate(
+        ymin = !!sym(y) - !!sym(error_func),
+        ymax = !!sym(y) + !!sym(error_func)
       )
+
+    # Utiliser le même positionnement que pour les barres
+    error_position <- if(inherits(position, "PositionDodge")) {
+      position
+    } else {
+      position_dodge(width = 0.8)
+    }
+
+    # Ajouter les barres d'erreur avec groupement explicite
+    p <- p + geom_errorbar(
+      aes(ymin = ymin, ymax = ymax, group = interaction_group),
+      data = data_sum,
+      position = error_position,
+      width = 0.2,
+      size = 0.7,  # Épaisseur des barres d'erreur
+      color = "black",  # Couleur des barres d'erreur
+      na.rm = TRUE
+    )
+
+    # Ajouter les autres éléments si nécessaire
+    if(length(.remove_errorbar_func(add)) > 0) {
+      p <- add.params %>%
+        .add_item(add = .remove_errorbar_func(add), position = error_position) %>%
+        do.call(ggadd, .)
     }
   }
-  else {
-    p <- add.params %>%
-      .add_item(add = add, position = add.position) %>%
-      do.call(ggadd, .)
+
+  # Add labels
+  add.label <- FALSE
+  if(is.logical(label)){
+    .lab <- y
+    add.label <- label
+  } else {
+    # Add user specified labels as data column
+    data_sum$.ulabel. <- label
+    .lab <- ".ulabel."
+    add.label <- TRUE
   }
 
+  if(add.label) {
+    if(is.null(lab.vjust)) lab.vjust <- ifelse(lab.pos == "out", -0.4, 2 )
+    if(is.null(lab.hjust)) lab.hjust <- 0.5
+    if(!is.null(lab.nb.digits)){
+      if(is.numeric(.lab)) .lab <- round(.lab, digits = lab.nb.digits)
+      else if(.lab[1] %in% colnames(data_sum))
+        data_sum[, .lab] <- dplyr::pull(data_sum, .lab) %>%
+          round(digits = lab.nb.digits)
+    }
 
-   # Add labels
-   add.label <- FALSE
-   if(is.logical(label)){
-     .lab <- y
-     add.label <- label
-   } else {
-     # Add user specified labels as data column
-     data_sum$.ulabel. <- label
-     .lab <- ".ulabel."
-     add.label <- TRUE
-   }
+    # pos <- "identity"
+    # if color or fill by groups
+    .cols <- unique(c(color, fill))
+    if(any(.cols %in% names(data))){
+      .in <- which(.cols %in% names(data))
+      lab.fill <- color.var <- .cols[.in]
+      data_sum <- data_sum %>%
+        dplyr::arrange(!!!syms(x), desc(!!!syms(color.var)))
 
-   if(add.label) {
-     if(is.null(lab.vjust)) lab.vjust <- ifelse(lab.pos == "out", -0.4, 2 )
-     if(is.null(lab.hjust)) lab.hjust <- 0.5
-     if(!is.null(lab.nb.digits)){
-       if(is.numeric(.lab)) .lab <- round(.lab, digits = lab.nb.digits)
-       else if(.lab[1] %in% colnames(data_sum))
-         data_sum[, .lab] <- dplyr::pull(data_sum, .lab) %>%
-           round(digits = lab.nb.digits)
-     }
+      group <- intersect(.cols, names(data))[1]# You should specify group for dodging text
 
-      # pos <- "identity"
-      # if color or fill by groups
-     .cols <- unique(c(color, fill))
-     if(any(.cols %in% names(data))){
-       .in <- which(.cols %in% names(data))
-       lab.fill <- color.var <- .cols[.in]
-       data_sum <- data_sum %>%
-         dplyr::arrange(!!!syms(x), desc(!!!syms(color.var)))
-
-       group <- intersect(.cols, names(data))[1]# You should specify group for dodging text
-
-       p <- p + geom_exec(geom_text, data = data_sum, label = .lab,  #fill = lab.fill
-                           vjust = lab.vjust, hjust = lab.hjust, size = lab.size, color = lab.col,
-                           fontface = "plain", position = position, group = group)
-     }
-     else{
-     p <- p + geom_exec(geom_text, data = data_sum, label = .lab,
+      p <- p + geom_exec(geom_text, data = data_sum, label = .lab,  #fill = lab.fill
+                         vjust = lab.vjust, hjust = lab.hjust, size = lab.size, color = lab.col,
+                         fontface = "plain", position = position, group = group)
+    }
+    else{
+      p <- p + geom_exec(geom_text, data = data_sum, label = .lab,
                          vjust = lab.vjust,  hjust = lab.hjust, size = lab.size, color = lab.col,
                          fontface = "plain", position = position)
-     }
-   }
-   # To do
-   # top10, visualizing error
-   p <- ggpar(p, palette = palette, ggtheme = ggtheme,
-              title = title, xlab = xlab, ylab = ylab,...)
+    }
+  }
+  # To do
+  # top10, visualizing error
+  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
+             title = title, xlab = xlab, ylab = ylab,...)
 
   p
 }
 
 # Stacked error bar ----------------------------
-.geom_stacked_errorbar <- function(data_sum, x, y, color = NULL, fill = NULL, facet.by = NULL, group = NULL,
-                                  func = "mean_se", error.plot = "errorbar"){
-  stack.groups <- unique(c(x, facet.by))
-  legend.var <- intersect(unique(c(color, fill, group)), colnames(data_sum))
-  error <- .get_errorbar_error_func(func)
-  error.value <- data_sum %>% dplyr::pull(!!error)
-  desc <- dplyr::desc
-  errorbar.position <- data_sum %>%
-    group_by(!!!syms(stack.groups)) %>%
-    dplyr::arrange(!!sym(x), desc(!!sym(legend.var))) %>%
-    dplyr::mutate(
-      y = cumsum(!!sym(y)),
-      ymin = .data$y - !!sym(error),
-      ymax = .data$y + !!sym(error)
-      ) %>%
-    dplyr::ungroup()
-  geom_error <- .get_geom_error_function(error.plot)
+.geom_stacked_errorbar <- function(data_sum, x, y, color = NULL, fill = NULL,
+                                   facet.by = NULL, group = NULL,
+                                   func = "mean_se", error.plot = "errorbar",
+                                   position = position_dodge(width = 0.8)) {
 
-  args <- geom_exec(
-    data = errorbar.position, color = color,
-    group = group,
-    x = x, ymin = "ymin", ymax = "ymax"
+  # Calcul des erreurs
+  error <- .get_errorbar_error_func(func)
+  data_sum <- data_sum %>%
+    mutate(ymin = !!sym(y) - !!sym(error),
+           ymax = !!sym(y) + !!sym(error))
+
+  # Création du mapping
+  mapping <- aes(x = !!sym(x), y = !!sym(y),
+                 ymin = !!sym("ymin"),
+                 ymax = !!sym("ymax"))
+
+  if(!is.null(group)) {
+    mapping <- modifyList(mapping, aes(group = !!sym(group)))
+  }
+
+  # Paramètres géométriques
+  params <- list(
+    mapping = mapping,
+    data = data_sum,
+    position = position,
+    width = 0.2,
+    na.rm = TRUE
   )
-  mapping <- args$mapping
-  option <- args$option
-  if(error.plot == "errorbar") option$width <- 0.15
-  option[["mapping"]] <- create_aes(mapping)
-  do.call(geom_error, option)
+
+  # Application de la géométrie
+  do.call(.get_geom_error_function(error.plot), params)
 }
 
 
