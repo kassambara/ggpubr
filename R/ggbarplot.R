@@ -303,11 +303,17 @@ ggbarplot_core <- function(data, x, y,
 
   # Add errors
   if(any(.errorbar_functions() %in% add)) {
-    # Créer un groupe d'interaction explicite pour l'alignement
+    # Calcul des positions avec ajustement précis
     data_sum <- data_sum %>%
-      mutate(interaction_group = interaction(!!sym(x), !!sym(add.params$group)))
+      mutate(
+        x_num = as.numeric(factor(!!sym(x))),  # Position de base (1, 2, 3...)
+        group_num = as.numeric(factor(!!sym(add.params$group))),  # Numéro du groupe (1, 2...)
+        n_groups = length(unique(group_num)),  # Nombre total de groupes
+        x_pos = x_num + (group_num - (n_groups + 1)/2) * (width/n_groups)
+        # Formule centrée
+      )
 
-    # Calculer les limites d'erreur
+    # Calcul des erreurs
     error_func <- .get_errorbar_error_func(add)
     data_sum <- data_sum %>%
       mutate(
@@ -315,30 +321,15 @@ ggbarplot_core <- function(data, x, y,
         ymax = !!sym(y) + !!sym(error_func)
       )
 
-    # Utiliser le même positionnement que pour les barres
-    error_position <- if(inherits(position, "PositionDodge")) {
-      position
-    } else {
-      position_dodge(width = 0.8)
-    }
-
-    # Ajouter les barres d'erreur avec groupement explicite
+    # Ajout des barres d'erreur
     p <- p + geom_errorbar(
-      aes(ymin = ymin, ymax = ymax, group = interaction_group),
       data = data_sum,
-      position = error_position,
-      width = 0.2,
-      size = 0.7,  # Épaisseur des barres d'erreur
-      color = "black",  # Couleur des barres d'erreur
-      na.rm = TRUE
+      aes(x = x_pos, ymin = ymin, ymax = ymax),
+      width = 0.15,  # Largeur des barres d'erreur
+      size = 0.3,   # Épaisseur
+      color = "black",
+      inherit.aes = FALSE
     )
-
-    # Ajouter les autres éléments si nécessaire
-    if(length(.remove_errorbar_func(add)) > 0) {
-      p <- add.params %>%
-        .add_item(add = .remove_errorbar_func(add), position = error_position) %>%
-        do.call(ggadd, .)
-    }
   }
 
   # Add labels
@@ -391,6 +382,7 @@ ggbarplot_core <- function(data, x, y,
 
   p
 }
+
 
 # Stacked error bar ----------------------------
 .geom_stacked_errorbar <- function(data_sum, x, y, color = NULL, fill = NULL,
