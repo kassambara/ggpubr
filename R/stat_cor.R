@@ -90,15 +90,17 @@ NULL
 #'@export
 stat_cor <- function(mapping = NULL, data = NULL,
                      method = "pearson", alternative = "two.sided",
+                     formula = y ~ x,  # ✅ Ajout explicite de formula
                      cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
                      r.accuracy = NULL, p.accuracy = NULL,
                      geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
-                    inherit.aes = TRUE, ...) {
+                     inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
   cor.coef.name = cor.coef.name[1]
+
   layer(
     stat = StatCor, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -107,42 +109,41 @@ stat_cor <- function(mapping = NULL, data = NULL,
                   method = method, alternative = alternative, output.type = output.type, digits = digits,
                   r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
                   p.accuracy = p.accuracy, cor.coef.name = cor.coef.name,
+                  formula = formula,  # ✅ Passage explicite de formula
                   parse = parse, na.rm = na.rm, ...)
   )
 }
 
+StatCor <- ggproto("StatCor", Stat,
+                   required_aes = c("x", "y"),
+                   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
+                                            label.x, label.y, label.sep, output.type, digits,
+                                            r.digits, p.digits, r.accuracy, p.accuracy, cor.coef.name,
+                                            formula) {  # ✅ On récupère formula
+                     if (length(unique(data$x)) < 2) {
+                       return(data.frame())
+                     }
 
-StatCor<- ggproto("StatCor", Stat,
-                  required_aes = c("x", "y"),
-                  default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
+                     # ✅ Appliquer explicitement la transformation
+                     transformed_data <- model.frame(formula, data)
+                     data$x <- transformed_data[, 2]  # ✅ X transformé
+                     data$y <- transformed_data[, 1]  # ✅ Y inchangé
 
-                  compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
-                                           label.x, label.y, label.sep, output.type, digits,
-                                           r.digits, p.digits, r.accuracy, p.accuracy, cor.coef.name)
-                    {
-                    if (length(unique(data$x)) < 2) {
-                      # Not enough data to perform test
-                      return(data.frame())
-                    }
-                    # Returns a data frame with estimate, p.value, label, method
-                    .test <- .cor_test(
-                      data$x, data$y, method = method, alternative = alternative,
-                      label.sep = label.sep, output.type = output.type, digits = digits,
-                      r.digits = r.digits, p.digits = p.digits,
-                      r.accuracy = r.accuracy, p.accuracy = p.accuracy,
-                      cor.coef.name = cor.coef.name
-                      )
-                    # Returns a data frame with label: x, y, hjust, vjust
-                    .label.pms <- .label_params(data = data, scales = scales,
-                                                label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-                                                label.x = label.x, label.y = label.y ) %>%
-                      mutate(hjust = 0)
-                    cbind(.test, .label.pms)
-                  }
+                     .test <- .cor_test(
+                       data$x, data$y, method = method, alternative = alternative,
+                       label.sep = label.sep, output.type = output.type, digits = digits,
+                       r.digits = r.digits, p.digits = p.digits,
+                       r.accuracy = r.accuracy, p.accuracy = p.accuracy,
+                       cor.coef.name = cor.coef.name
+                     )
+
+                     .label.pms <- ggpubr:::.label_params(data = data, scales = scales,
+                                                          label.x.npc = label.x.npc, label.y.npc = label.y.npc,
+                                                          label.x = label.x, label.y = label.y) %>%
+                       mutate(hjust = 0)
+                     cbind(.test, .label.pms)
+                   }
 )
-
-
-
 
 
 # Correlation test
@@ -262,3 +263,4 @@ get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = 
   label <- gsub(pattern = "R", cor.coef.name, x = label, fixed = TRUE)
   label
 }
+

@@ -85,51 +85,60 @@ NULL
 #'
 #'@export
 stat_regline_equation <- function(
-  mapping = NULL, data = NULL, formula = y~x,
-  label.x.npc = "left", label.y.npc = "top",
-  label.x = NULL, label.y = NULL, output.type = "expression",
-  geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, ...
-  )
-  {
+    mapping = NULL, data = NULL, formula = y ~ x,  # ✅ Ajout explicite de formula
+    label.x.npc = "left", label.y.npc = "top",
+    label.x = NULL, label.y = NULL, output.type = "expression",
+    geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
+    inherit.aes = TRUE, ...
+) {
 
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
+
+  # ✅ Ajout explicite de aes(label = ..eq.label..)
+  if (is.null(mapping)) {
+    mapping <- aes(label = ..eq.label..)
+  } else {
+    mapping <- modifyList(mapping, aes(label = ..eq.label..))
+  }
 
   layer(
     stat = StatReglineEquation, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(formula = formula, label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
+    params = list(formula = formula, label.x.npc  = label.x.npc , label.y.npc = label.y.npc,
                   label.x = label.x, label.y = label.y,
                   output.type = output.type, parse = parse, na.rm = na.rm, ...)
   )
 }
 
+StatReglineEquation <- ggproto("StatReglineEquation", Stat,
+                               required_aes = c("x", "y"),
+                               compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
+                                                        label.x, label.y, output.type) {
 
-StatReglineEquation<- ggproto("StatReglineEquation", Stat,
-                  required_aes = c("x", "y"),
-                  default_aes = aes(label = ..eq.label.., hjust = ..hjust.., vjust = ..vjust..),
+                                 if (length(unique(data$x)) < 2) {
+                                   return(data.frame()) # Not enough data to perform test
+                                 }
 
-                  compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
-                                           label.x, label.y, output.type)
-                    {
+                                 # ✅ Appliquer explicitement la transformation
+                                 transformed_data <- model.frame(formula, data)
+                                 data$x <- transformed_data[, 2]  # ✅ X transformé
+                                 data$y <- transformed_data[, 1]  # ✅ Y inchangé
 
-                    force(data)
+                                 .test <- .stat_lm(formula, data, output.type = output.type)
 
-                    if (length(unique(data$x)) < 2) {
-                      return(data.frame()) # Not enough data to perform test
-                    }
+                                 # ✅ Vérification que eq.label existe
+                                 if (!"eq.label" %in% names(.test)) {
+                                   stop("`eq.label` is missing in .stat_lm() output. Check formula or model fitting.")
+                                 }
 
-                    .test <- .stat_lm(formula, data, output.type = output.type)
-                    # Returns a data frame with label: x, y, hjust, vjust
-                    .label.pms <- .label_params(data = data, scales = scales,
-                                                label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-                                                label.x = label.x, label.y = label.y ) %>%
-                      mutate(hjust = 0)
-                    cbind(.test, .label.pms)
-                  }
+                                 .label.pms <- ggpubr:::.label_params(data = data, scales = scales,
+                                                                      label.x.npc = label.x.npc, label.y.npc = label.y.npc,
+                                                                      label.x = label.x, label.y = label.y) %>%
+                                   mutate(hjust = 0)
+
+                                 cbind(.test, .label.pms)
+                               }
 )
-
-
 
 # Compute regression line equation
 .stat_lm <- function(formula, data, output.type = "expression"){
