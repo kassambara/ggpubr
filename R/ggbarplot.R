@@ -306,9 +306,8 @@ ggbarplot_core <- function(data, x, y,
     error_func <- .get_errorbar_error_func(add)
     group_var <- if(!is.null(add.params$group)) add.params$group else x
 
-    # Solution hybride qui combine les deux approches
+
     if(inherits(position, "PositionStack")) {
-      # Cas des barres empilées - calcul manuel des positions
       all_groups <- levels(factor(data[[add.params$group]]))
       all_x_levels <- levels(factor(data[[x]]))
 
@@ -331,7 +330,6 @@ ggbarplot_core <- function(data, x, y,
         inherit.aes = FALSE
       )
     } else {
-      # Cas des barres groupées - utilisation de position_dodge
       p <- p + geom_errorbar(
         data = data_sum,
         aes(x = !!sym(x),
@@ -404,13 +402,11 @@ ggbarplot_core <- function(data, x, y,
                                    func = "mean_se", error.plot = "errorbar",
                                    position = position_dodge(width = 0.8)) {
 
-  # Calcul des erreurs
   error <- .get_errorbar_error_func(func)
   data_sum <- data_sum %>%
     mutate(ymin = !!sym(y) - !!sym(error),
            ymax = !!sym(y) + !!sym(error))
 
-  # Création du mapping
   mapping <- aes(x = !!sym(x), y = !!sym(y),
                  ymin = !!sym("ymin"),
                  ymax = !!sym("ymax"))
@@ -419,7 +415,6 @@ ggbarplot_core <- function(data, x, y,
     mapping <- modifyList(mapping, aes(group = !!sym(group)))
   }
 
-  # Paramètres géométriques
   params <- list(
     mapping = mapping,
     data = data_sum,
@@ -428,7 +423,6 @@ ggbarplot_core <- function(data, x, y,
     na.rm = TRUE
   )
 
-  # Application de la géométrie
   do.call(.get_geom_error_function(error.plot), params)
 }
 
