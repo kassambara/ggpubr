@@ -35,7 +35,7 @@ two levels, then a pairwise comparison is performed.
 \item
 \code{\link[stats]{anova}} (parametric) and
 \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
-test or kruskal test comparing multiple groups. \strong{The argument \code{ref.group} is not allowed for these methods. Using it with these methods will result in an error.}
+test or kruskal test comparing multiple groups. The argument \code{ref.group} is not allowed for these methods. Using it with these methods will result in an error. % This last sentence is what we have been working on.
 }}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
@@ -46,7 +46,8 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 \item{ref.group}{a character string specifying the reference group. If
  specified, for a given grouping variable, each of the group levels will be
  compared to the reference group (i.e. control group).
-
+% We added this note to prevent the users to not use 'anova' and 'kruskal test'
+% with 'ref.group'
  \strong{Note :} This argument is only valid for pairwise comparisons. It is not supported for \code{\link[stats]{anova}} . Using \code{ref.group} with ANOVA or kruskal test will result in an error.
 
  \code{ref.group} can also be \code{".all."}, in which case each group is
