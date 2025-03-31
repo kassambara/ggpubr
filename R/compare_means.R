@@ -21,6 +21,8 @@ NULL
 #'@param paired a logical indicating whether you want a paired test. Used only
 #'  in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.
 #'@param group.by  a character vector containing the name of grouping variables.
+#
+# We modified to specify that 'ref.group' can only be used with pairwise tests.
 #'@param ref.group a character string specifying the reference group. Only
 #'  valid for pairwise tests (\code{method = "t.test"} or
 #'  \code{method = "wilcox.test"}). If specified, each level in the grouping
@@ -114,14 +116,17 @@ compare_means <- function(formula, data, method = "wilcox.test",
   method <- method.info$method
   method.name <- method.info$name
 
+# Here we created a message to warn users that you cannot use 'anova' and
+# 'kruskal' methods with 'ref.group'
+
   if (!is.null(ref.group) && method == 'anova'){
-    stop("The argument 'ref.group' is only valid for pairwise comparisons.",
+    stop("The argument 'ref.group' is only valid for pairwise comparisons. ",
          "ANOVA compares all groups together and does not support a reference group.",
          call. = FALSE)
   }
 
   if (!is.null(ref.group) && method == 'kruskal.test'){
-    stop("The argument 'ref.group' is only valid for pairwise comparisons.",
+    stop("The argument 'ref.group' is only valid for pairwise comparisons. ",
          "Kruskal compares all groups together and does not support a reference group.",
          call. = FALSE)
   }
