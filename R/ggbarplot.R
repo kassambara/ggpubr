@@ -303,33 +303,47 @@ ggbarplot_core <- function(data, x, y,
 
   # Add errors
   if(any(.errorbar_functions() %in% add)) {
-    # Calcul des positions avec ajustement précis
-    data_sum <- data_sum %>%
-      mutate(
-        x_num = as.numeric(factor(!!sym(x))),  # Position de base (1, 2, 3...)
-        group_num = as.numeric(factor(!!sym(add.params$group))),  # Numéro du groupe (1, 2...)
-        n_groups = length(unique(group_num)),  # Nombre total de groupes
-        x_pos = x_num + (group_num - (n_groups + 1)/2) * (width/n_groups)
-        # Formule centrée
-      )
-
-    # Calcul des erreurs
     error_func <- .get_errorbar_error_func(add)
-    data_sum <- data_sum %>%
-      mutate(
-        ymin = !!sym(y) - !!sym(error_func),
-        ymax = !!sym(y) + !!sym(error_func)
-      )
+    group_var <- if(!is.null(add.params$group)) add.params$group else x
 
-    # Ajout des barres d'erreur
-    p <- p + geom_errorbar(
-      data = data_sum,
-      aes(x = x_pos, ymin = ymin, ymax = ymax),
-      width = 0.15,  # Largeur des barres d'erreur
-      size = 0.3,   # Épaisseur
-      color = "black",
-      inherit.aes = FALSE
-    )
+    # Solution hybride qui combine les deux approches
+    if(inherits(position, "PositionStack")) {
+      # Cas des barres empilées - calcul manuel des positions
+      all_groups <- levels(factor(data[[add.params$group]]))
+      all_x_levels <- levels(factor(data[[x]]))
+
+      data_sum <- data_sum %>%
+        mutate(
+          x_num = as.numeric(factor(!!sym(x), levels = all_x_levels)),
+          group_num = as.numeric(factor(!!sym(add.params$group), levels = all_groups)),
+          n_groups = length(all_groups),
+          x_pos = x_num + (group_num - (n_groups + 1)/2) * (width/n_groups),
+          ymin = !!sym(y) - !!sym(error_func),
+          ymax = !!sym(y) + !!sym(error_func)
+        )
+
+      p <- p + geom_errorbar(
+        data = data_sum,
+        aes(x = x_pos, ymin = ymin, ymax = ymax),
+        width = 0.15,
+        size = 0.3,
+        color = "black",
+        inherit.aes = FALSE
+      )
+    } else {
+      # Cas des barres groupées - utilisation de position_dodge
+      p <- p + geom_errorbar(
+        data = data_sum,
+        aes(x = !!sym(x),
+            ymin = !!sym(y) - !!sym(error_func),
+            ymax = !!sym(y) + !!sym(error_func),
+            group = !!sym(group_var)),
+        position = position_dodge(width = width),
+        width = 0.15,
+        size = 0.3,
+        color = "black"
+      )
+    }
   }
 
   # Add labels
