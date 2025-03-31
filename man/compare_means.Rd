@@ -31,7 +31,7 @@ compare_means(
 values include: \itemize{ \item \code{\link[stats]{t.test}} (parametric) and
 \code{\link[stats]{wilcox.test}} (non-parametric). Perform pairwise comparisons between two groups. If the grouping variable contains more than
 two levels, then a pairwise comparison is performed.
-\strong{The argument \code{ref.group} can be used only with these methods.}
+The argument \code{ref.group} can be used only with these methods.
 \item
 \code{\link[stats]{anova}} (parametric) and
 \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
