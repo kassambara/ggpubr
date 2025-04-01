@@ -160,7 +160,7 @@ test_that("compare_means works when grouping variable levels contain group2", {
 test_that("compare_means fails for ref.group with Anova", {
   expect_error(
     compare_means(len ~ dose, ToothGrowth, method = "anova", ref.group = "0.5"),
-    "The argument 'ref.group' is only valid for pairwise comparisons.ANOVA compares all groups together and does not support a reference group."
+    "The argument 'ref.group' is only valid for pairwise comparisons. ANOVA compares all groups together and does not support a reference group."
   )
 })
 
@@ -168,7 +168,7 @@ test_that("compare_means fails for ref.group with Anova", {
 test_that("compare_means fails for ref.group with kruskal.test", {
   expect_error(
     compare_means(len ~ dose, ToothGrowth, method = "kruskal.test", ref.group = "0.5"),
-    "The argument 'ref.group' is only valid for pairwise comparisons.Kruskal compares all groups together and does not support a reference group."
+    "The argument 'ref.group' is only valid for pairwise comparisons. Kruskal compares all groups together and does not support a reference group."
   )
 })
 
