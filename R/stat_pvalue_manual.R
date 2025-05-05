@@ -118,7 +118,7 @@ stat_pvalue_manual <- function(
   bracket.nudge.y = 0, bracket.shorten = 0,
   color = "black", linetype = 1, tip.length = 0.03,
   remove.bracket = FALSE, step.increase = 0, step.group.by = NULL,
-  hide.ns = FALSE, vjust = 0, coord.flip = FALSE, position = "identity", ...
+  hide.ns = FALSE, vjust = 0, coord.flip = FALSE, position = "identity", inherit.aes = F, ...
 )
 {
   if(is.null(label)){
@@ -229,7 +229,7 @@ stat_pvalue_manual <- function(
       label.size = label.size, size = bracket.size,
       bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
       color = color, linetype = linetype, step.increase = step.increase,
-      step.group.by = step.group.by, coord.flip = coord.flip, position = position, ...
+      step.group.by = step.group.by, coord.flip = coord.flip, position = position, inherit.aes=inherit.aes, ...
     )
   }
   else{
@@ -246,7 +246,7 @@ stat_pvalue_manual <- function(
     else{
       mapping <- aes(x = xmin, y = y.position, vjust = vjust, label = label)
     }
-    option <- list(data = data, size = label.size, position = position, ...)
+    option <- list(data = data, size = label.size, position = position, inherit.aes = inherit.aes, ...)
     if(color %in% colnames(data)) mapping$colour <- rlang::ensym(color)
     else option$color <- color
     option[["mapping"]] <- mapping
