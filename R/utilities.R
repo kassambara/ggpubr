@@ -28,7 +28,7 @@ required_package <- function(pkg){
 # Unnesting, adapt to tidyr 1.0.0
 unnest <- function(data, cols = "data", ...){
   if(is_pkg_version_sup("tidyr", "0.8.3")){
-    results <- tidyr::unnest(data, cols = cols, ...)
+    results <- tidyr::unnest(data, cols = dplyr::all_of(cols), ...)
   }
   else {results <- tidyr::unnest(data, ...)}
   results
