@@ -53,7 +53,7 @@ theme_pubr <- function (base_size = 12, base_family = "",
   if(x.text.angle > 5) xhjust <- 1 else xhjust <- NULL
 
   if(border){
-    panel.border <- element_rect(fill = NA, colour = "black", size = 0.7)
+    panel.border <- element_rect(fill = NA, colour = "black", linewidth = 0.7)
     axis.line <- element_blank()
   }
   else{
@@ -73,7 +73,7 @@ theme_pubr <- function (base_size = 12, base_family = "",
           panel.grid.minor = element_blank(),
           axis.line = axis.line, axis.text = element_text(color = "black"),
           legend.key = element_blank(),
-          strip.background = element_rect(fill = "#F2F2F2", colour = "black", size = 0.7),
+          strip.background = element_rect(fill = "#F2F2F2", colour = "black", linewidth = 0.7),
           plot.margin = plot.margin,
           legend.position = legend,
           complete = TRUE)
