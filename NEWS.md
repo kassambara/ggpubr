@@ -10,6 +10,11 @@
 
 - Fixed compatibility with ggplot2 4.0.0. Updated `gghistogram()` tests to handle changes in binning standardization introduced in ggplot2 4.0.0 (#635, @teunbrand).
 - Fixed `stat_pvalue_manual()` failing when `fill` or other aesthetics are provided in the parent ggplot layer. The function now sets `inherit.aes = FALSE` by default to prevent conflicts between parent plot aesthetics and the p-value annotation data (#621, @fncokg).
+- Fixed deprecation warnings for newer package versions:
+  - Replaced deprecated `ggplot2::is.ggplot()` with `ggplot2::is_ggplot()` in `ggpar()` 
+  - Updated `.data$column` syntax to quoted column names in `geom_pwc()` for tidyselect 1.2.0+ compatibility
+  - Added `all_of()` wrapper in `unnest()` utility function for tidyselect compatibility
+  - Replaced the option `size` by `linewidth` in ggplot2 element_line() and element_trect() functions.
 
 # ggpubr 0.6.0
 
