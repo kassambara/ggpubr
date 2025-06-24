@@ -8,7 +8,7 @@
 
 ## Bug fixes
 
-
+- Fixed compatibility with ggplot2 4.0.0. Updated `gghistogram()` tests to handle changes in binning standardization introduced in ggplot2 4.0.0 (#635, @teunbrand).
 
 # ggpubr 0.6.0
 
