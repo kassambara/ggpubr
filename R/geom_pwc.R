@@ -393,7 +393,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                               if(is.grouped.plots){
                                 if(grouping.var == "group" & "colour" %in% colnames(data)){
                                   color.data <- data %>%
-                                    select(.data$group, .data$colour) %>%
+                                    select("group", "colour") %>%
                                     distinct(.data$group, .keep_all = TRUE)
                                   stat.test <- stat.test %>% dplyr::left_join(color.data, by = "group")
                                 }
