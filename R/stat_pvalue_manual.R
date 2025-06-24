@@ -56,6 +56,14 @@ NULL
 #'  column name available in the data.
 #'@param position position adjustment, either as a string, or the result of a
 #'  call to a position adjustment function.
+#'@param inherit.aes If \code{FALSE} (the default), overrides the default aesthetics,
+#'  rather than combining with them. This is most useful for helper functions
+#'  that define both data and aesthetics and shouldn't inherit behaviour from
+#'  the default plot specification, e.g. \code{borders()}. Most layers should use 
+#'  \code{TRUE} (the \pkg{ggplot2} default), but \code{stat_pvalue_manual()} uses 
+#'  its own data with different column names than the parent plot data, so 
+#'  \code{FALSE} avoids conflicts between parent plot aesthetics (like \code{fill} or 
+#'  \code{color}) and the p-value annotation data.
 #'@param ... other arguments passed to the function \code{geom_bracket()} or
 #'  \code{geom_text()}
 #'@seealso \code{\link{stat_compare_means}}
@@ -118,7 +126,7 @@ stat_pvalue_manual <- function(
   bracket.nudge.y = 0, bracket.shorten = 0,
   color = "black", linetype = 1, tip.length = 0.03,
   remove.bracket = FALSE, step.increase = 0, step.group.by = NULL,
-  hide.ns = FALSE, vjust = 0, coord.flip = FALSE, position = "identity", inherit.aes = F, ...
+  hide.ns = FALSE, vjust = 0, coord.flip = FALSE, position = "identity", inherit.aes = FALSE, ...
 )
 {
   if(is.null(label)){

@@ -26,6 +26,7 @@ stat_pvalue_manual(
   vjust = 0,
   coord.flip = FALSE,
   position = "identity",
+  inherit.aes = FALSE,
   ...
 )
 }
@@ -103,6 +104,15 @@ p-values to a horizontal ggplot (generated using
 
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
+
+\item{inherit.aes}{If \code{FALSE} (the default), overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. \code{borders()}. Most layers should use 
+\code{TRUE} (the \pkg{ggplot2} default), but \code{stat_pvalue_manual()} uses 
+its own data with different column names than the parent plot data, so 
+\code{FALSE} avoids conflicts between parent plot aesthetics (like \code{fill} or 
+\code{color}) and the p-value annotation data.}
 
 \item{...}{other arguments passed to the function \code{geom_bracket()} or
 \code{geom_text()}}
