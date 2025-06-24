@@ -58,7 +58,7 @@ theme_pubr <- function (base_size = 12, base_family = "",
   }
   else{
     panel.border <- element_blank()
-    axis.line = element_line(colour = "black", size = 0.5)
+    axis.line = element_line(colour = "black", linewidth = 0.5)
   }
 
 

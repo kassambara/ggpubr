@@ -22,9 +22,9 @@
 grids <- function(axis = c("xy", "x", "y"), color = "grey92", size = NULL, linetype = NULL)
 {
   axis <- match.arg(axis)
-  grid.major <- element_line(color = color, size = size,
+  grid.major <- element_line(color = color, linewidth = size,
                              linetype = linetype)
-  grid.minor <- element_line(color = color, size = 0.25,
+  grid.minor <- element_line(color = color, linewidth = 0.25,
                              linetype = linetype)
 
   switch(axis,
