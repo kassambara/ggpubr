@@ -15,7 +15,7 @@ reference:
       - gghistogram
       - ggecdf
       - ggqqplot
-  - title: Plot Two Vriables - X and Y, Discrete X and Continuous Y
+  - title: Plot Two Variables - X and Y, Discrete X and Continuous Y
     desc: Visualize data distributions by groups.
     contents:
       - ggboxplot
