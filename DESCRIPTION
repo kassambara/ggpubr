@@ -44,7 +44,7 @@ Suggests:
     testthat
 URL: https://rpkgs.datanovia.com/ggpubr/
 BugReports: https://github.com/kassambara/ggpubr/issues
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Collate:
     'utilities_color.R'
     'utilities_base.R'
