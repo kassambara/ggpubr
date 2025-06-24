@@ -170,7 +170,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
   original.p <- p
   if(rotate) orientation <- "horizontal"
 
-  if(is.ggplot(original.p)) list.plots <- list(original.p)
+  if(is_ggplot(original.p)) list.plots <- list(original.p)
   else if(is.list(original.p)) list.plots <- original.p
   else stop("Can't handle an object of class ", class (original.p))
   if(!is.null(title)) main <- title
@@ -182,7 +182,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
 
   for(i in 1:length(list.plots)){
     p <- list.plots[[i]]
-    if(is.ggplot(p)){
+    if(is_ggplot(p)){
         p <- p + .ggcolor(palette)+
           .ggfill(palette)
         if(!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +
@@ -206,7 +206,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
 
   }
 
-  if(is.ggplot(original.p)) list.plots[[1]]
+  if(is_ggplot(original.p)) list.plots[[1]]
   else list.plots
 }
 
