@@ -1,4 +1,4 @@
-#' @include utilities.R utilities_label.R
+#' @include utilities.R utilities_label.R utils_stat_test_label.R
 NULL
 #'Add Mean Comparison P-values to a ggplot
 #'@description Add mean comparison p-values to a ggplot, such as box blots, dot
@@ -326,34 +326,6 @@ StatCompareMeans<- ggproto("StatCompareMeans", Stat,
   if(!.is_empty(ns.pos)) n[ns.pos] = " "
   names(x) <- n
   x
-}
-
-
-# The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0.
-# after_stat(p.signif) should be used. This function makes automatic
-# conversion if user specified ..p.signif..
-convert_label_dotdot_notation_to_after_stat <- function(mapping){
-  if(!is.null(mapping) ){
-    label <- mapping$label
-    if(!is.null(mapping$label)){
-      label <-  rlang::as_label(mapping$label)
-      label <- gsub(
-        pattern = "..p.signif..", replacement = "ggplot2::after_stat(p.signif)",
-        x = label, fixed = TRUE
-        )
-      label <- gsub(
-        pattern = "..p.format..", replacement = "ggplot2::after_stat(p.format)",
-        x = label, fixed = TRUE
-      )
-      label <- gsub(
-        pattern = "..p..", replacement = "ggplot2::after_stat(p)",
-        x = label, fixed = TRUE
-      )
-      mapping$label <- parse(text = label)[[1]]
-    }
-
-  }
-  mapping
 }
 
 

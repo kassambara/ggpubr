@@ -161,7 +161,7 @@ p <- ggplot(my.data, aes(x, y2, color = group)) +
   geom_point() +
   stat_smooth(aes(fill = group, color = group), method = "lm", formula = formula) +
   stat_regline_equation(
-    aes(label =  paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
+    aes(label =  paste(after_stat(eq.label), after_stat(adj.rr.label), sep = "~~~~")),
     formula = formula
   ) +
   theme_bw()

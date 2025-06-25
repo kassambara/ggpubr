@@ -1,4 +1,4 @@
-#' @include utilities.R utilities_label.R
+#' @include utilities.R utilities_label.R utils_stat_test_label.R
 #' @importFrom dplyr everything
 #' @importFrom dplyr select
 NULL
@@ -78,7 +78,7 @@ NULL
 #'   geom_point() +
 #'   stat_smooth(aes(fill = group, color = group), method = "lm", formula = formula) +
 #'   stat_regline_equation(
-#'     aes(label =  paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
+#'     aes(label =  paste(after_stat(eq.label), after_stat(adj.rr.label), sep = "~~~~")),
 #'     formula = formula
 #'   ) +
 #'   theme_bw()
@@ -95,6 +95,8 @@ stat_regline_equation <- function(
   {
 
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
+  # Convert any dot-dot notation in user-provided mapping
+  mapping <- convert_label_dotdot_notation_to_after_stat(mapping)
 
   layer(
     stat = StatReglineEquation, data = data, mapping = mapping, geom = geom,
@@ -108,7 +110,7 @@ stat_regline_equation <- function(
 
 StatReglineEquation<- ggproto("StatReglineEquation", Stat,
                   required_aes = c("x", "y"),
-                  default_aes = aes(label = ..eq.label.., hjust = ..hjust.., vjust = ..vjust..),
+                  default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
 
                   compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
                                            label.x, label.y, output.type)

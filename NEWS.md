@@ -18,6 +18,8 @@
   - Updated `.data$column` syntax to quoted column names in `geom_pwc()` for tidyselect 1.2.0+ compatibility
   - Added `all_of()` wrapper in `unnest()` utility function for tidyselect compatibility
   - Replaced the option `size` by `linewidth` in ggplot2 element_line() and element_trect() functions.
+- Fixed deprecation warning in `stat_regline_equation()`  by automatically converting deprecated dot-dot notation (`..eq.label..`, `..adj.rr.label..`, `..p.signif..`, etc.) to `after_stat()` syntax for ggplot2 3.4.0+ compatibility (#623, @hinkyisme).
+
 
 # ggpubr 0.6.0
 
