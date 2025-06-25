@@ -39,6 +39,10 @@ NULL
 #'  when you have a strong dense dotplot. For example binwidth = 0.2. Used only
 #'  when \code{add} contains "dotplot".
 #'@param dotsize as \code{size} but applied only to dotplot.
+#'@param outliers logical. If TRUE (default), outliers are displayed in boxplots.
+#'  If FALSE, outliers are not displayed.
+#' @param outlier.shape numeric value specifying the shape of outliers in boxplots.
+#'  Default is 19 (filled circle). if set to NA, outliers are not displayed.
 #'@param p_geom the geometry of the main plot. Ex: p_geom = "geom_line". If
 #'  NULL, the geometry is extracted from p. Used only by \link{ggline}().
 #' @examples
@@ -57,6 +61,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
                   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2, seed = 123,
                   binwidth = NULL, dotsize = size, linetype = 1, show.legend = NA,
                   error.plot = "pointrange", ci = 0.95,
+                  outliers = TRUE, outlier.shape = 19,
                   data = NULL, position = position_dodge(0.8),
                   p_geom = ""
 )
@@ -107,7 +112,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
     if(.geom(p) == "violin" & missing(width)) width = 0.2
     else if(missing(width)) width = 0.7
     p <- common.opts %>%
-      .add_item(geomfunc = geom_boxplot, width = width) %>%
+      .add_item(geomfunc = geom_boxplot, width = width, outliers = outliers, outlier.shape = outlier.shape) %>%
       .update_plot(p)
   }
   if ("violin" %in% add) {

@@ -25,6 +25,7 @@ ggboxplot(
   size = NULL,
   width = 0.7,
   notch = FALSE,
+  outliers = TRUE,
   outlier.shape = 19,
   select = NULL,
   remove = NULL,
@@ -105,6 +106,13 @@ outlines.}
 \code{TRUE}, make a notched box plot. Notches are used to compare groups;
 if the notches of two boxes do not overlap, this suggests that the medians
 are significantly different.}
+
+\item{outliers}{Whether to display (\code{TRUE}) or discard (\code{FALSE}) outliers
+from the plot. Hiding or discarding outliers can be useful when, for
+example, raw data points need to be displayed on top of the boxplot.
+By discarding outliers, the axis limits will adapt to the box and whiskers
+only, not the full data range. If outliers need to be hidden and the axes
+needs to show the full data range, please use \code{outlier.shape = NA} instead.}
 
 \item{outlier.shape}{point shape of outlier. Default is 19. To hide outlier,
 specify \code{outlier.shape = NA}. When jitter is added, then outliers will

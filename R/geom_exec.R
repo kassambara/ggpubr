@@ -32,7 +32,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # point
     "stroke",
     # boxplot
-    "outlier.colour", "outlier.shape", "outlier.size",
+    "outlier.colour", "outlier.shape", "outlier.size", "outliers",
     "outlier.stroke", "notch", "notchwidth", "varwidth",
     # dot plot
     "binwidth", "binaxis", "method", "binpositions",

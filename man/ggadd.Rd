@@ -22,6 +22,8 @@ ggadd(
   show.legend = NA,
   error.plot = "pointrange",
   ci = 0.95,
+  outliers = TRUE,
+  outlier.shape = 19,
   data = NULL,
   position = position_dodge(0.8),
   p_geom = ""
@@ -85,6 +87,12 @@ finely select the aesthetics to display.}
 "lower_linerange")}. Default value is "pointrange".}
 
 \item{ci}{the percent range of the confidence interval (default is 0.95).}
+
+\item{outliers}{logical. If TRUE (default), outliers are displayed in boxplots.
+If FALSE, outliers are not displayed.}
+
+\item{outlier.shape}{numeric value specifying the shape of outliers in boxplots.
+Default is 19 (filled circle). if set to NA, outliers are not displayed.}
 
 \item{data}{a \code{data.frame} to be displayed. If \code{NULL}, the default,
 the data is inherited from the plot data as specified in the call to
