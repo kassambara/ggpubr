@@ -121,6 +121,7 @@ NULL
 #'   \item \href{https://www.datanovia.com/en/blog/add-p-values-to-ggplot-facets-with-different-scales/}{Add P-values to GGPLOT Facets with Different Scales}
 #' }
 #' }
+#' @inheritParams ggpubr-common-params
 #'@inheritParams ggplot2::layer
 #' @examples
 #' df <- ToothGrowth

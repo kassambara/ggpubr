@@ -2,6 +2,7 @@
 NULL
 #' Draw group mean points
 #' @description Draw the mean point of each group.
+#' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @param ... other arguments to pass to \code{\link[ggplot2]{geom_point}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning.

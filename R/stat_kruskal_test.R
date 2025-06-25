@@ -3,6 +3,7 @@ NULL
 #'Add Kruskal-Wallis Test P-values to a GGPlot
 #'@description Add Kruskal-Wallis test p-values to a ggplot, such as
 #'  box blots, dot plots and stripcharts.
+#'@inheritParams ggpubr-common-params
 #'@inheritParams ggplot2::layer
 #'@inheritParams stat_pvalue_manual
 #'@inheritParams stat_anova_test

@@ -2,6 +2,7 @@
 NULL
 #' Plot convex hull of a set of points
 #' @description Plot convex hull of a set of points.
+#' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::stat_ellipse
 #' @seealso \code{\link{ggpar}}, \code{\link{ggscatter}}

@@ -3,6 +3,7 @@ NULL
 #'Add Anova Test P-values to a GGPlot
 #'@description Adds automatically one-way and two-way ANOVA test p-values to a
 #'  ggplot, such as box blots, dot plots and stripcharts.
+#'@inheritParams ggpubr-common-params
 #'@inheritParams ggplot2::layer
 #'@inheritParams stat_pvalue_manual
 #'@param method ANOVA test methods. Possible values are one of

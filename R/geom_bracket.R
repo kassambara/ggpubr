@@ -75,6 +75,7 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #'   aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'   "red"} or \code{size = 3}. They may also be parameters to the paired
 #'   geom/stat.
+#' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @examples
 #' df <- ToothGrowth

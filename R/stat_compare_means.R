@@ -3,6 +3,7 @@ NULL
 #'Add Mean Comparison P-values to a ggplot
 #'@description Add mean comparison p-values to a ggplot, such as box blots, dot
 #'  plots and stripcharts.
+#' @inheritParams ggpubr-common-params
 #'@inheritParams ggplot2::layer
 #'@inheritParams compare_means
 #'@param method a character string indicating which method to be used for

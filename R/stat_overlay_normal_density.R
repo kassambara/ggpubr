@@ -5,6 +5,7 @@ NULL
 #' @description Overlay normal density plot (with the same mean and SD) to the
 #'   density distribution of 'x'. This is useful for visually inspecting the
 #'   degree of deviance from normality.
+#' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @param ... other arguments to pass to \code{\link[ggplot2:geom_path]{geom_line}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning.

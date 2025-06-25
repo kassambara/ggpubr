@@ -118,6 +118,7 @@ Collate:
     'rotate_axis_text.R'
     'rremove.R'
     'set_palette.R'
+    'shared_docs.R'
     'show_line_types.R'
     'show_point_shapes.R'
     'stat_anova_test.R'

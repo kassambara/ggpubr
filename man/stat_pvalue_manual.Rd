@@ -108,7 +108,7 @@ call to a position adjustment function.}
 \item{inherit.aes}{If \code{FALSE} (the default), overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{borders()}. Most layers should use 
+the default plot specification, e.g. \code{stat_pvalue_manual()}. Most layers should use 
 \code{TRUE} (the \pkg{ggplot2} default), but \code{stat_pvalue_manual()} uses 
 its own data with different column names than the parent plot data, so 
 \code{FALSE} avoids conflicts between parent plot aesthetics (like \code{fill} or 

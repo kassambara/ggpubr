@@ -5,6 +5,7 @@ NULL
 #'Add Regression Line Equation and R-Square to a GGPLOT.
 #'@description Add regression line equation and R^2 to a ggplot. Regression
 #'  model is fitted using the function \code{\link[stats]{lm}}.
+#'@inheritParams ggpubr-common-params
 #'@inheritParams ggplot2::layer
 #'@param formula a formula object
 #'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}

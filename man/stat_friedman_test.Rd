@@ -134,10 +134,11 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
-rather than combining with them. This is most useful for helper functions
-that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
+overrides the default aesthetics, rather than combining with them. This is 
+most useful for helper functions that define both data and aesthetics and 
+shouldn't inherit behaviour from the default plot specification. Set to 
+\code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{parse}{If TRUE, the labels will be parsed into expressions and displayed
 as described in \code{?plotmath}.}

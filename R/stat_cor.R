@@ -3,6 +3,7 @@ NULL
 #'Add Correlation Coefficients with P-values to a Scatter Plot
 #'@description Add correlation coefficients with p-values to a scatter plot. Can
 #'  be also used to add `R2`.
+#' @inheritParams ggpubr-common-params
 #'@inheritParams ggplot2::layer
 #'@param method a character string indicating which correlation coefficient (or
 #'  covariance) is to be computed. One of "pearson" (default), "kendall", or

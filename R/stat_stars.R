@@ -2,6 +2,7 @@
 NULL
 #' Add Stars to a Scatter Plot
 #' @description Create a star plot by drawing segments from group centroid to each points.
+#' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @param ... other arguments to pass to \code{\link[ggplot2]{geom_segment}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning.
