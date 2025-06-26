@@ -1,11 +1,8 @@
-# ggpubr 0.6.0.999
+# ggpubr 0.6.1
 
 ## New features
 
 - Added `outliers` parameter to `ggboxplot()` to control the display of outlier points. Set `outliers = FALSE` to remove the black dots representing outliers from box plots (#614, @hswl1314).
-
-
-## Major changes
 
 ## Minor changes
 

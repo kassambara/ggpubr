@@ -1,7 +1,7 @@
 ---
 output:
   md_document:
-    variant: markdown_github
+    variant: gfm
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -334,6 +334,6 @@ Find out more at https://rpkgs.datanovia.com/ggpubr/.
   
 ## Blog posts
    
-- A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
+- A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](https://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
 
      
