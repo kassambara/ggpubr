@@ -26,7 +26,9 @@
   - Added `all_of()` wrapper in `unnest()` utility function for tidyselect compatibility
   - Replaced the option `size` by `linewidth` in ggplot2 element_line() and element_trect() functions.
 - Fixed deprecation warning in `stat_regline_equation()`  by automatically converting deprecated dot-dot notation (`..eq.label..`, `..adj.rr.label..`, `..p.signif..`, etc.) to `after_stat()` syntax for ggplot2 3.4.0+ compatibility (#623, @hinkyisme).
--  Fixed deprecation warnings in `add_summary()` and `ggerrorplot()` by updating internal stat_summary parameters to use `fun`, `fun.min`, and `fun.max` instead of deprecated `fun.y`, `fun.ymin`, and `fun.ymax` for ggplot2 3.3.0+ compatibility (#587, @vlonde).
+-  Fixed deprecation warnings in `add_summary()` and `ggerrorplot()` for ggplot2 compatibility:
+    - Updated internal `stat_summary()` parameters to use `fun`, `fun.min`, and `fun.max` instead of deprecated `fun.y`, `fun.ymin`, and `fun.ymax` (#587, @vlonde).
+   - Fixed line aesthetic parameters by using `linewidth` instead of `size` for line-based error plots
 
 
 # ggpubr 0.6.0

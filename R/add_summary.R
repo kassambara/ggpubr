@@ -67,6 +67,9 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
     stop("Don't support ", fun, ". Possibilities for the argument fun are: ",
          .collapse(allowed.fun, sep = ", "))
 
+  line_geoms <- c("errorbar", "linerange", "upper_errorbar", "lower_errorbar", 
+                  "upper_linerange", "lower_linerange", "crossbar")
+
   allowed.error.plot = c("pointrange", "linerange", "crossbar", "errorbar",
                  "upper_errorbar", "lower_errorbar", "upper_pointrange", "lower_pointrange",
                  "upper_linerange", "lower_linerange")
@@ -119,7 +122,10 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
             color = color,  geom = geom, size = size, linewidth = linewidth, linetype = linetype,
             show.legend = show.legend, data = data, position = position,
             fun.args = list(error.limit = error.limit), group = group)
-  if(fun %in% c("mean_ci", "median_hilow_")){
+  if (error.plot %in% line_geoms) {
+    opts <- opts %>% .remove_item("size")
+  }
+  if (fun %in% c("mean_ci", "median_hilow_")){
     opts$fun.args$ci <- ci
   }
 
