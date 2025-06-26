@@ -23,6 +23,7 @@ add_summary(
   width = NULL,
   shape = 19,
   size = 1,
+  linewidth = size,
   linetype = 1,
   show.legend = NA,
   ci = 0.95,
@@ -77,6 +78,8 @@ c("crossbar", "errorbar").}
 \code{\link{show_point_shapes}()}.}
 
 \item{size}{numeric value in [0-1] specifying point and line size.}
+
+\item{linewidth}{numeric value in [0-1] specifying line width.}
 
 \item{linetype}{line type.}
 

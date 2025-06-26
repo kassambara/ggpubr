@@ -9,6 +9,13 @@
 
 ## Minor changes
 
+-  Enhanced `ggline()` parameter handling for ggplot2 3.4.0+ compatibility:
+    - Added `linewidth` parameter for line width 
+    - Deprecated `size` parameter for lines with helpful warning message
+    - Maintained backward compatibility with existing `size` parameter
+    - Prevents conflicts when both parameters are specified
+  
+
 ## Bug fixes
 
 - Fixed compatibility with ggplot2 4.0.0. Updated `gghistogram()` tests to handle changes in binning standardization introduced in ggplot2 4.0.0 (#635, @teunbrand).

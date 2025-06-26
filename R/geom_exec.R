@@ -26,7 +26,7 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
 
   allowed_options <- c(
     # general
-    "x", "y", "color", "colour", "linetype", "fill", "size", "shape", "width",
+    "x", "y", "color", "colour", "linetype", "fill", "size", "linewidth", "shape", "width",
     "alpha", "na.rm", "lwd", "pch", "cex", "position", "stat", "geom",
     "show.legend", "inherit.aes", "fun.args", "fontface",
     # point

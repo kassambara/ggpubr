@@ -13,6 +13,9 @@ NULL
 #' @param linetype line type.
 #' @param plot_type plot type. Allowed values are one of "b" for both line and point;
 #' "l" for line only; and "p" for point only. Default is "b".
+#' @param size line size. Deprecated in ggplot2 v >= 3.4.0, use \code{linewidth} instead.
+#' @param linewidth line width. Default is 0.5. Recommended parameter for
+#' ggplot2 version >= 3.4.0. If both \code{size} and \code{linewidth} are specified, an error is thrown.
 #' @param shape point shapes.
 #' @param stroke point stroke. Used only for shapes 21-24 to control the thickness of points border.
 #' @param show.line.label logical value. If TRUE, shows line labels.
@@ -124,8 +127,9 @@ ggline<- function(data, x, y, group = 1,
                   color = "black", palette = NULL,
                   linetype = "solid",
                   plot_type = c("b", "l", "p"),
-                  size = 0.5, shape = 19, stroke = NULL,
-                  point.size = size, point.color = color,
+                  size = NULL, linewidth = NULL, 
+                  shape = 19, stroke = NULL,
+                  point.size = linewidth, point.color = color,
                   title = NULL, xlab = NULL, ylab = NULL,
                   facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                   select = NULL, remove = NULL, order = NULL,
@@ -148,7 +152,7 @@ ggline<- function(data, x, y, group = 1,
     combine = combine, merge = merge,
     color = color, palette = palette,
     linetype = linetype, plot_type = plot_type,
-    size = size,  shape = shape, stroke = stroke,
+    size = size,  linewidth = linewidth, shape = shape, stroke = stroke,
     point.size = point.size, point.color = point.color,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
@@ -186,8 +190,9 @@ ggline_core <- function(data, x, y, group = 1,
                   color = "black", fill = "white", palette = NULL,
                   linetype = "solid",
                   plot_type = c("b", "l", "p"),
-                  size = 0.5, shape = 19, stroke = NULL,
-                  point.size = size, point.color = color,
+                  size = NULL, linewidth = NULL,
+                  shape = 19, stroke = NULL,
+                  point.size = NULL, point.color = color,
                   title = NULL, xlab = NULL, ylab = NULL,
                   select = NULL, order = NULL,
                   facet.by = NULL,
@@ -201,6 +206,22 @@ ggline_core <- function(data, x, y, group = 1,
                   ggtheme = theme_pubr(),
                       ...)
 {
+
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0
+  if (!is.null(size) && !is.null(linewidth)) {
+    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
+  } else if (!is.null(size)) {
+    warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
+    linewidth <- size  
+  } else if (is.null(linewidth)) {
+    linewidth <- 0.5  # Default value
+  }
+  
+  if(is.null(point.size)){
+    point.size <- if (!is.null(size)) size else if (!is.null(linewidth)) linewidth else 0.5
+  }
+
   xx <- .select_vec(data, x)
   if(inherits(xx, c("character", "numeric")) & !numeric.x.axis)
     data[[x]] <- .select_vec(data, x) %>% as.factor()
@@ -255,7 +276,7 @@ ggline_core <- function(data, x, y, group = 1,
     do.call(ggadd, .)
   # Then add summary statistics
   p <- add.params %>%
-    .add_item(p = p, size = size, add = intersect(add, .summary_functions())) %>%
+    .add_item(p = p, size = linewidth, linewidth = linewidth, add = intersect(add, .summary_functions())) %>%
     do.call(ggadd, .)
 
 
@@ -270,7 +291,7 @@ ggline_core <- function(data, x, y, group = 1,
                             stat = "identity",
                             color = color, linetype = linetype,
                             position = position,
-                            size = size)
+                            linewidth = linewidth)
     mapping <- line_args$mapping
     mapping[["group"]] <- group
     option <- line_args$option

@@ -20,6 +20,8 @@ NULL
 #'@param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #'@param size numeric value in [0-1] specifying point and line size.
+#'@param linewidth numeric value in [0-1] specifying line width. Used only when
+#'  \code{add} contains "line" or for adding error bars. Default is \code{size}.
 #'@param linetype line type.
 #'@param show.legend logical. Should this layer be included in the legends? NA,
 #'  the default, includes if any aesthetics are mapped. \code{FALSE} never
@@ -59,7 +61,7 @@ NULL
 #'@export
 ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
                   width = 1, shape = 19, size = NULL, alpha = 1, jitter = 0.2, seed = 123,
-                  binwidth = NULL, dotsize = size, linetype = 1, show.legend = NA,
+                  binwidth = NULL, dotsize = size, linetype = 1, linewidth = size, show.legend = NA,
                   error.plot = "pointrange", ci = 0.95,
                   outliers = TRUE, outlier.shape = 19,
                   data = NULL, position = position_dodge(0.8),
@@ -141,8 +143,10 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
       .update_plot(p)
   }
   if ( "line" %in% add ) {
-    p <- common.opts %>% .remove_item("fill") %>%
-      .add_item(geomfunc = geom_line, group = 1) %>%
+    p <- common.opts %>% 
+      .remove_item("fill") %>%
+      .remove_item("size") %>%
+      .add_item(geomfunc = geom_line, group = 1, linewidth = linewidth) %>%
       .update_plot(p)
   }
 
@@ -160,7 +164,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
       else if(error.plot == "crossbar" & .geom(p) == "violin") width = 0.2
     }
     p <- p %>% add_summary(errors, error.plot = error.plot, color = color, shape = shape,
-                  position = position, size = size, width = width, ci = ci, group = group,
+                  position = position, size = size, linewidth = linewidth, width = width, ci = ci, group = group,
                   linetype = linetype, show.legend = show.legend)
   }
 

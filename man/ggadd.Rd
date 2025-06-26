@@ -19,6 +19,7 @@ ggadd(
   binwidth = NULL,
   dotsize = size,
   linetype = 1,
+  linewidth = size,
   show.legend = NA,
   error.plot = "pointrange",
   ci = 0.95,
@@ -75,6 +76,9 @@ when \code{add} contains "dotplot".}
 \item{dotsize}{as \code{size} but applied only to dotplot.}
 
 \item{linetype}{line type.}
+
+\item{linewidth}{numeric value in [0-1] specifying line width. Used only when
+\code{add} contains "line" or for adding error bars. Default is \code{size}.}
 
 \item{show.legend}{logical. Should this layer be included in the legends? NA,
 the default, includes if any aesthetics are mapped. \code{FALSE} never

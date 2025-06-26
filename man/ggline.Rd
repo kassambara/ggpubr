@@ -16,10 +16,11 @@ ggline(
   palette = NULL,
   linetype = "solid",
   plot_type = c("b", "l", "p"),
-  size = 0.5,
+  size = NULL,
+  linewidth = NULL,
   shape = 19,
   stroke = NULL,
-  point.size = size,
+  point.size = linewidth,
   point.color = color,
   title = NULL,
   xlab = NULL,
@@ -78,8 +79,10 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 \item{plot_type}{plot type. Allowed values are one of "b" for both line and point;
 "l" for line only; and "p" for point only. Default is "b".}
 
-\item{size}{Numeric value (e.g.: size = 1). change the size of points and
-outlines.}
+\item{size}{line size. Deprecated in ggplot2 v >= 3.4.0, use \code{linewidth} instead.}
+
+\item{linewidth}{line width. Default is 0.5. Recommended parameter for
+ggplot2 version >= 3.4.0. If both \code{size} and \code{linewidth} are specified, an error is thrown.}
 
 \item{shape}{point shapes.}
 

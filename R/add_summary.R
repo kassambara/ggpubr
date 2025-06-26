@@ -22,6 +22,7 @@ NULL
 #'@param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #'@param size numeric value in [0-1] specifying point and line size.
+#'@param linewidth numeric value in [0-1] specifying line width. 
 #'@param linetype line type.
 #'@param show.legend logical. Should this layer be included in the legends? NA,
 #'  the default, includes if any aesthetics are mapped. \code{FALSE} never includes,
@@ -52,7 +53,7 @@ NULL
 #'@export
 add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
                         color = "black", fill = "white", group = 1,
-                        width = NULL, shape = 19, size = 1, linetype = 1,
+                        width = NULL, shape = 19, size = 1, linewidth = size, linetype = 1,
                         show.legend = NA, ci = 0.95,
                         data = NULL, position = position_dodge(0.8))
   {
@@ -115,7 +116,7 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
   #::::::::::::::::::::::::::::::::::::::::::::::::::
   opts <- list(geomfunc = "stat_summary", fun.data = fun.data, fun.y = fun.y,
             fun.ymin = fun.ymin, fun.ymax = fun.ymax,
-            color = color,  geom = geom, size = size, linetype = linetype,
+            color = color,  geom = geom, size = size, linewidth = linewidth, linetype = linetype,
             show.legend = show.legend, data = data, position = position,
             fun.args = list(error.limit = error.limit), group = group)
   if(fun %in% c("mean_ci", "median_hilow_")){
