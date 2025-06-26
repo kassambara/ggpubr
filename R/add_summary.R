@@ -114,8 +114,8 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
 
   # General option
   #::::::::::::::::::::::::::::::::::::::::::::::::::
-  opts <- list(geomfunc = "stat_summary", fun.data = fun.data, fun.y = fun.y,
-            fun.ymin = fun.ymin, fun.ymax = fun.ymax,
+  opts <- list(geomfunc = "stat_summary", fun.data = fun.data, fun = fun.y,
+            fun.min = fun.ymin, fun.max = fun.ymax,
             color = color,  geom = geom, size = size, linewidth = linewidth, linetype = linetype,
             show.legend = show.legend, data = data, position = position,
             fun.args = list(error.limit = error.limit), group = group)
