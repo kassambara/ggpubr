@@ -13,6 +13,7 @@ stat_regline_equation(
   label.x = NULL,
   label.y = NULL,
   output.type = "expression",
+  decreasing = TRUE,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -59,6 +60,11 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 for absolute positioning of the label. If too short they will be recycled.}
 
 \item{output.type}{character One of "expression", "latex" or "text".}
+
+\item{decreasing}{logical. If \code{TRUE} (the default), the equation is 
+formatted in standard mathematical convention with terms in decreasing 
+order of powers (e.g., "y = 2*x + 1"). If \code{FALSE}, terms are in 
+increasing order (e.g., "y = 1 + 2*x").}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument

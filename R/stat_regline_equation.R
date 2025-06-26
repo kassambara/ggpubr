@@ -21,6 +21,10 @@ NULL
 #'@param label.x,label.y \code{numeric} Coordinates (in data units) to be used
 #'  for absolute positioning of the label. If too short they will be recycled.
 #'@param output.type character One of "expression", "latex" or "text".
+#' @param decreasing logical. If \code{TRUE} (the default), the equation is 
+#'   formatted in standard mathematical convention with terms in decreasing 
+#'   order of powers (e.g., "y = 2*x + 1"). If \code{FALSE}, terms are in 
+#'   increasing order (e.g., "y = 1 + 2*x").
 #'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #'@param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -88,7 +92,7 @@ NULL
 stat_regline_equation <- function(
   mapping = NULL, data = NULL, formula = y~x,
   label.x.npc = "left", label.y.npc = "top",
-  label.x = NULL, label.y = NULL, output.type = "expression",
+  label.x = NULL, label.y = NULL, output.type = "expression", decreasing = TRUE,
   geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...
   )
@@ -103,7 +107,8 @@ stat_regline_equation <- function(
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(formula = formula, label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
                   label.x = label.x, label.y = label.y,
-                  output.type = output.type, parse = parse, na.rm = na.rm, ...)
+                  output.type = output.type, decreasing = decreasing,
+                  parse = parse, na.rm = na.rm, ...)
   )
 }
 
@@ -113,7 +118,7 @@ StatReglineEquation<- ggproto("StatReglineEquation", Stat,
                   default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
 
                   compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
-                                           label.x, label.y, output.type)
+                                           label.x, label.y, output.type, decreasing)
                     {
 
                     force(data)
@@ -122,7 +127,7 @@ StatReglineEquation<- ggproto("StatReglineEquation", Stat,
                       return(data.frame()) # Not enough data to perform test
                     }
 
-                    .test <- .stat_lm(formula, data, output.type = output.type)
+                    .test <- .stat_lm(formula, data, output.type = output.type, decreasing = decreasing)
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
                                                 label.x.npc = label.x.npc, label.y.npc = label.y.npc,
@@ -135,7 +140,7 @@ StatReglineEquation<- ggproto("StatReglineEquation", Stat,
 
 
 # Compute regression line equation
-.stat_lm <- function(formula, data, output.type = "expression"){
+.stat_lm <- function(formula, data, output.type = "expression", decreasing = TRUE){
 
   res.lm <- stats::lm(formula, data)
   coefs <- stats::coef(res.lm)
@@ -151,7 +156,7 @@ StatReglineEquation<- ggproto("StatReglineEquation", Stat,
   BIC <- stats::BIC(res.lm) %>% signif(2)
 
   # Build model equation
-  eq.char <- as.character(signif(polynom::as.polynomial(coefs), 2))
+  eq.char <- as.character(signif(polynom::as.polynomial(coefs), 2), decreasing = decreasing)
   eq.char <- gsub("e([+-]?[0-9]*)", "%*%10^\\1", eq.char)
   if (output.type %in% c("latex", "tex", "tikz")) {
     eq.char <- gsub("*", " ", eq.char, fixed = TRUE)

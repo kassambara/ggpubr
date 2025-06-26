@@ -18,6 +18,7 @@
 
 ## Bug fixes
 
+- Fixed equation format in `stat_regline_equation()` to display in standard mathematical convention "y = mx + b" instead of "y = b + mx" (#559, @tshates, @mwaak).
 - Fixed compatibility with ggplot2 4.0.0. Updated `gghistogram()` tests to handle changes in binning standardization introduced in ggplot2 4.0.0 (#635, @teunbrand).
 - Fixed `stat_pvalue_manual()` failing when `fill` or other aesthetics are provided in the parent ggplot layer. The function now sets `inherit.aes = FALSE` by default to prevent conflicts between parent plot aesthetics and the p-value annotation data (#621, @fncokg).
 - Fixed deprecation warnings for newer package versions:
@@ -28,7 +29,8 @@
 - Fixed deprecation warning in `stat_regline_equation()`  by automatically converting deprecated dot-dot notation (`..eq.label..`, `..adj.rr.label..`, `..p.signif..`, etc.) to `after_stat()` syntax for ggplot2 3.4.0+ compatibility (#623, @hinkyisme).
 -  Fixed deprecation warnings in `add_summary()` and `ggerrorplot()` for ggplot2 compatibility:
     - Updated internal `stat_summary()` parameters to use `fun`, `fun.min`, and `fun.max` instead of deprecated `fun.y`, `fun.ymin`, and `fun.ymax` (#587, @vlonde).
-   - Fixed line aesthetic parameters by using `linewidth` instead of `size` for line-based error plots
+    - Fixed line aesthetic parameters by using `linewidth` instead of `size` for line-based error plots
+
 
 
 # ggpubr 0.6.0
