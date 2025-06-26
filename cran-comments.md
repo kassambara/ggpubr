@@ -13,3 +13,6 @@ All packages that I could install passed.
 
 This is an updated version 0.6.1 (see NEWS.md). 
 
+## Resubmission
+
+This is a resubmission. In this version I have updated `geom_bracket()`  and `geom_pwc()` doc to fix CRAN check note by specifying package anchor for `layer()` link
