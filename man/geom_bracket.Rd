@@ -144,7 +144,7 @@ of bracket.}
 
 \item{vjust}{move the text up or down relative to the bracket}
 
-\item{...}{other arguments passed on to \code{\link{layer}}. These are often
+\item{...}{other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
 aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 "red"} or \code{size = 3}. They may also be parameters to the paired
 geom/stat.}

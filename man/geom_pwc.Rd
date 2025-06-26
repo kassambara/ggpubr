@@ -240,7 +240,7 @@ shouldn't inherit behaviour from the default plot specification. Set to
 
 \item{parse}{logical for parsing plotmath expression.}
 
-\item{...}{other arguments passed on to \code{\link{layer}}. These are often
+\item{...}{other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
 aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 "red"} or \code{size = 3}. They may also be parameters to the paired
 geom/stat.}

@@ -14,3 +14,4 @@
 ^data-raw$
 ^ISSUE_TEMPLATE\.md$
 ^_tmp$
+^CRAN-SUBMISSION$

@@ -102,7 +102,7 @@ NULL
 #'@param na.rm If \code{FALSE} (the default), removes missing values with a
 #'  warning.  If \code{TRUE} silently removes missing values.
 #'@param parse logical for parsing plotmath expression.
-#'@param ... other arguments passed on to \code{\link{layer}}. These are often
+#'@param ... other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
 #'  aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'  "red"} or \code{size = 3}. They may also be parameters to the paired
 #'  geom/stat.

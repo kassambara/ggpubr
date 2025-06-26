@@ -71,7 +71,7 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #'   p-values to a horizontal ggplot (generated using
 #'   \code{\link[ggplot2]{coord_flip}()}), you need to specify the option
 #'   \code{coord.flip = TRUE}.
-#' @param ... other arguments passed on to \code{\link{layer}}. These are often
+#' @param ... other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
 #'   aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'   "red"} or \code{size = 3}. They may also be parameters to the paired
 #'   geom/stat.
