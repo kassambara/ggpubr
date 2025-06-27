@@ -1,270 +1,93 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/ISSUE_TEMPLATE.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_summary.html</loc>
-  </url>
-  <url>
-    <loc>/reference/annotate_figure.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_ggplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_npc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/axis_scale.html</loc>
-  </url>
-  <url>
-    <loc>/reference/background_image.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bgcolor.html</loc>
-  </url>
-  <url>
-    <loc>/reference/border.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compare_means.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_aes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/desc_statby.html</loc>
-  </url>
-  <url>
-    <loc>/reference/diff_express.html</loc>
-  </url>
-  <url>
-    <loc>/reference/facet.html</loc>
-  </url>
-  <url>
-    <loc>/reference/font.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gene_citation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gene_expression.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_bracket.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_exec.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_pwc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_signif.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_breaks.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_coord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_legend.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_palette.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggadd.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggadjust_pvalue.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggarrange.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggballoonplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggbarplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggboxplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggdensity.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggdonutchart.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggdotchart.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggdotplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggecdf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggerrorplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggexport.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gghistogram.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggline.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggmaplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggpaired.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggpar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggparagraph.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggpie.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggpubr-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggpubr_args.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggpubr_options.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggqqplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggscatter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggscatterhist.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggstripchart.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggsummarystats.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggtext.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggtexttable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ggviolin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gradient_color.html</loc>
-  </url>
-  <url>
-    <loc>/reference/grids.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/npc_to_data_coord.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rotate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rotate_axis_text.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rremove.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_palette.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_line_types.html</loc>
-  </url>
-  <url>
-    <loc>/reference/show_point_shapes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_anova_test.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_central_tendency.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_chull.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_compare_means.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_conf_ellipse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_cor.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_friedman_test.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_kruskal_test.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_mean.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_overlay_normal_density.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_pvalue_manual.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_regline_equation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_stars.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stat_welch_anova_test.html</loc>
-  </url>
-  <url>
-    <loc>/reference/text_grob.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theme_pubr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theme_transparent.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/ISSUE_TEMPLATE.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/add_summary.html</loc></url>
+<url><loc>/reference/annotate_figure.html</loc></url>
+<url><loc>/reference/as_ggplot.html</loc></url>
+<url><loc>/reference/as_npc.html</loc></url>
+<url><loc>/reference/axis_scale.html</loc></url>
+<url><loc>/reference/background_image.html</loc></url>
+<url><loc>/reference/bgcolor.html</loc></url>
+<url><loc>/reference/border.html</loc></url>
+<url><loc>/reference/compare_means.html</loc></url>
+<url><loc>/reference/create_aes.html</loc></url>
+<url><loc>/reference/desc_statby.html</loc></url>
+<url><loc>/reference/diff_express.html</loc></url>
+<url><loc>/reference/facet.html</loc></url>
+<url><loc>/reference/font.html</loc></url>
+<url><loc>/reference/gene_citation.html</loc></url>
+<url><loc>/reference/gene_expression.html</loc></url>
+<url><loc>/reference/geom_bracket.html</loc></url>
+<url><loc>/reference/geom_exec.html</loc></url>
+<url><loc>/reference/geom_pwc.html</loc></url>
+<url><loc>/reference/geom_signif.html</loc></url>
+<url><loc>/reference/get_breaks.html</loc></url>
+<url><loc>/reference/get_coord.html</loc></url>
+<url><loc>/reference/get_legend.html</loc></url>
+<url><loc>/reference/get_palette.html</loc></url>
+<url><loc>/reference/ggadd.html</loc></url>
+<url><loc>/reference/ggadjust_pvalue.html</loc></url>
+<url><loc>/reference/ggarrange.html</loc></url>
+<url><loc>/reference/ggballoonplot.html</loc></url>
+<url><loc>/reference/ggbarplot.html</loc></url>
+<url><loc>/reference/ggboxplot.html</loc></url>
+<url><loc>/reference/ggdensity.html</loc></url>
+<url><loc>/reference/ggdonutchart.html</loc></url>
+<url><loc>/reference/ggdotchart.html</loc></url>
+<url><loc>/reference/ggdotplot.html</loc></url>
+<url><loc>/reference/ggecdf.html</loc></url>
+<url><loc>/reference/ggerrorplot.html</loc></url>
+<url><loc>/reference/ggexport.html</loc></url>
+<url><loc>/reference/gghistogram.html</loc></url>
+<url><loc>/reference/ggline.html</loc></url>
+<url><loc>/reference/ggmaplot.html</loc></url>
+<url><loc>/reference/ggpaired.html</loc></url>
+<url><loc>/reference/ggpar.html</loc></url>
+<url><loc>/reference/ggparagraph.html</loc></url>
+<url><loc>/reference/ggpie.html</loc></url>
+<url><loc>/reference/ggpubr-common-params.html</loc></url>
+<url><loc>/reference/ggpubr-package.html</loc></url>
+<url><loc>/reference/ggpubr_args.html</loc></url>
+<url><loc>/reference/ggpubr_options.html</loc></url>
+<url><loc>/reference/ggqqplot.html</loc></url>
+<url><loc>/reference/ggscatter.html</loc></url>
+<url><loc>/reference/ggscatterhist.html</loc></url>
+<url><loc>/reference/ggstripchart.html</loc></url>
+<url><loc>/reference/ggsummarystats.html</loc></url>
+<url><loc>/reference/ggtext.html</loc></url>
+<url><loc>/reference/ggtexttable.html</loc></url>
+<url><loc>/reference/ggviolin.html</loc></url>
+<url><loc>/reference/gradient_color.html</loc></url>
+<url><loc>/reference/grids.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/npc_to_data_coord.html</loc></url>
+<url><loc>/reference/pipe.html</loc></url>
+<url><loc>/reference/reexports.html</loc></url>
+<url><loc>/reference/rotate.html</loc></url>
+<url><loc>/reference/rotate_axis_text.html</loc></url>
+<url><loc>/reference/rremove.html</loc></url>
+<url><loc>/reference/set_palette.html</loc></url>
+<url><loc>/reference/show_line_types.html</loc></url>
+<url><loc>/reference/show_point_shapes.html</loc></url>
+<url><loc>/reference/stat_anova_test.html</loc></url>
+<url><loc>/reference/stat_central_tendency.html</loc></url>
+<url><loc>/reference/stat_chull.html</loc></url>
+<url><loc>/reference/stat_compare_means.html</loc></url>
+<url><loc>/reference/stat_conf_ellipse.html</loc></url>
+<url><loc>/reference/stat_cor.html</loc></url>
+<url><loc>/reference/stat_friedman_test.html</loc></url>
+<url><loc>/reference/stat_kruskal_test.html</loc></url>
+<url><loc>/reference/stat_mean.html</loc></url>
+<url><loc>/reference/stat_overlay_normal_density.html</loc></url>
+<url><loc>/reference/stat_pvalue_manual.html</loc></url>
+<url><loc>/reference/stat_regline_equation.html</loc></url>
+<url><loc>/reference/stat_stars.html</loc></url>
+<url><loc>/reference/stat_welch_anova_test.html</loc></url>
+<url><loc>/reference/text_grob.html</loc></url>
+<url><loc>/reference/theme_pubr.html</loc></url>
+<url><loc>/reference/theme_transparent.html</loc></url>
 </urlset>
+
