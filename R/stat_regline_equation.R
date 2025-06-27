@@ -82,7 +82,7 @@ NULL
 #'   geom_point() +
 #'   stat_smooth(aes(fill = group, color = group), method = "lm", formula = formula) +
 #'   stat_regline_equation(
-#'     aes(label =  paste(after_stat(eq.label), after_stat(adj.rr.label), sep = "~~~~")),
+#'     aes(label =  paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
 #'     formula = formula
 #'   ) +
 #'   theme_bw()
@@ -105,7 +105,7 @@ stat_regline_equation <- function(
   layer(
     stat = StatReglineEquation, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(formula = formula, label.x.npc  = label.x.npc , label.y.npc  = label.y.npc,
+    params = list(formula = formula, label.x.npc  = label.x.npc, label.y.npc  = label.y.npc,
                   label.x = label.x, label.y = label.y,
                   output.type = output.type, decreasing = decreasing,
                   parse = parse, na.rm = na.rm, ...)
@@ -115,7 +115,7 @@ stat_regline_equation <- function(
 
 StatReglineEquation<- ggproto("StatReglineEquation", Stat,
                   required_aes = c("x", "y"),
-                  default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
+                  default_aes = aes(label = ..eq.label.., hjust = ..hjust.., vjust = ..vjust..),
 
                   compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
                                            label.x, label.y, output.type, decreasing)
@@ -131,7 +131,7 @@ StatReglineEquation<- ggproto("StatReglineEquation", Stat,
                     # Returns a data frame with label: x, y, hjust, vjust
                     .label.pms <- .label_params(data = data, scales = scales,
                                                 label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-                                                label.x = label.x, label.y = label.y ) %>%
+                                                label.x = label.x, label.y = label.y) %>%
                       mutate(hjust = 0)
                     cbind(.test, .label.pms)
                   }
