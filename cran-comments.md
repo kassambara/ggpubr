@@ -15,4 +15,6 @@ This is an updated version 0.6.1 (see NEWS.md).
 
 ## Resubmission
 
-This is a resubmission. In this version I have updated `geom_bracket()`  and `geom_pwc()` doc to fix CRAN check note by specifying package anchor for `layer()` link
+This is a resubmission. In this version I have:
+  
+- Fixed namespace resolution issues with `after_stat()` calls that were causing failures in reverse dependency packages (`bSi` and `PopComm`). The issue has been resolved within ggpubr by ensuring proper evaluation environment setup, so no changes are required from the maintainers of affected packages.

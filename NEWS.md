@@ -6,6 +6,7 @@
 
 ## Minor changes
 
+- Enhanced automatic conversion of deprecated dot-dot notation (`..p.signif..`, `..eq.label..`) to modern `after_stat()` calls with proper namespace qualification.
 -  Enhanced `ggline()` parameter handling for ggplot2 3.4.0+ compatibility:
     - Added `linewidth` parameter for line width 
     - Deprecated `size` parameter for lines with helpful warning message
@@ -15,6 +16,8 @@
 
 ## Bug fixes
 
+- Fixed namespace resolution issues with `after_stat()` calls that were causing failures in reverse dependency packages (`bSi`, `PopComm`). The `convert_label_dotdot_notation_to_after_stat()` function now properly handles namespace qualification while maintaining backward compatibility (#638).
+- Improved evaluation environment setup to ensure `ggplot2::after_stat()` is accessible during plot building, resolving "could not find function after_stat" errors in downstream packages.
 - Fixed equation format in `stat_regline_equation()` to display in standard mathematical convention "y = mx + b" instead of "y = b + mx" (#559, @tshates, @mwaak).
 - Fixed compatibility with ggplot2 4.0.0. Updated `gghistogram()` tests to handle changes in binning standardization introduced in ggplot2 4.0.0 (#635, @teunbrand).
 - Fixed `stat_pvalue_manual()` failing when `fill` or other aesthetics are provided in the parent ggplot layer. The function now sets `inherit.aes = FALSE` by default to prevent conflicts between parent plot aesthetics and the p-value annotation data (#621, @fncokg).
