@@ -78,6 +78,12 @@ NULL
 #'  method. Allowed values include "holm", "hochberg", "hommel", "bonferroni",
 #'  "BH", "BY", "fdr", "none". If you don't want to adjust the p value (not
 #'  recommended), use p.adjust.method = "none".
+#'@param manual.n.comparisons optional numeric value allowing the user to 
+#'  manually specify the number of comparisons used for p-value adjustment. 
+#'  This value must be greater than or equal to the number of tests performed. 
+#'  It is particularly useful when the performed tests represent only a subset 
+#'  of all possible comparisons, ensuring that the correction accounts for the 
+#'  total number of tests in practice.
 #'@param p.adjust.by possible value is one of \code{c("group", "panel")}.
 #'  Default is \code{"group"}: for a grouped data, if pairwise test is
 #'  performed, then the p-values are adjusted for each group level
@@ -232,8 +238,9 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      bracket.group.by = c("x.var", "legend.var"),
                      step.increase = 0.12, tip.length = 0.03,
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
-                     p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
-                     symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
+                     p.adjust.method = "holm", manual.n.comparisons = NULL,
+                     p.adjust.by = c("group", "panel"),symnum.args = list(), 
+                     hide.ns = FALSE, remove.bracket = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, parse = FALSE, ...) {
 
@@ -268,7 +275,9 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       tip.length = tip.length, size=size, label.size=label.size,
       remove.bracket = remove.bracket,
       family=family, vjust=vjust, hjust = hjust, na.rm = na.rm,
-      p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
+      p.adjust.method = p.adjust.method, 
+      manual.n.comparisons = manual.n.comparisons,
+      p.adjust.by = p.adjust.by, 
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
       hide.ns = hide.ns, parse = parse, ...)
   )
@@ -294,8 +303,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                             compute_panel = function(self, data, scales, method, method.args, ref.group,
                                                      tip.length, stat.label, y.position, step.increase,
                                                      bracket.nudge.y, bracket.shorten, bracket.group.by,
-                                                     p.adjust.method, p.adjust.by,
-                                                     symnum.args, hide.ns, group.by, dodge, remove.bracket) {
+                                                     p.adjust.method, manual.n.comparisons,
+                                                     p.adjust.by,symnum.args, hide.ns, group.by, dodge, remove.bracket) {
 
                               # Compute the statistical tests
                               df <- data %>% mutate(x = as.factor(.data$x))
@@ -326,6 +335,16 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 
                               method.args <- method.args %>% .add_item(data = df, formula = formula)
                               stat.test <- do.call(method, method.args)
+                              
+                              # Compute number of comparisons
+                              n.comparaisons <- nrow(stat.test)
+                              if (!is.null(manual.n.comparisons)) {
+                                if (manual.n.comparisons < n.comparaisons) {
+                                  stop("The value of 'manual.n.comparisons' must be greater than or equal to the number of tests performed.")
+                                }
+                              } else {
+                                manual.n.comparisons <- n.comparaisons
+                              }
 
                               # Add method name
                               method.name <- rstatix::get_description(stat.test)
@@ -333,19 +352,17 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                                 stat.label <- gsub(pattern = "\\{method\\},\\s?", replacement = "", stat.label)
                               }
                               stat.test$method <- method.name
-
                               # P-value adjustment, formatting and significance
                               if(!("p.adj" %in% colnames(stat.test))){
                                 # Case of one comparison of two groups
-                                stat.test <- stat.test %>% rstatix::adjust_pvalue(method = p.adjust.method)
+                                stat.test$p.adj <- p.adjust(stat.test$p, method = p.adjust.method, n = manual.n.comparisons)
                               }
 
                               # Adjust all the p-values in a given panel
                               # no matter the grouping
                               if(p.adjust.by == "panel"){
                                 if("p" %in% colnames(stat.test)){
-                                  stat.test <- stat.test %>%
-                                    rstatix::adjust_pvalue(method = p.adjust.method)
+                                  stat.test$p.adj <- p.adjust(stat.test$p, method = p.adjust.method, n = manual.n.comparisons)
                                 }
                                 else{
                                   warning(
@@ -471,8 +488,9 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      step.increase = 0.12,  tip.length = 0.03,
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
                      size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
-                     p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
-                     symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
+                     p.adjust.method = "holm", manual.n.comparisons = NULL,
+                     p.adjust.by = c("group", "panel"),symnum.args = list(), 
+                     hide.ns = FALSE, remove.bracket = FALSE,
                      position = "identity", na.rm = FALSE,
                      show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
   p.adjust.by <- match.arg(p.adjust.by)
@@ -511,7 +529,9 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       step.increase = step.increase, tip.length = tip.length,
       size = size, label.size = label.size,
       family = family, na.rm = na.rm, hjust = hjust, vjust = vjust,
-      p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
+      p.adjust.method = p.adjust.method, 
+      manual.n.comparisons = manual.n.comparisons,
+      p.adjust.by = p.adjust.by,
       symnum.args = fortify_signif_symbols_encoding(symnum.args),
       hide.ns = hide.ns, remove.bracket = remove.bracket,
       parse = parse,
