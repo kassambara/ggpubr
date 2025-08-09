@@ -10,6 +10,8 @@ NULL
 #' @param position position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function. Used to adjust position for
 #'   multiple groups.
+#' @param show.n logical value. If TRUE, adds the number of observations per
+#'   group to the plot.
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_jitter}}, \code{\link{ggpar}} and
 #'   \code{\link{facet}}.
@@ -19,7 +21,8 @@ NULL
 #'   scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes:
 #'   palette = "Dark2" or palette = c("gray", "blue", "red") \item legend title,
 #'   labels and position: legend = "right" \item plot orientation : orientation
-#'   = c("vertical", "horizontal", "reverse") }
+#'   = c("vertical", "horizontal", "reverse") \item sample size display: show.n
+#'   = TRUE }
 #'@seealso \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}}
 #'  and \code{\link{ggboxplot}}.
 #' @examples
@@ -87,6 +90,9 @@ NULL
 #'  color = "supp", palette = c("#00AFBB", "#E7B800"),
 #'  add = "boxplot", add.params = list(color = "black") )
 #'
+#' # Display number of observations per group
+#' ggstripchart(df, x = "dose", y = "len", show.n = TRUE)
+#'
 #' @export
 ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
                          color = "black", fill = "white", palette = NULL,
@@ -101,7 +107,7 @@ ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
                          label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                          jitter = 0.2,
                          position = position_jitter(jitter, seed = 123),
-                         ggtheme = theme_pubr(),
+                         ggtheme = theme_pubr(), show.n = FALSE,
                          ...)
 {
 
@@ -117,7 +123,7 @@ ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
     repel = repel, label.rectangle = label.rectangle,
-    jitter = jitter, position = position, ggtheme = ggtheme, ...)
+    jitter = jitter, position = position, ggtheme = ggtheme, show.n = show.n, ...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
   if(!missing(y)) .opts$y <- y
@@ -152,11 +158,20 @@ ggstripchart_core <- function(data, x, y,
                       jitter = 0.2,
                       position = position_jitter(jitter, seed = 123),
                       ggtheme = theme_pubr(),
+                      show.n = FALSE,
                       ...)
 {
 
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
   . <- NULL
+
+  library(dplyr)
+
+  # Calculer le nombre d'observations et la médiane pour chaque groupe
+  stats <- data %>%
+    suppressPackageStartupMessages() %>%
+    group_by(!!sym(x)) %>%
+    summarise(n = n(), median = median(!!sym(y)), .groups = "drop")
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
   if("none" %in% add) add <- "none"
@@ -188,6 +203,19 @@ ggstripchart_core <- function(data, x, y,
 
    p <- ggpar(p, palette = palette, ggtheme = ggtheme,
               title = title, xlab = xlab, ylab = ylab,...)
+
+   if (show.n) {
+     # Calculer les positions en fonction de la valeur max de chaque groupe
+     stats <- stats %>%
+       mutate(max_y = tapply(data[[y]], data[[x]], max),
+              min_y = tapply(data[[y]], data[[x]], min)) %>%
+       mutate(y_position = max_y + (max_y - min_y) * 0.01 +0.5)  # Décalage au-dessus du groupe
+
+     p <- p + geom_text(data = stats,
+                        aes(x = !!sym(x), y = y_position, label = paste("n =", n)),
+                        vjust = 0, size = 4, color = "black")
+   }
+
 
   p
 }
