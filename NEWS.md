@@ -1,12 +1,8 @@
-# ggpubr 0.6.1.999
-
-## New features
-
-## Major changes
-
-## Minor changes
+# ggpubr 0.6.2
 
 ## Bug fixes
+
+- Fixed compatibility with R-devel r88748 (2025-08-31) which changed Wilcoxon test to provide exact conditional two-sample inference with ties. The `compare_means()` function now sets `exact = FALSE` for `wilcox.test()` and `pairwise.wilcox.test()` to maintain backward compatibility and consistent p-values across R versions (#647).
 
 
 

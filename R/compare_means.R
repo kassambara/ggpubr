@@ -284,6 +284,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
     test.opts <- list(x = .select_vec(data, x), ...)
   else test.opts <- list(formula = formula, data = data, ...)
 
+  if(method == "wilcox.test" && is.null(test.opts$exact)) test.opts$exact <- FALSE
+
   res <- data.frame(p = suppressWarnings(do.call(test, test.opts)$p.value))
   group1 <- group2 <- NULL
 
@@ -328,7 +330,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
                     g = .select_vec(data, group),
                     paired = paired,
                     ...)
-  # if(method == "pairwise.wilcox.test") test.opts$exact <- FALSE
+  if(method == "pairwise.wilcox.test" && is.null(test.opts$exact)) test.opts$exact <- FALSE
   if(method == "pairwise.t.test"){
     if(missing(pool.sd)){
       if(!paired) pool.sd <- FALSE

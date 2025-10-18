@@ -149,8 +149,8 @@ test_that("compare_means works when grouping variable levels contain group2", {
     dplyr::select(.y., group1, group2, p.format, p.signif, method)
   expected <- tibble::tribble(
       ~.y.,  ~group1,  ~group2, ~p.format, ~p.signif,    ~method,
-     "val", "group2", "group4",    "0.23",      "ns", "Wilcoxon",
-     "val", "group2", "group4",    "0.23",      "ns", "Wilcoxon"
+     "val", "group2", "group4",    "0.22",      "ns", "Wilcoxon",
+     "val", "group2", "group4",    "0.22",      "ns", "Wilcoxon"
      )
   expect_equal(results, expected)
 })
