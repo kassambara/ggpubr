@@ -1,3 +1,13 @@
+# ggpubr 0.6.2.999
+
+## New features
+
+## Major changes
+
+## Minor changes
+
+## Bug fixes
+
 # ggpubr 0.6.2
 
 ## Bug fixes
