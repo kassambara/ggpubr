@@ -90,15 +90,14 @@ test_that("stat_compare_means works when label specified as aes(label=..p.signif
 # Paired samples-----------------------------------
 test_that("stat_compare_means works for paired samples comparison", {
   stat.test <- .get_stat_test(df, paired = TRUE)
-  label_coords_expected <- data.frame(
-    stringsAsFactors = FALSE,
-    x = 1,
-    y = c(33.9),
-    label = c("Wilcoxon, p = 0.0043")
-  )
   label_coords_observed <- stat.test[, c("x", "y", "label")]
   label_coords_observed$x <- as.numeric(label_coords_observed$x)
-  expect_equal(label_coords_expected, label_coords_observed)
+
+  # Accept either 0.0043 (exact=FALSE) or 0.0038 (R-devel exact conditional inference)
+  expect_true(label_coords_observed$label %in% c("Wilcoxon, p = 0.0043", "Wilcoxon, p = 0.0038"),
+              info = paste("Observed label =", label_coords_observed$label))
+  expect_equal(label_coords_observed$x, 1)
+  expect_equal(label_coords_observed$y, 33.9)
 })
 
 

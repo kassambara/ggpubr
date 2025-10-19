@@ -1,7 +1,7 @@
 Package: ggpubr
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots
-Version: 0.6.2
+Version: 0.6.2.999
 Date: 2025-10-17
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"))
@@ -44,7 +44,7 @@ Suggests:
     testthat
 URL: https://rpkgs.datanovia.com/ggpubr/
 BugReports: https://github.com/kassambara/ggpubr/issues
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Collate:
     'utilities_color.R'
     'utilities_base.R'
