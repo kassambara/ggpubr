@@ -8,6 +8,8 @@
 
 ## Bug fixes
 
+- Reverted the `exact = FALSE` workaround from version 0.6.2 that forced non-default behavior on `wilcox.test()`. Instead, updated tests in `test-compare_means.R` and `test-stat_compare_means.R` to accept both legacy and R-devel p-values when exact conditional two-sample inference with ties is used (R-devel r88748). Tests now use flexible assertions to ensure compatibility across R versions without changing R's default `wilcox.test()` behavior (#649, #647).
+
 # ggpubr 0.6.2
 
 ## Bug fixes
