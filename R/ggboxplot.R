@@ -24,6 +24,8 @@ NULL
 #'@param bxp.errorbar logical value. If TRUE, shows error bars of box plots.
 #'@param bxp.errorbar.width numeric value specifying the width of box plot error
 #'  bars. Default is 0.4.
+#'@param show.n logical value. If TRUE, adds the number of observations per
+#'  group to the plot.
 #'@param linetype line types.
 #'@param size Numeric value (e.g.: size = 1). change the size of points and
 #'  outlines.
@@ -69,7 +71,8 @@ NULL
 #'  scales: xscale, yscale (e.g.: yscale = "log2") \item color palettes: palette
 #'  = "Dark2" or palette = c("gray", "blue", "red") \item legend title, labels
 #'  and position: legend = "right" \item plot orientation : orientation =
-#'  c("vertical", "horizontal", "reverse") }
+#'  c("vertical", "horizontal", "reverse") \item sample size display: show.n =
+#'  TRUE }
 #'
 #'@section Suggestions for the argument "add": Suggested values are one of
 #'  c("dotplot", "jitter").
@@ -139,6 +142,9 @@ NULL
 #' ggboxplot(df, "dose", "len", color = "supp",
 #'  palette = c("#00AFBB", "#E7B800"))
 #'
+#' # Display number of observations per group
+#' ggboxplot(df, x = "dose", y = "len", show.n = TRUE)
+#'
 #'@export
 ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       color = "black", fill = "white", palette = NULL,
@@ -152,7 +158,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       error.plot = "pointrange",
                       label = NULL, font.label = list(size = 11, color = "black"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-                      ggtheme = theme_pubr(),...)
+                      ggtheme = theme_pubr(), show.n = FALSE,...)
 {
 
   # Default options
@@ -168,7 +174,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
+    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, show.n = show.n,...)
   if(!missing(data)) .opts$data <- data
   if(!missing(x)) .opts$x <- x
   if(!missing(y)) .opts$y <- y
@@ -203,11 +209,20 @@ ggboxplot_core <- function(data, x, y,
                       add = "none", add.params = list(),
                       error.plot = "pointrange",
                       ggtheme = theme_pubr(),
+                      show.n = FALSE,
                       ...)
 {
 
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
   if("jitter" %in% add) outlier.shape <- NA
+
+  library(dplyr)
+
+  # Calculer le nombre d'observations et la médiane pour chaque groupe
+  stats <- data %>%
+    suppressPackageStartupMessages() %>%
+    group_by(!!sym(x)) %>%
+    summarise(n = n(), median = median(!!sym(y)), .groups = "drop")
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
   if(bxp.errorbar){
@@ -232,6 +247,17 @@ ggboxplot_core <- function(data, x, y,
               outliers = outliers, outlier.shape = outlier.shape,
               position = position_dodge(0.8), size = size,...)
 
+  if (show.n) {
+    stats <- stats %>%
+      mutate(max_y = tapply(data[[y]], data[[x]], max)) %>%
+      mutate(y_position = max_y + 0.5)
+    p <- p + geom_text(data = stats, aes(x = !!sym(x), y = y_position, label = paste("n =", n)),
+                       vjust = -0.5, size = 4, color = "black")
+  }
+
+
+
+
   # Add
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%
     .add_item(p = p, add = add, error.plot = error.plot)
@@ -240,5 +266,4 @@ ggboxplot_core <- function(data, x, y,
           title = title, xlab = xlab, ylab = ylab, ...)
   p
 }
-
 
