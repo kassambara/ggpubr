@@ -31,7 +31,7 @@ stat_pvalue_manual(
 )
 }
 \arguments{
-\item{data}{a data frame containing statitistical test results. The expected
+\item{data}{a data frame containing statistical test results. The expected
 default format should contain the following columns: \code{group1 | group2 |
 p | y.position | etc}. \code{group1} and \code{group2} are the groups that
 have been compared. \code{p} is the resulting p-value. \code{y.position} is
