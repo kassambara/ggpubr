@@ -22,6 +22,7 @@
 - Fixed `stat_cor()` parsing error when `options(OutDec = ",")` is set (European decimal separator) by using `decimal.mark = "."` in `formatC()` calls (#512, @erdeyl).
 - Fixed `compare_means()` error "object 'group2' not found" when using `ref.group` with `method = "anova"` or `method = "kruskal.test"` (#572, @erdeyl).
 - Reverted the `exact = FALSE` workaround from version 0.6.2 that forced non-default behavior on `wilcox.test()`. Tests now use flexible assertions to ensure compatibility across R versions (#649, #647).
+- Fixed `.parse_font()` not recognizing decimal font sizes (e.g., `lab.font = c(2.4, "italic", "black")`), which caused label colors to render incorrectly (#659).
 
 # ggpubr 0.6.2
 
