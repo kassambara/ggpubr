@@ -169,7 +169,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
 
 StatCompareMeans<- ggproto("StatCompareMeans", Stat,
                   required_aes = c("x", "y"),
-                  default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
+                  default_aes = aes(hjust = after_stat(hjust), vjust = after_stat(vjust)),
 
                   compute_panel = function(data, scales, method, method.args,
                                            paired, ref.group, symnum.args,

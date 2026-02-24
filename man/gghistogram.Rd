@@ -16,6 +16,7 @@ gghistogram(
   palette = NULL,
   size = NULL,
   linetype = "solid",
+  linewidth = NULL,
   alpha = 0.5,
   bins = NULL,
   binwidth = NULL,
@@ -70,6 +71,8 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 outlines.}
 
 \item{linetype}{line type. See \code{\link{show_line_types}}.}
+
+\item{linewidth}{numeric value specifying the line width.}
 
 \item{alpha}{numeric value specifying fill color transparency. Value should
 be in [0, 1], where 0 is full transparency and 1 is no transparency.}

@@ -72,12 +72,12 @@ NULL
 #' sp + stat_cor(p.accuracy = 0.001, r.accuracy = 0.01)
 #'
 #' # Show only the r.label but not the p.label
-#' sp + stat_cor(aes(label = ..r.label..), label.x = 3)
+#' sp + stat_cor(aes(label = after_stat(r.label)), label.x = 3)
 #'
 #'# Use R2 instead of R
 #'ggscatter(df, x = "wt", y = "mpg", add = "reg.line") +
 #'  stat_cor(
-#'    aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+#'    aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
 #'   label.x = 3
 #' )
 #'
@@ -115,7 +115,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
 
 StatCor<- ggproto("StatCor", Stat,
                   required_aes = c("x", "y"),
-                  default_aes = aes(hjust = ..hjust.., vjust = ..vjust..),
+                  default_aes = aes(hjust = after_stat(hjust), vjust = after_stat(vjust)),
 
                   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
                                            label.x, label.y, label.sep, output.type, digits,
@@ -253,7 +253,7 @@ get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = 
   }
   else{
     nb_decimal_places <- round(abs(log10(accuracy)))
-    label <- formatC(x, digits = nb_decimal_places, format = "f")
+    label <- formatC(x, digits = nb_decimal_places, format = "f", decimal.mark = ".")
     label <- paste0(prefix, " = ", label)
   }
   if(type == "expression"){

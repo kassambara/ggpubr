@@ -90,7 +90,7 @@ ggecdf_core <- function(data, x, y = "..ecdf..",
 
   p <- p +
       geom_exec(stat_ecdf, data = data,
-                 color = color,  size = size,
+                 color = color,  linewidth = size,
                  linetype = linetype)+
     labs(y = paste0("F(", x, ")"))
   p <- ggpar(p, palette = palette, ggtheme = ggtheme,

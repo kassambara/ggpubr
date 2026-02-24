@@ -174,12 +174,12 @@ sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
 sp + stat_cor(p.accuracy = 0.001, r.accuracy = 0.01)
 
 # Show only the r.label but not the p.label
-sp + stat_cor(aes(label = ..r.label..), label.x = 3)
+sp + stat_cor(aes(label = after_stat(r.label)), label.x = 3)
 
 # Use R2 instead of R
 ggscatter(df, x = "wt", y = "mpg", add = "reg.line") +
  stat_cor(
-   aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+   aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
   label.x = 3
 )
 

@@ -23,6 +23,7 @@ ggviolin(
   linetype = "solid",
   trim = FALSE,
   size = NULL,
+  linewidth = NULL,
   width = 1,
   draw_quantiles = NULL,
   select = NULL,
@@ -98,6 +99,8 @@ to the range of the data. If \code{FALSE}, don't trim the tails.}
 
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}
+
+\item{linewidth}{constant value specifying the line width.}
 
 \item{width}{violin width.}
 

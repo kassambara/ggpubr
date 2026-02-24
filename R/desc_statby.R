@@ -39,10 +39,9 @@ desc_statby <- function(data, measure.var, grps, ci = 0.95){
   if(!inherits(data, "data.frame"))
     stop("data must be a data.frame.")
 
-  . <- NULL
   data %>% as.data.frame() %>%
     df_group_by(vars = grps) %>%
-    do(.summary(.[, measure.var], ci = ci)) %>%
+    reframe(.summary(.data[[measure.var]], ci = ci)) %>%
     as.data.frame()
 }
 

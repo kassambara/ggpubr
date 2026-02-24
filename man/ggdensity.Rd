@@ -14,6 +14,7 @@ ggdensity(
   fill = NA,
   palette = NULL,
   size = NULL,
+  linewidth = NULL,
   linetype = "solid",
   alpha = 0.5,
   title = NULL,
@@ -61,6 +62,10 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}
+
+\item{linewidth}{numeric value specifying line width. This is the preferred
+parameter for ggplot2 3.4.0+. If \code{size} is also specified, \code{linewidth}
+takes precedence.}
 
 \item{linetype}{line type. See \code{\link{show_line_types}}.}
 

@@ -37,8 +37,8 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
     # dot plot
     "binwidth", "binaxis", "method", "binpositions",
     "stackdir", "stackratio", "dotsize",
-    # Violin
-    "trim", "draw_quantiles", "scale",
+    # Violin and density
+    "trim", "draw_quantiles", "scale", "adjust", "bw",
     # error
     "ymin", "ymax", "xmin", "xmax",
     # text
@@ -66,6 +66,34 @@ geom_exec <- function (geomfunc = NULL, data = NULL,
   )
 
   columns <- colnames(data)
+
+  # Helper to check for line-based geoms that require linewidth
+  is_line_geom <- function(f) {
+    if (is.null(f)) return(FALSE)
+
+    # List of geoms that use linewidth in modern ggplot2
+    line_geoms <- list(
+      ggplot2::geom_line, ggplot2::geom_path, ggplot2::geom_segment,
+      ggplot2::geom_step, ggplot2::geom_density, ggplot2::geom_freqpoly,
+      ggplot2::geom_histogram, ggplot2::geom_smooth, ggplot2::geom_errorbar,
+      ggplot2::geom_linerange, ggplot2::geom_vline, ggplot2::geom_hline,
+      ggplot2::geom_abline, ggplot2::geom_rug, ggplot2::geom_rect,
+      ggplot2::geom_tile, ggplot2::geom_polygon, ggplot2::geom_ribbon,
+      ggplot2::geom_area, ggplot2::geom_crossbar, ggplot2::geom_boxplot,
+      ggplot2::geom_violin
+    )
+
+    for (geom in line_geoms) {
+      if (identical(f, geom)) return(TRUE)
+    }
+    return(FALSE)
+  }
+
+  # Auto-convert size to linewidth for line-based geoms
+  if (is_line_geom(geomfunc) && "size" %in% names(params) && !"linewidth" %in% names(params)) {
+     names(params)[names(params) == "size"] <- "linewidth"
+  }
+
   for (key in names(params)) {
     value <- params[[key]]
     if (is.null(value)) {

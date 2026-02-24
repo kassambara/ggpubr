@@ -7,6 +7,9 @@ NULL
 #' @param y one of "density" or "count".
 #' @param color,fill density line color and fill color.
 #' @param linetype line type. See \code{\link{show_line_types}}.
+#' @param linewidth numeric value specifying line width. This is the preferred
+#'   parameter for ggplot2 3.4.0+. If \code{size} is also specified, \code{linewidth}
+#'   takes precedence.
 #' @param alpha numeric value specifying fill color transparency. Value should
 #'   be in [0, 1], where 0 is full transparency and 1 is no transparency.
 #' @param add allowed values are one of "mean" or "median" (for adding mean or
@@ -57,7 +60,7 @@ NULL
 #' @export
 ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
                       color = "black", fill = NA, palette = NULL,
-                      size = NULL, linetype = "solid", alpha = 0.5,
+                      size = NULL, linewidth = NULL, linetype = "solid", alpha = 0.5,
                       title = NULL, xlab = NULL, ylab = NULL,
                       facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                       add = c("none", "mean", "median"),
@@ -93,6 +96,16 @@ ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
       .opts[[opt.name]] <- NULL
   }
 
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0 - convert after .user.opts processing
+  if (!is.null(.opts$size)) {
+    .opts$linewidth <- .opts$size
+    .opts$size <- NULL
+  }
+  if (!is.null(linewidth)) {
+    .opts$linewidth <- linewidth
+  }
+
   .opts$fun <- ggdensity_core
   if(missing(ggtheme) & (!is.null(facet.by) | combine))
     .opts$ggtheme <- theme_pubr(border = TRUE)
@@ -106,7 +119,7 @@ ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
 
 ggdensity_core <- function(data, x, y = "density",
                       color = "black", fill = NA, palette = NULL,
-                      size = NULL, linetype = "solid", alpha = 0.5,
+                      size = NULL, linewidth = NULL, linetype = "solid", alpha = 0.5,
                       title = NULL, xlab = NULL, ylab = NULL,
                       add = c("none", "mean", "median"),
                       add.params = list(linetype = "dashed"),
@@ -115,6 +128,16 @@ ggdensity_core <- function(data, x, y = "density",
                       ggtheme = theme_classic(),
                       ...)
 {
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0
+  extra_args <- list(...)
+  if ("size" %in% names(extra_args) && is.null(linewidth)) {
+    linewidth <- extra_args$size
+    extra_args$size <- NULL
+  }
+  if (!is.null(size) && is.null(linewidth)) {
+    linewidth <- size
+  }
 
   grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
     unique() %>%
@@ -122,17 +145,21 @@ ggdensity_core <- function(data, x, y = "density",
 
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
-  if(is.null(add.params$size)) add.params$size <- size
+  if(is.null(add.params$size)) add.params$size <- linewidth
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
   if (y %in% c("..density..", "density")) y <- "after_stat(density)"
   else if (y %in% c("..count..", "count")) y <- "after_stat(count)"
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 
-  p <- p +
-       geom_exec(geom_density, data = data,
-                 color = color, fill = fill, size = size,
-                 linetype = linetype, alpha = alpha, ...)
+  # Build geom_density args without passing size through ...
+  geom_args <- c(
+    list(geomfunc = geom_density, data = data,
+         color = color, fill = fill, linewidth = linewidth,
+         linetype = linetype, alpha = alpha),
+    extra_args
+  )
+  p <- p + do.call(geom_exec, geom_args)
 
   # Add mean/median
   if(add %in% c("mean", "median")){

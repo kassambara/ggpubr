@@ -526,7 +526,7 @@ GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
                             required_aes = c("x", "xend", "y", "yend", "label"),
                             default_aes = ggplot2::aes(
                               shape = 19, colour = "black", label.size = 3.88, angle = NA, hjust = 0.5,
-                              vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3,
+                              vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3, linewidth = NULL,
                               legend.var = NA
                             ),
                             # draw_key = function(...){grid::nullGrob()},
@@ -551,7 +551,7 @@ GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
                                   gp = grid::gpar(
                                     col = scales::alpha(coords$colour, coords$alpha),
                                     lty = coords$linetype,
-                                    lwd = coords$size * ggplot2::.pt
+                                    lwd = (coords$linewidth %||% coords$size) * ggplot2::.pt
                                   )
                                 )
                               )

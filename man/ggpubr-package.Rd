@@ -46,5 +46,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Alboukadel Kassambara \email{alboukadel.kassambara@gmail.com}
 
+Other contributors:
+\itemize{
+  \item Laszlo Erdey \email{erdey.laszlo@econ.unideb.hu} (Faculty of Economics and Business, University of Debrecen, Hungary) [contributor]
+}
+
 }
 \keyword{internal}

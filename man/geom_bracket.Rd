@@ -23,6 +23,7 @@ stat_bracket(
   bracket.nudge.y = 0,
   bracket.shorten = 0,
   size = 0.3,
+  linewidth = size,
   label.size = 3.88,
   family = "",
   vjust = 0,
@@ -48,6 +49,7 @@ geom_bracket(
   bracket.nudge.y = 0,
   bracket.shorten = 0,
   size = 0.3,
+  linewidth = size,
   label.size = 3.88,
   family = "",
   vjust = 0,
@@ -136,7 +138,9 @@ up; if negative value, brackets are moved down.}
 \item{bracket.shorten}{a small numeric value in [0-1] for shortening the with
 of bracket.}
 
-\item{size}{change the width of the lines of the bracket}
+\item{size}{change the width of the lines of the bracket. Deprecated, use \code{linewidth} instead.}
+
+\item{linewidth}{change the width of the lines of the bracket}
 
 \item{label.size}{change the size of the label text}
 

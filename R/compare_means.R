@@ -209,8 +209,9 @@ compare_means <- function(formula, data, method = "wilcox.test",
     dplyr::select(!!!syms(c(group.by, ".y.")), dplyr::everything())
 
   # Select only reference groups if any
+  # Skip for anova/kruskal.test which don't have group1/group2 columns (Issue #572)
   #::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  if(!is.null(ref.group)){
+  if(!is.null(ref.group) && !method %in% c("anova", "kruskal.test")){
     group.levs <- .select_vec(data, group) %>% .levels()
     group1 <- NULL
     res <- res %>% dplyr::filter(group1 == ref.group | group2 == ref.group)
@@ -229,10 +230,10 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   pvalue.format <- format.pval(res$p, digits = 2)
 
-  .y. <- p.adj <- NULL
-  .p.adjust <- function(d, ...) {data.frame(p.adj = stats::p.adjust(d$p, ...))}
-  by_y <- res %>% group_by(.y.)
-  pvalue.adj <- do(by_y, .p.adjust(., method = p.adjust.method))
+  .y. <- p.adj <- p <- NULL
+  pvalue.adj <- res %>%
+    group_by(.y.) %>%
+    reframe(p.adj = stats::p.adjust(p, method = p.adjust.method))
   res <- res %>%
     dplyr::ungroup() %>%
     mutate(p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
@@ -337,11 +338,15 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   pvalues <- suppressWarnings(do.call(test, test.opts)$p.value) %>%
     as.data.frame()
-  ..group1.. <- ..group2.. <- p <- NULL
+  p <- NULL
   pvalues$..group2.. <- rownames(pvalues)
   pvalues <- pvalues %>%
-    tidyr::gather(key = "..group1..", value = "p", -..group2..) %>%
-    dplyr::select(group1 = ..group1.., group2 = ..group2.., p) %>%
+    tidyr::pivot_longer(
+      cols = -"..group2..",
+      names_to = "..group1..",
+      values_to = "p"
+    ) %>%
+    dplyr::select(group1 = "..group1..", group2 = "..group2..", p) %>%
     dplyr::filter(!is.na(p))
   pvalues
 }

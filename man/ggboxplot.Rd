@@ -23,6 +23,7 @@ ggboxplot(
   short.panel.labs = TRUE,
   linetype = "solid",
   size = NULL,
+  linewidth = NULL,
   width = 0.7,
   notch = FALSE,
   outliers = TRUE,
@@ -99,6 +100,8 @@ labelled only by variable grouping levels.}
 
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}
+
+\item{linewidth}{constant value specifying the line width.}
 
 \item{width}{numeric value between 0 and 1 specifying box width.}
 

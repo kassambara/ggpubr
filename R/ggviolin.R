@@ -7,6 +7,7 @@ NULL
 #'@inheritParams ggboxplot
 #'@param width violin width.
 #'@param alpha color transparency. Values should be between 0 and 1.
+#'@param linewidth constant value specifying the line width.
 #'@inheritParams ggplot2::geom_violin
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_violin}}, \code{\link{ggpar}} and
@@ -88,7 +89,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      color = "black", fill = "white", palette = NULL, alpha = 1,
                      title = NULL, xlab = NULL, ylab = NULL,
                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-                     linetype = "solid", trim = FALSE, size = NULL, width = 1,
+                     linetype = "solid", trim = FALSE, size = NULL, linewidth = NULL, width = 1,
                      draw_quantiles = NULL,
                      select = NULL, remove = NULL, order = NULL,
                      add = "mean_se", add.params = list(),
@@ -105,7 +106,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
     color = color, fill = fill, palette = palette, alpha = alpha,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    linetype = linetype, trim = trim, size = size, width = width, draw_quantiles = draw_quantiles,
+    linetype = linetype, trim = trim, size = size, linewidth = linewidth, width = width, draw_quantiles = draw_quantiles,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
@@ -141,7 +142,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
 ggviolin_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL, alpha = 1,
                       title = NULL, xlab = NULL, ylab = NULL,
-                      linetype = "solid", trim = FALSE, size = NULL, width = 1,
+                      linetype = "solid", trim = FALSE, size = NULL, linewidth = NULL, width = 1,
                       draw_quantiles = NULL,
                       add = "mean_se", add.params = list(),
                       error.plot = "pointrange",
@@ -149,6 +150,18 @@ ggviolin_core <- function(data, x, y,
                       position = position_dodge(0.8),
                      ...)
 {
+
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0
+  if (!is.null(size) && !is.null(linewidth)) {
+    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
+  } else if (!is.null(size)) {
+    warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
+    linewidth <- size
+  } else if (is.null(linewidth)) {
+    linewidth <- NULL # Default value
+  }
+
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
   pms <- .violin_params(...)
@@ -156,9 +169,9 @@ ggviolin_core <- function(data, x, y,
   p <- ggplot(data, create_aes(list(x = x, y = y))) +
       geom_exec(geom_violin, data = data,
                 color = color, fill = fill, linetype = linetype,
-                trim = trim, size = size, width = width, alpha = alpha,
+                trim = trim, size = linewidth, width = width, alpha = alpha,
                 position = position, draw_quantiles = draw_quantiles,
-                stat = pms$stat, scale = pms$scale)
+                stat = pms$stat, scale = pms$scale, adjust = pms$adjust)
 
   # Add
   #+++++++++++++++++++

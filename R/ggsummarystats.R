@@ -111,7 +111,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
   }
 
   df <- df %>%
-    mutate_if(is.double, round, digits) %>%
+    mutate(across(where(is.double), ~ round(.x, digits))) %>%
     unite(col = "label", !!!syms(y_values), sep = "\n") %>%
     mutate(y = paste(names(y), collapse = "\n"))
   p <- ggplot(data, aes(x, y)) +

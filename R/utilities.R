@@ -4,10 +4,10 @@ NULL
 #' @importFrom magrittr %>%
 #' @importFrom rstatix df_group_by df_nest_by df_select df_arrange
 #' @importFrom tibble as_tibble
-#' @importFrom dplyr group_by mutate mutate_if group_nest arrange desc
+#' @importFrom dplyr group_by mutate across where group_nest arrange desc reframe slice_head slice_tail
 #' @importFrom purrr map2 map
 #' @importFrom tidyr unite
-#' @importFrom dplyr do select distinct
+#' @importFrom dplyr select distinct
 #' @importFrom dplyr summarise
 #' @importFrom dplyr everything
 #' @importFrom grid drawDetails
@@ -109,6 +109,7 @@ keep_only_tbl_df_classes <- function(x){
   res$draw_quantiles  <- x$draw_quantiles
   res$scale <- ifelse(!is.null(x$scale), x$scale, "area")
   res$trim <- ifelse(!is.null(x$trim), x$trim, TRUE)
+  res$adjust <- x$adjust  # Bandwidth adjustment for kernel density (Issue #552)
   return(res)
 }
 
@@ -658,24 +659,22 @@ p
 # - n the number of rows
 # - grps: other grouping variables
 .top_up <- function(df, x, y, n, grouping.vars = NULL){
-  . <- NULL
   grouping.vars <- c(x, grouping.vars) %>%
     unique()
   df %>%
     df_arrange(vars = c(grouping.vars, y)) %>%
     df_group_by(vars = grouping.vars) %>%
-    do(utils::tail(., n))
+    slice_tail(n = n)
 }
 
 
 .top_down <- function(df, x, y, n, grouping.vars = NULL){
-  . <- NULL
   grouping.vars <- c(x, grouping.vars) %>%
     unique()
   df %>%
     df_arrange(vars = c(grouping.vars, y)) %>%
     df_group_by(vars = grouping.vars) %>%
-    do(utils::head(., n))
+    slice_head(n = n)
 }
 
 
@@ -917,9 +916,14 @@ p
 # add: center to add
 # grouping.vars: grouping variables
 .add_center_line <- function(p, add = c("none", "mean", "median"), grouping.vars = NULL,
-                             color = "black", linetype = "dashed", size = NULL)
+                             color = "black", linetype = "dashed", size = NULL, linewidth = NULL)
 {
 
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0
+  if (!is.null(linewidth)) {
+    size <- linewidth
+  }
   add <- match.arg(add)
   data <- p$data
   # x <- .mapping(p)$x
@@ -937,7 +941,7 @@ p
                 stats::median(data[[x]], na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data,
                        xintercept = m, color = color,
-                       linetype = linetype, size = size)
+                       linetype = linetype, linewidth = size)
   }
   # Case of grouping variable
   else {
@@ -946,7 +950,7 @@ p
       summarise(.center = compute_center(!!sym(x), na.rm = TRUE))
     p <- p + geom_exec(geom_vline, data = data_sum,
                        xintercept = ".center", color = color,
-                       linetype = linetype, size = size)
+                       linetype = linetype, linewidth = size)
   }
 
   p

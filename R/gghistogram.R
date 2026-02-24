@@ -8,6 +8,7 @@ NULL
 #' @param weight a variable name available in the input data for creating a weighted histogram.
 #' @param color,fill histogram line color and fill color.
 #' @param linetype line type. See \code{\link{show_line_types}}.
+#' @param linewidth numeric value specifying the line width.
 #' @param alpha numeric value specifying fill color transparency. Value should
 #'   be in [0, 1], where 0 is full transparency and 1 is no transparency.
 #' @param bins Number of bins. Defaults to 30.
@@ -73,7 +74,7 @@ NULL
 #' @export
 gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
                         weight = NULL, color = "black", fill = NA, palette = NULL,
-                        size = NULL, linetype = "solid", alpha = 0.5,
+                        size = NULL, linetype = "solid", linewidth = NULL, alpha = 0.5,
                         bins = NULL, binwidth = NULL,
                         title = NULL, xlab = NULL, ylab = NULL,
                         facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
@@ -92,7 +93,7 @@ gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
   .opts <- list(
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
-    linetype = linetype, size = size, alpha = alpha, bins = bins, binwidth = binwidth,
+    linetype = linetype, size = size, linewidth = linewidth, alpha = alpha, bins = bins, binwidth = binwidth,
     weight = weight, title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     add = add, add.params = add.params, rug = rug, add_density = add_density,
@@ -127,7 +128,7 @@ gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
 
 gghistogram_core <- function(data, x, y = "count", weight = NULL,
                       color = "black", fill = NA, palette = NULL,
-                      size = NULL, linetype = "solid", alpha = 0.5,
+                      size = NULL, linetype = "solid", linewidth = NULL, alpha = 0.5,
                       bins = NULL, binwidth = NULL,
                       title = NULL, xlab = NULL, ylab = NULL,
                       facet.by = NULL,
@@ -138,6 +139,17 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
                       ggtheme = theme_classic(),
                       ...)
 {
+
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0
+  if (!is.null(size) && !is.null(linewidth)) {
+    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
+  } else if (!is.null(size)) {
+    warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
+    linewidth <- size
+  } else if (is.null(linewidth)) {
+    linewidth <- NULL # Default value
+  }
 
   grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
     unique() %>%
@@ -158,6 +170,7 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
   }
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
   if(is.null(add.params$size)) add.params$size <- size
+  if(is.null(add.params$linewidth)) add.params$linewidth <- linewidth
   if(is.null(add.params$linetype)) add.params$linetype <- linetype
   # if(add_density) y <- "..density.."
 
@@ -168,14 +181,14 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
 
   p <- p +
       geom_exec(geom_histogram, data = data,
-                 color = color, fill = fill, size = size,
+                 color = color, fill = fill, size = linewidth,
                  linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
                  weight = weight, position = position, ...)
 
   # Add mean/median
   if(add %in% c("mean", "median")){
     p <- p %>% .add_center_line(add = add, grouping.vars = grouping.vars, color = add.params$color,
-                                linetype = add.params$linetype, size = add.params$size)
+                                linetype = add.params$linetype, size = add.params$size, linewidth = add.params$linewidth)
   }
 
   # Add marginal rug
@@ -197,7 +210,7 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
   if(add_density) p <- p + geom_exec(geom_density, data = data,
                                       color = add.params$color,
                                       linetype = linetype, alpha = alpha,
-                                      size = add.params$size)
+                                      size = add.params$size, linewidth = add.params$linewidth)
 
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme,

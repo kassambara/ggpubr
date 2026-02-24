@@ -27,6 +27,7 @@ NULL
 #'@param linetype line types.
 #'@param size Numeric value (e.g.: size = 1). change the size of points and
 #'  outlines.
+#' @param linewidth constant value specifying the line width.
 #'@param width numeric value between 0 and 1 specifying box width.
 #'@inheritParams ggplot2::geom_boxplot
 #'@param outlier.shape point shape of outlier. Default is 19. To hide outlier,
@@ -145,7 +146,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       title = NULL, xlab = NULL, ylab = NULL,
                       bxp.errorbar = FALSE, bxp.errorbar.width = 0.4,
                       facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-                      linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
+                      linetype = "solid", size = NULL, linewidth = NULL, width = 0.7,  notch = FALSE,
                       outliers = TRUE, outlier.shape = 19,
                       select = NULL, remove = NULL, order = NULL,
                       add = "none", add.params = list(),
@@ -163,7 +164,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     title = title, xlab = xlab, ylab = ylab,
     bxp.errorbar = bxp.errorbar, bxp.errorbar.width = bxp.errorbar.width,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    linetype = linetype, size = size, width = width,  notch = notch,
+    linetype = linetype, size = size, linewidth = linewidth, width = width,  notch = notch,
     outliers = outliers,  outlier.shape = outlier.shape,
     select = select , remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
@@ -196,7 +197,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
 
 ggboxplot_core <- function(data, x, y,
                       color = "black", fill = "white", palette = NULL,
-                      linetype = "solid", size = NULL, width = 0.7,  notch = FALSE,
+                      linetype = "solid", size = NULL, linewidth = NULL, width = 0.7,  notch = FALSE,
                       outliers = TRUE, outlier.shape = 19,
                       title = NULL, xlab = NULL, ylab = NULL,
                       bxp.errorbar = FALSE, bxp.errorbar.width = 0.4,
@@ -205,6 +206,17 @@ ggboxplot_core <- function(data, x, y,
                       ggtheme = theme_pubr(),
                       ...)
 {
+
+  # Handle size vs linewidth parameter compatibility
+  # size deprecated in ggplot2 v >= 3.4.0
+  if (!is.null(size) && !is.null(linewidth)) {
+    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
+  } else if (!is.null(size)) {
+    warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
+    linewidth <- size
+  } else if (is.null(linewidth)) {
+    linewidth <- NULL # Default value
+  }
 
   if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
   if("jitter" %in% add) outlier.shape <- NA
@@ -228,9 +240,9 @@ ggboxplot_core <- function(data, x, y,
 
   p <- p + geom_exec(geom_boxplot, data = data,
               color = color, fill = fill, linetype = linetype,
-              size = size, width = width, notch = notch,
+              size = linewidth, width = width, notch = notch,
               outliers = outliers, outlier.shape = outlier.shape,
-              position = position_dodge(0.8), size = size,...)
+              position = position_dodge(0.8),...)
 
   # Add
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...) %>%

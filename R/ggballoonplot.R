@@ -93,7 +93,7 @@
 #' ggballoonplot(car_data, x = "Car", y = "Color",
 #'               size = "Value", fill = "Value") +
 #'    scale_fill_gradientn(colors = my_cols) +
-#'   guides(size = FALSE)
+#'   guides(size = "none")
 #'
 #'
 #' # Grouped frequency table
@@ -234,8 +234,10 @@ ggballoonplot <- function(
   # Sretch the data into three columns
   .col <- .row <- NULL
   data <- data %>%
-    tidyr::gather(
-      key= ".col", value = "value", -.row
+    tidyr::pivot_longer(
+      cols = -".row",
+      names_to = ".col",
+      values_to = "value"
     ) %>%
     dplyr::mutate(
       .col = factor(.col, levels = .col.names),

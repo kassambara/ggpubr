@@ -1,10 +1,12 @@
 Package: ggpubr
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots
-Version: 0.6.2.999
-Date: 2025-10-17
+Version: 0.6.3
+Date: 2025-12-21
 Authors@R: c(
-    person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"))
+    person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"),
+    person("Laszlo", "Erdey", role = "ctb", email = "erdey.laszlo@econ.unideb.hu",
+           comment = "Faculty of Economics and Business, University of Debrecen, Hungary"))
 Description: The 'ggplot2' package is excellent and flexible for elegant data
     visualization in R. However the default generated plots requires some formatting
     before we can send them for publication. Furthermore, to customize a 'ggplot',
@@ -15,7 +17,7 @@ License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
 Depends:
-    R (>= 3.1.0),
+    R (>= 4.1.0),
     ggplot2 (>= 3.5.2)
 Imports:
     ggrepel (>= 0.9.2),
@@ -25,7 +27,7 @@ Imports:
     utils,
     tidyr (>= 1.3.0),
     purrr,
-    dplyr (>= 0.7.1),
+    dplyr (>= 1.1.0),
     cowplot (>= 1.1.1),
     ggsignif,
     scales,

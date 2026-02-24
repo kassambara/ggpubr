@@ -135,7 +135,7 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
     geom_exec(geom_boxplot, data = data, color = color, fill = fill, width = width,
               position = position)+
     geom_exec(geom_line, data = data, group = "id",
-              color = line.color, size = line.size, linetype = linetype,
+              color = line.color, linewidth = line.size, linetype = linetype,
               position = position) +
     geom_exec(geom_point, data = data, color = color, size = point.size,
               position = position)

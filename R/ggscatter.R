@@ -265,7 +265,7 @@ ggscatter_core <- function(data, x, y,
   # Add marginal rug
   # +++++++++++
   if(rug) p <- p + .geom_exec(geom_rug, data = data,
-                         color = color, size = size/2)
+                         color = color, linewidth = size/2)
 
   # Add reg line or loess
   # ++++++++++++
@@ -331,7 +331,7 @@ ggscatter_core <- function(data, x, y,
   # ++++++++++++
   if(star.plot){
     p <- p + .geom_exec(stat_stars, data = data,
-                        color = color, linetype = star.plot.lty, size = star.plot.lwd)
+                        color = color, linetype = star.plot.lty, linewidth = star.plot.lwd)
   }
 
   #/ star plots
