@@ -2,7 +2,7 @@
 .Rhistory
 .RData
 .DS_Store
-docs/.DS_Store
+docs/
 TODO.Rmd
 _tmp
 Rplots.pdf
