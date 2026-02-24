@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Package Overview
 
-ggpubr is an R package that wraps ggplot2 to produce publication-ready plots with a simplified API. It targets researchers without advanced R programming skills. Current dev version: 0.6.2.999.
+ggpubr is an R package that wraps ggplot2 to produce publication-ready plots with a simplified API. It targets researchers without advanced R programming skills. Current dev version: 0.6.3.999.
 
 ## Development Commands
 
