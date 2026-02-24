@@ -1,129 +1,27 @@
-# ggpubr 0.6.3
+# ggpubr 0.6.2.999
 
-## Issues Addressed
+## Major changes
 
-This version addresses the following **9 issues** from the original ggpubr repository:
+- Raised minimum R version to R >= 4.1.0 (from R >= 3.1.0) to match ggplot2 >= 3.5.2 requirement.
+- Raised minimum dplyr version to dplyr >= 1.1.0 (from dplyr >= 0.7.1) to use modern `reframe()`, `slice_head()`, `slice_tail()`, `across()`, and `where()` functions.
 
-| Issue | Description |
-|-------|-------------|
-| #656 | border() size deprecation warning |
-| #654 | border() size deprecation warning |
-| #645 | Deprecation in ggplot2 3.4.0 |
-| #644 | border() size deprecation warning |
-| #572 | compare_means() error with ref.group and anova |
-| #552 | ggviolin missing adjust parameter for bandwidth |
-| #536 | tidyr 1.3.0 release notice |
-| #512 | stat_cor() OutDec locale issue |
-| #490 | ggdensity missing bw parameter for bandwidth |
+## Minor changes
 
-
+- Added `linewidth` parameter to `ggboxplot()`, `gghistogram()`, `ggviolin()`, and `ggdensity()` for ggplot2 3.4.0+ compatibility. The `size` parameter is deprecated for line width in these functions (#644, #645, #654, #656).
+- Added `adjust` parameter to `ggviolin()` to control bandwidth adjustment for kernel density estimation (#552).
+- Added `bw` and `adjust` parameters to `ggdensity()` for bandwidth control (#490).
+- `stat_cor()`, `stat_compare_means()`, and `stat_regline_equation()` now use `after_stat()` syntax instead of deprecated `..var..` notation in `default_aes` (#645).
+- `ggballoonplot()` example updated to use `guides(size = "none")` instead of deprecated `guides(size = FALSE)`.
+- Replaced deprecated `tidyr::gather()` with `tidyr::pivot_longer()` in `ggballoonplot()` and `compare_means()` internals (#536).
+- Replaced deprecated `dplyr::do()` with `dplyr::reframe()` in `compare_means()`, `desc_statby()`, and internal helpers. Replaced `dplyr::mutate_if()` with `dplyr::mutate(across(where()))` in `ggsummarytable()`.
 
 ## Bug fixes
 
-### Package Dependency Updates
-
-- **Raised minimum R version** to R >= 4.1.0 (from R >= 3.1.0) to match ggplot2
-  >= 3.5.2 requirement.
-
-- **Raised minimum dplyr version** to dplyr >= 1.1.0 (from dplyr >= 0.7.1) to
-  use modern `reframe()`, `slice_head()`, `slice_tail()`, `across()`, and
-  `where()` functions.
-
-### dplyr Compatibility
-
-- **`ggsummarytable()` mutate_if() deprecation**: Replaced deprecated
-  `dplyr::mutate_if()` with `dplyr::mutate(across(where(...)))` syntax.
-
-- **`compare_means()` do() deprecation**: Replaced deprecated `dplyr::do()`
-  with modern `dplyr::reframe()` for p-value adjustment calculations.
-
-- **`desc_statby()` do() deprecation**: Replaced deprecated `dplyr::do()`
-  with `dplyr::reframe()` for computing summary statistics by groups.
-
-- **`.top_up()` and `.top_down()` do() deprecation**: Replaced deprecated
-  `dplyr::do(utils::tail())` and `dplyr::do(utils::head())` with modern
-  `dplyr::slice_tail()` and `dplyr::slice_head()` functions.
-
-### ggplot2 3.4.0+ Compatibility (Issues #644, #645, #654, #656)
-
-- **`border()` size deprecation** (Issues #644, #654, #656): Fixed deprecation
-  warning in `border()` function by replacing deprecated `size` parameter with
-  `linewidth` in `element_rect()` as required by ggplot2 3.4.0+.
-
-- **`stat_cor()` deprecated ..var.. notation**: Updated `default_aes` to use
-  modern `after_stat()` syntax instead of deprecated `..hjust..` and `..vjust..`
-  notation. Also updated examples to use `after_stat(r.label)`,
-  `after_stat(rr.label)`, and `after_stat(p.label)`.
-
-- **`stat_compare_means()` deprecated ..var.. notation**: Updated `default_aes`
-  to use `after_stat(hjust)` and `after_stat(vjust)` instead of deprecated
-  `..hjust..` and `..vjust..` notation.
-
-- **`stat_regline_equation()` deprecated ..var.. notation**: Updated
-  `default_aes` to use `after_stat(eq.label)`, `after_stat(hjust)`, and
-  `after_stat(vjust)` instead of deprecated notation.
-
-- **`ggscatter()` geom_rug size deprecation**: Fixed deprecation warning in
-  `ggscatter()` when `rug = TRUE` by using `linewidth` instead of `size` for
-  `geom_rug()`.
-
-- **`ggpaired()` geom_line size deprecation**: Fixed deprecation warning in
-  `ggpaired()` by using `linewidth` instead of `size` for connecting lines
-  between paired data points.
-
-- **`ggecdf()` stat_ecdf size deprecation**: Fixed deprecation warning in
-  `ggecdf()` by using `linewidth` instead of `size` for the ECDF line.
-
-- **`ggscatter()` stat_stars size deprecation**: Fixed deprecation warning
-  in `ggscatter()` when `star.plot = TRUE` by using `linewidth` instead of
-  `size` for star plot segments.
-
-- **`ggdensity()` geom_density size deprecation**: Fixed deprecation warning
-  in `ggdensity()` by using `linewidth` instead of `size` for density lines.
-
-- **`ggballoonplot()` guides() FALSE deprecation**: Updated example to use
-  `guides(size = "none")` instead of deprecated `guides(size = FALSE)`.
-
-### tidyr Compatibility (Issue #536)
-
-- **`ggballoonplot()` tidyr::gather() deprecation**: Replaced deprecated
-  `tidyr::gather()` with `tidyr::pivot_longer()` in internal `.df_strech()`
-  function.
-
-- **`compare_means()` tidyr::gather() deprecation**: Replaced deprecated
-  `tidyr::gather()` with `tidyr::pivot_longer()` in internal
-  `.pairwise_twogroups_test()` function.
-
-### Locale Compatibility
-
-- **`stat_cor()` OutDec locale issue** (Issue #512): Fixed parsing error when
-  `options(OutDec = ",")` is set (European decimal separator) by explicitly
-  using `decimal.mark = "."` in `formatC()` calls within `get_corcoef_label()`.
-  This ensures R expressions parse correctly regardless of locale settings.
-
-### Kernel Density Parameter Fixes
-
-- **`ggviolin()` missing adjust parameter** (Issue #552): Added `adjust` parameter
-  to `ggviolin()` to allow users to control bandwidth adjustment for kernel density
-  estimation.
-
-- **`ggdensity()` missing bw parameter** (Issue #490): Added `bw` and `adjust`
-  parameters to the allowed options in `geom_exec()` so they properly pass through
-  to underlying `geom_density()`.
-
-### compare_means() Fixes
-
-- **`compare_means()` error with ref.group and anova** (Issue #572): Fixed error
-  "object 'group2' not found" when using `compare_means()` with `ref.group` and
-  `method = "anova"` or `method = "kruskal.test"`. The ref.group filtering is
-  now skipped for these methods since they perform overall group comparisons rather
-  than pairwise tests.
-
-### Previous version notes
-
-- Reverted the `exact = FALSE` workaround from version 0.6.2 that forced
-  non-default behavior on `wilcox.test()`. Tests now use flexible assertions
-  to ensure compatibility across R versions (#649, #647).
+- Fixed `border()` deprecation warning by using `linewidth` instead of `size` in `element_rect()` (#644, #654, #656).
+- Fixed `size` deprecation warnings in `ggscatter()` (rug and star plots), `ggpaired()` (connecting lines), `ggecdf()` (ECDF line), `ggdensity()` (density lines), `geom_bracket()`, and `geom_pwc()` (#645).
+- Fixed `stat_cor()` parsing error when `options(OutDec = ",")` is set (European decimal separator) by using `decimal.mark = "."` in `formatC()` calls (#512).
+- Fixed `compare_means()` error "object 'group2' not found" when using `ref.group` with `method = "anova"` or `method = "kruskal.test"` (#572).
+- Reverted the `exact = FALSE` workaround from version 0.6.2 that forced non-default behavior on `wilcox.test()`. Tests now use flexible assertions to ensure compatibility across R versions (#649, #647).
 
 # ggpubr 0.6.2
 
