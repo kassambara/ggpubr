@@ -1,7 +1,7 @@
 Package: ggpubr
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots
-Version: 0.6.2.999
+Version: 0.6.3
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"),
     person("Laszlo", "Erdey", role = "ctb", email = "erdey.laszlo@econ.unideb.hu",

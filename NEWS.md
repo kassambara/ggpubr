@@ -1,4 +1,4 @@
-# ggpubr 0.6.2.999
+# ggpubr 0.6.3
 
 ## Major changes
 
