@@ -29,12 +29,14 @@ compare_means(
 
 \item{method}{the type of test. Default is \link[stats]{wilcox.test}. Allowed
 values include: \itemize{ \item \code{\link[stats]{t.test}} (parametric) and
-\code{\link[stats]{wilcox.test}} (non-parametric). Perform comparison
-between two groups of samples. If the grouping variable contains more than
-two levels, then a pairwise comparison is performed. \item
+\code{\link[stats]{wilcox.test}} (non-parametric). Perform pairwise comparisons between two groups. If the grouping variable contains more than
+two levels, then a pairwise comparison is performed.
+The argument \code{ref.group} can be used only with these methods.
+\item
 \code{\link[stats]{anova}} (parametric) and
 \code{\link[stats]{kruskal.test}} (non-parametric). Perform one-way ANOVA
-test comparing multiple groups. }}
+test or kruskal test comparing multiple groups. The argument \code{ref.group} is not allowed for these methods. Using it with these methods will result in an error. % This last sentence is what we have been working on.
+}}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
@@ -44,9 +46,12 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 \item{ref.group}{a character string specifying the reference group. If
  specified, for a given grouping variable, each of the group levels will be
  compared to the reference group (i.e. control group).
+% We added this note to prevent the users to not use 'anova' and 'kruskal test'
+% with 'ref.group'
+ \strong{Note :} This argument is only valid for pairwise comparisons. It is not supported for \code{\link[stats]{anova}} . Using \code{ref.group} with ANOVA or kruskal test will result in an error.
 
- \code{ref.group} can be also \code{".all."}. In this case, each of the
- grouping variable levels is compared to all (i.e. basemean).}
+ \code{ref.group} can also be \code{".all."}, in which case each group is
+ compared to the overall mean.}
 
 \item{symnum.args}{a list of arguments to pass to the function
  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
@@ -125,6 +130,10 @@ compare_means(len ~ dose, df, ref.group = ".all.")
 
 # Anova and kruskal.test
 #::::::::::::::::::::::::::::::::::::::::
+# Using 'ref.group' with 'anova' or 'kruskal.test' will generate an error.
+# Thus, the following line will cause an error:
+# compare_means(len ~ dose, df, method = "anova", ref.group = "0.5")
+# Here are correct solutions to use 'anova' or 'kruskal.test' with 'compare_means' :
 compare_means(len ~ dose, df, method = "anova")
 compare_means(len ~ dose, df, method = "kruskal.test")
 }
