@@ -8,8 +8,8 @@ df$id <- rep(1:10, 6) # Add individuals id
 set.seed(123)
 df$group <- sample(factor(rep(c("grp1", "grp2", "grp3"), 20)))
 df <- df %>% mutate(
-  len = ifelse(group == "grp2", len+2, len),
-  len = ifelse(group == "grp3", len+7, len)
+  len = ifelse(group == "grp2", len + 2, len),
+  len = ifelse(group == "grp3", len + 7, len)
 )
 
 
@@ -30,7 +30,8 @@ test_that("stat_friedman_test works for grouped plot: group by x var", {
   df$id <- as.factor(rep(1:10, 6))
   bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
     stat_friedman_test(aes(group = supp, color = supp),
-                    label = "p.format", wid = "id", group.by = "x.var")
+      label = "p.format", wid = "id", group.by = "x.var"
+    )
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   # Replace possible "1." (with trailing dot) by "1"
@@ -45,7 +46,8 @@ test_that("stat_friedman_test works for grouped one-way repeated measure anova: 
   df$id <- as.factor(rep(1:10, 6))
   bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
     stat_friedman_test(aes(group = supp, color = supp),
-                    wid = "id", group.by = "legend.var")
+      wid = "id", group.by = "legend.var"
+    )
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   expect_equal(as.numeric(stat.test$x), c(0.8, 0.8))

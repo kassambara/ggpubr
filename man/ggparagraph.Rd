@@ -42,23 +42,28 @@ Draw a paragraph o text. Splits a long text into multiple lines
 }
 \examples{
 # Density plot
-density.p <- ggdensity(iris, x = "Sepal.Length",
-                      fill = "Species", palette = "jco")
+density.p <- ggdensity(iris,
+  x = "Sepal.Length",
+  fill = "Species", palette = "jco"
+)
 
 # Text plot
 text <- paste("iris data set gives the measurements in cm",
-             "of the variables sepal length and width",
-             "and petal length and width, respectively,",
-             "for 50 flowers from each of 3 species of iris.",
-             "The species are Iris setosa, versicolor, and virginica.", sep = " ")
+  "of the variables sepal length and width",
+  "and petal length and width, respectively,",
+  "for 50 flowers from each of 3 species of iris.",
+  "The species are Iris setosa, versicolor, and virginica.",
+  sep = " "
+)
 text.p <- ggparagraph(text, face = "italic", size = 12)
 
 # Arrange the plots on the same page
 ggarrange(density.p, text.p,
-         ncol = 1, nrow = 2,
-         heights = c(1, 0.3))
+  ncol = 1, nrow = 2,
+  heights = c(1, 0.3)
+)
 
 }
 \author{
-Alboukadel Kassambara <alboukadel.kassambara@gmail.com>
+Laszlo Erdey <erdey.laszlo@econ.unideb.hu>
 }

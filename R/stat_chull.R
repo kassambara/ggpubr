@@ -13,11 +13,11 @@ NULL
 #' df$cyl <- as.factor(df$cyl)
 #'
 #' # scatter plot with convex hull
-#' ggscatter(df, x = "wt", y = "mpg", color = "cyl")+
-#'  stat_chull(aes(color = cyl))
+#' ggscatter(df, x = "wt", y = "mpg", color = "cyl") +
+#'   stat_chull(aes(color = cyl))
 #'
-#' ggscatter(df, x = "wt", y = "mpg", color = "cyl")+
-#'  stat_chull(aes(color = cyl, fill = cyl), alpha = 0.1, geom = "polygon")
+#' ggscatter(df, x = "wt", y = "mpg", color = "cyl") +
+#'   stat_chull(aes(color = cyl, fill = cyl), alpha = 0.1, geom = "polygon")
 #'
 #' @export
 stat_chull <- function(mapping = NULL, data = NULL, geom = "path",
@@ -32,9 +32,8 @@ stat_chull <- function(mapping = NULL, data = NULL, geom = "path",
 
 # Convex ellipse
 StatChull <- ggproto("StatChull", Stat,
-                     compute_group = function(data, scales) {
-                       data[chull(data$x, data$y), , drop = FALSE]
-                     },
-                    required_aes = c("x", "y")
+  compute_group = function(data, scales) {
+    data[chull(data$x, data$y), , drop = FALSE]
+  },
+  required_aes = c("x", "y")
 )
-

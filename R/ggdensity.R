@@ -31,31 +31,37 @@ NULL
 #' @examples
 #' # Create some data format
 #' set.seed(1234)
-#' wdata = data.frame(
-#'    sex = factor(rep(c("F", "M"), each=200)),
-#'    weight = c(rnorm(200, 55), rnorm(200, 58)))
+#' wdata <- data.frame(
+#'   sex = factor(rep(c("F", "M"), each = 200)),
+#'   weight = c(rnorm(200, 55), rnorm(200, 58))
+#' )
 #'
 #' head(wdata, 4)
 #'
 #' # Basic density plot
-#'  # Add mean line and marginal rug
-#' ggdensity(wdata, x = "weight", fill = "lightgray",
-#'    add = "mean", rug = TRUE)
+#' # Add mean line and marginal rug
+#' ggdensity(wdata,
+#'   x = "weight", fill = "lightgray",
+#'   add = "mean", rug = TRUE
+#' )
 #'
 #' # Change outline colors by groups ("sex")
 #' # Use custom palette
-#' ggdensity(wdata, x = "weight",
-#'    add = "mean", rug = TRUE,
-#'    color = "sex", palette = c("#00AFBB", "#E7B800"))
+#' ggdensity(wdata,
+#'   x = "weight",
+#'   add = "mean", rug = TRUE,
+#'   color = "sex", palette = c("#00AFBB", "#E7B800")
+#' )
 #'
 #'
 #' # Change outline and fill colors by groups ("sex")
 #' # Use custom palette
-#' ggdensity(wdata, x = "weight",
-#'    add = "mean", rug = TRUE,
-#'    color = "sex", fill = "sex",
-#'    palette = c("#00AFBB", "#E7B800"))
-#'
+#' ggdensity(wdata,
+#'   x = "weight",
+#'   add = "mean", rug = TRUE,
+#'   color = "sex", fill = "sex",
+#'   palette = c("#00AFBB", "#E7B800")
+#' )
 #'
 #' @export
 ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
@@ -69,10 +75,9 @@ ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
                       label = NULL, font.label = list(size = 11, color = "black"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       ggtheme = theme_pubr(),
-                      ...){
-
+                      ...) {
   # Default options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
@@ -81,19 +86,21 @@ ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     add = add, add.params = add.params, rug = rug,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...)
-  if(!missing(data)) .opts$data <- data
-  if(!missing(x)) .opts$x <- x
-  if(!missing(y)) .opts$y <- y
+    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...
+  )
+  if (!missing(data)) .opts$data <- data
+  if (!missing(x)) .opts$x <- x
+  if (!missing(y)) .opts$y <- y
 
   # User options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .user.opts <- as.list(match.call(expand.dots = TRUE))
   .user.opts[[1]] <- NULL # Remove the function name
   # keep only user arguments
-  for(opt.name in names(.opts)){
-    if(is.null(.user.opts[[opt.name]]))
+  for (opt.name in names(.opts)) {
+    if (is.null(.user.opts[[opt.name]])) {
       .opts[[opt.name]] <- NULL
+    }
   }
 
   # Handle size vs linewidth parameter compatibility
@@ -107,27 +114,27 @@ ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
   }
 
   .opts$fun <- ggdensity_core
-  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+  if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
-  if(missing(y)) .opts$y <- y
-  if(missing(add.params)) .opts$add.params <- add.params
+  }
+  if (missing(y)) .opts$y <- y
+  if (missing(add.params)) .opts$add.params <- add.params
   p <- do.call(.plotter, .opts)
 
-  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)
 }
 
 ggdensity_core <- function(data, x, y = "density",
-                      color = "black", fill = NA, palette = NULL,
-                      size = NULL, linewidth = NULL, linetype = "solid", alpha = 0.5,
-                      title = NULL, xlab = NULL, ylab = NULL,
-                      add = c("none", "mean", "median"),
-                      add.params = list(linetype = "dashed"),
-                      rug = FALSE,
-                      facet.by = NULL,
-                      ggtheme = theme_classic(),
-                      ...)
-{
+                           color = "black", fill = NA, palette = NULL,
+                           size = NULL, linewidth = NULL, linetype = "solid", alpha = 0.5,
+                           title = NULL, xlab = NULL, ylab = NULL,
+                           add = c("none", "mean", "median"),
+                           add.params = list(linetype = "dashed"),
+                           rug = FALSE,
+                           facet.by = NULL,
+                           ggtheme = theme_classic(),
+                           ...) {
   # Handle size vs linewidth parameter compatibility
   # size deprecated in ggplot2 v >= 3.4.0
   extra_args <- list(...)
@@ -145,36 +152,43 @@ ggdensity_core <- function(data, x, y = "density",
 
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
-  if(is.null(add.params$size)) add.params$size <- linewidth
-  if(is.null(add.params$linetype)) add.params$linetype <- linetype
-  if (y %in% c("..density..", "density")) y <- "after_stat(density)"
-  else if (y %in% c("..count..", "count")) y <- "after_stat(count)"
+  if (is.null(add.params$size)) add.params$size <- linewidth
+  if (is.null(add.params$linetype)) add.params$linetype <- linetype
+  if (y %in% c("..density..", "density")) {
+    y <- "after_stat(density)"
+  } else if (y %in% c("..count..", "count")) y <- "after_stat(count)"
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 
   # Build geom_density args without passing size through ...
   geom_args <- c(
-    list(geomfunc = geom_density, data = data,
-         color = color, fill = fill, linewidth = linewidth,
-         linetype = linetype, alpha = alpha),
+    list(
+      geomfunc = geom_density, data = data,
+      color = color, fill = fill, linewidth = linewidth,
+      linetype = linetype, alpha = alpha
+    ),
     extra_args
   )
   p <- p + do.call(geom_exec, geom_args)
 
   # Add mean/median
-  if(add %in% c("mean", "median")){
-    p <- p %>% .add_center_line(add = add, grouping.vars = grouping.vars, color = add.params$color,
-                                linetype = add.params$linetype, size = add.params$size)
+  if (add %in% c("mean", "median")) {
+    p <- p %>% .add_center_line(
+      add = add, grouping.vars = grouping.vars, color = add.params$color,
+      linetype = add.params$linetype, linewidth = add.params$size
+    )
   }
 
   # Add marginal rug
-  if(rug) {
-
+  if (rug) {
     grps <- c(color, fill, linetype, size, alpha) %>%
-      unique() %>% intersect(colnames(data))
+      unique() %>%
+      intersect(colnames(data))
     alpha <- ifelse(.is_empty(grps), 1, alpha)
-    .args <- geom_exec(NULL, data = data,
-                              color = color, sides = "b", alpha = alpha)
+    .args <- geom_exec(NULL,
+      data = data,
+      color = color, sides = "b", alpha = alpha
+    )
     mapping <- .args$mapping
     mapping[["y"]] <- 0
     option <- .args$option
@@ -183,10 +197,9 @@ ggdensity_core <- function(data, x, y = "density",
   }
 
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
-             title = title, xlab = xlab, ylab = ylab,...)
+  p <- ggpar(p,
+    palette = palette, ggtheme = ggtheme,
+    title = title, xlab = xlab, ylab = ylab, ...
+  )
   p
 }
-
-
-

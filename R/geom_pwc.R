@@ -1,18 +1,18 @@
-#' @include utilities.R utils_stat_test_label.R utils-aes.R
+#' @include utilities.R utils_stat_test_label.R utils-aes.R p_format_utils.R
 NULL
 
-#'Add Pairwise Comparisons P-values to a GGPlot
-#'@description add pairwise comparison p-values to a ggplot such as box plots,
+#' Add Pairwise Comparisons P-values to a GGPlot
+#' @description add pairwise comparison p-values to a ggplot such as box plots,
 #'  dot plots and stripcharts.
-#'@param method a character string indicating which method to be used for
+#' @param method a character string indicating which method to be used for
 #'  pairwise comparisons. Default is \code{"wilcox_test"}. Allowed methods
 #'  include pairwise comparisons methods implemented in the \code{rstatix} R
 #'  package. These methods are: \code{"wilcox_test", "t_test", "sign_test",
 #'  "dunn_test", "emmeans_test", "tukey_hsd", "games_howell_test"}.
-#'@param method.args a list of additional arguments used for the test method.
+#' @param method.args a list of additional arguments used for the test method.
 #'  For example one might use \code{method.args = list(alternative = "greater")}
 #'  for wilcoxon test.
-#'@param ref.group a character string or a numeric value specifying the
+#' @param ref.group a character string or a numeric value specifying the
 #'  reference group. If specified, for a given grouping variable, each of the
 #'  group levels will be compared to the reference group (i.e. control group).
 #'
@@ -29,48 +29,49 @@ NULL
 #'  the numeric rank value of the "ctrl" group. \item \strong{"all"}: In this
 #'  case, each of the grouping variable levels is compared to all (i.e.
 #'  basemean). }
-#'@param label character string specifying label. Can be: \itemize{ \item the
+#' @param label character string specifying label. Can be: \itemize{ \item the
 #'  column containing the label (e.g.: \code{label = "p"} or \code{label =
 #'  "p.adj"}), where \code{p} is the p-value. Other possible values are
-#'  \code{"p.signif", "p.adj.signif", "p.format", "p.adj.format"}. \item an
+#'  \code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+#'  \item an
 #'  expression that can be formatted by the \code{\link[glue]{glue}()} package.
 #'  For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
 #'  expression \{p\} will be replaced by its value. \item a combination of
 #'  plotmath expressions and glue expressions. You may want some of the
 #'  statistical parameter in italic; for example:\code{label = "Wilcoxon,
 #'  italic(p)= {p}"}}.
-#'@param y.position numeric vector with the y positions of the brackets
-#'@param group.by (optional) character vector specifying the grouping variable;
+#' @param y.position numeric vector with the y positions of the brackets
+#' @param group.by (optional) character vector specifying the grouping variable;
 #'  it should be used only for grouped plots. Possible values are : \itemize{
 #'  \item \code{"x.var"}: Group by the x-axis variable and perform the test
 #'  between legend groups. In other words, the p-value is compute between legend
 #'  groups at each x position \item \code{"legend.var"}: Group by the legend
 #'  variable and perform the test between x-axis groups. In other words, the
 #'  test is performed between the x-groups for each legend level. }
-#'@param dodge dodge width for grouped ggplot/test. Default is 0.8. It's used to
+#' @param dodge dodge width for grouped ggplot/test. Default is 0.8. It's used to
 #'  dodge the brackets position when \code{group.by = "legend.var"}.
-#'@param stack logical value. Default is FALSE; should be set to TRUE for
+#' @param stack logical value. Default is FALSE; should be set to TRUE for
 #'  stacked bar plots or line plots. If TRUE, then the brackets are
 #'  automatically removed and the \code{dodge} value is set to zero.
-#'@param bracket.nudge.y Vertical adjustment to nudge brackets by (in fraction
+#' @param bracket.nudge.y Vertical adjustment to nudge brackets by (in fraction
 #'  of the total height). Useful to move up or move down the bracket. If
 #'  positive value, brackets will be moved up; if negative value, brackets are
 #'  moved down.
-#'@param bracket.shorten a small numeric value in [0-1] for shortening the width
+#' @param bracket.shorten a small numeric value in [0-1] for shortening the width
 #'  of bracket.
-#'@param bracket.group.by (optional); a variable name for grouping brackets
+#' @param bracket.group.by (optional); a variable name for grouping brackets
 #'  before adding step.increase. Useful for grouped plots. Possible values
 #'  include \code{"x.var"} and \code{"legend.var"}.
-#'@param step.increase numeric vector with the increase in fraction of total
+#' @param step.increase numeric vector with the increase in fraction of total
 #'  height for every additional comparison to minimize overlap.
-#'@param tip.length numeric vector with the fraction of total height that the
+#' @param tip.length numeric vector with the fraction of total height that the
 #'  bar goes down to indicate the precise column/
-#'@param size change the width of the lines of the bracket
-#'@param label.size change the size of the label text
-#'@param family change the font used for the text
-#'@param vjust move the text up or down relative to the bracket.
-#'@param hjust move the text left or right relative to the bracket.
-#'@param p.adjust.method method for adjusting p values (see
+#' @param size change the width of the lines of the bracket
+#' @param label.size change the size of the label text
+#' @param family change the font used for the text
+#' @param vjust move the text up or down relative to the bracket.
+#' @param hjust move the text left or right relative to the bracket.
+#' @param p.adjust.method method for adjusting p values (see
 #'  \code{\link[stats]{p.adjust}}).  Has impact only in a situation, where
 #'  multiple pairwise tests are performed; or when there are multiple grouping
 #'  variables. Ignored when the specified method is \code{"tukey_hsd"} or
@@ -78,12 +79,12 @@ NULL
 #'  method. Allowed values include "holm", "hochberg", "hommel", "bonferroni",
 #'  "BH", "BY", "fdr", "none". If you don't want to adjust the p value (not
 #'  recommended), use p.adjust.method = "none".
-#'@param p.adjust.by possible value is one of \code{c("group", "panel")}.
+#' @param p.adjust.by possible value is one of \code{c("group", "panel")}.
 #'  Default is \code{"group"}: for a grouped data, if pairwise test is
 #'  performed, then the p-values are adjusted for each group level
 #'  independently. P-values are adjusted by panel when \code{p.adjust.by =
 #'  "panel"}.
-#'@param symnum.args a list of arguments to pass to the function
+#' @param symnum.args a list of arguments to pass to the function
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 #'  example, \code{symnum.args = list(cutpoints = c(0, 0.0001, 0.001, 0.01,
 #'  0.05, Inf), symbols = c("****", "***", "**", "*",  "ns"))}.
@@ -92,17 +93,46 @@ NULL
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
-#'@param hide.ns can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).
-#'@param remove.bracket logical, if \code{TRUE}, brackets are removed from the
+#'
+#'  Note: If \code{signif.cutoffs} is provided, it takes precedence over
+#'  \code{symnum.args}.
+#' @param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+#'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+#'  Default is NULL, which uses the package defaults.
+#' @param signif.symbols character vector of symbols corresponding to
+#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+#'  (and "****" if \code{use.four.stars = TRUE}).
+#' @param ns.symbol character string for non-significant results. Default is "ns".
+#'  Use "" (empty string) to show nothing.
+#' @param use.four.stars logical. If TRUE, allows four stars (****) for the most
+#'  significant level. Default is FALSE.
+#' @param hide.ns can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).
+#' @param p.format.style character string specifying the p-value formatting style.
+#'  One of: \code{"default"} (backward compatible, uses scientific notation),
+#'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+#'  \code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+#'  (GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+#'  See \code{\link{list_p_format_styles}} for details.
+#' @param p.digits integer specifying the number of decimal places for p-values.
+#'  If provided, overrides the style default.
+#' @param p.leading.zero logical indicating whether to include leading zero before
+#'  decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
+#' @param p.min.threshold numeric specifying the minimum p-value to display exactly.
+#'  Values below this threshold are shown as "< threshold". If provided, overrides
+#'  the style default.
+#' @param p.decimal.mark character string to use as the decimal mark. If NULL,
+#'  uses \code{getOption("OutDec")}.
+#' @param remove.bracket logical, if \code{TRUE}, brackets are removed from the
 #'  plot. \itemize{ \item Case when logical value. If TRUE, hide ns symbol when
 #'  displaying significance levels. Filter is done by checking the column
 #'  \code{p.adj.signif}, \code{p.signif}, \code{p.adj} and \code{p}. \item Case
 #'  when character value. Possible values are "p" or "p.adj", for filtering out
 #'  non significant. }
-#'@param na.rm If \code{FALSE} (the default), removes missing values with a
+#' @param na.rm If \code{FALSE} (the default), removes missing values with a
 #'  warning.  If \code{TRUE} silently removes missing values.
-#'@param parse logical for parsing plotmath expression.
-#'@param ... other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
+#' @param parse logical for parsing plotmath expression.
+#' @param ... other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
 #'  aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'  "red"} or \code{size = 3}. They may also be parameters to the paired
 #'  geom/stat.
@@ -122,16 +152,16 @@ NULL
 #' }
 #' }
 #' @inheritParams ggpubr-common-params
-#'@inheritParams ggplot2::layer
+#' @inheritParams ggplot2::layer
 #' @examples
 #' df <- ToothGrowth
 #' df$dose <- factor(df$dose)
 #'
-#'@rdname geom_pwc
+#' @rdname geom_pwc
 #' @seealso \code{\link{ggadjust_pvalue}}
-#'@examples
+#' @examples
 #' # Data preparation
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # Transform `dose` into factor variable
 #' df <- ToothGrowth
 #' df$dose <- as.factor(df$dose)
@@ -141,39 +171,43 @@ NULL
 #'
 #'
 #' # Two groups by x position
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #'
 #' # Create a box plot
 #' # Add 10% spaces between the p-value labels and the plot border
 #' bxp <- ggboxplot(
-#'   df, x = "dose", y = "len",
+#'   df,
+#'   x = "dose", y = "len",
 #'   color = "supp", palette = c("#00AFBB", "#E7B800")
 #' ) +
-#'  scale_y_continuous(expand = expansion(mult = c(0.05, 0.10)))
+#'   scale_y_continuous(expand = expansion(mult = c(0.05, 0.10)))
 #'
 #'
 #' # Add p-values onto the box plots
 #' # label can be "p.format"  or "p.adj.format"
 #' bxp + geom_pwc(
-#'   aes(group = supp), tip.length = 0,
+#'   aes(group = supp),
+#'   tip.length = 0,
 #'   method = "t_test", label = "p.format"
 #' )
 #'
 #' # Show adjusted p-values and significance levels
 #' # Hide ns (non-significant)
 #' bxp + geom_pwc(
-#'   aes(group = supp), tip.length = 0,
+#'   aes(group = supp),
+#'   tip.length = 0,
 #'   method = "t_test", label = "{p.adj.format}{p.adj.signif}",
 #'   p.adjust.method = "bonferroni", p.adjust.by = "panel",
 #'   hide.ns = TRUE
 #' )
 #'
 #' # Complex cases
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # 1. Add p-values of OJ vs VC at each dose group
 #' bxp.complex <- bxp +
 #'   geom_pwc(
-#'     aes(group = supp), tip.length = 0,
+#'     aes(group = supp),
+#'     tip.length = 0,
 #'     method = "t_test", label = "p.adj.format",
 #'     p.adjust.method = "bonferroni", p.adjust.by = "panel"
 #'   )
@@ -190,19 +224,21 @@ NULL
 #'
 #'
 #' # Three groups by x position
-#' #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #'
 #' # Simple plots
-#' #_____________________________________
+#' # _____________________________________
 #'
 #' # Box plots with p-values
 #' bxp <- ggboxplot(
-#'   df, x = "supp", y = "len", fill = "dose",
+#'   df,
+#'   x = "supp", y = "len", fill = "dose",
 #'   palette = "npg"
 #' )
 #' bxp +
 #'   geom_pwc(
-#'     aes(group = dose), tip.length = 0,
+#'     aes(group = dose),
+#'     tip.length = 0,
 #'     method = "t_test", label = "p.adj.format",
 #'     bracket.nudge.y = -0.08
 #'   ) +
@@ -210,19 +246,21 @@ NULL
 #'
 #' # Bar plots with p-values
 #' bp <- ggbarplot(
-#'   df, x = "supp", y = "len", fill = "dose",
+#'   df,
+#'   x = "supp", y = "len", fill = "dose",
 #'   palette = "npg", add = "mean_sd",
 #'   position = position_dodge(0.8)
 #' )
 #' bp +
 #'   geom_pwc(
-#'     aes(group = dose), tip.length = 0,
+#'     aes(group = dose),
+#'     tip.length = 0,
 #'     method = "t_test", label = "p.adj.format",
 #'     bracket.nudge.y = -0.08
 #'   ) +
 #'   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 #'
-#'@export
+#' @export
 stat_pwc <- function(mapping = NULL, data = NULL,
                      method = "wilcox_test", method.args = list(), ref.group = NULL,
                      label = "p.format",
@@ -231,22 +269,35 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      bracket.nudge.y = 0.05, bracket.shorten = 0,
                      bracket.group.by = c("x.var", "legend.var"),
                      step.increase = 0.12, tip.length = 0.03,
-                     size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
+                     size = 0.3, label.size = 3.88, family = "", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
+                     p.format.style = "default", p.digits = NULL,
+                     p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
+                     signif.cutoffs = NULL, signif.symbols = NULL,
+                     ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, parse = FALSE, ...) {
+  # Build symnum.args from new parameters
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
 
   p.adjust.by <- match.arg(p.adjust.by)
-  if(missing(parse) & is_plotmath_expression(label)){
+  if (missing(parse) & is_plotmath_expression(label)) {
     parse <- TRUE
   }
-  if(is.null(group.by)) group.by <- "x.var"
+  if (is.null(group.by)) group.by <- "x.var"
   bracket.group.by <- match.arg(bracket.group.by)
 
-  if(!is.null(ref.group)){
-    if(ref.group %in% c("all", ".all.")){
-      if(missing(step.increase)) step.increase <- 0
+  if (!is.null(ref.group)) {
+    if (ref.group %in% c("all", ".all.")) {
+      if (missing(step.increase)) step.increase <- 0
       remove.bracket <- TRUE
     }
   }
@@ -254,7 +305,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
   # Keep legend variable in memory, we'll be useful to guess ref.group id
   # related question: https://stackoverflow.com/questions/63640543/how-to-access-to-a-legend-group-id-inside-a-ggplot2-extension
   legend.var <- aes_get_group(mapping)
-  if(!is.null(legend.var)) mapping$legend.var <- as.name(legend.var)
+  if (!is.null(legend.var)) mapping$legend.var <- as.name(legend.var)
 
   ggplot2::layer(
     stat = StatPwc, data = data, mapping = mapping, geom = "pwc",
@@ -265,201 +316,226 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       y.position = y.position, group.by = group.by, dodge = dodge,
       bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
       bracket.group.by = bracket.group.by, step.increase = step.increase,
-      tip.length = tip.length, size=size, label.size=label.size,
+      tip.length = tip.length, size = size, label.size = label.size,
       remove.bracket = remove.bracket,
-      family=family, vjust=vjust, hjust = hjust, na.rm = na.rm,
+      family = family, vjust = vjust, hjust = hjust, na.rm = na.rm,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
-      symnum.args = fortify_signif_symbols_encoding(symnum.args),
-      hide.ns = hide.ns, parse = parse, ...)
+      symnum.args = symnum.args,
+      hide.ns = hide.ns, parse = parse,
+      p.format.style = p.format.style, p.digits = p.digits,
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark, ...
+    )
   )
 }
 
 StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
-                            required_aes = c("x", "y", "group"),
-                            setup_params = function(data, params) {
-                              if(length(params$tip.length) == 1) params$tip.length <- rep(params$tip.length, max(length(params$xmin), 1) * 2)
-                              if(length(params$tip.length) == length(params$xmin)) params$tip.length <- rep(params$tip.length, each=2)
+  required_aes = c("x", "y", "group"),
+  setup_params = function(data, params) {
+    if (length(params$tip.length) == 1) params$tip.length <- rep(params$tip.length, max(length(params$xmin), 1) * 2)
+    if (length(params$tip.length) == length(params$xmin)) params$tip.length <- rep(params$tip.length, each = 2)
 
-                              # Statistical test methods functions and arguments
-                              method <- params$method
-                              method.args <- params$method.args
-                              if(is.null(method.args$p.adjust.method)){
-                                method.args$p.adjust.method <- params$p.adjust.method
-                              }
-                              pwc_func <- get_pwc_stat_function(method, method.args)
-                              params$method <- pwc_func$method
-                              params$method.args <- pwc_func$method.args
-                              return(params)
-                            },
-                            compute_panel = function(self, data, scales, method, method.args, ref.group,
-                                                     tip.length, stat.label, y.position, step.increase,
-                                                     bracket.nudge.y, bracket.shorten, bracket.group.by,
-                                                     p.adjust.method, p.adjust.by,
-                                                     symnum.args, hide.ns, group.by, dodge, remove.bracket) {
+    # Statistical test methods functions and arguments
+    method <- params$method
+    method.args <- params$method.args
+    if (is.null(method.args$p.adjust.method)) {
+      method.args$p.adjust.method <- params$p.adjust.method
+    }
+    pwc_func <- get_pwc_stat_function(method, method.args)
+    params$method <- pwc_func$method
+    params$method.args <- pwc_func$method.args
+    return(params)
+  },
+  compute_panel = function(self, data, scales, method, method.args, ref.group,
+                           tip.length, stat.label, y.position, step.increase,
+                           bracket.nudge.y, bracket.shorten, bracket.group.by,
+                           p.adjust.method, p.adjust.by,
+                           symnum.args, hide.ns, group.by, dodge, remove.bracket,
+                           p.format.style, p.digits, p.leading.zero,
+                           p.min.threshold, p.decimal.mark) {
+    # Compute the statistical tests
+    df <- data %>% mutate(x = as.factor(.data$x))
+    is.grouped.plots <- contains_multiple_grouping_vars(df)
+    formula <- y ~ x
+    grouping.var <- NULL
+    if (is.grouped.plots) {
+      if (group.by == "legend.var") {
+        grouping.var <- "group"
+        formula <- y ~ x
+      } else {
+        grouping.var <- "x"
+        formula <- y ~ group
+      }
+      df <- df %>% rstatix::df_group_by(vars = grouping.var)
+    }
+    is.comparisons.between.legend.grps <- is.grouped.plots & group.by == "x.var"
 
-                              # Compute the statistical tests
-                              df <- data %>% mutate(x = as.factor(.data$x))
-                              is.grouped.plots <- contains_multiple_grouping_vars(df)
-                              formula <- y ~ x
-                              grouping.var <- NULL
-                              if(is.grouped.plots){
-                                if(group.by == "legend.var"){
-                                  grouping.var <- "group"
-                                  formula <- y ~ x
-                                }
-                                else {
-                                  grouping.var <- "x"
-                                  formula <- y ~ group
-                                }
-                                df <- df %>% rstatix::df_group_by(vars = grouping.var)
-                              }
-                              is.comparisons.between.legend.grps <- is.grouped.plots & group.by == "x.var"
+    # Comparison against reference group
+    ref.group.id <- get_ref_group_id(
+      scales = scales, data = df, ref.group = ref.group,
+      is.comparisons.between.legend.grps = is.comparisons.between.legend.grps
+    )
+    if (!is.null(ref.group.id)) {
+      method.args <- method.args %>% .add_item(ref.group = ref.group.id)
+    }
 
-                              # Comparison against reference group
-                              ref.group.id <- get_ref_group_id(
-                                scales = scales, data = df, ref.group = ref.group,
-                                is.comparisons.between.legend.grps = is.comparisons.between.legend.grps
-                                )
-                              if(!is.null(ref.group.id)) {
-                                method.args <- method.args %>% .add_item(ref.group = ref.group.id)
-                              }
+    method.args <- method.args %>% .add_item(data = df, formula = formula)
+    stat.test <- do.call(method, method.args)
 
-                              method.args <- method.args %>% .add_item(data = df, formula = formula)
-                              stat.test <- do.call(method, method.args)
+    # Add method name
+    method.name <- rstatix::get_description(stat.test)
+    if (method.name == "") {
+      stat.label <- gsub(pattern = "\\{method\\},\\s?", replacement = "", stat.label)
+    }
+    stat.test$method <- method.name
 
-                              # Add method name
-                              method.name <- rstatix::get_description(stat.test)
-                              if(method.name == "") {
-                                stat.label <- gsub(pattern = "\\{method\\},\\s?", replacement = "", stat.label)
-                              }
-                              stat.test$method <- method.name
+    # P-value adjustment, formatting and significance
+    if (!("p.adj" %in% colnames(stat.test))) {
+      # Case of one comparison of two groups
+      stat.test <- stat.test %>% rstatix::adjust_pvalue(method = p.adjust.method)
+    }
 
-                              # P-value adjustment, formatting and significance
-                              if(!("p.adj" %in% colnames(stat.test))){
-                                # Case of one comparison of two groups
-                                stat.test <- stat.test %>% rstatix::adjust_pvalue(method = p.adjust.method)
-                              }
+    # Adjust all the p-values in a given panel
+    # no matter the grouping
+    if (p.adjust.by == "panel") {
+      if ("p" %in% colnames(stat.test)) {
+        stat.test <- stat.test %>%
+          rstatix::adjust_pvalue(method = p.adjust.method)
+      } else {
+        warning(
+          "p-values can't be adjusted by panel for the specified stat method.\n",
+          "The result of the method doesn't contain the p column.\n",
+          "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustement ",
+          "internally; they only return the p.adj.",
+          call. = FALSE
+        )
+      }
+    }
 
-                              # Adjust all the p-values in a given panel
-                              # no matter the grouping
-                              if(p.adjust.by == "panel"){
-                                if("p" %in% colnames(stat.test)){
-                                  stat.test <- stat.test %>%
-                                    rstatix::adjust_pvalue(method = p.adjust.method)
-                                }
-                                else{
-                                  warning(
-                                    "p-values can't be adjusted by panel for the specified stat method.\n",
-                                    "The result of the method doesn't contain the p column.\n",
-                                    "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustement ",
-                                    "internally; they only return the p.adj.",
-                                    call. = FALSE
-                                    )
-                                }
-                              }
+    if (!("p" %in% colnames(stat.test))) {
+      # Case when method is tukey or games-howel, etc
+      # doesn't return p but p.adj
+      stat.test <- stat.test %>%
+        tibble::add_column(p = NA, .before = "p.adj")
+      stat.label <- gsub(pattern = "p\\.format(?!\\.signif)", replacement = "p.adj.format", stat.label, perl = TRUE)
+      stat.label <- gsub(pattern = "p\\.signif", replacement = "p.adj.signif", stat.label)
+    }
 
-                              if(!("p" %in% colnames(stat.test))){
-                                # Case when method is tukey or games-howel, etc
-                                # doesn't return p but p.adj
-                                stat.test <- stat.test %>%
-                                  tibble::add_column(p = NA, .before = "p.adj")
-                                stat.label <- gsub(pattern = "p.format", replacement = "p.adj.format", stat.label)
-                              }
+    sy <- symnum.args
+    stat.test <- stat.test %>%
+      rstatix::add_x_position(x = "x", group = "group", dodge = dodge) %>%
+      rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
+      rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols)
 
-                              sy <- symnum.args
-                              stat.test <- stat.test %>%
-                                rstatix::add_x_position(x = "x", group = "group", dodge = dodge) %>%
-                                rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
-                                rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
-                                rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4) %>%
-                                add_stat_n() %>%
-                                keep_only_tbl_df_classes() %>%
-                                add_stat_label(label = stat.label)
+    # Format p-values using the specified style
+    if (p.format.style == "default") {
+      # Use rstatix default formatting for backward compatibility
+      stat.test <- stat.test %>%
+        rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4)
+    } else {
+      # Use custom formatting based on style
+      stat.test <- stat.test %>%
+        dplyr::mutate(
+          p.format = format_p_value(p,
+            style = p.format.style,
+            digits = p.digits, leading.zero = p.leading.zero,
+            min.threshold = p.min.threshold,
+            decimal.mark = p.decimal.mark
+          ),
+          p.adj.format = format_p_value(p.adj,
+            style = p.format.style,
+            digits = p.digits, leading.zero = p.leading.zero,
+            min.threshold = p.min.threshold,
+            decimal.mark = p.decimal.mark
+          )
+        )
+    }
 
-                              if(!is.null(ref.group)){
-                                if(!(ref.group %in% c(".all.", "all"))){
-                                  # when comparisons is done against reference group
-                                  if(remove.bracket) stat.test$xmin <- stat.test$xmax
-                                }
-                              }
+    stat.test <- stat.test %>%
+      add_stat_n() %>%
+      keep_only_tbl_df_classes() %>%
+      add_stat_label(label = stat.label)
 
-                              # Hide NS if hide.ns not null
-                              stat.test <- rstatix::remove_ns(stat.test, col = hide.ns)
+    if (!is.null(ref.group)) {
+      if (!(ref.group %in% c(".all.", "all"))) {
+        # when comparisons is done against reference group
+        if (remove.bracket) stat.test$xmin <- stat.test$xmax
+      }
+    }
+
+    # Hide NS if hide.ns not null
+    stat.test <- rstatix::remove_ns(stat.test, col = hide.ns)
 
 
-                              # Grouped bracket colors
-                              # When data is grouped by legend variable and
-                              # stat test is computed between x variable groups
-                              # labels are stacked on y-axis. labels group ids are group (legend var)
-                              if(is.grouped.plots){
-                                if(grouping.var == "group" & "colour" %in% colnames(data)){
-                                  color.data <- data %>%
-                                    select("group", "colour") %>%
-                                    distinct(.data$group, .keep_all = TRUE)
-                                  stat.test <- stat.test %>% dplyr::left_join(color.data, by = "group")
-                                }
-                              }
+    # Grouped bracket colors
+    # When data is grouped by legend variable and
+    # stat test is computed between x variable groups
+    # labels are stacked on y-axis. labels group ids are group (legend var)
+    if (is.grouped.plots) {
+      if (grouping.var == "group" & "colour" %in% colnames(data)) {
+        color.data <- data %>%
+          select("group", "colour") %>%
+          distinct(.data$group, .keep_all = TRUE)
+        stat.test <- stat.test %>% dplyr::left_join(color.data, by = "group")
+      }
+    }
 
-                              # Bracket groups, used for spacing vertically brackets
-                              bracket.group <- 1
-                              if(nrow(stat.test) > 1) bracket.group <- 1:nrow(stat.test)
-                              if(is.grouped.plots){
-                                if(grouping.var == "x"){
-                                  nb.comparisons.by.group <- stat.test %>%
-                                    rstatix::df_group_by(vars = grouping.var) %>%
-                                    dplyr::summarise(n = dplyr::n())
-                                  bracket.group <- unlist(purrr::map(nb.comparisons.by.group$n, seq))
-                                }
-                                else if(grouping.var == "group" & bracket.group.by == "legend.var"){
-                                  stat.test <- stat.test %>% dplyr::arrange(.data$group1, .data$group2)
-                                }
-                              }
+    # Bracket groups, used for spacing vertically brackets
+    bracket.group <- 1
+    if (nrow(stat.test) > 1) bracket.group <- seq_len(nrow(stat.test))
+    if (is.grouped.plots) {
+      if (grouping.var == "x") {
+        nb.comparisons.by.group <- stat.test %>%
+          rstatix::df_group_by(vars = grouping.var) %>%
+          dplyr::summarise(n = dplyr::n())
+        bracket.group <- sequence(nb.comparisons.by.group$n)
+      } else if (grouping.var == "group" & bracket.group.by == "legend.var") {
+        stat.test <- stat.test %>% dplyr::arrange(.data$group1, .data$group2)
+      }
+    }
 
-                              # Parameters for customizing brackets
-                              group <- 1
-                              if(nrow(stat.test) > 1) group <- 1:nrow(stat.test)
-                              stat.test <- stat.test %>%
-                                mutate(
-                                  group =  group,
-                                  bracket.group = bracket.group,
-                                  step.increase = step.increase,
-                                  bracket.nudge.y = bracket.nudge.y,
-                                  bracket.shorten = bracket.shorten
-                                )
+    # Parameters for customizing brackets
+    group <- 1
+    if (nrow(stat.test) > 1) group <- seq_len(nrow(stat.test))
+    stat.test <- stat.test %>%
+      mutate(
+        group = group,
+        bracket.group = bracket.group,
+        step.increase = step.increase,
+        bracket.nudge.y = bracket.nudge.y,
+        bracket.shorten = bracket.shorten
+      )
 
-                              # Bracket x positions
-                              bracket.shorten <- stat.test$bracket.shorten/2
-                              xmin <- as.numeric(stat.test$xmin) + bracket.shorten
-                              xmax <- as.numeric(stat.test$xmax) - bracket.shorten
+    # Bracket x positions
+    bracket.shorten <- stat.test$bracket.shorten / 2
+    xmin <- as.numeric(stat.test$xmin) + bracket.shorten
+    xmax <- as.numeric(stat.test$xmax) - bracket.shorten
 
-                              # Bracket y positions
-                              yrange <- scales$y$range$range
-                              y.scale.range <- yrange[2] - yrange[1]
-                              bracket.nudge.y <- stat.test$bracket.nudge.y
-                              step.increase <- stat.test$step.increase
-                              if(is.null(y.position)){
-                                y.position <- yrange[2] + y.scale.range * bracket.nudge.y + y.scale.range * step.increase * (bracket.group-1)
-                              }
-                              else if(length(y.position) == 1) {
-                                y.position <- y.position + y.scale.range * bracket.nudge.y + y.scale.range * step.increase * (bracket.group-1)
-                              }
-                              else if(length(y.position) >= length(stat.test$group)){
-                                y.position <- y.position[stat.test$group]
-                              }
+    # Bracket y positions
+    yrange <- scales$y$range$range
+    y.scale.range <- yrange[2] - yrange[1]
+    bracket.nudge.y <- stat.test$bracket.nudge.y
+    step.increase <- stat.test$step.increase
+    if (is.null(y.position)) {
+      y.position <- yrange[2] + y.scale.range * bracket.nudge.y + y.scale.range * step.increase * (bracket.group - 1)
+    } else if (length(y.position) == 1) {
+      y.position <- y.position + y.scale.range * bracket.nudge.y + y.scale.range * step.increase * (bracket.group - 1)
+    } else if (length(y.position) >= length(stat.test$group)) {
+      y.position <- y.position[stat.test$group]
+    }
 
-                              if("tip.length" %in% colnames(stat.test)){
-                                tip.length <-  rep(stat.test$tip.length, each=2)
-                              }
-                              # Preparing bracket data
-                              stat.test <- dplyr::bind_rows(stat.test, stat.test, stat.test)
-                              stat.test$x <- c(xmin, xmin, xmax)
-                              stat.test$xend = c(xmin, xmax, xmax)
-                              stat.test$y <- c(y.position - y.scale.range*tip.length[seq_len(length(tip.length))%% 2 == 1], y.position, y.position)
-                              stat.test$yend <- c(y.position, y.position, y.position-y.scale.range*tip.length[seq_len(length(tip.length))%% 2 == 0])
-                              stat.test %>% select(-step.increase, -bracket.nudge.y, -bracket.shorten)
-                            }
+    if ("tip.length" %in% colnames(stat.test)) {
+      tip.length <- rep(stat.test$tip.length, each = 2)
+    }
+    # Preparing bracket data
+    stat.test <- dplyr::bind_rows(stat.test, stat.test, stat.test)
+    stat.test$x <- c(xmin, xmin, xmax)
+    stat.test$xend <- c(xmin, xmax, xmax)
+    stat.test$y <- c(y.position - y.scale.range * tip.length[seq_along(tip.length) %% 2 == 1], y.position, y.position)
+    stat.test$yend <- c(y.position, y.position, y.position - y.scale.range * tip.length[seq_along(tip.length) %% 2 == 0])
+    stat.test %>% select(-step.increase, -bracket.nudge.y, -bracket.shorten)
+  }
 )
-
 
 
 #' @rdname geom_pwc
@@ -468,28 +544,42 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      method = "wilcox_test", method.args = list(), ref.group = NULL,
                      label = "p.format",
                      y.position = NULL, group.by = NULL, dodge = 0.8, stack = FALSE,
-                     step.increase = 0.12,  tip.length = 0.03,
+                     step.increase = 0.12, tip.length = 0.03,
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
-                     size = 0.3, label.size = 3.88, family="", vjust = 0, hjust = 0.5,
+                     size = 0.3, label.size = 3.88, family = "", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
+                     p.format.style = "default", p.digits = NULL,
+                     p.leading.zero = NULL, p.min.threshold = NULL,
+                     p.decimal.mark = NULL,
+                     signif.cutoffs = NULL, signif.symbols = NULL,
+                     ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE,
                      show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
+  # Build symnum.args from new parameters
+  symnum.args <- build_symnum_args(
+    signif.cutoffs = signif.cutoffs,
+    signif.symbols = signif.symbols,
+    ns.symbol = ns.symbol,
+    use.four.stars = use.four.stars,
+    symnum.args = symnum.args
+  )
+
   p.adjust.by <- match.arg(p.adjust.by)
-  if(missing(parse) & is_plotmath_expression(label)){
+  if (missing(parse) & is_plotmath_expression(label)) {
     parse <- TRUE
   }
   bracket.group.by <- match.arg(bracket.group.by)
-  if(is.null(group.by)) group.by <- "x.var"
-  if(stack){
+  if (is.null(group.by)) group.by <- "x.var"
+  if (stack) {
     # for stacked bar plots/line plots
     dodge <- 0
     if (group.by == "x.var") remove.bracket <- TRUE
   }
 
-  if(!is.null(ref.group)){
-    if(ref.group %in% c("all", ".all.")){
-      if(missing(step.increase)) step.increase <- 0
+  if (!is.null(ref.group)) {
+    if (ref.group %in% c("all", ".all.")) {
+      if (missing(step.increase)) step.increase <- 0
       remove.bracket <- TRUE
     }
   }
@@ -497,10 +587,10 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
   # Keep legend variable in memory, we'll be useful to guess ref.group id
   # related question: https://stackoverflow.com/questions/63640543/how-to-access-to-a-legend-group-id-inside-a-ggplot2-extension
   legend.var <- aes_get_group(mapping)
-  if(!is.null(legend.var)) mapping$legend.var <- as.name(legend.var)
+  if (!is.null(legend.var)) mapping$legend.var <- as.name(legend.var)
 
   ggplot2::layer(
-    stat = stat, geom = GeomPwc, mapping = mapping,  data = data,
+    stat = stat, geom = GeomPwc, mapping = mapping, data = data,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       method = method, method.args = method.args, ref.group = ref.group,
@@ -512,8 +602,11 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       size = size, label.size = label.size,
       family = family, na.rm = na.rm, hjust = hjust, vjust = vjust,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
-      symnum.args = fortify_signif_symbols_encoding(symnum.args),
+      symnum.args = symnum.args,
       hide.ns = hide.ns, remove.bracket = remove.bracket,
+      p.format.style = p.format.style, p.digits = p.digits,
+      p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark,
       parse = parse,
       ...
     )
@@ -521,48 +614,46 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
 }
 
 
-
 GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
-                            required_aes = c("x", "xend", "y", "yend", "label"),
-                            default_aes = ggplot2::aes(
-                              shape = 19, colour = "black", label.size = 3.88, angle = NA, hjust = 0.5,
-                              vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype=1, size = 0.3, linewidth = NULL,
-                              legend.var = NA
-                            ),
-                            # draw_key = function(...){grid::nullGrob()},
-                            # for legend:
-                            draw_key = draw_key_path,
-                            draw_panel = function(data, panel_params, coord,
-                                                  parse = FALSE,
-                                                  remove.bracket = FALSE) {
-
-                              coords <- coord$transform(data, panel_params)
-                              coord.flip <- inherits(coord, "CoordFlip")
-                              if(remove.bracket){
-                                text_grob <- get_text_grob(data, coords, coord.flip = coord.flip, parse = parse)
-                                return(text_grob)
-                              }
-                              grid::gList(
-                                get_text_grob(data, coords, coord.flip = coord.flip, parse = parse),
-                                grid::segmentsGrob(
-                                  coords$x, coords$y,
-                                  default.units = "native",
-                                  coords$xend, coords$yend,
-                                  gp = grid::gpar(
-                                    col = scales::alpha(coords$colour, coords$alpha),
-                                    lty = coords$linetype,
-                                    lwd = (coords$linewidth %||% coords$size) * ggplot2::.pt
-                                  )
-                                )
-                              )
-                            }
+  required_aes = c("x", "xend", "y", "yend", "label"),
+  default_aes = ggplot2::aes(
+    shape = 19, colour = "black", label.size = 3.88, angle = NA, hjust = 0.5,
+    vjust = 0, alpha = NA, family = "", fontface = 1, lineheight = 1.2, linetype = 1, size = 0.3, linewidth = NULL,
+    legend.var = NA
+  ),
+  # draw_key = function(...){grid::nullGrob()},
+  # for legend:
+  draw_key = draw_key_path,
+  draw_panel = function(data, panel_params, coord,
+                        parse = FALSE,
+                        remove.bracket = FALSE) {
+    coords <- coord$transform(data, panel_params)
+    coord.flip <- inherits(coord, "CoordFlip")
+    if (remove.bracket) {
+      text_grob <- get_text_grob(data, coords, coord.flip = coord.flip, parse = parse)
+      return(text_grob)
+    }
+    grid::gList(
+      get_text_grob(data, coords, coord.flip = coord.flip, parse = parse),
+      grid::segmentsGrob(
+        coords$x, coords$y,
+        default.units = "native",
+        coords$xend, coords$yend,
+        gp = grid::gpar(
+          col = scales::alpha(coords$colour, coords$alpha),
+          lty = coords$linetype,
+          lwd = (coords$linewidth %||% coords$size) * ggplot2::.pt
+        )
+      )
+    )
+  }
 )
 
 # Text grob ------------------------------
-get_text_grob <- function(data, coords, coord.flip = FALSE, parse = FALSE){
+get_text_grob <- function(data, coords, coord.flip = FALSE, parse = FALSE) {
   lab <- as.character(data$label)
-  if(parse) lab <- parse_as_expression(lab)
-  label_coords <- get_pwc_label_coords(coords, coord.flip = coord.flip )
+  if (parse) lab <- parse_as_expression(lab)
+  label_coords <- get_pwc_label_coords(coords, coord.flip = coord.flip)
   grid::textGrob(
     lab,
     x = label_coords$x,
@@ -592,22 +683,30 @@ parse_as_expression <- function(text) {
 }
 
 # Compute the coordinates  of pairwise comparison labels
-get_pwc_label_coords <- function(coords, coord.flip = FALSE){
-  get_label_x <- function(coords){mean(c(coords$x[1], utils::tail(coords$xend, n=1)))}
-  get_label_y <- function(coords){max(c(coords$y, coords$yend))+0.01}
-  get_label_angle <- function(coords, coord.flip = FALSE){
+get_pwc_label_coords <- function(coords, coord.flip = FALSE) {
+  get_label_x <- function(coords) {
+    mean(c(coords$x[1], utils::tail(coords$xend, n = 1)))
+  }
+  get_label_y <- function(coords) {
+    max(c(coords$y, coords$yend)) + 0.01
+  }
+  get_label_angle <- function(coords, coord.flip = FALSE) {
     label.angle <- coords$angle[1]
-    if(coord.flip & is.na(label.angle)) label.angle <- -90
-    if(is.na(label.angle)) label.angle <- 0
+    if (coord.flip & is.na(label.angle)) label.angle <- -90
+    if (is.na(label.angle)) label.angle <- 0
     label.angle[1]
-    }
-
-  if(coord.flip){
-    get_label_x <- function(coords){max(c(coords$x, coords$xend))+0.01}
-    get_label_y <- function(coords){mean(c(coords$y[1], utils::tail(coords$yend, n=1)))}
   }
 
-  if(!("group" %in% colnames(coords))){
+  if (coord.flip) {
+    get_label_x <- function(coords) {
+      max(c(coords$x, coords$xend)) + 0.01
+    }
+    get_label_y <- function(coords) {
+      mean(c(coords$y[1], utils::tail(coords$yend, n = 1)))
+    }
+  }
+
+  if (!("group" %in% colnames(coords))) {
     coords$group <- 1
   }
   data <- NULL
@@ -616,26 +715,28 @@ get_pwc_label_coords <- function(coords, coord.flip = FALSE){
     dplyr::transmute(
       x = unlist(map(data, get_label_x)),
       y = unlist(map(data, get_label_y)),
-      angle =  unlist(map(data, get_label_angle, coord.flip = coord.flip))
+      angle = unlist(map(data, get_label_angle, coord.flip = coord.flip))
     )
 }
 
 # Statistical tests --------------------------------------------------
 # Get the pairwise comparison stat function
 # returns a list(method, method.args)
-get_pwc_stat_function <- function(method, method.args){
-  if(is.character(method)){
+get_pwc_stat_function <- function(method, method.args) {
+  if (is.character(method)) {
     # replace t.test by t_test, etc
     method <- gsub(pattern = ".", replacement = "_", method, fixed = TRUE)
-    if(method == "wilcoxon") method <- "wilcox_test"
-    else if(method == "emmeans") method <- "emmeans_test"
-    else if(method == "games_howell") method <- "games_howell_test"
+    if (method == "wilcoxon") {
+      method <- "wilcox_test"
+    } else if (method == "emmeans") {
+      method <- "emmeans_test"
+    } else if (method == "games_howell") method <- "games_howell_test"
     allowed.methods <- c(
       "wilcox_test", "wilcoxon", "t_test", "sign_test",
       "dunn_test", "emmeans_test", "emmeans", "tukey_hsd",
       "games_howell_test"
     )
-    if(!(method %in% allowed.methods)){
+    if (!(method %in% allowed.methods)) {
       stop(
         "Unknown stat method: '", method, "'. ",
         "Allowed method names are: ", paste(allowed.methods, collapse = ","),
@@ -644,24 +745,24 @@ get_pwc_stat_function <- function(method, method.args){
     }
     # Ignoring p.adjust.method for tukey_hsd and games_howell
     # because they come with internal adjustment method
-    if(method %in% c("tukey_hsd", "games_howell_test"))
+    if (method %in% c("tukey_hsd", "games_howell_test")) {
       method.args$p.adjust.method <- NULL
-    stat_func <- switch(
-      method,
+    }
+    stat_func <- switch(method,
       wilcox_test = rstatix::wilcox_test,
       t_test = rstatix::t_test,
       sign_test = rstatix::sign_test,
       dunn_test = rstatix::dunn_test,
       emmeans_test = rstatix::emmeans_test,
-      tukey_hsd = function(data, formula, ...){rstatix::tukey_hsd(data, formula, ...)},
+      tukey_hsd = function(data, formula, ...) {
+        rstatix::tukey_hsd(data, formula, ...)
+      },
       games_howell_test = rstatix::games_howell_test,
       games_howell = rstatix::games_howell_test
     )
-  }
-  else if(is.function(method)){
+  } else if (is.function(method)) {
     stat_func <- method
-  }
-  else{
+  } else {
     stop("The argument method is required.")
   }
   list(
@@ -675,17 +776,19 @@ get_pwc_stat_function <- function(method, method.args){
 # param data: ggproto data
 # param ref.group: group name
 # Returns 1 (for the first group), 2 for the second group
-get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.between.legend.grps = FALSE){
-  if(is.null(ref.group)) return(NULL)
-  else if(ref.group %in% c(".all.", "all")) return(ref.group)
+get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.between.legend.grps = FALSE) {
+  if (is.null(ref.group)) {
+    return(NULL)
+  } else if (ref.group %in% c(".all.", "all")) {
+    return(ref.group)
+  }
   # Grouped plots
-  if(is.comparisons.between.legend.grps){
-    if(is.character(ref.group)){
-      if("legend.var" %in% colnames(data)){
+  if (is.comparisons.between.legend.grps) {
+    if (is.character(ref.group)) {
+      if ("legend.var" %in% colnames(data)) {
         ref.group <- get_group_id(data$legend.var, ref.group)
-        if(is.na(ref.group)) stop("The ref.group ('", ref.group, "') doesn't exist.", call. = FALSE)
-      }
-      else{
+        if (is.na(ref.group)) stop("The ref.group ('", ref.group, "') doesn't exist.", call. = FALSE)
+      } else {
         stop(
           "ref.group should be a numeric value indicating the rank of the ",
           "legend group to be used as the reference. \n",
@@ -697,7 +800,7 @@ get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.betw
     }
   }
   # Basic plot: comparison between x-axis groups
-  else if(is.character(ref.group)){
+  else if (is.character(ref.group)) {
     ref.group <- scales$x$map(ref.group) %>% as.character()
   }
   as.character(ref.group)
@@ -706,8 +809,10 @@ get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.betw
 
 # x a factor
 # group a level
-get_group_id <- function(x, group){
-  ids <- x %>% as.factor() %>% as.numeric()
+get_group_id <- function(x, group) {
+  ids <- x %>%
+    as.factor() %>%
+    as.numeric()
   names(ids) <- x
   unname(ids[group]) %>% unique()
 }

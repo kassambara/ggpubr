@@ -36,9 +36,10 @@ NULL
 #' data(iris)
 #' ggdensity(iris, "Sepal.Length", color = "Species") +
 #'   stat_central_tendency(
-#'      aes(color = Species), type = "median",
-#'      geom = "point", size = 4
-#'      )
+#'     aes(color = Species),
+#'     type = "median",
+#'     geom = "point", size = 4
+#'   )
 #'
 #' # Facet
 #' ggdensity(iris, "Sepal.Length", facet.by = "Species") +
@@ -47,55 +48,54 @@ NULL
 #'
 #' @export
 stat_central_tendency <- function(mapping = NULL, data = NULL, geom = c("line", "point"),
-                    position = "identity", na.rm = FALSE, show.legend = NA,
-                    inherit.aes = TRUE,
-                    type = c("mean", "median", "mode"),
-                    ...) {
+                                  position = "identity", na.rm = FALSE, show.legend = NA,
+                                  inherit.aes = TRUE,
+                                  type = c("mean", "median", "mode"),
+                                  ...) {
   type <- match.arg(type)
   geom <- match.arg(geom)
-  if(is.null(mapping)){
+  if (is.null(mapping)) {
     mapping <- ggplot2::aes(y = NULL)
-  }else{
+  } else {
     mapping["y"] <- list(NULL)
   }
   layer(
     stat = StatCentralTendency, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm,  type = type, geom = geom, ...)
+    params = list(na.rm = na.rm, type = type, geom = geom, ...)
   )
 }
 
 StatCentralTendency <- ggproto("StatCentralTendency", Stat,
-                  required_aes = c("x"),
-                  compute_group = function(data, scales, type, geom) {
-                    center.func <- switch (type,
-                      mean = mean, median = stats::median, mode = .get_mode
-                    )
-                    .center <- center.func(data$x, na.rm = TRUE)
-                    n <- length(.center)
-                    if(geom == "line"){
-                      results <- data.frame(x = rep(.center, each = 2),y = c(-Inf, Inf))
-                      if(n >= 2) results$group <- rep(1:n, each = 2)
-                    }
-                    else if(geom == "point") {
-                      results <- data.frame(x = .center, y = -Inf)
-                    }
-                    results
-                  }
+  required_aes = c("x"),
+  compute_group = function(data, scales, type, geom) {
+    center.func <- switch(type,
+      mean = mean,
+      median = stats::median,
+      mode = .get_mode
+    )
+    .center <- center.func(data$x, na.rm = TRUE)
+    n <- length(.center)
+    if (geom == "line") {
+      results <- data.frame(x = rep(.center, each = 2), y = c(-Inf, Inf))
+      if (n >= 2) results$group <- rep(seq_len(n), each = 2)
+    } else if (geom == "point") {
+      results <- data.frame(x = .center, y = -Inf)
+    }
+    results
+  }
 )
 
 
 # from rstatix
-.get_mode <- function (x, na.rm = TRUE)
-{
-  if(na.rm) x <- stats::na.omit(x)
+.get_mode <- function(x, na.rm = TRUE) {
+  if (na.rm) x <- stats::na.omit(x)
   .x <- factor(x)
   .table <- table(.x)
   .max <- max(.table)
   if (all(.table == .max)) {
     .mode <- NA
-  }
-  else {
+  } else {
     .mode <- names(.table)[.table == .max]
   }
   if (is.numeric(x)) {

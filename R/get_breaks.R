@@ -31,26 +31,25 @@
 #'
 #' # Increase the number of ticks
 #' p +
-#'  scale_x_continuous(breaks = get_breaks(n = 10)) +
-#'  scale_y_continuous(breaks = get_breaks(n = 10))
+#'   scale_x_continuous(breaks = get_breaks(n = 10)) +
+#'   scale_y_continuous(breaks = get_breaks(n = 10))
 #'
 #' # Set ticks according to a specific step, starting from 0
 #' p + scale_x_continuous(
 #'   breaks = get_breaks(by = 1.5, from = 0),
-#'   limits =  c(0, 6)
+#'   limits = c(0, 6)
 #' ) +
-#'  scale_y_continuous(
-#'   breaks = get_breaks(by = 10, from = 0),
-#'   limits = c(0, 40)
+#'   scale_y_continuous(
+#'     breaks = get_breaks(by = 10, from = 0),
+#'     limits = c(0, 40)
 #'   )
 #'
 #' @export
-get_breaks <- function(n = NULL, by = NULL, from = NULL, to = NULL){
+get_breaks <- function(n = NULL, by = NULL, from = NULL, to = NULL) {
   breaks <- ggplot2::waiver()
-  if(!is.null(n)){
-    breaks  <- get_breaks_number(n = n)
-  }
-  else if(is.numeric(by)){
+  if (!is.null(n)) {
+    breaks <- get_breaks_number(n = n)
+  } else if (is.numeric(by)) {
     breaks <- get_breaks_position(by = by, from = from, to = to)
   }
   breaks
@@ -58,23 +57,23 @@ get_breaks <- function(n = NULL, by = NULL, from = NULL, to = NULL){
 
 
 # Set the number of breaks
-get_breaks_number <- function(n){
- scales::breaks_extended(n = n)
+get_breaks_number <- function(n) {
+  scales::breaks_extended(n = n)
 }
 
 # Set breaks using increasing step
 # Adapted from scales::breaks_extended
-get_breaks_position <- function(by, from = NULL, to = NULL){
+get_breaks_position <- function(by, from = NULL, to = NULL) {
   by_default <- by
   from_default <- from
   to_default <- to
-  function(x,  by = by_default, from = from_default, to = to_default) {
+  function(x, by = by_default, from = from_default, to = to_default) {
     x <- x[is.finite(x)]
     if (length(x) == 0) {
       return(numeric())
     }
     rng <- range(x)
-    if( rng[1] > 0 & is.null(from)) from <- 0
+    if (rng[1] > 0 & is.null(from)) from <- 0
     xmin <- ifelse(is.null(from), floor(rng[1]), from)
     xmax <- ifelse(is.null(to), rng[2], to)
     seq(from = xmin, to = xmax, by = by)

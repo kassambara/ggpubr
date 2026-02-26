@@ -15,5 +15,6 @@
 ^ISSUE_TEMPLATE\.md$
 ^_tmp$
 ^CRAN-SUBMISSION$
-^CLAUDE\.md$
 ^\.claude$
+^check-as-cran\.sh$
+^Rplots\.pdf$

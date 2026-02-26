@@ -14,12 +14,12 @@ NULL
 #'  \item \code{tab_add_border(), tbody_add_border(), thead_add_border()}: Add borders to table; tbody is for table body and thead is for table head.
 #'  \item \code{tab_add_title(),tab_add_footnote()}: Add title, subtitle and footnote to a table.
 #'   }
-#'@inheritParams gridExtra::tableGrob
-#'@param x a \code{data.frame} or \code{matrix}.
-#'@param theme a list, as returned by the function \code{ttheme()}, defining the
+#' @inheritParams gridExtra::tableGrob
+#' @param x a \code{data.frame} or \code{matrix}.
+#' @param theme a list, as returned by the function \code{ttheme()}, defining the
 #'  parameters of the table theme. Allowed values include one of \code{ttheme()}
 #'  and \code{ttheme_clean()}.
-#'@param base_style character string the table style/theme. The available themes
+#' @param base_style character string the table style/theme. The available themes
 #'  are illustrated in the
 #'  \href{https://rpkgs.datanovia.com/ggpubr/files/ggtexttable-theme.pdf}{ggtexttable-theme.pdf}
 #'   file. Allowed values include one of \code{c("default", "blank", "classic",
@@ -29,20 +29,20 @@ NULL
 #'  "mGreen", "mViolet", "mCyan", "mOrange", "mBlackWhite", "mBlueWhite",
 #'  "mRedWhite", "mGreenWhite", "mVioletWhite", "mCyanWhite", "mOrangeWhite" )}.
 #'  Note that, l = "light"; m = "medium".
-#'@param colnames.style a list, as returned by the function
+#' @param colnames.style a list, as returned by the function
 #'  \code{colnames_style()}, defining the style of the table column names.
 #'  Considered only when \code{base_size = "default"}.
-#'@param rownames.style a list, as returned by the function
+#' @param rownames.style a list, as returned by the function
 #'  \code{rownames_style()}, defining the style of the table row names.
 #'  Considered only when \code{base_size = "default"}.
-#'@param tbody.style a list, as returned by the function \code{tbody_style()},
+#' @param tbody.style a list, as returned by the function \code{tbody_style()},
 #'  defining the style of the table body. Considered only when \code{base_size =
 #'  "default"}.
-#'@param color,face,size text font color, face and size, respectively. Allowed
+#' @param color,face,size text font color, face and size, respectively. Allowed
 #'  values for face include c("plain", "bold", "italic", "bold.italic").
-#'@param fill background color.
-#'@param linewidth,linecolor line width and color, respectively.
-#'@param alpha numeric value specifying fill color transparency.
+#' @param fill background color.
+#' @param linewidth,linecolor line width and color, respectively.
+#' @param alpha numeric value specifying fill color transparency.
 #' Value should be in [0, 1], where 0 is full transparency and 1 is no transparency.
 #' @param at.row a numeric vector of row indexes; for example \code{at.row = c(1, 2)}.
 #' @param row.side row side to which the horinzotal line should be added. Can be one of \code{c("bottom", "top")}.
@@ -53,10 +53,10 @@ NULL
 #' @param column.side column side to which the vertical line should be added. Can be one of \code{c("left", "right")}.
 #' @param from.row integer indicating the row from which to start drawing the horizontal line.
 #' @param to.row integer indicating the row to which the vertical line should end.
-#'@param ... extra parameters for text justification, e.g.: hjust and x. Default
+#' @param ... extra parameters for text justification, e.g.: hjust and x. Default
 #'  is "centre" for the body and header, and "right" for the row names. Left
 #'  justification: \code{hjust = 0, x = 0.1}. Right justification: \code{hjust = 1, x = 0.9}.
-#'@return an object of class ggplot.
+#' @return an object of class ggplot.
 #'
 #'
 #' @examples
@@ -72,9 +72,9 @@ NULL
 #' # Remaining columns are right justified i.e., hjust = 1 , x = 0.9
 #' table_theme <- ttheme(
 #'   tbody.style = tbody_style(
-#'    hjust = as.vector(matrix(c(0, 1, 1, 1, 1), ncol = 5, nrow = nrow(df), byrow = TRUE)),
-#'    x = as.vector(matrix(c(.1, .9, .9,.9, .9), ncol = 5, nrow = nrow(df), byrow = TRUE))
-#'  )
+#'     hjust = as.vector(matrix(c(0, 1, 1, 1, 1), ncol = 5, nrow = nrow(df), byrow = TRUE)),
+#'     x = as.vector(matrix(c(.1, .9, .9, .9, .9), ncol = 5, nrow = nrow(df), byrow = TRUE))
+#'   )
 #' )
 #' ggtexttable(df, rows = NULL, theme = table_theme)
 #'
@@ -86,7 +86,7 @@ NULL
 #'
 #' # Column names border only
 #' ggtexttable(df, rows = NULL, theme = ttheme("blank")) %>%
-#'  tab_add_hline(at.row = 1:2, row.side = "top", linewidth = 2)
+#'   tab_add_hline(at.row = 1:2, row.side = "top", linewidth = 2)
 #'
 #' # classic theme
 #' ggtexttable(df, rows = NULL, theme = ttheme("classic"))
@@ -99,133 +99,152 @@ NULL
 #'
 #'
 #' # Customize the table as you want
-#' ggtexttable(df, rows = NULL,
-#'            theme = ttheme(
-#'              colnames.style = colnames_style(color = "white", fill = "#8cc257"),
-#'              tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"))
-#'            )
+#' ggtexttable(df,
+#'   rows = NULL,
+#'   theme = ttheme(
+#'     colnames.style = colnames_style(color = "white", fill = "#8cc257"),
+#'     tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"))
+#'   )
 #' )
 #'
 #' # Use RColorBrewer palette
 #' # Provide as many fill color as there are rows in the table body, here nrow = 6
-#'ggtexttable(df,
-#'            theme = ttheme(
-#'              colnames.style = colnames_style(fill = "white"),
-#'              tbody.style = tbody_style(fill = get_palette("RdBu", 6))
-#'            )
-#')
+#' ggtexttable(df,
+#'   theme = ttheme(
+#'     colnames.style = colnames_style(fill = "white"),
+#'     tbody.style = tbody_style(fill = get_palette("RdBu", 6))
+#'   )
+#' )
 #'
-#'# Text justification
-#'#::::::::::::::::::::::::::::::::::::::::::::::
-#'# Default is "centre" for the body and header, and "right" for the row names.
-#'# Left justification: hjust=0, x=0.1
-#'# Right justification: hjust=1, x=0.9
-#'tbody.style = tbody_style(color = "black",
-#'    fill = c("#e8f3de", "#d3e8bb"), hjust=1, x=0.9)
-#'ggtexttable(head(iris), rows = NULL,
-#'            theme = ttheme(
-#'              colnames.style = colnames_style(color = "white", fill = "#8cc257"),
-#'              tbody.style = tbody.style
-#'            )
-#')
+#' # Text justification
+#' # ::::::::::::::::::::::::::::::::::::::::::::::
+#' # Default is "centre" for the body and header, and "right" for the row names.
+#' # Left justification: hjust=0, x=0.1
+#' # Right justification: hjust=1, x=0.9
+#' tbody.style <- tbody_style(
+#'   color = "black",
+#'   fill = c("#e8f3de", "#d3e8bb"), hjust = 1, x = 0.9
+#' )
+#' ggtexttable(head(iris),
+#'   rows = NULL,
+#'   theme = ttheme(
+#'     colnames.style = colnames_style(color = "white", fill = "#8cc257"),
+#'     tbody.style = tbody.style
+#'   )
+#' )
 #'
-#'# Access and modify the font and
-#'# the background of table cells
-#'# :::::::::::::::::::::::::::::::::::::::::::::
-#'tab <- ggtexttable(head(iris), rows = NULL,
-#'                   theme = ttheme("classic"))
-#'tab <- table_cell_font(tab, row = 3, column = 2,
-#'                       face = "bold")
-#'tab <- table_cell_bg(tab, row = 4, column = 3, linewidth = 5,
-#'                     fill="darkolivegreen1", color = "darkolivegreen4")
-#'tab
+#' # Access and modify the font and
+#' # the background of table cells
+#' # :::::::::::::::::::::::::::::::::::::::::::::
+#' tab <- ggtexttable(head(iris),
+#'   rows = NULL,
+#'   theme = ttheme("classic")
+#' )
+#' tab <- table_cell_font(tab,
+#'   row = 3, column = 2,
+#'   face = "bold"
+#' )
+#' tab <- table_cell_bg(tab,
+#'   row = 4, column = 3, linewidth = 5,
+#'   fill = "darkolivegreen1", color = "darkolivegreen4"
+#' )
+#' tab
 #'
-#'# Change table cells background and font for column 3,
-#'# Spaning from row 2 to the last row in the data
-#'tab <- ggtexttable(df, rows = NULL, theme = ttheme("classic"))
-#'tab %>%
-#'  table_cell_bg(row = 2:tab_nrow(tab), column = 3, fill = "darkblue") %>%
-#'  table_cell_font(row = 2:tab_nrow(tab), column = 3, face = "italic", color = "white")
+#' # Change table cells background and font for column 3,
+#' # Spaning from row 2 to the last row in the data
+#' tab <- ggtexttable(df, rows = NULL, theme = ttheme("classic"))
+#' tab %>%
+#'   table_cell_bg(row = 2:tab_nrow(tab), column = 3, fill = "darkblue") %>%
+#'   table_cell_font(row = 2:tab_nrow(tab), column = 3, face = "italic", color = "white")
 #'
-#'# Add separators and borders
-#'# :::::::::::::::::::::::::::::::::::::::::::::::::::
-#'# Table with blank theme
-#'tab <- ggtexttable(df, theme = ttheme("blank"), rows = NULL)
-#'# Add horizontal and vertical lines
-#'tab %>%
-#'  tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) %>%
-#'  tab_add_hline(at.row = c(7), row.side = "bottom", linewidth = 3, linetype = 1) %>%
-#'  tab_add_vline(at.column = 2:tab_ncol(tab), column.side = "left", from.row = 2, linetype = 2)
+#' # Add separators and borders
+#' # :::::::::::::::::::::::::::::::::::::::::::::::::::
+#' # Table with blank theme
+#' tab <- ggtexttable(df, theme = ttheme("blank"), rows = NULL)
+#' # Add horizontal and vertical lines
+#' tab %>%
+#'   tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) %>%
+#'   tab_add_hline(at.row = c(7), row.side = "bottom", linewidth = 3, linetype = 1) %>%
+#'   tab_add_vline(at.column = 2:tab_ncol(tab), column.side = "left", from.row = 2, linetype = 2)
 #'
-#'# Add borders to table body and header
-#'# Cross out some cells
-#'tab %>%
-#'  tbody_add_border() %>%
-#'  thead_add_border() %>%
-#'  tab_cell_crossout(
-#'    row = c(2, 4), column = 3, linecolor = "red",
-#'    reduce.size.by = 0.6
-#'  )
+#' # Add borders to table body and header
+#' # Cross out some cells
+#' tab %>%
+#'   tbody_add_border() %>%
+#'   thead_add_border() %>%
+#'   tab_cell_crossout(
+#'     row = c(2, 4), column = 3, linecolor = "red",
+#'     reduce.size.by = 0.6
+#'   )
 #'
-#'# Add titles andd footnote
-#'# :::::::::::::::::::::::::::::::::::::::::::::::::::
-#'# Add titles and footnote
-#'# Wrap subtitle into multiple lines using strwrap()
-#'main.title <- "Edgar Anderson's Iris Data"
-#'subtitle <- paste0(
-#' "This famous (Fisher's or Anderson's) iris data set gives the measurements",
-#' " in centimeters of the variables sepal length and width and petal length and width,",
-#'  " respectively, for 50 flowers from each of 3 species of iris.",
-#'  " The species are Iris setosa, versicolor, and virginica."
-#') %>%
-#'  strwrap(width = 80) %>%
-#'  paste(collapse = "\n")
+#' # Add titles andd footnote
+#' # :::::::::::::::::::::::::::::::::::::::::::::::::::
+#' # Add titles and footnote
+#' # Wrap subtitle into multiple lines using strwrap()
+#' main.title <- "Edgar Anderson's Iris Data"
+#' subtitle <- paste0(
+#'   "This famous (Fisher's or Anderson's) iris data set gives the measurements",
+#'   " in centimeters of the variables sepal length and width and petal length and width,",
+#'   " respectively, for 50 flowers from each of 3 species of iris.",
+#'   " The species are Iris setosa, versicolor, and virginica."
+#' ) %>%
+#'   strwrap(width = 80) %>%
+#'   paste(collapse = "\n")
 #'
-#'tab <- ggtexttable(head(iris), theme = ttheme("light"))
-#'tab %>%
-#'  tab_add_title(text = subtitle, face = "plain", size = 10) %>%
-#'  tab_add_title(text = main.title, face = "bold", padding = unit(0.1, "line")) %>%
-#'  tab_add_footnote(text = "*Table created using ggpubr", size = 10, face = "italic")
+#' tab <- ggtexttable(head(iris), theme = ttheme("light"))
+#' tab %>%
+#'   tab_add_title(text = subtitle, face = "plain", size = 10) %>%
+#'   tab_add_title(text = main.title, face = "bold", padding = unit(0.1, "line")) %>%
+#'   tab_add_footnote(text = "*Table created using ggpubr", size = 10, face = "italic")
 #'
 #'
 #' # Combine density plot and summary table
-#'#:::::::::::::::::::::::::::::::::::::
-#'# Density plot of "Sepal.Length"
-#'density.p <- ggdensity(iris, x = "Sepal.Length",
-#'                       fill = "Species", palette = "jco")
+#' # :::::::::::::::::::::::::::::::::::::
+#' # Density plot of "Sepal.Length"
+#' density.p <- ggdensity(iris,
+#'   x = "Sepal.Length",
+#'   fill = "Species", palette = "jco"
+#' )
 #'
-#'# Draw the summary table of Sepal.Length
-#'# Descriptive statistics by groups
-#'stable <- desc_statby(iris, measure.var = "Sepal.Length",
-#'                      grps = "Species")
-#'stable <- stable[, c("Species", "length", "mean", "sd")]
-#'stable.p <- ggtexttable(stable, rows = NULL,
-#'                        theme = ttheme("mOrange"))
+#' # Draw the summary table of Sepal.Length
+#' # Descriptive statistics by groups
+#' stable <- desc_statby(iris,
+#'   measure.var = "Sepal.Length",
+#'   grps = "Species"
+#' )
+#' stable <- stable[, c("Species", "length", "mean", "sd")]
+#' stable.p <- ggtexttable(stable,
+#'   rows = NULL,
+#'   theme = ttheme("mOrange")
+#' )
 #'
-#'# Arrange the plots on the same page
-#'ggarrange(density.p, stable.p,
-#'          ncol = 1, nrow = 2,
-#'          heights = c(1, 0.5))
+#' # Arrange the plots on the same page
+#' ggarrange(density.p, stable.p,
+#'   ncol = 1, nrow = 2,
+#'   heights = c(1, 0.5)
+#' )
 #'
-#'@rdname ggtexttable
-#'@export
+#' @rdname ggtexttable
+#' @export
 ggtexttable <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL,
-                       theme = ttheme(), ...)
-{
+                        theme = ttheme(), ...) {
   style <- attr(theme, "style")
-  res <- gridExtra::tableGrob(x, rows = rows, cols = cols, vp = vp,
-                                theme = theme, ...)
-  if(style == "minimal"){
+  res <- gridExtra::tableGrob(x,
+    rows = rows, cols = cols, vp = vp,
+    theme = theme, ...
+  )
+  if (style == "minimal") {
     # minimal = blank theme + left vertical line
     res <- tab_add_vline(
-      res, at.column = 2:tab_ncol(res), column.side = "left",
+      res,
+      at.column = 2:tab_ncol(res), column.side = "left",
       from.row = 2, to.row = tab_nrow(res)
-      )
-  }
-  else if(style == "light"){
+    )
+  } else if (style == "light") {
     # light = blank theme + horizontal line
     res <- tab_add_hline(
-      res, at.row = c(1, tab_nrow(res)), row.side = "bottom",
+      res,
+      at.row = c(1, tab_nrow(res)), row.side = "bottom",
       linewidth = 1.5, linetype = 1, from.column = 1
     )
   }
@@ -238,22 +257,21 @@ ggtexttable <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL,
 #' @export
 #' @rdname ggtexttable
 ttheme <- function(base_style = "default", base_size = 11, base_colour = "black", padding = unit(c(4, 4), "mm"),
-                    colnames.style = colnames_style(size = base_size),
-                    rownames.style = rownames_style(size = base_size),
-                    tbody.style = tbody_style(size = base_size)
-                      )
-{
-
+                   colnames.style = colnames_style(size = base_size),
+                   rownames.style = rownames_style(size = base_size),
+                   tbody.style = tbody_style(size = base_size)) {
   style <- tstyle(base_style, size = base_size)
-  if(!is.null(style)){
-    if(missing(colnames.style)) colnames.style <- style$colnames.style
-    if(missing(rownames.style)) rownames.style  <- style$rownames.style
-    if(missing(tbody.style)) tbody.style <- style$tbody.style
+  if (!is.null(style)) {
+    if (missing(colnames.style)) colnames.style <- style$colnames.style
+    if (missing(rownames.style)) rownames.style <- style$rownames.style
+    if (missing(tbody.style)) tbody.style <- style$tbody.style
   }
 
-  .ttheme <- gridExtra::ttheme_default(base_size = base_size,
-                                      base_colour = base_colour,
-                                       padding = padding)
+  .ttheme <- gridExtra::ttheme_default(
+    base_size = base_size,
+    base_colour = base_colour,
+    padding = padding
+  )
 
   .ttheme$colhead <- do.call(.add_item, c(list(.list = .ttheme$colhead), colnames.style))
   .ttheme$rowhead <- do.call(.add_item, c(list(.list = .ttheme$rowhead), rownames.style))
@@ -264,33 +282,34 @@ ttheme <- function(base_style = "default", base_size = 11, base_colour = "black"
 }
 
 
-
-
 #' @export
 #' @rdname ggtexttable
 colnames_style <- function(color = "black", face = "bold", size = 12,
-                        fill = "grey80", linewidth = 1, linecolor = "white",
-                        parse = FALSE, ...)
-{
-
+                           fill = "grey80", linewidth = 1, linecolor = "white",
+                           parse = FALSE, ...) {
   list(
-    fg_params = list(parse = parse, col = color,
-                     fontface = face, fontsize = size) %>%
+    fg_params = list(
+      parse = parse, col = color,
+      fontface = face, fontsize = size
+    ) %>%
       .add_item(...), # Accept extra parameters
-    bg_params = list(fill = fill, lwd = linewidth, col = linecolor))
+    bg_params = list(fill = fill, lwd = linewidth, col = linecolor)
+  )
 }
 
 #' @export
 #' @rdname ggtexttable
 rownames_style <- function(color = "black", face = "italic", size = 12,
-                        fill = NA, linewidth = 1, linecolor = "white",
-                        parse = FALSE, ...)
-{
+                           fill = NA, linewidth = 1, linecolor = "white",
+                           parse = FALSE, ...) {
   list(
-    fg_params = list(parse = parse, col = color,
-                     fontface = face, fontsize = size, hjust = 1, x = 0.95) %>%
+    fg_params = list(
+      parse = parse, col = color,
+      fontface = face, fontsize = size, hjust = 1, x = 0.95
+    ) %>%
       .add_item(...), # Accept extra parameters
-    bg_params = list(fill = fill, lwd = linewidth, col = linecolor))
+    bg_params = list(fill = fill, lwd = linewidth, col = linecolor)
+  )
 }
 
 
@@ -299,13 +318,15 @@ rownames_style <- function(color = "black", face = "italic", size = 12,
 tbody_style <- function(color = "black", face = "plain", size = 12,
                         fill = c("grey95", "grey90"),
                         linewidth = 1, linecolor = "white",
-                        parse = FALSE, ...)
-{
+                        parse = FALSE, ...) {
   list(
-    fg_params = list(parse = parse, col = color,
-                     fontface = face, fontsize = size)%>%
+    fg_params = list(
+      parse = parse, col = color,
+      fontface = face, fontsize = size
+    ) %>%
       .add_item(...), # Accept extra parameters
-    bg_params = list(fill = fill, lwd = linewidth, col = linecolor))
+    bg_params = list(fill = fill, lwd = linewidth, col = linecolor)
+  )
 }
 
 
@@ -313,11 +334,10 @@ tbody_style <- function(color = "black", face = "plain", size = 12,
 #' @rdname ggtexttable
 #' @param tab an object from \code{ggtexttable} or from \code{gridExtra::tableGrob()}.
 #' @param row,column an integer specifying the row and the column numbers for the cell of interest.
-table_cell_font <- function(tab, row, column, face = NULL, size = NULL, color = NULL)
-{
+table_cell_font <- function(tab, row, column, face = NULL, size = NULL, color = NULL) {
   tabGrob <- get_tablegrob(tab)
   cells <- expand.grid(row = row, column = column)
-  for(i in 1:nrow(cells)){
+  for (i in seq_len(nrow(cells))) {
     tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], "core-fg")
     tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(fontface = face, fontsize = size, col = color)
   }
@@ -326,28 +346,27 @@ table_cell_font <- function(tab, row, column, face = NULL, size = NULL, color = 
 
 #' @export
 #' @rdname ggtexttable
-table_cell_bg <- function(tab, row, column, fill = NULL, color = NULL, linewidth = NULL, alpha = NULL)
-{
+table_cell_bg <- function(tab, row, column, fill = NULL, color = NULL, linewidth = NULL, alpha = NULL) {
   tabGrob <- get_tablegrob(tab)
   cells <- expand.grid(row = row, column = column)
-  for(i in 1:nrow(cells)){
+  for (i in seq_len(nrow(cells))) {
     tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], "core-bg")
     tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(
       fill = fill, col = color, lwd = linewidth, alpha = alpha
-      )
+    )
   }
   tab_return_same_class_as_input(tabGrob, input = tab)
 }
 
-.find_cell <- function(tab, row, column, name="core-fg"){
+.find_cell <- function(tab, row, column, name = "core-fg") {
   l <- tab$layout
-  which(l$t==row & l$l==column & l$name==name)
+  which(l$t == row & l$l == column & l$name == name)
 }
 
 #' @export
 #' @rdname ggtexttable
 #' @param reduce.size.by Numeric value in [0, 1] to reduce the size by.
-tab_cell_crossout <- function(tab, row, column, linetype = 1, linewidth = 1, linecolor = "black", reduce.size.by = 0){
+tab_cell_crossout <- function(tab, row, column, linetype = 1, linewidth = 1, linecolor = "black", reduce.size.by = 0) {
   required_package("gtable")
   tabgrob <- get_tablegrob(tab)
   crosses <- replicate(
@@ -356,29 +375,30 @@ tab_cell_crossout <- function(tab, row, column, linetype = 1, linewidth = 1, lin
     simplify = FALSE
   )
   tabgrob <- gtable::gtable_add_grob(
-    tabgrob, grobs = crosses,
+    tabgrob,
+    grobs = crosses,
     t = row, b = row,
     l = column, r = column
   )
   tab_return_same_class_as_input(tabgrob, input = tab)
 }
 
-tab_cross <- function(linetype = 1, linewidth = 1, linecolor = "black", reduce.size.by = 0){
-  reduce <- reduce.size.by/2
+tab_cross <- function(linetype = 1, linewidth = 1, linecolor = "black", reduce.size.by = 0) {
+  reduce <- reduce.size.by / 2
   grid::grobTree(
     grid::segmentsGrob( # diagonal line ul -> lr
-      x0 = unit(0+reduce,"npc"),
-      y0 = unit(1-reduce,"npc"),
-      x1 = unit(1-reduce,"npc"),
-      y1 = unit(0+reduce,"npc"),
-      gp = grid::gpar( lty = linetype, lwd = linewidth, col = linecolor, reduce = reduce)
+      x0 = unit(0 + reduce, "npc"),
+      y0 = unit(1 - reduce, "npc"),
+      x1 = unit(1 - reduce, "npc"),
+      y1 = unit(0 + reduce, "npc"),
+      gp = grid::gpar(lty = linetype, lwd = linewidth, col = linecolor, reduce = reduce)
     ),
     grid::segmentsGrob( # diagonal line ll -> ur
-      x0 = unit(0+reduce,"npc"),
-      y0 = unit(0+reduce,"npc"),
-      x1 = unit(1-reduce,"npc"),
-      y1 = unit(1-reduce,"npc"),
-      gp = grid::gpar( lty = linetype, lwd = linewidth, col = linecolor)
+      x0 = unit(0 + reduce, "npc"),
+      y0 = unit(0 + reduce, "npc"),
+      x1 = unit(1 - reduce, "npc"),
+      y1 = unit(1 - reduce, "npc"),
+      gp = grid::gpar(lty = linetype, lwd = linewidth, col = linecolor)
     )
   )
 }
@@ -386,13 +406,13 @@ tab_cross <- function(linetype = 1, linewidth = 1, linecolor = "black", reduce.s
 
 #' @export
 #' @rdname  ggtexttable
-tab_ncol <- function(tab){
+tab_ncol <- function(tab) {
   ncol(get_tablegrob(tab))
 }
 
 #' @export
 #' @rdname  ggtexttable
-tab_nrow <- function(tab){
+tab_nrow <- function(tab) {
   nrow(get_tablegrob(tab))
 }
 
@@ -400,7 +420,7 @@ tab_nrow <- function(tab){
 #' @rdname ggtexttable
 tab_add_hline <- function(tab, at.row = 2:tab_nrow(tab), row.side = c("bottom", "top"),
                           from.column = 1, to.column = tab_ncol(tab),
-                          linetype = 1, linewidth = 1, linecolor = "black"){
+                          linetype = 1, linewidth = 1, linecolor = "black") {
   required_package("gtable")
   row.side <- match.arg(row.side)
   tabgrob <- get_tablegrob(tab)
@@ -410,7 +430,8 @@ tab_add_hline <- function(tab, at.row = 2:tab_nrow(tab), row.side = c("bottom", 
     simplify = FALSE
   )
   tabgrob <- gtable::gtable_add_grob(
-    tabgrob, grobs = separators,
+    tabgrob,
+    grobs = separators,
     t = at.row, b = at.row,
     l = from.column, r = to.column
   )
@@ -418,14 +439,14 @@ tab_add_hline <- function(tab, at.row = 2:tab_nrow(tab), row.side = c("bottom", 
 }
 
 # Create hline at the top or the bottom side of a given row
-tab_hline <- function(row.side = c("bottom", "top"), linetype = 1, linewidth = 1, linecolor = "black"){
+tab_hline <- function(row.side = c("bottom", "top"), linetype = 1, linewidth = 1, linecolor = "black") {
   row.side <- match.arg(row.side)
   y0 <- y1 <- unit(0, "npc")
-  if(row.side == "top") y0 <- y1 <- unit(1, "npc")
+  if (row.side == "top") y0 <- y1 <- unit(1, "npc")
   grid::segmentsGrob(
-    x0 = unit(0, "npc"), x1 = unit(1,"npc"),
+    x0 = unit(0, "npc"), x1 = unit(1, "npc"),
     y0 = y0, y1 = y1,
-    gp = grid::gpar( lty = linetype, lwd = linewidth, col = linecolor)
+    gp = grid::gpar(lty = linetype, lwd = linewidth, col = linecolor)
   )
 }
 
@@ -434,7 +455,7 @@ tab_hline <- function(row.side = c("bottom", "top"), linetype = 1, linewidth = 1
 #' @rdname ggtexttable
 tab_add_vline <- function(tab, at.column = 2:tab_ncol(tab), column.side = c("left", "right"),
                           from.row = 1, to.row = tab_nrow(tab),
-                          linetype = 1, linewidth = 1, linecolor = "black"){
+                          linetype = 1, linewidth = 1, linecolor = "black") {
   required_package("gtable")
   column.side <- match.arg(column.side)
   tabgrob <- get_tablegrob(tab)
@@ -444,21 +465,22 @@ tab_add_vline <- function(tab, at.column = 2:tab_ncol(tab), column.side = c("lef
     simplify = FALSE
   )
   tabgrob <- gtable::gtable_add_grob(
-    tabgrob, grobs = separators,
+    tabgrob,
+    grobs = separators,
     t = from.row, b = to.row,
     l = at.column, r = at.column
   )
   tab_return_same_class_as_input(tabgrob, input = tab)
 }
 # Create vline at the left or the right side of a given column
-tab_vline <- function(column.side = c("left", "right"), linetype = 1, linewidth = 1, linecolor = "black"){
+tab_vline <- function(column.side = c("left", "right"), linetype = 1, linewidth = 1, linecolor = "black") {
   column.side <- match.arg(column.side)
   x0 <- x1 <- unit(0, "npc")
-  if(column.side == "right") x0 <- x1 <- unit(1, "npc")
+  if (column.side == "right") x0 <- x1 <- unit(1, "npc")
   grid::segmentsGrob(
     x0 = x0, x1 = x1,
     y0 = unit(0, "npc"), y1 = unit(1, "npc"),
-    gp = grid::gpar( lty = linetype, lwd = linewidth, col = linecolor)
+    gp = grid::gpar(lty = linetype, lwd = linewidth, col = linecolor)
   )
 }
 
@@ -466,14 +488,15 @@ tab_vline <- function(column.side = c("left", "right"), linetype = 1, linewidth 
 #' @rdname ggtexttable
 tab_add_border <- function(tab, from.row = 2, to.row = tab_nrow(tab),
                            from.column = 1, to.column = tab_ncol(tab),
-                           linetype = 1, linewidth = 1, linecolor = "black"){
+                           linetype = 1, linewidth = 1, linecolor = "black") {
   required_package("gtable")
   tabgrob <- get_tablegrob(tab)
   border <- grid::rectGrob(
     gp = grid::gpar(fill = NA, lty = linetype, lwd = linewidth, col = linecolor)
-    )
+  )
   tabgrob <- gtable::gtable_add_grob(
-    tabgrob, grobs = border,
+    tabgrob,
+    grobs = border,
     t = from.row, b = to.row,
     l = from.column, r = to.column
   )
@@ -484,9 +507,10 @@ tab_add_border <- function(tab, from.row = 2, to.row = tab_nrow(tab),
 #' @rdname ggtexttable
 tbody_add_border <- function(tab, from.row = 2, to.row = tab_nrow(tab),
                              from.column = 1, to.column = tab_ncol(tab),
-                             linetype = 1, linewidth = 1, linecolor = "black"){
+                             linetype = 1, linewidth = 1, linecolor = "black") {
   tab_add_border(
-    tab, from.row = from.row, to.row = to.row,
+    tab,
+    from.row = from.row, to.row = to.row,
     from.column = from.column, to.column = to.column,
     linetype = linetype, linewidth = linewidth, linecolor = linecolor
   )
@@ -496,9 +520,10 @@ tbody_add_border <- function(tab, from.row = 2, to.row = tab_nrow(tab),
 #' @rdname ggtexttable
 thead_add_border <- function(tab, from.row = 1, to.row = 1,
                              from.column = 1, to.column = tab_ncol(tab),
-                             linetype = 1, linewidth = 1, linecolor = "black"){
+                             linetype = 1, linewidth = 1, linecolor = "black") {
   tab_add_border(
-    tab, from.row = from.row, to.row = to.row,
+    tab,
+    from.row = from.row, to.row = to.row,
     from.column = from.column, to.column = to.column,
     linetype = linetype, linewidth = linewidth, linecolor = linecolor
   )
@@ -507,24 +532,26 @@ thead_add_border <- function(tab, from.row = 1, to.row = 1,
 #' @export
 #' @rdname ggtexttable
 #' @param text text to be added as title or footnote.
-tab_add_title <- function(tab, text,  face = NULL, size = NULL, color = NULL,
-                      family = NULL, padding = unit(1.5,"line"),
-                      just = "left", hjust = NULL, vjust = NULL){
+tab_add_title <- function(tab, text, face = NULL, size = NULL, color = NULL,
+                          family = NULL, padding = unit(1.5, "line"),
+                          just = "left", hjust = NULL, vjust = NULL) {
   required_package("gtable")
   tabgrob <- get_tablegrob(tab)
   text <- grid::textGrob(
-    text, x = 0.02, just = just, hjust = hjust, vjust = vjust,
+    text,
+    x = 0.02, just = just, hjust = hjust, vjust = vjust,
     gp = grid::gpar(fontsize = size, fontface = face, fontfamily = family, col = color)
-    )
+  )
   # Add row at the top
   tabgrob <- gtable::gtable_add_rows(
-    tabgrob, heights = grid::grobHeight(text) + padding,
+    tabgrob,
+    heights = grid::grobHeight(text) + padding,
     pos = 0
-    )
+  )
   tabgrob <- gtable::gtable_add_grob(
     tabgrob, list(text),
     t = 1, b = 1, l = 1, r = ncol(tabgrob)
-    )
+  )
   tab_return_same_class_as_input(tabgrob, input = tab)
 }
 
@@ -544,18 +571,20 @@ tab_add_title <- function(tab, text,  face = NULL, size = NULL, color = NULL,
 #' @param vjust A numeric vector specifying vertical justification. If
 #'   specified, overrides the just setting.
 #'
-tab_add_footnote <- function(tab, text,  face = NULL, size = NULL, color = NULL,
-                          family = NULL, padding = unit(1.5,"line"),
-                          just = "right", hjust = NULL, vjust = NULL){
+tab_add_footnote <- function(tab, text, face = NULL, size = NULL, color = NULL,
+                             family = NULL, padding = unit(1.5, "line"),
+                             just = "right", hjust = NULL, vjust = NULL) {
   required_package("gtable")
   tabgrob <- get_tablegrob(tab)
   text <- grid::textGrob(
-    text, x = 0.95, just = just, hjust = hjust, vjust = vjust,
+    text,
+    x = 0.95, just = just, hjust = hjust, vjust = vjust,
     gp = grid::gpar(fontsize = size, fontface = face, fontfamily = family, col = color)
   )
   # Add row at the bottom
   tabgrob <- gtable::gtable_add_rows(
-    tabgrob, heights = grid::grobHeight(text) + padding,
+    tabgrob,
+    heights = grid::grobHeight(text) + padding,
     pos = -1
   )
   tabgrob <- gtable::gtable_add_grob(
@@ -566,33 +595,31 @@ tab_add_footnote <- function(tab, text,  face = NULL, size = NULL, color = NULL,
 }
 
 
-#::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::
 # Helper function
-#::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::
 
-is_ggtexttable <- function(tab){
+is_ggtexttable <- function(tab) {
   !is.null(attr(tab, "ggtexttableGrob"))
 }
-is_tablegrob <- function(tab){
+is_tablegrob <- function(tab) {
   inherits(tab, "gtable") & inherits(tab, "grob")
 }
 
 # Transform a table grob in ggtexttable like object
-as_ggtexttable <- function(tabgrob){
+as_ggtexttable <- function(tabgrob) {
   res <- as_ggplot(tabgrob)
   attr(res, "ggtexttableGrob") <- tabgrob
   res
 }
 
 # Extract tableGrob from ggtexttable()
-get_tablegrob <- function(tab){
-  if(is_ggtexttable(tab)){
+get_tablegrob <- function(tab) {
+  if (is_ggtexttable(tab)) {
     tabgrob <- attr(tab, "ggtexttableGrob")
-  }
-  else if(is_tablegrob(tab)){
+  } else if (is_tablegrob(tab)) {
     tabgrob <- tab
-  }
-  else{
+  } else {
     stop("tab should be an object from either ggpubr::ggtexttable() or gridExtra::tableGrob().")
   }
   tabgrob
@@ -600,288 +627,360 @@ get_tablegrob <- function(tab){
 
 # Return the same class as the input data,
 # which can be either ggtextable or a gridExtra::tableGrob
-tab_return_same_class_as_input <- function(tabgrob, input){
-  if(is_ggtexttable(input)){
+tab_return_same_class_as_input <- function(tabgrob, input) {
+  if (is_ggtexttable(input)) {
     return(as_ggtexttable(tabgrob))
-  }
-  else if(is_tablegrob(input)){
+  } else if (is_tablegrob(input)) {
     return(tabgrob)
   }
   tabgrob
 }
 
 
-
 # Define table style
-tstyle <- function(pal, size = 12){
-
-  allowed.palettes = c("default", "blank", "classic", "minimal", "light",
-                      "lBlack", "lBlue", "lRed", "lGreen", "lViolet", "lCyan", "lOrange",
-                      "lBlackWhite", "lBlueWhite", "lRedWhite", "lGreenWhite", "lVioletWhite", "lCyanWhite", "lOrangeWhite",
-                      "mBlack", "mBlue", "mRed", "mGreen", "mViolet", "mCyan", "mOrange",
-                      "mBlackWhite", "mBlueWhite", "mRedWhite", "mGreenWhite", "mVioletWhite", "mCyanWhite", "mOrangeWhite"
-                      )
-  if(!(pal %in% allowed.palettes ))
+tstyle <- function(pal, size = 12) {
+  allowed.palettes <- c(
+    "default", "blank", "classic", "minimal", "light",
+    "lBlack", "lBlue", "lRed", "lGreen", "lViolet", "lCyan", "lOrange",
+    "lBlackWhite", "lBlueWhite", "lRedWhite", "lGreenWhite", "lVioletWhite", "lCyanWhite", "lOrangeWhite",
+    "mBlack", "mBlue", "mRed", "mGreen", "mViolet", "mCyan", "mOrange",
+    "mBlackWhite", "mBlueWhite", "mRedWhite", "mGreenWhite", "mVioletWhite", "mCyanWhite", "mOrangeWhite"
+  )
+  if (!(pal %in% allowed.palettes)) {
     stop(pal, " is not a supported palette")
+  }
 
   style <- switch(pal,
-
-                  blank = list(
-                    colnames.style = colnames_style(fill = NA, linecolor = NA, size = size),
-                    rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
-                    tbody.style = tbody_style(fill = NA, linecolor = NA, size = size)
-                  ),
-
-                  classic = list(
-                    colnames.style = colnames_style(fill = NA, linecolor = "black", size = size),
-                    rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
-                    tbody.style = tbody_style(fill = NA, linecolor = "black", size = size)
-                  ),
-
-                  minimal = list(
-                    colnames.style = colnames_style(fill = NA, linecolor = NA, size = size),
-                    rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
-                    tbody.style = tbody_style(fill = NA, linecolor = NA, size = size)
-                  ),
-
-                  light = list(
-                    colnames.style = colnames_style(fill = NA, linecolor = NA, size = size),
-                    rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
-                    tbody.style = tbody_style(fill = NA, linecolor = NA, size = size)
-                  ),
-
-                  lBlack = list(
-                    colnames.style = colnames_style( color = "black", fill = "white", size = size,
-                                                     linecolor = NA, linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#D9D9D9", "white"),
-                                              linecolor = NA, size = size)
-                  ),
-
-                  lBlue = list(
-                    colnames.style = colnames_style( color = "#2F5D94", fill = "white",
-                                                     linecolor = NA, linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "#2F5D94", fill = c("#DAE6F2", "white"),
-                                              linecolor = NA, size = size)
-                  ),
-
-                  lRed = list(
-                    colnames.style = colnames_style( color = "#A3262A", fill = "white",
-                                                     linecolor = NA, linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "#A3262A", fill = c("#F7DBDA", "white"),
-                                              linecolor = NA, size = size)
-                  ),
-
-                  lGreen = list(
-                    colnames.style = colnames_style( color = "#7F993A", fill = "white",
-                                                     linecolor = NA, linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "#7F993A", fill = c("#E8F3DE", "white"),
-                                              linecolor = NA, size = size)
-                  ),
-
-                  lViolet = list(
-                    colnames.style = colnames_style( color = "#67417B", fill = "white",
-                                                     linecolor = NA, linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "#67417B", fill = c("#E6DEEC", "white"),
-                                              linecolor = NA, size = size)
-                  ),
-
-                  lCyan = list(
-                    colnames.style = colnames_style( color = "#00889E", fill = "white",
-                                                     linecolor = NA, linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "#00889E", fill = c("#D5EFF4", "white"),
-                                              linecolor = NA, size = size)
-                  ),
-
-                  lOrange = list(
-                    colnames.style = colnames_style( color = "#F15F00", fill = "white",
-                                                     linecolor = NA, linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "#F15F00", fill = c("#FBE5D4", "white"),
-                                              linecolor = NA, size = size)
-                  ),
-
-                  lBlackWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "black", size = size,
-                                                     linecolor = "black", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = "white",
-                                              linecolor = "black", size = size)
-                  ),
-
-                  lBlueWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#477DC0", size = size,
-                                                     linecolor = "#477DC0", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = "white",
-                                              linecolor = "#477DC0", size = size)
-                  ),
-
-                  lRedWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#D04042", size = size,
-                                                     linecolor = "#D04042", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = "white",
-                                              linecolor = "#D04042", size = size)
-                  ),
-
-                  lGreenWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#8CC257", size = size,
-                                                     linecolor = "#8CC257", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = "white",
-                                              linecolor = "#8CC257", size = size)
-                  ),
-
-                  lVioletWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#895AA3", size = size,
-                                                     linecolor = "#895AA3", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = "white",
-                                              linecolor = "#895AA3", size = size)
-                  ),
-
-                  lCyanWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#00AEC9", size = size,
-                                                     linecolor = "#00AEC9", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = "white",
-                                              linecolor = "#00AEC9", size = size)
-                  ),
-
-                  lOrangeWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#FB8F2D", size = size,
-                                                     linecolor = "#FB8F2D", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = "white",
-                                              linecolor = "#FB8F2D", size = size)
-                  ),
-
-                  mBlack = list(
-                    colnames.style = colnames_style( color = "white", fill = "black", size = size,
-                                                     linecolor = "white", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#A6A6A6", "#D9D9D9"),
-                                              linecolor = "white", size = size)
-                  ),
-
-                  mBlue = list(
-                    colnames.style = colnames_style( color = "white", fill = "#477DC0",
-                                                     linecolor = "white", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#B5CBE5", "#DAE6F2"),
-                                              linecolor = "white", size = size)
-                  ),
-
-                  mRed = list(
-                    colnames.style = colnames_style( color = "white", fill = "#D04042",
-                                                     linecolor = "white", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#EFB4B5", "#F7DBDA"),
-                                              linecolor = "white", size = size)
-                  ),
-
-                  mGreen = list(
-                    colnames.style = colnames_style( color = "white", fill = "#8CC257",
-                                                     linecolor = "white", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#D3E8BB", "#E8F3DE"),
-                                              linecolor = "white", size = size)
-                  ),
-
-                  mViolet = list(
-                    colnames.style = colnames_style( color = "white", fill = "#895AA3",
-                                                     linecolor = "white", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#D0BDDA", "#E6DEEC"),
-                                              linecolor = "white", size = size)
-                  ),
-
-                  mCyan = list(
-                    colnames.style = colnames_style( color = "white", fill = "#00AEC9",
-                                                     linecolor = "white", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#ADDFEA", "#D5EFF4"),
-                                              linecolor = "white", size = size)
-                  ),
-
-                  mOrange = list(
-                    colnames.style = colnames_style( color = "white", fill = "#EC8C2C",
-                                                     linecolor = "white", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#FDD2AF", "#FFE9D7"),
-                                              linecolor = "white", size = size)
-                  ),
-                  mBlackWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "black", size = size,
-                                                     linecolor = "black", linewidth = 1),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#A6A6A6", "white"),
-                                              linecolor = "black", size = size)
-                  ),
-
-                  mBlueWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#477DC0",
-                                                     linecolor = "#477DC0", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#B5CBE5", "white"),
-                                              linecolor = "#477DC0", size = size)
-                  ),
-
-                  mRedWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#D04042",
-                                                     linecolor = "#D04042", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#EFB4B5", "white"),
-                                              linecolor = "#D04042", size = size)
-                  ),
-
-                  mGreenWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#8CC257",
-                                                     linecolor = "#8CC257", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#D3E8BB", "white"),
-                                              linecolor = "#8CC257", size = size)
-                  ),
-
-                  mVioletWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#895AA3",
-                                                     linecolor = "#895AA3", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#D0BDDA", "white"),
-                                              linecolor = "#895AA3", size = size)
-                  ),
-
-                  mCyanWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#00AEC9",
-                                                     linecolor = "#00AEC9", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#ADDFEA", "white"),
-                                              linecolor = "#00AEC9", size = size)
-                  ),
-
-                  mOrangeWhite = list(
-                    colnames.style = colnames_style( color = "white", fill = "#EC8C2C",
-                                                     linecolor = "#EC8C2C", linewidth = 1, size = size),
-                    rownames.style = rownames_style(size = size),
-                    tbody.style = tbody_style(color = "black", fill = c("#FDD2AF", "white"),
-                                              linecolor = "#EC8C2C", size = size)
-                  )
-                  ,
-                  NULL
+    blank = list(
+      colnames.style = colnames_style(fill = NA, linecolor = NA, size = size),
+      rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
+      tbody.style = tbody_style(fill = NA, linecolor = NA, size = size)
+    ),
+    classic = list(
+      colnames.style = colnames_style(fill = NA, linecolor = "black", size = size),
+      rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
+      tbody.style = tbody_style(fill = NA, linecolor = "black", size = size)
+    ),
+    minimal = list(
+      colnames.style = colnames_style(fill = NA, linecolor = NA, size = size),
+      rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
+      tbody.style = tbody_style(fill = NA, linecolor = NA, size = size)
+    ),
+    light = list(
+      colnames.style = colnames_style(fill = NA, linecolor = NA, size = size),
+      rownames.style = rownames_style(fill = NA, linecolor = NA, size = size),
+      tbody.style = tbody_style(fill = NA, linecolor = NA, size = size)
+    ),
+    lBlack = list(
+      colnames.style = colnames_style(
+        color = "black", fill = "white", size = size,
+        linecolor = NA, linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#D9D9D9", "white"),
+        linecolor = NA, size = size
+      )
+    ),
+    lBlue = list(
+      colnames.style = colnames_style(
+        color = "#2F5D94", fill = "white",
+        linecolor = NA, linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "#2F5D94", fill = c("#DAE6F2", "white"),
+        linecolor = NA, size = size
+      )
+    ),
+    lRed = list(
+      colnames.style = colnames_style(
+        color = "#A3262A", fill = "white",
+        linecolor = NA, linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "#A3262A", fill = c("#F7DBDA", "white"),
+        linecolor = NA, size = size
+      )
+    ),
+    lGreen = list(
+      colnames.style = colnames_style(
+        color = "#7F993A", fill = "white",
+        linecolor = NA, linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "#7F993A", fill = c("#E8F3DE", "white"),
+        linecolor = NA, size = size
+      )
+    ),
+    lViolet = list(
+      colnames.style = colnames_style(
+        color = "#67417B", fill = "white",
+        linecolor = NA, linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "#67417B", fill = c("#E6DEEC", "white"),
+        linecolor = NA, size = size
+      )
+    ),
+    lCyan = list(
+      colnames.style = colnames_style(
+        color = "#00889E", fill = "white",
+        linecolor = NA, linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "#00889E", fill = c("#D5EFF4", "white"),
+        linecolor = NA, size = size
+      )
+    ),
+    lOrange = list(
+      colnames.style = colnames_style(
+        color = "#F15F00", fill = "white",
+        linecolor = NA, linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "#F15F00", fill = c("#FBE5D4", "white"),
+        linecolor = NA, size = size
+      )
+    ),
+    lBlackWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "black", size = size,
+        linecolor = "black", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = "white",
+        linecolor = "black", size = size
+      )
+    ),
+    lBlueWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#477DC0", size = size,
+        linecolor = "#477DC0", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = "white",
+        linecolor = "#477DC0", size = size
+      )
+    ),
+    lRedWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#D04042", size = size,
+        linecolor = "#D04042", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = "white",
+        linecolor = "#D04042", size = size
+      )
+    ),
+    lGreenWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#8CC257", size = size,
+        linecolor = "#8CC257", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = "white",
+        linecolor = "#8CC257", size = size
+      )
+    ),
+    lVioletWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#895AA3", size = size,
+        linecolor = "#895AA3", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = "white",
+        linecolor = "#895AA3", size = size
+      )
+    ),
+    lCyanWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#00AEC9", size = size,
+        linecolor = "#00AEC9", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = "white",
+        linecolor = "#00AEC9", size = size
+      )
+    ),
+    lOrangeWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#FB8F2D", size = size,
+        linecolor = "#FB8F2D", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = "white",
+        linecolor = "#FB8F2D", size = size
+      )
+    ),
+    mBlack = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "black", size = size,
+        linecolor = "white", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#A6A6A6", "#D9D9D9"),
+        linecolor = "white", size = size
+      )
+    ),
+    mBlue = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#477DC0",
+        linecolor = "white", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#B5CBE5", "#DAE6F2"),
+        linecolor = "white", size = size
+      )
+    ),
+    mRed = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#D04042",
+        linecolor = "white", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#EFB4B5", "#F7DBDA"),
+        linecolor = "white", size = size
+      )
+    ),
+    mGreen = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#8CC257",
+        linecolor = "white", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#D3E8BB", "#E8F3DE"),
+        linecolor = "white", size = size
+      )
+    ),
+    mViolet = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#895AA3",
+        linecolor = "white", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#D0BDDA", "#E6DEEC"),
+        linecolor = "white", size = size
+      )
+    ),
+    mCyan = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#00AEC9",
+        linecolor = "white", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#ADDFEA", "#D5EFF4"),
+        linecolor = "white", size = size
+      )
+    ),
+    mOrange = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#EC8C2C",
+        linecolor = "white", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#FDD2AF", "#FFE9D7"),
+        linecolor = "white", size = size
+      )
+    ),
+    mBlackWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "black", size = size,
+        linecolor = "black", linewidth = 1
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#A6A6A6", "white"),
+        linecolor = "black", size = size
+      )
+    ),
+    mBlueWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#477DC0",
+        linecolor = "#477DC0", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#B5CBE5", "white"),
+        linecolor = "#477DC0", size = size
+      )
+    ),
+    mRedWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#D04042",
+        linecolor = "#D04042", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#EFB4B5", "white"),
+        linecolor = "#D04042", size = size
+      )
+    ),
+    mGreenWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#8CC257",
+        linecolor = "#8CC257", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#D3E8BB", "white"),
+        linecolor = "#8CC257", size = size
+      )
+    ),
+    mVioletWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#895AA3",
+        linecolor = "#895AA3", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#D0BDDA", "white"),
+        linecolor = "#895AA3", size = size
+      )
+    ),
+    mCyanWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#00AEC9",
+        linecolor = "#00AEC9", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#ADDFEA", "white"),
+        linecolor = "#00AEC9", size = size
+      )
+    ),
+    mOrangeWhite = list(
+      colnames.style = colnames_style(
+        color = "white", fill = "#EC8C2C",
+        linecolor = "#EC8C2C", linewidth = 1, size = size
+      ),
+      rownames.style = rownames_style(size = size),
+      tbody.style = tbody_style(
+        color = "black", fill = c("#FDD2AF", "white"),
+        linecolor = "#EC8C2C", size = size
+      )
+    ),
+    NULL
   )
 
   style
-
 }
-
-
-
-
-
-

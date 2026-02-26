@@ -20,7 +20,7 @@ Convert NPC (Normalized Parent Coordinates) into data coordinates.
 \examples{
 npc_to_data_coord(npc = c(0.2, 0.95), data.ranges = c(1, 20))
 as_npc(c("top", "right")) \%>\%
-   npc_to_data_coord(data.ranges = c(1, 20))
+  npc_to_data_coord(data.ranges = c(1, 20))
 
 }
 \seealso{

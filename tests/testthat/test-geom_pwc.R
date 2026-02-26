@@ -145,9 +145,10 @@ test_that("Grouped plots: grouping by legend var and comparing x-axis groups", {
 test_that("Grouped plots: grouping by legend var and comparing x-axis groups, using dodge=0 and bracket.group.by = 'legend.var'", {
   bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp") +
     geom_pwc(
-      aes(group = supp, color = supp), group.by = "legend.var",
+      aes(group = supp, color = supp),
+      group.by = "legend.var",
       dodge = 0, bracket.group.by = "legend.var"
-      )
+    )
   bxp_build <- ggplot2::ggplot_build(bxp)
   stat.test <- bxp_build$data[[2]]
   label_coords <- as.data.frame(get_pwc_label_coords(stat.test))
@@ -244,32 +245,40 @@ test_that("Grouped plots: test that geom_pwc() works with different number of gr
   # https://github.com/kassambara/ggpubr/issues/326
   demo_data <- data.frame(
     stringsAsFactors = FALSE,
-    Study = c("A","A","A","A","A","A",
-              "A","A","A","A","B","B","B","B","B","B","B","B",
-              "B","B","C","C","C","C","C","C","C","C","C",
-              "C","C","C","C","C","C","D","D","D","D","D",
-              "D","D","D","D","D","D","D","D","D","D"),
-    Studytype = c("X","X","X","X","X","X",
-                  "X","X","X","X","X","X","X","X","X","X","X","X",
-                  "X","X","Y","Y","Y","Y","Y","Y","Y","Y","Y",
-                  "Y","Y","Y","Y","Y","Y","Y","Y","Y","Y","Y",
-                  "Y","Y","Y","Y","Y","Y","Y","Y","Y","Y"),
-    Values = c(4469L,4797L,5101L,5397L,
-               4542L,2780L,4326L,3396L,3657L,3199L,9221L,10176L,
-               9277L,10500L,9707L,7406L,7756L,7601L,7586L,7353L,
-               1811L,1485L,3003L,1629L,2495L,4207L,4265L,3629L,
-               4157L,3495L,2075L,2112L,2973L,3086L,2943L,5664L,6690L,
-               3538L,5741L,7880L,5848L,6390L,6569L,6114L,6520L,
-               7389L,6843L,7611L,6621L,7340L),
-    Group = as.factor(c("CTR",
-                        "CTR","CTR","CTR","CTR","Dis1","Dis1","Dis1",
-                        "Dis1","Dis1","CTR","CTR","CTR","CTR",
-                        "CTR","Dis1","Dis1","Dis1","Dis1","Dis1",
-                        "CTR","CTR","CTR","CTR","CTR","Dis2","Dis2",
-                        "Dis2","Dis2","Dis2","Dis3","Dis3",
-                        "Dis3","Dis3","Dis3","CTR","CTR","CTR","CTR",
-                        "CTR","Dis2","Dis2","Dis2","Dis2","Dis2",
-                        "Dis3","Dis3","Dis3","Dis3","Dis3"))
+    Study = c(
+      "A", "A", "A", "A", "A", "A",
+      "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B",
+      "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "C",
+      "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D",
+      "D", "D", "D", "D", "D", "D", "D", "D", "D", "D"
+    ),
+    Studytype = c(
+      "X", "X", "X", "X", "X", "X",
+      "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X",
+      "X", "X", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y",
+      "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y",
+      "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"
+    ),
+    Values = c(
+      4469L, 4797L, 5101L, 5397L,
+      4542L, 2780L, 4326L, 3396L, 3657L, 3199L, 9221L, 10176L,
+      9277L, 10500L, 9707L, 7406L, 7756L, 7601L, 7586L, 7353L,
+      1811L, 1485L, 3003L, 1629L, 2495L, 4207L, 4265L, 3629L,
+      4157L, 3495L, 2075L, 2112L, 2973L, 3086L, 2943L, 5664L, 6690L,
+      3538L, 5741L, 7880L, 5848L, 6390L, 6569L, 6114L, 6520L,
+      7389L, 6843L, 7611L, 6621L, 7340L
+    ),
+    Group = as.factor(c(
+      "CTR",
+      "CTR", "CTR", "CTR", "CTR", "Dis1", "Dis1", "Dis1",
+      "Dis1", "Dis1", "CTR", "CTR", "CTR", "CTR",
+      "CTR", "Dis1", "Dis1", "Dis1", "Dis1", "Dis1",
+      "CTR", "CTR", "CTR", "CTR", "CTR", "Dis2", "Dis2",
+      "Dis2", "Dis2", "Dis2", "Dis3", "Dis3",
+      "Dis3", "Dis3", "Dis3", "CTR", "CTR", "CTR", "CTR",
+      "CTR", "Dis2", "Dis2", "Dis2", "Dis2", "Dis2",
+      "Dis3", "Dis3", "Dis3", "Dis3", "Dis3"
+    ))
   )
   bxp <- ggboxplot(demo_data, x = "Study", y = "Values", fill = "Group") +
     geom_pwc(aes(group = Group), dodge = 0.8, label = "p", ref.group = 1)

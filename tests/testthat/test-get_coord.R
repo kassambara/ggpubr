@@ -15,7 +15,7 @@ test_that("get_coord works for one group", {
     npc = "left", step = 0.1, margin.npc = 0
   )
   # Y -axis
-  res_top<- get_coord(
+  res_top <- get_coord(
     data.ranges = c(4.2, 36.4), group = 1,
     npc = "top", step = -0.1, margin.npc = 0
   )
@@ -44,4 +44,3 @@ test_that("get_coord works for grouped plots", {
   expect_equal(res_coord, 1:3)
   expect_equal(res_top, c(36.40, 39.62, 42.84))
 })
-

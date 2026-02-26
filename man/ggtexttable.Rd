@@ -309,9 +309,9 @@ ggtexttable(df, rows = NULL)
 # Remaining columns are right justified i.e., hjust = 1 , x = 0.9
 table_theme <- ttheme(
   tbody.style = tbody_style(
-   hjust = as.vector(matrix(c(0, 1, 1, 1, 1), ncol = 5, nrow = nrow(df), byrow = TRUE)),
-   x = as.vector(matrix(c(.1, .9, .9,.9, .9), ncol = 5, nrow = nrow(df), byrow = TRUE))
- )
+    hjust = as.vector(matrix(c(0, 1, 1, 1, 1), ncol = 5, nrow = nrow(df), byrow = TRUE)),
+    x = as.vector(matrix(c(.1, .9, .9, .9, .9), ncol = 5, nrow = nrow(df), byrow = TRUE))
+  )
 )
 ggtexttable(df, rows = NULL, theme = table_theme)
 
@@ -323,7 +323,7 @@ ggtexttable(df, rows = NULL, theme = ttheme("light"))
 
 # Column names border only
 ggtexttable(df, rows = NULL, theme = ttheme("blank")) \%>\%
- tab_add_hline(at.row = 1:2, row.side = "top", linewidth = 2)
+  tab_add_hline(at.row = 1:2, row.side = "top", linewidth = 2)
 
 # classic theme
 ggtexttable(df, rows = NULL, theme = ttheme("classic"))
@@ -336,53 +336,63 @@ ggtexttable(df, rows = NULL, theme = ttheme("mBlue"))
 
 
 # Customize the table as you want
-ggtexttable(df, rows = NULL,
-           theme = ttheme(
-             colnames.style = colnames_style(color = "white", fill = "#8cc257"),
-             tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"))
-           )
+ggtexttable(df,
+  rows = NULL,
+  theme = ttheme(
+    colnames.style = colnames_style(color = "white", fill = "#8cc257"),
+    tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"))
+  )
 )
 
 # Use RColorBrewer palette
 # Provide as many fill color as there are rows in the table body, here nrow = 6
 ggtexttable(df,
-           theme = ttheme(
-             colnames.style = colnames_style(fill = "white"),
-             tbody.style = tbody_style(fill = get_palette("RdBu", 6))
-           )
+  theme = ttheme(
+    colnames.style = colnames_style(fill = "white"),
+    tbody.style = tbody_style(fill = get_palette("RdBu", 6))
+  )
 )
 
 # Text justification
-#::::::::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::::::::
 # Default is "centre" for the body and header, and "right" for the row names.
 # Left justification: hjust=0, x=0.1
 # Right justification: hjust=1, x=0.9
-tbody.style = tbody_style(color = "black",
-   fill = c("#e8f3de", "#d3e8bb"), hjust=1, x=0.9)
-ggtexttable(head(iris), rows = NULL,
-           theme = ttheme(
-             colnames.style = colnames_style(color = "white", fill = "#8cc257"),
-             tbody.style = tbody.style
-           )
+tbody.style <- tbody_style(
+  color = "black",
+  fill = c("#e8f3de", "#d3e8bb"), hjust = 1, x = 0.9
+)
+ggtexttable(head(iris),
+  rows = NULL,
+  theme = ttheme(
+    colnames.style = colnames_style(color = "white", fill = "#8cc257"),
+    tbody.style = tbody.style
+  )
 )
 
 # Access and modify the font and
 # the background of table cells
 # :::::::::::::::::::::::::::::::::::::::::::::
-tab <- ggtexttable(head(iris), rows = NULL,
-                  theme = ttheme("classic"))
-tab <- table_cell_font(tab, row = 3, column = 2,
-                      face = "bold")
-tab <- table_cell_bg(tab, row = 4, column = 3, linewidth = 5,
-                    fill="darkolivegreen1", color = "darkolivegreen4")
+tab <- ggtexttable(head(iris),
+  rows = NULL,
+  theme = ttheme("classic")
+)
+tab <- table_cell_font(tab,
+  row = 3, column = 2,
+  face = "bold"
+)
+tab <- table_cell_bg(tab,
+  row = 4, column = 3, linewidth = 5,
+  fill = "darkolivegreen1", color = "darkolivegreen4"
+)
 tab
 
 # Change table cells background and font for column 3,
 # Spaning from row 2 to the last row in the data
 tab <- ggtexttable(df, rows = NULL, theme = ttheme("classic"))
 tab \%>\%
- table_cell_bg(row = 2:tab_nrow(tab), column = 3, fill = "darkblue") \%>\%
- table_cell_font(row = 2:tab_nrow(tab), column = 3, face = "italic", color = "white")
+  table_cell_bg(row = 2:tab_nrow(tab), column = 3, fill = "darkblue") \%>\%
+  table_cell_font(row = 2:tab_nrow(tab), column = 3, face = "italic", color = "white")
 
 # Add separators and borders
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -390,19 +400,19 @@ tab \%>\%
 tab <- ggtexttable(df, theme = ttheme("blank"), rows = NULL)
 # Add horizontal and vertical lines
 tab \%>\%
- tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) \%>\%
- tab_add_hline(at.row = c(7), row.side = "bottom", linewidth = 3, linetype = 1) \%>\%
- tab_add_vline(at.column = 2:tab_ncol(tab), column.side = "left", from.row = 2, linetype = 2)
+  tab_add_hline(at.row = c(1, 2), row.side = "top", linewidth = 3, linetype = 1) \%>\%
+  tab_add_hline(at.row = c(7), row.side = "bottom", linewidth = 3, linetype = 1) \%>\%
+  tab_add_vline(at.column = 2:tab_ncol(tab), column.side = "left", from.row = 2, linetype = 2)
 
 # Add borders to table body and header
 # Cross out some cells
 tab \%>\%
- tbody_add_border() \%>\%
- thead_add_border() \%>\%
- tab_cell_crossout(
-   row = c(2, 4), column = 3, linecolor = "red",
-   reduce.size.by = 0.6
- )
+  tbody_add_border() \%>\%
+  thead_add_border() \%>\%
+  tab_cell_crossout(
+    row = c(2, 4), column = 3, linecolor = "red",
+    reduce.size.by = 0.6
+  )
 
 # Add titles andd footnote
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -410,38 +420,45 @@ tab \%>\%
 # Wrap subtitle into multiple lines using strwrap()
 main.title <- "Edgar Anderson's Iris Data"
 subtitle <- paste0(
-"This famous (Fisher's or Anderson's) iris data set gives the measurements",
-" in centimeters of the variables sepal length and width and petal length and width,",
- " respectively, for 50 flowers from each of 3 species of iris.",
- " The species are Iris setosa, versicolor, and virginica."
+  "This famous (Fisher's or Anderson's) iris data set gives the measurements",
+  " in centimeters of the variables sepal length and width and petal length and width,",
+  " respectively, for 50 flowers from each of 3 species of iris.",
+  " The species are Iris setosa, versicolor, and virginica."
 ) \%>\%
- strwrap(width = 80) \%>\%
- paste(collapse = "\n")
+  strwrap(width = 80) \%>\%
+  paste(collapse = "\n")
 
 tab <- ggtexttable(head(iris), theme = ttheme("light"))
 tab \%>\%
- tab_add_title(text = subtitle, face = "plain", size = 10) \%>\%
- tab_add_title(text = main.title, face = "bold", padding = unit(0.1, "line")) \%>\%
- tab_add_footnote(text = "*Table created using ggpubr", size = 10, face = "italic")
+  tab_add_title(text = subtitle, face = "plain", size = 10) \%>\%
+  tab_add_title(text = main.title, face = "bold", padding = unit(0.1, "line")) \%>\%
+  tab_add_footnote(text = "*Table created using ggpubr", size = 10, face = "italic")
 
 
 # Combine density plot and summary table
-#:::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::
 # Density plot of "Sepal.Length"
-density.p <- ggdensity(iris, x = "Sepal.Length",
-                      fill = "Species", palette = "jco")
+density.p <- ggdensity(iris,
+  x = "Sepal.Length",
+  fill = "Species", palette = "jco"
+)
 
 # Draw the summary table of Sepal.Length
 # Descriptive statistics by groups
-stable <- desc_statby(iris, measure.var = "Sepal.Length",
-                     grps = "Species")
+stable <- desc_statby(iris,
+  measure.var = "Sepal.Length",
+  grps = "Species"
+)
 stable <- stable[, c("Species", "length", "mean", "sd")]
-stable.p <- ggtexttable(stable, rows = NULL,
-                       theme = ttheme("mOrange"))
+stable.p <- ggtexttable(stable,
+  rows = NULL,
+  theme = ttheme("mOrange")
+)
 
 # Arrange the plots on the same page
 ggarrange(density.p, stable.p,
-         ncol = 1, nrow = 2,
-         heights = c(1, 0.5))
+  ncol = 1, nrow = 2,
+  heights = c(1, 0.5)
+)
 
 }

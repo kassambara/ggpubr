@@ -21,9 +21,10 @@ NULL
 #' @examples
 #' # Create some data format
 #' set.seed(1234)
-#' wdata = data.frame(
-#'    sex = factor(rep(c("F", "M"), each=200)),
-#'    weight = c(rnorm(200, 55), rnorm(200, 58)))
+#' wdata <- data.frame(
+#'   sex = factor(rep(c("F", "M"), each = 200)),
+#'   weight = c(rnorm(200, 55), rnorm(200, 58))
+#' )
 #'
 #' head(wdata, 4)
 #'
@@ -32,71 +33,72 @@ NULL
 #'
 #' # Change colors and linetype by groups ("sex")
 #' # Use custom palette
-#' ggecdf(wdata, x = "weight",
-#'    color = "sex", linetype = "sex",
-#'    palette = c("#00AFBB", "#E7B800"))
+#' ggecdf(wdata,
+#'   x = "weight",
+#'   color = "sex", linetype = "sex",
+#'   palette = c("#00AFBB", "#E7B800")
+#' )
 #'
 #' @export
-ggecdf <- function(data, x,  combine = FALSE, merge = FALSE,
-                   color = "black",  palette = NULL,
+ggecdf <- function(data, x, combine = FALSE, merge = FALSE,
+                   color = "black", palette = NULL,
                    size = NULL, linetype = "solid",
                    title = NULL, xlab = NULL, ylab = NULL,
                    facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                    ggtheme = theme_pubr(),
-                   ...){
-
-
+                   ...) {
   # Default options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
     combine = combine, merge = merge,
     color = color, palette = palette,
     linetype = linetype, size = size,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    ggtheme = ggtheme, ...)
-  if(!missing(data)) .opts$data <- data
-  if(!missing(x)) .opts$x <- x
+    ggtheme = ggtheme, ...
+  )
+  if (!missing(data)) .opts$data <- data
+  if (!missing(x)) .opts$x <- x
 
   # User options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .user.opts <- as.list(match.call(expand.dots = TRUE))
   .user.opts[[1]] <- NULL # Remove the function name
   # keep only user arguments
-  for(opt.name in names(.opts)){
-    if(is.null(.user.opts[[opt.name]]))
+  for (opt.name in names(.opts)) {
+    if (is.null(.user.opts[[opt.name]])) {
       .opts[[opt.name]] <- NULL
+    }
   }
   .opts$fun <- ggecdf_core
   .opts$y <- "..ecdf.."
-  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+  if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
+  }
   p <- do.call(.plotter, .opts)
 
-  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)
-
 }
 
 ggecdf_core <- function(data, x, y = "..ecdf..",
-                      color = "black",  palette = NULL,
-                      size = NULL, linetype = "solid",
-                      title = NULL, xlab = NULL, ylab = NULL,
-                      ggtheme = theme_classic(),
-                      ...)
-{
-
+                        color = "black", palette = NULL,
+                        size = NULL, linetype = "solid",
+                        title = NULL, xlab = NULL, ylab = NULL,
+                        ggtheme = theme_classic(),
+                        ...) {
   p <- ggplot(data, create_aes(list(x = x)))
 
   p <- p +
-      geom_exec(stat_ecdf, data = data,
-                 color = color,  linewidth = size,
-                 linetype = linetype)+
+    geom_exec(stat_ecdf,
+      data = data,
+      color = color, linewidth = size,
+      linetype = linetype
+    ) +
     labs(y = paste0("F(", x, ")"))
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
-             title = title, xlab = xlab, ylab = ylab,...)
+  p <- ggpar(p,
+    palette = palette, ggtheme = ggtheme,
+    title = title, xlab = xlab, ylab = ylab, ...
+  )
   p
 }
-
-
-

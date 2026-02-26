@@ -13,8 +13,8 @@ a ggplot.
 Show point shapes available in R.
 }
 \examples{
-show_point_shapes()+
- theme_minimal()
+show_point_shapes() +
+  theme_minimal()
 }
 \seealso{
 \code{\link{ggpar}} and \code{\link{ggline}}.

@@ -1,0 +1,8 @@
+pandoc: '3.9'
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles: {}
+last_built: 2026-02-26T07:50Z
+urls:
+  reference: https://rpkgs.datanovia.com/ggpubr/reference
+  article: https://rpkgs.datanovia.com/ggpubr/articles

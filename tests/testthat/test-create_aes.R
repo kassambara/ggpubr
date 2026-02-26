@@ -18,4 +18,3 @@ test_that("parse_expression works for a mathetical expression", {
   expected <- parse(text = "log2( a + b )")[[1]]
   expect_equal(observed, expected)
 })
-

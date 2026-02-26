@@ -28,7 +28,10 @@ A helper function used by ggpubr functions to execute any geom_*
 }
 \examples{
 \dontrun{
-ggplot() + geom_exec(geom_point, data = mtcars,
-    x = "mpg", y = "wt", size = "cyl", color = "cyl")
+ggplot() +
+  geom_exec(geom_point,
+    data = mtcars,
+    x = "mpg", y = "wt", size = "cyl", color = "cyl"
+  )
 }
 }

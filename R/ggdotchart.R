@@ -39,41 +39,47 @@ NULL
 #' head(df[, c("wt", "mpg", "cyl")], 3)
 #'
 #' # Basic plot
-#' ggdotchart(df, x = "name", y ="mpg",
-#'   ggtheme = theme_bw())
+#' ggdotchart(df,
+#'   x = "name", y = "mpg",
+#'   ggtheme = theme_bw()
+#' )
 #'
 #' # Change colors by  group cyl
-#' ggdotchart(df, x = "name", y = "mpg",
-#'    group = "cyl", color = "cyl",
-#'    palette = c('#999999','#E69F00','#56B4E9'),
-#'    rotate = TRUE,
-#'    sorting = "descending",
-#'    ggtheme = theme_bw(),
-#'    y.text.col = TRUE )
+#' ggdotchart(df,
+#'   x = "name", y = "mpg",
+#'   group = "cyl", color = "cyl",
+#'   palette = c("#999999", "#E69F00", "#56B4E9"),
+#'   rotate = TRUE,
+#'   sorting = "descending",
+#'   ggtheme = theme_bw(),
+#'   y.text.col = TRUE
+#' )
 #'
 #'
-#'# Plot with multiple groups
-#'# +++++++++++++++++++++
-#'# Create some data
-#'df2 <- data.frame(supp=rep(c("VC", "OJ"), each=3),
-#'                  dose=rep(c("D0.5", "D1", "D2"),2),
-#'                  len=c(6.8, 15, 33, 4.2, 10, 29.5))
-#'print(df2)
+#' # Plot with multiple groups
+#' # +++++++++++++++++++++
+#' # Create some data
+#' df2 <- data.frame(
+#'   supp = rep(c("VC", "OJ"), each = 3),
+#'   dose = rep(c("D0.5", "D1", "D2"), 2),
+#'   len = c(6.8, 15, 33, 4.2, 10, 29.5)
+#' )
+#' print(df2)
 #'
-#'ggdotchart(df2, x = "dose", y = "len",
-#'           color = "supp", size = 3,
-#'           add = "segment",
-#'           add.params = list(color = "lightgray", size = 1.5),
-#'           position = position_dodge(0.3),
-#'           palette = "jco",
-#'           ggtheme = theme_pubclean()
-#')
-#'
+#' ggdotchart(df2,
+#'   x = "dose", y = "len",
+#'   color = "supp", size = 3,
+#'   add = "segment",
+#'   add.params = list(color = "lightgray", linewidth = 1.5),
+#'   position = position_dodge(0.3),
+#'   palette = "jco",
+#'   ggtheme = theme_pubclean()
+#' )
 #'
 #' @export
 ggdotchart <- function(data, x, y, group = NULL,
                        combine = FALSE,
-                       color = "black",  palette = NULL,
+                       color = "black", palette = NULL,
                        shape = 19, size = NULL, dot.size = size,
                        sorting = c("ascending", "descending", "none"),
                        add = c("none", "segment"), add.params = list(),
@@ -86,63 +92,65 @@ ggdotchart <- function(data, x, y, group = NULL,
                        label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                        position = "identity",
                        ggtheme = theme_pubr(),
-                       ...){
-
+                       ...) {
   # Default options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  .opts <- list( data = data, x = x, y = y,
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .opts <- list(
+    data = data, x = x, y = y,
     group = group, combine = combine,
     color = color, palette = palette, shape = shape,
     size = size, dot.size = dot.size, sorting = sorting,
     x.text.col = x.text.col,
     rotate = rotate, title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    select = select , remove = remove, order = order,
+    select = select, remove = remove, order = order,
     add = add, add.params = add.params,
     label = label, font.label = font.label, label.select = label.select,
     repel = repel, label.rectangle = label.rectangle,
-    position = position, ggtheme = ggtheme, ...)
+    position = position, ggtheme = ggtheme, ...
+  )
 
   # User options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .user.opts <- as.list(match.call(expand.dots = TRUE))
   .user.opts[[1]] <- NULL # Remove the function name
   # keep only user arguments
-  for(opt.name in names(.opts)){
-    if(is.null(.user.opts[[opt.name]]))
+  for (opt.name in names(.opts)) {
+    if (is.null(.user.opts[[opt.name]])) {
       .opts[[opt.name]] <- NULL
+    }
   }
 
   .opts$fun <- ggdotchart_core
   .opts$fun_name <- "ggdotchart"
 
-  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+  if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
+  }
 
   p <- do.call(.plotter, .opts)
 
-  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)
-
 }
 
 
 ggdotchart_core <- function(data, x, y, group = NULL,
-                       color = "black",  palette = NULL,
-                       shape = 19, size = NULL, dot.size = size,
-                       sorting = c("ascending", "descending", "none"),
-                       add = c("none", "segments"), add.params = list(),
-                       x.text.col = FALSE,
-                       rotate = FALSE,
-                       title = NULL, xlab = NULL, ylab = NULL,
-                       ggtheme = theme_bw(),
-                       position = "identity",
-                       ...)
-{
+                            color = "black", palette = NULL,
+                            shape = 19, size = NULL, dot.size = size,
+                            sorting = c("ascending", "descending", "none"),
+                            add = c("none", "segments"), add.params = list(),
+                            x.text.col = FALSE,
+                            rotate = FALSE,
+                            title = NULL, xlab = NULL, ylab = NULL,
+                            ggtheme = theme_bw(),
+                            position = "identity",
+                            ...) {
   add <- match.arg(add)
-  if(!is.null(group)){
-    if(group == 1)
+  if (!is.null(group)) {
+    if (group == 1) {
       group <- NULL
+    }
   }
 
   # if(is.null(group) & color[1] %in% names(data)){
@@ -154,37 +162,42 @@ ggdotchart_core <- function(data, x, y, group = NULL,
   sorting <- match.arg(sorting)
   decreasing <- ifelse(sorting == "descending", FALSE, TRUE)
   x.text.angle <- ifelse(rotate, 0, 90)
-  if(!is.null(.dots$y.text.col))
+  if (!is.null(.dots$y.text.col)) {
     x.text.col <- .dots$y.text.col
+  }
   data <- as.data.frame(data)
   label <- .select_vec(data, x)
   . <- NULL
 
-  if(rotate & sorting == "descending") sorting <- "ascending"
-  else if(rotate & sorting == "ascending") sorting <- "descending"
-  if(sorting != "none"){
-    if(is.null(group)){
-      if(sorting == "descending")
+  if (rotate & sorting == "descending") {
+    sorting <- "ascending"
+  } else if (rotate & sorting == "ascending") sorting <- "descending"
+  if (sorting != "none") {
+    if (is.null(group)) {
+      if (sorting == "descending") {
         data <- arrange(data, desc(!!sym(y)))
-      else if(sorting == "ascending")
+      } else if (sorting == "ascending") {
         data <- arrange(data, !!sym(y))
-    }
-    else if(group != 1){
-      if(sorting == "descending")
+      }
+    } else if (group != 1) {
+      if (sorting == "descending") {
         data <- arrange(data, !!sym(group), desc(!!sym(y)))
-      else if(sorting == "ascending")
+      } else if (sorting == "ascending") {
         data <- arrange(data, !!!syms(c(group, y)))
+      }
     }
     data[[x]] <- factor(data[[x]], levels = unique(as.vector(data[[x]])))
   }
 
-  if(!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
+  if (!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 
-  if(add == "segments"){
-    seg.opts <- geom_exec(data = data, color = color,
-                          size = size, position = position)
+  if (add == "segments") {
+    seg.opts <- geom_exec(
+      data = data, color = color,
+      size = size, position = position
+    )
 
     mapping <- seg.opts$mapping %>%
       .add_item(x = x, ymin = 0, ymax = y, group = group)
@@ -195,97 +208,113 @@ ggdotchart_core <- function(data, x, y, group = NULL,
     # option <- seg.opts$option
 
     seg.col <- "lightgray"
-    if(!is.null(add.params$color))
+    if (!is.null(add.params$color)) {
       seg.col <- add.params$color
-    else if(!is.null(add.params$colour))
+    } else if (!is.null(add.params$colour)) {
       seg.col <- add.params$colour
-    if(seg.col %in% names(data)) mapping$color <- seg.col
-    else option$color <- seg.col
+    }
+    if (seg.col %in% names(data)) {
+      mapping$color <- seg.col
+    } else {
+      option$color <- seg.col
+    }
 
 
-    if(!is.null(add.params$size))
-      option$size <- add.params$size
+    # Use linewidth instead of size for geom_linerange (ggplot2 3.4.0+ compatibility)
+    if (!is.null(add.params$linewidth)) {
+      option$linewidth <- add.params$linewidth
+    } else if (!is.null(add.params$size)) {
+      option$linewidth <- add.params$size
+    }
 
-    # if(!is.null(add.params$color))
-    #   option$color <- add.params$color
-    # else if(!is.null(add.params$colour))
-    #   option$color <- add.params$colour
-    # if(!is.null(add.params$size))
-    #   option$size <- add.params$size
+    if ("linewidth" %in% names(formals(ggplot2::geom_linerange))) {
+      option$size <- NULL
+    } else {
+      if (is.null(option$size) && !is.null(option$linewidth)) option$size <- option$linewidth
+      option$linewidth <- NULL
+    }
 
     option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_linerange, option)
   }
 
 
-  p <- p + geom_exec(geom_point, data = data, shape = shape,
-                      color = color, size = dot.size, position = position)
+  p <- p + geom_exec(geom_point,
+    data = data, shape = shape,
+    color = color, size = dot.size, position = position
+  )
 
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme, x.text.angle = x.text.angle,
-             title = title, xlab = xlab, ylab = ylab, ...)
+  p <- ggpar(p,
+    palette = palette, ggtheme = ggtheme, x.text.angle = x.text.angle,
+    title = title, xlab = xlab, ylab = ylab, ...
+  )
 
 
   # Change x axis text colors
-  if(x.text.col){
-    if(!rotate)
+  if (x.text.col) {
+    if (!rotate) {
       p <- .set_x_text_col(p, label, x.text.angle)
-    else
+    } else {
       p <- .set_y_text_col(p, label, x.text.angle)
+    }
   }
 
-  if(x.text.angle == 90 & !rotate){
+  if (x.text.angle == 90 & !rotate) {
     p <- p + theme(axis.text.x = element_text(vjust = 0.5))
   }
 
-  if(rotate) p <- p + coord_flip()
+  if (rotate) p <- p + coord_flip()
 
   p
 }
 
 
 # Set x text color
-.set_x_text_col <- function(p, label, angle){
+# Note: Vectorized input to element_text() is not officially supported by ggplot2,
+# but this is a deliberate feature for Cleveland dot plots. We suppress the warning.
+.set_x_text_col <- function(p, label, angle) {
   g <- ggplot2::ggplot_build(p)
   cols <- unlist(g$data[[1]]["colour"])
   names(cols) <- as.vector(label) # Give every color an appropriate name
-  p + theme(axis.text.x = element_text(colour = cols, angle = angle, hjust = 1))
+  suppressWarnings(
+    p + theme(axis.text.x = element_text(colour = cols, angle = angle, hjust = 1))
+  )
 }
 
 # Set y text color
-.set_y_text_col <- function(p, label, angle){
+# Note: Vectorized input to element_text() is not officially supported by ggplot2,
+# but this is a deliberate feature for Cleveland dot plots. We suppress the warning.
+.set_y_text_col <- function(p, label, angle) {
   g <- ggplot2::ggplot_build(p)
   cols <- unlist(g$data[[1]]["colour"])
   names(cols) <- as.vector(label) # Give every color an appropriate name
-  p + theme(axis.text.y = element_text(colour = cols))
+  suppressWarnings(
+    p + theme(axis.text.y = element_text(colour = cols))
+  )
 }
-
-
-
 
 
 # Helper functions
 # +++++++++++++++++++++++++
 #' @export
 #' @rdname ggdotchart
-theme_cleveland <- function(rotate = TRUE){
-  if(rotate){
-    theme(panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank(),
-          panel.grid.major.y = element_line(colour = "grey70", linetype = "dashed"),
-          axis.title.y = element_blank(),
-          axis.ticks.y = element_blank())
+theme_cleveland <- function(rotate = TRUE) {
+  if (rotate) {
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      panel.grid.major.y = element_line(colour = "grey70", linetype = "dashed"),
+      axis.title.y = element_blank(),
+      axis.ticks.y = element_blank()
+    )
+  } else {
+    theme(
+      panel.grid.major.x = element_line(colour = "grey70", linetype = "dashed"),
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      axis.title.x = element_blank(),
+      axis.ticks.x = element_blank()
+    )
   }
-  else{
-    theme(panel.grid.major.x = element_line(colour = "grey70", linetype = "dashed"),
-          panel.grid.major.y = element_blank(),
-          panel.grid.minor.y = element_blank(),
-          axis.title.x = element_blank(),
-          axis.ticks.x = element_blank())
-  }
-
 }
-
-
-
-

@@ -1,149 +1,166 @@
 #' @include utilities.R
 NULL
-#'Facet a ggplot into Multiple Panels
-#'@description Create multi-panel plots of a data set grouped by one or two
+#' Facet a ggplot into Multiple Panels
+#' @description Create multi-panel plots of a data set grouped by one or two
 #'  grouping variables. Wrapper around \code{\link[ggplot2]{facet_wrap}}
-#'@param p a ggplot
-#'@param facet.by character vector, of length 1 or 2, specifying grouping
+#' @param p a ggplot
+#' @param facet.by character vector, of length 1 or 2, specifying grouping
 #'  variables for faceting the plot into multiple panels. Should be in the data.
-#'@param nrow,ncol Number of rows and columns in the panel. Used only when the
+#' @param nrow,ncol Number of rows and columns in the panel. Used only when the
 #'  data is faceted by one grouping variable.
-#'@param scales should axis scales of panels be fixed ("fixed", the default),
+#' @param scales should axis scales of panels be fixed ("fixed", the default),
 #'  free ("free"), or free in one dimension ("free_x", "free_y").
-#'@param short.panel.labs logical value. Default is TRUE. If TRUE, create short
+#' @param short.panel.labs logical value. Default is TRUE. If TRUE, create short
 #'  labels for panels by omitting variable names; in other words panels will be
 #'  labelled only by variable grouping levels.
-#'@param labeller Character vector. An alternative to the argument
+#' @param labeller Character vector. An alternative to the argument
 #'  \code{short.panel.labs}. Possible values are one of "label_both" (panel
 #'  labelled by both grouping variable names and levels) and "label_value"
 #'  (panel labelled with only grouping levels).
-#'@param panel.labs a list of one or two character vectors to modify facet panel
+#' @param panel.labs a list of one or two character vectors to modify facet panel
 #'  labels. For example, panel.labs = list(sex = c("Male", "Female")) specifies
 #'  the labels for the "sex" variable. For two grouping variables, you can use
 #'  for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
 #'  "Lev", "Lev2") ).
-#'@param panel.labs.background a list to customize the background of panel
+#' @param panel.labs.background a list to customize the background of panel
 #'  labels. Should contain the combination of the following elements: \itemize{
-#'  \item \code{color, linetype, size}: background line color, type and size
+#'  \item \code{color, linetype, linewidth}: background line color, type and width
 #'  \item \code{fill}: background fill color. } For example,
 #'  panel.labs.background = list(color = "blue", fill = "pink", linetype =
-#'  "dashed", size = 0.5).
-#'@param panel.labs.font a list of aestheics indicating the size (e.g.: 14), the
+#'  "dashed", linewidth = 0.5). Note: \code{size} is deprecated, use
+#'  \code{linewidth} instead.
+#' @param panel.labs.font a list of aestheics indicating the size (e.g.: 14), the
 #'  face/style (e.g.: "plain", "bold", "italic", "bold.italic") and the color
 #'  (e.g.: "red") and the orientation angle (e.g.: 45) of panel labels.
-#'@param panel.labs.font.x,panel.labs.font.y same as panel.labs.font but for
+#' @param panel.labs.font.x,panel.labs.font.y same as panel.labs.font but for
 #'  only x and y direction, respectively.
-#'@param strip.position (used only in \code{facet_wrap()}). By default, the
+#' @param strip.position (used only in \code{facet_wrap()}). By default, the
 #'  labels are displayed on the top of the plot. Using \code{strip.position} it
 #'  is possible to place the labels on either of the four sides by setting
 #'  \code{strip.position = c("top", "bottom", "left", "right")}
-#'@param ... not used
+#' @param ... not used
 #' @examples
-#' p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
-#'       color = "supp")
+#' p <- ggboxplot(ToothGrowth,
+#'   x = "dose", y = "len",
+#'   color = "supp"
+#' )
 #' print(p)
 #'
 #' facet(p, facet.by = "supp")
 #'
 #' # Customize
-#' facet(p + theme_bw(), facet.by = "supp",
-#'   short.panel.labs = FALSE,   # Allow long labels in panels
+#' facet(p + theme_bw(),
+#'   facet.by = "supp",
+#'   short.panel.labs = FALSE, # Allow long labels in panels
 #'   panel.labs.background = list(fill = "steelblue", color = "steelblue")
 #' )
-#'@name facet
-#'@rdname facet
-#'@export
-facet <- function(p,  facet.by, nrow = NULL, ncol = NULL,
+#' @name facet
+#' @rdname facet
+#' @export
+facet <- function(p, facet.by, nrow = NULL, ncol = NULL,
                   scales = "fixed", short.panel.labs = TRUE, labeller = "label_value",
                   panel.labs = NULL,
                   panel.labs.background = list(color = NULL, fill = NULL),
                   panel.labs.font = list(face = NULL, color = NULL, size = NULL, angle = NULL),
                   panel.labs.font.x = panel.labs.font,
                   panel.labs.font.y = panel.labs.font,
-                  strip.position = "top", ...
-)
-{
-
-  if(length(facet.by) > 2)
+                  strip.position = "top", ...) {
+  if (length(facet.by) > 2) {
     stop("facet.by should be of length 1 or 2.")
-  if(!missing(labeller)){
-    if(labeller == "label_value")
-      short.panel.labs = TRUE
-    else if(labeller == "label_both")
-      short.panel.labs = FALSE
-    else stop("Don't support the following labeller: ", labeller, call. = FALSE)
+  }
+  if (!missing(labeller)) {
+    if (labeller == "label_value") {
+      short.panel.labs <- TRUE
+    } else if (labeller == "label_both") {
+      short.panel.labs <- FALSE
+    } else {
+      stop("Don't support the following labeller: ", labeller, call. = FALSE)
+    }
   }
 
   panel.labs.background <- .compact(panel.labs.background)
+  # Convert size to linewidth for element_rect (ggplot2 3.4.0+ compatibility)
+  if ("size" %in% names(panel.labs.background)) {
+    panel.labs.background$linewidth <- panel.labs.background$size
+    panel.labs.background$size <- NULL
+  }
   panel.labs.font.x <- .compact(panel.labs.font.x)
   panel.labs.font.y <- .compact(panel.labs.font.y)
 
   .labeller <- "label_value"
 
-  if(!is.null(panel.labs)){
+  if (!is.null(panel.labs)) {
     .labeller <- .create_labeller(p$data, panel.labs)
-  }
-  else if(!short.panel.labs) {
+  } else if (!short.panel.labs) {
     .labeller <- label_both
   }
 
 
-  if(length(facet.by) == 1){
+  if (length(facet.by) == 1) {
     facet.formula <- paste0("~", glue::backtick(facet.by)) %>% stats::as.formula()
-    p <- p + facet_wrap(facet.formula, nrow = nrow, ncol = ncol, scales = scales, labeller = .labeller,
-                        strip.position = strip.position)
-  }
-  else if(length(facet.by) == 2){
+    p <- p + facet_wrap(facet.formula,
+      nrow = nrow, ncol = ncol, scales = scales, labeller = .labeller,
+      strip.position = strip.position
+    )
+  } else if (length(facet.by) == 2) {
     facet.formula <- paste(glue::backtick(facet.by), collapse = " ~ ") %>% stats::as.formula()
     p <- p + facet_grid(facet.formula, scales = scales, labeller = .labeller)
   }
 
-  if(!.is_empty(panel.labs.background))
+  if (!.is_empty(panel.labs.background)) {
     p <- p + theme(strip.background = do.call(element_rect, panel.labs.background))
-  if(!.is_empty(panel.labs.font.x))
+  }
+  if (!.is_empty(panel.labs.font.x)) {
     p <- p + theme(strip.text.x = do.call(element_text, panel.labs.font.x))
-  if(!.is_empty(panel.labs.font.y))
+  }
+  if (!.is_empty(panel.labs.font.y)) {
     p <- p + theme(strip.text.y = do.call(element_text, panel.labs.font.y))
+  }
 
   p
 }
 
 
 # Create labeller to rename panel labels
-.create_labeller <- function(data,  panel.labs = NULL)
-  {
-
-  if(is.null(panel.labs))
+.create_labeller <- function(data, panel.labs = NULL) {
+  if (is.null(panel.labs)) {
     return(NULL)
+  }
 
-  if(!is.null(panel.labs) & !.is_list(panel.labs))
+  if (!is.null(panel.labs) & !.is_list(panel.labs)) {
     stop("Argument panel.labs should be a list. Read the documentation.")
+  }
 
-  if(is.null(names(panel.labs)))
-    stop("panel.labs should be a named list. ",
-         "Ex: panel.labs = list(sex = c('Male', 'Female') )")
+  if (is.null(names(panel.labs))) {
+    stop(
+      "panel.labs should be a named list. ",
+      "Ex: panel.labs = list(sex = c('Male', 'Female') )"
+    )
+  }
 
   variables <- names(panel.labs)
 
   . <- NULL
   .labels <- list()
 
-  for(variable in variables){
-
+  for (variable in variables) {
     current.levels <- .levels(data[[variable]])
     provided.levels <- panel.labs[[variable]]
 
-    if(length(current.levels) != length(provided.levels)){
-      stop("The number of ", variable, " levels in panel.labs ",
-           "and in the data are different.")
+    if (length(current.levels) != length(provided.levels)) {
+      stop(
+        "The number of ", variable, " levels in panel.labs ",
+        "and in the data are different."
+      )
     }
 
     names(provided.levels) <- current.levels
-    .labels[[variable]] <-  provided.levels
-
+    .labels[[variable]] <- provided.levels
   }
 
-  if(!.is_empty(.labels))
+  if (!.is_empty(.labels)) {
     do.call(ggplot2::labeller, .labels)
-  else return(NULL)
+  } else {
+    return(NULL)
+  }
 }

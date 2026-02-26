@@ -16,14 +16,16 @@ NULL
 #' df$cyl <- as.factor(df$cyl)
 #'
 #' # Scatter plot with ellipses and group mean points
-#' ggscatter(df, x = "wt", y = "mpg",
-#'    color = "cyl", shape = "cyl", ellipse = TRUE)+
-#'  stat_mean(aes(color = cyl, shape = cyl), size = 4)
+#' ggscatter(df,
+#'   x = "wt", y = "mpg",
+#'   color = "cyl", shape = "cyl", ellipse = TRUE
+#' ) +
+#'   stat_mean(aes(color = cyl, shape = cyl), size = 4)
 #'
 #' @export
 stat_mean <- function(mapping = NULL, data = NULL, geom = "point",
-                    position = "identity", na.rm = FALSE, show.legend = NA,
-                    inherit.aes = TRUE, ...) {
+                      position = "identity", na.rm = FALSE, show.legend = NA,
+                      inherit.aes = TRUE, ...) {
   layer(
     stat = StatMean, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -32,11 +34,13 @@ stat_mean <- function(mapping = NULL, data = NULL, geom = "point",
 }
 
 
-StatMean<- ggproto("StatMean", Stat,
-                  required_aes = c("x", "y"),
-                  compute_group = function(data, scales) {
-                    res <- data.frame(x = mean(data$x, na.rm = TRUE),
-                                      y = mean(data$y, na.rm = TRUE))
-                    res
-                  }
+StatMean <- ggproto("StatMean", Stat,
+  required_aes = c("x", "y"),
+  compute_group = function(data, scales) {
+    res <- data.frame(
+      x = mean(data$x, na.rm = TRUE),
+      y = mean(data$y, na.rm = TRUE)
+    )
+    res
+  }
 )

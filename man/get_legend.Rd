@@ -21,9 +21,11 @@ Extract the legend labels from a ggplot object.
 }
 \examples{
 # Create a scatter plot
-p <- ggscatter(iris, x = "Sepal.Length", y = "Sepal.Width",
-        color = "Species", palette = "jco",
-        ggtheme = theme_minimal())
+p <- ggscatter(iris,
+  x = "Sepal.Length", y = "Sepal.Width",
+  color = "Species", palette = "jco",
+  ggtheme = theme_minimal()
+)
 p
 
 # Extract the legend. Returns a gtable

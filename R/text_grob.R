@@ -14,27 +14,31 @@ NULL
 #' @param ... other arguments passed to \link[grid:grid.text]{textGrob}.
 #' @return  a text grob.
 #' @examples
-#'text <- paste("iris data set gives the measurements in cm",
-#'              "of the variables sepal length and width",
-#'              "and petal length and width, respectively,",
-#'              "for 50 flowers from each of 3 species of iris.",
-#'              "The species are Iris setosa, versicolor, and virginica.", sep = "\n")
+#' text <- paste("iris data set gives the measurements in cm",
+#'   "of the variables sepal length and width",
+#'   "and petal length and width, respectively,",
+#'   "for 50 flowers from each of 3 species of iris.",
+#'   "The species are Iris setosa, versicolor, and virginica.",
+#'   sep = "\n"
+#' )
 #'
-#'# Create a text grob
-#'tgrob <- text_grob(text, face = "italic", color = "steelblue")
-#'# Draw the text
-#'as_ggplot(tgrob)
+#' # Create a text grob
+#' tgrob <- text_grob(text, face = "italic", color = "steelblue")
+#' # Draw the text
+#' as_ggplot(tgrob)
 #'
 #' @export
 text_grob <- function(label, just = "centre", hjust = NULL, vjust = NULL, rot = 0,
                       color = "black", face = "plain", size = NULL, lineheight = NULL,
-                      family = NULL, ...)
-{
+                      family = NULL, ...) {
+  gp <- grid::gpar(
+    col = color, fontface = face, fontsize = size,
+    lineheight = lineheight, fontfamily = family
+  )
 
-  gp <- grid::gpar(col = color, fontface = face, fontsize = size,
-                   lineheight = lineheight, fontfamily = family)
-
-  tgrob <- grid::textGrob(label = label, just = just, hjust = hjust, vjust = vjust,
-                          rot = rot, gp = gp, ...)
+  tgrob <- grid::textGrob(
+    label = label, just = just, hjust = hjust, vjust = vjust,
+    rot = rot, gp = gp, ...
+  )
   tgrob
 }

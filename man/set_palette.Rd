@@ -43,8 +43,10 @@ data("ToothGrowth")
 df <- ToothGrowth
 
 # Basic plot
-p <- ggboxplot(df, x = "dose", y = "len",
-   color = "dose")
+p <- ggboxplot(df,
+  x = "dose", y = "len",
+  color = "dose"
+)
 p
 
 # Change the color palette

@@ -42,28 +42,28 @@
 #' @rdname get_coord
 #' @export
 get_coord <- function(group = 1L, data.ranges = NULL, coord = NULL, npc = "left",
-                      step = 0.1, margin.npc = 0.05){
-  if(!is.null(coord)){
-    if(!is.numeric(group)){
-      stop("get_coord: 'group' should be numeric. ",
-           "Current class is: ", class(group))
+                      step = 0.1, margin.npc = 0.05) {
+  if (!is.null(coord)) {
+    if (!is.numeric(group)) {
+      stop(
+        "get_coord: 'group' should be numeric. ",
+        "Current class is: ", class(group)
+      )
     }
     # If coords are too short, they are recycled.
     coord <- ifelse(length(coord) >= group, coord[group], coord[1])
     return(coord)
-  }
-  else if(!is.null(npc)){
-    if(is.null(data.ranges)){
+  } else if (!is.null(npc)) {
+    if (is.null(data.ranges)) {
       stop("Specify the option data.ranges", call. = FALSE)
     }
     npc <- ifelse(length(npc) >= group, npc[group], npc[1])
     coord <- as_npc(
-      npc, group = group, step = step,
+      npc,
+      group = group, step = step,
       margin.npc = margin.npc
     ) %>%
       npc_to_data_coord(data.ranges)
   }
   coord
 }
-
-

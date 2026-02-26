@@ -102,10 +102,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{label}{character vector with alternative label, if not null test is
@@ -194,13 +194,13 @@ ggboxplot(df, x = "dose", y = "len") +
     label = "t-test, p < 0.05", tip.length = c(0.2, 0.02)
   )
 
-#Using plotmath expression
+# Using plotmath expression
 ggboxplot(df, x = "dose", y = "len") +
- geom_bracket(
-   xmin = "0.5", xmax = "1", y.position = 30,
-   label = "list(~italic(p)<=0.001)", type = "expression",
-   tip.length = c(0.2, 0.02)
- )
+  geom_bracket(
+    xmin = "0.5", xmax = "1", y.position = 30,
+    label = "list(~italic(p)<=0.001)", type = "expression",
+    tip.length = c(0.2, 0.02)
+  )
 
 # Specify multiple brackets manually
 ggboxplot(df, x = "dose", y = "len") +
@@ -230,5 +230,5 @@ ggboxplot(df, x = "dose", y = "len") +
   geom_bracket(
     aes(xmin = group1, xmax = group2, label = signif(p, 2)),
     data = stat.test, y.position = c(32, 35, 38)
-   )
+  )
 }

@@ -23,8 +23,10 @@ Transform the output of
 \examples{
 # Creat some plots
 bxp <- ggboxplot(iris, x = "Species", y = "Sepal.Length")
-vp <- ggviolin(iris, x = "Species", y = "Sepal.Length",
-              add = "mean_sd")
+vp <- ggviolin(iris,
+  x = "Species", y = "Sepal.Length",
+  add = "mean_sd"
+)
 
 # Arrange the plots in one page
 # Returns a gtable (grob) object

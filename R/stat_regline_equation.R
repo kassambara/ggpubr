@@ -2,13 +2,13 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr select
 NULL
-#'Add Regression Line Equation and R-Square to a GGPLOT.
-#'@description Add regression line equation and R^2 to a ggplot. Regression
+#' Add Regression Line Equation and R-Square to a GGPLOT.
+#' @description Add regression line equation and R^2 to a ggplot. Regression
 #'  model is fitted using the function \code{\link[stats]{lm}}.
-#'@inheritParams ggpubr-common-params
-#'@inheritParams ggplot2::layer
-#'@param formula a formula object
-#'@param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
+#' @inheritParams ggpubr-common-params
+#' @inheritParams ggplot2::layer
+#' @param formula a formula object
+#' @param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
 #'  vector of the same length as the number of groups and/or panels. If too
 #'  short they will be recycled. \itemize{ \item If \code{numeric}, value should
 #'  be between 0 and 1. Coordinates to be used for positioning the label,
@@ -18,19 +18,19 @@ NULL
 #'  'middle') for y-axis.}
 #'
 #'  If too short they will be recycled.
-#'@param label.x,label.y \code{numeric} Coordinates (in data units) to be used
+#' @param label.x,label.y \code{numeric} Coordinates (in data units) to be used
 #'  for absolute positioning of the label. If too short they will be recycled.
-#'@param output.type character One of "expression", "latex" or "text".
-#' @param decreasing logical. If \code{TRUE} (the default), the equation is 
-#'   formatted in standard mathematical convention with terms in decreasing 
-#'   order of powers (e.g., "y = 2*x + 1"). If \code{FALSE}, terms are in 
+#' @param output.type character One of "expression", "latex" or "text".
+#' @param decreasing logical. If \code{TRUE} (the default), the equation is
+#'   formatted in standard mathematical convention with terms in decreasing
+#'   order of powers (e.g., "y = 2*x + 1"). If \code{FALSE}, terms are in
 #'   increasing order (e.g., "y = 1 + 2*x").
-#'@param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
+#' @param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
-#'@param na.rm If FALSE (the default), removes missing values with a warning. If
+#' @param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
-#'@seealso \code{\link{ggscatter}}
-#'@references the source code of the function \code{stat_regline_equation()} is
+#' @seealso \code{\link{ggscatter}}
+#' @references the source code of the function \code{stat_regline_equation()} is
 #'  inspired from the code of the function \code{stat_poly_eq()} (in ggpmisc
 #'  package).
 #'
@@ -49,32 +49,35 @@ NULL
 #'
 #' # Simple scatter plot with correlation coefficient and
 #' # regression line
-#' #::::::::::::::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::::::::::::::
 #' ggscatter(mtcars, x = "wt", y = "mpg", add = "reg.line") +
 #'   stat_cor(label.x = 3, label.y = 34) +
 #'   stat_regline_equation(label.x = 3, label.y = 32)
 #'
 #'
 #' # Groupped scatter plot
-#' #::::::::::::::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::::::::::::::
 #' ggscatter(
-#'   iris, x = "Sepal.Length", y = "Sepal.Width",
+#'   iris,
+#'   x = "Sepal.Length", y = "Sepal.Width",
 #'   color = "Species", palette = "jco",
 #'   add = "reg.line"
-#'   ) +
+#' ) +
 #'   facet_wrap(~Species) +
 #'   stat_cor(label.y = 4.4) +
 #'   stat_regline_equation(label.y = 4.2)
 #'
 #' # Polynomial equation
-#' #::::::::::::::::::::::::::::::::::::::::::::::::::::
+#' # ::::::::::::::::::::::::::::::::::::::::::::::::::::
 #'
 #' # Demo data
 #' set.seed(4321)
 #' x <- 1:100
 #' y <- (x + x^2 + x^3) + rnorm(length(x), mean = 0, sd = mean(x^3) / 4)
-#' my.data <- data.frame(x, y, group = c("A", "B"),
-#'                       y2 = y * c(0.5,2), block = c("a", "a", "b", "b"))
+#' my.data <- data.frame(x, y,
+#'   group = c("A", "B"),
+#'   y2 = y * c(0.5, 2), block = c("a", "a", "b", "b")
+#' )
 #'
 #' # Fit polynomial regression line and add labels
 #' formula <- y ~ poly(x, 3, raw = TRUE)
@@ -82,22 +85,20 @@ NULL
 #'   geom_point() +
 #'   stat_smooth(aes(fill = group, color = group), method = "lm", formula = formula) +
 #'   stat_regline_equation(
-#'     aes(label =  paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
+#'     aes(label = paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
 #'     formula = formula
 #'   ) +
 #'   theme_bw()
 #' ggpar(p, palette = "jco")
 #'
-#'@export
+#' @export
 stat_regline_equation <- function(
-  mapping = NULL, data = NULL, formula = y~x,
+  mapping = NULL, data = NULL, formula = y ~ x,
   label.x.npc = "left", label.y.npc = "top",
   label.x = NULL, label.y = NULL, output.type = "expression", decreasing = TRUE,
-  geom = "text", position = "identity",  na.rm = FALSE, show.legend = NA,
+  geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...
-  )
-  {
-
+) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
   # Convert any dot-dot notation in user-provided mapping
   mapping <- convert_label_dotdot_notation_to_after_stat(mapping)
@@ -105,43 +106,42 @@ stat_regline_equation <- function(
   layer(
     stat = StatReglineEquation, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(formula = formula, label.x.npc  = label.x.npc, label.y.npc  = label.y.npc,
-                  label.x = label.x, label.y = label.y,
-                  output.type = output.type, decreasing = decreasing,
-                  parse = parse, na.rm = na.rm, ...)
+    params = list(
+      formula = formula, label.x.npc = label.x.npc, label.y.npc = label.y.npc,
+      label.x = label.x, label.y = label.y,
+      output.type = output.type, decreasing = decreasing,
+      parse = parse, na.rm = na.rm, ...
+    )
   )
 }
 
 
-StatReglineEquation<- ggproto("StatReglineEquation", Stat,
-                  required_aes = c("x", "y"),
-                  default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
+StatReglineEquation <- ggproto("StatReglineEquation", Stat,
+  required_aes = c("x", "y"),
+  default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
+  compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
+                           label.x, label.y, output.type, decreasing) {
+    force(data)
 
-                  compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
-                                           label.x, label.y, output.type, decreasing)
-                    {
+    if (length(unique(data$x)) < 2) {
+      return(data.frame()) # Not enough data to perform test
+    }
 
-                    force(data)
-
-                    if (length(unique(data$x)) < 2) {
-                      return(data.frame()) # Not enough data to perform test
-                    }
-
-                    .test <- .stat_lm(formula, data, output.type = output.type, decreasing = decreasing)
-                    # Returns a data frame with label: x, y, hjust, vjust
-                    .label.pms <- .label_params(data = data, scales = scales,
-                                                label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-                                                label.x = label.x, label.y = label.y) %>%
-                      mutate(hjust = 0)
-                    cbind(.test, .label.pms)
-                  }
+    .test <- .stat_lm(formula, data, output.type = output.type, decreasing = decreasing)
+    # Returns a data frame with label: x, y, hjust, vjust
+    .label.pms <- .label_params(
+      data = data, scales = scales,
+      label.x.npc = label.x.npc, label.y.npc = label.y.npc,
+      label.x = label.x, label.y = label.y
+    ) %>%
+      mutate(hjust = 0)
+    cbind(.test, .label.pms)
+  }
 )
 
 
-
 # Compute regression line equation
-.stat_lm <- function(formula, data, output.type = "expression", decreasing = TRUE){
-
+.stat_lm <- function(formula, data, output.type = "expression", decreasing = TRUE) {
   res.lm <- stats::lm(formula, data)
   coefs <- stats::coef(res.lm)
 
@@ -171,24 +171,30 @@ StatReglineEquation<- ggproto("StatReglineEquation", Stat,
 
   # Build data frame with the output
   if (output.type == "expression") {
-    eq.x.rhs = "~italic(x)"
+    eq.x.rhs <- "~italic(x)"
   } else {
-    eq.x.rhs = " x"
+    eq.x.rhs <- " x"
   }
 
   if (output.type == "expression") {
-    z <- data.frame(eq.label = gsub("x", eq.x.rhs, eq.char, fixed = TRUE),
-                    rr.label = paste("italic(R)^2", rr, sep = "~`=`~"),
-                    adj.rr.label = paste("italic(R)[adj]^2",
-                                         adj.rr, sep = "~`=`~"),
-                    AIC.label = paste("AIC", AIC, sep = "~`=`~"),
-                    BIC.label = paste("BIC", BIC, sep = "~`=`~"))
+    z <- data.frame(
+      eq.label = gsub("x", eq.x.rhs, eq.char, fixed = TRUE),
+      rr.label = paste("italic(R)^2", rr, sep = "~`=`~"),
+      adj.rr.label = paste("italic(R)[adj]^2",
+        adj.rr,
+        sep = "~`=`~"
+      ),
+      AIC.label = paste("AIC", AIC, sep = "~`=`~"),
+      BIC.label = paste("BIC", BIC, sep = "~`=`~")
+    )
   } else if (output.type %in% c("latex", "tex", "text")) {
-    z <- data.frame(eq.label = gsub("x", eq.x.rhs, eq.char, fixed = TRUE),
-                    rr.label = paste("R^2", rr, sep = " = "),
-                    adj.rr.label = paste("R_{adj}^2",adj.rr, sep = " = "),
-                    AIC.label = paste("AIC", AIC, sep = " = "),
-                    BIC.label = paste("BIC", BIC, sep = " = "))
+    z <- data.frame(
+      eq.label = gsub("x", eq.x.rhs, eq.char, fixed = TRUE),
+      rr.label = paste("R^2", rr, sep = " = "),
+      adj.rr.label = paste("R_{adj}^2", adj.rr, sep = " = "),
+      AIC.label = paste("AIC", AIC, sep = " = "),
+      BIC.label = paste("BIC", BIC, sep = " = ")
+    )
   }
 
   z <- z %>%
@@ -197,4 +203,3 @@ StatReglineEquation<- ggproto("StatReglineEquation", Stat,
 
   z
 }
-

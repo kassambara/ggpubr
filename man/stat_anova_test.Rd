@@ -23,6 +23,11 @@ stat_anova_test(
   step.increase = 0.1,
   p.adjust.method = "holm",
   significance = list(),
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -99,7 +104,8 @@ significant, p <= 0.05). }}
 \item{label}{character string specifying label. Can be: \itemize{ \item the
 column containing the label (e.g.: \code{label = "p"} or \code{label =
 "p.adj"}), where \code{p} is the p-value. Other possible values are
-\code{"p.signif", "p.adj.signif", "p.format", "p.adj.format"}. \item an
+\code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+\item an
 expression that can be formatted by the \code{\link[glue]{glue}()} package.
 For example, when specifying \code{label = "Anova, p = \{p\}"}, the
 expression \{p\} will be replaced by its value. \item a combination of
@@ -144,6 +150,26 @@ value (not recommended), use p.adjust.method = "none".}
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }}
 
+\item{p.format.style}{character string specifying the p-value formatting style.
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+See \code{\link{list_p_format_styles}} for details.}
+
+\item{p.digits}{integer specifying the number of decimal places for p-values.
+If provided, overrides the style default.}
+
+\item{p.leading.zero}{logical indicating whether to include leading zero before
+decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
+Values below this threshold are shown as "< threshold". If provided, overrides
+the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
 can be used to override the default coupling between stats and geoms. The
@@ -181,10 +207,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{parse}{If TRUE, the labels will be parsed into expressions and displayed
@@ -209,13 +235,14 @@ Adds automatically one-way and two-way ANOVA test p-values to a
  the option \code{effect.size = "pes"}. \item{F}:	F-value. \item{p}:	p-value.
  \item{p.adj}: Adjusted p-values. \item{p.signif}: P-value significance.
  \item{p.adj.signif}: Adjusted p-value significance. \item{p.format}:
- Formated p-value. \item{p.adj.format}: Formated adjusted p-value. \item{n}:
+ Formated p-value. \item{p.format.signif}: Formated p-value with significance symbols.
+ \item{p.adj.format}: Formated adjusted p-value. \item{n}:
  number of samples. }
 }
 
 \examples{
 # Data preparation
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Transform `dose` into factor variable
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
@@ -224,13 +251,13 @@ df$id <- rep(1:10, 6)
 # Add a random grouping variable
 set.seed(123)
 df$group <- sample(factor(rep(c("grp1", "grp2", "grp3"), 20)))
-df$len <- ifelse(df$group == "grp2", df$len+2, df$len)
-df$len <- ifelse(df$group == "grp3", df$len+7, df$len)
+df$len <- ifelse(df$group == "grp2", df$len + 2, df$len)
+df$len <- ifelse(df$group == "grp3", df$len + 7, df$len)
 head(df, 3)
 
 
 # Basic boxplot
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a basic boxplot
 # Add 5\% and 10\% space to the plot bottom and the top, respectively
 bxp <- ggboxplot(df, x = "dose", y = "len") +
@@ -258,7 +285,7 @@ bxp + stat_anova_test(label = "as_detailed_italic")
 
 
 # Faceted plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a ggplot facet
 bxp <- ggboxplot(df, x = "dose", y = "len", facet.by = "supp") +
   scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
@@ -267,7 +294,7 @@ bxp + stat_anova_test()
 
 
 # Grouped plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 bxp2 <- ggboxplot(df, x = "group", y = "len", color = "dose", palette = "npg")
 
 # For each x-position, computes tests between legend groups
@@ -276,26 +303,26 @@ bxp2 + stat_anova_test(aes(group = dose), label = "p = {p.format}{p.signif}")
 #  For each legend group, computes tests between x variable groups
 bxp2 + stat_anova_test(aes(group = dose, color = dose), group.by = "legend.var")
 
-
 \dontrun{
 # Two-way ANOVA: Independent measures
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Visualization: box plots with p-values
 # Two-way interaction p-values between x and legend (group) variables
 bxp3 <- ggboxplot(
-  df, x = "supp", y = "len",
+  df,
+  x = "supp", y = "len",
   color = "dose", palette = "jco"
 )
-bxp3 + stat_anova_test(aes(group = dose),  method = "two_way")
+bxp3 + stat_anova_test(aes(group = dose), method = "two_way")
 
 # One-way repeatead measures ANOVA
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 df$id <- as.factor(c(rep(1:10, 3), rep(11:20, 3)))
 ggboxplot(df, x = "dose", y = "len") +
   stat_anova_test(method = "one_way_repeated", wid = "id")
 
 # Two-way repeatead measures ANOVA
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 df$id <- as.factor(rep(1:10, 6))
 ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
   stat_anova_test(aes(group = supp), method = "two_way_repeated", wid = "id")
@@ -303,6 +330,7 @@ ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
 # Grouped one-way repeated measures ANOVA
 ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
   stat_anova_test(aes(group = supp, color = supp),
-  method = "one_way_repeated", wid = "id", group.by = "legend.var")
- }
+    method = "one_way_repeated", wid = "id", group.by = "legend.var"
+  )
+}
 }

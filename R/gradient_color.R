@@ -1,6 +1,6 @@
 #' @include utilities_color.R
 NULL
-#'Set Gradient Color
+#' Set Gradient Color
 #'
 #' @description Change gradient color.
 #' \itemize{
@@ -19,17 +19,19 @@ NULL
 #' @seealso \link{set_palette}.
 #'
 #'
-#'@examples
+#' @examples
 #' df <- mtcars
-#' p <- ggscatter(df, x = "wt", y = "mpg",
-#'                color = "mpg")
+#' p <- ggscatter(df,
+#'   x = "wt", y = "mpg",
+#'   color = "mpg"
+#' )
 #'
 #' # Change gradient color
 #' # Use one custom color
 #' p + gradient_color("red")
 #'
 #' # Two colors
-#' p + gradient_color(c("blue",  "red"))
+#' p + gradient_color(c("blue", "red"))
 #'
 #' # Three colors
 #' p + gradient_color(c("blue", "white", "red"))
@@ -41,12 +43,11 @@ NULL
 #' p + gradient_color("npg")
 #' @rdname gradient_color
 #' @export
-gradient_color <- function(palette){
-
-  if(.is_col_palette(palette)) palette <- .get_pal(palette, k = 3)
+gradient_color <- function(palette) {
+  if (.is_col_palette(palette)) palette <- .get_pal(palette, k = 3)
   n_palette <- length(palette)
 
-  if(n_palette == 1) {
+  if (n_palette == 1) {
     palette <- grDevices::colorRampPalette(c("white", palette))(10)
     palette <- palette[c(1, 10)]
     n_palette <- 2
@@ -56,12 +57,11 @@ gradient_color <- function(palette){
 
 #' @rdname gradient_color
 #' @export
-gradient_fill <- function(palette){
-
-  if(.is_col_palette(palette)) palette <- .get_pal(palette, k = 3)
+gradient_fill <- function(palette) {
+  if (.is_col_palette(palette)) palette <- .get_pal(palette, k = 3)
   n_palette <- length(palette)
 
-  if(n_palette == 1) {
+  if (n_palette == 1) {
     palette <- grDevices::colorRampPalette(c("white", palette))(10)
     palette <- palette[c(1, 10)]
     n_palette <- 2

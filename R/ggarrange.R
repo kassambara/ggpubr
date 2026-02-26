@@ -40,7 +40,7 @@ NULL
 #'   legend.
 #' @return return an object of class \code{ggarrange}, which is a ggplot or a
 #'   list of ggplot.
-#' @author Alboukadel Kassambara \email{alboukadel.kassambara@@gmail.com}
+#' @author Laszlo Erdey \email{erdey.laszlo@@econ.unideb.hu}
 #' @seealso \code{\link{annotate_figure}()}
 #' @examples
 #' data("ToothGrowth")
@@ -50,11 +50,15 @@ NULL
 #' # Create some plots
 #' # ::::::::::::::::::::::::::::::::::::::::::::::::::
 #' # Box plot
-#' bxp <- ggboxplot(df, x = "dose", y = "len",
-#'     color = "dose", palette = "jco")
+#' bxp <- ggboxplot(df,
+#'   x = "dose", y = "len",
+#'   color = "dose", palette = "jco"
+#' )
 #' # Dot plot
-#' dp <- ggdotplot(df, x = "dose", y = "len",
-#'     color = "dose", palette = "jco")
+#' dp <- ggdotplot(df,
+#'   x = "dose", y = "len",
+#'   color = "dose", palette = "jco"
+#' )
 #' # Density plot
 #' dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 #'
@@ -62,8 +66,7 @@ NULL
 #' # ::::::::::::::::::::::::::::::::::::::::::::::::::
 #' ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 #' # Use a common legend for multiple plots
-#' ggarrange(bxp, dp,  common.legend = TRUE)
-#'
+#' ggarrange(bxp, dp, common.legend = TRUE)
 #'
 #' @export
 ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
@@ -71,9 +74,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       font.label = list(size = 14, color = "black", face = "bold", family = NULL),
                       align = c("none", "h", "v", "hv"),
                       widths = 1, heights = 1,
-                      legend = NULL, common.legend = FALSE, legend.grob = NULL )
-  {
-
+                      legend = NULL, common.legend = FALSE, legend.grob = NULL) {
   # Open null device to avoid blank page before plot------
   # see cowplot:::as_grob.ggplot
   null_device <- base::getOption("ggpubr.null_device", default = cowplot::pdf_null_device)
@@ -95,87 +96,95 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   nrow <- page.layout$nrow
   nb.plots.per.page <- .nbplots_per_page(ncol, nrow)
 
-  if(!is.null(legend.grob))
+  if (!is.null(legend.grob)) {
     common.legend <- TRUE
-  if(is.null(legend) & common.legend)
+  }
+  if (is.null(legend) & common.legend) {
     legend <- "top"
+  }
   legend <- .check_legend(legend)
-  if(!is.null(legend))
+  if (!is.null(legend)) {
     plots <- purrr::map(
       plots,
-      function(x) {if(!is.null(x)) x + theme(legend.position = legend) else x}
-      )
+      function(x) {
+        if (!is.null(x)) x + theme(legend.position = legend) else x
+      }
+    )
+  }
 
-  if(common.legend){
-    if(is.null(legend.grob))
+  if (common.legend) {
+    if (is.null(legend.grob)) {
       legend.grob <- get_legend(plots)
+    }
     plots <- purrr::map(
       plots,
-      function(x) {if(!is.null(x)) x + theme(legend.position = "none") else x}
+      function(x) {
+        if (!is.null(x)) x + theme(legend.position = "none") else x
+      }
     )
   }
 
   # Split plots over multiple pages
-  if(nb.plots > nb.plots.per.page){
-    plots <- split(plots, ceiling(seq_along(plots)/nb.plots.per.page))
+  if (nb.plots > nb.plots.per.page) {
+    plots <- split(plots, ceiling(seq_along(plots) / nb.plots.per.page))
   }
   # One unique page
-  else plots <- list(plots)
+  else {
+    plots <- list(plots)
+  }
 
   # label arguments
-  .lab <- .update_label_pms(font.label, label.x = label.x, label.y = label.y,
-                            hjust = hjust, vjust = vjust)
+  .lab <- .update_label_pms(font.label,
+    label.x = label.x, label.y = label.y,
+    hjust = hjust, vjust = vjust
+  )
 
   res <- purrr::map(plots, .plot_grid,
-              ncol = ncol, nrow = nrow, labels = labels,
-              label_size = .lab$size, label_fontfamily = .lab$family,
-              label_fontface = .lab$face, label_colour = .lab$color,
-              label_x = .lab$label.x, label_y = .lab$label.y,
-              hjust = .lab$hjust, vjust = .lab$vjust, align = align,
-              rel_widths = widths, rel_heights = heights,
-              legend = legend, common.legend.grob = legend.grob
-              )
+    ncol = ncol, nrow = nrow, labels = labels,
+    label_size = .lab$size, label_fontfamily = .lab$family,
+    label_fontface = .lab$face, label_colour = .lab$color,
+    label_x = .lab$label.x, label_y = .lab$label.y,
+    hjust = .lab$hjust, vjust = .lab$vjust, align = align,
+    rel_widths = widths, rel_heights = heights,
+    legend = legend, common.legend.grob = legend.grob
+  )
 
 
-
-
-  if(length(res) == 1) res <- res[[1]]
+  if (length(res) == 1) res <- res[[1]]
 
   class(res) <- c(class(res), "ggarrange")
   res
 }
 
 
-
-.get_layout <- function(ncol, nrow, nb.plots){
-  if(!is.null(ncol) & !is.null(nrow)){}
-  else if(!is.null(ncol)){
-    if(ncol == 1) nrow = nb.plots
-  }
-  else if(!is.null(nrow)){
-    if(nrow == 1) ncol = nb.plots
+.get_layout <- function(ncol, nrow, nb.plots) {
+  if (!is.null(ncol) & !is.null(nrow)) {} else if (!is.null(ncol)) {
+    if (ncol == 1) nrow <- nb.plots
+  } else if (!is.null(nrow)) {
+    if (nrow == 1) ncol <- nb.plots
   }
   list(ncol = ncol, nrow = nrow)
 }
 
 # Compute number of plots per page
-.nbplots_per_page <- function(ncol = NULL, nrow = NULL){
-
-  if(!is.null(ncol) & !is.null(nrow))
+.nbplots_per_page <- function(ncol = NULL, nrow = NULL) {
+  if (!is.null(ncol) & !is.null(nrow)) {
     ncol * nrow
-  else if(!is.null(ncol))
+  } else if (!is.null(ncol)) {
     ncol
-  else if(!is.null(nrow))
+  } else if (!is.null(nrow)) {
     nrow
-  else Inf
+  } else {
+    Inf
+  }
 }
 
 
-.plot_grid <- function(plotlist, legend = "top", common.legend.grob = NULL,  ... ){
-
+.plot_grid <- function(plotlist, legend = "top", common.legend.grob = NULL, ...) {
   res <- cowplot::plot_grid(plotlist = plotlist, ...)
-  if(is.null(common.legend.grob)) return(res)
-  else {
+  if (is.null(common.legend.grob)) {
+    return(res)
+  } else {
     leg <- common.legend.grob
     lheight <- sum(leg$height)
     lwidth <- sum(leg$width)
@@ -186,29 +195,34 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   .unit <- grid::unit(1, "npc")
 
   res <- switch(legend,
-                top = arrangeGrob(leg, res, ncol = 1,
-                                  heights = unit.c(lheight, .unit - lheight)),
-                bottom = arrangeGrob(res, leg, ncol = 1,
-                                     heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                left = arrangeGrob(leg, res, ncol = 2,
-                                   widths = unit.c(lwidth, .unit - lwidth)),
-                right = arrangeGrob(res, leg, ncol = 2,
-                                    widths = unit.c(.unit - lwidth, lwidth))
-                )
+    top = arrangeGrob(leg, res,
+      ncol = 1,
+      heights = unit.c(lheight, .unit - lheight)
+    ),
+    bottom = arrangeGrob(res, leg,
+      ncol = 1,
+      heights = unit.c(unit(1, "npc") - lheight, lheight)
+    ),
+    left = arrangeGrob(leg, res,
+      ncol = 2,
+      widths = unit.c(lwidth, .unit - lwidth)
+    ),
+    right = arrangeGrob(res, leg,
+      ncol = 2,
+      widths = unit.c(.unit - lwidth, lwidth)
+    )
+  )
 
   p <- cowplot::ggdraw() + cowplot::draw_grob(grid::grobTree(res))
   p
-
 }
 
 # update label parameters for cowplot::plot_grid()
 .update_label_pms <- function(font.label,
-                             label.x = 0, label.y = 1, hjust = -0.5, vjust = 1.5)
-  {
-
+                              label.x = 0, label.y = 1, hjust = -0.5, vjust = 1.5) {
   .font <- list(size = 14, color = "black", face = "bold", family = NULL)
   new.font.names <- names(font.label)
-  for(i in new.font.names) .font[[i]] <- font.label[[i]]
+  for (i in new.font.names) .font[[i]] <- font.label[[i]]
 
   pms <- .font
   list(

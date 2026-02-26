@@ -45,17 +45,17 @@ p
 
 # Increase the number of ticks
 p +
- scale_x_continuous(breaks = get_breaks(n = 10)) +
- scale_y_continuous(breaks = get_breaks(n = 10))
+  scale_x_continuous(breaks = get_breaks(n = 10)) +
+  scale_y_continuous(breaks = get_breaks(n = 10))
 
 # Set ticks according to a specific step, starting from 0
 p + scale_x_continuous(
   breaks = get_breaks(by = 1.5, from = 0),
-  limits =  c(0, 6)
+  limits = c(0, 6)
 ) +
- scale_y_continuous(
-  breaks = get_breaks(by = 10, from = 0),
-  limits = c(0, 40)
+  scale_y_continuous(
+    breaks = get_breaks(by = 10, from = 0),
+    limits = c(0, 40)
   )
 
 }

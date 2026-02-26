@@ -7,10 +7,10 @@
 #' @examples
 #' npc_to_data_coord(npc = c(0.2, 0.95), data.ranges = c(1, 20))
 #' as_npc(c("top", "right")) %>%
-#'    npc_to_data_coord(data.ranges = c(1, 20))
+#'   npc_to_data_coord(data.ranges = c(1, 20))
 #'
 #' @rdname npc_to_data_coord
 #' @export
-npc_to_data_coord <- function(npc, data.ranges){
+npc_to_data_coord <- function(npc, data.ranges) {
   data.ranges[1] + npc * (data.ranges[2] - data.ranges[1])
 }

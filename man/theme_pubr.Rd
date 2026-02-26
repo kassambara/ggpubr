@@ -64,7 +64,7 @@ axis.}
 }
 \examples{
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
-   geom_point(aes(color = gear))
+  geom_point(aes(color = gear))
 
 # Default plot
 p

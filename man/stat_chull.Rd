@@ -73,10 +73,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{layer()}}'s \code{params} argument. These
@@ -117,11 +117,11 @@ df <- mtcars
 df$cyl <- as.factor(df$cyl)
 
 # scatter plot with convex hull
-ggscatter(df, x = "wt", y = "mpg", color = "cyl")+
- stat_chull(aes(color = cyl))
+ggscatter(df, x = "wt", y = "mpg", color = "cyl") +
+  stat_chull(aes(color = cyl))
 
-ggscatter(df, x = "wt", y = "mpg", color = "cyl")+
- stat_chull(aes(color = cyl, fill = cyl), alpha = 0.1, geom = "polygon")
+ggscatter(df, x = "wt", y = "mpg", color = "cyl") +
+  stat_chull(aes(color = cyl, fill = cyl), alpha = 0.1, geom = "polygon")
 
 }
 \seealso{

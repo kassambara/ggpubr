@@ -108,10 +108,10 @@ call to a position adjustment function.}
 \item{inherit.aes}{If \code{FALSE} (the default), overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{stat_pvalue_manual()}. Most layers should use 
-\code{TRUE} (the \pkg{ggplot2} default), but \code{stat_pvalue_manual()} uses 
-its own data with different column names than the parent plot data, so 
-\code{FALSE} avoids conflicts between parent plot aesthetics (like \code{fill} or 
+the default plot specification, e.g. \code{stat_pvalue_manual()}. Most layers should use
+\code{TRUE} (the \pkg{ggplot2} default), but \code{stat_pvalue_manual()} uses
+its own data with different column names than the parent plot data, so
+\code{FALSE} avoids conflicts between parent plot aesthetics (like \code{fill} or
 \code{color}) and the p-value annotation data.}
 
 \item{...}{other arguments passed to the function \code{geom_bracket()} or
@@ -134,8 +134,9 @@ Add manually p-values to a ggplot, such as box blots, dot plots
 
 # T-test
 stat.test <- compare_means(
- len ~ dose, data = ToothGrowth,
- method = "t.test"
+  len ~ dose,
+  data = ToothGrowth,
+  method = "t.test"
 )
 stat.test
 
@@ -145,15 +146,16 @@ p
 
 # Perform a t-test between groups
 stat.test <- compare_means(
- len ~ dose, data = ToothGrowth,
- method = "t.test"
+  len ~ dose,
+  data = ToothGrowth,
+  method = "t.test"
 )
 stat.test
 
 # Add manually p-values from stat.test data
 # First specify the y.position of each comparison
 stat.test <- stat.test \%>\%
- mutate(y.position = c(29, 35, 39))
+  mutate(y.position = c(29, 35, 39))
 p + stat_pvalue_manual(stat.test, label = "p.adj")
 
 # Customize the label with glue expression
@@ -162,21 +164,25 @@ p + stat_pvalue_manual(stat.test, label = "p = {p.adj}")
 
 
 # Grouped bar plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 ToothGrowth$dose <- as.factor(ToothGrowth$dose)
 # Comparisons against reference
 stat.test <- compare_means(
-  len ~ dose, data = ToothGrowth, group.by = "supp",
+  len ~ dose,
+  data = ToothGrowth, group.by = "supp",
   method = "t.test", ref.group = "0.5"
 )
 stat.test
 # Plot
-bp <- ggbarplot(ToothGrowth, x = "supp", y = "len",
-                fill = "dose", palette = "jco",
-                add = "mean_sd", add.params = list(group = "dose"),
-                position = position_dodge(0.8))
+bp <- ggbarplot(ToothGrowth,
+  x = "supp", y = "len",
+  fill = "dose", palette = "jco",
+  add = "mean_sd", add.params = list(group = "dose"),
+  position = position_dodge(0.8)
+)
 bp + stat_pvalue_manual(
-  stat.test, x = "supp", y.position = 33,
+  stat.test,
+  x = "supp", y.position = 33,
   label = "p.signif",
   position = position_dodge(0.8)
 )

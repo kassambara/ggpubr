@@ -37,37 +37,45 @@ NULL
 #' @examples
 #' # Create some data format
 #' set.seed(1234)
-#' wdata = data.frame(
-#'    sex = factor(rep(c("F", "M"), each=200)),
-#'    weight = c(rnorm(200, 55), rnorm(200, 58)))
+#' wdata <- data.frame(
+#'   sex = factor(rep(c("F", "M"), each = 200)),
+#'   weight = c(rnorm(200, 55), rnorm(200, 58))
+#' )
 #'
 #' head(wdata, 4)
 #'
 #' # Basic density plot
 #' # Add mean line and marginal rug
-#' gghistogram(wdata, x = "weight", fill = "lightgray",
-#'    add = "mean", rug = TRUE)
+#' gghistogram(wdata,
+#'   x = "weight", fill = "lightgray",
+#'   add = "mean", rug = TRUE
+#' )
 #'
 #' # Change outline colors by groups ("sex")
 #' # Use custom color palette
-#' gghistogram(wdata, x = "weight",
-#'    add = "mean", rug = TRUE,
-#'    color = "sex", palette = c("#00AFBB", "#E7B800"))
+#' gghistogram(wdata,
+#'   x = "weight",
+#'   add = "mean", rug = TRUE,
+#'   color = "sex", palette = c("#00AFBB", "#E7B800")
+#' )
 #'
 #' # Change outline and fill colors by groups ("sex")
 #' # Use custom color palette
-#' gghistogram(wdata, x = "weight",
-#'    add = "mean", rug = TRUE,
-#'    color = "sex", fill = "sex",
-#'    palette = c("#00AFBB", "#E7B800"))
-#'
+#' gghistogram(wdata,
+#'   x = "weight",
+#'   add = "mean", rug = TRUE,
+#'   color = "sex", fill = "sex",
+#'   palette = c("#00AFBB", "#E7B800")
+#' )
 #'
 #'
 #' # Combine histogram and density plots
-#' gghistogram(wdata, x = "weight",
-#'    add = "mean", rug = TRUE,
-#'    fill = "sex", palette = c("#00AFBB", "#E7B800"),
-#'    add_density = TRUE)
+#' gghistogram(wdata,
+#'   x = "weight",
+#'   add = "mean", rug = TRUE,
+#'   fill = "sex", palette = c("#00AFBB", "#E7B800"),
+#'   add_density = TRUE
+#' )
 #'
 #' # Weighted histogram
 #' gghistogram(iris, x = "Sepal.Length", weight = "Petal.Length")
@@ -85,11 +93,9 @@ gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
                         label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                         position = position_identity(),
                         ggtheme = theme_pubr(),
-                        ...)
-{
-
+                        ...) {
   # Default options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
@@ -99,106 +105,119 @@ gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
     add = add, add.params = add.params, rug = rug, add_density = add_density,
     label = label, font.label = font.label, label.select = label.select,
     repel = repel, label.rectangle = label.rectangle,
-    position = position, ggtheme = ggtheme, ...)
-  if(!missing(data)) .opts$data <- data
-  if(!missing(x)) .opts$x <- x
-  if(!missing(y)) .opts$y <- y
+    position = position, ggtheme = ggtheme, ...
+  )
+  if (!missing(data)) .opts$data <- data
+  if (!missing(x)) .opts$x <- x
+  if (!missing(y)) .opts$y <- y
 
   # User options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .user.opts <- as.list(match.call(expand.dots = TRUE))
   .user.opts[[1]] <- NULL # Remove the function name
   # keep only user arguments
-  for(opt.name in names(.opts)){
-    if(is.null(.user.opts[[opt.name]]))
+  for (opt.name in names(.opts)) {
+    if (is.null(.user.opts[[opt.name]])) {
       .opts[[opt.name]] <- NULL
+    }
   }
 
   .opts$fun <- gghistogram_core
-  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+  if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
-  if(missing(y)) .opts$y <- y
-  if(missing(add.params)) .opts$add.params <- add.params
+  }
+  if (missing(y)) .opts$y <- y
+  if (missing(add.params)) .opts$add.params <- add.params
   p <- do.call(.plotter, .opts)
 
-  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)
-
 }
 
 gghistogram_core <- function(data, x, y = "count", weight = NULL,
-                      color = "black", fill = NA, palette = NULL,
-                      size = NULL, linetype = "solid", linewidth = NULL, alpha = 0.5,
-                      bins = NULL, binwidth = NULL,
-                      title = NULL, xlab = NULL, ylab = NULL,
-                      facet.by = NULL,
-                      add = c("none", "mean", "median"),
-                      add.params = list(linetype = "dashed"),
-                      rug = FALSE, add_density = FALSE,
-                      position = position_identity(),
-                      ggtheme = theme_classic(),
-                      ...)
-{
-
-  # Handle size vs linewidth parameter compatibility
-  # size deprecated in ggplot2 v >= 3.4.0
-  if (!is.null(size) && !is.null(linewidth)) {
-    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
-  } else if (!is.null(size)) {
-    warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
-    linewidth <- size
-  } else if (is.null(linewidth)) {
-    linewidth <- NULL # Default value
-  }
+                             color = "black", fill = NA, palette = NULL,
+                             size = NULL, linetype = "solid", linewidth = NULL, alpha = 0.5,
+                             bins = NULL, binwidth = NULL,
+                             title = NULL, xlab = NULL, ylab = NULL,
+                             facet.by = NULL,
+                             add = c("none", "mean", "median"),
+                             add.params = list(linetype = "dashed"),
+                             rug = FALSE, add_density = FALSE,
+                             position = position_identity(),
+                             ggtheme = theme_classic(),
+                             ...) {
+  line_width <- .resolve_linewidth_args(
+    size = size, linewidth = linewidth, default_linewidth = NULL,
+    warn_if_size = FALSE, null_size_after = TRUE
+  )
+  size <- line_width$size
+  linewidth <- line_width$linewidth
 
   grouping.vars <- grp <- c(color, fill, linetype, size, alpha, facet.by) %>%
     unique() %>%
     intersect(colnames(data))
-  color2 <-  c(color, fill) %>% unique() %>% intersect(colnames(data))
-  if(.is_empty(color2)) color2 <- color
+  color2 <- c(color, fill) %>%
+    unique() %>%
+    intersect(colnames(data))
+  if (.is_empty(color2)) color2 <- color
 
   # Check bins
-  if(is.null(bins) & is.null(binwidth)){
+  if (is.null(bins) & is.null(binwidth)) {
     bins <- 30
-    warning("Using `bins = 30` by default. Pick better value with the argument `bins`.",
-            call.= FALSE)
   }
 
   add <- match.arg(add)
-  if(is.null(add.params$color)){
-    if(!.is_empty(color2)) add.params$color <- color2
+  if (is.null(add.params$color)) {
+    if (!.is_empty(color2)) add.params$color <- color2
   }
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
-  if(is.null(add.params$size)) add.params$size <- size
-  if(is.null(add.params$linewidth)) add.params$linewidth <- linewidth
-  if(is.null(add.params$linetype)) add.params$linetype <- linetype
+  if (is.null(add.params$size)) add.params$size <- size
+  if (is.null(add.params$linewidth)) add.params$linewidth <- linewidth
+  if (is.null(add.params$linetype)) add.params$linetype <- linetype
   # if(add_density) y <- "..density.."
 
-  if (y %in% c("..density..", "density")) y <- "after_stat(density)"
-  else if (y %in% c("..count..", "count")) y <- "after_stat(count)"
+  if (y %in% c("..density..", "density")) {
+    y <- "after_stat(density)"
+  } else if (y %in% c("..count..", "count")) y <- "after_stat(count)"
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 
-  p <- p +
-      geom_exec(geom_histogram, data = data,
-                 color = color, fill = fill, size = linewidth,
-                 linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
-                 weight = weight, position = position, ...)
+  if ("linewidth" %in% names(formals(ggplot2::geom_histogram))) {
+    p <- p +
+      geom_exec(geom_histogram,
+        data = data,
+        color = color, fill = fill, linewidth = linewidth,
+        linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
+        weight = weight, position = position, ...
+      )
+  } else {
+    p <- p +
+      geom_exec(geom_histogram,
+        data = data,
+        color = color, fill = fill, size = linewidth,
+        linetype = linetype, alpha = alpha, bins = bins, binwidth = binwidth,
+        weight = weight, position = position, ...
+      )
+  }
 
   # Add mean/median
-  if(add %in% c("mean", "median")){
-    p <- p %>% .add_center_line(add = add, grouping.vars = grouping.vars, color = add.params$color,
-                                linetype = add.params$linetype, size = add.params$size, linewidth = add.params$linewidth)
+  if (add %in% c("mean", "median")) {
+    p <- p %>% .add_center_line(
+      add = add, grouping.vars = grouping.vars, color = add.params$color,
+      linetype = add.params$linetype, size = add.params$size, linewidth = add.params$linewidth
+    )
   }
 
   # Add marginal rug
-  if(rug) {
-
+  if (rug) {
     grps <- c(color, fill, linetype, size, alpha) %>%
-      unique() %>% intersect(colnames(data))
+      unique() %>%
+      intersect(colnames(data))
     alpha <- ifelse(.is_empty(grps), 1, alpha)
-    .args <- geom_exec(NULL, data = data,
-                       color = color2, sides = "b", alpha = alpha)
+    .args <- geom_exec(NULL,
+      data = data,
+      color = color2, sides = "b", alpha = alpha
+    )
     mapping <- .args$mapping
     mapping[["y"]] <- 0
     option <- .args$option
@@ -207,15 +226,19 @@ gghistogram_core <- function(data, x, y = "count", weight = NULL,
   }
 
   # Add density curve
-  if(add_density) p <- p + geom_exec(geom_density, data = data,
-                                      color = add.params$color,
-                                      linetype = linetype, alpha = alpha,
-                                      size = add.params$size, linewidth = add.params$linewidth)
+  if (add_density) {
+    p <- p + geom_exec(geom_density,
+      data = data,
+      color = add.params$color,
+      linetype = linetype, alpha = alpha,
+      size = add.params$size, linewidth = add.params$linewidth
+    )
+  }
 
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
-             title = title, xlab = xlab, ylab = ylab,...)
+  p <- ggpar(p,
+    palette = palette, ggtheme = ggtheme,
+    title = title, xlab = xlab, ylab = ylab, ...
+  )
   p
 }
-
-

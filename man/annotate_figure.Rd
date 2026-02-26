@@ -46,11 +46,15 @@ df$dose <- as.factor(df$dose)
 # Create some plots
 # ::::::::::::::::::::::::::::::::::::::::::::::::::
 # Box plot
-bxp <- ggboxplot(df, x = "dose", y = "len",
-    color = "dose", palette = "jco")
+bxp <- ggboxplot(df,
+  x = "dose", y = "len",
+  color = "dose", palette = "jco"
+)
 # Dot plot
-dp <- ggdotplot(df, x = "dose", y = "len",
-    color = "dose", palette = "jco")
+dp <- ggdotplot(df,
+  x = "dose", y = "len",
+  color = "dose", palette = "jco"
+)
 # Density plot
 dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 
@@ -58,19 +62,20 @@ dens <- ggdensity(df, x = "len", fill = "dose", palette = "jco")
 # ::::::::::::::::::::::::::::::::::::::::::::::::::
 figure <- ggarrange(bxp, dp, dens, ncol = 2, nrow = 2)
 annotate_figure(figure,
-               top = text_grob("Visualizing Tooth Growth", color = "red", face = "bold", size = 14),
-               bottom = text_grob("Data source: \n ToothGrowth data set", color = "blue",
-                                  hjust = 1, x = 1, face = "italic", size = 10),
-               left = text_grob("Figure arranged using ggpubr", color = "green", rot = 90),
-               right = text_grob(bquote("Superscript: ("*kg~NH[3]~ha^-1~yr^-1*")"), rot = 90),
-               fig.lab = "Figure 1", fig.lab.face = "bold"
+  top = text_grob("Visualizing Tooth Growth", color = "red", face = "bold", size = 14),
+  bottom = text_grob("Data source: \n ToothGrowth data set",
+    color = "blue",
+    hjust = 1, x = 1, face = "italic", size = 10
+  ),
+  left = text_grob("Figure arranged using ggpubr", color = "green", rot = 90),
+  right = text_grob(bquote("Superscript: (" * kg ~ NH[3] ~ ha^-1 ~ yr^-1 * ")"), rot = 90),
+  fig.lab = "Figure 1", fig.lab.face = "bold"
 )
-
 
 }
 \seealso{
 \code{\link{ggarrange}()}
 }
 \author{
-Alboukadel Kassambara \email{alboukadel.kassambara@gmail.com}
+Laszlo Erdey \email{erdey.laszlo@econ.unideb.hu}
 }

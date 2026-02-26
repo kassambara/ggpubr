@@ -6,7 +6,7 @@
 \alias{ggpubr-package}
 \title{ggpubr: 'ggplot2' Based Publication Ready Plots}
 \description{
-The 'ggplot2' package is excellent and flexible for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills. 'ggpubr' provides some easy-to-use functions for creating and customizing 'ggplot2'- based publication ready plots.
+The 'ggplot2' package is excellent and flexible for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills. 'ggpubr' provides some easy-to-use functions for creating and customizing 'ggplot2'-based publication ready plots. This version includes modern R ecosystem compatibility updates and customizable p-value formatting presets (APA, AMA, NEJM, Lancet, GraphPad) for publication workflows.
 }
 \details{
 General resources:
@@ -16,6 +16,19 @@ General resources:
 \item \href{https://www.datanovia.com/en/blog/tag/ggpubr/}{ggpubr tutorials}
 }
 }
+\section{P-Value Formatting}{
+
+
+ggpubr provides customizable p-value formatting with predefined style presets
+to match different journal and publication requirements. Use \code{\link{format_p_value}()}
+for direct formatting, or set \code{p.format.style} in statistical functions.
+
+Available styles: \code{"default"}, \code{"apa"}, \code{"nejm"}, \code{"lancet"},
+\code{"ama"}, \code{"graphpad"}, \code{"scientific"}.
+
+See \code{\link{list_p_format_styles}()} for details on each style.
+}
+
 \section{Package options}{
 
 
@@ -39,6 +52,7 @@ when calling \code{\link{ggarrange}()} or \code{\link{as_ggplot}()}} }
 Useful links:
 \itemize{
   \item \url{https://rpkgs.datanovia.com/ggpubr/}
+  \item \url{https://github.com/kassambara/ggpubr}
   \item Report bugs at \url{https://github.com/kassambara/ggpubr/issues}
 }
 

@@ -4,10 +4,21 @@
 #'
 #' General resources:
 #'
-#'\itemize{
+#' \itemize{
 #' \item \href{https://rpkgs.datanovia.com/ggpubr/}{ggpubr documentation}
 #' \item \href{https://www.datanovia.com/en/blog/tag/ggpubr/}{ggpubr tutorials}
-#'}
+#' }
+#'
+#' @section P-Value Formatting:
+#'
+#' ggpubr provides customizable p-value formatting with predefined style presets
+#' to match different journal and publication requirements. Use \code{\link{format_p_value}()}
+#' for direct formatting, or set \code{p.format.style} in statistical functions.
+#'
+#' Available styles: \code{"default"}, \code{"apa"}, \code{"nejm"}, \code{"lancet"},
+#' \code{"ama"}, \code{"graphpad"}, \code{"scientific"}.
+#'
+#' See \code{\link{list_p_format_styles}()} for details on each style.
 #'
 #' @section Package options:
 #'

@@ -73,10 +73,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2:geom_path]{geom_line}}.}
@@ -96,12 +96,12 @@ ggdensity(mtcars, x = "mpg", fill = "red") +
 # Color by groups
 data(iris)
 ggdensity(iris, "Sepal.Length", color = "Species") +
- stat_overlay_normal_density(aes(color = Species), linetype = "dashed")
+  stat_overlay_normal_density(aes(color = Species), linetype = "dashed")
 
 
 # Facet
 ggdensity(iris, "Sepal.Length", facet.by = "Species") +
- stat_overlay_normal_density(color = "red", linetype = "dashed")
+  stat_overlay_normal_density(color = "red", linetype = "dashed")
 
 }
 \seealso{

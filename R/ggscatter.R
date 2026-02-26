@@ -94,57 +94,65 @@ NULL
 #'
 #' # Basic plot
 #' # +++++++++++++++++++++++++++
-#' ggscatter(df, x = "wt", y = "mpg",
-#'    color = "black", shape = 21, size = 3, # Points color, shape and size
-#'    add = "reg.line",  # Add regressin line
-#'    add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
-#'    conf.int = TRUE, # Add confidence interval
-#'    cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
-#'    cor.coeff.args = list(method = "pearson", label.x = 3, label.sep = "\n")
-#'    )
+#' ggscatter(df,
+#'   x = "wt", y = "mpg",
+#'   color = "black", shape = 21, size = 3, # Points color, shape and size
+#'   add = "reg.line", # Add regressin line
+#'   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+#'   conf.int = TRUE, # Add confidence interval
+#'   cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+#'   cor.coeff.args = list(method = "pearson", label.x = 3, label.sep = "\n")
+#' )
 #'
 #' # loess method: local regression fitting
-#' ggscatter(df, x = "wt", y = "mpg",
-#'    add = "loess", conf.int = TRUE)
+#' ggscatter(df,
+#'   x = "wt", y = "mpg",
+#'   add = "loess", conf.int = TRUE
+#' )
 #'
 #'
 #' # Control point size by continuous variable values ("qsec")
-#' ggscatter(df, x = "wt", y = "mpg",
-#'    color = "#00AFBB", size = "qsec")
+#' ggscatter(df,
+#'   x = "wt", y = "mpg",
+#'   color = "#00AFBB", size = "qsec"
+#' )
 #'
 #'
 #' # Change colors
 #' # +++++++++++++++++++++++++++
 #' # Use custom color palette
 #' # Add marginal rug
-#' ggscatter(df, x = "wt", y = "mpg", color = "cyl",
-#'    palette = c("#00AFBB", "#E7B800", "#FC4E07") )
-#'
-#'
+#' ggscatter(df,
+#'   x = "wt", y = "mpg", color = "cyl",
+#'   palette = c("#00AFBB", "#E7B800", "#FC4E07")
+#' )
 #'
 #'
 #' # Add group ellipses and mean points
 #' # Add stars
 #' # +++++++++++++++++++
-#' ggscatter(df, x = "wt", y = "mpg",
-#'    color = "cyl", shape = "cyl",
-#'    palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-#'    ellipse = TRUE, mean.point = TRUE,
-#'    star.plot = TRUE)
+#' ggscatter(df,
+#'   x = "wt", y = "mpg",
+#'   color = "cyl", shape = "cyl",
+#'   palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+#'   ellipse = TRUE, mean.point = TRUE,
+#'   star.plot = TRUE
+#' )
 #'
 #'
 #' # Textual annotation
 #' # +++++++++++++++++
 #' df$name <- rownames(df)
-#' ggscatter(df, x = "wt", y = "mpg",
-#'    color = "cyl", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-#'    label = "name", repel = TRUE)
-#'
+#' ggscatter(df,
+#'   x = "wt", y = "mpg",
+#'   color = "cyl", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+#'   label = "name", repel = TRUE
+#' )
 #'
 #' @export
 ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
                       color = "black", fill = "lightgray", palette = NULL,
-                      shape = 19, size = 2, point = TRUE,  rug = FALSE,
+                      shape = 19, size = 2, point = TRUE, rug = FALSE,
                       title = NULL, xlab = NULL, ylab = NULL,
                       facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                       add = c("none", "reg.line", "loess"), add.params = list(),
@@ -152,25 +160,24 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
                       ellipse = FALSE, ellipse.level = 0.95,
                       ellipse.type = "norm", ellipse.alpha = 0.1,
                       ellipse.border.remove = FALSE,
-                      mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2*size, size),
+                      mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2 * size, size),
                       star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
-                      label = NULL,  font.label = c(12, "plain"), font.family = "",
+                      label = NULL, font.label = c(12, "plain"), font.family = "",
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       parse = FALSE,
                       cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 4,
                       ggp = NULL, show.legend.text = NA,
                       ggtheme = theme_pubr(),
-                      ...){
-
+                      ...) {
   add <- match.arg(add)
   # Default options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
     combine = combine, merge = merge,
     color = color, fill = fill, palette = palette,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    shape = shape, size = size, point = point,  rug = rug,
+    shape = shape, size = size, point = point, rug = rug,
     add = add, add.params = add.params,
     conf.int = conf.int, conf.int.level = conf.int.level, fullrange = fullrange,
     ellipse = ellipse, ellipse.level = ellipse.level,
@@ -183,20 +190,22 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
     parse = parse,
     cor.coef = cor.coef, cor.coeff.args = cor.coeff.args, cor.method = cor.method,
     cor.coef.coord = cor.coef.coord, cor.coef.size = cor.coef.size,
-    ggp = ggp, show.legend.text = show.legend.text, ggtheme = ggtheme, ...)
+    ggp = ggp, show.legend.text = show.legend.text, ggtheme = ggtheme, ...
+  )
 
-  if(!missing(data)) .opts$data <- data
-  if(!missing(x)) .opts$x <- x
-  if(!missing(y)) .opts$y <- y
+  if (!missing(data)) .opts$data <- data
+  if (!missing(x)) .opts$x <- x
+  if (!missing(y)) .opts$y <- y
 
   # User options
-  #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .user.opts <- as.list(match.call(expand.dots = TRUE))
   .user.opts[[1]] <- NULL # Remove the function name
   # keep only user arguments
-  for(opt.name in names(.opts)){
-    if(is.null(.user.opts[[opt.name]]))
+  for (opt.name in names(.opts)) {
+    if (is.null(.user.opts[[opt.name]])) {
       .opts[[opt.name]] <- NULL
+    }
   }
 
   font.label <- .parse_font(font.label) %>% .compact()
@@ -204,42 +213,45 @@ ggscatter <- function(data, x, y, combine = FALSE, merge = FALSE,
   .opts$font.label <- font.label
 
   .opts$fun <- ggscatter_core
-  if(missing(ggtheme) & (!is.null(facet.by) | combine))
+  if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
+  }
   p <- do.call(.plotter, .opts)
-  if(.is_list(p) & length(p) == 1) p <- p[[1]]
+  if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)
-
 }
 
 
 ggscatter_core <- function(data, x, y,
-                      color = "black", fill = "lightgray", palette = NULL,
-                      shape = 19, size = 2, point = TRUE,  rug = FALSE,
-                      title = NULL, xlab = NULL, ylab = NULL,
-                      add = c("none", "reg.line", "loess"), add.params = list(),
-                      conf.int = FALSE, conf.int.level = 0.95, fullrange = FALSE,
-                      ellipse = FALSE, ellipse.level = 0.95,
-                      ellipse.type = "norm", ellipse.alpha = 0.1,
-                      ellipse.border.remove = FALSE,
-                      mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2*size, size),
-                      star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
-                      label = NULL,  font.label = c(12, "plain"), font.family = "",
-                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
-                      parse = FALSE,
-                      cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 4,
-                      ggp = NULL, show.legend.text = NA,
-                      ggtheme = theme_classic(),
-                      ...)
-{
+                           color = "black", fill = "lightgray", palette = NULL,
+                           shape = 19, size = 2, point = TRUE, rug = FALSE,
+                           title = NULL, xlab = NULL, ylab = NULL,
+                           add = c("none", "reg.line", "loess"), add.params = list(),
+                           conf.int = FALSE, conf.int.level = 0.95, fullrange = FALSE,
+                           ellipse = FALSE, ellipse.level = 0.95,
+                           ellipse.type = "norm", ellipse.alpha = 0.1,
+                           ellipse.border.remove = FALSE,
+                           mean.point = FALSE, mean.point.size = ifelse(is.numeric(size), 2 * size, size),
+                           star.plot = FALSE, star.plot.lty = 1, star.plot.lwd = NULL,
+                           label = NULL, font.label = c(12, "plain"), font.family = "",
+                           label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                           parse = FALSE,
+                           cor.coef = FALSE, cor.coeff.args = list(), cor.method = "pearson", cor.coef.coord = c(NULL, NULL), cor.coef.size = 4,
+                           ggp = NULL, show.legend.text = NA,
+                           ggtheme = theme_classic(),
+                           ...) {
   add <- match.arg(add)
   add.params <- .check_add.params(add, add.params, error.plot = "", data, color, fill, ...)
 
-  if(length(label) >1){
-    if(length(label) != nrow(data))
-      stop("The argument label should be a column name or a vector of length = nrow(data). ",
-           "It seems that length(label) != nrow(data)")
-    else data$label.xx <- label
+  if (length(label) > 1) {
+    if (length(label) != nrow(data)) {
+      stop(
+        "The argument label should be a column name or a vector of length = nrow(data). ",
+        "It seems that length(label) != nrow(data)"
+      )
+    } else {
+      data$label.xx <- label
+    }
     label <- "label.xx"
   }
   # label font
@@ -248,37 +260,51 @@ ggscatter_core <- function(data, x, y,
   font.label$color <- ifelse(is.null(font.label$color), color, font.label$color)
   font.label$face <- ifelse(is.null(font.label$face), "plain", font.label$face)
 
-  if(is.null(ggp)) p <- ggplot(data, create_aes(list(x = x, y = y)))
-  else p <- ggp
+  if (is.null(ggp)) {
+    p <- ggplot(data, create_aes(list(x = x, y = y)))
+  } else {
+    p <- ggp
+  }
 
-  if(point) p <- p +
-      .geom_exec(geom_point, data = data, x = x, y = y,
-                 color = color, fill = fill, size = size,
-                 shape = shape, ...)
+  if (point) {
+    p <- p +
+      .geom_exec(geom_point,
+        data = data, x = x, y = y,
+        color = color, fill = fill, size = size,
+        shape = shape, ...
+      )
+  }
 
   # Adjust shape when ngroups > 6, to avoid ggplot warnings
-  if(shape %in% colnames(data)){
+  if (shape %in% colnames(data)) {
     ngroups <- length(levels(data[[shape]]))
-    if(ngroups > 6) p <- p + scale_shape_manual(values=1:ngroups, labels = levels(data[[shape]]))
+    if (ngroups > 6) p <- p + scale_shape_manual(values = seq_len(ngroups), labels = levels(data[[shape]]))
   }
 
   # Add marginal rug
   # +++++++++++
-  if(rug) p <- p + .geom_exec(geom_rug, data = data,
-                         color = color, linewidth = size/2)
+  if (rug) {
+    p <- p + .geom_exec(geom_rug,
+      data = data,
+      color = color, linewidth = size / 2
+    )
+  }
 
   # Add reg line or loess
   # ++++++++++++
-  if(add %in% c("reg.line", "loess")){
+  if (add %in% c("reg.line", "loess")) {
     add <- ifelse(add == "reg.line", stats::lm, stats::loess)
-    if(is.null(add.params$linetype)) add.params$linetype <- "solid"
-    if(conf.int == FALSE) add.params$fill <- "lightgray"
+    if (is.null(add.params$linetype)) add.params$linetype <- "solid"
+    if (conf.int == FALSE) add.params$fill <- "lightgray"
 
-    .args <- .geom_exec(NULL, data = data,
-                        se = conf.int, level = conf.int.level,
-                        color = add.params$color, fill = add.params$fill,
-                        linetype = add.params$linetype, size = add.params$size,
-                        fullrange = fullrange)
+    # Use linewidth instead of size for geom_smooth (ggplot2 3.4.0+ compatibility)
+    .args <- .geom_exec(NULL,
+      data = data,
+      se = conf.int, level = conf.int.level,
+      color = add.params$color, fill = add.params$fill,
+      linetype = add.params$linetype, linewidth = add.params$size,
+      fullrange = fullrange
+    )
 
     mapping <- .args$mapping
     option <- .args$option
@@ -291,10 +317,10 @@ ggscatter_core <- function(data, x, y,
 
   # Add ellipses
   # +++++++++++
-  if(ellipse){
+  if (ellipse) {
     grp <- intersect(unique(c(color, fill, shape)), colnames(data))[1]
     # NO grouping variable
-    if(is.na(grp)) {
+    if (is.na(grp)) {
       grp <- factor(rep(1, nrow(data)))
       grp_name <- "group"
       data$group <- grp
@@ -305,98 +331,115 @@ ggscatter_core <- function(data, x, y,
       data[[grp_name]] <- as.factor(data[[grp_name]])
     }
 
-    if (ellipse.type == 'convex')
+    if (ellipse.type == "convex") {
       p <- p + .convex_ellipse(data, x, y, grp_name, color, fill, ellipse.alpha,
-                               ellipse.border.remove = ellipse.border.remove)
-    else if(ellipse.type == "confidence")
+        ellipse.border.remove = ellipse.border.remove
+      )
+    } else if (ellipse.type == "confidence") {
       p <- p + .confidence_ellipse(data, x, y, grp_name, color, fill,
-                                   alpha = ellipse.alpha, level = ellipse.level,
-                                   ellipse.border.remove = ellipse.border.remove)
-     else if (ellipse.type %in% c('t', 'norm', 'euclid'))
-       p <- p + .stat_ellipse(data, x, y, grp_name, color = color, fill = fill,
-                              alpha = ellipse.alpha, type = ellipse.type, level = ellipse.level,
-                              ellipse.border.remove = ellipse.border.remove)
+        alpha = ellipse.alpha, level = ellipse.level,
+        ellipse.border.remove = ellipse.border.remove
+      )
+    } else if (ellipse.type %in% c("t", "norm", "euclid")) {
+      p <- p + .stat_ellipse(data, x, y, grp_name,
+        color = color, fill = fill,
+        alpha = ellipse.alpha, type = ellipse.type, level = ellipse.level,
+        ellipse.border.remove = ellipse.border.remove
+      )
+    }
   }
   # /ellipse
 
   # Add mean points
   # +++++++++
-  if(mean.point) {
-    p <- p + .geom_exec(stat_mean, data = data,
-                        color = color, shape = shape, fill = fill,
-                        size = mean.point.size)
+  if (mean.point) {
+    p <- p + .geom_exec(stat_mean,
+      data = data,
+      color = color, shape = shape, fill = fill,
+      size = mean.point.size
+    )
   }
 
   # Star plots
   # ++++++++++++
-  if(star.plot){
-    p <- p + .geom_exec(stat_stars, data = data,
-                        color = color, linetype = star.plot.lty, linewidth = star.plot.lwd)
+  if (star.plot) {
+    p <- p + .geom_exec(stat_stars,
+      data = data,
+      color = color, linetype = star.plot.lty, linewidth = star.plot.lwd
+    )
   }
 
-  #/ star plots
+  # / star plots
 
   # Add textual annotation
   # ++++++
   alpha <- 1
-  if(!is.null(list(...)$alpha)) alpha <- list(...)$alpha
-  if(!is.null(label)) {
+  if (!is.null(list(...)$alpha)) alpha <- list(...)$alpha
+  if (!is.null(label)) {
     lab_data <- data
     # Select some labels to show
-    if(!is.null(label.select))
-      lab_data  <- subset(lab_data, lab_data[[label]] %in% label.select,
-                          drop = FALSE)
-
-    if(repel){
-      max.overlaps = getOption("ggrepel.max.overlaps", default = Inf)
-      ggfunc <- ggrepel::geom_text_repel
-      if(label.rectangle) ggfunc <- ggrepel::geom_label_repel
-        p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y,
-                          label = label, fontface = font.label$face,
-                          parse = parse,
-                          size = font.label$size/3, color = font.label$color,
-                          alpha = alpha, family = font.family,
-                          box.padding = unit(0.35, "lines"),
-                          point.padding = unit(0.3, "lines"),
-                          force = 1, show.legend = show.legend.text, seed=123,
-                          max.overlaps = max.overlaps)
+    if (!is.null(label.select)) {
+      lab_data <- subset(lab_data, lab_data[[label]] %in% label.select,
+        drop = FALSE
+      )
     }
-    else{
+
+    if (repel) {
+      max.overlaps <- getOption("ggrepel.max.overlaps", default = Inf)
+      ggfunc <- ggrepel::geom_text_repel
+      if (label.rectangle) ggfunc <- ggrepel::geom_label_repel
+      p <- p + .geom_exec(ggfunc,
+        data = lab_data, x = x, y = y,
+        label = label, fontface = font.label$face,
+        parse = parse,
+        size = font.label$size / 3, color = font.label$color,
+        alpha = alpha, family = font.family,
+        box.padding = unit(0.35, "lines"),
+        point.padding = unit(0.3, "lines"),
+        force = 1, show.legend = show.legend.text, seed = 123,
+        max.overlaps = max.overlaps
+      )
+    } else {
       ggfunc <- geom_text
-      vjust  <- -0.7
-      if(label.rectangle) {
+      vjust <- -0.7
+      if (label.rectangle) {
         ggfunc <- geom_label
         vjust <- -0.4
       }
-      p <- p + .geom_exec(ggfunc, data = lab_data, x = x, y = y, color = color,
-                          label = label, fontface = font.label$face, family = font.family,
-                          parse = parse,
-                          size = font.label$size/3, color = font.label$color,
-                          vjust = vjust, alpha = alpha, show.legend = show.legend.text)
+      p <- p + .geom_exec(ggfunc,
+        data = lab_data, x = x, y = y, color = color,
+        label = label, fontface = font.label$face, family = font.family,
+        parse = parse,
+        size = font.label$size / 3, color = font.label$color,
+        vjust = vjust, alpha = alpha, show.legend = show.legend.text
+      )
     }
   }
 
   # Add correlation coefficient
-  if(cor.coef){
-
-    if(!missing(cor.method))
+  if (cor.coef) {
+    if (!missing(cor.method)) {
       cor.coeff.args$method <- cor.method
-    if(!missing(cor.coef.size))
+    }
+    if (!missing(cor.coef.size)) {
       cor.coeff.args$size <- cor.coef.size
-    if(!missing(cor.coef.coord)){
+    }
+    if (!missing(cor.coef.coord)) {
       cor.coeff.args$label.x <- cor.coef.coord[1]
       cor.coeff.args$label.y <- cor.coef.coord[2]
     }
-     p <- p + do.call(stat_cor, cor.coeff.args)
+    p <- p + do.call(stat_cor, cor.coeff.args)
   }
 
-  p <- ggpar(p, palette = palette, ggtheme = ggtheme,
-             title = title, xlab = xlab, ylab = ylab,...)
-  if(font.family != "")
+  p <- ggpar(p,
+    palette = palette, ggtheme = ggtheme,
+    title = title, xlab = xlab, ylab = ylab, ...
+  )
+  if (font.family != "") {
     p <- p + theme(text = element_text(family = font.family))
+  }
   p
 }
-
 
 
 # Add convex ellipse
@@ -404,59 +447,70 @@ ggscatter_core <- function(data, x, y,
 # x,y: x and y variables
 # grp_name: grp variable
 .convex_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray", alpha = 0.1,
-                            ellipse.border.remove = FALSE ){
-
+                            ellipse.border.remove = FALSE) {
   grp_levels <- levels(data[[grp_name]])
-  if(length(grp_levels) == 1) .geom_exec(geomfunc = stat_chull, data = data,
-                                         color = color, fill = fill, alpha = alpha,
-                                         geom = "polygon")
-  else {
-    if( ellipse.border.remove) color <- NULL
-    else color = grp_name
-    .geom_exec(geomfunc = stat_chull, data = data,
-                  color = color, fill = grp_name, alpha = alpha,
-                  geom = "polygon")
+  if (length(grp_levels) == 1) {
+    .geom_exec(
+      geomfunc = stat_chull, data = data,
+      color = color, fill = fill, alpha = alpha,
+      geom = "polygon"
+    )
+  } else {
+    if (ellipse.border.remove) {
+      color <- NULL
+    } else {
+      color <- grp_name
+    }
+    .geom_exec(
+      geomfunc = stat_chull, data = data,
+      color = color, fill = grp_name, alpha = alpha,
+      geom = "polygon"
+    )
   }
 }
 
 # Confidence ellipse
 .confidence_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray",
-                                alpha = 0.1, level = 0.95, ellipse.border.remove = FALSE){
+                                alpha = 0.1, level = 0.95, ellipse.border.remove = FALSE) {
   grp_levels <- levels(data[[grp_name]])
-  if(length(grp_levels) == 1) {
+  if (length(grp_levels) == 1) {
     mapping <- create_aes(list(x = x, y = y))
-    stat_conf_ellipse(mapping = mapping, data = data,
-               color = color, fill = fill, alpha = alpha,
-               level = level, geom = "polygon")
-  }
-  else {
-    mapping = create_aes(list(x = x, y = y, colour = grp_name, fill = grp_name))
-    if(ellipse.border.remove ) mapping = create_aes(list(x = x, y = y, colour = NULL, fill = grp_name))
-    stat_conf_ellipse(mapping = mapping, data = data,
-                          level = level, alpha = alpha,
-                          geom = 'polygon')
+    stat_conf_ellipse(
+      mapping = mapping, data = data,
+      color = color, fill = fill, alpha = alpha,
+      level = level, geom = "polygon"
+    )
+  } else {
+    mapping <- create_aes(list(x = x, y = y, colour = grp_name, fill = grp_name))
+    if (ellipse.border.remove) mapping <- create_aes(list(x = x, y = y, colour = NULL, fill = grp_name))
+    stat_conf_ellipse(
+      mapping = mapping, data = data,
+      level = level, alpha = alpha,
+      geom = "polygon"
+    )
   }
 }
 
 
-
 # Add ggplot2 stat ellipse
 .stat_ellipse <- function(data, x, y, grp_name, color = "black", fill = "lightgray",
-                          alpha = 0.1, type = "norm", level = 0.95, ellipse.border.remove = FALSE)
-  {
+                          alpha = 0.1, type = "norm", level = 0.95, ellipse.border.remove = FALSE) {
   grp_levels <- levels(data[[grp_name]])
-  if(length(grp_levels) == 1){
+  if (length(grp_levels) == 1) {
     mapping <- create_aes(list(x = x, y = y))
-    ggplot2::stat_ellipse(mapping = mapping, data = data,
-                         level = level, type = type,
-                         colour = color, fill = fill, alpha = alpha,
-                         geom = 'polygon')
-  }
-  else{
-  mapping = create_aes(list(x = x, y = y, colour = grp_name, group = grp_name, fill = grp_name))
-  if(ellipse.border.remove) mapping = create_aes(list(x = x, y = y, group = grp_name, fill = grp_name))
-  ggplot2::stat_ellipse(mapping = mapping, data = data,
-                       level = level, type = type, alpha = alpha,
-                       geom = 'polygon')
+    ggplot2::stat_ellipse(
+      mapping = mapping, data = data,
+      level = level, type = type,
+      colour = color, fill = fill, alpha = alpha,
+      geom = "polygon"
+    )
+  } else {
+    mapping <- create_aes(list(x = x, y = y, colour = grp_name, group = grp_name, fill = grp_name))
+    if (ellipse.border.remove) mapping <- create_aes(list(x = x, y = y, group = grp_name, fill = grp_name))
+    ggplot2::stat_ellipse(
+      mapping = mapping, data = data,
+      level = level, type = type, alpha = alpha,
+      geom = "polygon"
+    )
   }
 }

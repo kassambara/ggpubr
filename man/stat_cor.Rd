@@ -21,6 +21,9 @@ stat_cor(
   p.digits = digits,
   r.accuracy = NULL,
   p.accuracy = NULL,
+  p.format.style = "default",
+  p.leading.zero = NULL,
+  p.decimal.mark = NULL,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -94,6 +97,16 @@ ignored.}
 precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 decimal places of precision. If specified, then \code{p.digits} is ignored.}
 
+\item{p.format.style}{character specifying the p-value formatting style.
+One of "default", "apa", "nejm", "lancet", "ama", "graphpad", "scientific".
+Default is "default" for backward compatibility.}
+
+\item{p.leading.zero}{logical. Whether to include leading zero before decimal
+point (e.g., "0.05" vs ".05"). If NULL, uses the style's default setting.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
 can be used to override the default coupling between stats and geoms. The
@@ -131,10 +144,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2]{geom_text}} or
@@ -159,12 +172,13 @@ df <- mtcars
 df$cyl <- as.factor(df$cyl)
 
 # Scatter plot with correlation coefficient
-#:::::::::::::::::::::::::::::::::::::::::::::::::
-sp <- ggscatter(df, x = "wt", y = "mpg",
-   add = "reg.line",  # Add regressin line
-   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
-   conf.int = TRUE # Add confidence interval
-   )
+# :::::::::::::::::::::::::::::::::::::::::::::::::
+sp <- ggscatter(df,
+  x = "wt", y = "mpg",
+  add = "reg.line", # Add regressin line
+  add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+  conf.int = TRUE # Add confidence interval
+)
 # Add correlation coefficient
 sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
 
@@ -178,16 +192,18 @@ sp + stat_cor(aes(label = after_stat(r.label)), label.x = 3)
 
 # Use R2 instead of R
 ggscatter(df, x = "wt", y = "mpg", add = "reg.line") +
- stat_cor(
-   aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
-  label.x = 3
-)
+  stat_cor(
+    aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+    label.x = 3
+  )
 
 # Color by groups and facet
-#::::::::::::::::::::::::::::::::::::::::::::::::::::
-sp <- ggscatter(df, x = "wt", y = "mpg",
-   color = "cyl", palette = "jco",
-   add = "reg.line", conf.int = TRUE)
+# ::::::::::::::::::::::::::::::::::::::::::::::::::::
+sp <- ggscatter(df,
+  x = "wt", y = "mpg",
+  color = "cyl", palette = "jco",
+  add = "reg.line", conf.int = TRUE
+)
 sp + stat_cor(aes(color = cyl), label.x = 3)
 
 }

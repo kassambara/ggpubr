@@ -21,39 +21,39 @@ NULL
 #' # Color by groups
 #' data(iris)
 #' ggdensity(iris, "Sepal.Length", color = "Species") +
-#'  stat_overlay_normal_density(aes(color = Species), linetype = "dashed")
+#'   stat_overlay_normal_density(aes(color = Species), linetype = "dashed")
 #'
 #'
 #' # Facet
 #' ggdensity(iris, "Sepal.Length", facet.by = "Species") +
-#'  stat_overlay_normal_density(color = "red", linetype = "dashed")
+#'   stat_overlay_normal_density(color = "red", linetype = "dashed")
 #'
 #' @export
 stat_overlay_normal_density <- function(mapping = NULL, data = NULL, geom = "line",
-                    position = "identity", na.rm = FALSE, show.legend = NA,
-                    inherit.aes = TRUE,  ...) {
-  if(is.null(mapping)){
+                                        position = "identity", na.rm = FALSE, show.legend = NA,
+                                        inherit.aes = TRUE, ...) {
+  if (is.null(mapping)) {
     mapping <- ggplot2::aes(y = NULL)
-  }else{
+  } else {
     mapping["y"] <- list(NULL)
   }
   layer(
     stat = StatOverlayNormalDensity, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm,  ...)
+    params = list(na.rm = na.rm, ...)
   )
 }
 
 
-StatOverlayNormalDensity<- ggproto("StatOverlayNormalDensity", Stat,
-                  required_aes = c("x"),
-                  compute_group = function(data, scales) {
-                    x <- data$x
-                    .mean <- mean(x, na.rm = TRUE)
-                    .sd <- stats::sd(x, na.rm = TRUE)
-                    probability.points <- stats::ppoints(length(x[!(is.na(x))]))
-                    res.density <- stats::density(stats::qnorm(probability.points, .mean, .sd))
-                    res.density <- data.frame(x = res.density$x, y = res.density$y)
-                    res.density
-                  }
+StatOverlayNormalDensity <- ggproto("StatOverlayNormalDensity", Stat,
+  required_aes = c("x"),
+  compute_group = function(data, scales) {
+    x <- data$x
+    .mean <- mean(x, na.rm = TRUE)
+    .sd <- stats::sd(x, na.rm = TRUE)
+    probability.points <- stats::ppoints(length(x[!(is.na(x))]))
+    res.density <- stats::density(stats::qnorm(probability.points, .mean, .sd))
+    res.density <- data.frame(x = res.density$x, y = res.density$y)
+    res.density
+  }
 )

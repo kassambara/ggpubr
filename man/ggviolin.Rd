@@ -25,6 +25,14 @@ ggviolin(
   size = NULL,
   linewidth = NULL,
   width = 1,
+  quantiles = NULL,
+  quantile.linetype = NULL,
+  quantile.type = NULL,
+  quantile.alpha = NULL,
+  quantile.colour = NULL,
+  quantile.color = NULL,
+  quantile.linewidth = NULL,
+  quantile.size = NULL,
   draw_quantiles = NULL,
   select = NULL,
   remove = NULL,
@@ -103,6 +111,15 @@ outlines.}
 \item{linewidth}{constant value specifying the line width.}
 
 \item{width}{violin width.}
+
+\item{quantiles}{numeric vector of quantiles to draw on the violin.}
+
+\item{quantile.linetype}{linetype for quantile lines; set to draw quantiles
+with ggplot2 >= 4.0.0.}
+
+\item{quantile.type}{quantile algorithm passed to ggplot2.}
+
+\item{quantile.alpha, quantile.colour, quantile.color, quantile.linewidth, quantile.size}{aesthetics for quantile lines.}
 
 \item{draw_quantiles}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Previous
 specification of drawing quantiles.}
@@ -203,55 +220,74 @@ ggviolin(df, "dose", "len", orientation = "horiz")
 # Add summary statistics
 # ++++++++++++++++++++++++++
 # Draw quantiles
-ggviolin(df, "dose", "len", add = "none",
-   draw_quantiles = 0.5)
+ggviolin(df, "dose", "len",
+  add = "none",
+  quantiles = 0.5, quantile.linetype = "dashed"
+)
 
 # Add box plot
-ggviolin(df, x = "dose", y = "len",
- add = "boxplot")
+ggviolin(df,
+  x = "dose", y = "len",
+  add = "boxplot"
+)
 
-ggviolin(df, x = "dose", y = "len",
- add = "dotplot")
+ggviolin(df,
+  x = "dose", y = "len",
+  add = "dotplot"
+)
 
 # Add jitter points and
 # change point shape by groups ("dose")
-ggviolin(df, x = "dose", y = "len",
-add = "jitter", shape = "dose")
+ggviolin(df,
+  x = "dose", y = "len",
+  add = "jitter", shape = "dose"
+)
 
 
 # Add mean_sd + jittered points
-ggviolin(df, x = "dose", y = "len",
- add = c("jitter", "mean_sd"))
+ggviolin(df,
+  x = "dose", y = "len",
+  add = c("jitter", "mean_sd")
+)
 
 # Change error.plot to "crossbar"
-ggviolin(df, x = "dose", y = "len",
- add = "mean_sd", error.plot = "crossbar")
+ggviolin(df,
+  x = "dose", y = "len",
+  add = "mean_sd", error.plot = "crossbar"
+)
 
 
 # Change colors
 # +++++++++++++++++++++++++++
 # Change outline and fill colors
 ggviolin(df, "dose", "len",
-   color = "black", fill = "gray")
+  color = "black", fill = "gray"
+)
 
 # Change outline colors by groups: dose
 # Use custom color palette and add boxplot
-ggviolin(df, "dose", "len",  color = "dose",
-   palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-   add = "boxplot")
+ggviolin(df, "dose", "len",
+  color = "dose",
+  palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+  add = "boxplot"
+)
 
 # Change fill color by groups: dose
 # add boxplot with white fill color
-ggviolin(df, "dose", "len", fill = "dose",
-   palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-   add = "boxplot", add.params = list(fill = "white"))
+ggviolin(df, "dose", "len",
+  fill = "dose",
+  palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+  add = "boxplot", add.params = list(fill = "white")
+)
 
 
 # Plot with multiple groups
 # +++++++++++++++++++++
 # fill or color box plot by a second group : "supp"
-ggviolin(df, "dose", "len", color = "supp",
- palette = c("#00AFBB", "#E7B800"), add = "boxplot")
+ggviolin(df, "dose", "len",
+  color = "supp",
+  palette = c("#00AFBB", "#E7B800"), add = "boxplot"
+)
 
 }
 \seealso{

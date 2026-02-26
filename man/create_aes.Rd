@@ -16,16 +16,16 @@ Create aes mapping to make programming easy with ggplot2.
 }
 \examples{
 # Simple aes creation
-create_aes(list(x = "Sepal.Length", y = "Petal.Length" ))
+create_aes(list(x = "Sepal.Length", y = "Petal.Length"))
 
 # Parse an expression
 x <- "log2(Sepal.Length)"
 y <- "log2(Petal.Length)"
-create_aes(list(x = x, y = y ), parse = TRUE)
+create_aes(list(x = x, y = y), parse = TRUE)
 
 # Create a ggplot
-mapping <- create_aes(list(x = x, y = y ), parse = TRUE)
+mapping <- create_aes(list(x = x, y = y), parse = TRUE)
 ggplot(iris, mapping) +
- geom_point()
+  geom_point()
 
 }

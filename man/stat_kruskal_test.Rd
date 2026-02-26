@@ -16,6 +16,11 @@ stat_kruskal_test(
   step.increase = 0.1,
   p.adjust.method = "holm",
   significance = list(),
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -92,6 +97,26 @@ value (not recommended), use p.adjust.method = "none".}
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }}
 
+\item{p.format.style}{character string specifying the p-value formatting style.
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+See \code{\link{list_p_format_styles}} for details.}
+
+\item{p.digits}{integer specifying the number of decimal places for p-values.
+If provided, overrides the style default.}
+
+\item{p.leading.zero}{logical indicating whether to include leading zero before
+decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
+Values below this threshold are shown as "< threshold". If provided, overrides
+the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
 can be used to override the default coupling between stats and geoms. The
@@ -129,10 +154,10 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions), 
-overrides the default aesthetics, rather than combining with them. This is 
-most useful for helper functions that define both data and aesthetics and 
-shouldn't inherit behaviour from the default plot specification. Set to 
+\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+overrides the default aesthetics, rather than combining with them. This is
+most useful for helper functions that define both data and aesthetics and
+shouldn't inherit behaviour from the default plot specification. Set to
 \code{TRUE} to inherit aesthetics from the parent ggplot layer.}
 
 \item{parse}{If TRUE, the labels will be parsed into expressions and displayed
@@ -153,6 +178,7 @@ Add Kruskal-Wallis test p-values to a ggplot, such as
  \item{p.signif}: P-value significance.
  \item{p.adj.signif}: Adjusted p-value significance.
  \item{p.format}: Formated p-value.
+ \item{p.format.signif}: Formated p-value with significance symbols.
  \item{p.adj.format}: Formated adjusted p-value.
  \item{n}: number of samples.
   }
@@ -160,20 +186,20 @@ Add Kruskal-Wallis test p-values to a ggplot, such as
 
 \examples{
 # Data preparation
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Transform `dose` into factor variable
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
 # Add a random grouping variable
 set.seed(123)
 df$group <- sample(factor(rep(c("grp1", "grp2", "grp3"), 20)))
-df$len <- ifelse(df$group == "grp2", df$len+2, df$len)
-df$len <- ifelse(df$group == "grp3", df$len+7, df$len)
+df$len <- ifelse(df$group == "grp2", df$len + 2, df$len)
+df$len <- ifelse(df$group == "grp3", df$len + 7, df$len)
 head(df, 3)
 
 
 # Basic boxplot
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a basic boxplot
 # Add 5\% and 10\% space to the plot bottom and the top, respectively
 bxp <- ggboxplot(df, x = "dose", y = "len") +
@@ -199,16 +225,16 @@ bxp + stat_kruskal_test(label = "as_detailed_italic")
 
 
 # Faceted plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 # Create a ggplot facet
 bxp <- ggboxplot(df, x = "dose", y = "len", facet.by = "supp") +
- scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
 # Add p-values
 bxp + stat_kruskal_test()
 
 
 # Grouped plots
-#\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
+# \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
 bxp2 <- ggboxplot(df, x = "group", y = "len", color = "dose", palette = "npg")
 
 # For each x-position, computes tests between legend groups

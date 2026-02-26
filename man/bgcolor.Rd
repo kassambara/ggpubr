@@ -23,7 +23,7 @@ p
 
 # Change panel background color
 p +
-  bgcolor("#BFD5E3")+
+  bgcolor("#BFD5E3") +
   border("#BFD5E3")
 }
 \seealso{

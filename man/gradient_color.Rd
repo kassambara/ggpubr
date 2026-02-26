@@ -28,15 +28,17 @@ Change gradient color.
 }
 \examples{
 df <- mtcars
-p <- ggscatter(df, x = "wt", y = "mpg",
-               color = "mpg")
+p <- ggscatter(df,
+  x = "wt", y = "mpg",
+  color = "mpg"
+)
 
 # Change gradient color
 # Use one custom color
 p + gradient_color("red")
 
 # Two colors
-p + gradient_color(c("blue",  "red"))
+p + gradient_color(c("blue", "red"))
 
 # Three colors
 p + gradient_color(c("blue", "white", "red"))

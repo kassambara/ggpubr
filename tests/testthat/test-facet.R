@@ -1,9 +1,8 @@
-
 # Data preparation
 data("ToothGrowth")
 df <- ToothGrowth
 # Adding column name with space
-df[['spa ced']] <- df[['supp']]
+df[["spa ced"]] <- df[["supp"]]
 
 
 test_that("facet works", {
@@ -22,6 +21,3 @@ test_that("facet works when column names contain space", {
     as.numeric()
   expect_equal(panels, c(1, 2))
 })
-
-
-

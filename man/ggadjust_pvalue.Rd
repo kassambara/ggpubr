@@ -11,6 +11,15 @@ ggadjust_pvalue(
   label = "p.adj",
   hide.ns = NULL,
   symnum.args = list(),
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
+  p.decimal.mark = NULL,
+  signif.cutoffs = NULL,
+  signif.symbols = NULL,
+  ns.symbol = "ns",
+  use.four.stars = FALSE,
   output = c("plot", "stat_test")
 )
 }
@@ -32,7 +41,8 @@ recommended), use p.adjust.method = "none".}
 \item{label}{character string specifying label. Can be: \itemize{ \item the
 column containing the label (e.g.: \code{label = "p"} or \code{label =
 "p.adj"}), where \code{p} is the p-value. Other possible values are
-\code{"p.signif", "p.adj.signif", "p.format", "p.adj.format"}. \item an
+\code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+\item an
 expression that can be formatted by the \code{\link[glue]{glue}()} package.
 For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
 expression \{p\} will be replaced by its value. \item a combination of
@@ -50,7 +60,45 @@ italic(p)= {p}"}}.}
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
- \item \code{****}:  p <= 0.0001 }}
+ \item \code{****}:  p <= 0.0001 }
+
+ Note: If \code{signif.cutoffs} is provided, it takes precedence over
+ \code{symnum.args}.}
+
+\item{p.format.style}{character string specifying the p-value formatting style.
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+See \code{\link{list_p_format_styles}} for details.}
+
+\item{p.digits}{integer specifying the number of decimal places for p-values.
+If provided, overrides the style default.}
+
+\item{p.leading.zero}{logical indicating whether to include leading zero before
+decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
+Values below this threshold are shown as "< threshold". If provided, overrides
+the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
+\item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
+for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+Default is NULL, which uses the package defaults.}
+
+\item{signif.symbols}{character vector of symbols corresponding to
+\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+(and "****" if \code{use.four.stars = TRUE}).}
+
+\item{ns.symbol}{character string for non-significant results. Default is "ns".
+Use "" (empty string) to show nothing.}
+
+\item{use.four.stars}{logical. If TRUE, allows four stars (****) for the most
+significant level. Default is FALSE.}
 
 \item{output}{character. Possible values are one of \code{c("plot",
 "stat_test")}. Default is "plot".}
@@ -63,7 +111,7 @@ Adjust p-values produced by \code{\link{geom_pwc}()} on a ggplot.
 }
 \examples{
 # Data preparation
-#:::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
 # Add a random grouping variable
@@ -71,10 +119,11 @@ df$group <- factor(rep(c("grp1", "grp2"), 30))
 head(df, 3)
 
 # Boxplot: Two groups by panel
-#:::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::
 # Create a box plot
 bxp <- ggboxplot(
-  df, x = "supp", y = "len", fill = "#00AFBB",
+  df,
+  x = "supp", y = "len", fill = "#00AFBB",
   facet.by = "dose"
 )
 # Make facet and add p-values
@@ -82,16 +131,18 @@ bxp <- bxp + geom_pwc(method = "t_test")
 bxp
 # Adjust all p-values together after
 ggadjust_pvalue(
-  bxp, p.adjust.method = "bonferroni",
+  bxp,
+  p.adjust.method = "bonferroni",
   label = "{p.adj.format}{p.adj.signif}", hide.ns = TRUE
 )
 
 
 # Boxplot: Three groups by panel
-#:::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::
 # Create a box plot
 bxp <- ggboxplot(
-  df, x = "dose", y = "len", fill = "#00AFBB",
+  df,
+  x = "dose", y = "len", fill = "#00AFBB",
   facet.by = "supp"
 )
 # Make facet and add p-values
@@ -99,7 +150,8 @@ bxp <- bxp + geom_pwc(method = "t_test")
 bxp
 # Adjust all p-values together after
 ggadjust_pvalue(
-  bxp, p.adjust.method = "bonferroni",
+  bxp,
+  p.adjust.method = "bonferroni",
   label = "{p.adj.format}{p.adj.signif}"
 )
 }

@@ -121,7 +121,7 @@ Create a ggplot with summary stats (n, median, mean, iqr) table
 }}
 \examples{
 # Data preparation
-#::::::::::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::::::::::
 data("ToothGrowth")
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
@@ -134,7 +134,7 @@ head(df)
 
 
 # Basic summary stats
-#::::::::::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::::::::::
 # Compute summary statistics
 summary.stats <- df \%>\%
   group_by(dose) \%>\%
@@ -143,38 +143,43 @@ summary.stats
 
 # Visualize summary table
 ggsummarytable(
-  summary.stats, x = "dose", y = c("n", "median", "iqr"),
+  summary.stats,
+  x = "dose", y = c("n", "median", "iqr"),
   ggtheme = theme_bw()
 )
 
 
 # Create plots with summary table under the plot
-#::::::::::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::::::::::
 # Basic plot
 ggsummarystats(
-  df, x = "dose", y = "len",
+  df,
+  x = "dose", y = "len",
   ggfunc = ggboxplot, add = "jitter"
 )
 
 # Color by groups
 ggsummarystats(
-  df, x = "dose", y = "len",
+  df,
+  x = "dose", y = "len",
   ggfunc = ggboxplot, add = "jitter",
   color = "dose", palette = "npg"
 )
 
 # Create a barplot
 ggsummarystats(
-  df, x = "dose", y = "len",
+  df,
+  x = "dose", y = "len",
   ggfunc = ggbarplot, add = c("jitter", "median_iqr"),
   color = "dose", palette = "npg"
 )
 
 # Facet
-#::::::::::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::::::::::
 # Specify free.panels = TRUE for free panels
 ggsummarystats(
-  df, x = "dose", y = "len",
+  df,
+  x = "dose", y = "len",
   ggfunc = ggboxplot, add = "jitter",
   color = "dose", palette = "npg",
   facet.by = c("supp", "qc"),

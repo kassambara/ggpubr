@@ -13,6 +13,15 @@ compare_means(
   ref.group = NULL,
   symnum.args = list(),
   p.adjust.method = "holm",
+  p.format.style = "default",
+  p.digits = NULL,
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
+  p.decimal.mark = NULL,
+  signif.cutoffs = NULL,
+  signif.symbols = NULL,
+  ns.symbol = "ns",
+  use.four.stars = FALSE,
   ...
 )
 }
@@ -55,7 +64,10 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 
  In other words, we use the following convention for symbols indicating
  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
- \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }}
+ \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001 \item \code{****}:  p <= 0.0001 }
+
+ Note: If \code{signif.cutoffs} is provided, it takes precedence over
+ \code{symnum.args}.}
 
 \item{p.adjust.method}{method for adjusting p values (see
  \code{\link[stats]{p.adjust}}). Has impact only in a situation, where
@@ -66,6 +78,45 @@ in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 
  Note that, when the \code{formula} contains multiple variables, the p-value
  adjustment is done independently for each variable.}
+
+\item{p.format.style}{character string specifying the p-value formatting style.
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
+See \code{\link{list_p_format_styles}} for details.}
+
+\item{p.digits}{integer specifying the number of decimal places for p-values.
+If provided, overrides the style default.}
+
+\item{p.leading.zero}{logical indicating whether to include leading zero before
+decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
+Values below this threshold are shown as "< threshold". Set to NULL to always
+show exact values. If provided, overrides the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
+uses \code{getOption("OutDec")}.}
+
+\item{signif.cutoffs}{numeric vector of p-value cutoffs in descending order
+for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+If \code{use.four.stars = TRUE}, can include a fourth level (e.g.,
+\code{c(0.10, 0.05, 0.01, 0.001)} for "****" at p < 0.001).
+Default is NULL, which uses the package defaults (backward compatible).}
+
+\item{signif.symbols}{character vector of symbols corresponding to
+\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+(and "****" if \code{use.four.stars = TRUE}). Must have the same length
+as \code{signif.cutoffs}.}
+
+\item{ns.symbol}{character string for non-significant results. Default is "ns".
+Use "" (empty string) to show nothing for non-significant results.}
+
+\item{use.four.stars}{logical. If TRUE and \code{signif.symbols} is NULL,
+allows four stars (****) for the most significant level when
+\code{signif.cutoffs} has 4 levels. Default is FALSE.}
 
 \item{...}{Other arguments to be passed to the test function.}
 }
@@ -78,6 +129,7 @@ Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
 \item \code{p}: the p-value.
 \item \code{p.adj}: the adjusted p-value. Default for \code{p.adjust.method = "holm"}.
 \item \code{p.format}: the formatted p-value.
+\item \code{p.format.signif}: the formatted p-value with significance symbols.
 \item \code{p.signif}: the significance level.
 \item \code{method}: the statistical test used to compare groups.
 
@@ -89,42 +141,42 @@ Performs one or multiple mean comparisons.
 }
 \examples{
 # Load data
-#:::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::
 data("ToothGrowth")
 df <- ToothGrowth
 
 # One-sample test
-#:::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ 1, df, mu = 0)
 
 # Two-samples unpaired test
-#:::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ supp, df)
 
 # Two-samples paired test
-#:::::::::::::::::::::::::::::::::::::::::
+# :::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ supp, df, paired = TRUE)
 
 # Compare supp levels after grouping the data by "dose"
-#::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ supp, df, group.by = "dose")
 
 # pairwise comparisons
-#::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::
 # As dose contains more thant two levels ==>
 # pairwise test is automatically performed.
 compare_means(len ~ dose, df)
 
 # Comparison against reference group
-#::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ dose, df, ref.group = "0.5")
 
 # Comparison against all
-#::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ dose, df, ref.group = ".all.")
 
 # Anova and kruskal.test
-#::::::::::::::::::::::::::::::::::::::::
+# ::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ dose, df, method = "anova")
 compare_means(len ~ dose, df, method = "kruskal.test")
 }

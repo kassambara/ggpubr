@@ -13,8 +13,8 @@ a ggplot.
 Show line types available in R.
 }
 \examples{
-show_line_types()+
- theme_minimal()
+show_line_types() +
+  theme_minimal()
 }
 \seealso{
 \code{\link{ggpar}} and \code{\link{ggline}}.

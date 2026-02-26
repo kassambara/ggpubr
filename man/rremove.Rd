@@ -41,8 +41,10 @@ Remove a specific component from a ggplot.
 data("ToothGrowth")
 
 # Basic plot
-p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
-  ggtheme = theme_gray())
+p <- ggboxplot(ToothGrowth,
+  x = "dose", y = "len",
+  ggtheme = theme_gray()
+)
 p
 
 # Remove all grids

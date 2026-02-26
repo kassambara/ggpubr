@@ -42,17 +42,19 @@
 #'
 #' @examples
 #' # Define color palette
-#' my_cols <- c("#0D0887FF", "#6A00A8FF", "#B12A90FF",
-#' "#E16462FF", "#FCA636FF", "#F0F921FF")
+#' my_cols <- c(
+#'   "#0D0887FF", "#6A00A8FF", "#B12A90FF",
+#'   "#E16462FF", "#FCA636FF", "#F0F921FF"
+#' )
 #'
 #' # Standard contingency table
-#' #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+#' # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 #' # Read a contingency table: housetasks
 #' # Repartition of 13 housetasks in the couple
 #' data <- read.delim(
 #'   system.file("demo-data/housetasks.txt", package = "ggpubr"),
 #'   row.names = 1
-#'   )
+#' )
 #' data
 #'
 #' # Basic ballon plot
@@ -63,59 +65,66 @@
 #'
 #'
 #' # Change color according to the value of table cells
-#' ggballoonplot(data, fill = "value")+
-#'    scale_fill_gradientn(colors = my_cols)
+#' ggballoonplot(data, fill = "value") +
+#'   scale_fill_gradientn(colors = my_cols)
 #'
 #' # Change the plotting symbol shape
-#' ggballoonplot(data, fill = "value",  shape = 23)+
+#' ggballoonplot(data, fill = "value", shape = 23) +
 #'   gradient_fill(c("blue", "white", "red"))
 #'
 #'
 #' # Set points size to 8, but change fill color by values
 #' # Sow labels
-#' ggballoonplot(data, fill = "value", color = "lightgray",
-#'               size = 10, show.label = TRUE)+
+#' ggballoonplot(data,
+#'   fill = "value", color = "lightgray",
+#'   size = 10, show.label = TRUE
+#' ) +
 #'   gradient_fill(c("blue", "white", "red"))
 #'
 #' # Streched contingency table
-#' #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+#' # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 #'
 #' # Create an Example Data Frame Containing Car x Color data
-#' carnames <- c("bmw","renault","mercedes","seat")
-#' carcolors <- c("red","white","silver","green")
-#' datavals <- round(rnorm(16, mean=100, sd=60),1)
-#' car_data <- data.frame(Car = rep(carnames,4),
-#'                    Color = rep(carcolors, c(4,4,4,4) ),
-#'                    Value=datavals )
+#' carnames <- c("bmw", "renault", "mercedes", "seat")
+#' carcolors <- c("red", "white", "silver", "green")
+#' datavals <- round(rnorm(16, mean = 100, sd = 60), 1)
+#' car_data <- data.frame(
+#'   Car = rep(carnames, 4),
+#'   Color = rep(carcolors, c(4, 4, 4, 4)),
+#'   Value = datavals
+#' )
 #'
 #' car_data
 #'
-#' ggballoonplot(car_data, x = "Car", y = "Color",
-#'               size = "Value", fill = "Value") +
-#'    scale_fill_gradientn(colors = my_cols) +
+#' ggballoonplot(car_data,
+#'   x = "Car", y = "Color",
+#'   size = "Value", fill = "Value"
+#' ) +
+#'   scale_fill_gradientn(colors = my_cols) +
 #'   guides(size = "none")
 #'
 #'
 #' # Grouped frequency table
-#' #:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-#'data("Titanic")
-#'dframe <- as.data.frame(Titanic)
-#'head(dframe)
-#'ggballoonplot(
-#'  dframe, x = "Class", y = "Sex",
-#'  size = "Freq", fill = "Freq",
-#'  facet.by = c("Survived", "Age"),
-#'  ggtheme = theme_bw()
-#')+
+#' # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+#' data("Titanic")
+#' dframe <- as.data.frame(Titanic)
+#' head(dframe)
+#' ggballoonplot(
+#'   dframe,
+#'   x = "Class", y = "Sex",
+#'   size = "Freq", fill = "Freq",
+#'   facet.by = c("Survived", "Age"),
+#'   ggtheme = theme_bw()
+#' ) +
 #'   scale_fill_gradientn(colors = my_cols)
 #'
-#'# Hair and Eye Color of Statistics Students
-#'data(HairEyeColor)
-#'ggballoonplot( as.data.frame(HairEyeColor),
-#'               x = "Hair", y = "Eye", size = "Freq",
-#'               ggtheme = theme_gray()) %>%
-#'  facet("Sex")
-#'
+#' # Hair and Eye Color of Statistics Students
+#' data(HairEyeColor)
+#' ggballoonplot(as.data.frame(HairEyeColor),
+#'   x = "Hair", y = "Eye", size = "Freq",
+#'   ggtheme = theme_gray()
+#' ) %>%
+#'   facet("Sex")
 #'
 #' @export
 ggballoonplot <- function(
@@ -125,24 +134,23 @@ ggballoonplot <- function(
   show.label = FALSE, font.label = list(size = 12, color = "black"),
   rotate.x.text = TRUE,
   ggtheme = theme_minimal(), ...
-  )
-  {
-
-  if(inherits(data, "matrix"))
+) {
+  if (inherits(data, "matrix")) {
     data <- as.data.frame(data)
+  }
 
   # Check the data
-  #::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  # ::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
   # case 1: x and y specified. we assume that the data is streched
   # if size not specified, then take the third column as size values
   # detect fill variable if misspecified
-  if(!is.null(x) & !is.null(y)){
-
-    if(missing(size)) size <- colnames(data)[3]
-    if(fill == "value" & !("value" %in% colnames(data)))
+  if (!is.null(x) & !is.null(y)) {
+    if (missing(size)) size <- colnames(data)[3]
+    if (fill == "value" & !("value" %in% colnames(data))) {
       fill <- colnames(data)[3]
+    }
     label <- colnames(data)[3]
   }
 
@@ -151,71 +159,69 @@ ggballoonplot <- function(
   # - check if the data is streched:
   #     If yes, then consider the first 3 columns as x, y and size values
   #     If no, then strech the data and continu
-  else if(is.null(x) | is.null(y)){
-
-    if(.is_streched(data)){
-
+  else if (is.null(x) | is.null(y)) {
+    if (.is_streched(data)) {
       .cnames <- colnames(data)
       x <- .cnames[1]
       y <- .cnames[2]
-      if(missing(size)) size <- .cnames[3]
-      if(fill == "value" & !("value" %in% .cnames)) fill <- .cnames[3]
+      if (missing(size)) size <- .cnames[3]
+      if (fill == "value" & !("value" %in% .cnames)) fill <- .cnames[3]
       label <- .cnames[3]
       # Reverse y levels so that it appears in the right order on the plot
       y.val <- dplyr::pull(data, 2)
       data[[2]] <- y.val %>% factor(levels = rev(.levels(y.val)))
-    }
-
-    else {
-      data <- .df_strech(data)  # Strech the data into 3 columns: .row|.col|.value
+    } else {
+      data <- .df_strech(data) # Strech the data into 3 columns: .row|.col|.value
       x <- ".col"
       y <- ".row"
-      if(missing(size)) size <- "value"
+      if (missing(size)) size <- "value"
       label <- "value"
     }
   }
 
   p <- ggplot(data, create_aes(list(x = x, y = y))) +
     geom_exec(
-    geom_point, data = data,
-    size = size, fill = fill, shape = shape,
-    color = color
-  )
+      geom_point,
+      data = data,
+      size = size, fill = fill, shape = shape,
+      color = color
+    )
 
   p <- p +
-    scale_size(range = size.range)+
-    guides( size = guide_legend(reverse=TRUE))+
+    scale_size(range = size.range) +
+    guides(size = guide_legend(reverse = TRUE)) +
     ggtheme +
     theme(
       axis.title.x = ggplot2::element_blank(),
       axis.title.y = ggplot2::element_blank()
-      )
+    )
 
-  if (show.label){
+  if (show.label) {
     font.label <- .check_lab_font(font.label)
     text.args <- font.label %>%
       .add_item(
         geomfunc = geom_text, data = data,
         x = x, y = y, label = label
-        )
+      )
     p <- p + do.call(geom_exec, text.args)
   }
 
-  if(rotate.x.text)
+  if (rotate.x.text) {
     p <- p + rotate_x_text(45, hjust = 1, vjust = 1)
+  }
 
-  if(!is.null(facet.by))
+  if (!is.null(facet.by)) {
     p <- facet(p, facet.by)
+  }
 
   ggpar(p, ...)
 }
 
 
-
 # Font label
-.check_lab_font <- function(font.label){
+.check_lab_font <- function(font.label) {
   font.label <- .parse_font(font.label)
-  font.label$size <- ifelse(is.null(font.label$size), 4, font.label$size/3)
+  font.label$size <- ifelse(is.null(font.label$size), 4, font.label$size / 3)
   font.label$color <- ifelse(is.null(font.label$color), "black", font.label$color)
   font.label$face <- ifelse(is.null(font.label$face), "plain", font.label$face)
   font.label
@@ -224,7 +230,7 @@ ggballoonplot <- function(
 
 # strech a data frame with row names
 # returns a data frame with 3 columns .row, .col, value
-.df_strech <- function(data){
+.df_strech <- function(data) {
   .col.names <- colnames(data)
   .row.names <- rownames(data)
   data <- data %>%
@@ -247,16 +253,13 @@ ggballoonplot <- function(
 }
 
 
-
 # Check if the contingency table is in the streched format
-.is_streched <- function(data, x = NULL, y = NULL){
-
+.is_streched <- function(data, x = NULL, y = NULL) {
   streched <- TRUE
-  if(is.null(x) | is.null(y)){
-
-    if(.is_numeric_data(data))
+  if (is.null(x) | is.null(y)) {
+    if (.is_numeric_data(data)) {
       streched <- FALSE
-    else{
+    } else {
       x <- dplyr::pull(data, 1)
       y <- dplyr::pull(data, 2)
       z <- dplyr::pull(data, 3)
@@ -264,7 +267,7 @@ ggballoonplot <- function(
         (is.character(x) | is.factor(x)) &
           (is.character(y) | is.factor(y)) &
           is.numeric(z)
-        )
+      )
     }
   }
 
@@ -272,20 +275,19 @@ ggballoonplot <- function(
 }
 
 # Check if a data matrix is numeric
-.is_numeric_data <- function(x){
+.is_numeric_data <- function(x) {
   all(apply(x, 2, is.numeric))
 }
 
 # For tible data. The first column should be row names
-.is_correct_tbl <- function(x){
+.is_correct_tbl <- function(x) {
   ok <- FALSE
-  if(inherits(x,"tbl_df" )) ok <- TRUE
+  if (inherits(x, "tbl_df")) ok <- TRUE
 
-  if(ok){
+  if (ok) {
     .rows <- dplyr::pull(x, 1)
-    ok <- is.character(.rows) & .is_numeric_data(x[,-1])
+    ok <- is.character(.rows) & .is_numeric_data(x[, -1])
   }
 
   ok
 }
-

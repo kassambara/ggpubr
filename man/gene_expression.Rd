@@ -22,10 +22,12 @@ Gene expression data extracted from TCGA using the `RTCGA` and
 \examples{
 data(gene_expression)
 
-ggboxplot(gene_expression, x = "dataset",
-y = c("GATA3", "PTEN", "XBP1"),
-combine = TRUE,
-ylab = "Expression",
-color = "dataset", palette = "jco")
+ggboxplot(gene_expression,
+  x = "dataset",
+  y = c("GATA3", "PTEN", "XBP1"),
+  combine = TRUE,
+  ylab = "Expression",
+  color = "dataset", palette = "jco"
+)
 
 }

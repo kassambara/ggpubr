@@ -19,8 +19,10 @@ data("ToothGrowth")
 df <- ToothGrowth
 
 # Basic plot
-p <- ggboxplot(df, x = "dose", y = "len",
-   color = "dose", palette = "jco")
+p <- ggboxplot(df,
+  x = "dose", y = "len",
+  color = "dose", palette = "jco"
+)
 p
 # Create horizontal plots
 p + rotate()

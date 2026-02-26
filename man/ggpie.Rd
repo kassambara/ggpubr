@@ -75,8 +75,9 @@ The plot can be easily customized using the function ggpar(). Read
 # +++++++++++++++++++++++++++++++
 
 df <- data.frame(
- group = c("Male", "Female", "Child"),
-  value = c(25, 25, 50))
+  group = c("Male", "Female", "Child"),
+  value = c(25, 25, 50)
+)
 
 head(df)
 
@@ -88,7 +89,7 @@ ggpie(df, "value", label = "group")
 
 # Reducing margins around the pie chart
 ggpie(df, "value", label = "group") +
- theme( plot.margin = unit(c(-.75,-.75,-.75,-.75),"cm"))
+  theme(plot.margin = unit(c(-.75, -.75, -.75, -.75), "cm"))
 
 
 # Change color
@@ -97,9 +98,11 @@ ggpie(df, "value", label = "group") +
 # Change fill color by group
 # set line color to white
 # Use custom color palette
- ggpie(df, "value", label = "group",
-      fill = "group", color = "white",
-       palette = c("#00AFBB", "#E7B800", "#FC4E07") )
+ggpie(df, "value",
+  label = "group",
+  fill = "group", color = "white",
+  palette = c("#00AFBB", "#E7B800", "#FC4E07")
+)
 
 
 # Change label
@@ -107,17 +110,19 @@ ggpie(df, "value", label = "group") +
 
 # Show group names and value as labels
 labs <- paste0(df$group, " (", df$value, "\%)")
-ggpie(df, "value", label = labs,
-   fill = "group", color = "white",
-   palette = c("#00AFBB", "#E7B800", "#FC4E07"))
+ggpie(df, "value",
+  label = labs,
+  fill = "group", color = "white",
+  palette = c("#00AFBB", "#E7B800", "#FC4E07")
+)
 
 # Change the position and font color of labels
-ggpie(df, "value", label = labs,
-   lab.pos = "in", lab.font = "white",
-   fill = "group", color = "white",
-   palette = c("#00AFBB", "#E7B800", "#FC4E07"))
-
-
+ggpie(df, "value",
+  label = labs,
+  lab.pos = "in", lab.font = "white",
+  fill = "group", color = "white",
+  palette = c("#00AFBB", "#E7B800", "#FC4E07")
+)
 
 }
 \seealso{
