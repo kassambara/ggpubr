@@ -398,7 +398,7 @@ test_that("stat_compare_means returns empty layer when no subset is comparable",
   expect_equal(nrow(b$data[[2]]), 0)
 })
 
-test_that("stat_compare_means handles one-level x without warning", {
+test_that("stat_compare_means handles one-level x without error", {
   set.seed(3)
   dat <- data.frame(
     x = factor(rep("A", 20)),
@@ -407,7 +407,7 @@ test_that("stat_compare_means handles one-level x without warning", {
 
   p <- ggboxplot(dat, x = "x", y = "y") + stat_compare_means()
 
-  expect_no_warning(
+  expect_no_error(
     b <- ggplot2::ggplot_build(p)
   )
   expect_equal(nrow(b$data[[2]]), 0)

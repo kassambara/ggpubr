@@ -420,6 +420,20 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
           ) %>%
           dplyr::filter(.data$.n_levels >= 2, .data$.has_ref)
 
+        skipped_groups <- setdiff(
+          unique(as.character(df_fallback[[grouping.var]])),
+          as.character(comparable[[grouping.var]])
+        )
+        if (length(skipped_groups) > 0) {
+          message(
+            "geom_pwc(): skipped ",
+            length(skipped_groups),
+            " grouped subset(s) with insufficient comparison levels",
+            if (requires_ref_level) paste0(" or missing ref.group='", ref.group.id, "'") else "",
+            ": ", paste(skipped_groups, collapse = ", ")
+          )
+        }
+
         if (nrow(comparable) == 0) {
           return(data.frame())
         }
