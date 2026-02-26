@@ -392,7 +392,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       do.call(method, method.args),
       error = function(e) {
         sparse_error <- grepl(
-          "not enough|exactly 2 levels|at least 2|same group|fewer than two levels",
+          "not enough|exactly 2 levels|at least 2|same group|fewer than two levels|must be an existing level",
           conditionMessage(e),
           ignore.case = TRUE
         )
@@ -405,13 +405,20 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 
         # Retry using only grouped subsets with at least two comparison levels.
         df_fallback <- data %>% mutate(x = as.factor(.data$x))
+        requires_ref_level <- !is.null(ref.group.id) && !(ref.group.id %in% c("all", ".all."))
+        ref_level <- if (requires_ref_level) as.character(ref.group.id) else NA_character_
         comparable <- df_fallback %>%
           dplyr::group_by(.data[[grouping.var]]) %>%
           dplyr::summarise(
             .n_levels = dplyr::n_distinct(.data[[comparison.var]]),
+            .has_ref = if (requires_ref_level) {
+              ref_level %in% as.character(unique(.data[[comparison.var]]))
+            } else {
+              TRUE
+            },
             .groups = "drop"
           ) %>%
-          dplyr::filter(.data$.n_levels >= 2)
+          dplyr::filter(.data$.n_levels >= 2, .data$.has_ref)
 
         if (nrow(comparable) == 0) {
           return(data.frame())

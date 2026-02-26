@@ -39,6 +39,14 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Pin RSPM snapshot for oldrel-1 dependency resolution
+        if: ${{ matrix.config.r == 'oldrel-1' }}
+        run: |
+          SNAPSHOT_DATE=2026-02-25
+          SNAPSHOT_RSPM="${RSPM%/latest}/${SNAPSHOT_DATE}"
+          echo "RSPM=${SNAPSHOT_RSPM}" >> "$GITHUB_ENV"
+          echo "RENV_CONFIG_REPOS_OVERRIDE=${SNAPSHOT_RSPM}" >> "$GITHUB_ENV"
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck

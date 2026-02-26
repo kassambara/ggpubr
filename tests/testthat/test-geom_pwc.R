@@ -346,3 +346,33 @@ test_that("geom_pwc returns empty layer when no grouped subset is comparable", {
   )
   expect_equal(nrow(b$data[[2]]), 0)
 })
+
+test_that("geom_pwc skips grouped subsets missing ref.group and keeps valid ones", {
+  set.seed(102)
+  dat <- data.frame(
+    x = factor(
+      c(rep("A", 8), rep("B", 8), rep("B", 8), rep("C", 8)),
+      levels = c("A", "B", "C")
+    ),
+    y = rnorm(32),
+    grp = factor(
+      c(rep("M", 8), rep("M", 8), rep("F", 8), rep("F", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  # group.by = "legend.var" compares x levels within each legend group.
+  # grp == "F" has no "A", so it should be skipped when ref.group = "A".
+  p <- ggboxplot(dat, x = "x", y = "y", color = "grp") +
+    geom_pwc(
+      aes(group = grp),
+      group.by = "legend.var",
+      method = "t_test",
+      ref.group = "A"
+    )
+
+  expect_no_warning(
+    b <- ggplot2::ggplot_build(p)
+  )
+  expect_gte(nrow(b$data[[2]]), 1)
+})
