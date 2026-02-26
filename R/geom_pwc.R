@@ -407,7 +407,12 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
         df_fallback <- data %>% mutate(x = as.factor(.data$x))
         requires_ref_level <- !is.null(ref.group.id) && !(ref.group.id %in% c("all", ".all."))
         ref_level <- if (requires_ref_level) as.character(ref.group.id) else NA_character_
-        comparable <- df_fallback %>%
+        ref_level_label <- if (requires_ref_level && !is.null(ref.group)) {
+          as.character(ref.group)
+        } else {
+          ref_level
+        }
+        grouped_summary <- df_fallback %>%
           dplyr::group_by(.data[[grouping.var]]) %>%
           dplyr::summarise(
             .n_levels = dplyr::n_distinct(.data[[comparison.var]]),
@@ -417,20 +422,47 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
               TRUE
             },
             .groups = "drop"
-          ) %>%
-          dplyr::filter(.data$.n_levels >= 2, .data$.has_ref)
+          )
+        grouped_summary$.is_comparable <- grouped_summary$.n_levels >= 2 & grouped_summary$.has_ref
+        if (requires_ref_level) {
+          grouped_summary$.skip_reason <- ifelse(
+            grouped_summary$.is_comparable,
+            NA_character_,
+            ifelse(
+              !grouped_summary$.has_ref & grouped_summary$.n_levels < 2,
+              paste0("missing ref.group='", ref_level_label, "' and <2 comparison levels"),
+              ifelse(
+                !grouped_summary$.has_ref,
+                paste0("missing ref.group='", ref_level_label, "'"),
+                "<2 comparison levels"
+              )
+            )
+          )
+        } else {
+          grouped_summary$.skip_reason <- ifelse(
+            grouped_summary$.is_comparable,
+            NA_character_,
+            "<2 comparison levels"
+          )
+        }
 
-        skipped_groups <- setdiff(
-          unique(as.character(df_fallback[[grouping.var]])),
-          as.character(comparable[[grouping.var]])
-        )
-        if (length(skipped_groups) > 0) {
+        comparable <- grouped_summary %>%
+          dplyr::filter(.data$.is_comparable)
+
+        skipped_summary <- grouped_summary %>%
+          dplyr::filter(!.data$.is_comparable)
+        if (nrow(skipped_summary) > 0) {
+          skipped_desc <- paste0(
+            as.character(skipped_summary[[grouping.var]]),
+            " (",
+            skipped_summary$.skip_reason,
+            ")"
+          )
           message(
             "geom_pwc(): skipped ",
-            length(skipped_groups),
-            " grouped subset(s) with insufficient comparison levels",
-            if (requires_ref_level) paste0(" or missing ref.group='", ref.group.id, "'") else "",
-            ": ", paste(skipped_groups, collapse = ", ")
+            nrow(skipped_summary),
+            " grouped subset(s): ",
+            paste(skipped_desc, collapse = ", ")
           )
         }
 

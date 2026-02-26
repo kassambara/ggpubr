@@ -322,7 +322,10 @@ test_that("geom_pwc skips non-comparable grouped subsets and keeps valid ones", 
     geom_pwc(aes(group = grp), method = "t_test")
 
   expect_no_warning(
-    b <- ggplot2::ggplot_build(p)
+    expect_message(
+      b <- ggplot2::ggplot_build(p),
+      "geom_pwc\\(\\): skipped .*<2 comparison levels"
+    )
   )
   expect_gte(nrow(b$data[[2]]), 1)
 })
@@ -372,7 +375,10 @@ test_that("geom_pwc skips grouped subsets missing ref.group and keeps valid ones
     )
 
   expect_no_warning(
-    b <- ggplot2::ggplot_build(p)
+    expect_message(
+      b <- ggplot2::ggplot_build(p),
+      "geom_pwc\\(\\): skipped .*missing ref\\.group='A'"
+    )
   )
   expect_gte(nrow(b$data[[2]]), 1)
 })
