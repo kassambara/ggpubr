@@ -35,7 +35,8 @@ remotes::install_github("kassambara/ggpubr")
   - `p.decimal.mark`
 - Sparse grouped subsets are handled robustly in `stat_compare_means()`
   and `geom_pwc()`: non-comparable subsets are skipped while valid
-  comparisons are kept (Issue #663).
+  comparisons are kept (Issue \#663), and `geom_pwc()` reports per-group
+  skip reasons.
 
 ## Example
 

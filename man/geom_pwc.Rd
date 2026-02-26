@@ -331,6 +331,8 @@ In this case, when there is only one computed p-value by panel, then using `labe
 For grouped plots with sparse data, if some subsets do not contain enough
 levels or observations for the requested test, those subsets are skipped while
 preserving valid inferential comparisons from comparable subsets.
+Informative messages list skipped grouped subsets and their skip reasons
+(for example, missing \code{ref.group} or fewer than two comparison levels).
 
 One might want to adjust the p-values of all the facet panels together. There are two solutions for that:
 

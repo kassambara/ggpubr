@@ -20,6 +20,8 @@
 - Hardened sparse-group handling in `stat_compare_means()` and `geom_pwc()`.
 - Non-comparable grouped subsets (insufficient levels/observations) are now skipped
   while preserving valid inferential comparisons in the same layer.
+- Added per-group skip diagnostics in `geom_pwc()` so users can see which grouped
+  subsets were skipped and why (e.g., missing `ref.group` or insufficient levels).
 - Added regression tests for mixed comparable/non-comparable subsets and fully sparse
   subsets.
 - Tightened non-interactive all-lock cleanup to skip recently modified lock

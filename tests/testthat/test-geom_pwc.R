@@ -345,7 +345,10 @@ test_that("geom_pwc returns empty layer when no grouped subset is comparable", {
     geom_pwc(aes(group = grp), method = "t_test")
 
   expect_no_warning(
-    b <- ggplot2::ggplot_build(p)
+    expect_message(
+      b <- ggplot2::ggplot_build(p),
+      "geom_pwc\\(\\): skipped 3 grouped subset\\(s\\)"
+    )
   )
   expect_equal(nrow(b$data[[2]]), 0)
 })
