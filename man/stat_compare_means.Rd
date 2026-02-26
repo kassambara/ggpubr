@@ -223,6 +223,12 @@ shouldn't inherit behaviour from the default plot specification. Set to
 Add mean comparison p-values to a ggplot, such as box blots, dot
  plots and stripcharts.
 }
+\details{
+For grouped plots, if one or more subsets do not contain enough levels
+ to identify the requested comparison, those subsets are skipped and valid
+ subsets are still tested. This avoids fatal layer failures in sparse grouped
+ data settings (Issue #663).
+}
 \examples{
 # Load data
 data("ToothGrowth")

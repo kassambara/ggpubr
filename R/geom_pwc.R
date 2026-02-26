@@ -141,6 +141,10 @@ NULL
 #'
 #' In this case, when there is only one computed p-value by panel, then using `label = "p"` or `label = "p.adj"` will give the same results using `geom_pwc()`. Again, p-value computation and adjustment in a given facet panel is done independently to the other panels.
 #'
+#' For grouped plots with sparse data, if some subsets do not contain enough
+#' levels or observations for the requested test, those subsets are skipped while
+#' preserving valid inferential comparisons from comparable subsets.
+#'
 #' One might want to adjust the p-values of all the facet panels together. There are two solutions for that:
 #'
 #' \itemize{

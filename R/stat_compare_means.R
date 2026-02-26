@@ -77,6 +77,10 @@ NULL
 #' @param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #' @seealso \code{\link{compare_means}}
+#' @details For grouped plots, if one or more subsets do not contain enough levels
+#'  to identify the requested comparison, those subsets are skipped and valid
+#'  subsets are still tested. This avoids fatal layer failures in sparse grouped
+#'  data settings (Issue #663).
 #' @examples
 #' # Load data
 #' data("ToothGrowth")

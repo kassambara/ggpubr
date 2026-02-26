@@ -38,19 +38,22 @@
 
 - `ggpubrplus` open issues: checked all pages, total open issues = `0`.
 - `ggpubr` open issues: checked all pages, total open issues = `220`.
-- PR auto-closing target:
+- PR auto-closing targets:
   - `Closes #334`
+  - `Closes #663`
 - Related but not auto-closing in this PR text:
   - `#540`, `#626`
+- Issue #663 status:
+  - Reproduced context on `R 4.5.2` with `tidyr 1.3.2`.
+  - Verified fixed: `stat_compare_means()` no longer fails on sparse grouped subsets.
+  - Behavior now skips non-comparable subsets while preserving valid comparisons.
 
 ## Validation run
 
 - `devtools::document('.')`
-- `rmarkdown::render('README.Rmd', ...)`
-- `pkgdown::build_site('.')`
-- `devtools::test()`:
-  - `PASS 342`, `WARN 2`, `FAIL 0`
-  - warnings are orientation warnings in `test-stat_pvalue_manual.R`
-- `R CMD check --no-manual --as-cran .`:
-  - completed with `1 WARNING, 5 NOTEs`
-  - notes/warning are from checking the working directory directly instead of a built source tarball (expected in this local run mode).
+- `devtools::run_examples(run_dontrun = FALSE)`:
+  - completed successfully (exit code `0`)
+  - no fatal errors
+- `devtools::check()` (`--no-manual --as-cran`):
+  - `0 errors`, `0 warnings`, `1 note`
+  - only note: `checking for future file timestamps ... unable to verify current time`
