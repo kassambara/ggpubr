@@ -33,6 +33,8 @@
   - deprecated tidyverse API replacements
   - restored Ubuntu oldrel compatibility in CI by relaxing `ggrepel` minimum
     requirement from `>= 0.9.6` to `>= 0.9.2` (avoids forcing `R >= 4.5.0`)
+  - pinned `ggrepel` to `0.9.5` in the `oldrel-1` GitHub Actions dependency
+    setup path to avoid `pak` solver failures with the latest `ggrepel` metadata
   - lock-file utility (`clean_lock_files()`)
 - Additional tests for the synchronized behavior.
 

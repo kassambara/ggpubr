@@ -48,6 +48,17 @@ jobs:
           echo "RENV_CONFIG_REPOS_OVERRIDE=${SNAPSHOT_RSPM}" >> "$GITHUB_ENV"
 
       - uses: r-lib/actions/setup-r-dependencies@v2
+        if: ${{ matrix.config.r == 'oldrel-1' }}
+        with:
+          # ggrepel 0.9.6 currently fails dependency solving on R 4.4.x in CI.
+          # Pin to the last compatible release for oldrel-1 only.
+          extra-packages: |
+            any::rcmdcheck
+            cran::ggrepel@0.9.5
+          needs: check
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        if: ${{ matrix.config.r != 'oldrel-1' }}
         with:
           extra-packages: any::rcmdcheck
           needs: check
