@@ -182,15 +182,20 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     size <- ifelse(is.null(pms$size), 3.88, pms$size)
     color <- ifelse(is.null(pms$color), "black", pms$color)
 
-    map_signif_level <- FALSE
-    if (is.null(label)) label <- "p.format"
-
-    if (.is_p.signif_in_mapping(mapping) | (label %in% "p.signif")) {
-      # Use cutpoints from symnum.args (already built from new parameters)
-      map_signif_level <- symnum.args$cutpoints[-1] # the first element is 0 (the minimum p-value)
-      names(map_signif_level) <- symnum.args$symbols
-      if (hide.ns) map_signif_level <- .hide_ns(map_signif_level)
+    if (is.null(label)) {
+      mapped_label <- .get_stat_compare_means_label_from_mapping(mapping)
+      label <- if (is.null(mapped_label)) "p.format" else mapped_label
     }
+    map_signif_level <- .make_stat_compare_means_map_signif_level(
+      label = label,
+      symnum.args = symnum.args,
+      hide.ns = hide.ns,
+      p.format.style = p.format.style,
+      p.digits = p.digits,
+      p.leading.zero = p.leading.zero,
+      p.min.threshold = p.min.threshold,
+      p.decimal.mark = p.decimal.mark
+    )
 
     if (missing(step.increase)) {
       step.increase <- ifelse(is.null(label.y), 0.12, 0)
@@ -291,6 +296,8 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
       min.threshold = p.min.threshold,
       decimal.mark = p.decimal.mark
     )
+    .test$p.format <- p_formatted
+    .test <- add_p_format_signif(.test)
     pvaltxt <- create_p_label(p_formatted)
     .test$label <- paste(.test$method, pvaltxt, sep = label.sep)
 
@@ -363,6 +370,65 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
     }
   }
   return(res)
+}
+
+.get_stat_compare_means_label_from_mapping <- function(mapping) {
+  if (is.null(mapping) || is.null(mapping$label)) {
+    return(NULL)
+  }
+  .label <- rlang::as_label(mapping$label)
+  if (grepl("p\\.format\\.signif", .label)) {
+    return("p.format.signif")
+  }
+  if (grepl("p\\.signif", .label)) {
+    return("p.signif")
+  }
+  if (grepl("p\\.format", .label)) {
+    return("p.format")
+  }
+  if (grepl("after_stat\\(p\\)|\\.\\.p\\.\\.", .label)) {
+    return("p")
+  }
+  NULL
+}
+
+.make_stat_compare_means_map_signif_level <- function(label, symnum.args, hide.ns,
+                                                      p.format.style, p.digits,
+                                                      p.leading.zero, p.min.threshold,
+                                                      p.decimal.mark) {
+  p_to_signif <- function(p) {
+    signif_label <- as.character(stats::symnum(
+      p,
+      cutpoints = symnum.args$cutpoints,
+      symbols = symnum.args$symbols
+    ))
+    if (hide.ns) signif_label[signif_label == "ns"] <- ""
+    signif_label
+  }
+  p_to_format <- function(p) {
+    format_p_value(
+      p,
+      style = p.format.style,
+      digits = p.digits,
+      leading.zero = p.leading.zero,
+      min.threshold = p.min.threshold,
+      decimal.mark = p.decimal.mark
+    )
+  }
+
+  if (label %in% c("p.signif", "..p.signif..")) {
+    return(p_to_signif)
+  }
+  if (label %in% c("p.format", "..p.format..")) {
+    return(p_to_format)
+  }
+  if (label %in% c("p", "..p..")) {
+    return(function(p) create_p_label(p_to_format(p)))
+  }
+  if (label %in% c("p.format.signif", "..p.format.signif..")) {
+    return(function(p) create_p_label(p_to_format(p), p_to_signif(p)))
+  }
+  FALSE
 }
 
 # Update mapping with label

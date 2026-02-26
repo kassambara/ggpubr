@@ -23,7 +23,7 @@ LazyData: TRUE
 Encoding: UTF-8
 Depends:
     R (>= 4.1.0),
-    ggplot2 (>= 4.0.2)
+    ggplot2 (>= 3.5.2)
 Imports:
     ggrepel (>= 0.9.6),
     grid,

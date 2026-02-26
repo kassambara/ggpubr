@@ -62,8 +62,8 @@ italic(p)= {p}"}}.}
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }
 
- Note: If \code{signif.cutoffs} is provided, it takes precedence over
- \code{symnum.args}.}
+ Note: If \code{symnum.args} is provided, it takes precedence over
+ \code{signif.cutoffs}.}
 
 \item{p.format.style}{character string specifying the p-value formatting style.
 One of: \code{"default"} (backward compatible, uses scientific notation),

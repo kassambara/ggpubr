@@ -250,15 +250,22 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
     p.decimal.mark <- getOption("OutDec")
   }
 
-  if (!is.null(p.format.style) && p.format.style != "default" && is.null(accuracy)) {
-    p_formatted <- format_p_value(
-      x,
-      style = p.format.style,
-      digits = p.digits,
-      leading.zero = p.leading.zero,
-      min.threshold = NULL,
-      decimal.mark = p.decimal.mark
-    )
+  if (!is.null(p.format.style) && p.format.style != "default") {
+    p_digits <- p.digits
+    if (!is.null(accuracy)) {
+      p_digits <- round(abs(log10(accuracy)))
+    }
+    digits_by_value <- .signif_to_decimal_digits(x, p_digits)
+    p_formatted <- vapply(seq_along(x), function(i) {
+      format_p_value(
+        x[i],
+        style = p.format.style,
+        digits = digits_by_value[i],
+        leading.zero = p.leading.zero,
+        min.threshold = NULL,
+        decimal.mark = p.decimal.mark
+      )
+    }, character(1))
     label <- create_p_label(p_formatted)
   } else {
     # Backward compatible behavior (scales::pvalue + accuracy)
@@ -282,10 +289,11 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
     }
 
     if (!is.null(p.leading.zero) && !p.leading.zero) {
-      label <- gsub("0\\.", ".", label)
+      label <- sub("^((?:p\\s*[=<]\\s*))0\\.", "\\1.", label, perl = TRUE)
+      label <- sub("^((?:p\\s*[=<]\\s*))-0\\.", "\\1-.", label, perl = TRUE)
     }
     if (!is.null(p.decimal.mark) && p.decimal.mark != ".") {
-      label <- gsub("\\.", p.decimal.mark, label)
+      label <- sub("^((?:p\\s*[=<]\\s*)-?[0-9]+)\\.", paste0("\\1", p.decimal.mark), label, perl = TRUE)
     }
   }
 
@@ -294,6 +302,19 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
     label <- gsub(pattern = "p < ", replacement = "italic(p)~`<`~", x = label, fixed = TRUE)
   }
   label
+}
+
+.signif_to_decimal_digits <- function(x, sig_digits) {
+  if (is.null(sig_digits)) {
+    sig_digits <- 2L
+  }
+  x_abs <- abs(x)
+  out <- ifelse(
+    is.na(x_abs) | x_abs == 0,
+    sig_digits,
+    pmax(0, sig_digits - 1L - floor(log10(x_abs)))
+  )
+  as.integer(out)
 }
 
 # Prefix can be R or R^2.

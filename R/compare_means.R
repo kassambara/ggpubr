@@ -264,7 +264,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
   # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   if (!is.null(ref.group) && !method %in% c("anova", "kruskal.test")) {
     group.levs <- .select_vec(data, group) %>% .levels()
-    group1 <- NULL
+    group1 <- group2 <- NULL
     res <- res %>% dplyr::filter(group1 == ref.group | group2 == ref.group)
     # ref.group should be always in group1 column
     # swap group1 and group2 if group2 contains ref.group

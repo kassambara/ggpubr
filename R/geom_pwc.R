@@ -94,8 +94,8 @@ NULL
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
 #'
-#'  Note: If \code{signif.cutoffs} is provided, it takes precedence over
-#'  \code{symnum.args}.
+#'  Note: If \code{symnum.args} is provided, it takes precedence over
+#'  \code{signif.cutoffs}.
 #' @param signif.cutoffs numeric vector of p-value cutoffs in descending order
 #'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
 #'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".

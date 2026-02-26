@@ -335,3 +335,23 @@ test_that("stat_compare_means with p.format.signif uses custom signif.cutoffs", 
   # p = 0.064 is between 0.05 and 0.10, so should get "*"
   expect_equal(stat.test$label, "p = 0.064 *")
 })
+
+test_that("stat_compare_means comparisons branch applies p.format.style", {
+  pwc_default <- .get_pwc_test(df, label = "p.format")
+  pwc_apa <- .get_pwc_test(df, label = "p.format", p.format.style = "apa")
+
+  expect_false(identical(pwc_default$annotation, pwc_apa$annotation))
+  expect_true(all(pwc_apa$annotation == "< .001"))
+})
+
+test_that("stat_compare_means comparisons branch supports p.format.signif labels", {
+  pwc <- .get_pwc_test(df,
+    label = "p.format.signif",
+    p.format.style = "apa",
+    signif.cutoffs = c(0.10, 0.05, 0.01, 0.001),
+    use.four.stars = TRUE
+  )
+
+  expect_true(all(grepl("^p\\s*[=<]", pwc$annotation)))
+  expect_true(any(grepl("\\*+$", pwc$annotation)))
+})

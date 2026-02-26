@@ -13,7 +13,7 @@ NULL
 #' @importFrom grid drawDetails
 #' @importFrom rlang !!
 #' @importFrom rlang !!!
-#' @importFrom rlang syms .data
+#' @importFrom rlang sym syms .data
 
 
 required_package <- function(pkg) {

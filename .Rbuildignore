@@ -18,3 +18,4 @@
 ^\.claude$
 ^check-as-cran\.sh$
 ^Rplots\.pdf$
+^PR_SYNC_NOTES\.md$

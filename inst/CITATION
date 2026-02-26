@@ -3,15 +3,12 @@ citHeader("To cite ggpubr in publications, please use:")
 bibentry(
   bibtype = "Manual",
   title = "ggpubr: 'ggplot2' Based Publication Ready Plots",
-  author = c(
-    person("Alboukadel", "Kassambara"),
-    person("Laszlo", "Erdey")
-  ),
+  author = person("Alboukadel", "Kassambara"),
   year = "2026",
   note = "R package version 0.6.3.999",
   url = "https://CRAN.R-project.org/package=ggpubr",
   textVersion = paste(
-    "Kassambara A, Erdey L (2026).",
+    "Kassambara A (2026).",
     "ggpubr: 'ggplot2' Based Publication Ready Plots.",
     "R package version 0.6.3.999.",
     "https://CRAN.R-project.org/package=ggpubr"

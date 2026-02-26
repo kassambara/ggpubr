@@ -324,7 +324,7 @@ ggbarplot_core <- function(data, x, y,
     } else if (ngrps == 1) {
       data_sum <- data_sum[order(dd[, 1], dd[, y]), ]
     } else if (ngrps == 2) data_sum <- data_sum[order(dd[, 1], dd[, 2], dd[, y]), ]
-    data_sum[, x] <- factor(data_sum[, x], levels = data_sum[, x])
+    data_sum[, x] <- factor(data_sum[, x], levels = unique(data_sum[, x]))
   }
 
   # Main plot

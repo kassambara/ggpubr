@@ -143,7 +143,7 @@ is_plotmath_expression <- function(label) {
 # if label is plotmath expression, then
 # fortify it in case users miss something
 contains_p_signif <- function(label) {
-  any(grepl("p*\\.signif", label))
+  any(grepl("p(\\.adj|\\.format)?\\.signif", label))
 }
 contains_twoequal_signs <- function(label) {
   any(grepl("==", label))

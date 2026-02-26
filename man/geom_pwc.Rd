@@ -218,8 +218,8 @@ independently. P-values are adjusted by panel when \code{p.adjust.by =
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }
 
- Note: If \code{signif.cutoffs} is provided, it takes precedence over
- \code{symnum.args}.}
+ Note: If \code{symnum.args} is provided, it takes precedence over
+ \code{signif.cutoffs}.}
 
 \item{hide.ns}{can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).}
 

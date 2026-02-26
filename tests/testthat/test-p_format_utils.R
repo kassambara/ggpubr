@@ -140,3 +140,27 @@ test_that("format_p_value min.threshold works with scientific styles", {
   p <- format_p_value(0.00001, style = "default", min.threshold = 0.0001)
   expect_true(grepl("<", p))
 })
+
+test_that("format_p_value handles invalid p-values safely", {
+  expect_warning(
+    out <- format_p_value(c(-0.1, 0.5, 1.2, Inf, NaN)),
+    "Invalid p-values detected"
+  )
+  expect_true(is.na(out[1]))
+  expect_false(is.na(out[2]))
+  expect_true(is.na(out[3]))
+  expect_true(is.na(out[4]))
+  expect_true(is.na(out[5]))
+})
+
+test_that("format_p_value allows overriding scientific notation", {
+  p <- format_p_value(1e-6, style = "default", use.scientific = FALSE, digits = 6)
+  expect_equal(p, "0.000001")
+})
+
+test_that("create_p_label builds labels correctly", {
+  expect_equal(create_p_label("0.05"), "p = 0.05")
+  expect_equal(create_p_label("< 0.001"), "p < 0.001")
+  expect_equal(create_p_label("0.01", "**"), "p = 0.01 **")
+  expect_equal(create_p_label("< 0.001", "****"), "p < 0.001 ****")
+})

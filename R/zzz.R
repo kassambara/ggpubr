@@ -92,7 +92,7 @@ clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRU
       error = function(e) {
         warning(
           "Failed to remove ", d, ": ", e$message,
-          "\nOn Linux/macOS, you may need: sudo rm -rf '", d, "'"
+          "\nIf this is a stale lock from a stopped install, remove it manually after confirming no package installation is running: 'rm -rf \"", d, "\"'"
         )
         success <<- FALSE
       }

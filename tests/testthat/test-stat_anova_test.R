@@ -45,6 +45,18 @@ test_that("stat_anova_test works for grouped plots: grouped by legend variable",
   expect_equal(stat.test$label, c("0.009", "0.012", "0.019"))
 })
 
+test_that("stat_anova_test supports new significance parameters", {
+  bxp <- ggboxplot(df, x = "dose", y = "len") +
+    stat_anova_test(
+      label = "p.signif",
+      signif.cutoffs = c(0.10, 0.05, 0.01),
+      signif.symbols = c("+", "++", "+++")
+    )
+  bxp_build <- ggplot2::ggplot_build(bxp)
+  stat.test <- bxp_build$data[[2]]
+  expect_true(stat.test$label %in% c("+", "++", "+++"))
+})
+
 
 # One-way repeated measure ANOVA ----------------------
 test_that("stat_anova_test works for one-way repeated measure anova", {

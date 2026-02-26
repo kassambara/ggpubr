@@ -19,7 +19,7 @@ install.packages("ggpubr")
 remotes::install_github("kassambara/ggpubr")
 ```
 
-## Highlights in this branch
+## Highlights in this release
 
 - Modern compatibility updates for current `ggplot2`, `dplyr`, and
   `tidyr`.

@@ -57,6 +57,21 @@ NULL
 #'  statistical significance: \itemize{ \item \code{ns}: p > 0.05 \item
 #'  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
 #'  \item \code{****}:  p <= 0.0001 }
+#'
+#'  Note: \code{significance} is kept for backward compatibility. If provided,
+#'  it takes precedence over \code{signif.cutoffs} and related parameters.
+#' @param signif.cutoffs numeric vector of p-value cutoffs in descending order
+#'  for assigning significance symbols. For example, \code{c(0.10, 0.05, 0.01)}
+#'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
+#'  If \code{use.four.stars = TRUE}, can include a fourth level.
+#'  Default is NULL, which uses the package defaults.
+#' @param signif.symbols character vector of symbols corresponding to
+#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
+#'  (and "****" if \code{use.four.stars = TRUE}).
+#' @param ns.symbol character string for non-significant results. Default is "ns".
+#'  Use "" (empty string) to show nothing.
+#' @param use.four.stars logical. If TRUE, allows four stars (****) for the most
+#'  significant level. Default is FALSE.
 #' @param p.format.style character string specifying the p-value formatting style.
 #'  One of: \code{"default"} (backward compatible, uses scientific notation),
 #'  \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
@@ -225,6 +240,8 @@ stat_anova_test <- function(mapping = NULL, data = NULL,
                             label.x.npc = "left", label.y.npc = "top",
                             label.x = NULL, label.y = NULL, step.increase = 0.1,
                             p.adjust.method = "holm", significance = list(),
+                            signif.cutoffs = NULL, signif.symbols = NULL,
+                            ns.symbol = "ns", use.four.stars = FALSE,
                             p.format.style = "default", p.digits = NULL,
                             p.leading.zero = NULL, p.min.threshold = NULL,
                             p.decimal.mark = NULL,
@@ -262,7 +279,13 @@ stat_anova_test <- function(mapping = NULL, data = NULL,
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),
       step.increase = step.increase, p.adjust.method = p.adjust.method,
-      significance = fortify_signif_symbols_encoding(significance),
+      significance = build_symnum_args(
+        signif.cutoffs = signif.cutoffs,
+        signif.symbols = signif.symbols,
+        ns.symbol = ns.symbol,
+        use.four.stars = use.four.stars,
+        symnum.args = significance
+      ),
       p.format.style = p.format.style, p.digits = p.digits,
       p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
       p.decimal.mark = p.decimal.mark, ...
