@@ -31,6 +31,8 @@
 - Compatibility and maintenance updates:
   - `size`/`linewidth` compatibility paths
   - deprecated tidyverse API replacements
+  - restored Ubuntu oldrel compatibility in CI by relaxing `ggrepel` minimum
+    requirement from `>= 0.9.6` to `>= 0.9.2` (avoids forcing `R >= 4.5.0`)
   - lock-file utility (`clean_lock_files()`)
 - Additional tests for the synchronized behavior.
 

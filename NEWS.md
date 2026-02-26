@@ -12,6 +12,8 @@
 - Updated legacy `size` usage to `linewidth` where required by recent `ggplot2`.
 - Replaced deprecated tidyverse APIs in affected helper functions.
 - Added package startup lock-file checks and `clean_lock_files()` helper.
+- Relaxed minimum `ggrepel` dependency to `>= 0.9.2` to keep Ubuntu oldrel
+  (`R 4.4.x`) CI dependency resolution working.
 
 ## Robustness fixes
 
