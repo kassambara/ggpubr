@@ -20,7 +20,7 @@ ggline(
   linewidth = NULL,
   shape = 19,
   stroke = NULL,
-  point.size = linewidth,
+  point.size = NULL,
   point.color = color,
   title = NULL,
   xlab = NULL,

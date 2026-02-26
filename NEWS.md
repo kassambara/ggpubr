@@ -22,6 +22,9 @@
   while preserving valid inferential comparisons in the same layer.
 - Added regression tests for mixed comparable/non-comparable subsets and fully sparse
   subsets.
+- Tightened non-interactive all-lock cleanup to skip recently modified lock
+  directories, reducing risk of interfering with active package installation
+  processes.
 
 ## P-value formatting
 

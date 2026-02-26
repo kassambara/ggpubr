@@ -407,7 +407,7 @@ ggscatter_core <- function(data, x, y,
         vjust <- -0.4
       }
       p <- p + .geom_exec(ggfunc,
-        data = lab_data, x = x, y = y, color = color,
+        data = lab_data, x = x, y = y,
         label = label, fontface = font.label$face, family = font.family,
         parse = parse,
         size = font.label$size / 3, color = font.label$color,

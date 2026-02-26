@@ -43,6 +43,8 @@
 #'
 #' @export
 clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRUE) {
+  stale_cutoff_mins <- 10
+
   if (package == "all") {
     # Find all lock directories
     lock_dirs <- list.dirs(lib, recursive = FALSE, full.names = TRUE)
@@ -56,6 +58,27 @@ clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRU
   if (length(lock_dirs) == 0) {
     message("No lock files found.")
     return(invisible(FALSE))
+  }
+
+  # In non-interactive all-lock cleanup, skip very recent locks
+  # to reduce risk of removing active package installation locks.
+  if (package == "all" && !ask) {
+    lock_info <- file.info(lock_dirs)
+    lock_age_mins <- as.numeric(difftime(Sys.time(), lock_info$mtime, units = "mins"))
+    recent_locks <- is.na(lock_age_mins) | lock_age_mins < stale_cutoff_mins
+    if (any(recent_locks)) {
+      warning(
+        "Skipping lock directories modified within the last ", stale_cutoff_mins,
+        " minutes for clean_lock_files(package = 'all', ask = FALSE) ",
+        "to avoid removing active installation locks.",
+        call. = FALSE
+      )
+      lock_dirs <- lock_dirs[!recent_locks]
+    }
+    if (length(lock_dirs) == 0) {
+      message("No stale lock files found for non-interactive all-lock cleanup.")
+      return(invisible(FALSE))
+    }
   }
 
 
@@ -77,7 +100,7 @@ clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRU
   for (d in lock_dirs) {
     tryCatch(
       {
-        unlink(d, recursive = TRUE, force = TRUE)
+        unlink(d, recursive = TRUE, force = FALSE)
         if (dir.exists(d)) {
           # unlink doesn't always error on failure, check if still exists
           warning(

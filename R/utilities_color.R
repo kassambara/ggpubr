@@ -3,7 +3,7 @@
     # sequential
     "Blues", "BuGn", "BuPu", "GnBu", "Greens", "Greys", "Oranges",
     "OrRd", "PuBu", "PuBuGn", "PuRd", "Purples", "RdPu", "Reds",
-    "YlGn", "YlGnBu YlOrBr", "YlOrRd",
+    "YlGn", "YlGnBu", "YlOrBr", "YlOrRd",
     # Divergent
     "BrBG", "PiYG", "PRGn", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral",
     # Qualitative

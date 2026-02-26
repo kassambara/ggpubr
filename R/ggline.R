@@ -150,7 +150,7 @@ ggline <- function(data, x, y, group = 1,
                    plot_type = c("b", "l", "p"),
                    size = NULL, linewidth = NULL,
                    shape = 19, stroke = NULL,
-                   point.size = linewidth, point.color = color,
+                   point.size = NULL, point.color = color,
                    title = NULL, xlab = NULL, ylab = NULL,
                    facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
                    select = NULL, remove = NULL, order = NULL,
@@ -163,6 +163,10 @@ ggline <- function(data, x, y, group = 1,
                    position = "identity",
                    ggtheme = theme_pubr(),
                    ...) {
+  if (is.null(point.size)) {
+    point.size <- linewidth
+  }
+
   # Default options
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(

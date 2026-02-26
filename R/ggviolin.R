@@ -161,9 +161,6 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
   if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
   }
-  if (missing(ggtheme) & !is.null(facet.by)) {
-    .opts$ggtheme <- theme_pubr(border = TRUE)
-  }
 
   p <- do.call(.plotter, .opts)
 
