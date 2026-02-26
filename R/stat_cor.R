@@ -282,12 +282,6 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
       label <- gsub(pattern = "(=|<)", replacement = " \\1 ", x = label)
     }
 
-    # Apply style-based leading.zero preference even in legacy path
-    if (!is.null(p.format.style) && p.format.style != "default" && is.null(p.leading.zero)) {
-      style_params <- get_p_format_style(p.format.style)
-      p.leading.zero <- style_params$leading.zero
-    }
-
     if (!is.null(p.leading.zero) && !p.leading.zero) {
       label <- sub("^((?:p\\s*[=<]\\s*))0\\.", "\\1.", label, perl = TRUE)
       label <- sub("^((?:p\\s*[=<]\\s*))-0\\.", "\\1-.", label, perl = TRUE)

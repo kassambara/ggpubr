@@ -301,17 +301,6 @@ is_group_aes_specified <- function(mapping) {
   answer
 }
 
-
-# Manipulating statistical test outputs -----------------
-keep_only_tbl_df_classes <- function(x) {
-  toremove <- setdiff(class(x), c("tbl_df", "tbl", "data.frame"))
-  if (length(toremove) > 0) {
-    class(x) <- setdiff(class(x), toremove)
-  }
-  x
-}
-
-
 # The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0.
 # after_stat(p.signif) should be used. This function makes automatic
 # conversion if user specified ..p.signif..

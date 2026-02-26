@@ -176,3 +176,24 @@ test_that("compare_means works when grouping variable levels contain group2", {
   expect_equal(results$p.signif, rep("ns", 2))
   expect_equal(results$method, rep("Wilcoxon", 2))
 })
+
+test_that("compare_means skips grouped subsets with <2 levels without error", {
+  set.seed(1)
+  dat <- data.frame(
+    x = factor(c(rep("A", 8), rep("B", 8), rep("C", 8))),
+    y = rnorm(24),
+    gp = factor(
+      c(rep("M", 8), rep(c("M", "F"), each = 4), rep("F", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  expect_no_error(
+    results <- compare_means(y ~ gp, data = dat, group.by = "x")
+  )
+
+  expect_equal(unique(as.character(results$x)), "B")
+  expect_equal(nrow(results), 1)
+  expect_equal(as.character(results$group1), "M")
+  expect_equal(as.character(results$group2), "F")
+})

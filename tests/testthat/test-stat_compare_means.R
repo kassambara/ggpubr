@@ -355,3 +355,25 @@ test_that("stat_compare_means comparisons branch supports p.format.signif labels
   expect_true(all(grepl("^p\\s*[=<]", pwc$annotation)))
   expect_true(any(grepl("\\*+$", pwc$annotation)))
 })
+
+test_that("stat_compare_means handles grouped subsets with <2 levels", {
+  set.seed(42)
+  dat <- data.frame(
+    x = factor(c(rep("A", 8), rep("B", 8), rep("C", 8))),
+    y = rnorm(24),
+    grp = factor(
+      c(rep("M", 8), rep(c("M", "F"), each = 4), rep("F", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y", color = "grp") +
+    stat_compare_means(aes(group = grp))
+
+  expect_no_error(
+    b <- ggplot2::ggplot_build(p)
+  )
+  stat.test <- b$data[[2]]
+  expect_true(all(c("group1", "group2", "p") %in% colnames(stat.test)))
+  expect_gte(nrow(stat.test), 1)
+})

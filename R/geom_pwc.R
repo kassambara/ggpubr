@@ -427,29 +427,22 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
       rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols)
 
-    # Format p-values using the specified style
-    if (p.format.style == "default") {
-      # Use rstatix default formatting for backward compatibility
-      stat.test <- stat.test %>%
-        rstatix::p_format(p, p.adj, new.col = TRUE, accuracy = 1e-4)
-    } else {
-      # Use custom formatting based on style
-      stat.test <- stat.test %>%
-        dplyr::mutate(
-          p.format = format_p_value(p,
-            style = p.format.style,
-            digits = p.digits, leading.zero = p.leading.zero,
-            min.threshold = p.min.threshold,
-            decimal.mark = p.decimal.mark
-          ),
-          p.adj.format = format_p_value(p.adj,
-            style = p.format.style,
-            digits = p.digits, leading.zero = p.leading.zero,
-            min.threshold = p.min.threshold,
-            decimal.mark = p.decimal.mark
-          )
+    # Format p-values using unified p-format implementation for all styles
+    stat.test <- stat.test %>%
+      dplyr::mutate(
+        p.format = format_p_value(p,
+          style = p.format.style,
+          digits = p.digits, leading.zero = p.leading.zero,
+          min.threshold = p.min.threshold,
+          decimal.mark = p.decimal.mark
+        ),
+        p.adj.format = format_p_value(p.adj,
+          style = p.format.style,
+          digits = p.digits, leading.zero = p.leading.zero,
+          min.threshold = p.min.threshold,
+          decimal.mark = p.decimal.mark
         )
-    }
+      )
 
     stat.test <- stat.test %>%
       add_stat_n() %>%

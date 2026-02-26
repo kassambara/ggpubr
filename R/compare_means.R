@@ -412,6 +412,18 @@ compare_means <- function(formula, data, method = "wilcox.test",
 
   pvalues <- suppressWarnings(do.call(test, test.opts)$p.value) %>%
     as.data.frame()
+
+  # No pairwise comparisons are possible when a subset has < 2 group levels.
+  # This occurs in grouped workflows (e.g., some x-groups missing one legend level).
+  # Return an empty result instead of erroring in tidyr::pivot_longer(cols = -"..group2..").
+  if (ncol(pvalues) == 0) {
+    return(tibble::tibble(
+      group1 = character(),
+      group2 = character(),
+      p = numeric()
+    ))
+  }
+
   p <- NULL
   pvalues$..group2.. <- rownames(pvalues)
   pvalues <- pvalues %>%
