@@ -377,3 +377,38 @@ test_that("stat_compare_means handles grouped subsets with <2 levels", {
   expect_true(all(c("group1", "group2", "p") %in% colnames(stat.test)))
   expect_gte(nrow(stat.test), 1)
 })
+
+test_that("stat_compare_means returns empty layer when no subset is comparable", {
+  set.seed(2)
+  dat <- data.frame(
+    x = factor(rep(c("A", "B", "C"), each = 8)),
+    y = rnorm(24),
+    grp = factor(
+      c(rep("M", 8), rep("F", 8), rep("M", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y", color = "grp") +
+    stat_compare_means(aes(group = grp))
+
+  expect_no_warning(
+    b <- ggplot2::ggplot_build(p)
+  )
+  expect_equal(nrow(b$data[[2]]), 0)
+})
+
+test_that("stat_compare_means handles one-level x without warning", {
+  set.seed(3)
+  dat <- data.frame(
+    x = factor(rep("A", 20)),
+    y = rnorm(20)
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y") + stat_compare_means()
+
+  expect_no_warning(
+    b <- ggplot2::ggplot_build(p)
+  )
+  expect_equal(nrow(b$data[[2]]), 0)
+})

@@ -258,6 +258,11 @@ add_p_format_signif <- function(stat.test) {
     p_signif <- rep(NA_character_, nrow(stat.test))
   }
 
+  if (length(p_format) == 0) {
+    stat.test[["p.format.signif"]] <- character(0)
+    return(stat.test)
+  }
+
   if (has_adj) {
     use_adj <- is.na(p_format) | p_format == ""
     p_format[use_adj] <- stat.test$p.adj.format[use_adj]

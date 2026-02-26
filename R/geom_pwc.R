@@ -358,13 +358,17 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
     is.grouped.plots <- contains_multiple_grouping_vars(df)
     formula <- y ~ x
     grouping.var <- NULL
+    comparison.var <- "x"
+
     if (is.grouped.plots) {
       if (group.by == "legend.var") {
         grouping.var <- "group"
         formula <- y ~ x
+        comparison.var <- "x"
       } else {
         grouping.var <- "x"
         formula <- y ~ group
+        comparison.var <- "group"
       }
       df <- df %>% rstatix::df_group_by(vars = grouping.var)
     }
@@ -380,7 +384,47 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
     }
 
     method.args <- method.args %>% .add_item(data = df, formula = formula)
-    stat.test <- do.call(method, method.args)
+    stat.test <- tryCatch(
+      do.call(method, method.args),
+      error = function(e) {
+        sparse_error <- grepl(
+          "not enough|exactly 2 levels|at least 2|same group|fewer than two levels",
+          conditionMessage(e),
+          ignore.case = TRUE
+        )
+        if (!sparse_error) {
+          stop(e)
+        }
+        if (!is.grouped.plots) {
+          return(data.frame())
+        }
+
+        # Retry using only grouped subsets with at least two comparison levels.
+        df_fallback <- data %>% mutate(x = as.factor(.data$x))
+        comparable <- df_fallback %>%
+          dplyr::group_by(.data[[grouping.var]]) %>%
+          dplyr::summarise(
+            .n_levels = dplyr::n_distinct(.data[[comparison.var]]),
+            .groups = "drop"
+          ) %>%
+          dplyr::filter(.data$.n_levels >= 2)
+
+        if (nrow(comparable) == 0) {
+          return(data.frame())
+        }
+
+        df_fallback <- df_fallback %>%
+          dplyr::semi_join(comparable, by = grouping.var) %>%
+          rstatix::df_group_by(vars = grouping.var)
+        method.args.fallback <- method.args
+        method.args.fallback$data <- df_fallback
+        do.call(method, method.args.fallback)
+      }
+    )
+
+    if (nrow(stat.test) == 0) {
+      return(data.frame())
+    }
 
     # Add method name
     method.name <- rstatix::get_description(stat.test)

@@ -306,3 +306,43 @@ test_that("Grouped plots: test that geom_pwc() works with different number of gr
   expect_equal(stat.test$yend, c(10950.75, 10950.75, 10950.75, 12032.55, 10950.75, 12032.55, 10950.75, 10950.75, 10950.75, 12032.55, 10950.75, 12032.55, 10680.3, 10680.3, 10680.3, 11762.1, 10680.3, 11762.1))
   expect_equal(label_coords, label_coords_expected)
 })
+
+test_that("geom_pwc skips non-comparable grouped subsets and keeps valid ones", {
+  set.seed(100)
+  dat <- data.frame(
+    x = factor(c(rep("A", 8), rep("B", 8), rep("C", 8))),
+    y = rnorm(24),
+    grp = factor(
+      c(rep("M", 8), rep(c("M", "F"), each = 4), rep("F", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y", color = "grp") +
+    geom_pwc(aes(group = grp), method = "t_test")
+
+  expect_no_warning(
+    b <- ggplot2::ggplot_build(p)
+  )
+  expect_gte(nrow(b$data[[2]]), 1)
+})
+
+test_that("geom_pwc returns empty layer when no grouped subset is comparable", {
+  set.seed(101)
+  dat <- data.frame(
+    x = factor(rep(c("A", "B", "C"), each = 8)),
+    y = rnorm(24),
+    grp = factor(
+      c(rep("M", 8), rep("F", 8), rep("M", 8)),
+      levels = c("M", "F")
+    )
+  )
+
+  p <- ggboxplot(dat, x = "x", y = "y", color = "grp") +
+    geom_pwc(aes(group = grp), method = "t_test")
+
+  expect_no_warning(
+    b <- ggplot2::ggplot_build(p)
+  )
+  expect_equal(nrow(b$data[[2]]), 0)
+})
