@@ -186,7 +186,7 @@
   pal <- palette[1]
   sequential <- c(
     "Blues", "BuGn", "BuPu", "GnBu", "Greens", "Greys", "Oranges",
-    "OrRd", "PuBu", "PuBuGn", "PuRd", "Purples", "RdPu", "Reds", "YlGn", "YlGnBu YlOrBr", "YlOrRd"
+    "OrRd", "PuBu", "PuBuGn", "PuRd", "Purples", "RdPu", "Reds", "YlGn", "YlGnBu", "YlOrBr", "YlOrRd"
   )
   divergent <- c("BrBG", "PiYG", "PRGn", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral")
 
