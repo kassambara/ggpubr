@@ -164,3 +164,36 @@ test_that("create_p_label builds labels correctly", {
   expect_equal(create_p_label("0.01", "**"), "p = 0.01 **")
   expect_equal(create_p_label("< 0.001", "****"), "p < 0.001 ****")
 })
+
+test_that("format_p_value validates min.threshold input", {
+  expect_error(
+    format_p_value(0.01, style = "nejm", min.threshold = 0),
+    "`min.threshold` must be a single positive finite numeric value or NULL\\."
+  )
+  expect_error(
+    format_p_value(0.01, style = "nejm", min.threshold = -1),
+    "`min.threshold` must be a single positive finite numeric value or NULL\\."
+  )
+  expect_error(
+    format_p_value(0.01, style = "nejm", min.threshold = Inf),
+    "`min.threshold` must be a single positive finite numeric value or NULL\\."
+  )
+  expect_error(
+    format_p_value(0.01, style = "nejm", min.threshold = c(0.001, 0.01)),
+    "`min.threshold` must be a single positive finite numeric value or NULL\\."
+  )
+})
+
+test_that("format_p_value handles common reporting boundaries", {
+  expect_equal(format_p_value(0.050, style = "nejm"), "0.050")
+  expect_equal(format_p_value(0.010, style = "nejm"), "0.010")
+  expect_equal(format_p_value(0.001, style = "nejm"), "0.001")
+  expect_equal(format_p_value(0.0009, style = "nejm"), "< 0.001")
+})
+
+test_that("create_p_label preserves missing formatted p-values", {
+  labels <- create_p_label(c("< 0.001", NA_character_), c("****", "ns"))
+  expect_equal(labels[1], "p < 0.001 ****")
+  expect_true(is.na(labels[2]))
+  expect_true(is.na(create_p_label(NA_character_)))
+})

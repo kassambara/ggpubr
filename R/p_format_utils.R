@@ -147,6 +147,7 @@ list_p_format_styles <- function() {
 #' @param min.threshold Numeric specifying the minimum p-value to display exactly.
 #'   Values below this threshold are shown as "< threshold" (e.g., "< 0.001").
 #'   Set to NULL to always show exact values. If provided, overrides the style default.
+#'   Must be a single positive finite number.
 #' @param decimal.mark Character string to use as the decimal mark. If NULL,
 #'   uses \code{getOption("OutDec")}.
 #' @param use.scientific Logical indicating whether to force scientific notation.
@@ -224,6 +225,20 @@ format_p_value <- function(p,
   if (is.null(decimal.mark)) decimal.mark <- getOption("OutDec")
 
   if (is.null(use.scientific)) use.scientific <- style_settings$use.scientific
+
+  if (!is.null(min.threshold)) {
+    is_valid_threshold <- is.numeric(min.threshold) &&
+      length(min.threshold) == 1L &&
+      !is.na(min.threshold) &&
+      is.finite(min.threshold) &&
+      min.threshold > 0
+    if (!is_valid_threshold) {
+      stop(
+        "`min.threshold` must be a single positive finite numeric value or NULL.",
+        call. = FALSE
+      )
+    }
+  }
 
 
   # Handle NA values
@@ -368,7 +383,8 @@ resolve_p_format_params <- function(style = "default",
 #' @param p.signif Optional character string of significance symbol (e.g., "*", "**", "ns").
 #'   If provided, it will be appended after the p-value.
 #'
-#' @return A character string with the properly formatted p-value label.
+#' @return A character string with the properly formatted p-value label. Missing
+#'   values in \code{p.format} are preserved as \code{NA_character_}.
 #'
 #' @examples
 #' \dontrun{
@@ -387,23 +403,29 @@ resolve_p_format_params <- function(style = "default",
 #'
 #' @export
 create_p_label <- function(p.format, p.signif = NULL) {
-  # Check if p.format starts with < or >
-  has_inequality <- grepl("^[<>]", p.format)
+  label <- rep(NA_character_, length(p.format))
+  valid_idx <- !is.na(p.format)
+  if (!any(valid_idx)) return(label)
+
+  # Check if p.format starts with < or > for non-missing values
+  has_inequality <- grepl("^[<>]", p.format[valid_idx])
 
   # Create base label
-  label <- ifelse(has_inequality,
-    paste("p", p.format),
-    paste("p =", p.format)
+  label_valid <- ifelse(has_inequality,
+    paste("p", p.format[valid_idx]),
+    paste("p =", p.format[valid_idx])
   )
 
   # Normalize spacing around inequality symbols
-  label <- gsub("([<>])\\s*", "\\1 ", label)
+  label_valid <- gsub("([<>])\\s*", "\\1 ", label_valid)
 
   # Append significance if provided
   if (!is.null(p.signif)) {
-    label <- paste(label, p.signif)
-    label <- trimws(label)
+    p_signif_vec <- rep_len(p.signif, length(p.format))
+    label_valid <- paste(label_valid, p_signif_vec[valid_idx])
+    label_valid <- trimws(label_valid)
   }
 
+  label[valid_idx] <- label_valid
   label
 }

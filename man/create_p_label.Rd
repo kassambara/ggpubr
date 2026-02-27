@@ -13,7 +13,8 @@ create_p_label(p.format, p.signif = NULL)
 If provided, it will be appended after the p-value.}
 }
 \value{
-A character string with the properly formatted p-value label.
+A character string with the properly formatted p-value label. Missing
+  values in \code{p.format} are preserved as \code{NA_character_}.
 }
 \description{
 Creates a p-value label string with proper handling of inequality
