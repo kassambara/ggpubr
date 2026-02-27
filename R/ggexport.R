@@ -91,7 +91,7 @@ ggexport <- function(..., plotlist = NULL, filename = NULL, ncol = NULL, nrow = 
   if (nb.plots > 1 & file.ext %in% c("eps", "ps", "png", "jpeg", "jpg", "tiff", "bmp", "svg")) {
     filename <- gsub(paste0(".", file.ext), paste0("%03d.", file.ext), filename)
     dev.opts$file <- filename
-    print(filename)
+    if (verbose) print(filename)
   }
 
   do.call(dev, dev.opts)
