@@ -399,6 +399,9 @@ resolve_p_format_params <- function(style = "default",
 #'
 #' create_p_label("< 0.001", "****")
 #' # Returns: "p < 0.001 ****"
+#'
+#' create_p_label(c("0.05", NA_character_))
+#' # Returns: c("p = 0.05", NA)
 #' }
 #'
 #' @export
