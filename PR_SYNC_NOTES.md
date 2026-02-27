@@ -5,6 +5,28 @@
 - Upstream base (`kassambara/ggpubr`): `8ebb039ea819818a7e568bce247171636c1cdd28` (`origin/master`)
 - Source parity target (`erdeyl/ggpubrplus`): `efca9bde033241b83101677da23ac8909e764a6f` (`origin/main`)
 
+## PR #662 stats (verified locally)
+
+- Range: `master..d8a5a43`
+- Commits: `12`
+- Diffstat: `+11,411 / -8,636`
+- Files changed: `212`
+- `NAMESPACE` directives:
+  - `export()` entries: `127`
+  - `S3method()` entries: `4`
+
+## Post-review correction pass
+
+- Fixed unresolved ColorBrewer regression in `.get_brewer_pal()` (`"YlOrBr"` now accepted).
+- Added regression tests for:
+  - `.get_brewer_pal("YlOrBr", 5)`
+  - `.get_pal("YlOrBr", 5)`
+- Updated `ggexport()` to avoid unconditional filename printing when
+  `verbose = FALSE`.
+- Added `ggexport()` tests for silent vs verbose output behavior.
+- Added `format_p_value()` validation for non-NULL `min.threshold` values.
+- Updated `create_p_label()` to preserve `NA` values instead of rendering `"p = NA"`.
+
 ## What was done
 
 - Synced package sources, tests, manuals, and generated site assets to match the functionality present in `ggpubrplus`.

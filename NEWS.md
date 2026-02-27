@@ -6,6 +6,23 @@
 - Preserved upstream package identity (`ggpubr`) and original authorship.
 - Added contributor credit for Laszlo Erdey in package metadata and documentation.
 
+## Post-review fixes
+
+- Fixed ColorBrewer sequential palette parsing in `.get_brewer_pal()` so
+  `"YlOrBr"` is recognized correctly (resolving the lingering
+  `"YlGnBu YlOrBr"` tokenization bug).
+- Added regression coverage for both `.get_brewer_pal("YlOrBr", 5)` and the
+  `.get_pal("YlOrBr", 5)` routing path.
+- Updated `ggexport()` to respect `verbose = FALSE` by suppressing filename
+  `print()` output in multi-file raster/vector exports.
+- Added `ggexport()` verbosity tests to validate silent and verbose behavior.
+- Hardened `format_p_value()` by validating non-NULL `p.min.threshold` as a
+  single positive finite number.
+- Updated `create_p_label()` to preserve `NA` values in `p.format` (returning
+  `NA_character_` instead of stringifying to `"p = NA"`).
+- Added boundary-value formatting tests for p-values at `0.050`, `0.010`,
+  and `0.001`.
+
 ## Compatibility updates
 
 - Added compatibility updates for modern `ggplot2`, `dplyr`, and `tidyr`.
