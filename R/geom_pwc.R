@@ -394,7 +394,11 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       do.call(method, method.args),
       error = function(e) {
         sparse_error <- grepl(
-          "not enough|exactly 2 levels|at least 2|same group|fewer than two levels|must be an existing level",
+          paste0(
+            "not enough|exactly 2 levels|at least 2|same group|fewer than two levels|must be an existing level",
+            # French locale equivalents
+            "|insuffisant|niveau existant|pas assez|au moins 2"
+          ),
           conditionMessage(e),
           ignore.case = TRUE
         )
