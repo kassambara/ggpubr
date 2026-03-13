@@ -2,12 +2,14 @@
 
 ## Compatibility updates
 
+- Raised dependency floors to `R >= 4.5.0`, `ggplot2 >= 4.0.0`,
+  `ggrepel >= 0.9.7`, and `scales >= 1.4.0`.
 - Added compatibility updates for modern `ggplot2`, `dplyr`, and `tidyr`.
 - Updated legacy `size` usage to `linewidth` where required by recent `ggplot2`.
 - Replaced deprecated tidyverse APIs in affected helper functions.
 - Added package startup lock-file checks and `clean_lock_files()` helper.
-- Relaxed minimum `ggrepel` dependency to `>= 0.9.2` to keep Ubuntu oldrel
-  (`R 4.4.x`) CI dependency resolution working.
+- Removed the old Ubuntu `oldrel-1` CI workaround that pinned `ggrepel` to
+  `0.9.5` for `R 4.4.x`.
 
 ## Robustness fixes
 
@@ -45,7 +47,7 @@
 ## Tests and docs
 
 - Expanded test coverage for formatting helpers and compatibility paths.
-- Regenerated manuals and package documentation after source sync.
+- Regenerated manuals and package documentation after dependency-policy updates.
 
 ## Issue closures
 

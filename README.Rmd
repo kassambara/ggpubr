@@ -33,6 +33,8 @@ Find out more at https://rpkgs.datanovia.com/ggpubr/.
 
 ## Highlights in the development version
 
+- Requires `R >= 4.5.0`, `ggplot2 >= 4.0.0`, `ggrepel >= 0.9.7`, and
+  `scales >= 1.4.0`.
 - Modern compatibility updates for current `ggplot2`, `dplyr`, and `tidyr`.
 - New p-value formatting helpers: `format_p_value()`, `get_p_format_style()`, `list_p_format_styles()`.
 - Extended p-value formatting parameters across statistical layers: `p.format.style`, `p.digits`, `p.leading.zero`, `p.min.threshold`, `p.decimal.mark`.
@@ -40,6 +42,8 @@ Find out more at https://rpkgs.datanovia.com/ggpubr/.
 
 ## Installation and loading
 
+- Current development baseline: `R >= 4.5.0`, `ggplot2 >= 4.0.0`,
+  `ggrepel >= 0.9.7`, and `scales >= 1.4.0`.
 
 - Install from [CRAN](https://cran.r-project.org/package=ggpubr) as follow:
 
@@ -342,5 +346,4 @@ Find out more at https://rpkgs.datanovia.com/ggpubr/.
 ## Blog posts
 
 - A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](https://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
-
 

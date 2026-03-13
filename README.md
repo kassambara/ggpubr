@@ -1,49 +1,55 @@
+---
+output:
+  md_document:
+    variant: gfm
+---
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
+
 
 [![R-CMD-check](https://github.com/kassambara/ggpubr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kassambara/ggpubr/actions/workflows/R-CMD-check.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ggpubr)](https://cran.r-project.org/package=ggpubr)
 [![Downloads](https://cranlogs.r-pkg.org/badges/ggpubr)](https://cran.r-project.org/package=ggpubr)
-[![Total
-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
+[![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
+
 
 # ggpubr: 'ggplot2' Based Publication Ready Plots
 
-[ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an
-excellent and flexible package for elegant data visualization in R.
-However the default generated plots requires some formatting before we
-can send them for publication. Furthermore, to customize a ggplot, the
-syntax is opaque and this raises the level of difficulty for researchers
-with no advanced R programming skills.
+[ggplot2, by Hadley Wickham, ](https://ggplot2.tidyverse.org/) is an excellent and flexible package for elegant data visualization in R. However the default generated plots requires some formatting before we can send them for publication. Furthermore, to customize a ggplot, the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills.
 
-The 'ggpubr' package provides some easy-to-use functions for creating
-and customizing 'ggplot2'- based publication ready plots.
+The 'ggpubr' package provides some easy-to-use functions for creating and customizing 'ggplot2'- based publication ready plots.
 
-Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
+
+Find out more at https://rpkgs.datanovia.com/ggpubr/.
 
 ## Highlights in the development version
 
-- Modern compatibility updates for current `ggplot2`, `dplyr`, and
-  `tidyr`.
-- New p-value formatting helpers: `format_p_value()`,
-  `get_p_format_style()`, `list_p_format_styles()`.
-- Extended p-value formatting parameters across statistical layers:
-  `p.format.style`, `p.digits`, `p.leading.zero`, `p.min.threshold`,
-  `p.decimal.mark`.
-- Sparse grouped subsets are handled robustly in `stat_compare_means()`
-  and `geom_pwc()`: non-comparable subsets are skipped while valid
-  comparisons are kept (#663).
+- Requires `R >= 4.5.0`, `ggplot2 >= 4.0.0`, `ggrepel >= 0.9.7`, and
+  `scales >= 1.4.0`.
+- Modern compatibility updates for current `ggplot2`, `dplyr`, and `tidyr`.
+- New p-value formatting helpers: `format_p_value()`, `get_p_format_style()`, `list_p_format_styles()`.
+- Extended p-value formatting parameters across statistical layers: `p.format.style`, `p.digits`, `p.leading.zero`, `p.min.threshold`, `p.decimal.mark`.
+- Sparse grouped subsets are handled robustly in `stat_compare_means()` and `geom_pwc()`: non-comparable subsets are skipped while valid comparisons are kept (#663).
 
 ## Installation and loading
 
-- Install from [CRAN](https://cran.r-project.org/package=ggpubr) as
-  follow:
+- Current development baseline: `R >= 4.5.0`, `ggplot2 >= 4.0.0`,
+  `ggrepel >= 0.9.7`, and `scales >= 1.4.0`.
+
+- Install from [CRAN](https://cran.r-project.org/package=ggpubr) as follow:
+
+
 
 ``` r
 install.packages("ggpubr")
 ```
 
-- Or, install the latest version from
-  [GitHub](https://github.com/kassambara/ggpubr) as follow:
+
+- Or, install the latest version from [GitHub](https://github.com/kassambara/ggpubr) as follow:
+
+
 
 ``` r
 # Install
@@ -51,7 +57,11 @@ if(!require(devtools)) install.packages("devtools")
 devtools::install_github("kassambara/ggpubr")
 ```
 
+
+
 ## Distribution
+
+
 
 ``` r
 library(ggpubr)
@@ -79,7 +89,7 @@ ggdensity(wdata, x = "weight",
    palette = c("#00AFBB", "#E7B800"))
 ```
 
-![](tools/README-ggpubr-1.png)<!-- -->
+![plot of chunk ggpubr](tools/README-ggpubr-1.png)
 
 ``` r
 # Histogram plot with mean lines and marginal rug
@@ -92,9 +102,12 @@ gghistogram(wdata, x = "weight",
    palette = c("#00AFBB", "#E7B800"))
 ```
 
-![](tools/README-ggpubr-2.png)<!-- -->
+![plot of chunk ggpubr](tools/README-ggpubr-2.png)
+
 
 ## Box plots and violin plots
+
+
 
 ``` r
 # Load data
@@ -118,7 +131,7 @@ head(df, 4)
  p
 ```
 
-![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-1.png)<!-- -->
+![plot of chunk ggpubr-box-plot-dot-plots-strip-charts](tools/README-ggpubr-box-plot-dot-plots-strip-charts-1.png)
 
 ``` r
 
@@ -129,7 +142,7 @@ p + stat_compare_means(comparisons = my_comparisons)+ # Add pairwise comparisons
   stat_compare_means(label.y = 50)                   # Add global p-value
 ```
 
-![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png)<!-- -->
+![plot of chunk ggpubr-box-plot-dot-plots-strip-charts](tools/README-ggpubr-box-plot-dot-plots-strip-charts-2.png)
 
 ``` r
 
@@ -145,13 +158,18 @@ ggviolin(df, x = "dose", y = "len", fill = "dose",
   stat_compare_means(label.y = 50)                                      # Add global the p-value
 ```
 
-![](tools/README-ggpubr-box-plot-dot-plots-strip-charts-3.png)<!-- -->
+![plot of chunk ggpubr-box-plot-dot-plots-strip-charts](tools/README-ggpubr-box-plot-dot-plots-strip-charts-3.png)
+
 
 ## Bar plots
 
+
 ### Demo data set
 
+
+
 Load and prepare data:
+
 
 ``` r
 # Load data
@@ -172,10 +190,13 @@ head(dfm[, c("name", "wt", "mpg", "cyl")])
 #> Valiant                     Valiant 3.460 18.1   6
 ```
 
+
+
 ### Ordered bar plots
 
-Change the fill color by the grouping variable "cyl". Sorting will be
-done globally, but not by groups.
+
+Change the fill color by the grouping variable "cyl". Sorting will be done globally, but not by groups.
+
 
 ``` r
 ggbarplot(dfm, x = "name", y = "mpg",
@@ -188,9 +209,14 @@ ggbarplot(dfm, x = "name", y = "mpg",
           )
 ```
 
-![](tools/README-ordered-bar-plots-1.png)<!-- -->
+![plot of chunk ordered-bar-plots](tools/README-ordered-bar-plots-1.png)
+
+
 
 Sort bars inside each group. Use the argument **sort.by.groups = TRUE**.
+
+
+
 
 ``` r
 ggbarplot(dfm, x = "name", y = "mpg",
@@ -203,15 +229,17 @@ ggbarplot(dfm, x = "name", y = "mpg",
           )
 ```
 
-![](tools/README-ordered-bar-plots-by-groups-1.png)<!-- -->
+![plot of chunk ordered-bar-plots-by-groups](tools/README-ordered-bar-plots-by-groups-1.png)
+
+
 
 ### Deviation graphs
 
-The deviation graph shows the deviation of quantitatives values to a
-reference value. In the R code below, we'll plot the mpg z-score from
-the mtcars dataset.
+The deviation graph shows the deviation of quantitatives values to a reference value. In the R code below, we'll plot the mpg z-score from the mtcars dataset.
+
 
 Calculate the z-score of the mpg data:
+
 
 ``` r
 # Calculate the z-score of the mpg data
@@ -229,7 +257,10 @@ head(dfm[, c("name", "wt", "mpg", "mpg_z", "mpg_grp", "cyl")])
 #> Valiant                     Valiant 3.460 18.1 -0.3302874     low   6
 ```
 
+
 Create an ordered barplot, colored according to the level of mpg:
+
+
 
 ``` r
 ggbarplot(dfm, x = "name", y = "mpg_z",
@@ -243,11 +274,19 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
           xlab = FALSE,
           legend.title = "MPG Group"
           )
+#> Ignoring unknown labels:
+#> • colour : "MPG Group"
+#> • linetype : "MPG Group"
+#> • shape : "MPG Group"
 ```
 
-![](tools/README-deviation-graphs-1.png)<!-- -->
+![plot of chunk deviation-graphs](tools/README-deviation-graphs-1.png)
+
+
 
 Rotate the plot: use rotate = TRUE and sort.val = "desc"
+
+
 
 ``` r
 ggbarplot(dfm, x = "name", y = "mpg_z",
@@ -262,18 +301,24 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
           rotate = TRUE,
           ggtheme = theme_minimal()
           )
+#> Ignoring unknown labels:
+#> • colour : "MPG Group"
+#> • linetype : "MPG Group"
+#> • shape : "MPG Group"
 ```
 
-![](tools/README-deviation-graphs-horizontal-1.png)<!-- -->
+![plot of chunk deviation-graphs-horizontal](tools/README-deviation-graphs-horizontal-1.png)
+
+
 
 ## Dot charts
 
 ### Lollipop chart
 
-Lollipop chart is an alternative to bar plots, when you have a large set
-of values to visualize.
+Lollipop chart is an alternative to bar plots, when you have a large set of values to visualize.
 
 Lollipop chart colored by the grouping variable "cyl":
+
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg",
@@ -285,14 +330,18 @@ ggdotchart(dfm, x = "name", y = "mpg",
            )
 ```
 
-![](tools/README-lollipop-chart-1.png)<!-- -->
+![plot of chunk lollipop-chart](tools/README-lollipop-chart-1.png)
+
+
 
 - Sort in decending order. **sorting = "descending"**.
 - Rotate the plot vertically, using **rotate = TRUE**.
 - Sort the mpg value inside each group by using **group = "cyl"**.
 - Set **dot.size** to 6.
-- Add mpg values as label. **label = "mpg"** or **label =
-  round(dfm\$mpg)**.
+- Add mpg values as label. **label = "mpg"** or **label = round(dfm$mpg)**.
+
+
+
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg",
@@ -310,13 +359,16 @@ ggdotchart(dfm, x = "name", y = "mpg",
            )
 ```
 
-![](tools/README-lollipop-chart-rotate-1.png)<!-- -->
+![plot of chunk lollipop-chart-rotate](tools/README-lollipop-chart-rotate-1.png)
+
 
 Deviation graph:
 
 - Use y = "mpg_z"
-- Change segment color and size: add.params = list(color = "lightgray",
-  size = 2)
+- Change segment color and size: add.params = list(color = "lightgray", size = 2)
+
+
+
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg_z",
@@ -335,11 +387,14 @@ ggdotchart(dfm, x = "name", y = "mpg_z",
   geom_hline(yintercept = 0, linetype = 2, color = "lightgray")
 ```
 
-![](tools/README-lollipop-chart-deviation-1.png)<!-- -->
+![plot of chunk lollipop-chart-deviation](tools/README-lollipop-chart-deviation-1.png)
+
 
 ### Cleveland's dot plot
 
+
 Color y text by groups. Use y.text.col = TRUE.
+
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg",
@@ -354,13 +409,16 @@ ggdotchart(dfm, x = "name", y = "mpg",
   theme_cleveland()                                      # Add dashed grids
 ```
 
-![](tools/README-cleveland-dot-plots-1.png)<!-- -->
+![plot of chunk cleveland-dot-plots](tools/README-cleveland-dot-plots-1.png)
+
+
 
 ## More
 
-Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
+Find out more at https://rpkgs.datanovia.com/ggpubr/.
+
 
 ## Blog posts
 
-- A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready
-  Plots](https://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
+- A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](https://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
+

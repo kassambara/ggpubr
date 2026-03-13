@@ -147,36 +147,36 @@ df <- ToothGrowth
 
 # One-sample test
 # :::::::::::::::::::::::::::::::::::::::::
-compare_means(len ~ 1, df, mu = 0)
+as.data.frame(compare_means(len ~ 1, df, mu = 0))
 
 # Two-samples unpaired test
 # :::::::::::::::::::::::::::::::::::::::::
-compare_means(len ~ supp, df)
+as.data.frame(compare_means(len ~ supp, df))
 
 # Two-samples paired test
 # :::::::::::::::::::::::::::::::::::::::::
-compare_means(len ~ supp, df, paired = TRUE)
+as.data.frame(compare_means(len ~ supp, df, paired = TRUE))
 
 # Compare supp levels after grouping the data by "dose"
 # ::::::::::::::::::::::::::::::::::::::::
-compare_means(len ~ supp, df, group.by = "dose")
+as.data.frame(compare_means(len ~ supp, df, group.by = "dose"))
 
 # pairwise comparisons
 # ::::::::::::::::::::::::::::::::::::::::
 # As dose contains more thant two levels ==>
 # pairwise test is automatically performed.
-compare_means(len ~ dose, df)
+as.data.frame(compare_means(len ~ dose, df))
 
 # Comparison against reference group
 # ::::::::::::::::::::::::::::::::::::::::
-compare_means(len ~ dose, df, ref.group = "0.5")
+as.data.frame(compare_means(len ~ dose, df, ref.group = "0.5"))
 
 # Comparison against all
 # ::::::::::::::::::::::::::::::::::::::::
-compare_means(len ~ dose, df, ref.group = ".all.")
+as.data.frame(compare_means(len ~ dose, df, ref.group = ".all."))
 
 # Anova and kruskal.test
 # ::::::::::::::::::::::::::::::::::::::::
-compare_means(len ~ dose, df, method = "anova")
-compare_means(len ~ dose, df, method = "kruskal.test")
+as.data.frame(compare_means(len ~ dose, df, method = "anova"))
+as.data.frame(compare_means(len ~ dose, df, method = "kruskal.test"))
 }
