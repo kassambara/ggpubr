@@ -1,10 +1,10 @@
 ## Test environments
-- macOS Tahoe 26.2, R 4.5.2 (aarch64-apple-darwin25.0.0)
+- macOS Tahoe 26.4, R 4.5.3 (aarch64-apple-darwin25.3.0)
 
 ## R CMD check results
-- 0 errors | 0 warnings | 1 note
-- NOTE: New submission.
+- 0 errors | 0 warnings | 0 notes
 
 ## Additional comments
-- This release introduces a breaking change by requiring ggplot2 >= 4.0.0.
-- Added ggviolin quantile migration tests and refreshed documentation.
+- Refreshed package metadata and generated documentation, including README assets and package help files.
+- Stabilized example output for `compare_means()`, `ggsummarystats()`, and `stat_pvalue_manual()` by printing base data frames instead of tibbles in the examples.
+- Verified `devtools::run_examples(run_donttest = TRUE, document = FALSE)` completes successfully in addition to clean `R CMD check` and `R CMD check --as-cran`.
