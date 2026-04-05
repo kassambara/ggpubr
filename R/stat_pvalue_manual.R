@@ -76,7 +76,7 @@ NULL
 #'   data = ToothGrowth,
 #'   method = "t.test"
 #' )
-#' stat.test
+#' as.data.frame(stat.test)
 #'
 #' # Create a simple box plot
 #' p <- ggboxplot(ToothGrowth, x = "dose", y = "len")
@@ -88,7 +88,7 @@ NULL
 #'   data = ToothGrowth,
 #'   method = "t.test"
 #' )
-#' stat.test
+#' as.data.frame(stat.test)
 #'
 #' # Add manually p-values from stat.test data
 #' # First specify the y.position of each comparison
@@ -110,7 +110,7 @@ NULL
 #'   data = ToothGrowth, group.by = "supp",
 #'   method = "t.test", ref.group = "0.5"
 #' )
-#' stat.test
+#' as.data.frame(stat.test)
 #' # Plot
 #' bp <- ggbarplot(ToothGrowth,
 #'   x = "supp", y = "len",
