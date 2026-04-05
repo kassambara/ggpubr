@@ -20,3 +20,6 @@
 ^Rplots\.pdf$
 ^PR_SYNC_NOTES\.md$
 ^CLAUDE\.md$
+^\.git$
+^.*\.tar\.gz$
+^.*\.tar\.gz\..*$
