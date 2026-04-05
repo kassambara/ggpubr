@@ -139,7 +139,7 @@ head(df)
 summary.stats <- df \%>\%
   group_by(dose) \%>\%
   get_summary_stats(type = "common")
-summary.stats
+as.data.frame(summary.stats)
 
 # Visualize summary table
 ggsummarytable(
