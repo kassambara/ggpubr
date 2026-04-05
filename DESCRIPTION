@@ -2,7 +2,7 @@ Package: ggpubr
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots
 Version: 0.6.3.999
-Date: 2026-02-27
+Date: 2026-04-05
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"),
     person("Laszlo", "Erdey", role = "ctb", email = "erdey.laszlo@econ.unideb.hu",
@@ -19,7 +19,8 @@ Description: The 'ggplot2' package is excellent and flexible for elegant data
     p-value formatting presets (APA, AMA, NEJM, Lancet, GraphPad) for publication
     workflows, plus robust sparse-subset handling in statistical annotation layers
     such as 'stat_compare_means()' and 'geom_pwc()', with informative per-group
-    skip diagnostics for non-comparable subsets.
+    skip diagnostics for non-comparable subsets and hardened rendering-time
+    namespace resolution in p-value annotation geoms.
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8

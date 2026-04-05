@@ -37,6 +37,7 @@ Find out more at https://rpkgs.datanovia.com/ggpubr/.
 - New p-value formatting helpers: `format_p_value()`, `get_p_format_style()`, `list_p_format_styles()`.
 - Extended p-value formatting parameters across statistical layers: `p.format.style`, `p.digits`, `p.leading.zero`, `p.min.threshold`, `p.decimal.mark`.
 - Sparse grouped subsets are handled robustly in `stat_compare_means()` and `geom_pwc()`: non-comparable subsets are skipped while valid comparisons are kept (#663).
+- P-value annotation geoms now harden internal `%||%` resolution during rendering, avoiding namespace fragility in `geom_bracket()` and `geom_pwc()` (#665).
 
 ## Installation and loading
 
@@ -342,5 +343,4 @@ Find out more at https://rpkgs.datanovia.com/ggpubr/.
 ## Blog posts
 
 - A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](https://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
-
 
