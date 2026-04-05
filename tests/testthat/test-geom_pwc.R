@@ -385,3 +385,12 @@ test_that("geom_pwc skips grouped subsets missing ref.group and keeps valid ones
   )
   expect_gte(nrow(b$data[[2]]), 1)
 })
+
+test_that("geom_pwc renders without attaching rlang", {
+  expect_false("package:rlang" %in% search())
+
+  p <- ggboxplot(df, x = "dose", y = "len") +
+    geom_pwc(method = "wilcox_test")
+
+  expect_no_error(ggplot2::ggplotGrob(p))
+})

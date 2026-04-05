@@ -39,5 +39,5 @@ test_that("stat_pvalue_manual works without attaching rlang", {
   p <- ggboxplot(ToothGrowth, x = "dose", y = "len") +
     stat_pvalue_manual(stat.test, label = "p.adj")
 
-  expect_no_error(ggplot2::ggplot_build(p))
+  expect_no_error(ggplot2::ggplotGrob(p))
 })
