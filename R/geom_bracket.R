@@ -214,7 +214,7 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
         gp = grid::gpar(
           col = scales::alpha(coords$colour, coords$alpha),
           lty = coords$linetype,
-          lwd = (coords$linewidth %||% coords$size) * ggplot2::.pt
+          lwd = (rlang::`%||%`(coords$linewidth, coords$size)) * ggplot2::.pt
         )
       )
     )

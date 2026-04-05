@@ -25,3 +25,19 @@ test_that("fill aes works well by default", {
   expect_no_error(test_with_fill(inherit.aes = FALSE))
   expect_no_error(test_with_fill())
 })
+
+test_that("stat_pvalue_manual works without attaching rlang", {
+  expect_false("package:rlang" %in% search())
+
+  stat.test <- compare_means(
+    len ~ dose,
+    data = ToothGrowth,
+    method = "t.test"
+  )
+  stat.test$y.position <- c(29, 35, 39)
+
+  p <- ggboxplot(ToothGrowth, x = "dose", y = "len") +
+    stat_pvalue_manual(stat.test, label = "p.adj")
+
+  expect_no_error(ggplot2::ggplot_build(p))
+})
