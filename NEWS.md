@@ -12,6 +12,8 @@
 ## Robustness fixes
 
 - Hardened sparse-group handling in `stat_compare_means()` and `geom_pwc()`.
+- Hardened `%||%` resolution in p-value annotation geoms during rendering to avoid
+  namespace fragility in `geom_bracket()` and `geom_pwc()` (#665).
 - Non-comparable grouped subsets (insufficient levels/observations) are now skipped
   while preserving valid inferential comparisons in the same layer.
 - Added per-group skip diagnostics in `geom_pwc()` so users can see which grouped
