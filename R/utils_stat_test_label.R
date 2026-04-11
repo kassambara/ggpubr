@@ -8,11 +8,13 @@ fortify_signif_symbols_encoding <- function(symnum.args = list()) {
   } else {
     symnum.args.isok <- (length(symnum.args$symbols) == length(symnum.args$cutpoints) - 1)
     if (!symnum.args.isok) {
-      stop(
-        "Incorrect format detected in 'symnum.args'. ",
-        "Check the documentation. ",
-        "length(symbols) should be length(cutpoints)-1",
-        call. = FALSE
+      rlang::abort(
+        c(
+          "Incorrect format detected in `symnum.args`.",
+          "i" = "`length(symbols)` should be `length(cutpoints) - 1`.",
+          "i" = "Check the documentation for the expected format."
+        ),
+        call = rlang::caller_env()
       )
     }
   }
@@ -63,7 +65,12 @@ build_symnum_args <- function(signif.cutoffs = NULL,
   if (!is.null(signif.cutoffs)) {
     # Validate cutoffs
     if (!is.numeric(signif.cutoffs) || any(signif.cutoffs <= 0) || any(signif.cutoffs >= 1)) {
-      stop("signif.cutoffs must be numeric values between 0 and 1 (exclusive)", call. = FALSE)
+      rlang::abort(
+        c(
+          "`signif.cutoffs` must be numeric values between 0 and 1 (exclusive)."
+        ),
+        call = rlang::caller_env()
+      )
     }
 
     # Sort cutoffs in descending order (largest to smallest)
@@ -80,9 +87,12 @@ build_symnum_args <- function(signif.cutoffs = NULL,
           FUN.VALUE = character(1)
         )
       } else if (n_cutoffs > 3 && !use.four.stars) {
-        stop("signif.cutoffs has more than 3 levels but use.four.stars = FALSE. ",
-          "Either set use.four.stars = TRUE or provide signif.symbols explicitly.",
-          call. = FALSE
+        rlang::abort(
+          c(
+            "`signif.cutoffs` has more than 3 levels but `use.four.stars = FALSE`.",
+            "i" = "Either set `use.four.stars = TRUE` or provide `signif.symbols` explicitly."
+          ),
+          call = rlang::caller_env()
         )
       } else {
         signif.symbols <- vapply(
@@ -95,8 +105,11 @@ build_symnum_args <- function(signif.cutoffs = NULL,
 
     # Validate symbols length
     if (length(signif.symbols) != n_cutoffs) {
-      stop("signif.symbols must have the same length as signif.cutoffs (", n_cutoffs, ")",
-        call. = FALSE
+      rlang::abort(
+        c(
+          paste0("`signif.symbols` must have the same length as `signif.cutoffs` (", n_cutoffs, ").")
+        ),
+        call = rlang::caller_env()
       )
     }
 
@@ -183,10 +196,15 @@ add_stat_label <- function(stat.test, label = NULL) {
       stat.test <- stat.test %>% mutate(label = glue(label))
     } else {
       if (!(label %in% colnames(stat.test))) {
-        stop(
-          "Can't find the value of the argument label ('", label, "') in the computed ",
-          "statistical test table.",
-          call. = FALSE
+        rlang::abort(
+          c(
+            paste0("Can't find the label column \"", label, "\" in the statistical test table."),
+            "i" = paste0(
+              "Available columns: ",
+              paste(colnames(stat.test), collapse = ", "), "."
+            )
+          ),
+          call = rlang::caller_env()
         )
       }
       stat.test$label <- as.character(stat.test[[label]])

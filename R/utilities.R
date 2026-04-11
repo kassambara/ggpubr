@@ -13,14 +13,17 @@ NULL
 #' @importFrom grid drawDetails
 #' @importFrom rlang !!
 #' @importFrom rlang !!!
-#' @importFrom rlang sym syms .data
+#' @importFrom rlang sym syms .data abort warn inform caller_env
 
 
 required_package <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
-    stop(
-      pkg, " package needed to be installed before using this function. ",
-      "Type this in R: install.packages('", pkg, "')"
+    rlang::abort(
+      c(
+        paste0("The `", pkg, "` package is required but not installed."),
+        "i" = paste0("Install it with: `install.packages('", pkg, "')`.")
+      ),
+      call = rlang::caller_env()
     )
   }
 }
@@ -29,12 +32,24 @@ required_package <- function(pkg) {
 .resolve_linewidth_args <- function(size = NULL, linewidth = NULL, default_linewidth = NULL,
                                     warn_if_size = TRUE, null_size_after = FALSE) {
   if (!is.null(size) && !is.null(linewidth)) {
-    stop("Please specify either 'size' or 'linewidth', not both. Use 'linewidth' for ggplot2 3.4.0+ compatibility.")
+    rlang::abort(
+      c(
+        "Specify either `size` or `linewidth`, not both.",
+        "i" = "Use `linewidth` for ggplot2 3.4.0+ compatibility."
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   if (!is.null(size)) {
     if (isTRUE(warn_if_size)) {
-      warning("The 'size' parameter for lines is deprecated in ggplot2 3.4.0+. Please use 'linewidth' instead to avoid this warning in future versions.")
+      rlang::warn(
+        c(
+          "The `size` parameter for lines is deprecated in ggplot2 3.4.0+.",
+          "i" = "Use `linewidth` instead."
+        ),
+        call = rlang::caller_env()
+      )
     }
     linewidth <- size
     if (isTRUE(null_size_after)) size <- NULL
@@ -340,7 +355,15 @@ keep_only_tbl_df_classes <- function(x) {
   .x <- ".x"
 
   if (format.scale) {
-    if (!requireNamespace("scales")) stop("The R package 'scales' is required.")
+    if (!requireNamespace("scales")) {
+      rlang::abort(
+        c(
+          "The `scales` package is required but not installed.",
+          "i" = "Install it with: `install.packages('scales')`."
+        ),
+        call = rlang::caller_env()
+      )
+    }
 
     if (yscale == "log2") {
       p <- p + scale_y_continuous(
@@ -546,7 +569,13 @@ keep_only_tbl_df_classes <- function(x) {
 .check_data <- function(data, x, y, combine = FALSE) {
   if (missing(x) & missing(y)) {
     if (!is.numeric(data)) {
-      stop("x and y are missing. In this case data should be a numeric vector.")
+      rlang::abort(
+        c(
+          "`x` and `y` are missing.",
+          "i" = "When `x` and `y` are not provided, `data` must be a numeric vector."
+        ),
+        call = rlang::caller_env()
+      )
     } else {
       data <- data.frame(y = data, x = rep(1, length(data)))
       x <- "x"
@@ -567,11 +596,17 @@ keep_only_tbl_df_classes <- function(x) {
       y <- intersect(y, colnames(data))
 
       if (.is_empty(y)) {
-        stop("Can't find the y elements in the data.")
+        rlang::abort(
+          "Can't find any of the `y` elements in the data.",
+          call = rlang::caller_env()
+        )
       } else if (!.is_empty(not_found)) {
-        warning(
-          "Can't find the following element in the data: ",
-          .collapse(not_found)
+        rlang::warn(
+          c(
+            "Some elements were not found in the data.",
+            "x" = paste0("Missing: ", .collapse(not_found), ".")
+          ),
+          call = rlang::caller_env()
         )
       }
     }
@@ -782,7 +817,10 @@ keep_only_tbl_df_classes <- function(x) {
     }
   }
   if (combine & merge != "none") {
-    stop("You should use either combine = TRUE or merge = TRUE, but not both together.")
+    rlang::abort(
+      "Use either `combine = TRUE` or `merge = TRUE`, not both.",
+      call = rlang::caller_env()
+    )
   }
 
   font.label <- .parse_font(font.label)
@@ -1083,7 +1121,13 @@ keep_only_tbl_df_classes <- function(x) {
   } else if (is.character(legend)) {
     legend <- legend[1]
     if (!legend %in% allowed.values) {
-      stop("Argument legend should be one of ", .collapse(allowed.values, sep = ", "))
+      rlang::abort(
+        c(
+          paste0("Unknown value for `legend`: \"", legend, "\"."),
+          "i" = paste0("Allowed values: ", .collapse(allowed.values, sep = ", "), ".")
+        ),
+        call = rlang::caller_env()
+      )
     }
   }
   return(legend)

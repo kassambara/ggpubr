@@ -199,26 +199,41 @@ ggviolin_core <- function(data, x, y,
       quantiles <- draw_quantiles
       if (is.null(quantile.linetype)) {
         quantile.linetype <- "solid"
-        warning(
-          "`draw_quantiles` is deprecated. Mapped to `quantiles` and set ",
-          "`quantile.linetype = 'solid'` to preserve legacy behavior. ",
-          "With ggplot2 >= 4.0.0, quantile lines are only drawn when ",
-          "`quantile.linetype` is set; set it explicitly (or set it to NULL ",
-          "to keep the new default)."
+        rlang::warn(
+          c(
+            "`draw_quantiles` is deprecated.",
+            "i" = "Mapped to `quantiles` and set `quantile.linetype = 'solid'` to preserve legacy behavior.",
+            "i" = "With ggplot2 >= 4.0.0, set `quantile.linetype` explicitly."
+          ),
+          call = rlang::caller_env()
         )
       } else {
-        warning("`draw_quantiles` is deprecated. Use `quantiles` instead.")
+        rlang::warn(
+          c(
+            "`draw_quantiles` is deprecated.",
+            "i" = "Use `quantiles` instead."
+          ),
+          call = rlang::caller_env()
+        )
       }
     } else {
-      warning("`draw_quantiles` is deprecated and ignored because `quantiles` was supplied.")
+      rlang::warn(
+        c(
+          "`draw_quantiles` is deprecated and ignored because `quantiles` was supplied.",
+          "i" = "Use `quantiles` instead."
+        ),
+        call = rlang::caller_env()
+      )
     }
   }
 
   if (!is.null(quantiles) && is.null(quantile.linetype) && is.null(draw_quantiles)) {
-    warning(
-      "`quantiles` provided but `quantile.linetype` is NULL. ",
-      "With ggplot2 >= 4.0.0, quantile lines are only drawn when ",
-      "`quantile.linetype` is set."
+    rlang::warn(
+      c(
+        "`quantiles` provided but `quantile.linetype` is NULL.",
+        "i" = "With ggplot2 >= 4.0.0, quantile lines are only drawn when `quantile.linetype` is set."
+      ),
+      call = rlang::caller_env()
     )
   }
 

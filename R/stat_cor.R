@@ -272,9 +272,12 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
     if (is.null(accuracy)) {
       label <- ifelse(x < 2.2e-16, "p < 2.2e-16", paste0("p = ", x))
     } else if (!(accuracy < 1)) {
-      stop(
-        "Accuracy should be < 1; For example use 0.01, 0.001, 0.0001, etc.",
-        call. = FALSE
+      rlang::abort(
+        c(
+          "`accuracy` must be less than 1.",
+          "i" = "Use values like 0.01, 0.001, or 0.0001."
+        ),
+        call = rlang::caller_env()
       )
     } else {
       label <- scales::pvalue(x, accuracy = accuracy, add_p = TRUE)
@@ -317,9 +320,12 @@ get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = 
   if (is.null(accuracy)) {
     label <- paste0(prefix, " = ", x)
   } else if (!(accuracy < 1)) {
-    stop(
-      "Accuracy should be < 1; For example use 0.01, 0.001, 0.0001, etc.",
-      call. = FALSE
+    rlang::abort(
+      c(
+        "`accuracy` must be less than 1.",
+        "i" = "Use values like 0.01, 0.001, or 0.0001."
+      ),
+      call = rlang::caller_env()
     )
   } else {
     nb_decimal_places <- round(abs(log10(accuracy)))

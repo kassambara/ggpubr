@@ -147,7 +147,10 @@
   } else if (pal %in% c("simpsons")) {
     max_k <- 16
   } else {
-    stop("Don't support palette name: ", pal)
+    rlang::abort(
+      paste0("Unsupported palette: \"", pal, "\"."),
+      call = rlang::caller_env()
+    )
   }
 
   functs <- list(
@@ -179,7 +182,13 @@
 # Generate a color palette from brewer
 .get_brewer_pal <- function(palette, k) {
   if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
-    stop("RColorBrewer package needed. Please install it using install.packages('RColorBrewer').")
+    rlang::abort(
+      c(
+        "The `RColorBrewer` package is required but not installed.",
+        "i" = "Install it with: `install.packages('RColorBrewer')`."
+      ),
+      call = rlang::caller_env()
+    )
   }
   initial.k <- k
   k <- max(c(k, 3)) # Kshoud be at least 3
@@ -201,7 +210,10 @@
   } else if (pal %in% c("Paired", "Set3")) {
     max_k <- 12
   } else {
-    stop("Don't support palette name: ", pal)
+    rlang::abort(
+      paste0("Unsupported palette: \"", pal, "\"."),
+      call = rlang::caller_env()
+    )
   }
 
   if (k <= max_k) {

@@ -620,7 +620,13 @@ get_tablegrob <- function(tab) {
   } else if (is_tablegrob(tab)) {
     tabgrob <- tab
   } else {
-    stop("tab should be an object from either ggpubr::ggtexttable() or gridExtra::tableGrob().")
+    rlang::abort(
+      c(
+        "`tab` must be an object from `ggpubr::ggtexttable()` or `gridExtra::tableGrob()`.",
+        "x" = paste0("Got an object of class `", class(tab)[[1]], "`.")
+      ),
+      call = rlang::caller_env()
+    )
   }
   tabgrob
 }
@@ -647,7 +653,10 @@ tstyle <- function(pal, size = 12) {
     "mBlackWhite", "mBlueWhite", "mRedWhite", "mGreenWhite", "mVioletWhite", "mCyanWhite", "mOrangeWhite"
   )
   if (!(pal %in% allowed.palettes)) {
-    stop(pal, " is not a supported palette")
+    rlang::abort(
+      paste0("\"", pal, "\" is not a supported palette."),
+      call = rlang::caller_env()
+    )
   }
 
   style <- switch(pal,

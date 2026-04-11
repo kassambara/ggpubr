@@ -93,7 +93,13 @@ ggpie <- function(
 
 
   if (length(label) > 1 & length(label) != nrow(data)) {
-    stop("label should be of the same length as data")
+    rlang::abort(
+      c(
+        "`label` must be the same length as the data.",
+        "x" = paste0("`label` has ", length(label), " elements, but data has ", nrow(data), " rows.")
+      ),
+      call = rlang::caller_env()
+    )
   } else if (length(label) > 1) {
     # 1. Add label column
     data <- data %>%

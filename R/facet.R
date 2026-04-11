@@ -66,7 +66,13 @@ facet <- function(p, facet.by, nrow = NULL, ncol = NULL,
                   panel.labs.font.y = panel.labs.font,
                   strip.position = "top", ...) {
   if (length(facet.by) > 2) {
-    stop("facet.by should be of length 1 or 2.")
+    rlang::abort(
+      c(
+        "`facet.by` must be of length 1 or 2.",
+        "x" = paste0("Got length ", length(facet.by), ".")
+      ),
+      call = rlang::caller_env()
+    )
   }
   if (!missing(labeller)) {
     if (labeller == "label_value") {
@@ -74,7 +80,13 @@ facet <- function(p, facet.by, nrow = NULL, ncol = NULL,
     } else if (labeller == "label_both") {
       short.panel.labs <- FALSE
     } else {
-      stop("Don't support the following labeller: ", labeller, call. = FALSE)
+      rlang::abort(
+        c(
+          paste0("Unsupported labeller: \"", labeller, "\"."),
+          "i" = "Use \"label_value\" or \"label_both\"."
+        ),
+        call = rlang::caller_env()
+      )
     }
   }
 
@@ -128,13 +140,22 @@ facet <- function(p, facet.by, nrow = NULL, ncol = NULL,
   }
 
   if (!is.null(panel.labs) & !.is_list(panel.labs)) {
-    stop("Argument panel.labs should be a list. Read the documentation.")
+    rlang::abort(
+      c(
+        "`panel.labs` must be a list.",
+        "i" = "See the documentation for the expected format."
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   if (is.null(names(panel.labs))) {
-    stop(
-      "panel.labs should be a named list. ",
-      "Ex: panel.labs = list(sex = c('Male', 'Female') )"
+    rlang::abort(
+      c(
+        "`panel.labs` must be a named list.",
+        "i" = "Example: `panel.labs = list(sex = c('Male', 'Female'))`."
+      ),
+      call = rlang::caller_env()
     )
   }
 
@@ -148,9 +169,12 @@ facet <- function(p, facet.by, nrow = NULL, ncol = NULL,
     provided.levels <- panel.labs[[variable]]
 
     if (length(current.levels) != length(provided.levels)) {
-      stop(
-        "The number of ", variable, " levels in panel.labs ",
-        "and in the data are different."
+      rlang::abort(
+        c(
+          paste0("The number of `", variable, "` levels in `panel.labs` and in the data are different."),
+          "x" = paste0("Data has ", length(current.levels), " levels, but `panel.labs` provides ", length(provided.levels), ".")
+        ),
+        call = rlang::caller_env()
       )
     }
 

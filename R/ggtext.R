@@ -80,9 +80,12 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   data <- as.data.frame(data)
   if (length(label) > 1) {
     if (length(label) != nrow(data)) {
-      stop(
-        "The argument label should be a column name or a vector of length = nrow(data). ",
-        "It seems that length(label) != nrow(data)"
+      rlang::abort(
+        c(
+          "`label` must be a column name or a vector of length `nrow(data)`.",
+          "x" = paste0("Got length ", length(label), ", but data has ", nrow(data), " rows.")
+        ),
+        call = rlang::caller_env()
       )
     } else {
       data$label.xx <- label
@@ -190,9 +193,12 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   if (.is_list(label.select)) {
     expected.components <- c("top.up", "top.down", "criteria")
     if (!any(expected.components %in% names(label.select))) {
-      stop(
-        "If label.select is a list, it should contain one or the combination ",
-        "of the following element: ", .collapse(expected.components, sep = ", ")
+      rlang::abort(
+        c(
+          "If `label.select` is a list, it must contain one or more of the expected elements.",
+          "i" = paste0("Expected: ", .collapse(expected.components, sep = ", "), ".")
+        ),
+        call = rlang::caller_env()
       )
     }
   }

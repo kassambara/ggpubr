@@ -177,7 +177,13 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
   } else if (is.list(original.p)) {
     list.plots <- original.p
   } else {
-    stop("Can't handle an object of class ", class(original.p))
+    rlang::abort(
+      c(
+        paste0("Can't handle an object of class `", class(original.p)[[1]], "`."),
+        "i" = "Expected a ggplot object or a list of ggplot objects."
+      ),
+      call = rlang::caller_env()
+    )
   }
   if (!is.null(title)) main <- title
   if (!is.null(subtitle)) submain <- subtitle

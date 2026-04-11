@@ -39,7 +39,13 @@
 #' @export
 desc_statby <- function(data, measure.var, grps, ci = 0.95) {
   if (!inherits(data, "data.frame")) {
-    stop("data must be a data.frame.")
+    rlang::abort(
+      c(
+        "`data` must be a data frame.",
+        "x" = paste0("Got an object of class `", class(data)[[1]], "`.")
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   data %>%
@@ -55,7 +61,13 @@ desc_statby <- function(data, measure.var, grps, ci = 0.95) {
     if (ncol(x) == 1) x <- .select_vec(x, 1)
   }
   if (!is.numeric(x)) {
-    stop("x should be a numeric vector or a data frame with one numeric column")
+    rlang::abort(
+      c(
+        "`x` must be a numeric vector or a data frame with one numeric column.",
+        "x" = paste0("Got an object of class `", class(x)[[1]], "`.")
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   data_sum <- data.frame(

@@ -184,10 +184,22 @@ stat_pvalue_manual <- function(
 
   available.variables <- colnames(data)
   if (!(label %in% available.variables)) {
-    stop("can't find the label variable '", label, "' in the data")
+    rlang::abort(
+      c(
+        paste0("Can't find the `label` variable \"", label, "\" in the data."),
+        "i" = paste0("Available columns: ", paste(available.variables, collapse = ", "), ".")
+      ),
+      call = rlang::caller_env()
+    )
   }
   if (!(xmin %in% available.variables)) {
-    stop("can't find the xmin variable '", xmin, "' in the data")
+    rlang::abort(
+      c(
+        paste0("Can't find the `xmin` variable \"", xmin, "\" in the data."),
+        "i" = paste0("Available columns: ", paste(available.variables, collapse = ", "), ".")
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   y.position <- .valide_y_position(y.position, data)
@@ -278,7 +290,13 @@ asserttat_group_columns_exists <- function(data) {
       data$group1 <- "all"
       data$group2 <- data$group
     } else {
-      stop("data should contain group1 and group2 columns")
+      rlang::abort(
+        c(
+          "Data must contain `group1` and `group2` columns.",
+          "i" = "These are typically produced by `rstatix` test functions."
+        ),
+        call = rlang::caller_env()
+      )
     }
   }
   invisible(data)
@@ -296,7 +314,10 @@ asserttat_group_columns_exists <- function(data) {
     }
   } else if (is.character(y.position)) {
     if (!(y.position %in% colnames(data))) {
-      stop("can't find the y.position variable '", y.position, "' in the data")
+      rlang::abort(
+        paste0("Can't find the `y.position` variable \"", y.position, "\" in the data."),
+        call = rlang::caller_env()
+      )
     }
   }
   return(y.position)
@@ -336,7 +357,13 @@ detect_comparison_type <- function(data) {
     # filtered data
     type <- "pairwise"
   } else {
-    stop("Make sure that group1 and group2 columns exist in the data.")
+    rlang::abort(
+      c(
+        "Data must contain `group1` and `group2` columns.",
+        "i" = "These are typically produced by `rstatix` test functions."
+      ),
+      call = rlang::caller_env()
+    )
   }
   type
 }

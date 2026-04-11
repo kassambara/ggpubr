@@ -56,7 +56,7 @@ clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRU
 
 
   if (length(lock_dirs) == 0) {
-    message("No lock files found.")
+    rlang::inform("No lock files found.")
     return(invisible(FALSE))
   }
 
@@ -67,30 +67,31 @@ clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRU
     lock_age_mins <- as.numeric(difftime(Sys.time(), lock_info$mtime, units = "mins"))
     recent_locks <- is.na(lock_age_mins) | lock_age_mins < stale_cutoff_mins
     if (any(recent_locks)) {
-      warning(
-        "Skipping lock directories modified within the last ", stale_cutoff_mins,
-        " minutes for clean_lock_files(package = 'all', ask = FALSE) ",
-        "to avoid removing active installation locks.",
-        call. = FALSE
+      rlang::warn(
+        c(
+          paste0(
+            "Skipping lock directories modified within the last ", stale_cutoff_mins,
+            " minutes to avoid removing active installation locks."
+          ),
+          "i" = "This applies to `clean_lock_files(package = \"all\", ask = FALSE)`."
+        ),
+        call = rlang::caller_env()
       )
       lock_dirs <- lock_dirs[!recent_locks]
     }
     if (length(lock_dirs) == 0) {
-      message("No stale lock files found for non-interactive all-lock cleanup.")
+      rlang::inform("No stale lock files found for non-interactive all-lock cleanup.")
       return(invisible(FALSE))
     }
   }
 
 
-  message("Found lock directories:")
-  for (d in lock_dirs) {
-    message("  ", d)
-  }
+  rlang::inform(c("Found lock directories:", paste0("  ", lock_dirs)))
 
   if (ask) {
     response <- readline("Remove these directories? (y/n): ")
     if (!tolower(response) %in% c("y", "yes")) {
-      message("Aborted.")
+      rlang::inform("Aborted.")
       return(invisible(FALSE))
     }
   }
@@ -103,19 +104,29 @@ clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRU
         unlink(d, recursive = TRUE, force = FALSE)
         if (dir.exists(d)) {
           # unlink doesn't always error on failure, check if still exists
-          warning(
-            "Failed to remove ", d, ": directory still exists. ",
-            "You may need to remove it manually or check permissions."
+          rlang::warn(
+            c(
+              paste0("Failed to remove ", d, ": directory still exists."),
+              "i" = "You may need to remove it manually or check permissions."
+            ),
+            call = rlang::caller_env()
           )
           success <- FALSE
         } else {
-          message("Removed: ", d)
+          rlang::inform(paste0("Removed: ", d))
         }
       },
       error = function(e) {
-        warning(
-          "Failed to remove ", d, ": ", e$message,
-          "\nIf this is a stale lock from a stopped install, remove it manually after confirming no package installation is running: 'rm -rf \"", d, "\"'"
+        rlang::warn(
+          c(
+            paste0("Failed to remove ", d, ": ", e$message),
+            "i" = paste0(
+              "If this is a stale lock from a stopped install, remove it manually ",
+              "after confirming no package installation is running: ",
+              "'rm -rf \"", d, "\"'"
+            )
+          ),
+          call = rlang::caller_env()
         )
         success <<- FALSE
       }
@@ -123,8 +134,10 @@ clean_lock_files <- function(package = "ggpubr", lib = .libPaths()[1], ask = TRU
   }
 
   if (success) {
-    message("Lock files cleaned up successfully.")
-    message("You can now reinstall the package.")
+    rlang::inform(c(
+      "Lock files cleaned up successfully.",
+      "i" = "You can now reinstall the package."
+    ))
   }
 
   invisible(success)

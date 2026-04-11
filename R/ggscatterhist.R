@@ -82,9 +82,12 @@ ggscatterhist <- function(
   print = TRUE, ...
 ) {
   if (!has_cowplot_v0.9()) {
-    warning("Install the latest developmental version of cowplot on github ",
-      "to fully use all the feature of ggscatterhist",
-      .call = FALSE
+    rlang::warn(
+      c(
+        "The latest development version of `cowplot` is recommended.",
+        "i" = "Install with: `pak::pak('wilkelab/cowplot')`."
+      ),
+      call = rlang::caller_env()
     )
     # margin.space = TRUE
   }

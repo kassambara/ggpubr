@@ -104,11 +104,23 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
                      main = NULL, xlab = "Log2 mean expression", ylab = "Log2 fold change",
                      ggtheme = theme_classic(), ...) {
   if (!base::inherits(data, c("matrix", "data.frame", "DataFrame", "DE_Results", "DESeqResults"))) {
-    stop("data must be an object of class matrix, data.frame, DataFrame, DE_Results or DESeqResults")
+    rlang::abort(
+      c(
+        "`data` must be a matrix, data.frame, DataFrame, DE_Results, or DESeqResults.",
+        "x" = paste0("Got an object of class `", class(data)[[1]], "`.")
+      ),
+      call = rlang::caller_env()
+    )
   }
   if (!is.null(detection_call)) {
     if (nrow(data) != length(detection_call)) {
-      stop("detection_call must be a numeric vector of length = nrow(data)")
+      rlang::abort(
+        c(
+          "`detection_call` must be a numeric vector of length `nrow(data)`.",
+          "x" = paste0("Got length ", length(detection_call), ", but data has ", nrow(data), " rows.")
+        ),
+        call = rlang::caller_env()
+      )
     }
   } else if ("detection_call" %in% colnames(data)) {
     detection_call <- as.vector(data$detection_call)
@@ -129,16 +141,25 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   # Check data format
   ss <- base::setdiff(c("baseMean", "log2FoldChange", "padj"), colnames(data))
   if (length(ss) > 0) {
-    stop(
-      "The colnames of data must contain: ",
-      paste(ss, collapse = ", ")
+    rlang::abort(
+      c(
+        "Required columns are missing from the data.",
+        "x" = paste0("Missing: ", paste(ss, collapse = ", "), ".")
+      ),
+      call = rlang::caller_env()
     )
   }
 
   if (is.null(genenames)) {
     genenames <- rownames(data)
   } else if (length(genenames) != nrow(data)) {
-    stop("genenames should be of length nrow(data).")
+    rlang::abort(
+      c(
+        "`genenames` must have the same length as `nrow(data)`.",
+        "x" = paste0("Got length ", length(genenames), ", but data has ", nrow(data), " rows.")
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   sig <- rep(3, nrow(data))

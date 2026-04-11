@@ -102,18 +102,25 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
     }
   }
   if (is.null(layer)) {
-    stop("Can't find any layer containing statiscal tests")
+    rlang::abort(
+      c(
+        "Can't find any layer containing statistical tests.",
+        "i" = "Add a stat layer (e.g., `stat_compare_means()`) before adjusting p-values."
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   stat_test <- .build$data[[layer]]
   sy <- symnum.args
   if (all(is.na(stat_test$p))) {
-    warning(
-      "p-values can't be adjusted for the specified stat method.\n",
-      "The result of the method doesn't contain the p column.\n",
-      "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustement ",
-      "internally; they only return the p.adj.",
-      call. = FALSE
+    rlang::warn(
+      c(
+        "p-values can't be adjusted for this stat method.",
+        "i" = "The result doesn't contain a `p` column.",
+        "i" = "Methods like `tukey_hsd()` and `games_howell_test()` handle p-value adjustment internally."
+      ),
+      call = rlang::caller_env()
     )
     label <- gsub(pattern = "p\\.format(?!\\.signif)", replacement = "p.adj.format", label, perl = TRUE)
     label <- gsub(pattern = "p\\.signif", replacement = "p.adj.signif", label)

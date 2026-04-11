@@ -305,10 +305,12 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
     )
     if (params$method %in% methods_for_repeated_measures) {
       if (is.null(data$wid)) {
-        stop(
-          "The argument `wid` (sample id) is required for repeated measures tests.\n",
-          "Specify it using wid = 'id_col_name', where id_col_name is the column containing ids.",
-          call. = FALSE
+        rlang::abort(
+          c(
+            "`wid` (sample id) is required for repeated measures tests.",
+            "i" = "Specify it using `wid = 'id_col_name'`, where `id_col_name` is the column containing sample ids."
+          ),
+          call = rlang::caller_env()
         )
       }
     }
@@ -367,14 +369,17 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
       stat.test <- rstatix::welch_anova_test(df, .formula)
       stat.test$statistic <- round(stat.test$statistic, 2)
     } else if (method == "friedman_test") {
-      if (is.null(within)) stop("The argument 'within' is required.")
-      if (is.null(wid)) stop("The argument 'wid' is required.")
+      if (is.null(within)) rlang::abort("`within` is required.", call = rlang::caller_env())
+      if (is.null(wid)) rlang::abort("`wid` is required.", call = rlang::caller_env())
       .formula <- paste0("y ~", within, " | ", wid) %>% as.formula()
       method.name <- "Friedman test"
       stat.test <- rstatix::friedman_test(df, .formula)
       stat.test$statistic <- round(stat.test$statistic, 2)
     } else {
-      stop("Don't support the method: ", method, call. = FALSE)
+      rlang::abort(
+        paste0("Unsupported method: \"", method, "\"."),
+        call = rlang::caller_env()
+      )
     }
 
     # Prepare the output for visualization
@@ -513,7 +518,13 @@ get_test_args <- function(data, method = "one_way", group.by = NULL) {
       dplyr::pull(.data$n) %>%
       unique()
     if (!(all(wid.freq.group == 1) | all(wid.freq.x == 1))) {
-      stop("This is not a mixed design. Check your data.", call. = FALSE)
+      rlang::abort(
+        c(
+          "This is not a mixed design.",
+          "i" = "Check that `wid` identifies unique subjects and that the within/between structure is correct."
+        ),
+        call = rlang::caller_env()
+      )
     }
 
     if (all(wid.freq.group == 1)) {

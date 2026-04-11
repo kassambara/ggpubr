@@ -84,18 +84,18 @@ assertthat_coord_is_valid <- function(.coord, axis = c("x", "y", "xy")) {
     y = c("bottom", "top", "center", "centre", "middle"),
     xy = c("right", "left", "bottom", "top", "center", "centre", "middle")
   )
-  .message <- paste0(
-    "'*.npc coord for ", axis, " axis should be either a numeric value in [0-1] ",
-    "or a character strings including one of: ",
-    paste(allowed.values, collapse = ", ")
+  .message <- c(
+    paste0("NPC coordinate for ", axis, " axis is out of range."),
+    "i" = paste0("Expected a numeric value in [0, 1] or one of: ",
+                 paste(allowed.values, collapse = ", "), ".")
   )
   if (is.numeric(.coord)) {
     if (any(.coord < 0 | .coord > 1)) {
-      stop(.message, call. = FALSE)
+      rlang::abort(.message, call = rlang::caller_env())
     }
   } else if (is.character(.coord)) {
     if (!all(.coord %in% allowed.values)) {
-      stop(.message, call. = FALSE)
+      rlang::abort(.message, call = rlang::caller_env())
     }
   }
 }

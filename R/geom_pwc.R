@@ -403,7 +403,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
           ignore.case = TRUE
         )
         if (!sparse_error) {
-          stop(e)
+          rlang::abort(conditionMessage(e), call = rlang::caller_env())
         }
         if (!is.grouped.plots) {
           return(data.frame())
@@ -464,11 +464,9 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
             skipped_summary$.skip_reason,
             ")"
           )
-          message(
-            "geom_pwc(): skipped ",
-            nrow(skipped_summary),
-            " grouped subset(s): ",
-            paste(skipped_desc, collapse = ", ")
+          rlang::inform(
+            c("i" = paste0("Skipped ", nrow(skipped_summary), " grouped subset(s): ",
+                            paste(skipped_desc, collapse = ", "), "."))
           )
         }
 
@@ -509,12 +507,13 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
         stat.test <- stat.test %>%
           rstatix::adjust_pvalue(method = p.adjust.method)
       } else {
-        warning(
-          "p-values can't be adjusted by panel for the specified stat method.\n",
-          "The result of the method doesn't contain the p column.\n",
-          "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustement ",
-          "internally; they only return the p.adj.",
-          call. = FALSE
+        rlang::warn(
+          c(
+            "p-values can't be adjusted by panel for this stat method.",
+            "i" = "The result doesn't contain a `p` column.",
+            "i" = "Methods like `tukey_hsd()` and `games_howell_test()` handle p-value adjustment internally."
+          ),
+          call = rlang::caller_env()
         )
       }
     }
@@ -837,10 +836,12 @@ get_pwc_stat_function <- function(method, method.args) {
       "games_howell_test"
     )
     if (!(method %in% allowed.methods)) {
-      stop(
-        "Unknown stat method: '", method, "'. ",
-        "Allowed method names are: ", paste(allowed.methods, collapse = ","),
-        call. = FALSE
+      rlang::abort(
+        c(
+          paste0("Unknown stat method: \"", method, "\"."),
+          "i" = paste0("Allowed methods: ", paste(allowed.methods, collapse = ", "), ".")
+        ),
+        call = rlang::caller_env()
       )
     }
     # Ignoring p.adjust.method for tukey_hsd and games_howell
@@ -863,7 +864,10 @@ get_pwc_stat_function <- function(method, method.args) {
   } else if (is.function(method)) {
     stat_func <- method
   } else {
-    stop("The argument method is required.")
+    rlang::abort(
+      "`method` is required.",
+      call = rlang::caller_env()
+    )
   }
   list(
     method = stat_func,
@@ -887,14 +891,19 @@ get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.betw
     if (is.character(ref.group)) {
       if ("legend.var" %in% colnames(data)) {
         ref.group <- get_group_id(data$legend.var, ref.group)
-        if (is.na(ref.group)) stop("The ref.group ('", ref.group, "') doesn't exist.", call. = FALSE)
+        if (is.na(ref.group)) {
+          rlang::abort(
+            paste0("The `ref.group` (\"", ref.group, "\") doesn't exist in the data."),
+            call = rlang::caller_env()
+          )
+        }
       } else {
-        stop(
-          "ref.group should be a numeric value indicating the rank of the ",
-          "legend group to be used as the reference. \n",
-          "For example, use ref.group = 1 when the first group is the reference; \n",
-          "use ref.group = 2 when the second group is the reference and so on.",
-          call. = FALSE
+        rlang::abort(
+          c(
+            "`ref.group` must be a numeric value indicating the rank of the legend group to use as reference.",
+            "i" = "Use `ref.group = 1` for the first group, `ref.group = 2` for the second, etc."
+          ),
+          call = rlang::caller_env()
         )
       }
     }

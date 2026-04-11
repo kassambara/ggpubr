@@ -84,6 +84,9 @@ font <- function(object, size = NULL, color = NULL, face = NULL, family = NULL, 
     xy.text = theme(axis.text.x = elmt, axis.text.y = elmt),
     yxtext = theme(axis.text.x = elmt, axis.text.y = elmt),
     axis.text = theme(axis.text.x = elmt, axis.text.y = elmt),
-    stop("Don't support ", object)
+    rlang::abort(
+      paste0("Unsupported element: \"", object, "\"."),
+      call = rlang::caller_env()
+    )
   )
 }

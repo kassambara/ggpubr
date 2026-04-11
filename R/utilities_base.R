@@ -31,7 +31,10 @@
 
   dev <- devices[[device]]
   if (is.null(dev)) {
-    stop("Unknown graphics device '", device, "'", call. = FALSE)
+    rlang::abort(
+      paste0("Unknown graphics device: \"", device, "\"."),
+      call = rlang::caller_env()
+    )
   }
 
   dev

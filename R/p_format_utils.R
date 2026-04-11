@@ -233,9 +233,9 @@ format_p_value <- function(p,
       is.finite(min.threshold) &&
       min.threshold > 0
     if (!is_valid_threshold) {
-      stop(
+      rlang::abort(
         "`min.threshold` must be a single positive finite numeric value or NULL.",
-        call. = FALSE
+        call = rlang::caller_env()
       )
     }
   }
@@ -246,9 +246,9 @@ format_p_value <- function(p,
   valid_idx <- !is.na(p)
   invalid_idx <- valid_idx & (!is.finite(p) | p < 0 | p > 1)
   if (any(invalid_idx)) {
-    warning(
+    rlang::warn(
       "Invalid p-values detected (must be finite and in [0, 1]); returning NA for those entries.",
-      call. = FALSE
+      call = rlang::caller_env()
     )
     valid_idx <- valid_idx & !invalid_idx
   }

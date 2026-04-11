@@ -245,9 +245,12 @@ ggscatter_core <- function(data, x, y,
 
   if (length(label) > 1) {
     if (length(label) != nrow(data)) {
-      stop(
-        "The argument label should be a column name or a vector of length = nrow(data). ",
-        "It seems that length(label) != nrow(data)"
+      rlang::abort(
+        c(
+          "`label` must be a column name or a vector of length `nrow(data)`.",
+          "x" = paste0("Got length ", length(label), ", but data has ", nrow(data), " rows.")
+        ),
+        call = rlang::caller_env()
       )
     } else {
       data$label.xx <- label
