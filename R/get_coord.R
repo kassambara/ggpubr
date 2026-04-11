@@ -45,9 +45,12 @@ get_coord <- function(group = 1L, data.ranges = NULL, coord = NULL, npc = "left"
                       step = 0.1, margin.npc = 0.05) {
   if (!is.null(coord)) {
     if (!is.numeric(group)) {
-      stop(
-        "get_coord: 'group' should be numeric. ",
-        "Current class is: ", class(group)
+      rlang::abort(
+        c(
+          "`group` must be numeric.",
+          "x" = paste0("Got an object of class `", class(group)[[1]], "`.")
+        ),
+        call = rlang::caller_env()
       )
     }
     # If coords are too short, they are recycled.
@@ -55,7 +58,13 @@ get_coord <- function(group = 1L, data.ranges = NULL, coord = NULL, npc = "left"
     return(coord)
   } else if (!is.null(npc)) {
     if (is.null(data.ranges)) {
-      stop("Specify the option data.ranges", call. = FALSE)
+      rlang::abort(
+        c(
+          "`data.ranges` is required when `coord` is NULL.",
+          "i" = "Provide `data.ranges` to compute NPC coordinates."
+        ),
+        call = rlang::caller_env()
+      )
     }
     npc <- ifelse(length(npc) >= group, npc[group], npc[1])
     coord <- as_npc(

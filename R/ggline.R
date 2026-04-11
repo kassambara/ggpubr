@@ -259,9 +259,12 @@ ggline_core <- function(data, x, y, group = 1,
     data_sum <- desc_statby(data, measure.var = y, grps = grouping.vars)
     summary.funcs <- intersect(.summary_functions(), add)
     if (length(summary.funcs) > 1) {
-      stop(
-        "Only one summary function is allowed. ",
-        "Choose one of ", .collapse(.summary_functions(), sep = ", ")
+      rlang::abort(
+        c(
+          "Only one summary function is allowed.",
+          "i" = paste0("Choose one of: ", .collapse(.summary_functions(), sep = ", "), ".")
+        ),
+        call = rlang::caller_env()
       )
     }
 

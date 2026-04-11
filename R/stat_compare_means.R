@@ -160,9 +160,12 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                                inherit.aes = TRUE, ...) {
   # Handle show.signif = FALSE with label = "p.format.signif"
   if (!show.signif && identical(label, "p.format.signif")) {
-    warning("show.signif = FALSE with label = 'p.format.signif': ",
-      "falling back to 'p.format' (p-value only, no significance symbols)",
-      call. = FALSE
+    rlang::warn(
+      c(
+        "`show.signif = FALSE` has no effect when `label = 'p.format.signif'`.",
+        "i" = "Falling back to 'p.format' (p-value only, no significance symbols)."
+      ),
+      call = rlang::caller_env()
     )
     label <- "p.format"
   }
@@ -461,7 +464,13 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
 
   if (!is.null(label)) {
     if (!label %in% names(allowed.label)) {
-      stop("Allowed values for label are: ", .collapse(names(allowed.label), sep = ", "))
+      rlang::abort(
+        c(
+          paste0("Unknown value for `label`: \"", label, "\"."),
+          "i" = paste0("Allowed values: ", .collapse(names(allowed.label), sep = ", "), ".")
+        ),
+        call = rlang::caller_env()
+      )
     }
   }
 

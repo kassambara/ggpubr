@@ -265,7 +265,13 @@ guess_signif_label_column <- function(data) {
   if (length(res) > 0) {
     res <- res[1]
   } else {
-    stop("label is missing")
+    rlang::abort(
+      c(
+        "`label` is required.",
+        "i" = "Provide a label column or argument."
+      ),
+      call = rlang::caller_env()
+    )
   }
   res
 }
@@ -318,9 +324,12 @@ build_signif_mapping <- function(mapping, data) {
     required.vars <- c("xmin", "xmax", "y.position")
     missing.required.vars <- setdiff(required.vars, colnames(data))
     if (length(missing.required.vars) > 0) {
-      stop(
-        "Required variables are missing in the data: ",
-        paste(missing.required.vars, collapse = ", ")
+      rlang::abort(
+        c(
+          "Required variables are missing from the data.",
+          "x" = paste0("Missing: ", paste(missing.required.vars, collapse = ", "), ".")
+        ),
+        call = rlang::caller_env()
       )
     }
     mapping <- ggplot2::aes()

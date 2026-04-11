@@ -62,9 +62,12 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
 
   allowed.fun <- .summary_functions()
   if (!(fun %in% allowed.fun)) {
-    stop(
-      "Don't support ", fun, ". Possibilities for the argument fun are: ",
-      .collapse(allowed.fun, sep = ", ")
+    rlang::abort(
+      c(
+        paste0("Unsupported value for `fun`: \"", fun, "\"."),
+        "i" = paste0("Allowed values: ", .collapse(allowed.fun, sep = ", "), ".")
+      ),
+      call = rlang::caller_env()
     )
   }
 
@@ -80,9 +83,12 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
   )
 
   if (!(error.plot %in% allowed.error.plot)) {
-    stop(
-      "Don't support ", error.plot, ". Possibilities for the argument error.plot are: ",
-      .collapse(allowed.error.plot, sep = ", ")
+    rlang::abort(
+      c(
+        paste0("Unsupported value for `error.plot`: \"", error.plot, "\"."),
+        "i" = paste0("Allowed values: ", .collapse(allowed.error.plot, sep = ", "), ".")
+      ),
+      call = rlang::caller_env()
     )
   }
 

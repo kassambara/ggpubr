@@ -98,5 +98,5 @@ ggexport <- function(..., plotlist = NULL, filename = NULL, ncol = NULL, nrow = 
   utils::capture.output(print(plots))
   utils::capture.output(grDevices::dev.off())
 
-  if (verbose) message("file saved to ", filename)
+  if (verbose) rlang::inform(c("i" = paste0("File saved to ", filename, ".")))
 }

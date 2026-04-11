@@ -122,23 +122,25 @@
     allowed.values <- c("bottom", "top", "center", "centre", "middle")
   }
 
-  .message <- paste0(
-    "'*.npc coord for ", axis, " axis should be either a numeric value in [0-1] ",
-    "or a character strings including one of ",
-    .collapse(allowed.values, sep = ", ")
+  .message <- c(
+    paste0("Invalid `*.npc` coord for ", axis, " axis."),
+    "i" = paste0(
+      "Value must be a numeric in [0, 1] or one of ",
+      .collapse(allowed.values, sep = ", "), "."
+    )
   )
 
   if (!is.null(.coord)) {
     if (is.numeric(.coord)) {
       if (any(.coord < 0 | .coord > 1)) {
-        stop(.message)
+        rlang::abort(.message, call = rlang::caller_env())
       }
     } else if (is.character(.coord)) {
       if (!(.coord %in% allowed.values)) {
-        stop(.message)
+        rlang::abort(.message, call = rlang::caller_env())
       }
     } else {
-      stop(.message)
+      rlang::abort(.message, call = rlang::caller_env())
     }
   }
 }

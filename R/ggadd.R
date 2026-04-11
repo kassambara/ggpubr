@@ -74,12 +74,21 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   # Adding mean or median point
   center <- intersect(c("mean", "median"), add)
   if (length(center) == 2) {
-    stop("Use mean or mdedian, but not both at the same time.")
+    rlang::abort(
+      "Specify either `mean` or `median`, not both.",
+      call = rlang::caller_env()
+    )
   }
   # Adding error bars
   errors <- intersect(.errorbar_functions(), add)
   if (length(errors) > 1) {
-    stop("Choose only one of these: ", .collapse(errors, sep = ", "))
+    rlang::abort(
+      c(
+        "Only one error bar function may be specified.",
+        "i" = paste0("Choose one of: ", .collapse(errors, sep = ", "), ".")
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   if (is.null(dotsize)) dotsize <- 1

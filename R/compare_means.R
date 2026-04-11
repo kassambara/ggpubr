@@ -160,7 +160,13 @@ compare_means <- function(formula, data, method = "wilcox.test",
   )
 
   if (!inherits(data, "data.frame")) {
-    stop("data must be a data.frame.")
+    rlang::abort(
+      c(
+        "`data` must be a data frame.",
+        "x" = paste0("Got an object of class `", class(data)[[1]], "`.")
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   variables <- response.var <- .formula_left_variables(formula)
@@ -219,9 +225,12 @@ compare_means <- function(formula, data, method = "wilcox.test",
       group <- ".group."
       formula <- .collapse(response.var, group, sep = " ~ ") %>% stats::as.formula()
     } else if (!(ref.group %in% group.levs)) {
-      stop("Can't find specified reference group: ", ref.group, ". ",
-        "Allowed values include one of: ", .collapse(group.levs, sep = ", "),
-        call. = FALSE
+      rlang::abort(
+        c(
+          paste0("Can't find the reference group \"", ref.group, "\" in the data."),
+          "i" = paste0("Allowed values: ", .collapse(group.levs, sep = ", "), ".")
+        ),
+        call = rlang::caller_env()
       )
     }
   }
@@ -331,9 +340,12 @@ compare_means <- function(formula, data, method = "wilcox.test",
   )
 
   if (!(method %in% names(allowed.methods))) {
-    stop(
-      "Non-supported method specified. Allowed methods are one of: ",
-      .collapse(allowed.methods, sep = ", ")
+    rlang::abort(
+      c(
+        paste0("Unsupported method: \"", method, "\"."),
+        "i" = paste0("Allowed methods: ", .collapse(allowed.methods, sep = ", "), ".")
+      ),
+      call = rlang::caller_env()
     )
   }
   method <- allowed.methods[[method]]

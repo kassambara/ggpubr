@@ -71,6 +71,9 @@ rremove <- function(object) {
     axis.text = theme(axis.text.x = blank, axis.text.y = blank),
     legend.title = theme(legend.title = blank),
     legend = theme(legend.position = "none"),
-    stop("Don't support ", object)
+    rlang::abort(
+      paste0("Unsupported element: \"", object, "\"."),
+      call = rlang::caller_env()
+    )
   )
 }
