@@ -393,15 +393,23 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
     stat.test <- tryCatch(
       do.call(method, method.args),
       error = function(e) {
-        sparse_error <- grepl(
-          paste0(
-            "not enough|exactly 2 levels|at least 2|same group|fewer than two levels|must be an existing level",
-            # French locale equivalents
-            "|insuffisant|niveau existant|pas assez|au moins 2"
-          ),
-          conditionMessage(e),
-          ignore.case = TRUE
-        )
+        # rstatix (>= 0.7.3.9000) tags an absent reference group with the S3
+        # condition class "rstatix_missing_ref_group"; detect it by class
+        # (locale-independent, robust to message wording), walking the parent
+        # chain because the grouped path wraps the condition in dplyr/purrr
+        # errors. Fall back to matching the message text for older rstatix and
+        # for the other "sparse data" failures (too few levels / observations).
+        sparse_error <- rlang::cnd_inherits(e, "rstatix_missing_ref_group") ||
+          grepl(
+            paste0(
+              "not enough|exactly 2 levels|at least 2|same group|fewer than two levels",
+              "|must be an existing level|not present in the data",
+              # French locale equivalents
+              "|insuffisant|niveau existant|pas assez|au moins 2"
+            ),
+            conditionMessage(e),
+            ignore.case = TRUE
+          )
         if (!sparse_error) {
           stop(e)
         }

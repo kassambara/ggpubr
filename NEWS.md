@@ -18,6 +18,12 @@
   subsets were skipped and why (e.g., missing `ref.group` or insufficient levels).
 - Added regression tests for mixed comparable/non-comparable subsets and fully sparse
   subsets.
+- `geom_pwc()` now detects an absent `ref.group` in a grouped subset via the
+  `rstatix_missing_ref_group` condition class raised by recent `rstatix`
+  (walking the parent chain with `rlang::cnd_inherits()`), in addition to
+  matching the error message. This keeps the "skip ref-less subsets" behaviour
+  working after `rstatix` made that error message clearer (rstatix #153); older
+  `rstatix` versions are still handled via the message fallback.
 
 ## P-value formatting
 
