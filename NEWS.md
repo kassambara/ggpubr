@@ -48,9 +48,11 @@
 - Updated `create_p_label()` to preserve `NA` values in `p.format` (returning
   `NA_character_` instead of stringifying to `"p = NA"`).
 - `ggballoonplot()` now honors user-supplied `xlab`/`ylab` instead of always
-  blanking the axis titles; axis titles are still blank by default (@issue 639).
+  blanking the axis titles; axis titles are still blank by default (#639).
 - `ggsummarytable()` gains an `angle` argument to rotate the summary-table text;
-  default (`angle = 0`) is unchanged (@issue 595).
+  default (`angle = 0`) is unchanged (#595).
+- `ggmaplot()` gains a `line.color` argument to set the threshold line color;
+  default ("black") is unchanged (#322).
 
 ## Tests and docs
 

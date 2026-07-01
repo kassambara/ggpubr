@@ -52,6 +52,8 @@ NULL
 #'  values include "padj" and "fc" for selecting by adjusted p values or fold
 #'  changes, respectively.
 #' @param label.select character vector specifying some labels to show.
+#' @param line.color color of the horizontal threshold lines (the central line
+#'   at 0 and the two fold-change cutoff lines). Default is "black".
 #' @param ... other arguments to be passed to \code{\link{ggpar}}.
 #' @return returns a ggplot.
 #' @examples
@@ -102,6 +104,7 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
                      top = 15, select.top.method = c("padj", "fc"),
                      label.select = NULL,
                      main = NULL, xlab = "Log2 mean expression", ylab = "Log2 fold change",
+                     line.color = "black",
                      ggtheme = theme_classic(), ...) {
   if (!base::inherits(data, c("matrix", "data.frame", "DataFrame", "DE_Results", "DESeqResults"))) {
     stop("data must be an object of class matrix, data.frame, DataFrame, DE_Results or DESeqResults")
@@ -217,7 +220,7 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
     labs(x = xlab, y = ylab, title = main, color = "") + # to remove legend title use color = ""
     geom_hline(
       yintercept = c(0, -log2(fc), log2(fc)), linetype = c(1, 2, 2),
-      color = c("black", "black", "black")
+      color = line.color
     )
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
