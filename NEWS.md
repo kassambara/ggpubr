@@ -96,6 +96,9 @@
 - `stat_regline_equation()` gains `coef.digits` and `rr.digits` arguments to
   control the number of significant digits shown for the regression-equation
   coefficients and R2; defaults (`2`) reproduce the previous output (#312).
+- `table_cell_font()` and `table_cell_bg()` can now style an individual header
+  cell (`row = 1`), not only body cells; they previously matched only the
+  `core-*` grobs and silently did nothing for the header (#535).
 
 ## Tests and docs
 
