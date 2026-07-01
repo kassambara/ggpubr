@@ -71,6 +71,11 @@
   `linetype`, or an explicit `group` plus `color`); these are combined into a
   single interaction group so the right points are connected. Previously this
   errored with "the condition has length > 1" (#616, #375).
+- A NAMED `palette` vector no longer emits a spurious "No shared levels found
+  between `names(values)` ..." warning; the manual color/fill scale is now only
+  applied to an aesthetic actually mapped in the plot. Unnamed palettes are
+  unchanged, and a named palette whose names genuinely don't match still warns
+  (#642).
 
 ## Tests and docs
 

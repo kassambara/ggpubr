@@ -44,6 +44,34 @@
   fill_palette(palette = palette, ...)
 }
 
+# Aesthetics mapped in a plot (plot-level + all layer-level mappings)
+.mapped_aesthetics <- function(p) {
+  used <- names(p$mapping)
+  for (layer in p$layers) {
+    used <- c(used, names(layer$mapping))
+  }
+  unique(used)
+}
+
+# Apply the color/fill palette to a plot.
+# For an UNNAMED palette (or NULL) the previous behavior is preserved exactly:
+# both the color and fill scales are added. For a NAMED palette, the manual
+# scale is only added for an aesthetic actually mapped in the plot -- adding
+# scale_color/fill_manual() with named values to an aesthetic whose data has
+# none of those names raises a spurious "No shared levels found ..." warning at
+# draw time (#642).
+.apply_palette <- function(p, palette) {
+  is_named_palette <- !is.null(palette) &&
+    !is.null(names(palette)) && any(nzchar(names(palette)))
+  if (!is_named_palette) {
+    return(p + .ggcolor(palette) + .ggfill(palette))
+  }
+  used <- .mapped_aesthetics(p)
+  if (any(c("colour", "color") %in% used)) p <- p + .ggcolor(palette)
+  if ("fill" %in% used) p <- p + .ggfill(palette)
+  p
+}
+
 
 # Helper function to use palette from ggsci package
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

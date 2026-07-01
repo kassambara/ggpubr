@@ -189,8 +189,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
   for (i in seq_along(list.plots)) {
     p <- list.plots[[i]]
     if (is_ggplot(p)) {
-      p <- p + .ggcolor(palette) +
-        .ggfill(palette)
+      p <- .apply_palette(p, palette)
       if (!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +
       if (!is.null(gradient.cols)) p <- p + .gradient_col(gradient.cols)
 
