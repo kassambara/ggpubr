@@ -122,6 +122,10 @@
 - Import the `%||%` operator from `rlang`; it is used in `geom_bracket()` and
   `geom_pwc()` but base R only provides it since R 4.4, so it could be unresolved
   on the R (>= 4.1) versions the package supports (#665).
+- `tab_add_title()` / `tab_add_footnote()`: the `just` argument now actually
+  positions the text — `"center"`/`"right"` anchor the title/footnote across the
+  table width instead of around a fixed point — and the text is no longer clipped
+  when it is wider than the table (#302).
 
 ## Tests and docs
 
