@@ -18,6 +18,7 @@ ggarrange(
   align = c("none", "h", "v", "hv"),
   widths = 1,
   heights = 1,
+  byrow = TRUE,
   legend = NULL,
   common.legend = FALSE,
   legend.grob = NULL
@@ -32,6 +33,10 @@ either ggplot2 plot objects or arbitrary gtables.}
 \item{ncol}{(optional) number of columns in the plot grid.}
 
 \item{nrow}{(optional) number of rows in the plot grid.}
+
+\item{byrow}{logical. If \code{TRUE} (default), the plots are filled into the
+grid by row; set to \code{FALSE} to fill by column. Passed to
+\code{\link[cowplot]{plot_grid}()}.}
 
 \item{labels}{(optional) list of labels to be added to the plots. You can
 also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
