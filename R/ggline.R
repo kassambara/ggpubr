@@ -280,11 +280,40 @@ ggline_core <- function(data, x, y, group = 1,
     data_sum <- data
   }
 
+  # Remember whether the user supplied an explicit grouping variable (a data
+  # column, not the default group = 1). Following ggplot2 semantics, an explicit
+  # group takes precedence over aesthetic-derived grouping (see below).
+  explicit.group <- if (length(group) == 1 && is.character(group) &&
+    group %in% names(data)) {
+    group
+  } else {
+    NULL
+  }
+
   .cols <- unique(c(color, linetype, group))
   if (any(.cols %in% names(data))) {
     .in <- which(.cols %in% names(data))
     group <- .cols[.in]
     if (is.null(add.params$group)) add.params$group <- group[1]
+  }
+
+  # When several variables define the grouping (e.g. color and linetype map to
+  # different columns), a length > 1 group aesthetic otherwise errored (#616,
+  # #375). Resolve to a single group column, matching ggplot2:
+  #  - an explicit `group` variable takes precedence (group by it alone);
+  #  - otherwise combine the aesthetic variables into one interaction group so
+  #    the right points are connected.
+  # The single-variable case is unchanged (group stays length 1).
+  if (length(group) > 1) {
+    if (!is.null(explicit.group)) {
+      group <- explicit.group
+    } else {
+      data_sum[[".ggpubr.group"]] <- do.call(
+        interaction,
+        c(data_sum[group], list(drop = TRUE, lex.order = TRUE))
+      )
+      group <- ".ggpubr.group"
+    }
   }
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
