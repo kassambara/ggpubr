@@ -53,6 +53,8 @@
   default (`angle = 0`) is unchanged (#595).
 - `ggmaplot()` gains a `line.color` argument to set the threshold line color;
   default ("black") is unchanged (#322).
+- `ggpar(legend.title = )` now also titles `size` and `alpha` legends, not just
+  `colour`/`fill`/`linetype`/`shape` (#412).
 
 ## Tests and docs
 
