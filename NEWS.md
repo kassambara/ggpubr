@@ -61,6 +61,9 @@
 - `stat_compare_means()` no longer fails with a "`*.npc coord ...`" error when a
   grouped `x` value is `0` (or negative); `.group_coord()` now guards against a
   non-positive group index and falls back to the first label coordinate (#594).
+- `ggpar()`/plot functions now apply `xticks.by` and `yticks.by` together; an
+  internal `else if` previously dropped `xticks.by` whenever `yticks.by` was
+  also supplied (#333).
 
 ## Tests and docs
 
