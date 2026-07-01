@@ -154,7 +154,16 @@ facet <- function(p, facet.by, nrow = NULL, ncol = NULL,
       )
     }
 
-    names(provided.levels) <- current.levels
+    if (!is.null(names(provided.levels)) &&
+        all(current.levels %in% names(provided.levels))) {
+      # Named labels covering every data level: match them to the levels by
+      # name, so they aren't mis-assigned when the order differs (#643).
+      provided.levels <- provided.levels[current.levels]
+    } else {
+      # Unnamed labels (or names that don't cover the levels): map positionally
+      # to the data levels, preserving the previous default behavior.
+      names(provided.levels) <- current.levels
+    }
     .labels[[variable]] <- provided.levels
   }
 

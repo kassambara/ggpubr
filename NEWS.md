@@ -55,6 +55,9 @@
   default ("black") is unchanged (#322).
 - `ggpar(legend.title = )` now also titles `size` and `alpha` legends, not just
   `colour`/`fill`/`linetype`/`shape` (#412).
+- `facet()`/`panel.labs`: a NAMED `panel.labs` vector is now matched to the data
+  levels by name, fixing mislabeled panels when the order differed; unnamed
+  labels still map positionally (#643).
 
 ## Tests and docs
 
