@@ -90,6 +90,9 @@
   when a formula variable name contains a space (e.g. ``len ~ `spa ced` ``); the
   backticks that R adds to non-syntactic term names are now stripped before
   matching data columns (#385).
+- `ggarrange()` gains a `byrow` argument (default `TRUE`) to fill the plot grid
+  by column (`byrow = FALSE`) instead of by row; forwarded to
+  `cowplot::plot_grid()` (#225).
 
 ## Tests and docs
 

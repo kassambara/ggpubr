@@ -13,6 +13,9 @@ NULL
 #' @param plotlist (optional) list of plots to display.
 #' @param ncol (optional) number of columns in the plot grid.
 #' @param nrow (optional) number of rows in the plot grid.
+#' @param byrow logical. If \code{TRUE} (default), the plots are filled into the
+#'   grid by row; set to \code{FALSE} to fill by column. Passed to
+#'   \code{\link[cowplot]{plot_grid}()}.
 #' @param labels (optional) list of labels to be added to the plots. You can
 #'   also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
 #'   to auto-generate lower-case labels.
@@ -73,7 +76,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       labels = NULL, label.x = 0, label.y = 1, hjust = -0.5, vjust = 1.5,
                       font.label = list(size = 14, color = "black", face = "bold", family = NULL),
                       align = c("none", "h", "v", "hv"),
-                      widths = 1, heights = 1,
+                      widths = 1, heights = 1, byrow = TRUE,
                       legend = NULL, common.legend = FALSE, legend.grob = NULL) {
   # Open null device to avoid blank page before plot------
   # see cowplot:::as_grob.ggplot
@@ -145,7 +148,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
     label_fontface = .lab$face, label_colour = .lab$color,
     label_x = .lab$label.x, label_y = .lab$label.y,
     hjust = .lab$hjust, vjust = .lab$vjust, align = align,
-    rel_widths = widths, rel_heights = heights,
+    rel_widths = widths, rel_heights = heights, byrow = byrow,
     legend = legend, common.legend.grob = legend.grob
   )
 
