@@ -14,6 +14,12 @@ NULL
 #' @param comparisons A list of length-2 vectors. The entries in the vector are
 #'  either the names of 2 values on the x-axis or the 2 integers that correspond
 #'  to the index of the groups of interest, to be compared.
+#'
+#'  Note: when \code{comparisons} is specified, each pairwise test is computed
+#'  independently and the displayed p-values are \strong{not} adjusted for
+#'  multiple comparisons. For p-values corrected for multiple testing, use
+#'  \code{\link{geom_pwc}()}, or \code{\link{stat_pvalue_manual}()} together with
+#'  \code{\link{compare_means}(..., p.adjust.method = )}.
 #' @param hide.ns logical value. If TRUE, hide ns symbol when displaying
 #'  significance levels.
 #' @param label character string specifying label type. Allowed values include
@@ -177,6 +183,27 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
   )
 
   if (!is.null(comparisons)) {
+    # The `comparisons` path draws each pairwise test independently (via
+    # ggsignif::geom_signif) and shows UNADJUSTED p-values. Warn once per session
+    # when there is more than one comparison, so users aren't misled into thinking
+    # the p-values are corrected for multiple testing (#293).
+    if (length(comparisons) > 1) {
+      rlang::inform(
+        c(
+          paste0(
+            "`stat_compare_means()` with `comparisons` displays *unadjusted* ",
+            "p-values (no correction for multiple comparisons)."
+          ),
+          i = paste0(
+            "For p-values adjusted for multiple comparisons, use `geom_pwc()`, ",
+            "or `stat_pvalue_manual()` together with ",
+            "`compare_means(..., p.adjust.method = )`."
+          )
+        ),
+        .frequency = "once",
+        .frequency_id = "ggpubr_stat_compare_means_comparisons_unadjusted"
+      )
+    }
     method.info <- .method_info(method)
     method <- method.info$method
 
