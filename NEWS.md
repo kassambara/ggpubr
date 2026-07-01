@@ -106,6 +106,9 @@
   step (e.g. 0, 100, 200) instead of the slightly-negative expanded axis minimum,
   which produced odd labels such as `-20, 80, 180` on bar plots with
   `ylim = c(0, 400)` (#313).
+- `ggmaplot()` now draws the non-significant ("NS") points behind the significant
+  ones, so the up/down-regulated hits are no longer hidden under the grey NS
+  cloud; the legend order (Up, Down, NS) is unchanged (#365).
 
 ## Tests and docs
 
