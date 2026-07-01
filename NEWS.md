@@ -109,6 +109,10 @@
 - `ggmaplot()` now draws the non-significant ("NS") points behind the significant
   ones, so the up/down-regulated hits are no longer hidden under the grey NS
   cloud; the legend order (Up, Down, NS) is unchanged (#365).
+- `compare_means()` now adjusts p-values **within** each `group.by` level (and
+  response) rather than pooling all groups together, so a grouped adjustment
+  matches filtering to one group and adjusting there. This changes `p.adj` values
+  for calls that use `group.by`; ungrouped calls are unchanged (#200).
 
 ## Tests and docs
 

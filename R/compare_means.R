@@ -291,13 +291,18 @@ compare_means <- function(formula, data, method = "wilcox.test",
   )
 
   .y. <- p.adj <- p <- NULL
-  pvalue.adj <- res %>%
-    group_by(.y.) %>%
-    reframe(p.adj = stats::p.adjust(p, method = p.adjust.method))
+  # Adjust p-values WITHIN each grouping level (group.by) x response (.y.), not
+  # pooled across all groups, so a grouped adjustment matches filtering to one
+  # group and adjusting there (#200). Without group.by this reduces to grouping
+  # by .y. only (the previous behavior). Use group_by + mutate (not reframe) so
+  # the row order is preserved and p.adj stays aligned with p.format/p.signif.
+  adjust.by <- intersect(unique(c(group.by, ".y.")), colnames(res))
   res <- res %>%
+    dplyr::group_by(dplyr::across(dplyr::all_of(adjust.by))) %>%
+    dplyr::mutate(p.adj = stats::p.adjust(p, method = p.adjust.method)) %>%
     dplyr::ungroup() %>%
     mutate(
-      p.adj = pvalue.adj$p.adj, p.format = pvalue.format, p.signif = pvalue.signif,
+      p.format = pvalue.format, p.signif = pvalue.signif,
       method = method.name
     )
 
