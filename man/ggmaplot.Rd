@@ -22,6 +22,7 @@ ggmaplot(
   main = NULL,
   xlab = "Log2 mean expression",
   ylab = "Log2 fold change",
+  line.color = "black",
   ggtheme = theme_classic(),
   ...
 )
@@ -98,6 +99,9 @@ hide xlab.}
 
 \item{ylab}{character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.}
+
+\item{line.color}{color of the horizontal threshold lines (the central line
+at 0 and the two fold-change cutoff lines). Default is "black".}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
