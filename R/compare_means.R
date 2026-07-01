@@ -187,7 +187,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
       dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
     response.var <- ".value."
     group.by <- c(group.by, ".y.")
-    formula <- .collapse(response.var, group, sep = " ~ ") %>% stats::as.formula()
+    formula <- .collapse(glue::backtick(response.var), glue::backtick(group), sep = " ~ ") %>%
+      stats::as.formula()
   }
 
   # Check if comparisons should be done against a reference group
@@ -217,7 +218,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
         dplyr::select(-.group.name.)
       data[[".group."]] <- factor(data[[".group."]], levels = c(".all.", group.levs))
       group <- ".group."
-      formula <- .collapse(response.var, group, sep = " ~ ") %>% stats::as.formula()
+      formula <- .collapse(glue::backtick(response.var), glue::backtick(group), sep = " ~ ") %>%
+        stats::as.formula()
     } else if (!(ref.group %in% group.levs)) {
       stop("Can't find specified reference group: ", ref.group, ". ",
         "Allowed values include one of: ", .collapse(group.levs, sep = ", "),
@@ -347,8 +349,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
 .test <- function(data, formula, method = "t.test", ...) {
   test <- match.fun(method)
 
-  x <- deparse(formula[[2]])
-  group <- attr(stats::terms(formula), "term.labels")
+  x <- .strip_backticks(deparse(formula[[2]]))
+  group <- .strip_backticks(attr(stats::terms(formula), "term.labels"))
 
   if (.is_empty(group)) { # Case of null model
     test.opts <- list(x = .select_vec(data, x), ...)
@@ -381,8 +383,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
 .test_pairwise <- function(data, formula, method = "wilcox.test",
                            paired = FALSE, pool.sd = !paired,
                            ...) {
-  x <- deparse(formula[[2]])
-  group <- attr(stats::terms(formula), "term.labels")
+  x <- .strip_backticks(deparse(formula[[2]]))
+  group <- .strip_backticks(attr(stats::terms(formula), "term.labels"))
 
   # One sample test
   if (.is_empty(group)) {
@@ -477,7 +479,16 @@ compare_means <- function(formula, data, method = "wilcox.test",
 .formula_right_variables <- function(formula) {
   group <- attr(stats::terms(formula), "term.labels")
   if (.is_empty(group)) group <- "1"
-  group
+  # term.labels wraps names with special characters (e.g. spaces) in backticks,
+  # which don't match a data column in dplyr/`[[`. Return the bare column name;
+  # the formula object itself keeps its backticks for base-R/rstatix tests (#385).
+  .strip_backticks(group)
+}
+
+# Remove the surrounding backticks R adds to non-syntactic names in formula terms
+# so the string matches an actual data-frame column name.
+.strip_backticks <- function(x) {
+  gsub("`", "", x)
 }
 
 .update_test_arguments <- function(formula, data, group.by) {
