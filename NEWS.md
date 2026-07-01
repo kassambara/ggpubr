@@ -64,6 +64,9 @@
 - `ggpar()`/plot functions now apply `xticks.by` and `yticks.by` together; an
   internal `else if` previously dropped `xticks.by` whenever `yticks.by` was
   also supplied (#333).
+- `stat_compare_means()` now forwards the `family` argument to the comparison
+  bracket labels; it was previously ignored whenever `comparisons` was set
+  (#592, #624).
 
 ## Tests and docs
 

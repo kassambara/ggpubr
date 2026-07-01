@@ -185,6 +185,9 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     pms <- list(...)
     size <- ifelse(is.null(pms$size), 3.88, pms$size)
     color <- ifelse(is.null(pms$color), "black", pms$color)
+    # Forward the font family to the bracket labels; without this it was dropped
+    # in the comparisons path while it worked in the default path (#592, #624).
+    family <- ifelse(is.null(pms$family), "", pms$family)
 
     if (is.null(label)) {
       mapped_label <- .get_stat_compare_means_label_from_mapping(mapping)
@@ -208,6 +211,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
       comparisons = comparisons, y_position = label.y,
       test = method, test.args = method.args,
       step_increase = step.increase, size = bracket.size, textsize = size, color = color,
+      family = family,
       map_signif_level = map_signif_level, tip_length = tip.length,
       data = data, vjust = vjust
     )
