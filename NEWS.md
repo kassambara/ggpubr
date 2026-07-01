@@ -113,6 +113,10 @@
   response) rather than pooling all groups together, so a grouped adjustment
   matches filtering to one group and adjusting there. This changes `p.adj` values
   for calls that use `group.by`; ungrouped calls are unchanged (#200).
+- `stat_compare_means(comparisons = )` now emits a one-time message (and the docs
+  note) clarifying that the displayed pairwise p-values are **not** adjusted for
+  multiple comparisons, pointing to `geom_pwc()` / `stat_pvalue_manual()` +
+  `compare_means(p.adjust.method = )` for corrected p-values (#293).
 
 ## Tests and docs
 
