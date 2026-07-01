@@ -117,6 +117,8 @@
   note) clarifying that the displayed pairwise p-values are **not** adjusted for
   multiple comparisons, pointing to `geom_pwc()` / `stat_pvalue_manual()` +
   `compare_means(p.adjust.method = )` for corrected p-values (#293).
+- `ggboxplot()` now forwards `coef` to `geom_boxplot()`, so `coef = 0` can be used
+  to omit the whiskers; it was previously dropped by `geom_exec()` (#517).
 
 ## Tests and docs
 
