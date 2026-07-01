@@ -533,6 +533,27 @@ thead_add_border <- function(tab, from.row = 1, to.row = 1,
   )
 }
 
+# Anchor x-position for a title/footnote text grob derived from `just`, so that
+# `just` actually positions the text across the table width. Previously x was
+# hardcoded, so "center"/"right" only aligned the text around a fixed left/right
+# anchor and a centred title spilled off-canvas and clipped (#302). The `left`,
+# `center` and `right` defaults keep each function's historical home position
+# byte-identical (title left = 0.02, footnote right = 0.95).
+.tab_text_x <- function(just, left = 0.02, center = 0.5, right = 0.98, home = left) {
+  # A numeric or unrecognized `just` keeps the historical hardcoded anchor
+  # (`home`), so those calls are unchanged; only the named string justifications
+  # reposition the text.
+  if (!is.character(just) || length(just) != 1) {
+    return(home)
+  }
+  switch(just,
+    "left" = left,
+    "center" = center, "centre" = center, "middle" = center,
+    "right" = right,
+    home
+  )
+}
+
 #' @export
 #' @rdname ggtexttable
 #' @param text text to be added as title or footnote.
@@ -543,7 +564,7 @@ tab_add_title <- function(tab, text, face = NULL, size = NULL, color = NULL,
   tabgrob <- get_tablegrob(tab)
   text <- grid::textGrob(
     text,
-    x = 0.02, just = just, hjust = hjust, vjust = vjust,
+    x = .tab_text_x(just), just = just, hjust = hjust, vjust = vjust,
     gp = grid::gpar(fontsize = size, fontface = face, fontfamily = family, col = color)
   )
   # Add row at the top
@@ -554,7 +575,10 @@ tab_add_title <- function(tab, text, face = NULL, size = NULL, color = NULL,
   )
   tabgrob <- gtable::gtable_add_grob(
     tabgrob, list(text),
-    t = 1, b = 1, l = 1, r = ncol(tabgrob)
+    t = 1, b = 1, l = 1, r = ncol(tabgrob),
+    # Don't clip the title to the (often narrow) table width, so a title wider
+    # than the table is fully visible instead of being cut off (#302).
+    clip = "off"
   )
   tab_return_same_class_as_input(tabgrob, input = tab)
 }
@@ -582,7 +606,7 @@ tab_add_footnote <- function(tab, text, face = NULL, size = NULL, color = NULL,
   tabgrob <- get_tablegrob(tab)
   text <- grid::textGrob(
     text,
-    x = 0.95, just = just, hjust = hjust, vjust = vjust,
+    x = .tab_text_x(just, right = 0.95, home = 0.95), just = just, hjust = hjust, vjust = vjust,
     gp = grid::gpar(fontsize = size, fontface = face, fontfamily = family, col = color)
   )
   # Add row at the bottom
@@ -593,7 +617,9 @@ tab_add_footnote <- function(tab, text, face = NULL, size = NULL, color = NULL,
   )
   tabgrob <- gtable::gtable_add_grob(
     tabgrob, list(text),
-    t = nrow(tabgrob), b = nrow(tabgrob), l = 1, r = ncol(tabgrob)
+    t = nrow(tabgrob), b = nrow(tabgrob), l = 1, r = ncol(tabgrob),
+    # Don't clip a footnote wider than the table width (#302).
+    clip = "off"
   )
   tab_return_same_class_as_input(tabgrob, input = tab)
 }
