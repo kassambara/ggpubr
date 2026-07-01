@@ -14,6 +14,7 @@ NULL
 #' @importFrom rlang !!
 #' @importFrom rlang !!!
 #' @importFrom rlang sym syms .data
+#' @importFrom rlang %||%
 
 
 required_package <- function(pkg) {
