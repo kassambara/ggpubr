@@ -29,6 +29,7 @@ ggpar(
   yscale = c("none", "log2", "log10", "sqrt"),
   format.scale = FALSE,
   legend = NULL,
+  legend.direction = NULL,
   legend.title = NULL,
   font.legend = NULL,
   ticks = TRUE,
@@ -102,6 +103,11 @@ formatted when xscale or yscale = "log2" or "log10".}
 c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none". Legend position can be also specified using a numeric
 vector c(x, y); see details section.}
+
+\item{legend.direction}{character specifying the layout of legend items.
+Allowed values are "horizontal" or "vertical". Useful to override the
+default direction, e.g. to stack items vertically with
+\code{legend = "bottom"}.}
 
 \item{legend.title}{legend title, e.g.: \code{legend.title = "Species"}. Can
 be also a list, \code{legend.title = list(color = "Species", linetype = "Species",

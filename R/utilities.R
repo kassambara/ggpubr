@@ -386,11 +386,17 @@ keep_only_tbl_df_classes <- function(x) {
 # Legends
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_legend <- function(p, legend = NULL,
-                        legend.title = NULL, font.legend = NULL) {
+                        legend.title = NULL, font.legend = NULL,
+                        legend.direction = NULL) {
   if (is.null(legend.title)) legend.title <- waiver()
   font <- .parse_font(font.legend)
 
   if (!is.null(legend)) p <- p + theme(legend.position = legend)
+  # legend.direction was previously ignored for legend = "top"/"bottom" (it only
+  # took effect via ggplot2 defaults for "left"/"right"); apply it explicitly (#652).
+  if (!is.null(legend.direction)) {
+    p <- p + theme(legend.direction = legend.direction)
+  }
 
   # Handle legend.title - skip if empty string (used to hide legend title)
   # Empty string causes "Ignoring unknown labels" warnings in ggplot2
