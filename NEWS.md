@@ -39,6 +39,12 @@
 
 ## Bug fixes
 
+- `geom_pwc()` now places comparison brackets over the correct groups when an
+  entire x-axis group has only `NA` values. Such a group is dropped before the
+  statistical test runs; previously the surviving groups were renumbered from 1,
+  which shifted the remaining brackets left. The bracket positions are now
+  anchored to the discrete x scale so they stay aligned with the plotted groups
+  (#575).
 - Fixed ColorBrewer sequential palette parsing in `.get_brewer_pal()` so
   `"YlOrBr"` is recognized correctly.
 - Updated `ggexport()` to respect `verbose = FALSE` by suppressing filename

@@ -385,3 +385,43 @@ test_that("geom_pwc skips grouped subsets missing ref.group and keeps valid ones
   )
   expect_gte(nrow(b$data[[2]]), 1)
 })
+
+# All-NA group placement (#575) -----------------------------------
+test_that("geom_pwc places brackets over the correct groups when a group is all-NA (#575)", {
+  # Group "a" is entirely NA; its rows are dropped before the stat runs, so the
+  # only comparison is b vs c. The bracket must sit over b (x=2) and c (x=3),
+  # not shift left to a-b (x=1,2). See #575.
+  test <- data.frame(
+    x = rep(c("a", "b", "c"), each = 4),
+    y = c(NA, NA, NA, NA, 5:12)
+  )
+  p <- ggplot(test, aes(x, y)) +
+    ggplot2::geom_point() +
+    geom_pwc()
+  b <- ggplot2::ggplot_build(p)
+  st <- b$data[[which(vapply(
+    b$data, function(d) all(c("xmin", "xmax") %in% colnames(d)), logical(1)
+  ))[1]]]
+  st <- unique(st[, c("group1", "group2", "xmin", "xmax")])
+  expect_equal(nrow(st), 1L)
+  expect_equal(as.character(st$group1), "2")
+  expect_equal(as.character(st$group2), "3")
+  expect_equal(as.numeric(st$xmin), 2)
+  expect_equal(as.numeric(st$xmax), 3)
+})
+
+test_that("geom_pwc all-NA fix leaves the fully-populated case unchanged (#575)", {
+  # No NA groups: every pairwise bracket keeps its natural position.
+  tn <- data.frame(x = rep(c("a", "b", "c"), each = 4), y = 1:12)
+  p <- ggplot(tn, aes(x, y)) + ggplot2::geom_point() + geom_pwc()
+  b <- ggplot2::ggplot_build(p)
+  st <- b$data[[which(vapply(
+    b$data, function(d) all(c("xmin", "xmax") %in% colnames(d)), logical(1)
+  ))[1]]]
+  st <- unique(st[, c("xmin", "xmax")])
+  st$xmin <- as.numeric(st$xmin)
+  st$xmax <- as.numeric(st$xmax)
+  st <- st[order(st$xmin, st$xmax), ]
+  expect_equal(st$xmin, c(1, 1, 2))
+  expect_equal(st$xmax, c(2, 3, 3))
+})
