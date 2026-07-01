@@ -126,11 +126,14 @@ keep_only_tbl_df_classes <- function(x) {
 .violin_params <- function(...) {
   x <- list(...)
   res <- list()
-  res$stat <- ifelse(!is.null(x$stat), x$stat, "ydensity")
-  res$draw_quantiles <- x$draw_quantiles
-  res$scale <- ifelse(!is.null(x$scale), x$scale, "area")
-  res$trim <- ifelse(!is.null(x$trim), x$trim, TRUE)
-  res$adjust <- x$adjust # Bandwidth adjustment for kernel density (Issue #552)
+  # Use exact ([[) matching, not $, so a facet argument like scales = "free"
+  # is not partial-matched to the violin `scale` parameter (which would set an
+  # invalid scale and crash geom_violin at draw time, #398).
+  res$stat <- ifelse(!is.null(x[["stat"]]), x[["stat"]], "ydensity")
+  res$draw_quantiles <- x[["draw_quantiles"]]
+  res$scale <- ifelse(!is.null(x[["scale"]]), x[["scale"]], "area")
+  res$trim <- ifelse(!is.null(x[["trim"]]), x[["trim"]], TRUE)
+  res$adjust <- x[["adjust"]] # Bandwidth adjustment for kernel density (Issue #552)
   return(res)
 }
 

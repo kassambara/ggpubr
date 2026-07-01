@@ -76,6 +76,10 @@
   applied to an aesthetic actually mapped in the plot. Unnamed palettes are
   unchanged, and a named palette whose names genuinely don't match still warns
   (#642).
+- `ggviolin()` no longer crashes with `scales = "free"` (or `"free_x"`/`"free_y"`).
+  The facet argument `scales` was being partial-matched to the violin `scale`
+  parameter; it is now read with exact matching, so `scales` controls faceting
+  and the violin `scale` keeps its default (#398).
 
 ## Tests and docs
 
