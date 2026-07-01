@@ -41,6 +41,10 @@ NULL
 #'   c("top", "bottom", "left", "right", "none"). To remove the legend use
 #'   legend = "none". Legend position can be also specified using a numeric
 #'   vector c(x, y); see details section.
+#' @param legend.direction character specifying the layout of legend items.
+#'   Allowed values are "horizontal" or "vertical". Useful to override the
+#'   default direction, e.g. to stack items vertically with
+#'   \code{legend = "bottom"}.
 #' @param legend.title legend title, e.g.: \code{legend.title = "Species"}. Can
 #'   be also a list, \code{legend.title = list(color = "Species", linetype = "Species",
 #'   shape = "Species")}.
@@ -158,7 +162,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   xscale = c("none", "log2", "log10", "sqrt"),
                   yscale = c("none", "log2", "log10", "sqrt"),
                   format.scale = FALSE,
-                  legend = NULL,
+                  legend = NULL, legend.direction = NULL,
                   legend.title = NULL, font.legend = NULL,
                   ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
                   font.xtickslab = font.tickslab, font.ytickslab = font.tickslab,
@@ -203,7 +207,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
       # adding coord_cartesian() here would be replaced by coord_flip(), dropping
       # the limits and warning about two coordinate systems (#646).
       if (orientation != "horizontal") p <- p + .set_axis_limits(xlim, ylim)
-      p <- .set_legend(p, legend, legend.title, font.legend)
+      p <- .set_legend(p, legend, legend.title, font.legend, legend.direction)
       p <- .set_scale(p, xscale = xscale, yscale = yscale, format.scale = format.scale)
       p <- .labs(p, main, xlab, ylab,
         font.main, font.x, font.y,

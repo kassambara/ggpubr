@@ -84,6 +84,8 @@
   `rotate = TRUE`). The limits are passed to `coord_flip()` instead of a separate
   `coord_cartesian()` that was silently replaced, which also removes the
   "Coordinate system already present" warning (#646).
+- `ggpar()` (and the plot functions) now honor `legend.direction` for all legend
+  positions; it was previously ignored for `legend = "top"`/`"bottom"` (#652).
 
 ## Tests and docs
 
