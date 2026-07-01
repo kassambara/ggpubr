@@ -99,7 +99,11 @@
 # group.id the id of groups as returned by ggplot_build()
 .group_coord <- function(coord.values, group.id) {
   if (!.is_empty(coord.values)) {
-    coord.values <- ifelse(length(coord.values) >= group.id,
+    # group.id must be a valid 1-based index; a non-positive id (e.g. when the
+    # group value is derived from an x position of 0) would make
+    # coord.values[group.id] empty and produce NA. Fall back to the first value
+    # (recycling) in that case (#594).
+    coord.values <- ifelse(length(coord.values) >= group.id & group.id > 0,
       coord.values[group.id], coord.values[1]
     )
   }
