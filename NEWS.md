@@ -93,6 +93,9 @@
 - `ggarrange()` gains a `byrow` argument (default `TRUE`) to fill the plot grid
   by column (`byrow = FALSE`) instead of by row; forwarded to
   `cowplot::plot_grid()` (#225).
+- `stat_regline_equation()` gains `coef.digits` and `rr.digits` arguments to
+  control the number of significant digits shown for the regression-equation
+  coefficients and R2; defaults (`2`) reproduce the previous output (#312).
 
 ## Tests and docs
 

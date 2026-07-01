@@ -14,6 +14,8 @@ stat_regline_equation(
   label.y = NULL,
   output.type = "expression",
   decreasing = TRUE,
+  coef.digits = 2,
+  rr.digits = 2,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -65,6 +67,12 @@ for absolute positioning of the label. If too short they will be recycled.}
 formatted in standard mathematical convention with terms in decreasing
 order of powers (e.g., "y = 2*x + 1"). If \code{FALSE}, terms are in
 increasing order (e.g., "y = 1 + 2*x").}
+
+\item{coef.digits}{integer indicating the number of significant digits to use
+for the regression equation coefficients. Default is 2.}
+
+\item{rr.digits}{integer indicating the number of significant digits to use
+for R2 and adjusted R2. Default is 2.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument

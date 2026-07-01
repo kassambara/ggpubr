@@ -25,6 +25,10 @@ NULL
 #'   formatted in standard mathematical convention with terms in decreasing
 #'   order of powers (e.g., "y = 2*x + 1"). If \code{FALSE}, terms are in
 #'   increasing order (e.g., "y = 1 + 2*x").
+#' @param coef.digits integer indicating the number of significant digits to use
+#'   for the regression equation coefficients. Default is 2.
+#' @param rr.digits integer indicating the number of significant digits to use
+#'   for R2 and adjusted R2. Default is 2.
 #' @param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -96,6 +100,7 @@ stat_regline_equation <- function(
   mapping = NULL, data = NULL, formula = y ~ x,
   label.x.npc = "left", label.y.npc = "top",
   label.x = NULL, label.y = NULL, output.type = "expression", decreasing = TRUE,
+  coef.digits = 2, rr.digits = 2,
   geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...
 ) {
@@ -110,6 +115,7 @@ stat_regline_equation <- function(
       formula = formula, label.x.npc = label.x.npc, label.y.npc = label.y.npc,
       label.x = label.x, label.y = label.y,
       output.type = output.type, decreasing = decreasing,
+      coef.digits = coef.digits, rr.digits = rr.digits,
       parse = parse, na.rm = na.rm, ...
     )
   )
@@ -120,14 +126,16 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
   required_aes = c("x", "y"),
   default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
   compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
-                           label.x, label.y, output.type, decreasing) {
+                           label.x, label.y, output.type, decreasing,
+                           coef.digits = 2, rr.digits = 2) {
     force(data)
 
     if (length(unique(data$x)) < 2) {
       return(data.frame()) # Not enough data to perform test
     }
 
-    .test <- .stat_lm(formula, data, output.type = output.type, decreasing = decreasing)
+    .test <- .stat_lm(formula, data, output.type = output.type, decreasing = decreasing,
+                      coef.digits = coef.digits, rr.digits = rr.digits)
     # Returns a data frame with label: x, y, hjust, vjust
     .label.pms <- .label_params(
       data = data, scales = scales,
@@ -141,7 +149,8 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
 
 
 # Compute regression line equation
-.stat_lm <- function(formula, data, output.type = "expression", decreasing = TRUE) {
+.stat_lm <- function(formula, data, output.type = "expression", decreasing = TRUE,
+                     coef.digits = 2, rr.digits = 2) {
   res.lm <- stats::lm(formula, data)
   coefs <- stats::coef(res.lm)
 
@@ -150,13 +159,13 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
     coefs <- c(0, coefs)
   }
 
-  rr <- summary(res.lm)$r.squared %>% signif(2)
-  adj.rr <- summary(res.lm)$adj.r.squared %>% signif(2)
+  rr <- summary(res.lm)$r.squared %>% signif(rr.digits)
+  adj.rr <- summary(res.lm)$adj.r.squared %>% signif(rr.digits)
   AIC <- stats::AIC(res.lm) %>% signif(2)
   BIC <- stats::BIC(res.lm) %>% signif(2)
 
   # Build model equation
-  eq.char <- as.character(signif(polynom::as.polynomial(coefs), 2), decreasing = decreasing)
+  eq.char <- as.character(signif(polynom::as.polynomial(coefs), coef.digits), decreasing = decreasing)
   eq.char <- gsub("e([+-]?[0-9]*)", "%*%10^\\1", eq.char)
   if (output.type %in% c("latex", "tex", "tikz")) {
     eq.char <- gsub("*", " ", eq.char, fixed = TRUE)
