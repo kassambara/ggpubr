@@ -338,7 +338,9 @@ table_cell_font <- function(tab, row, column, face = NULL, size = NULL, color = 
   tabGrob <- get_tablegrob(tab)
   cells <- expand.grid(row = row, column = column)
   for (i in seq_len(nrow(cells))) {
-    tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], "core-fg")
+    # Match the body cells ("core-fg") as well as the header row ("colhead-fg"),
+    # so an individual header cell can be styled (row 1), not only body cells (#535).
+    tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], c("core-fg", "colhead-fg"))
     tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(fontface = face, fontsize = size, col = color)
   }
   tab_return_same_class_as_input(tabGrob, input = tab)
@@ -350,7 +352,9 @@ table_cell_bg <- function(tab, row, column, fill = NULL, color = NULL, linewidth
   tabGrob <- get_tablegrob(tab)
   cells <- expand.grid(row = row, column = column)
   for (i in seq_len(nrow(cells))) {
-    tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], "core-bg")
+    # Match body ("core-bg") and header ("colhead-bg") backgrounds, so a single
+    # header cell background can be changed too (#535).
+    tc <- .find_cell(tabGrob, cells$row[i], cells$column[i], c("core-bg", "colhead-bg"))
     tabGrob$grobs[tc][[1]][["gp"]] <- grid::gpar(
       fill = fill, col = color, lwd = linewidth, alpha = alpha
     )
@@ -360,7 +364,7 @@ table_cell_bg <- function(tab, row, column, fill = NULL, color = NULL, linewidth
 
 .find_cell <- function(tab, row, column, name = "core-fg") {
   l <- tab$layout
-  which(l$t == row & l$l == column & l$name == name)
+  which(l$t == row & l$l == column & l$name %in% name)
 }
 
 #' @export
