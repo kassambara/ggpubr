@@ -63,10 +63,25 @@ annotate_figure <- function(p,
   annot.args <- list(top = top, bottom = bottom, left = left, right = right) %>%
     .compact()
 
-  lab.args <- list(label = fig.lab, position = fig.lab.pos) %>%
-    .compact()
-  if (!missing(fig.lab.size)) lab.args$size <- fig.lab.size
-  if (!missing(fig.lab.face)) lab.args$fontface <- fig.lab.face
+  # Anchor the figure label with a length-independent horizontal justification.
+  # cowplot::draw_figure_label() uses hjust = -0.1 / 1.1 for the left/right
+  # positions, a width-proportional offset, so a longer label is pushed further
+  # from the corner and captions no longer align across figures (#185). Use a
+  # fixed hjust (0 for left, 1 for right; the centre positions already use 0, as
+  # cowplot did) with a fixed x anchor; vertical placement matches cowplot.
+  fig.lab.args <- switch(fig.lab.pos,
+    "top.left"     = list(x = 0.01, y = 1, hjust = 0, vjust = 1.1),
+    "top"          = list(x = 0.50, y = 1, hjust = 0, vjust = 1.1),
+    "top.right"    = list(x = 0.99, y = 1, hjust = 1, vjust = 1.1),
+    "bottom.left"  = list(x = 0.01, y = 0, hjust = 0, vjust = -0.1),
+    "bottom"       = list(x = 0.50, y = 0, hjust = 0, vjust = -0.1),
+    "bottom.right" = list(x = 0.99, y = 0, hjust = 1, vjust = -0.1)
+  )
+  lab.args <- c(list(label = fig.lab), fig.lab.args)
+  # Preserve the previous default label size/face, which cowplot::draw_figure_label()
+  # took from the current theme text (not draw_plot_label's bold/16 default) (#185).
+  lab.args$size <- if (!missing(fig.lab.size)) fig.lab.size else ggplot2::theme_get()$text$size
+  lab.args$fontface <- if (!missing(fig.lab.face)) fig.lab.face else ggplot2::theme_get()$text$face
 
 
   if (!.is_empty(annot.args)) {
@@ -75,7 +90,7 @@ annotate_figure <- function(p,
   }
 
   if (!is.null(fig.lab)) {
-    p <- cowplot::ggdraw(p) + do.call(cowplot::draw_figure_label, lab.args)
+    p <- cowplot::ggdraw(p) + do.call(cowplot::draw_plot_label, lab.args)
   }
 
   p
