@@ -102,6 +102,10 @@
 - `theme_pubr()` now draws the axis tick marks in black with linewidth `0.5`,
   matching the axis lines; previously the ticks inherited a lighter grey/thinner
   style, visibly inconsistent when zoomed (#668).
+- `xticks.by`/`yticks.by` now anchor the axis breaks to round multiples of the
+  step (e.g. 0, 100, 200) instead of the slightly-negative expanded axis minimum,
+  which produced odd labels such as `-20, 80, 180` on bar plots with
+  `ylim = c(0, 400)` (#313).
 
 ## Tests and docs
 

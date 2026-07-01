@@ -74,7 +74,12 @@ get_breaks_position <- function(by, from = NULL, to = NULL) {
     }
     rng <- range(x)
     if (rng[1] > 0 & is.null(from)) from <- 0
-    xmin <- ifelse(is.null(from), floor(rng[1]), from)
+    # Anchor the first break to a multiple of `by` so the ticks land on round
+    # numbers (e.g. 0, 100, 200) even when the axis range dips slightly below 0
+    # from the default scale expansion; otherwise the breaks started at the
+    # expanded minimum (e.g. -19, 81, 181) (#313). Out-of-range breaks are
+    # dropped by the scale.
+    xmin <- ifelse(is.null(from), floor(rng[1] / by) * by, from)
     xmax <- ifelse(is.null(to), rng[2], to)
     seq(from = xmin, to = xmax, by = by)
   }
