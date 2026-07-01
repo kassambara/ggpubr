@@ -58,6 +58,9 @@
 - `facet()`/`panel.labs`: a NAMED `panel.labs` vector is now matched to the data
   levels by name, fixing mislabeled panels when the order differed; unnamed
   labels still map positionally (#643).
+- `stat_compare_means()` no longer fails with a "`*.npc coord ...`" error when a
+  grouped `x` value is `0` (or negative); `.group_coord()` now guards against a
+  non-positive group index and falls back to the first label coordinate (#594).
 
 ## Tests and docs
 
