@@ -189,6 +189,13 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   font.label$color <- ifelse(is.null(font.label$color), "black", font.label$color)
   font.label$face <- ifelse(is.null(font.label$face), "plain", font.label$face)
 
+  # Draw the non-significant ("NS") points first (behind) so the significant
+  # Up/Down points are plotted on top and remain visible; the data was ordered
+  # by padj, which otherwise put the NS points last and hid the significant hits
+  # (#365). Stable ordering keeps the factor levels (and thus the legend) intact.
+  is.ns <- as.character(data$sig) == "NS"
+  data <- data[order(!is.ns), ]
+
   # Plot
   mean <- lfc <- sig <- name <- padj <- NULL
   p <- ggplot(data, aes(x = mean, y = lfc)) +
