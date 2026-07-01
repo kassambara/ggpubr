@@ -171,6 +171,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
                   ...) {
   original.p <- p
   if (rotate) orientation <- "horizontal"
+  orientation <- match.arg(orientation, c("vertical", "horizontal", "reverse"))
 
   if (is_ggplot(original.p)) {
     list.plots <- list(original.p)
@@ -198,14 +199,17 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
         font.xtickslab = font.xtickslab, font.ytickslab = font.ytickslab
       )
       p <- .set_ticksby(p, xticks.by, yticks.by)
-      p <- p + .set_axis_limits(xlim, ylim)
+      # For horizontal orientation the limits are passed to coord_flip() below;
+      # adding coord_cartesian() here would be replaced by coord_flip(), dropping
+      # the limits and warning about two coordinate systems (#646).
+      if (orientation != "horizontal") p <- p + .set_axis_limits(xlim, ylim)
       p <- .set_legend(p, legend, legend.title, font.legend)
       p <- .set_scale(p, xscale = xscale, yscale = yscale, format.scale = format.scale)
       p <- .labs(p, main, xlab, ylab,
         font.main, font.x, font.y,
         submain = submain, caption = caption, font.submain = font.submain, font.caption = font.caption
       )
-      p <- .set_orientation(p, orientation)
+      p <- .set_orientation(p, orientation, xlim = xlim, ylim = ylim)
       if (font.family != "") {
         p <- p + theme(text = element_text(family = font.family))
       }
