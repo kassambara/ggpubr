@@ -126,6 +126,10 @@
   positions the text — `"center"`/`"right"` anchor the title/footnote across the
   table width instead of around a fixed point — and the text is no longer clipped
   when it is wider than the table (#302).
+- `annotate_figure()`: the figure label (`fig.lab`) now uses a length-independent
+  horizontal justification, so labels of different lengths keep the same anchor
+  and captions align across figures; previously a longer label was shifted away
+  from the corner (#185).
 
 ## Tests and docs
 
