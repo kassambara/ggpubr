@@ -11,6 +11,8 @@ NULL
 #' @param table.font.size the summary table font size.
 #' @param position Position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function.
+#' @param angle numeric value specifying the rotation angle (in degrees) of the
+#'   summary table text. Default is 0.
 #' @param summaries summary stats to display in the table. Possible values are
 #'   those returned by the function \code{\link[rstatix]{get_summary_stats}()},
 #'   including: \code{"n", "min", "max",  "median",  "q1", "q2", "q3", "mad",
@@ -98,7 +100,7 @@ NULL
 #' @export
 ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", palette = NULL,
                            facet.by = NULL, labeller = "label_value", position = "identity",
-                           ggtheme = theme_pubr(), ...) {
+                           angle = 0, ggtheme = theme_pubr(), ...) {
   if (missing(ggtheme) & !is.null(facet.by)) {
     ggtheme <- theme_pubr(border = TRUE)
   }
@@ -123,7 +125,7 @@ ggsummarytable <- function(data, x, y, digits = 0, size = 3, color = "black", pa
       geom_text,
       data = df,
       label = "label", size = size, color = color, group = group,
-      position = position
+      position = position, angle = angle
     )
   p <- ggpar(p, ggtheme = ggtheme, palette = palette, xlab = x, ...)
   if (!is.null(facet.by)) p <- facet(p, facet.by = facet.by, labeller = labeller, ...)

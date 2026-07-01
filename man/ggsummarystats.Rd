@@ -18,6 +18,7 @@ ggsummarytable(
   facet.by = NULL,
   labeller = "label_value",
   position = "identity",
+  angle = 0,
   ggtheme = theme_pubr(),
   ...
 )
@@ -76,6 +77,9 @@ labelled by both grouping variable names and levels) and "label_value"
 
 \item{position}{Position adjustment, either as a string, or the result of a
 call to a position adjustment function.}
+
+\item{angle}{numeric value specifying the rotation angle (in degrees) of the
+summary table text. Default is 0.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
