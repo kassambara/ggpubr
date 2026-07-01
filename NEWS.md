@@ -49,6 +49,8 @@
   `NA_character_` instead of stringifying to `"p = NA"`).
 - `ggballoonplot()` now honors user-supplied `xlab`/`ylab` instead of always
   blanking the axis titles; axis titles are still blank by default (@issue 639).
+- `ggsummarytable()` gains an `angle` argument to rotate the summary-table text;
+  default (`angle = 0`) is unchanged (@issue 595).
 
 ## Tests and docs
 
