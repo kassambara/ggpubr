@@ -67,6 +67,10 @@
 - `stat_compare_means()` now forwards the `family` argument to the comparison
   bracket labels; it was previously ignored whenever `comparisons` was set
   (#592, #624).
+- `ggline()` now supports two grouping variables at once (e.g. `color` and
+  `linetype`, or an explicit `group` plus `color`); these are combined into a
+  single interaction group so the right points are connected. Previously this
+  errored with "the condition has length > 1" (#616, #375).
 
 ## Tests and docs
 
