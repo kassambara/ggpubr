@@ -432,6 +432,8 @@ keep_only_tbl_df_classes <- function(x) {
 # Set ticks by
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_ticksby <- function(p, xticks.by = NULL, yticks.by = NULL) {
+  # x and y must be handled independently: an `else if` here dropped xticks.by
+  # whenever yticks.by was also supplied (#333).
   if (!is.null(yticks.by)) {
     # Forcing ymin to start at 0 when distribution plot
     gg_mapping <- .get_gg_xy_variables(p)
@@ -439,10 +441,28 @@ keep_only_tbl_df_classes <- function(x) {
     ymin <- NULL
     if (is_density_plot) ymin <- 0
     p <- p + scale_y_continuous(breaks = get_breaks(by = yticks.by, from = ymin))
-  } else if (!is.null(xticks.by)) {
+  }
+  # Skip xticks.by only when x is discrete: adding scale_x_continuous() to a
+  # discrete x (e.g. ggboxplot) errors at draw time, so a discrete x keeps its
+  # default axis (as it silently did when xticks.by was combined with yticks.by
+  # before this fix). Every non-discrete x (numeric, integer, Date, POSIXct)
+  # still receives the continuous scale exactly as before (#333).
+  if (!is.null(xticks.by) && !.is_discrete_x(p)) {
     p <- p + scale_x_continuous(breaks = get_breaks(by = xticks.by))
   }
   p
+}
+
+# TRUE when the plot's x aesthetic resolves to discrete data (factor, character
+# or logical), for which a continuous x scale cannot be applied. Falls back to
+# FALSE (treat as continuous, i.e. apply the scale as before) if x cannot be
+# evaluated, so behavior for non-discrete x is unchanged from previous versions.
+.is_discrete_x <- function(p) {
+  x_data <- tryCatch(
+    rlang::eval_tidy(p$mapping$x, p$data),
+    error = function(e) NULL
+  )
+  is.factor(x_data) || is.character(x_data) || is.logical(x_data)
 }
 
 
