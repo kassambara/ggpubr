@@ -86,6 +86,10 @@
   "Coordinate system already present" warning (#646).
 - `ggpar()` (and the plot functions) now honor `legend.direction` for all legend
   positions; it was previously ignored for `legend = "top"`/`"bottom"` (#652).
+- `compare_means()` no longer errors ("Can't extract columns that don't exist")
+  when a formula variable name contains a space (e.g. ``len ~ `spa ced` ``); the
+  backticks that R adds to non-syntactic term names are now stripped before
+  matching data columns (#385).
 
 ## Tests and docs
 
