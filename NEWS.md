@@ -99,6 +99,9 @@
 - `table_cell_font()` and `table_cell_bg()` can now style an individual header
   cell (`row = 1`), not only body cells; they previously matched only the
   `core-*` grobs and silently did nothing for the header (#535).
+- `theme_pubr()` now draws the axis tick marks in black with linewidth `0.5`,
+  matching the axis lines; previously the ticks inherited a lighter grey/thinner
+  style, visibly inconsistent when zoomed (#668).
 
 ## Tests and docs
 

@@ -75,6 +75,10 @@ theme_pubr <- function(base_size = 12, base_family = "",
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       axis.line = axis.line, axis.text = element_text(color = "black"),
+      # Match the tick marks to the axis lines (black, 0.5); by default they
+      # inherited a lighter grey/thinner style, visibly inconsistent when zoomed
+      # (#668).
+      axis.ticks = element_line(colour = "black", linewidth = 0.5),
       legend.key = element_blank(),
       strip.background = element_rect(fill = "#F2F2F2", colour = "black", linewidth = 0.7),
       plot.margin = plot.margin,
