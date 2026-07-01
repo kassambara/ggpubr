@@ -542,6 +542,22 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       rstatix::add_significance(p.col = "p", cutpoints = sy$cutpoints, symbols = sy$symbols) %>%
       rstatix::add_significance(p.col = "p.adj", cutpoints = sy$cutpoints, symbols = sy$symbols)
 
+    # For simple (non-grouped) comparisons, anchor the bracket x positions to
+    # the actual x-axis positions. Observations whose y is NA are dropped
+    # before the test runs, so a group that is entirely NA disappears from the
+    # data; rstatix::add_x_position() then renumbers the surviving groups from
+    # 1, shifting the brackets left (#575). Here data$x (and therefore group1/
+    # group2) are the mapped discrete x positions, so we can restore the true
+    # positions directly. Rows with non-numeric group ids (e.g. ".all."/"all"
+    # basemean comparisons) are left as computed by add_x_position().
+    if (!is.grouped.plots && !is.null(scales$x) && scales$x$is_discrete()) {
+      g1 <- suppressWarnings(as.numeric(as.character(stat.test$group1)))
+      g2 <- suppressWarnings(as.numeric(as.character(stat.test$group2)))
+      ok <- !is.na(g1) & !is.na(g2)
+      stat.test$xmin[ok] <- g1[ok]
+      stat.test$xmax[ok] <- g2[ok]
+    }
+
     # Format p-values using unified p-format implementation for all styles
     stat.test <- stat.test %>%
       dplyr::mutate(
