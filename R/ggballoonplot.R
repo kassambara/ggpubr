@@ -190,11 +190,16 @@ ggballoonplot <- function(
   p <- p +
     scale_size(range = size.range) +
     guides(size = guide_legend(reverse = TRUE)) +
-    ggtheme +
-    theme(
-      axis.title.x = ggplot2::element_blank(),
-      axis.title.y = ggplot2::element_blank()
-    )
+    ggtheme
+  # Blank the axis titles by default, but keep them when the user supplies
+  # xlab/ylab (passed via ... to ggpar) so those labels are honored (#639).
+  dots <- list(...)
+  if (is.null(dots$xlab)) {
+    p <- p + theme(axis.title.x = ggplot2::element_blank())
+  }
+  if (is.null(dots$ylab)) {
+    p <- p + theme(axis.title.y = ggplot2::element_blank())
+  }
 
   if (show.label) {
     font.label <- .check_lab_font(font.label)

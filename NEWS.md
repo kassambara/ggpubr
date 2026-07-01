@@ -47,6 +47,8 @@
   single positive finite number.
 - Updated `create_p_label()` to preserve `NA` values in `p.format` (returning
   `NA_character_` instead of stringifying to `"p = NA"`).
+- `ggballoonplot()` now honors user-supplied `xlab`/`ylab` instead of always
+  blanking the axis titles; axis titles are still blank by default (@issue 639).
 
 ## Tests and docs
 
