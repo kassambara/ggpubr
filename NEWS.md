@@ -80,6 +80,10 @@
   The facet argument `scales` was being partial-matched to the violin `scale`
   parameter; it is now read with exact matching, so `scales` controls faceting
   and the violin `scale` keeps its default (#398).
+- `xlim`/`ylim` are now honored with `orientation = "horizontal"` (and
+  `rotate = TRUE`). The limits are passed to `coord_flip()` instead of a separate
+  `coord_cartesian()` that was silently replaced, which also removes the
+  "Coordinate system already present" warning (#646).
 
 ## Tests and docs
 

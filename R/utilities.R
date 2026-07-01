@@ -165,10 +165,14 @@ keep_only_tbl_df_classes <- function(x) {
 # Set plot orientation
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_orientation <-
-  function(p, orientation = c("vertical", "horizontal", "reverse")) {
+  function(p, orientation = c("vertical", "horizontal", "reverse"),
+           xlim = NULL, ylim = NULL) {
     ori <- match.arg(orientation)
     if (ori == "horizontal") {
-      p + coord_flip()
+      # Pass the axis limits into coord_flip() (in the original, pre-flip
+      # coordinates, so ylim still refers to the value axis). A separate
+      # coord_cartesian() would be dropped when coord_flip() replaces it (#646).
+      p + coord_flip(xlim = xlim, ylim = ylim)
     } else if (ori == "reverse") {
       p + scale_y_reverse()
     } else {
