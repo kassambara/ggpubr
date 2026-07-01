@@ -119,6 +119,9 @@
   `compare_means(p.adjust.method = )` for corrected p-values (#293).
 - `ggboxplot()` now forwards `coef` to `geom_boxplot()`, so `coef = 0` can be used
   to omit the whiskers; it was previously dropped by `geom_exec()` (#517).
+- Import the `%||%` operator from `rlang`; it is used in `geom_bracket()` and
+  `geom_pwc()` but base R only provides it since R 4.4, so it could be unresolved
+  on the R (>= 4.1) versions the package supports (#665).
 
 ## Tests and docs
 
