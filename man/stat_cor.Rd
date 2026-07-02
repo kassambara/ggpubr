@@ -21,9 +21,11 @@ stat_cor(
   p.digits = digits,
   r.accuracy = NULL,
   p.accuracy = NULL,
+  r.leading.zero = NULL,
   p.format.style = "default",
   p.leading.zero = NULL,
   p.decimal.mark = NULL,
+  p.coef.name = "p",
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -96,6 +98,16 @@ ignored.}
 \item{p.accuracy}{a real value specifying the number of decimal places of
 precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 decimal places of precision. If specified, then \code{p.digits} is ignored.}
+
+\item{r.leading.zero}{logical. Whether to include the leading zero before the
+decimal point in the correlation coefficient (e.g., \code{"0.73"} vs
+\code{".73"}). Default (NULL) keeps the leading zero; set to \code{FALSE}
+for APA-style reporting.}
+
+\item{p.coef.name}{character. Symbol used for the p-value label. Default is
+\code{"p"}; use \code{"P"} for an uppercase p-value label. For
+\code{output.type = "expression"} this should be a single valid plotmath
+symbol (e.g. \code{"P"}), since it is parsed as an expression.}
 
 \item{p.format.style}{character specifying the p-value formatting style.
 One of "default", "apa", "nejm", "lancet", "ama", "graphpad", "scientific".
