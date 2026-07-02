@@ -48,6 +48,12 @@
 
 ## Bug fixes
 
+- `ggboxplot()` now accepts a `position` argument (e.g.
+  `position = position_dodge(0.9)`), like `ggviolin()`/`ggdotplot()` already do.
+  Previously passing `position` errored (`formal argument "position" matched by
+  multiple actual arguments`) because the dodge was hardcoded; the default is
+  unchanged (`position_dodge(0.8)`), so grouped box plots look the same unless
+  you set it (#615).
 - The core plotting functions (`ggscatter()`, `ggboxplot()`, `ggviolin()`,
   `ggline()`, `ggbarplot()`, `gghistogram()`, `ggdensity()`, `ggdotplot()`,
   `ggstripchart()`, `ggerrorplot()`, `ggecdf()`, `ggdotchart()`, `ggpaired()`,

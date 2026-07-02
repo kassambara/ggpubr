@@ -39,3 +39,34 @@ test_that("The position of jittered points is reproducible in ggboxplot", {
     as.data.frame()
   expect_equal(jitter_data, expected_data)
 })
+
+# #615: ggboxplot() crashed when a `position` was supplied (the internal
+# position_dodge(0.8) was hardcoded and collided in geom_exec). `position` is
+# now an argument, so the dodge width is controllable and defaults are unchanged.
+test_that("ggboxplot accepts a position argument without error (#615)", {
+  tg <- ToothGrowth
+  tg$dose <- factor(tg$dose)
+  expect_no_error(
+    ggplot2::ggplot_build(
+      ggboxplot(tg, "dose", "len", color = "supp", position = ggplot2::position_dodge(0.5))
+    )
+  )
+  # bxp.errorbar path too
+  expect_no_error(
+    ggplot2::ggplot_build(
+      ggboxplot(tg, "dose", "len", color = "supp", bxp.errorbar = TRUE,
+                position = ggplot2::position_dodge(0.9))
+    )
+  )
+})
+
+test_that("ggboxplot default dodge is unchanged and width is controllable (#615)", {
+  tg <- ToothGrowth
+  tg$dose <- factor(tg$dose)
+  box_x <- function(p) ggplot2::ggplot_build(p)$data[[1]]$xmin
+  default <- box_x(ggboxplot(tg, "dose", "len", color = "supp"))
+  explicit08 <- box_x(ggboxplot(tg, "dose", "len", color = "supp", position = ggplot2::position_dodge(0.8)))
+  narrow <- box_x(ggboxplot(tg, "dose", "len", color = "supp", position = ggplot2::position_dodge(0.4)))
+  expect_equal(default, explicit08)          # default == dodge(0.8), no regression
+  expect_false(isTRUE(all.equal(default, narrow)))  # width actually changes spacing
+})
