@@ -228,6 +228,12 @@ sp <- ggscatter(df,
 sp + stat_cor(aes(color = cyl), label.x = 3)
 
 }
+\references{
+\code{stat_cor()}'s label-positioning logic was adapted from
+\code{stat_correlation()} / \code{stat_poly_eq()} in the 'ggpmisc' package by
+Pedro J. Aphalo. For an actively maintained correlation statistic with more features,
+see \code{ggpmisc::stat_correlation()}.
+}
 \seealso{
 \code{\link{ggscatter}}. For an alternative implementation with more
 control over label positioning (native NPC coordinates, per-group vertical and
