@@ -22,6 +22,7 @@ ggviolin(
   short.panel.labs = TRUE,
   linetype = "solid",
   trim = FALSE,
+  drop = TRUE,
   size = NULL,
   linewidth = NULL,
   width = 1,
@@ -111,6 +112,17 @@ outlines.}
 \item{linewidth}{constant value specifying the line width.}
 
 \item{width}{violin width.}
+
+\item{drop}{logical, passed to \code{\link[ggplot2]{geom_violin}()}. When
+\code{TRUE} (the default, unchanged behavior), grouped sub-samples with fewer
+than two data points (for which no density can be computed) are dropped,
+including from the dodge position, so the remaining violins re-center and no
+longer line up with other layers (e.g. added boxplots or dot plots). Set
+\code{drop = FALSE} \emph{together with} a "preserve single" dodge, i.e.
+\code{position = position_dodge(0.8, preserve = "single")}, to reserve the
+empty dodge lane so the violins stay aligned with the other geoms. Both are
+needed: \code{drop = FALSE} keeps the sparse group and \code{preserve =
+"single"} keeps its lane width (#381).}
 
 \item{quantiles}{numeric vector of quantiles to draw on the violin.}
 

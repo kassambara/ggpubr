@@ -41,7 +41,7 @@ geom_exec <- function(geomfunc = NULL, data = NULL,
     "binwidth", "binaxis", "method", "binpositions",
     "stackdir", "stackratio", "dotsize",
     # Violin and density
-    "trim", "draw_quantiles", "quantiles", "quantile.linetype", "quantile.type",
+    "trim", "drop", "draw_quantiles", "quantiles", "quantile.linetype", "quantile.type",
     "quantile.alpha", "quantile.colour", "quantile.color", "quantile.linewidth",
     "quantile.size", "scale", "adjust", "bw",
     # error

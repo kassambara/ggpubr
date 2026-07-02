@@ -77,6 +77,14 @@
   from which ggpubr's correlation/regression label-positioning logic was
   originally adapted; this is acknowledged via `@seealso` in `?stat_cor`.
 
+- `ggviolin()` gains a `drop` argument (passed to `ggplot2::geom_violin()`),
+  default `TRUE` (unchanged behavior). Previously the argument was silently
+  dropped, so grouped violins where a sub-sample has too few points to draw a
+  density (which `geom_violin()` removes, including from the dodge position)
+  could not be kept aligned with added boxplots / dot plots. Setting
+  `drop = FALSE` together with `position = position_dodge(0.8, preserve = "single")`
+  now reserves the empty dodge lane so all geoms stay aligned (#381).
+
 ## Bug fixes
 
 - `ggboxplot()` now accepts a `position` argument (e.g.
