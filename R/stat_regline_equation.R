@@ -154,6 +154,23 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
   res.lm <- stats::lm(formula, data)
   coefs <- stats::coef(res.lm)
 
+  # With an orthogonal poly() fit (the default, raw = FALSE), coef() returns
+  # coefficients in the orthogonal basis, but the displayed equation treats them
+  # as raw polynomial coefficients (c0 + c1 x + c2 x^2 + ...), giving a wrong
+  # equation (#653). For a simple poly(x, k) term with an intercept, refit with
+  # raw = TRUE - an identical fit - to obtain the correct raw coefficients for
+  # display. R^2/AIC/BIC are unchanged (same fit) and stay from the original
+  # model. .polynomial_raw_formula() returns NULL for cases that are not safe to
+  # rewrite (no intercept, transformed poly argument, ...), leaving the original
+  # coefficients untouched.
+  raw.formula <- .polynomial_raw_formula(formula)
+  if (!is.null(raw.formula)) {
+    coefs <- tryCatch(
+      stats::coef(stats::lm(raw.formula, data)),
+      error = function(e) coefs
+    )
+  }
+
   formula.rhs.chr <- as.character(formula)[3]
   if (grepl("-1", formula.rhs.chr) || grepl("- 1", formula.rhs.chr)) {
     coefs <- c(0, coefs)
@@ -211,4 +228,48 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
     dplyr::select(rr, adj.rr, AIC, BIC, everything())
 
   z
+}
+
+# If a formula fits an ORTHOGONAL polynomial - poly(x, k) or poly(x, k, raw =
+# FALSE) - return an equivalent formula using raw = TRUE, whose coefficients are
+# the raw polynomial coefficients suitable for display. Returns NULL when no
+# rewrite is needed or cannot be done safely, in which case the original
+# coefficients are used (unchanged behavior):
+#   * no poly(), or poly() already raw = TRUE, or a raw form such as y ~ x /
+#     y ~ x + I(x^2);
+#   * a model without an intercept (- 1): an orthogonal poly() without an
+#     intercept does NOT fit the same curve as its raw = TRUE counterpart, so
+#     rewriting would not be an identical fit;
+#   * a poly() whose first argument is itself a call, e.g. poly(log(x), 2): the
+#     simple textual rewrite can't be applied reliably.
+# Only a single, simple poly(<var>, ...) term is rewritten (#653).
+.polynomial_raw_formula <- function(formula) {
+  rhs <- paste(deparse(formula[[3]]), collapse = "")
+  # Match one simple poly() call with no nested parentheses in its arguments.
+  poly.call <- regmatches(rhs, regexpr("poly\\s*\\([^()]*\\)", rhs))
+  if (length(poly.call) != 1) {
+    return(NULL)
+  }
+  if (grepl("raw\\s*=\\s*TRUE", poly.call)) {
+    return(NULL)
+  }
+  # No-intercept models: orthogonal vs raw poly are not the same fit.
+  if (grepl("-\\s*1(\\b|$)", rhs)) {
+    return(NULL)
+  }
+  if (grepl("raw\\s*=", poly.call)) {
+    # explicit raw = FALSE (or other) -> force raw = TRUE
+    new.call <- sub("raw\\s*=\\s*[^,)]+", "raw = TRUE", poly.call)
+  } else {
+    # no raw argument -> add it inside the poly() call
+    new.call <- sub("\\)\\s*$", ", raw = TRUE)", poly.call)
+  }
+  rhs <- sub(poly.call, new.call, rhs, fixed = TRUE)
+  tryCatch(
+    stats::as.formula(
+      paste(deparse(formula[[2]]), "~", rhs),
+      env = environment(formula)
+    ),
+    error = function(e) NULL
+  )
 }

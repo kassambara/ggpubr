@@ -48,6 +48,15 @@
 
 ## Bug fixes
 
+- `stat_regline_equation()` now displays the correct equation for orthogonal
+  polynomial fits such as `formula = y ~ poly(x, 2)`. Previously the orthogonal
+  basis coefficients were printed as if they were raw polynomial coefficients,
+  giving a wrong equation that did not match the fitted curve. For a simple
+  `poly(x, k)` term with an intercept, the equation is now computed from an
+  equivalent `raw = TRUE` fit (identical curve, R², AIC, BIC). Linear,
+  `raw = TRUE`, and `I(x^2)` formulas are unaffected; no-intercept models and
+  transformed poly arguments (e.g. `poly(log(x), 2)`) keep their previous
+  behavior (#653).
 - `ggscatterhist()` now aligns the marginal plots with the main scatter plot's
   axes. The margins were built from the raw data, so anything that changed the
   scatter limits (`ellipse = TRUE`, `position` jitter, explicit `xlim`/`ylim`)
