@@ -87,6 +87,13 @@
 
 ## Bug fixes
 
+- `geom_bracket()` and `stat_pvalue_manual()` now place brackets correctly on a
+  transformed y axis (e.g. `scale_y_log10()`). `y.position` is given in data units
+  but was previously used directly in the scale's transformed space, so brackets
+  landed far off (e.g. at `10^30`) and squashed the plot. The bracket `y.position`
+  is now run through the scale's transformation; on an untransformed (identity)
+  scale this is a no-op, so existing plots are unchanged (#342).
+
 - `ggboxplot()` now accepts a `position` argument (e.g.
   `position = position_dodge(0.9)`), like `ggviolin()`/`ggdotplot()` already do.
   Previously passing `position` errored (`formal argument "position" matched by

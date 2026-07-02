@@ -1,6 +1,23 @@
 #' @include utilities.R
 NULL
 
+# Return the y-scale transformation function (e.g. log10) in a way that is robust
+# across ggplot2 versions, or NULL if unavailable. Used to place brackets in the
+# transformed space of the scale (#342). For an identity scale this is the
+# identity function, so applying it leaves positions unchanged.
+.stat_bracket_y_transform <- function(scale) {
+  trans <- NULL
+  # ggplot2 >= 3.5: get_transformation() method / transformation field
+  if (is.function(scale$get_transformation)) {
+    trans <- tryCatch(scale$get_transformation(), error = function(e) NULL)
+  }
+  if (is.null(trans)) trans <- scale$transformation
+  # ggplot2 < 3.5: trans field
+  if (is.null(trans)) trans <- scale$trans
+  if (is.null(trans) || !is.function(trans$transform)) return(NULL)
+  trans$transform
+}
+
 StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
   required_aes = c("x", "y", "group"),
   setup_params = function(data, params) {
@@ -23,6 +40,14 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
       if (length(axis.limits) == 2 && all(is.finite(axis.limits))) {
         tip.scale.range <- axis.limits[2] - axis.limits[1]
       }
+    }
+    # Place the bracket in the transformed space of the y scale, so a user-supplied
+    # y.position given in data units lands correctly on e.g. scale_y_log10(). The
+    # trained range/tips above are already in transformed units. For an identity
+    # scale the transform is a no-op, so default output is unchanged (#342).
+    y.transform <- .stat_bracket_y_transform(scales$y)
+    if (!is.null(y.transform)) {
+      data$y.position <- y.transform(data$y.position)
     }
     bracket.shorten <- data$bracket.shorten / 2
     xmin <- data$xmin + bracket.shorten

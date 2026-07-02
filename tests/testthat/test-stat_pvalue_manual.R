@@ -101,3 +101,46 @@ test_that("geom_bracket honors tip.length.ref and validates it", {
                  tip.length.ref = "bogus")
   )
 })
+
+# geom_bracket on a transformed (log) y scale (#342) --------------------------
+
+.bracket_y_range <- function(p) {
+  b <- ggplot2::ggplot_build(p)
+  for (d in b$data) {
+    if ("annotation" %in% names(d)) return(range(c(d$y, d$yend)))
+  }
+  NA_real_
+}
+
+test_that("geom_bracket places y.position in the scale's transformed space on log axes (#342)", {
+  df <- ToothGrowth
+  df$dose <- factor(df$dose)
+  p_log <- ggboxplot(df, "dose", "len") +
+    geom_bracket(xmin = "0.5", xmax = "1", y.position = 30, label = "p") +
+    ggplot2::scale_y_log10()
+  yr <- .bracket_y_range(p_log)
+  # y = 30 in data units must map to log10(30) ~ 1.477, not stay at 30
+  expect_equal(max(yr), log10(30), tolerance = 1e-6)
+  expect_lt(max(yr), 2)  # sanity: within the log panel, not at 30
+  # full render succeeds (draw-time, not just build)
+  expect_no_error(ggplot2::ggplot_gtable(p_log %>% ggplot2::ggplot_build()))
+})
+
+test_that("geom_bracket on a linear (identity) y scale is unchanged (#342 no-regression)", {
+  df <- ToothGrowth
+  df$dose <- factor(df$dose)
+  p_lin <- ggboxplot(df, "dose", "len") +
+    geom_bracket(xmin = "0.5", xmax = "1", y.position = 30, label = "p")
+  yr <- .bracket_y_range(p_lin)
+  expect_equal(max(yr), 30, tolerance = 1e-9)  # y.position untouched on identity scale
+})
+
+test_that("stat_pvalue_manual brackets also respect a log y scale (#342)", {
+  df <- ToothGrowth
+  df$dose <- factor(df$dose)
+  stat <- data.frame(group1 = "0.5", group2 = "1", p.signif = "*", y.position = 30)
+  p <- ggboxplot(df, "dose", "len") +
+    stat_pvalue_manual(stat, label = "p.signif") +
+    ggplot2::scale_y_log10()
+  expect_equal(max(.bracket_y_range(p)), log10(30), tolerance = 1e-6)
+})
