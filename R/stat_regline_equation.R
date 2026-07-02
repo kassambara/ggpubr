@@ -20,6 +20,10 @@ NULL
 #'  If too short they will be recycled.
 #' @param label.x,label.y \code{numeric} Coordinates (in data units) to be used
 #'  for absolute positioning of the label. If too short they will be recycled.
+#' @param label.y.step numeric value giving the vertical spacing (in text-line
+#'  units) between the labels of successive groups. Default is 1.4 (unchanged
+#'  behavior). Set \code{label.y.step = 0} to stop the per-group vertical shift so
+#'  labels align across facet panels.
 #' @param output.type character One of "expression", "latex" or "text".
 #' @param decreasing logical. If \code{TRUE} (the default), the equation is
 #'   formatted in standard mathematical convention with terms in decreasing
@@ -99,7 +103,8 @@ NULL
 stat_regline_equation <- function(
   mapping = NULL, data = NULL, formula = y ~ x,
   label.x.npc = "left", label.y.npc = "top",
-  label.x = NULL, label.y = NULL, output.type = "expression", decreasing = TRUE,
+  label.x = NULL, label.y = NULL, label.y.step = 1.4,
+  output.type = "expression", decreasing = TRUE,
   coef.digits = 2, rr.digits = 2,
   geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...
@@ -113,7 +118,7 @@ stat_regline_equation <- function(
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       formula = formula, label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-      label.x = label.x, label.y = label.y,
+      label.x = label.x, label.y = label.y, label.y.step = label.y.step,
       output.type = output.type, decreasing = decreasing,
       coef.digits = coef.digits, rr.digits = rr.digits,
       parse = parse, na.rm = na.rm, ...
@@ -126,7 +131,7 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
   required_aes = c("x", "y"),
   default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
   compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
-                           label.x, label.y, output.type, decreasing,
+                           label.x, label.y, label.y.step = 1.4, output.type, decreasing,
                            coef.digits = 2, rr.digits = 2) {
     force(data)
 
@@ -140,7 +145,7 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
     .label.pms <- .label_params(
       data = data, scales = scales,
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-      label.x = label.x, label.y = label.y
+      label.x = label.x, label.y = label.y, label.y.step = label.y.step
     ) %>%
       mutate(hjust = 0)
     cbind(.test, .label.pms)

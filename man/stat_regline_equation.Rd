@@ -12,6 +12,7 @@ stat_regline_equation(
   label.y.npc = "top",
   label.x = NULL,
   label.y = NULL,
+  label.y.step = 1.4,
   output.type = "expression",
   decreasing = TRUE,
   coef.digits = 2,
@@ -60,6 +61,11 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
+
+\item{label.y.step}{numeric value giving the vertical spacing (in text-line
+units) between the labels of successive groups. Default is 1.4 (unchanged
+behavior). Set \code{label.y.step = 0} to stop the per-group vertical shift so
+labels align across facet panels.}
 
 \item{output.type}{character One of "expression", "latex" or "text".}
 
