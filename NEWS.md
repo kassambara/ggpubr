@@ -36,6 +36,12 @@
   - `p.min.threshold`
   - `p.decimal.mark`
 - Added `p.format.signif` support and related label handling paths.
+- `stat_cor()` gains two label-formatting arguments:
+  - `r.leading.zero` — set to `FALSE` to drop the leading zero of the
+    correlation coefficient (e.g. `.73` instead of `0.73`), completing
+    APA-style reporting together with `p.leading.zero` (#540).
+  - `p.coef.name` — symbol for the p-value label; use `"P"` for an uppercase
+    p-value (#541).
 
 ## Bug fixes
 

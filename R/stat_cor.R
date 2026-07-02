@@ -39,6 +39,14 @@ NULL
 #' @param p.accuracy a real value specifying the number of decimal places of
 #'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 #'  decimal places of precision. If specified, then \code{p.digits} is ignored.
+#' @param r.leading.zero logical. Whether to include the leading zero before the
+#'  decimal point in the correlation coefficient (e.g., \code{"0.73"} vs
+#'  \code{".73"}). Default (NULL) keeps the leading zero; set to \code{FALSE}
+#'  for APA-style reporting.
+#' @param p.coef.name character. Symbol used for the p-value label. Default is
+#'  \code{"p"}; use \code{"P"} for an uppercase p-value label. For
+#'  \code{output.type = "expression"} this should be a single valid plotmath
+#'  symbol (e.g. \code{"P"}), since it is parsed as an expression.
 #' @param p.format.style character specifying the p-value formatting style.
 #'  One of "default", "apa", "nejm", "lancet", "ama", "graphpad", "scientific".
 #'  Default is "default" for backward compatibility.
@@ -106,8 +114,9 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      label.x = NULL, label.y = NULL, output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
                      r.accuracy = NULL, p.accuracy = NULL,
+                     r.leading.zero = NULL,
                      p.format.style = "default", p.leading.zero = NULL,
-                     p.decimal.mark = NULL,
+                     p.decimal.mark = NULL, p.coef.name = "p",
                      geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
@@ -120,9 +129,10 @@ stat_cor <- function(mapping = NULL, data = NULL,
       label.x = label.x, label.y = label.y, label.sep = label.sep,
       method = method, alternative = alternative, output.type = output.type, digits = digits,
       r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
-      p.accuracy = p.accuracy, p.format.style = p.format.style,
+      p.accuracy = p.accuracy, r.leading.zero = r.leading.zero,
+      p.format.style = p.format.style,
       p.leading.zero = p.leading.zero, p.decimal.mark = p.decimal.mark,
-      cor.coef.name = cor.coef.name,
+      cor.coef.name = cor.coef.name, p.coef.name = p.coef.name,
       parse = parse, na.rm = na.rm, ...
     )
   )
@@ -134,8 +144,9 @@ StatCor <- ggproto("StatCor", Stat,
   default_aes = aes(hjust = after_stat(hjust), vjust = after_stat(vjust)),
   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
                            label.x, label.y, label.sep, output.type, digits,
-                           r.digits, p.digits, r.accuracy, p.accuracy,
-                           p.format.style, p.leading.zero, p.decimal.mark, cor.coef.name) {
+                           r.digits, p.digits, r.accuracy, p.accuracy, r.leading.zero,
+                           p.format.style, p.leading.zero, p.decimal.mark, cor.coef.name,
+                           p.coef.name) {
     if (length(unique(data$x)) < 2) {
       # Not enough data to perform test
       return(data.frame())
@@ -147,9 +158,10 @@ StatCor <- ggproto("StatCor", Stat,
       label.sep = label.sep, output.type = output.type, digits = digits,
       r.digits = r.digits, p.digits = p.digits,
       r.accuracy = r.accuracy, p.accuracy = p.accuracy,
+      r.leading.zero = r.leading.zero,
       p.format.style = p.format.style, p.leading.zero = p.leading.zero,
       p.decimal.mark = p.decimal.mark,
-      cor.coef.name = cor.coef.name
+      cor.coef.name = cor.coef.name, p.coef.name = p.coef.name
     )
     # Returns a data frame with label: x, y, hjust, vjust
     .label.pms <- .label_params(
@@ -169,10 +181,10 @@ StatCor <- ggproto("StatCor", Stat,
 .cor_test <- function(x, y, method = "pearson", alternative = "two.sided",
                       label.sep = ", ", output.type = "expression",
                       digits = 2, r.digits = digits, p.digits = digits,
-                      r.accuracy = NULL, p.accuracy = NULL,
+                      r.accuracy = NULL, p.accuracy = NULL, r.leading.zero = NULL,
                       p.format.style = "default", p.leading.zero = NULL,
                       p.decimal.mark = NULL,
-                      cor.coef.name = "R") {
+                      cor.coef.name = "R", p.coef.name = "p") {
   # Overwritting digits by accuracy, if specified
   if (!is.null(p.accuracy)) {
     nb_decimal_places <- round(abs(log10(p.accuracy)))
@@ -204,18 +216,20 @@ StatCor <- ggproto("StatCor", Stat,
       r.label = get_corcoef_label(
         r,
         accuracy = r.accuracy, prefix = "R",
-        cor.coef.name = cor.coef.name, type = output.type
+        cor.coef.name = cor.coef.name, type = output.type,
+        leading.zero = r.leading.zero
       ),
       rr.label = get_corcoef_label(
         rr,
         accuracy = r.accuracy, prefix = "R2",
-        cor.coef.name = cor.coef.name, type = output.type
+        cor.coef.name = cor.coef.name, type = output.type,
+        leading.zero = r.leading.zero
       ),
       p.label = get_p_label(
         pval,
         p.digits = p.digits, accuracy = p.accuracy, type = output.type,
         p.format.style = p.format.style, p.leading.zero = p.leading.zero,
-        p.decimal.mark = p.decimal.mark
+        p.decimal.mark = p.decimal.mark, p.coef.name = p.coef.name
       )
     )
 
@@ -245,7 +259,7 @@ StatCor <- ggproto("StatCor", Stat,
 # Formatting R and P ----------------------
 get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
                         p.format.style = "default", p.leading.zero = NULL,
-                        p.decimal.mark = NULL) {
+                        p.decimal.mark = NULL, p.coef.name = "p") {
   if (is.null(p.decimal.mark)) {
     p.decimal.mark <- getOption("OutDec")
   }
@@ -295,6 +309,14 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
     label <- gsub(pattern = "p = ", replacement = "italic(p)~`=`~", x = label, fixed = TRUE)
     label <- gsub(pattern = "p < ", replacement = "italic(p)~`<`~", x = label, fixed = TRUE)
   }
+  # Optionally use a custom symbol for the p-value label, e.g. uppercase "P" (#541).
+  if (!identical(p.coef.name, "p")) {
+    if (type == "expression") {
+      label <- gsub("italic(p)", paste0("italic(", p.coef.name, ")"), label, fixed = TRUE)
+    } else {
+      label <- sub("^p", p.coef.name, label)
+    }
+  }
   label
 }
 
@@ -313,7 +335,8 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
 
 # Prefix can be R or R^2.
 # cor.coef.name: R, rho, tau
-get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = "R", type = "expression") {
+get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = "R", type = "expression",
+                              leading.zero = NULL) {
   if (is.null(accuracy)) {
     label <- paste0(prefix, " = ", x)
   } else if (!(accuracy < 1)) {
@@ -325,6 +348,11 @@ get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = 
     nb_decimal_places <- round(abs(log10(accuracy)))
     label <- formatC(x, digits = nb_decimal_places, format = "f", decimal.mark = ".")
     label <- paste0(prefix, " = ", label)
+  }
+  if (!is.null(leading.zero) && !leading.zero) {
+    # Drop the leading zero of the coefficient value (e.g. "R = 0.20" -> "R = .20",
+    # "R = -0.87" -> "R = -.87") for APA-style reporting (#540).
+    label <- sub("= (-?)0\\.", "= \\1.", label)
   }
   if (type == "expression") {
     label <- gsub(pattern = "R2 = ", replacement = "italic(R)^2~`=`~", x = label, fixed = TRUE)
