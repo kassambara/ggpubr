@@ -1,5 +1,10 @@
 #' @include utilities.R utilities_label.R p_format_utils.R
 NULL
+
+# stat_cor()'s label-positioning logic was adapted from ggpmisc::stat_correlation() /
+# stat_poly_eq() by Pedro J. Aphalo (package 'ggpmisc', GPL-2). For an actively maintained
+# correlation statistic with more features, see the 'ggpmisc' package. See ggpubr issue #419.
+
 #' Add Correlation Coefficients with P-values to a Scatter Plot
 #' @description Add correlation coefficients with p-values to a scatter plot. Can
 #'  be also used to add `R2`.
@@ -65,6 +70,10 @@ NULL
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
+#' @references \code{stat_cor()}'s label-positioning logic was adapted from
+#'  \code{stat_correlation()} / \code{stat_poly_eq()} in the 'ggpmisc' package by
+#'  Pedro J. Aphalo. For an actively maintained correlation statistic with more features,
+#'  see \code{ggpmisc::stat_correlation()}.
 #' @seealso \code{\link{ggscatter}}. For an alternative implementation with more
 #'  control over label positioning (native NPC coordinates, per-group vertical and
 #'  horizontal steps), see \code{ggpmisc::stat_correlation()}, from which some of

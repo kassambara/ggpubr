@@ -2,6 +2,11 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr select
 NULL
+
+# stat_regline_equation() was adapted from the source code of ggpmisc::stat_poly_eq()
+# by Pedro J. Aphalo (package 'ggpmisc', GPL-2). For an actively maintained version with
+# additional features and bug fixes, see the 'ggpmisc' package. See ggpubr issue #419.
+
 #' Add Regression Line Equation and R-Square to a GGPLOT.
 #' @description Add regression line equation and R^2 to a ggplot. Regression
 #'  model is fitted using the function \code{\link[stats]{lm}}.
@@ -38,9 +43,10 @@ NULL
 #' @param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #' @seealso \code{\link{ggscatter}}
-#' @references the source code of the function \code{stat_regline_equation()} is
-#'  inspired from the code of the function \code{stat_poly_eq()} (in ggpmisc
-#'  package).
+#' @references \code{stat_regline_equation()} was adapted from the source code of
+#'  \code{stat_poly_eq()} in the 'ggpmisc' package by Pedro J. Aphalo. For an actively
+#'  maintained version of this statistic, with additional features and bug fixes, see
+#'  \code{ggpmisc::stat_poly_eq()}.
 #'
 #' @section Computed variables:
 #'   \describe{ \item{x}{x position for left edge}
