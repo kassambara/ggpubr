@@ -38,6 +38,7 @@ ggbarplot(
   sort.by.groups = TRUE,
   top = Inf,
   position = position_stack(),
+  numeric.x.axis = FALSE,
   ggtheme = theme_pubr(),
   ...
 )
@@ -140,6 +141,12 @@ Allowed values are "none" (no sorting), "asc" (for ascending) or "desc" (for des
 Used only when sort.val != "none".}
 
 \item{top}{a numeric value specifying the number of top elements to be shown.}
+
+\item{numeric.x.axis}{logical. If TRUE, x axis will be treated as numeric.
+Default is FALSE. Useful, for example, to plot bars at their numeric x
+positions (e.g. a time axis) instead of at equally-spaced discrete
+categories. Ignored when \code{order} is set or \code{sort.val != "none"},
+which require a discrete x axis.}
 
 \item{position}{A position adjustment to use on the data for this layer. This
 can be used in various ways, including to prevent overplotting and

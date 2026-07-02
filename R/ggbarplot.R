@@ -11,6 +11,11 @@ NULL
 #' @param sort.by.groups logical value. If TRUE the data are sorted by groups.
 #' Used only when sort.val != "none".
 #' @param top a numeric value specifying the number of top elements to be shown.
+#' @param numeric.x.axis logical. If TRUE, x axis will be treated as numeric.
+#'   Default is FALSE. Useful, for example, to plot bars at their numeric x
+#'   positions (e.g. a time axis) instead of at equally-spaced discrete
+#'   categories. Ignored when \code{order} is set or \code{sort.val != "none"},
+#'   which require a discrete x axis.
 #' @param label specify whether to add labels on the bar plot. Allowed values
 #'   are: \itemize{ \item \strong{logical value}: If TRUE, y values is added as
 #'   labels on the bar plot \item \strong{character vector}: Used as text
@@ -180,6 +185,7 @@ ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       sort.val = c("none", "desc", "asc"), sort.by.groups = TRUE,
                       top = Inf,
                       position = position_stack(),
+                      numeric.x.axis = FALSE,
                       ggtheme = theme_pubr(),
                       ...) {
   # Default options
@@ -196,7 +202,7 @@ ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     lab.pos = lab.pos, lab.vjust = lab.vjust, lab.hjust = lab.hjust,
     lab.nb.digits = lab.nb.digits,
     sort.val = sort.val, sort.by.groups = sort.by.groups, top = top,
-    position = position, ggtheme = ggtheme, ...
+    position = position, numeric.x.axis = numeric.x.axis, ggtheme = ggtheme, ...
   )
 
   if (!missing(data)) .opts$data <- data
@@ -251,16 +257,15 @@ ggbarplot_core <- function(data, x, y,
                            add.params = list(),
                            error.plot = "errorbar",
                            position = position_stack(),
+                           numeric.x.axis = FALSE,
                            ggtheme = theme_pubr(),
                            ...) {
   sort.val <- match.arg(sort.val)
+  xx <- .select_vec(data, x)
   if (!is.null(order)) {
     data[[x]] <- factor(data[[x]], levels = order)
-  } else {
-    xx <- .select_vec(data, x)
-    if (inherits(xx, c("character", "numeric"))) {
-      data[[x]] <- as.factor(data[[x]])
-    }
+  } else if (inherits(xx, c("character", "numeric")) & !numeric.x.axis) {
+    data[[x]] <- as.factor(data[[x]])
   }
   error.plot <- error.plot[1]
   lab.pos <- match.arg(lab.pos)
@@ -292,7 +297,7 @@ ggbarplot_core <- function(data, x, y,
 
     add <- setdiff(add, .center)
     names(data_sum)[which(names(data_sum) == .center)] <- y
-    if (inherits(xx, c("character", "numeric"))) {
+    if (inherits(xx, c("character", "numeric")) & !numeric.x.axis) {
       data_sum[, x] <- .select_vec(data_sum, x) %>% as.factor()
     }
   } else {

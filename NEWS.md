@@ -46,6 +46,14 @@
   - `p.coef.name` — symbol for the p-value label; use `"P"` for an uppercase
     p-value (#541).
 
+## New features
+
+- `ggbarplot()` gains a `numeric.x.axis` argument (already available in
+  `ggline()` and `ggerrorplot()`). With `numeric.x.axis = TRUE` the x variable
+  is kept numeric instead of being coerced to a discrete factor, so bars are
+  drawn at their numeric x positions (e.g. a time axis). Default is `FALSE`
+  (unchanged behavior) (#463).
+
 ## Bug fixes
 
 - `ggboxplot()` now accepts a `position` argument (e.g.
