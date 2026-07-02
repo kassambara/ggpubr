@@ -15,6 +15,7 @@ stat_cor(
   label.y.npc = "top",
   label.x = NULL,
   label.y = NULL,
+  label.y.step = 1.4,
   output.type = "expression",
   digits = 2,
   r.digits = digits,
@@ -83,6 +84,14 @@ separate the correlation coefficient and the p.value.}
 
 \item{label.x, label.y}{\code{numeric} Coordinates (in data units) to be used
 for absolute positioning of the label. If too short they will be recycled.}
+
+\item{label.y.step}{numeric value giving the vertical spacing (in text-line
+units) between the labels of successive groups when several groups are present.
+Default is 1.4 (unchanged behavior). Set \code{label.y.step = 0} to stop the
+per-group vertical shift, so that labels align across facet panels when a
+factor is mapped to an aesthetic that also defines the facets. This places the
+labels flush with the top of each panel; it is similar in spirit to the
+\code{aes(group = 1)} workaround, which instead leaves them one text line lower.}
 
 \item{output.type}{character One of "expression", "latex", "tex" or "text".}
 
@@ -220,5 +229,8 @@ sp + stat_cor(aes(color = cyl), label.x = 3)
 
 }
 \seealso{
-\code{\link{ggscatter}}
+\code{\link{ggscatter}}. For an alternative implementation with more
+control over label positioning (native NPC coordinates, per-group vertical and
+horizontal steps), see \code{ggpmisc::stat_correlation()}, from which some of
+the label-positioning logic in \code{stat_cor()} was originally adapted.
 }

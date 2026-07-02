@@ -28,6 +28,13 @@ NULL
 #'  If too short they will be recycled.
 #' @param label.x,label.y \code{numeric} Coordinates (in data units) to be used
 #'  for absolute positioning of the label. If too short they will be recycled.
+#' @param label.y.step numeric value giving the vertical spacing (in text-line
+#'  units) between the labels of successive groups when several groups are present.
+#'  Default is 1.4 (unchanged behavior). Set \code{label.y.step = 0} to stop the
+#'  per-group vertical shift, so that labels align across facet panels when a
+#'  factor is mapped to an aesthetic that also defines the facets. This places the
+#'  labels flush with the top of each panel; it is similar in spirit to the
+#'  \code{aes(group = 1)} workaround, which instead leaves them one text line lower.
 #' @param output.type character One of "expression", "latex", "tex" or "text".
 #' @param digits,r.digits,p.digits integer indicating the number of decimal
 #'  places (round) or significant digits (signif) to be used for the correlation
@@ -58,7 +65,10 @@ NULL
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
-#' @seealso \code{\link{ggscatter}}
+#' @seealso \code{\link{ggscatter}}. For an alternative implementation with more
+#'  control over label positioning (native NPC coordinates, per-group vertical and
+#'  horizontal steps), see \code{ggpmisc::stat_correlation()}, from which some of
+#'  the label-positioning logic in \code{stat_cor()} was originally adapted.
 #' @section Computed variables: \describe{ \item{r}{correlation coefficient}
 #'  \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
 #'  for the correlation coefficient} \item{rr.label}{formatted label for the
@@ -111,7 +121,8 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      method = "pearson", alternative = "two.sided",
                      cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
-                     label.x = NULL, label.y = NULL, output.type = "expression",
+                     label.x = NULL, label.y = NULL, label.y.step = 1.4,
+                     output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
                      r.accuracy = NULL, p.accuracy = NULL,
                      r.leading.zero = NULL,
@@ -126,7 +137,8 @@ stat_cor <- function(mapping = NULL, data = NULL,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-      label.x = label.x, label.y = label.y, label.sep = label.sep,
+      label.x = label.x, label.y = label.y, label.y.step = label.y.step,
+      label.sep = label.sep,
       method = method, alternative = alternative, output.type = output.type, digits = digits,
       r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
       p.accuracy = p.accuracy, r.leading.zero = r.leading.zero,
@@ -143,7 +155,7 @@ StatCor <- ggproto("StatCor", Stat,
   required_aes = c("x", "y"),
   default_aes = aes(hjust = after_stat(hjust), vjust = after_stat(vjust)),
   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
-                           label.x, label.y, label.sep, output.type, digits,
+                           label.x, label.y, label.y.step = 1.4, label.sep, output.type, digits,
                            r.digits, p.digits, r.accuracy, p.accuracy, r.leading.zero,
                            p.format.style, p.leading.zero, p.decimal.mark, cor.coef.name,
                            p.coef.name) {
@@ -167,7 +179,7 @@ StatCor <- ggproto("StatCor", Stat,
     .label.pms <- .label_params(
       data = data, scales = scales,
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-      label.x = label.x, label.y = label.y
+      label.x = label.x, label.y = label.y, label.y.step = label.y.step
     ) %>%
       mutate(hjust = 0)
     cbind(.test, .label.pms)

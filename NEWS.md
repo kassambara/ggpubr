@@ -67,6 +67,16 @@
   `stat_pvalue_manual(..., tip.length.ref = "axis")` instead of being silently
   ignored (#362).
 
+- `stat_cor()` and `stat_regline_equation()` gain a `label.y.step` argument giving
+  the vertical spacing (in text-line units) between the labels of successive
+  groups. Default is `1.4` (unchanged behavior). Setting `label.y.step = 0` stops
+  the per-group vertical shift so labels align across facet panels when a factor
+  is mapped to an aesthetic that also defines the facets (the long-standing
+  "labels climbing stairs across facets" behavior; #248). This control was
+  inspired by the `vstep` argument in the ggpmisc package (by Pedro J. Aphalo),
+  from which ggpubr's correlation/regression label-positioning logic was
+  originally adapted; this is acknowledged via `@seealso` in `?stat_cor`.
+
 ## Bug fixes
 
 - `ggboxplot()` now accepts a `position` argument (e.g.

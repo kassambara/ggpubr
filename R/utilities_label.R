@@ -8,7 +8,8 @@
 # Returns a data frame with x, y, hjust, vjust
 # group.id is the index position of the group in a boxplot for example
 .label_params <- function(data, scales, label.x.npc = "left", label.y.npc = "right",
-                          label.x = NULL, label.y = NULL, .by = c("group", "panel"),
+                          label.x = NULL, label.y = NULL, label.y.step = 1.4,
+                          .by = c("group", "panel"),
                           group.id = NULL, ...) {
   .by <- match.arg(.by)
   # Check label coordinates for each group
@@ -54,17 +55,17 @@
     if (is.numeric(label.y.npc)) {
       y <- scales$y$dimension()[1] + label.y.npc *
         diff(scales$y$dimension())
-      vjust <- 1.4 * group.id - (0.7 * length(group.id))
+      vjust <- label.y.step * group.id - (label.y.step / 2 * length(group.id))
     } else if (is.character(label.y.npc)) {
       if (label.y.npc == "bottom") {
         y <- scales$y$dimension()[1]
-        vjust <- -1.4 * group.id
+        vjust <- -label.y.step * group.id
       } else if (label.y.npc %in% c("center", "centre", "middle")) {
         y <- mean(scales$y$dimension())
-        vjust <- 1.4 * group.id - (0.7 * length(group.id))
+        vjust <- label.y.step * group.id - (label.y.step / 2 * length(group.id))
       } else if (label.y.npc == "top") {
         y <- scales$y$dimension()[2]
-        vjust <- 1.4 * group.id
+        vjust <- label.y.step * group.id
       }
     }
   }

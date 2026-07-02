@@ -64,3 +64,71 @@ test_that("stat_cor new label options work with text output (#540/#541)", {
   expect_true(grepl("R = .20", lab, fixed = TRUE))
   expect_true(grepl("P = ", lab, fixed = TRUE))
 })
+
+# label.y.step: per-group vertical spacing / facet alignment (#248) -----------
+
+.cor_vjust <- function(p) {
+  b <- ggplot2::ggplot_build(p)
+  d <- b$data[[which(vapply(b$data, function(x) "label" %in% names(x), logical(1)))[1]]]
+  d$vjust
+}
+
+.facet_df <- transform(mtcars, cyl = factor(cyl))
+
+test_that("stat_cor label.y.step default keeps the per-group vjust shift (#248)", {
+  p <- ggplot2::ggplot(.facet_df, ggplot2::aes(mpg, hp)) +
+    ggplot2::geom_point() +
+    ggplot2::facet_wrap(~cyl, scales = "free_y") +
+    stat_cor(ggplot2::aes(color = cyl))
+  # historical behavior: vjust = 1.4 * group.id -> 1.4, 2.8, 4.2 (the "stairs")
+  expect_equal(sort(.cor_vjust(p)), c(1.4, 2.8, 4.2), tolerance = 1e-6)
+})
+
+test_that("stat_cor default equals explicitly passing label.y.step = 1.4 (byte-identical)", {
+  mk <- function(step) {
+    g <- ggplot2::ggplot(.facet_df, ggplot2::aes(mpg, hp)) +
+      ggplot2::geom_point() +
+      ggplot2::facet_wrap(~cyl, scales = "free_y")
+    if (is.null(step)) g + stat_cor(ggplot2::aes(color = cyl))
+    else g + stat_cor(ggplot2::aes(color = cyl), label.y.step = step)
+  }
+  expect_equal(sort(.cor_vjust(mk(NULL))), sort(.cor_vjust(mk(1.4))), tolerance = 1e-9)
+})
+
+test_that("stat_cor label.y.step = 0 aligns labels across facets (#248)", {
+  p <- ggplot2::ggplot(.facet_df, ggplot2::aes(mpg, hp)) +
+    ggplot2::geom_point() +
+    ggplot2::facet_wrap(~cyl, scales = "free_y") +
+    stat_cor(ggplot2::aes(color = cyl), label.y.step = 0)
+  vj <- .cor_vjust(p)
+  expect_equal(vj, rep(0, length(vj)), tolerance = 1e-9)
+})
+
+test_that("stat_regline_equation gains the same label.y.step control (#248)", {
+  base <- ggplot2::ggplot(.facet_df, ggplot2::aes(mpg, hp)) +
+    ggplot2::geom_point() +
+    ggplot2::facet_wrap(~cyl, scales = "free_y")
+  default <- .cor_vjust(base + stat_regline_equation(ggplot2::aes(color = cyl)))
+  aligned <- .cor_vjust(base + stat_regline_equation(ggplot2::aes(color = cyl), label.y.step = 0))
+  expect_equal(sort(default), c(1.4, 2.8, 4.2), tolerance = 1e-6)
+  expect_equal(aligned, rep(0, length(aligned)), tolerance = 1e-9)
+})
+
+test_that("label.y.step default is byte-identical for numeric and center npc branches (#248)", {
+  # These branches use the recentering term (label.y.step/2 * length(group.id)),
+  # which must reduce to the historical 0.7 at the default 1.4.
+  mk <- function(npc, step) {
+    g <- ggplot2::ggplot(.facet_df, ggplot2::aes(mpg, hp)) +
+      ggplot2::geom_point() +
+      ggplot2::facet_wrap(~cyl, scales = "free_y")
+    if (is.null(step)) g + stat_cor(ggplot2::aes(color = cyl), label.y.npc = npc)
+    else g + stat_cor(ggplot2::aes(color = cyl), label.y.npc = npc, label.y.step = step)
+  }
+  for (npc in list(0.5, "center", "bottom")) {
+    expect_equal(sort(.cor_vjust(mk(npc, NULL))), sort(.cor_vjust(mk(npc, 1.4))),
+                 tolerance = 1e-9, info = paste("npc =", npc))
+    # step = 0 collapses every branch to a single aligned value
+    expect_equal(.cor_vjust(mk(npc, 0)), rep(0, length(.cor_vjust(mk(npc, 0)))),
+                 tolerance = 1e-9, info = paste("npc =", npc))
+  }
+})
