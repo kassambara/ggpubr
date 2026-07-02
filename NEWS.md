@@ -48,6 +48,11 @@
 
 ## Bug fixes
 
+- The core plotting functions (`ggscatter()`, `ggboxplot()`, `ggviolin()`,
+  `ggline()`, `ggbarplot()`, `gghistogram()`, `ggdensity()`, `ggdotplot()`,
+  `ggstripchart()`, `ggerrorplot()`, `ggecdf()`, `ggdotchart()`, `ggpaired()`,
+  `ggqqplot()`) now accept the British spelling `colour` as an alias for
+  `color`. Previously `colour` was silently ignored (#317).
 - `stat_regline_equation()` now displays the correct equation for orthogonal
   polynomial fits such as `formula = y ~ poly(x, 2)`. Previously the orthogonal
   basis coefficients were printed as if they were raw polynomial coefficients,
