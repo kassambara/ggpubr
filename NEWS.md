@@ -39,6 +39,11 @@
 
 ## Bug fixes
 
+- `ggscatterhist()` now aligns the marginal plots with the main scatter plot's
+  axes. The margins were built from the raw data, so anything that changed the
+  scatter limits (`ellipse = TRUE`, `position` jitter, explicit `xlim`/`ylim`)
+  left the marginal histograms/densities misaligned with the scatter. Each
+  margin now inherits the scatter's axis range (#220, #420).
 - `geom_pwc()` now places comparison brackets over the correct groups when an
   entire x-axis group has only `NA` values. Such a group is dropped before the
   statistical test runs; previously the surviving groups were renumbered from 1,

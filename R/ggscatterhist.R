@@ -163,10 +163,31 @@ ggscatterhist <- function(
     do.call(geom_exec, .)
   yplot <- set_palette(yplot, palette)
 
+  # Align the marginal plot axes with the main scatter plot's data ranges.
+  # The margins are built from the raw data, so any transformation that changes
+  # the scatter limits (e.g. ellipse = TRUE, position jitter, explicit
+  # xlim/ylim) was not reflected in the margins, making them misaligned with the
+  # scatter (#220, #420). Anchor each margin's DATA axis to the scatter's panel
+  # range: set that scale's expansion to zero (the scatter range already
+  # includes expansion) and zoom with coord_*(). The other (count/density) axis
+  # keeps its default expansion. Only linear axes are aligned (see
+  # .get_scatter_ranges): forcing a transformed scatter range onto a raw-data
+  # margin would push it off-screen.
+  sp.ranges <- .get_scatter_ranges(sp)
   # Flip the marginal plots
   if (margin.plot %in% c("density", "histogram")) {
-    yplot <- yplot +
-      coord_flip()
+    if (sp.ranges$x_identity && !is.null(sp.ranges$x)) {
+      xplot <- xplot +
+        scale_x_continuous(expand = expansion(0)) +
+        coord_cartesian(xlim = sp.ranges$x)
+    }
+    if (sp.ranges$y_identity && !is.null(sp.ranges$y)) {
+      yplot <- yplot +
+        scale_x_continuous(expand = expansion(0)) +
+        coord_flip(xlim = sp.ranges$y)
+    } else {
+      yplot <- yplot + coord_flip()
+    }
   } else if (margin.plot %in% c("boxplot")) {
     xplot <- xplot + coord_flip()
   }
@@ -239,6 +260,36 @@ has_cowplot_v0.9 <- function() {
   vv <- as.character(utils::packageVersion("cowplot"))
   cc <- utils::compareVersion(vv, "0.8.0.8") > 0
   cc
+}
+
+# Extract the final x and y coordinate ranges (including expansion) of a built
+# scatter plot, plus whether each axis uses an identity (linear) transformation.
+# Used to align the marginal plots in ggscatterhist() (#220, #420). Alignment is
+# applied only to linear axes: a transformed scatter axis (log, sqrt, ...) lives
+# in different units than the raw-data margins, so forcing its range onto the
+# margin would push the margin off-screen. Falls back gracefully across ggplot2
+# panel_params / scale layouts.
+.get_scatter_ranges <- function(sp) {
+  b <- ggplot2::ggplot_build(sp)
+  pp <- b$layout$panel_params[[1]]
+  axis_range <- function(axis) {
+    r <- pp[[paste0(axis, ".range")]]
+    if (is.null(r) && !is.null(pp[[axis]])) r <- pp[[axis]]$continuous_range
+    r
+  }
+  axis_is_identity <- function(axis) {
+    sc <- b$layout[[paste0("panel_scales_", axis)]][[1]]
+    if (is.null(sc)) return(TRUE)
+    tr <- tryCatch(sc$get_transformation(), error = function(e) NULL)
+    if (is.null(tr)) tr <- tryCatch(sc$trans, error = function(e) NULL)
+    # Treat "can't determine" as linear (the common case); a real transform
+    # reports its name (e.g. "log-10", "sqrt").
+    is.null(tr) || is.null(tr$name) || identical(tr$name, "identity")
+  }
+  list(
+    x = axis_range("x"), y = axis_range("y"),
+    x_identity = axis_is_identity("x"), y_identity = axis_is_identity("y")
+  )
 }
 
 .check_margin_params <- function(params, data, color = "black", fill = NA, linetype = "slid") {
