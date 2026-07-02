@@ -2,8 +2,8 @@
 NULL
 
 # stat_cor()'s label-positioning logic was adapted from ggpmisc::stat_correlation() /
-# stat_poly_eq() by Pedro J. Aphalo (package 'ggpmisc', GPL-2). For an actively maintained
-# correlation statistic with more features, see the 'ggpmisc' package. See ggpubr issue #419.
+# stat_poly_eq() by Pedro J. Aphalo. For an actively maintained correlation statistic
+# with more features, see the 'ggpmisc' package.
 
 #' Add Correlation Coefficients with P-values to a Scatter Plot
 #' @description Add correlation coefficients with p-values to a scatter plot. Can
