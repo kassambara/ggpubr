@@ -11,6 +11,13 @@ NULL
 #'  axis lines, ticks, texts and titles. \item \strong{clean_table_theme()}:
 #'  Clean the the theme of a table, such as those created by
 #'  \code{\link{ggsummarytable}()}}.
+#' @details \code{theme_pubr()} sets \code{strip.clip = "off"} so that the facet
+#'  strip background border is drawn at its full width (with the ggplot2 default
+#'  \code{strip.clip = "on"} the border is clipped to the strip area and renders
+#'  thinner than requested). As a side effect, a facet label that is wider than
+#'  its panel will overflow the strip instead of being truncated; if that is a
+#'  problem for very long labels, restore clipping with
+#'  \code{+ theme(strip.clip = "on")}.
 #' @param base_size base font size
 #' @param base_family base font family
 #' @param border logical value. Default is FALSE. If TRUE, add panel border.
@@ -81,6 +88,12 @@ theme_pubr <- function(base_size = 12, base_family = "",
       axis.ticks = element_line(colour = "black", linewidth = 0.5),
       legend.key = element_blank(),
       strip.background = element_rect(fill = "#F2F2F2", colour = "black", linewidth = 0.7),
+      # Don't clip the facet strip background to the strip area: by default
+      # ggplot2 (>= 3.5.0) clips it, which cuts the outer half of the strip's
+      # border stroke so it renders thinner than the requested linewidth and
+      # looks misaligned with the panel/axis lines when zoomed (follow-up to
+      # the tick-consistency fix in #668).
+      strip.clip = "off",
       plot.margin = plot.margin,
       legend.position = legend,
       complete = TRUE

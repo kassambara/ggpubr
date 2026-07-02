@@ -108,6 +108,13 @@
 - `theme_pubr()` now draws the axis tick marks in black with linewidth `0.5`,
   matching the axis lines; previously the ticks inherited a lighter grey/thinner
   style, visibly inconsistent when zoomed (#668).
+- `theme_pubr()` now sets `strip.clip = "off"` so the facet strip background
+  border renders at its full `linewidth`. With the `ggplot2` (>= 3.5.0) default
+  (`strip.clip = "on"`) the border was clipped to the strip area, cutting the
+  outer half of the stroke so it looked thinner and misaligned with the panel
+  when zoomed (follow-up to #668). Note: a facet label wider than its panel now
+  overflows the strip instead of being truncated; restore clipping with
+  `+ theme(strip.clip = "on")` if needed.
 - `xticks.by`/`yticks.by` now anchor the axis breaks to round multiples of the
   step (e.g. 0, 100, 200) instead of the slightly-negative expanded axis minimum,
   which produced odd labels such as `-20, 80, 180` on bar plots with

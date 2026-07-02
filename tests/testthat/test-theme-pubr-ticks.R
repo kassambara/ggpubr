@@ -29,3 +29,25 @@ test_that("theme_pubr() still renders and other elements are intact (#668)", {
   expect_true(inherits(th$panel.grid.major, "element_blank"))
   expect_equal(ggplot2::calc_element("axis.text", th)$colour, "black")
 })
+
+# Follow-up to #668: with the ggplot2 (>= 3.5.0) default (strip.clip = "on"),
+# the facet strip background border is clipped to the strip area, so the outer
+# half of the border stroke is cut and the border renders thinner than the
+# requested linewidth -- misaligned with the panel/axis when zoomed. theme_pubr()
+# now sets strip.clip = "off" so the strip border renders at its full width.
+test_that("theme_pubr() sets strip.clip = 'off' so the strip border isn't clipped (#668)", {
+  expect_equal(theme_pubr()$strip.clip, "off")
+  expect_equal(theme_pubr(border = TRUE)$strip.clip, "off")
+})
+
+test_that("theme_pubr() faceted plot renders with a full-width strip border (#668)", {
+  df <- data.frame(x = c(1, 2, 3, 1, 2, 3), y = c(2, 3, 4, 1, 5, 3),
+                   g = rep(c("G1", "G2"), each = 3))
+  p <- ggplot2::ggplot(df, ggplot2::aes(x, y)) +
+    ggplot2::geom_point() + ggplot2::facet_wrap(~g) + theme_pubr()
+  expect_no_error(ggplot2::ggplot_gtable(ggplot2::ggplot_build(p)))
+  # strip.background linewidth preserved (border consistency, not thinned)
+  strip <- ggplot2::calc_element("strip.background", theme_pubr())
+  expect_equal(strip$linewidth, 0.7)
+  expect_equal(strip$colour, "black")
+})
