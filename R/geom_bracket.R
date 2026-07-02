@@ -8,9 +8,22 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
     if (length(params$tip.length) == length(params$xmin)) params$tip.length <- rep(params$tip.length, each = 2)
     return(params)
   },
-  compute_group = function(data, scales, tip.length) {
+  compute_group = function(data, scales, tip.length, tip.length.ref = "data") {
     yrange <- scales$y$range$range
     y.scale.range <- yrange[2] - yrange[1]
+    # Reference range used to convert the fractional `tip.length` into data units.
+    # Default ("data"): fraction of the trained data range (historical behavior) -
+    # tips scale with the data, so plots with different data ranges get different
+    # absolute tips. "axis": fraction of the y-axis range (limits set via ylim /
+    # scale_y_*), which renders at the same physical fraction across plots and so
+    # gives visually constant tips regardless of the data (#362).
+    tip.scale.range <- y.scale.range
+    if (identical(tip.length.ref, "axis")) {
+      axis.limits <- scales$y$get_limits()
+      if (length(axis.limits) == 2 && all(is.finite(axis.limits))) {
+        tip.scale.range <- axis.limits[2] - axis.limits[1]
+      }
+    }
     bracket.shorten <- data$bracket.shorten / 2
     xmin <- data$xmin + bracket.shorten
     xmax <- data$xmax - bracket.shorten
@@ -29,8 +42,8 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
     data <- dplyr::bind_rows(data, data, data)
     data$x <- c(xmin, xmin, xmax)
     data$xend <- c(xmin, xmax, xmax)
-    data$y <- c(y.position - y.scale.range * tip.length[seq_along(tip.length) %% 2 == 1], y.position, y.position)
-    data$yend <- c(y.position, y.position, y.position - y.scale.range * tip.length[seq_along(tip.length) %% 2 == 0])
+    data$y <- c(y.position - tip.scale.range * tip.length[seq_along(tip.length) %% 2 == 1], y.position, y.position)
+    data$yend <- c(y.position, y.position, y.position - tip.scale.range * tip.length[seq_along(tip.length) %% 2 == 0])
     data$annotation <- rep(label, 3)
     data
   }
@@ -63,8 +76,21 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #'   of bracket.
 #' @param step.group.by a variable name for grouping brackets before adding
 #'   step.increase. Useful to group bracket by facet panel.
-#' @param tip.length numeric vector with the fraction of total height that the
-#'   bar goes down to indicate the precise column
+#' @param tip.length numeric vector with the fraction that the bracket tips go
+#'   down to indicate the precise column. Interpreted relative to the reference
+#'   set by \code{tip.length.ref}. Default is 0.03. Can be of the same length as
+#'   the number of brackets to adjust each tip specifically, e.g.
+#'   \code{tip.length = c(0.01, 0.03)}. If too short it is recycled.
+#' @param tip.length.ref character string specifying what \code{tip.length} is a
+#'   fraction of. Allowed values are: \itemize{ \item \code{"data"} (default):
+#'   fraction of the trained data range. Tips scale with the data, so plots with
+#'   different data ranges get different absolute tip lengths (historical
+#'   behavior; keeps existing plots unchanged). \item \code{"axis"}: fraction of
+#'   the y-axis range (the limits set via \code{ylim}/\code{scale_y_*}). This
+#'   renders at the same physical fraction across plots and therefore gives
+#'   visually constant tip lengths regardless of the data - useful to keep tips
+#'   consistent across facets or across separate plots with different scales
+#'   (#362).}
 #' @param na.rm If \code{FALSE} (the default), removes missing values with a
 #'   warning.  If \code{TRUE} silently removes missing values.
 #' @param coord.flip logical. If \code{TRUE}, flip x and y coordinates so that
@@ -140,6 +166,7 @@ stat_bracket <- function(mapping = NULL, data = NULL,
                          inherit.aes = TRUE,
                          label = NULL, type = c("text", "expression"), y.position = NULL, xmin = NULL, xmax = NULL,
                          step.increase = 0, step.group.by = NULL, tip.length = 0.03,
+                         tip.length.ref = c("data", "axis"),
                          bracket.nudge.y = 0, bracket.shorten = 0,
                          size = 0.3, linewidth = size, label.size = 3.88, family = "", vjust = 0,
                          ...) {
@@ -148,6 +175,7 @@ stat_bracket <- function(mapping = NULL, data = NULL,
     if (!"y" %in% names(data)) mapping$y <- 1
   }
   type <- match.arg(type)
+  tip.length.ref <- match.arg(tip.length.ref)
   ggplot2::layer(
     stat = StatBracket, data = data, mapping = mapping, geom = "bracket",
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -156,7 +184,8 @@ stat_bracket <- function(mapping = NULL, data = NULL,
       y.position = y.position, xmin = xmin, xmax = xmax,
       step.increase = step.increase, bracket.nudge.y = bracket.nudge.y,
       bracket.shorten = bracket.shorten, step.group.by = step.group.by,
-      tip.length = tip.length, size = linewidth, label.size = label.size,
+      tip.length = tip.length, tip.length.ref = tip.length.ref,
+      size = linewidth, label.size = label.size,
       family = family, vjust = vjust, na.rm = na.rm, ...
     )
   )
@@ -228,11 +257,13 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
                          inherit.aes = TRUE,
                          label = NULL, type = c("text", "expression"), y.position = NULL, xmin = NULL, xmax = NULL,
                          step.increase = 0, step.group.by = NULL, tip.length = 0.03,
+                         tip.length.ref = c("data", "axis"),
                          bracket.nudge.y = 0, bracket.shorten = 0,
                          size = 0.3, linewidth = size, label.size = 3.88, family = "", vjust = 0,
                          coord.flip = FALSE,
                          ...) {
   type <- match.arg(type)
+  tip.length.ref <- match.arg(tip.length.ref)
   data <- build_signif_data(
     data = data, label = label, y.position = y.position,
     xmin = xmin, xmax = xmax, step.increase = step.increase,
@@ -245,7 +276,7 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(
       type = type,
-      tip.length = tip.length,
+      tip.length = tip.length, tip.length.ref = tip.length.ref,
       size = linewidth, label.size = label.size,
       family = family, na.rm = na.rm, coord.flip = coord.flip,
       ...

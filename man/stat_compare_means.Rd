@@ -115,12 +115,20 @@ for absolute positioning of the label. If too short they will be recycled.}
 
 \item{vjust}{move the text up or down relative to the bracket.}
 
-\item{tip.length}{numeric vector with the fraction of total height that the
- bar goes down to indicate the precise column. Default is 0.03. Can be of
+\item{tip.length}{numeric vector with the fraction that the bracket tips go
+ down to indicate the precise column. Default is 0.03. Can be of
  same length as the number of comparisons to adjust specifically the tip
  lenth of each comparison. For example tip.length = c(0.01, 0.03).
 
- If too short they will be recycled.}
+ If too short they will be recycled.
+
+ Note: when \code{comparisons} is set, brackets are drawn via
+ \code{ggsignif::geom_signif()} and \code{tip.length} is a fraction of the
+ trained data range, so the absolute tip length scales with your data (plots
+ with different scales get different tip lengths). To obtain visually constant
+ tip lengths across plots, compute the tests with \code{\link{compare_means}()}
+ and draw them with \code{\link{stat_pvalue_manual}(..., tip.length.ref = "axis")}
+ (which makes \code{tip.length} a fraction of the y-axis range).}
 
 \item{bracket.size}{Width of the lines of the bracket.}
 

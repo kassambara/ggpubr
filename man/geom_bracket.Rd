@@ -20,6 +20,7 @@ stat_bracket(
   step.increase = 0,
   step.group.by = NULL,
   tip.length = 0.03,
+  tip.length.ref = c("data", "axis"),
   bracket.nudge.y = 0,
   bracket.shorten = 0,
   size = 0.3,
@@ -46,6 +47,7 @@ geom_bracket(
   step.increase = 0,
   step.group.by = NULL,
   tip.length = 0.03,
+  tip.length.ref = c("data", "axis"),
   bracket.nudge.y = 0,
   bracket.shorten = 0,
   size = 0.3,
@@ -128,8 +130,22 @@ height for every additional comparison to minimize overlap.}
 \item{step.group.by}{a variable name for grouping brackets before adding
 step.increase. Useful to group bracket by facet panel.}
 
-\item{tip.length}{numeric vector with the fraction of total height that the
-bar goes down to indicate the precise column}
+\item{tip.length}{numeric vector with the fraction that the bracket tips go
+down to indicate the precise column. Interpreted relative to the reference
+set by \code{tip.length.ref}. Default is 0.03. Can be of the same length as
+the number of brackets to adjust each tip specifically, e.g.
+\code{tip.length = c(0.01, 0.03)}. If too short it is recycled.}
+
+\item{tip.length.ref}{character string specifying what \code{tip.length} is a
+fraction of. Allowed values are: \itemize{ \item \code{"data"} (default):
+fraction of the trained data range. Tips scale with the data, so plots with
+different data ranges get different absolute tip lengths (historical
+behavior; keeps existing plots unchanged). \item \code{"axis"}: fraction of
+the y-axis range (the limits set via \code{ylim}/\code{scale_y_*}). This
+renders at the same physical fraction across plots and therefore gives
+visually constant tip lengths regardless of the data - useful to keep tips
+consistent across facets or across separate plots with different scales
+(#362).}}
 
 \item{bracket.nudge.y}{Vertical adjustment to nudge brackets by. Useful to
 move up or move down the bracket. If positive value, brackets will be moved
