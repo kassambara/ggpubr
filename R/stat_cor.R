@@ -308,6 +308,13 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
   if (type == "expression") {
     label <- gsub(pattern = "p = ", replacement = "italic(p)~`=`~", x = label, fixed = TRUE)
     label <- gsub(pattern = "p < ", replacement = "italic(p)~`<`~", x = label, fixed = TRUE)
+    # Quote a value whose leading zero was explicitly dropped (p.leading.zero =
+    # FALSE) so plotmath renders it literally instead of re-adding the zero
+    # (e.g. .001 -> "0.001"). Scoped to the explicit flag so p.format.style
+    # presets keep their existing numeric rendering (#540).
+    if (!is.null(p.leading.zero) && !p.leading.zero) {
+      label <- .quote_leading_zero_dropped(label)
+    }
   }
   # Optionally use a custom symbol for the p-value label, e.g. uppercase "P" (#541).
   if (!identical(p.coef.name, "p")) {
@@ -357,7 +364,21 @@ get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = 
   if (type == "expression") {
     label <- gsub(pattern = "R2 = ", replacement = "italic(R)^2~`=`~", x = label, fixed = TRUE)
     label <- gsub(pattern = "R = ", replacement = "italic(R)~`=`~", x = label, fixed = TRUE)
+    if (!is.null(leading.zero) && !leading.zero) {
+      label <- .quote_leading_zero_dropped(label)
+    }
   }
   label <- gsub(pattern = "R", cor.coef.name, x = label, fixed = TRUE)
   label
+}
+
+# In plotmath, a bare value whose leading zero was dropped (e.g. .87) is parsed
+# as a number and rendered back WITH the zero (0.87). To make APA-style
+# leading-zero suppression survive rendering, quote such a value so plotmath
+# treats it as a literal string, keeping any minus sign outside the quotes
+# (e.g. italic(R)~`=`~-.87  ->  italic(R)~`=`~-".87"). Only values that start
+# with "." (i.e. already stripped) are affected; "0.87", "1.00", scientific
+# notation are left untouched (#540).
+.quote_leading_zero_dropped <- function(label) {
+  sub("~(-?)(\\.[0-9]+)$", '~\\1"\\2"', label)
 }
