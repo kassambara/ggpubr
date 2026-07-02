@@ -58,6 +58,11 @@ NULL
 #'  "bold.italic") and the color (e.g.: "red") of labels. For example font.label
 #'  = list(size = 14, face = "bold", color ="red"). To specify only the size and
 #'  the style, use font.label = list(size = 14, face = "plain").
+#' @param position position adjustment, either as a string, or the result of a
+#'  call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
+#'  Used to control the spacing between boxes of grouped box plots. Applies to
+#'  the box and box-error-bar layers; layers added via \code{add} (e.g.
+#'  "jitter") keep their own default positioning.
 #' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
 #'  Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'  theme_minimal(), theme_classic(), theme_void(), ....
@@ -166,6 +171,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       error.plot = "pointrange",
                       label = NULL, font.label = list(size = 11, color = "black"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
+                      position = position_dodge(0.8),
                       ggtheme = theme_pubr(), ...) {
   # Default options
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -180,7 +186,8 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
     select = select, remove = remove, order = order,
     add = add, add.params = add.params, error.plot = error.plot,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...
+    repel = repel, label.rectangle = label.rectangle, position = position,
+    ggtheme = ggtheme, ...
   )
   if (!missing(data)) .opts$data <- data
   if (!missing(x)) .opts$x <- x
@@ -217,6 +224,7 @@ ggboxplot_core <- function(data, x, y,
                            add = "none", add.params = list(),
                            error.plot = "pointrange",
                            ggtheme = theme_pubr(),
+                           position = position_dodge(0.8),
                            ...) {
   line_width <- .resolve_linewidth_args(
     size = size, linewidth = linewidth, default_linewidth = NULL
@@ -233,12 +241,12 @@ ggboxplot_core <- function(data, x, y,
       # Important, so that the fill grouping is taken into account in the errorbar
       p <- p + geom_exec(
         geomfunc = stat_boxplot, data = data, geom = "errorbar", width = bxp.errorbar.width,
-        color = color, fill = fill, linetype = linetype, position = position_dodge(0.8)
+        color = color, fill = fill, linetype = linetype, position = position
       )
     } else {
       p <- p + geom_exec(
         geomfunc = stat_boxplot, data = data, geom = "errorbar", width = bxp.errorbar.width,
-        color = color, linetype = linetype, position = position_dodge(0.8)
+        color = color, linetype = linetype, position = position
       )
     }
   }
@@ -248,7 +256,7 @@ ggboxplot_core <- function(data, x, y,
     color = color, fill = fill, linetype = linetype,
     size = linewidth, width = width, notch = notch,
     outliers = outliers, outlier.shape = outlier.shape,
-    position = position_dodge(0.8), ...
+    position = position, ...
   )
 
   # Add
