@@ -39,7 +39,10 @@
 - `stat_cor()` gains two label-formatting arguments:
   - `r.leading.zero` — set to `FALSE` to drop the leading zero of the
     correlation coefficient (e.g. `.73` instead of `0.73`), completing
-    APA-style reporting together with `p.leading.zero` (#540).
+    APA-style reporting together with `p.leading.zero` (#540). The dropped
+    leading zero is preserved through plotmath rendering (the value is quoted
+    so it is not silently re-normalized back to `0.73` in the default
+    `expression` output).
   - `p.coef.name` — symbol for the p-value label; use `"P"` for an uppercase
     p-value (#541).
 

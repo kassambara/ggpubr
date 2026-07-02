@@ -17,13 +17,16 @@ test_that("stat_cor default label is unchanged (no regression, #540/#541)", {
 })
 
 test_that("stat_cor r.leading.zero = FALSE drops the coefficient leading zero (#540)", {
+  # For expression output the stripped value is QUOTED so plotmath renders it
+  # literally (a bare .20 would be re-normalized to 0.20 at draw time). The
+  # quoted form is what actually renders as ".20"/"-.87".
   lab <- .cor_label(.sp + stat_cor(p.accuracy = 0.001, r.accuracy = 0.01, r.leading.zero = FALSE))
-  expect_true(grepl("italic(R)~`=`~.20", lab, fixed = TRUE))
-  # negative coefficient keeps the minus sign: -0.87 -> -.87
+  expect_true(grepl('italic(R)~`=`~".20"', lab, fixed = TRUE))
+  # negative coefficient keeps the minus sign outside the quotes: -0.87 -> -".87"
   lab.neg <- .cor_label(
     ggscatter(mtcars, "wt", "mpg") + stat_cor(r.accuracy = 0.01, r.leading.zero = FALSE)
   )
-  expect_true(grepl("`=`~-.87", lab.neg, fixed = TRUE))
+  expect_true(grepl('`=`~-".87"', lab.neg, fixed = TRUE))
 })
 
 test_that("stat_cor p.coef.name = 'P' uses an uppercase p-value symbol (#541)", {
@@ -37,7 +40,20 @@ test_that("stat_cor APA style: both leading-zero drops + uppercase P together (#
     p.accuracy = 0.001, r.accuracy = 0.01,
     r.leading.zero = FALSE, p.leading.zero = FALSE, p.coef.name = "P"
   ))
-  expect_equal(lab, "italic(R)~`=`~.20*`,`~italic(P)~`=`~.392")
+  # Both stripped values are quoted (render as .20 / .392 respectively).
+  expect_equal(lab, 'italic(R)~`=`~".20"*`,`~italic(P)~`=`~".392"')
+})
+
+test_that("stat_cor leading-zero drop survives plotmath rendering (#540)", {
+  # Guard against the plotmath re-normalization bug: the stripped value must be
+  # quoted in the expression so it renders literally. A bare `.20` would draw
+  # as `0.20`. Rendering the plot must not error.
+  p <- .sp + stat_cor(r.accuracy = 0.01, r.leading.zero = FALSE, label.x = -1)
+  lab <- .cor_label(p)
+  expect_true(grepl('"', lab, fixed = TRUE))                   # value is quoted
+  # the R coefficient itself is not a bare 0.-prefixed number
+  expect_false(grepl('italic(R)~`=`~0.', lab, fixed = TRUE))
+  expect_no_error(ggplot2::ggplot_gtable(ggplot2::ggplot_build(p)))
 })
 
 test_that("stat_cor new label options work with text output (#540/#541)", {
