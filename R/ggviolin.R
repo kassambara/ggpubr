@@ -6,6 +6,16 @@ NULL
 #' data at different values.
 #' @inheritParams ggboxplot
 #' @param width violin width.
+#' @param drop logical, passed to \code{\link[ggplot2]{geom_violin}()}. When
+#'  \code{TRUE} (the default, unchanged behavior), grouped sub-samples with fewer
+#'  than two data points (for which no density can be computed) are dropped,
+#'  including from the dodge position, so the remaining violins re-center and no
+#'  longer line up with other layers (e.g. added boxplots or dot plots). Set
+#'  \code{drop = FALSE} \emph{together with} a "preserve single" dodge, i.e.
+#'  \code{position = position_dodge(0.8, preserve = "single")}, to reserve the
+#'  empty dodge lane so the violins stay aligned with the other geoms. Both are
+#'  needed: \code{drop = FALSE} keeps the sparse group and \code{preserve =
+#'  "single"} keeps its lane width (#381).
 #' @param alpha color transparency. Values should be between 0 and 1.
 #' @param linewidth constant value specifying the line width.
 #' @param quantiles numeric vector of quantiles to draw on the violin.
@@ -114,7 +124,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      color = "black", fill = "white", palette = NULL, alpha = 1,
                      title = NULL, xlab = NULL, ylab = NULL,
                      facet.by = NULL, panel.labs = NULL, short.panel.labs = TRUE,
-                     linetype = "solid", trim = FALSE, size = NULL, linewidth = NULL, width = 1,
+                     linetype = "solid", trim = FALSE, drop = TRUE, size = NULL, linewidth = NULL, width = 1,
                      quantiles = NULL, quantile.linetype = NULL, quantile.type = NULL,
                      quantile.alpha = NULL, quantile.colour = NULL, quantile.color = NULL,
                      quantile.linewidth = NULL, quantile.size = NULL,
@@ -133,7 +143,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
     color = color, fill = fill, palette = palette, alpha = alpha,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
-    linetype = linetype, trim = trim, size = size, linewidth = linewidth, width = width,
+    linetype = linetype, trim = trim, drop = drop, size = size, linewidth = linewidth, width = width,
     quantiles = quantiles, quantile.linetype = quantile.linetype, quantile.type = quantile.type,
     quantile.alpha = quantile.alpha, quantile.colour = quantile.colour, quantile.color = quantile.color,
     quantile.linewidth = quantile.linewidth, quantile.size = quantile.size, draw_quantiles = draw_quantiles,
@@ -172,7 +182,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
 ggviolin_core <- function(data, x, y,
                           color = "black", fill = "white", palette = NULL, alpha = 1,
                           title = NULL, xlab = NULL, ylab = NULL,
-                          linetype = "solid", trim = FALSE, size = NULL, linewidth = NULL, width = 1,
+                          linetype = "solid", trim = FALSE, drop = TRUE, size = NULL, linewidth = NULL, width = 1,
                           quantiles = NULL, quantile.linetype = NULL, quantile.type = NULL,
                           quantile.alpha = NULL, quantile.colour = NULL, quantile.color = NULL,
                           quantile.linewidth = NULL, quantile.size = NULL,
@@ -228,7 +238,7 @@ ggviolin_core <- function(data, x, y,
     geom_exec(geom_violin,
       data = data,
       color = color, fill = fill, linetype = linetype,
-      trim = trim, size = linewidth, width = width, alpha = alpha,
+      trim = trim, drop = drop, size = linewidth, width = width, alpha = alpha,
       position = position, draw_quantiles = NULL, quantiles = quantiles,
       quantile.linetype = quantile.linetype, quantile.type = quantile.type,
       quantile.alpha = quantile.alpha, quantile.colour = quantile.colour,
