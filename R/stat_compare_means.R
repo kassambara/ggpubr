@@ -67,12 +67,22 @@ NULL
 #'  'middle') for x-axis; ii) and one of c( 'bottom', 'top', 'center', 'centre',
 #'  'middle') for y-axis.}
 #' @param vjust move the text up or down relative to the bracket.
-#' @param tip.length numeric vector with the fraction of total height that the
-#'  bar goes down to indicate the precise column. Default is 0.03. Can be of
+#' @param tip.length numeric vector with the fraction that the bracket tips go
+#'  down to indicate the precise column. Default is 0.03. Can be of
 #'  same length as the number of comparisons to adjust specifically the tip
 #'  lenth of each comparison. For example tip.length = c(0.01, 0.03).
 #'
 #'  If too short they will be recycled.
+#'
+#'  Note: when \code{comparisons} is set, brackets are drawn via
+#'  \code{ggsignif::geom_signif()} and \code{tip.length} is a fraction of the
+#'  trained data range, so the absolute tip length scales with your data (plots
+#'  with different scales get different tip lengths). To obtain visually constant
+#'  tip lengths across plots, compute the tests with \code{\link{compare_means}()}
+#'  and draw them with \code{\link{stat_pvalue_manual}(..., tip.length.ref = "axis")}
+#'  (which makes \code{tip.length} a fraction of the y-axis range). Passing
+#'  \code{tip.length.ref} directly to \code{stat_compare_means()} has no effect
+#'  and emits an informative message.
 #' @param label.x,label.y \code{numeric} Coordinates (in data units) to be used
 #'  for absolute positioning of the label. If too short they will be recycled.
 #' @param bracket.size Width of the lines of the bracket.
@@ -183,6 +193,28 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
   )
 
   if (!is.null(comparisons)) {
+    # The `comparisons` path draws brackets via ggsignif::geom_signif(), whose
+    # tip length is always a fraction of the data range - ggpubr cannot alter it.
+    # `tip.length.ref` (supported by geom_bracket()/stat_pvalue_manual()) is not
+    # honored here, so warn once instead of silently ignoring it (#362).
+    if ("tip.length.ref" %in% names(list(...))) {
+      rlang::inform(
+        c(
+          paste0(
+            "`tip.length.ref` is not supported by `stat_compare_means(comparisons = )`; ",
+            "it is ignored here."
+          ),
+          i = paste0(
+            "Bracket tips are drawn by `ggsignif::geom_signif()` and are always a ",
+            "fraction of the data range. For tip lengths that stay constant across ",
+            "plots, compute the tests with `compare_means()` and draw them with ",
+            "`stat_pvalue_manual(..., tip.length.ref = \"axis\")`."
+          )
+        ),
+        .frequency = "once",
+        .frequency_id = "ggpubr_stat_compare_means_tip_length_ref"
+      )
+    }
     # The `comparisons` path draws each pairwise test independently (via
     # ggsignif::geom_signif) and shows UNADJUSTED p-values. Warn once per session
     # when there is more than one comparison, so users aren't misled into thinking

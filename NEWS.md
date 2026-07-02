@@ -54,6 +54,19 @@
   drawn at their numeric x positions (e.g. a time axis). Default is `FALSE`
   (unchanged behavior) (#463).
 
+- `geom_bracket()` and `stat_pvalue_manual()` gain a `tip.length.ref` argument
+  controlling what `tip.length` is a fraction of. With the default
+  `tip.length.ref = "data"` the tips are a fraction of the data range (unchanged
+  behavior). With `tip.length.ref = "axis"` the tips are a fraction of the
+  y-axis range (`ylim`/`scale_y_*`), which renders at the same physical fraction
+  across plots and therefore gives visually constant tip lengths regardless of
+  the data range - useful to keep tips consistent across facets or across
+  separate plots with different scales (#362). `stat_compare_means(comparisons =)`
+  draws its brackets via `ggsignif::geom_signif()` and does not support
+  `tip.length.ref`; passing it there now emits an informative message pointing to
+  `stat_pvalue_manual(..., tip.length.ref = "axis")` instead of being silently
+  ignored (#362).
+
 ## Bug fixes
 
 - `ggboxplot()` now accepts a `position` argument (e.g.

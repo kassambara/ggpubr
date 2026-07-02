@@ -19,6 +19,7 @@ stat_pvalue_manual(
   color = "black",
   linetype = 1,
   tip.length = 0.03,
+  tip.length.ref = c("data", "axis"),
   remove.bracket = FALSE,
   step.increase = 0,
   step.group.by = NULL,
@@ -72,8 +73,15 @@ of bracket.}
 
 \item{linetype}{linetype. Can be variable name in the data for changing linetype by groups.}
 
-\item{tip.length}{numeric vector with the fraction of total height that the
-bar goes down to indicate the precise column. Default is 0.03.}
+\item{tip.length}{numeric vector with the fraction that the bracket tips go
+down to indicate the precise column. Interpreted relative to the reference set
+by \code{tip.length.ref}. Default is 0.03.}
+
+\item{tip.length.ref}{character string specifying what \code{tip.length} is a
+fraction of. Either \code{"data"} (default): fraction of the trained data
+range (tips scale with the data; existing plots unchanged); or \code{"axis"}:
+fraction of the y-axis range (\code{ylim}/\code{scale_y_*}), giving visually
+constant tip lengths across plots with different scales (#362).}
 
 \item{remove.bracket}{logical, if \code{TRUE}, brackets are removed from the
 plot. Considered only in the situation, where comparisons are performed

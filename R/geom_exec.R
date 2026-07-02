@@ -64,7 +64,7 @@ geom_exec <- function(geomfunc = NULL, data = NULL,
     # stat_summary,
     "fun.data", "fun", "fun.min", "fun.max",
     # bracket
-    "y.position", "tip.length", "label.size", "step.increase",
+    "y.position", "tip.length", "tip.length.ref", "label.size", "step.increase",
     "bracket.nudge.y", "bracket.shorten", "coord.flip"
   )
 
