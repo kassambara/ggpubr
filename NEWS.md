@@ -61,7 +61,11 @@
   y-axis range (`ylim`/`scale_y_*`), which renders at the same physical fraction
   across plots and therefore gives visually constant tip lengths regardless of
   the data range - useful to keep tips consistent across facets or across
-  separate plots with different scales (#362).
+  separate plots with different scales (#362). `stat_compare_means(comparisons =)`
+  draws its brackets via `ggsignif::geom_signif()` and does not support
+  `tip.length.ref`; passing it there now emits an informative message pointing to
+  `stat_pvalue_manual(..., tip.length.ref = "axis")` instead of being silently
+  ignored (#362).
 
 ## Bug fixes
 

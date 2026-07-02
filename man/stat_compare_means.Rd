@@ -128,7 +128,9 @@ for absolute positioning of the label. If too short they will be recycled.}
  with different scales get different tip lengths). To obtain visually constant
  tip lengths across plots, compute the tests with \code{\link{compare_means}()}
  and draw them with \code{\link{stat_pvalue_manual}(..., tip.length.ref = "axis")}
- (which makes \code{tip.length} a fraction of the y-axis range).}
+ (which makes \code{tip.length} a fraction of the y-axis range). Passing
+ \code{tip.length.ref} directly to \code{stat_compare_means()} has no effect
+ and emits an informative message.}
 
 \item{bracket.size}{Width of the lines of the bracket.}
 
