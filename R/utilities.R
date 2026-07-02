@@ -810,6 +810,15 @@ keep_only_tbl_df_classes <- function(x) {
                      fun_name = "", group = 1, # used only by ggline
                      show.legend.text = NA,
                      ...) {
+  # Accept the British spelling `colour` as an alias for `color` (#317).
+  # Map it to `color` and drop it from the extra args so it is not also passed
+  # to the geom (which would raise a "Duplicated aesthetics" warning). `.extra`
+  # replaces `...` in the downstream calls below.
+  .extra <- list(...)
+  if (!is.null(.extra$colour)) {
+    color <- .extra$colour
+    .extra$colour <- NULL
+  }
   if (is.logical(merge)) {
     if (merge) {
       merge <- "asis"
@@ -921,19 +930,22 @@ keep_only_tbl_df_classes <- function(x) {
   # Plotting
   # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   # Apply function to each y variables
-  p <- purrr::pmap(opts, fun,
-    color = color, fill = fill, legend = legend,
-    legend.title = legend.title, ggtheme = ggtheme, facet.by = facet.by,
-    add = add, add.params = add.params,
-    # group = group, # for line plot
-    user.add.color = user.add.color,
-    label = .lab, # used only in ggbarplot
-    font.label = font.label, repel = repel, label.rectangle = label.rectangle,
-    ...
-  )
+  p <- do.call(purrr::pmap, c(
+    list(
+      .l = opts, .f = fun,
+      color = color, fill = fill, legend = legend,
+      legend.title = legend.title, ggtheme = ggtheme, facet.by = facet.by,
+      add = add, add.params = add.params,
+      # group = group, # for line plot
+      user.add.color = user.add.color,
+      label = .lab, # used only in ggbarplot
+      font.label = font.label, repel = repel, label.rectangle = label.rectangle
+    ),
+    .extra
+  ))
   # Faceting
   if (!is.null(facet.by)) {
-    p <- purrr::map(p, facet, facet.by = facet.by, ...)
+    p <- do.call(purrr::map, c(list(.x = p, .f = facet, facet.by = facet.by), .extra))
   }
 
 
