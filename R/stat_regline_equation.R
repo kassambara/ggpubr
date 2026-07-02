@@ -4,8 +4,8 @@
 NULL
 
 # stat_regline_equation() was adapted from the source code of ggpmisc::stat_poly_eq()
-# by Pedro J. Aphalo (package 'ggpmisc', GPL-2). For an actively maintained version with
-# additional features and bug fixes, see the 'ggpmisc' package. See ggpubr issue #419.
+# by Pedro J. Aphalo. For an actively maintained version with additional features and
+# bug fixes, see the 'ggpmisc' package.
 
 #' Add Regression Line Equation and R-Square to a GGPLOT.
 #' @description Add regression line equation and R^2 to a ggplot. Regression
