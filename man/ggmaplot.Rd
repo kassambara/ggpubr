@@ -45,7 +45,7 @@ ggmaplot(
 
  \itemize{ \item baseMean: the mean expression of genes in the two groups.
  \item log2FoldChange: the log2 fold changes of group 2 compared to group 1
- \item padj: the adjusted p-value of the used statiscal test. }}
+ \item padj: the adjusted p-value of the used statistical test. }}
 
 \item{fdr}{Accepted false discovery rate for considering genes as
 differentially expressed.}
@@ -63,7 +63,7 @@ column is available in data, it will be used.}
 
 \item{size}{points size.}
 
-\item{alpha}{numeric value betwenn 0 an 1 specifying point alpha for
+\item{alpha}{numeric value between 0 and 1 specifying point alpha for
 controlling transparency. For example, use alpha = 0.5.}
 
 \item{seed}{Random seed passed to \code{set.seed}. if
@@ -110,7 +110,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 \item{...}{other arguments to be passed to \code{\link{ggpar}}.}
 }
 \value{
-returns a ggplot.
+a ggplot.
 }
 \description{
 Make MA-plot which is a scatter plot of log2 fold changes (M, on

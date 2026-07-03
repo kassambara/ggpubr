@@ -81,14 +81,14 @@ for wilcoxon test.}
  grouping variable levels is compared to all (i.e. basemean).}
 
 \item{comparisons}{A list of length-2 vectors. The entries in the vector are
-either the names of 2 values on the x-axis or the 2 integers that correspond
-to the index of the groups of interest, to be compared.
+ either the names of 2 values on the x-axis or the 2 integers that correspond
+ to the index of the groups of interest, to be compared.
 
-Note: when \code{comparisons} is specified, each pairwise test is computed
-independently and the displayed p-values are \strong{not} adjusted for
-multiple comparisons. For p-values corrected for multiple testing, use
-\code{\link{geom_pwc}()}, or \code{\link{stat_pvalue_manual}()} together with
-\code{\link{compare_means}(..., p.adjust.method = )}.}
+ Note: when \code{comparisons} is specified, each pairwise test is computed
+ independently and the displayed p-values are \strong{not} adjusted for
+ multiple comparisons. For p-values corrected for multiple testing, use
+ \code{\link{geom_pwc}()}, or \code{\link{stat_pvalue_manual}()} together with
+ \code{\link{compare_means}(..., p.adjust.method = )}.}
 
 \item{hide.ns}{logical value. If TRUE, hide ns symbol when displaying
 significance levels.}
@@ -118,7 +118,7 @@ for absolute positioning of the label. If too short they will be recycled.}
 \item{tip.length}{numeric vector with the fraction that the bracket tips go
  down to indicate the precise column. Default is 0.03. Can be of
  same length as the number of comparisons to adjust specifically the tip
- lenth of each comparison. For example tip.length = c(0.01, 0.03).
+ length of each comparison. For example tip.length = c(0.01, 0.03).
 
  If too short they will be recycled.
 
@@ -236,7 +236,7 @@ shouldn't inherit behaviour from the default plot specification. Set to
 \code{\link[ggplot2:geom_text]{geom_label}}.}
 }
 \description{
-Add mean comparison p-values to a ggplot, such as box blots, dot
+Add mean comparison p-values to a ggplot, such as box plots, dot
  plots and stripcharts.
 }
 \details{

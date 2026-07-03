@@ -67,7 +67,7 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}
 
-\item{width}{numeric value between 0 and 1 specifying box width.}
+\item{width}{numeric value between 0 and 1 specifying the width of the plot elements.}
 
 \item{title}{plot main title.}
 
@@ -115,18 +115,9 @@ se, ....}
 
 \item{ci}{the percent range of the confidence interval (default is 0.95).}
 
-\item{position}{A position adjustment to use on the data for this layer. This
-can be used in various ways, including to prevent overplotting and
-improving the display. The \code{position} argument accepts the following:
-\itemize{
-\item The result of calling a position function, such as \code{position_jitter()}.
-This method allows for passing extra arguments to the position.
-\item A string naming the position adjustment. To give the position as a
-string, strip the function name of the \code{position_} prefix. For example,
-to use \code{position_jitter()}, give the position as \code{"jitter"}.
-\item For more information and other ways to specify the position, see the
-\link[ggplot2:layer_positions]{layer position} documentation.
-}}
+\item{position}{position adjustment, either as a string, or the result of a
+call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
+Used to control the spacing between grouped elements.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

@@ -247,7 +247,7 @@ Value should be in [0, 1], where 0 is full transparency and 1 is no transparency
 
 \item{at.row}{a numeric vector of row indexes; for example \code{at.row = c(1, 2)}.}
 
-\item{row.side}{row side to which the horinzotal line should be added. Can be one of \code{c("bottom", "top")}.}
+\item{row.side}{row side to which the horizontal line should be added. Can be one of \code{c("bottom", "top")}.}
 
 \item{from.column}{integer indicating the column from which to start drawing the horizontal line.}
 

@@ -41,8 +41,8 @@ NULL
 #' @param legend.grob a legend grob as returned by the function
 #'   \code{\link{get_legend}()}. If provided, it will be used as the common
 #'   legend.
-#' @return return an object of class \code{ggarrange}, which is a ggplot or a
-#'   list of ggplot.
+#' @return an object of class \code{ggarrange}, which is a ggplot or a
+#'   list of ggplots.
 #' @author Laszlo Erdey \email{erdey.laszlo@@econ.unideb.hu}
 #' @seealso \code{\link{annotate_figure}()}
 #' @examples

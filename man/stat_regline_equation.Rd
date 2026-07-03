@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat_regline_equation.R
 \name{stat_regline_equation}
 \alias{stat_regline_equation}
-\title{Add Regression Line Equation and R-Square to a GGPLOT.}
+\title{Add Regression Line Equation and R-Square to a GGPlot.}
 \usage{
 stat_regline_equation(
   mapping = NULL,
@@ -193,9 +193,9 @@ ggpar(p, palette = "jco")
 }
 \references{
 \code{stat_regline_equation()} was adapted from the source code of
-\code{stat_poly_eq()} in the 'ggpmisc' package by Pedro J. Aphalo. For an actively
-maintained version of this statistic, with additional features and bug fixes, see
-\code{ggpmisc::stat_poly_eq()}.
+ \code{stat_poly_eq()} in the 'ggpmisc' package by Pedro J. Aphalo. For an actively
+ maintained version of this statistic, with additional features and bug fixes, see
+ \code{ggpmisc::stat_poly_eq()}.
 }
 \seealso{
 \code{\link{ggscatter}}

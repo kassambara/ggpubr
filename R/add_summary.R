@@ -12,7 +12,7 @@ NULL
 #'  "lower_errorbar", "upper_pointrange", "lower_pointrange", "upper_linerange",
 #'  "lower_linerange")}. Default value is "pointrange".
 #' @param color point or outline color.
-#' @param fill fill color. Used only whne \code{error.plot = "crossbar"}.
+#' @param fill fill color. Used only when \code{error.plot = "crossbar"}.
 #' @param group grouping variable. Allowed values are 1 (for one group) or a
 #'  character vector specifying the name of the grouping variable. Used only for
 #'  adding statistical summary per group.
@@ -239,7 +239,7 @@ median_iqr <- function(x, error.limit = "both") {
 #' @describeIn add_summary computes the sample median and a selected pair of
 #'   outer quantiles having equal tail areas. This function is a reformatted
 #'   version of \code{Hmisc::smedian.hilow()}. The confidence limits are computed
-#'   as follow: \code{lower.limits = (1-ci)/2} percentiles; \code{upper.limits =
+#'   as follows: \code{lower.limits = (1-ci)/2} percentiles; \code{upper.limits =
 #'   (1+ci)/2} percentiles. By default (\code{ci = 0.95}), the 2.5th and the
 #'   97.5th percentiles are used as the lower and the upper confidence limits,
 #'   respectively. If you want to use the 25th and the 75th percentiles as the

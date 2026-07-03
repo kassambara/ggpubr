@@ -150,7 +150,7 @@ specifying some labels to show. \item a list containing one or the
 combination of the following components: \itemize{ \item \code{top.up} and
 \code{top.down}: to display the labels  of the top up/down points. For
 example, \code{label.select = list(top.up = 10, top.down = 4)}. \item
-\code{criteria}: to filter, for example, by x and y variabes values, use
+\code{criteria}: to filter, for example, by x and y variables values, use
 this: \code{label.select = list(criteria = "`y` > 2 & `y` < 5 & `x` \%in\%
 c('A', 'B')")}. } }}
 
@@ -162,18 +162,9 @@ text, making it easier to read.}
 
 \item{show.line.label}{logical value. If TRUE, shows line labels.}
 
-\item{position}{A position adjustment to use on the data for this layer. This
-can be used in various ways, including to prevent overplotting and
-improving the display. The \code{position} argument accepts the following:
-\itemize{
-\item The result of calling a position function, such as \code{position_jitter()}.
-This method allows for passing extra arguments to the position.
-\item A string naming the position adjustment. To give the position as a
-string, strip the function name of the \code{position_} prefix. For example,
-to use \code{position_jitter()}, give the position as \code{"jitter"}.
-\item For more information and other ways to specify the position, see the
-\link[ggplot2:layer_positions]{layer position} documentation.
-}}
+\item{position}{position adjustment, either as a string, or the result of a
+call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
+Used to control the spacing between grouped elements.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

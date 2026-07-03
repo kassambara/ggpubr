@@ -78,7 +78,7 @@ keep_only_tbl_df_classes <- function(x) {
 # geomfunc : gem_*() functions
 # data data for mapping
 # ... argument accepeted by the function
-# return a plot if geomfunc!=Null or a list(option, mapping) if  geomfunc = NULL
+# return a plot if geomfunc != NULL or a list(option, mapping) if geomfunc is NULL
 .geom_exec <- function(geomfunc = NULL, data = NULL,
                        position = NULL, ...) {
   geom_exec(geomfunc = geomfunc, data = data, position = position, ...)
@@ -867,7 +867,7 @@ keep_only_tbl_df_classes <- function(x) {
   # Special case for density and histograms:
   # x are variables and y is ..count.. or ..density..
   # after merging ggpubr add a new column .y. which hold x variables
-  # User might want to color by x variables as follow color = ".x." and
+  # User might want to color by x variables as follows: color = ".x." and
   # he aren't aware that the column is ".y." --> so we should translate this (see from line 1055)
 
   user.add.color <- add.params$color
@@ -1085,9 +1085,10 @@ keep_only_tbl_df_classes <- function(x) {
       mean(data[[x]], na.rm = TRUE),
       stats::median(data[[x]], na.rm = TRUE)
     )
-    line_width_arg <- if ("linewidth" %in% names(formals(ggplot2::geom_vline))) "linewidth" else "size"
-    width_opt <- list(size)
-    names(width_opt) <- line_width_arg
+    # geom_vline takes `linewidth`, not the deprecated `size` (ggplot2 >= 3.4.0).
+    # Only pass it when set, so the default width is used otherwise (avoids an
+    # "empty aesthetic" warning when no width is supplied).
+    width_opt <- if (!is.null(size)) list(linewidth = size) else list()
     p <- p + do.call(
       ggplot2::geom_vline,
       c(

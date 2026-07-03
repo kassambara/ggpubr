@@ -28,7 +28,7 @@ NULL
 #' @param size Numeric value (e.g.: size = 1). change the size of points and
 #'  outlines.
 #' @param linewidth constant value specifying the line width.
-#' @param width numeric value between 0 and 1 specifying box width.
+#' @param width numeric value between 0 and 1 specifying the width of the plot elements.
 #' @inheritParams ggplot2::geom_boxplot
 #' @param outlier.shape point shape of outlier. Default is 19. To hide outlier,
 #'  specify \code{outlier.shape = NA}. When jitter is added, then outliers will
@@ -60,9 +60,7 @@ NULL
 #'  the style, use font.label = list(size = 14, face = "plain").
 #' @param position position adjustment, either as a string, or the result of a
 #'  call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
-#'  Used to control the spacing between boxes of grouped box plots. Applies to
-#'  the box and box-error-bar layers; layers added via \code{add} (e.g.
-#'  "jitter") keep their own default positioning.
+#'  Used to control the spacing between grouped elements.
 #' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
 #'  Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'  theme_minimal(), theme_classic(), theme_void(), ....

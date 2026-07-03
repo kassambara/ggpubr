@@ -17,7 +17,7 @@ NULL
 #'   categories. Ignored when \code{order} is set or \code{sort.val != "none"},
 #'   which require a discrete x axis.
 #' @param label specify whether to add labels on the bar plot. Allowed values
-#'   are: \itemize{ \item \strong{logical value}: If TRUE, y values is added as
+#'   are: \itemize{ \item \strong{logical value}: If TRUE, y values are added as
 #'   labels on the bar plot \item \strong{character vector}: Used as text
 #'   labels; must be the same length as y. }
 #' @param lab.col,lab.size text color and size for labels.

@@ -121,7 +121,7 @@ allows four stars (****) for the most significant level when
 \item{...}{Other arguments to be passed to the test function.}
 }
 \value{
-return a data frame with the following columns:
+a data frame with the following columns:
 \itemize{
 \item \code{.y.}: the y variable used in the test.
 \item \code{group1,group2}: the compared groups in the pairwise tests.

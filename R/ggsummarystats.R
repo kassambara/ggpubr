@@ -1,7 +1,7 @@
 #' @include utilities.R ggpar.R
 #' @importFrom rstatix df_split_by get_summary_stats
 NULL
-#' GGPLOT with Summary Stats Table Under the Plot
+#' GGPlot with Summary Stats Table Under the Plot
 #'
 #' @description Create a ggplot with summary stats (n, median, mean, iqr) table
 #'   under the plot. Read more: \href{https://www.datanovia.com/en/blog/how-to-create-a-beautiful-plots-in-r-with-summary-statistics-labels/}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.

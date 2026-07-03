@@ -4,6 +4,14 @@
 
 - Added compatibility updates for modern `ggplot2`, `dplyr`, and `tidyr`.
 - Updated legacy `size` usage to `linewidth` where required by recent `ggplot2`.
+- Completed the `size` -> `linewidth` migration for the remaining line layers that
+  still passed the deprecated `size` argument: the mean/median reference line added
+  by `gghistogram(add = ...)` and `ggdensity(add = ...)`, and the connector segments
+  of `ggdotchart(add = "segments")`. These no longer emit ggplot2's "`size` aesthetic
+  for lines was deprecated" or "Ignoring empty aesthetic: `size`" warnings, and the
+  requested line width is now applied via `linewidth`.
+- `ggmaplot()` no longer emits an "Ignoring empty aesthetic: `size`" warning on its
+  default call; the point layer sets `size` only when the user supplies a value.
 - Replaced deprecated tidyverse APIs in affected helper functions.
 - Added package startup lock-file checks and `clean_lock_files()` helper.
 - Relaxed minimum `ggrepel` dependency to `>= 0.9.2` to keep Ubuntu oldrel
@@ -300,7 +308,7 @@
   - Replaced deprecated `ggplot2::is.ggplot()` with `ggplot2::is_ggplot()` in `ggpar()`
   - Updated `.data$column` syntax to quoted column names in `geom_pwc()` for tidyselect 1.2.0+ compatibility
   - Added `all_of()` wrapper in `unnest()` utility function for tidyselect compatibility
-  - Replaced the option `size` by `linewidth` in ggplot2 element_line() and element_trect() functions.
+  - Replaced the option `size` by `linewidth` in ggplot2 element_line() and element_rect() functions.
 - Fixed deprecation warning in `stat_regline_equation()`  by automatically converting deprecated dot-dot notation (`..eq.label..`, `..adj.rr.label..`, `..p.signif..`, etc.) to `after_stat()` syntax for ggplot2 3.4.0+ compatibility (#623, @hinkyisme).
 -  Fixed deprecation warnings in `add_summary()` and `ggerrorplot()` for ggplot2 compatibility:
     - Updated internal `stat_summary()` parameters to use `fun`, `fun.min`, and `fun.max` instead of deprecated `fun.y`, `fun.ymin`, and `fun.ymax` (#587, @vlonde).
@@ -314,14 +322,14 @@
 
 - New function `ggadjust_pvalue()` added to adjust p-values produced by `geom_pwc()` on a ggplot (#522).
 - New data added: `gene_expression`
-- Global options: New available package options: `ggpubr.null_device`, which value should be a function that creates an appropriate null device. These include: `cowplot::pdf_null_device`, `cowplot::png_null_device`, `cowplot::cairo_null_device` and `cowplot::agg_null_device`. Default is `cowplot::pdf_null_device`. This is used in function like `as_ggplot()`, which needs to open a graphics device to render ggplot objects into grid graphics objects. This function is used to open null device for avoiding the display of unnecessary blank page when calling `ggarrange()` or `as_ggplot()` (#306 and #158).  The default option can be changed using, for example, `options(ggpubr.null_device = cowplot::png_null_device)`.
+- Global options: New available package options: `ggpubr.null_device`, whose value should be a function that creates an appropriate null device. These include: `cowplot::pdf_null_device`, `cowplot::png_null_device`, `cowplot::cairo_null_device` and `cowplot::agg_null_device`. Default is `cowplot::pdf_null_device`. This is used in functions like `as_ggplot()`, which need to open a graphics device to render ggplot objects into grid graphics objects. This function is used to open a null device to avoid displaying an unnecessary blank page when calling `ggarrange()` or `as_ggplot()` (#306 and #158).  The default option can be changed using, for example, `options(ggpubr.null_device = cowplot::png_null_device)`.
 
 
 ## Major changes
 
 - `gadd()`: Restoring back random state after setting seed when adding jittered points. To do so, the seed number is just passed to `position_jitter()` and `position_jitterdodge()`, which preserve the initial random state ( #177 and #349) .
-- `ggpubr` requires now a version of `ggrepel >= 0.9.2.9999`, which restores now the initial random state after set.seed(). see https://github.com/slowkow/ggrepel/issues/228
-- `ggpubr` requires now a version of `cowplot >= 1.1.1`
+- `ggpubr` now requires a version of `ggrepel >= 0.9.2.9999`, which now restores the initial random state after set.seed(). See https://github.com/slowkow/ggrepel/issues/228
+- `ggpubr` now requires a version of `cowplot >= 1.1.1`
 
 
 
@@ -335,7 +343,7 @@
 - `ggexport()`: support added for graphics device svg (#469)
 - `ggpie()` and `ggdonutchart()` now fully reacts to the option `lab.font` (#502)
 - Replacing deprecated `gather_()` in both internal (`.check_data()`) and exported functions (`compare_means()`) (#513)
-- `stat_compare_means()`: The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0; `after_stat(p.signif)` should be used; updated so that `..p.signif..` is automatically converted into `after_stat()` format without warning for bacward compatibility.
+- `stat_compare_means()`: The dot-dot notation (`..p.signif..`) was deprecated in ggplot2 3.4.0; `after_stat(p.signif)` should be used; updated so that `..p.signif..` is automatically converted into `after_stat()` format without warning for backward compatibility.
 - Enable faceting by column names with spaces (#391)
 - Licence changed to GPL (>= 2) (#482)
 - `desc_statby()` doc updated to clarify the difference between SD (standard deviation) and SE (standard error) (#492)
@@ -351,18 +359,18 @@
 - `ggmaplot()`: Suppressing ggmaplot warning: *Unlabeled data points (too many overlaps). Consider increasing max.overlaps* (#520)
 - `compare_means()`: works now when the grouping variable levels contain the key words group2 or group1 (#450)
 - `ggparagraph()` : fixing bug about minimum paragraph length (#408)
-- `ggexport()`: the verbose argument is now considered when specifyed by user (#474)
+- `ggexport()`: the verbose argument is now considered when specified by user (#474)
 
 # ggpubr 0.5.0
 
 
 ## New features
 
-- New functions `stat_anova_test()`, `stat_kruskal_test()`, `stat_welch_anova_test()`, `stat_friedman_test()` and `geom_pwc()` added. These are flexible functions to add p-values onto ggplot with more options. The function `geom_pwc()` is for adding pairwise comparisons p-values to a ggplot; supportted statistical methods include "wilcox_test", "t_test", "sign_test", "dunn_test", "emmeans_test", "tukey_hsd" and "games_howell_test".
+- New functions `stat_anova_test()`, `stat_kruskal_test()`, `stat_welch_anova_test()`, `stat_friedman_test()` and `geom_pwc()` added. These are flexible functions to add p-values onto ggplot with more options. The function `geom_pwc()` is for adding pairwise comparisons p-values to a ggplot; supported statistical methods include "wilcox_test", "t_test", "sign_test", "dunn_test", "emmeans_test", "tukey_hsd" and "games_howell_test".
 - New functions to convert character vector coordinates into NPC (normalized parent coordinates) and data coordinates: `as_npc()`, `npc_to_data_coordinates()` and `get_coord()`.
 - Global options:
     - New function `ggpubr_options()` to display allowed global options in ggpubr
-    - New available package options: `ggpubr.parse_aes`. logical indicating whether to parse or not the aesthetics variables names. Default is `TRUE`. For example, if you want ggpubr to handle non-standard column names, like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
+    - New available package options: `ggpubr.parse_aes`. Logical indicating whether to parse aesthetic variable names. Default is `TRUE`. For example, if you want ggpubr to handle non-standard column names, like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
 
 
 ## Minor changes
@@ -377,7 +385,7 @@
 - `create_aes()`:
     - Default is now to parse its input, which can be an expression (#348). If you want ggpubr to handle non-standard column names (#229), like A-A, without parsing, then set this option to FALSE using `options(ggpubr.parse_aes = FALSE)`.
     - Supports space in column names like "Dimension 1"
-    - Unittest added
+    - Unit tests added
 - Arguments (`digits` and `table.font.size`) added to `ggsummarystats()` for changing the summary table decimal place and text size (#341).
 - In `stat_pvalue_manual()` the argument `hide.ns` can be either a logical value (TRUE or FALSE) or a character value ("p" or "p.adj" for filtering out non significant by p-value or adjusted p-values).
 - Now, the x-axis tick label names correctly align with the corresponding ticks when the rotation angle of the texts is set to 90. This is automatically achieved by setting internally `vjust = 0.5` (#301).
@@ -409,7 +417,7 @@
 - New function `create_aes()` added to create aes mapping from a list. Makes programming easy with ggplot2 (#229).
 - New argument `coord.flip` added to support adding p-values onto horizontal ggplots (#179). When adding the p-values to a horizontal ggplot (generated using `coord_flip()`), you need to specify the option `coord.flip = TRUE`.
 - New errorbar functions - `median_hilow_()` and `median_q1q3()` -  added ([@davidlorenz, #209](https://github.com/kassambara/ggpubr/issues/209)):
-    - `median_hilow_()`: computes the sample median and a selected pair of outer quantiles having equal tail areas. This function is a reformatted version of `Hmisc::smedian.hilow()`. The confidence limits are computed as follow: `lower.limits = (1-ci)/2` percentiles; `upper.limits = (1+ci)/2` percentiles. By default (`ci = 0.95`), the 2.5th and the 97.5th percentiles are used as the lower and the upper confidence limits, respectively. If you want to use the 25th and the 75th percentiles as the confidence limits, then specify `ci = 0.5` or use the function `median_q1q3()`.
+    - `median_hilow_()`: computes the sample median and a selected pair of outer quantiles having equal tail areas. This function is a reformatted version of `Hmisc::smedian.hilow()`. The confidence limits are computed as follows: `lower.limits = (1-ci)/2` percentiles; `upper.limits = (1+ci)/2` percentiles. By default (`ci = 0.95`), the 2.5th and the 97.5th percentiles are used as the lower and the upper confidence limits, respectively. If you want to use the 25th and the 75th percentiles as the confidence limits, then specify `ci = 0.5` or use the function `median_q1q3()`.
     - `median_q1q3()`: computes the sample median and, the 25th and 75th percentiles. Wrapper around the function median_hilow_() using ci = 0.5.
 - New function `get_breaks()` added to easily create breaks for numeric axes. Can be used to increase the number of x and y ticks by specifying the option `n`. It's also possible to control axis breaks by specifying a step between ticks. For example, if by = 5, a tick mark is shown on every 5 ([@Chitanda-Satou, #258](https://github.com/kassambara/ggpubr/issues/258)).
 
@@ -422,7 +430,7 @@
 
 ## Minor changes
 
-- Now, when creating a box plot with error bars, color and fill argiments are taken into account in the errorbar function (#105).
+- Now, when creating a box plot with error bars, color and fill arguments are taken into account in the errorbar function (#105).
 - New argument `alternative` supported in `stat_cor()` (#276).
 - New argument `position` in `ggline()` to make position "dodged" (#52).
 - New argument `outlier.shape` in ggboxplot(). Default is 19. To hide outlier, specify outlier.shape = NA. When jitter is added, then outliers will be automatically hidden.
@@ -455,7 +463,7 @@
 - the argument `font.family` is now correctly handled by `ggscatter()` (#149)
 - `ggpar()` arguments are correctly applied using `ggpie()` (#277).
 - `ggscatter()`: When `conf.int = FALSE`, fill color is set to "lightgray" for the regression line confidence band ([@zhan6073, #111](https://github.com/kassambara/ggpubr/issues/111)).
-- Now, `gghistogram()` supports the paramter `yticks.by` ([@Chitanda-Satou, #258](https://github.com/kassambara/ggpubr/issues/258)).
+- Now, `gghistogram()` supports the parameter `yticks.by` ([@Chitanda-Satou, #258](https://github.com/kassambara/ggpubr/issues/258)).
 
 
 # ggpubr 0.3.0
@@ -464,8 +472,8 @@
 ## New features
 
 - New functions:
-    - `ggsummarystats()` to create  a GGPLOT with summary stats table under the plot ( [#251](https://github.com/kassambara/ggpubr/pull/251)).
-    - `clean_table_theme()` to clean the the theme of a table, such as those created by `ggsummarytable()`
+    - `ggsummarystats()` to create a GGPlot with summary stats table under the plot ( [#251](https://github.com/kassambara/ggpubr/pull/251)).
+    - `clean_table_theme()` to clean the theme of a table, such as those created by `ggsummarytable()`
 - `ggbarplot()` now supports stacked barplots with error bars ([#245](https://github.com/kassambara/ggpubr/pull/245)).
 
 
@@ -521,7 +529,7 @@
 
 # ggpubr 0.2.2
 
-## New fatures
+## New features
 
 - New function `geom_bracket()` for adding brackets with label annotation to a ggplot. Helpers for adding p-value or significance levels to a plot.
 
@@ -563,22 +571,22 @@
 
 ## Bug fixes
 
-- P-value for multiple comparisons by group (stat_compare_means()) are now correctly displayed ([@elisheva100, #135](https://github.com/kassambara/ggpubr/issues/135)).
+- P-values for multiple comparisons by group (stat_compare_means()) are now correctly displayed ([@elisheva100, #135](https://github.com/kassambara/ggpubr/issues/135)).
 
 
 # ggpubr 0.1.9
 
 ## Minor changes
 
-- ggsci palettes have been updated to add new palettes: nejm, jama, ucscgb, d3, locuszoom, igv, startrek, tron, futurama, simpsons ([@cbrueffer, #118](https://github.com/kassambara/ggpubr/pull/127)
+- ggsci palettes have been updated to add new palettes: nejm, jama, ucscgb, d3, locuszoom, igv, startrek, tron, futurama, simpsons ([@cbrueffer, #118](https://github.com/kassambara/ggpubr/pull/127))
 
 
 ## Bug fixes
 
-- The option `ref.group` was only considered when the grouping variable contains more than two levels. In that case, each level is compared against the specified reference group. Now, `ref.group` option is also considereded in two samples mean comparisons ([@OwenDonohoe, #118](https://github.com/kassambara/ggpubr/issues/118))
+- The option `ref.group` was only considered when the grouping variable contains more than two levels. In that case, each level is compared against the specified reference group. Now, `ref.group` option is also considered in two samples mean comparisons ([@OwenDonohoe, #118](https://github.com/kassambara/ggpubr/issues/118))
 
-- Now, `ggqqplot()` reacts to the argument `conf.int.level` ([@vsluydts, #123](https://github.com/kassambara/ggpubr/issues/123)
-- Added error bar color is now inherited from the main plot ([@JesseRop, #109](https://github.com/kassambara/ggpubr/issues/109)
+- Now, `ggqqplot()` reacts to the argument `conf.int.level` ([@vsluydts, #123](https://github.com/kassambara/ggpubr/issues/123))
+- Added error bar color is now inherited from the main plot ([@JesseRop, #109](https://github.com/kassambara/ggpubr/issues/109))
 
 
 # ggpubr 0.1.8
@@ -587,12 +595,12 @@
 ## New features
 
 - New arguments `bxp.errorbar` added to `ggboxplot()` for adding error bars at the top of the box plots ([@j3ypi, #105](https://github.com/kassambara/ggpubr/issues/105).
-- New function `stat_pvalue_manual()` for adding p-values generated elswhere ([@achamess, #81](https://github.com/kassambara/ggpubr/issues/81), [@grst, #65](https://github.com/kassambara/ggpubr/issues/65)).
+- New function `stat_pvalue_manual()` for adding p-values generated elsewhere ([@achamess, #81](https://github.com/kassambara/ggpubr/issues/81), [@grst, #65](https://github.com/kassambara/ggpubr/issues/65)).
 
 
 ## Minor changes
 
-- `alpha`option added to `ggviolin()` [@mtmatter, #77](https://github.com/kassambara/ggpubr/pull/77)
+- `alpha` option added to `ggviolin()` [@mtmatter, #77](https://github.com/kassambara/ggpubr/pull/77)
 - New argument `bracket.size` added to `stat_compare_means()` [@mtmatter, #43](https://github.com/kassambara/ggpubr/issues/43)
 - Now, the function `stat_cor()` supports R^2 as an option [@philament, #32](https://github.com/kassambara/ggpubr/issues/32)
 - New argument `position` added in `gghistogram()`. Allowed values include "identity", "stack", "dodge".
@@ -618,7 +626,7 @@
 ## Bug fixes
 
 - In `ggscatterhist()` the x variable was plotted two times, on both the plot x & y margins, instead of having, as expected, a) the x variable on the main plot x margin and 2) the y variable on the main plot y margin. This has been now fixed.
-- In previous version, `ggdotchart()` sorted automatically within groups when the `color` argument is specified, even when groups = NULL. This default behaviour has been now removed. Sorting withi groups is performed only when the argument `group` is specified ([@sfeds, #90](https://github.com/kassambara/ggpubr/issues/90)).
+- In previous version, `ggdotchart()` sorted automatically within groups when the `color` argument is specified, even when groups = NULL. This default behaviour has been now removed. Sorting within groups is performed only when the argument `group` is specified ([@sfeds, #90](https://github.com/kassambara/ggpubr/issues/90)).
 - Now, `yticks.by` and  `xticks.by` work with NAs ([@j3ypi, #89](https://github.com/kassambara/ggpubr/issues/89)).
 
 
@@ -649,7 +657,7 @@
 
 - New argument `lab.nb.digits` in `ggbarplot()`. Integer indicating the number of decimal places (round) to be used ([#28](https://github.com/kassambara/ggpubr/issues/28)). Example: lab.nb.digits = 2.
 
-- New argument `tip.length` in `stat_compare_means()`. Numeric vector with the fraction of total height that the bar goes down to indicate the precise column. Default is 0.03. Can be of same length as the number of comparisons to adjust specifically the tip lenth of each comparison. For example tip.length = c(0.01, 0.03).
+- New argument `tip.length` in `stat_compare_means()`. Numeric vector with the fraction of total height that the bar goes down to indicate the precise column. Default is 0.03. Can be of same length as the number of comparisons to adjust specifically the tip length of each comparison. For example tip.length = c(0.01, 0.03).
 
 
 ## Minor changes
@@ -695,7 +703,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 - `drawDetails.splitText()` exported so that the function `ggparagraph()` works properly.
 - Now, ggpubr functions accept expression for label text
 - In `ggbarplot()`, now labels correspond to the true size of bars ([@tdelhomme, #15](https://github.com/kassambara/ggpubr/issues/15)).
-- `stat_compare_means()` now keep the default order of factor levels ([@RoKant, #12](https://github.com/kassambara/ggpubr/issues/12)).
+- `stat_compare_means()` now keeps the default order of factor levels ([@RoKant, #12](https://github.com/kassambara/ggpubr/issues/12)).
 
 
 # ggpubr 0.1.4
@@ -703,10 +711,10 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 ## New features
 
 - New helper functions:
-    - `gradient_color()` and `gradient_color()`: change gradient color and fill palettes.
+    - `gradient_color()` and `gradient_fill()`: change gradient color and fill palettes.
     - `clean_theme()`: remove axis lines, ticks, texts and titles.
     - `get_legend()`: to extract the legend labels from a ggplot object.
-    - `as_ggplot()`: Transform the output of `gridExtra::arrangeGrob()` and `gridExtra::grid.arrange()` to a an object of class ggplot.
+    - `as_ggplot()`: Transform the output of `gridExtra::arrangeGrob()` and `gridExtra::grid.arrange()` to an object of class ggplot.
     - `ggtexttable()`: to draw a textual table.
     - `ggparagraph()`: to draw a paragraph of text.
     - fill_palette() and color_palette() to change the fill and color palette, respectively.
@@ -774,7 +782,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 
 - New arguments in ggpubr functions, see `ggboxplot()`, `ggdotplot()`, `ggstripchart()`, `ggviolin()`, `ggbarplot()` and `ggline`:
     - `combine` added to combine multiple y variables on the same graph.
-    - `merge` to merge multiple y variables in the same ploting area.
+    - `merge` to merge multiple y variables in the same plotting area.
     - `select` to select which item to display.
     - `remove` to remove a specific item from a plot.
     - `order` to order plot items.
@@ -795,13 +803,13 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 ## Minor changes
 
 
-- Now, the argument `palette` Can be also a numeric vector of length(groups); in this case a basic color palette is created using the function `grDevices::palette()`.
+- Now, the argument `palette` can be also a numeric vector of length(groups); in this case a basic color palette is created using the function `grDevices::palette()`.
 
 ## Bug fixes
 
 - Now, `ggpar()` reacts to palette when length(palette) = 1 and palette is a color name [#3](https://github.com/kassambara/ggpubr/issues/3).
 
-- `ggmaplot()` now handles situations, where there is only upregulated, or downlegulated gnes.
+- `ggmaplot()` now handles situations, where there is only upregulated, or downregulated genes.
 
 
 # ggpubr 0.1.2
@@ -809,7 +817,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 
 ## New features
 
-- New function `get_palette()` to generate a palette of k colors from ggsci palettes, RColorbrewer palettes and custom color palettes. Useful to extend RColorBrewer and ggsci to support more colors.
+- New function `get_palette()` to generate a palette of k colors from ggsci palettes, RColorBrewer palettes and custom color palettes. Useful to extend RColorBrewer and ggsci to support more colors.
 
 ## Minor changes
 
@@ -821,7 +829,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 
 ## Bug fixed
 
-- The mean within group for `ggdensity` (`gghistogram`) are now shown if data have NA values [@chunkaowang, #1](https://github.com/kassambara/ggpubr/issues/1)
+- Group means for `ggdensity` (`gghistogram`) are now shown when data have NA values [@chunkaowang, #1](https://github.com/kassambara/ggpubr/issues/1)
 
 
 # ggpubr 0.1.1
@@ -831,7 +839,7 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 
 - New function `ggtext()` for textual annotation.
 - New argument star.plot in `ggscatter()`. A logical value. If TRUE, a star plot is generated.
-- New helper function `geom_exec()`. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without carrying about the arguments to put in `ggplot2::aes()`.
+- New helper function `geom_exec()`. A helper function used by ggpubr functions to execute any geom_xx functions in ggplot2. Useful only when you want to call a geom_xx function without worrying about the arguments to put in `ggplot2::aes()`.
 - New arguments sort.val and top in `ggbarplot()`.
     - sort.val: a string specifying whether the value should be sorted. Allowed values are "none" (no sorting), "asc" (for ascending) or "desc" (for descending).
     - top: a numeric value specifying the number of top elements to be shown.
@@ -882,7 +890,7 @@ ggboxplot(iris$Sepal.Length)
 - ggscatter(): Scatter plot
 
 
-## Graphical paramters
+## Graphical parameters
 
 - ggpar(): Change graphical parameters
 - show_line_type(): Line types available in R

@@ -59,17 +59,17 @@ axis.}
  plot labels to a publication ready style \item \strong{theme_classic2()}:
  Create a classic theme with axis lines. \item \strong{clean_theme()}: Remove
  axis lines, ticks, texts and titles. \item \strong{clean_table_theme()}:
- Clean the the theme of a table, such as those created by
+ Clean the theme of a table, such as those created by
  \code{\link{ggsummarytable}()}}.
 }
 \details{
 \code{theme_pubr()} sets \code{strip.clip = "off"} so that the facet
-strip background border is drawn at its full width (with the ggplot2 default
-\code{strip.clip = "on"} the border is clipped to the strip area and renders
-thinner than requested). As a side effect, a facet label that is wider than
-its panel will overflow the strip instead of being truncated; if that is a
-problem for very long labels, restore clipping with
-\code{+ theme(strip.clip = "on")}.
+ strip background border is drawn at its full width (with the ggplot2 default
+ \code{strip.clip = "on"} the border is clipped to the strip area and renders
+ thinner than requested). As a side effect, a facet label that is wider than
+ its panel will overflow the strip instead of being truncated; if that is a
+ problem for very long labels, restore clipping with
+ \code{+ theme(strip.clip = "on")}.
 }
 \examples{
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +

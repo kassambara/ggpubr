@@ -82,7 +82,7 @@ NULL
 #'  \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
 #'  for the correlation coefficient} \item{rr.label}{formatted label for the
 #'  squared correlation coefficient} \item{p.label}{label for the p-value}
-#'  \item{label}{default labeldisplayed by \code{stat_cor()}} }
+#'  \item{label}{default label displayed by \code{stat_cor()}} }
 #'
 #' @examples
 #' # Load data

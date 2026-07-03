@@ -1,4 +1,4 @@
-#' Ballon plot
+#' Balloon plot
 #'
 #' @description Plot a graphical matrix where each cell contains a dot whose
 #'   size reflects the relative magnitude of the corresponding component. Useful
@@ -9,9 +9,9 @@
 #'   contingency table} formed by two categorical variables: a data frame with
 #'   row names and column names. The categories of the first variable are
 #'   columns and the categories of the second variable are rows. \item \bold{a
-#'   streched contingency table}: a data frame containing at least three columns
+#'   stretched contingency table}: a data frame containing at least three columns
 #'   corresponding, respectively, to (1) the categories of the first variable,
-#'   (2) the categories of the second varible, (3) the frequency value. In this
+#'   (2) the categories of the second variable, (3) the frequency value. In this
 #'   case, you should specify the argument x and y in the function
 #'   \code{ggballoonplot()}}.
 #' @param x,y the column names specifying, respectively, the first and the
@@ -20,7 +20,7 @@
 #' @param color point border line color.
 #' @param fill point fill color. Default is "lightgray". Considered only for
 #'   points 21 to 25.
-#' @param shape points shape. The default value is 21. Alternaive values include
+#' @param shape points shape. The default value is 21. Alternative values include
 #'   22, 23, 24, 25.
 #' @param size point size. By default, the points size reflects the relative
 #'   magnitude of the value of the corresponding cell (\code{size = "value"}).
@@ -37,7 +37,7 @@
 #'   the color (e.g.: "red") of point labels. For example font.label = c(14,
 #'   "bold", "red"). To specify only the size and the style, use font.label =
 #'   c(14, "plain").
-#' @param rotate.x.text logica. If TRUE (default), rotate the x axis text.
+#' @param rotate.x.text logical. If TRUE (default), rotate the x axis text.
 #' @param ... other arguments passed to the function \code{\link{ggpar}}
 #'
 #' @examples
@@ -81,7 +81,7 @@
 #' ) +
 #'   gradient_fill(c("blue", "white", "red"))
 #'
-#' # Streched contingency table
+#' # Stretched contingency table
 #' # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 #'
 #' # Create an Example Data Frame Containing Car x Color data
@@ -143,7 +143,7 @@ ggballoonplot <- function(
   # ::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-  # case 1: x and y specified. we assume that the data is streched
+  # case 1: x and y specified. we assume that the data is stretched
   # if size not specified, then take the third column as size values
   # detect fill variable if misspecified
   if (!is.null(x) & !is.null(y)) {
@@ -156,11 +156,11 @@ ggballoonplot <- function(
 
 
   # case 2: x and y are not specified
-  # - check if the data is streched:
+  # - check if the data is stretched:
   #     If yes, then consider the first 3 columns as x, y and size values
-  #     If no, then strech the data and continu
+  #     If no, then stretch the data and continue
   else if (is.null(x) | is.null(y)) {
-    if (.is_streched(data)) {
+    if (.is_stretched(data)) {
       .cnames <- colnames(data)
       x <- .cnames[1]
       y <- .cnames[2]
@@ -171,7 +171,7 @@ ggballoonplot <- function(
       y.val <- dplyr::pull(data, 2)
       data[[2]] <- y.val %>% factor(levels = rev(.levels(y.val)))
     } else {
-      data <- .df_strech(data) # Strech the data into 3 columns: .row|.col|.value
+      data <- .df_stretch(data) # Stretch the data into 3 columns: .row|.col|.value
       x <- ".col"
       y <- ".row"
       if (missing(size)) size <- "value"
@@ -233,16 +233,16 @@ ggballoonplot <- function(
 }
 
 
-# strech a data frame with row names
+# Stretch a data frame with row names
 # returns a data frame with 3 columns .row, .col, value
-.df_strech <- function(data) {
+.df_stretch <- function(data) {
   .col.names <- colnames(data)
   .row.names <- rownames(data)
   data <- data %>%
     dplyr::mutate(.row = .row.names) %>%
     dplyr::select(.row, dplyr::everything())
 
-  # Sretch the data into three columns
+  # Stretch the data into three columns
   .col <- .row <- NULL
   data <- data %>%
     tidyr::pivot_longer(
@@ -258,17 +258,17 @@ ggballoonplot <- function(
 }
 
 
-# Check if the contingency table is in the streched format
-.is_streched <- function(data, x = NULL, y = NULL) {
-  streched <- TRUE
+# Check if the contingency table is in the stretched format
+.is_stretched <- function(data, x = NULL, y = NULL) {
+  stretched <- TRUE
   if (is.null(x) | is.null(y)) {
     if (.is_numeric_data(data)) {
-      streched <- FALSE
+      stretched <- FALSE
     } else {
       x <- dplyr::pull(data, 1)
       y <- dplyr::pull(data, 2)
       z <- dplyr::pull(data, 3)
-      streched <- (
+      stretched <- (
         (is.character(x) | is.factor(x)) &
           (is.character(y) | is.factor(y)) &
           is.numeric(z)
@@ -276,7 +276,7 @@ ggballoonplot <- function(
     }
   }
 
-  streched
+  stretched
 }
 
 # Check if a data matrix is numeric
@@ -284,7 +284,7 @@ ggballoonplot <- function(
   all(apply(x, 2, is.numeric))
 }
 
-# For tible data. The first column should be row names
+# For tibble data. The first column should be row names
 .is_correct_tbl <- function(x) {
   ok <- FALSE
   if (inherits(x, "tbl_df")) ok <- TRUE

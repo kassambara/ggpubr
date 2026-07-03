@@ -54,6 +54,20 @@ test_that("ggscatterhist default still renders and margins align (#220/#420)", {
   expect_no_error(print(res))
 })
 
+test_that("ggscatterhist old-cowplot warning does not append the call flag", {
+  local_mocked_bindings(has_cowplot_v0.9 = function() FALSE)
+  warning_message <- NULL
+  withCallingHandlers(
+    res <- ggscatterhist(iris, x = "Sepal.Length", y = "Sepal.Width", print = FALSE),
+    warning = function(w) {
+      warning_message <<- conditionMessage(w)
+      invokeRestart("muffleWarning")
+    }
+  )
+  expect_s3_class(res, "ggscatterhist")
+  expect_match(warning_message, "features of ggscatterhist$")
+})
+
 test_that("ggscatterhist does NOT force a transformed (log) scatter range onto the raw-data margin (#220/#420)", {
   # A log-scaled scatter axis lives in different units than the raw-data margin.
   # The margin must stay in linear data units (visible), NOT be forced to the

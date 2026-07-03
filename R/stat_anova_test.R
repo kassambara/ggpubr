@@ -2,7 +2,7 @@
 NULL
 #' Add Anova Test P-values to a GGPlot
 #' @description Adds automatically one-way and two-way ANOVA test p-values to a
-#'  ggplot, such as box blots, dot plots and stripcharts.
+#'  ggplot, such as box plots, dot plots and stripcharts.
 #' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @inheritParams stat_pvalue_manual
@@ -23,7 +23,7 @@ NULL
 #'  1, 2 or 3. \code{type = 2} is the default because this will yield identical
 #'  ANOVA results as type = 1 when data are balanced but type = 2 will
 #'  additionally yield various assumption tests where appropriate. When the data
-#'  are unbalanced the \code{type = 3} is used by popular commercial softwares
+#'  are unbalanced the \code{type = 3} is used by popular commercial software
 #'  including SPSS.
 #' @param effect.size the effect size to compute and to show in the ANOVA
 #'  results. Allowed values can be either "ges" (generalized eta squared) or
@@ -36,7 +36,7 @@ NULL
 #'  the within-subject factors. Possible values are: \itemize{ \item{"GG"}:
 #'  applies Greenhouse-Geisser correction to all within-subjects factors even if
 #'  the assumption of sphericity is met (i.e., Mauchly's test is not
-#'  significant, p > 0.05). \item{"HF"}: applies Hyunh-Feldt correction to all
+#'  significant, p > 0.05). \item{"HF"}: applies Huynh-Feldt correction to all
 #'  within-subjects factors even if the assumption of sphericity is met,
 #'  \item{"none"}: returns the ANOVA table without any correction and
 #'  \item{"auto"}: apply automatically GG correction to only within-subjects
@@ -48,7 +48,7 @@ NULL
 #'  variables. Allowed values include "holm", "hochberg", "hommel",
 #'  "bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
 #'  value (not recommended), use p.adjust.method = "none".
-#' @param significance a list of arguments specifying the signifcance cutpoints
+#' @param significance a list of arguments specifying the significance cutpoints
 #'  and symbols. For example, \code{significance <- list(cutpoints = c(0,
 #'  0.0001, 0.001, 0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",
 #'  "ns"))}.
@@ -133,8 +133,8 @@ NULL
 #'  the option \code{effect.size = "pes"}. \item{F}:	F-value. \item{p}:	p-value.
 #'  \item{p.adj}: Adjusted p-values. \item{p.signif}: P-value significance.
 #'  \item{p.adj.signif}: Adjusted p-value significance. \item{p.format}:
-#'  Formated p-value. \item{p.format.signif}: Formated p-value with significance symbols.
-#'  \item{p.adj.format}: Formated adjusted p-value. \item{n}:
+#'  Formatted p-value. \item{p.format.signif}: Formatted p-value with significance symbols.
+#'  \item{p.adj.format}: Formatted adjusted p-value. \item{n}:
 #'  number of samples. }
 #'
 #' @examples

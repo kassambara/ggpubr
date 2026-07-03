@@ -2,7 +2,7 @@
 NULL
 #' Add Kruskal-Wallis Test P-values to a GGPlot
 #' @description Add Kruskal-Wallis test p-values to a ggplot, such as
-#'  box blots, dot plots and stripcharts.
+#'  box plots, dot plots and stripcharts.
 #' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @inheritParams stat_pvalue_manual
@@ -14,9 +14,9 @@ NULL
 #'  \item{p.adj}: Adjusted p-values.
 #'  \item{p.signif}: P-value significance.
 #'  \item{p.adj.signif}: Adjusted p-value significance.
-#'  \item{p.format}: Formated p-value.
-#'  \item{p.format.signif}: Formated p-value with significance symbols.
-#'  \item{p.adj.format}: Formated adjusted p-value.
+#'  \item{p.format}: Formatted p-value.
+#'  \item{p.format.signif}: Formatted p-value with significance symbols.
+#'  \item{p.adj.format}: Formatted adjusted p-value.
 #'  \item{n}: number of samples.
 #'   }
 #'

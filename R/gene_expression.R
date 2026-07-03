@@ -9,7 +9,7 @@
 #' @docType data
 #' @usage data("gene_expression")
 #' @format A data frame with 1305 rows and 5 columns. \describe{
-#'  \item{\code{bcr_patient_barcode}}{sample ID} \item{\code{dataset}}{cance type} \item{\code{GATA3}}{GATA3 gene expression}
+#'  \item{\code{bcr_patient_barcode}}{sample ID} \item{\code{dataset}}{cancer type} \item{\code{GATA3}}{GATA3 gene expression}
 #'  \item{\code{PTEN}}{PTEN gene expression}\item{\code{XBP1}}{XBP1 gene expression.}}
 #'
 #' @examples

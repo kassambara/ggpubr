@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggballoonplot.R
 \name{ggballoonplot}
 \alias{ggballoonplot}
-\title{Ballon plot}
+\title{Balloon plot}
 \usage{
 ggballoonplot(
   data,
@@ -26,9 +26,9 @@ ggballoonplot(
 contingency table} formed by two categorical variables: a data frame with
 row names and column names. The categories of the first variable are
 columns and the categories of the second variable are rows. \item \bold{a
-streched contingency table}: a data frame containing at least three columns
+stretched contingency table}: a data frame containing at least three columns
 corresponding, respectively, to (1) the categories of the first variable,
-(2) the categories of the second varible, (3) the frequency value. In this
+(2) the categories of the second variable, (3) the frequency value. In this
 case, you should specify the argument x and y in the function
 \code{ggballoonplot()}}.}
 
@@ -47,7 +47,7 @@ faceting the plot into multiple panels. Should be in the data.}
 maximum size of the plotting symbol. Default values are \code{size.range =
 c(1, 10)}.}
 
-\item{shape}{points shape. The default value is 21. Alternaive values include
+\item{shape}{points shape. The default value is 21. Alternative values include
 22, 23, 24, 25.}
 
 \item{color}{point border line color.}
@@ -64,7 +64,7 @@ the color (e.g.: "red") of point labels. For example font.label = c(14,
 "bold", "red"). To specify only the size and the style, use font.label =
 c(14, "plain").}
 
-\item{rotate.x.text}{logica. If TRUE (default), rotate the x axis text.}
+\item{rotate.x.text}{logical. If TRUE (default), rotate the x axis text.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
@@ -118,7 +118,7 @@ ggballoonplot(data,
 ) +
   gradient_fill(c("blue", "white", "red"))
 
-# Streched contingency table
+# Stretched contingency table
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 # Create an Example Data Frame Containing Car x Color data
