@@ -56,6 +56,11 @@
 
 ## New features
 
+- `ggarrange()` gains a `spacing` argument to increase the gap between the
+  arranged plots (a long-requested option). It adds a uniform margin, in
+  text-line units, around each plot. Default is `0` (no extra space; each plot
+  keeps its own margins, so existing arrangements are unchanged) (#151).
+
 - `ggbarplot()` gains a `numeric.x.axis` argument (already available in
   `ggline()` and `ggerrorplot()`). With `numeric.x.axis = TRUE` the x variable
   is kept numeric instead of being coerced to a discrete factor, so bars are

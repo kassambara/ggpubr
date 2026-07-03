@@ -21,7 +21,8 @@ ggarrange(
   byrow = TRUE,
   legend = NULL,
   common.legend = FALSE,
-  legend.grob = NULL
+  legend.grob = NULL,
+  spacing = 0
 )
 }
 \arguments{
@@ -82,6 +83,13 @@ unique legend will be created for arranged plots.}
 \item{legend.grob}{a legend grob as returned by the function
 \code{\link{get_legend}()}. If provided, it will be used as the common
 legend.}
+
+\item{spacing}{numeric value giving the margin, in text-line units, set
+uniformly around each plot to increase the gap between the arranged plots.
+Default is 0, which leaves each plot's own margins untouched (existing
+arrangements are unchanged). A positive value sets a uniform margin of that
+many lines around every plot, replacing the plots' default margin; e.g.
+\code{spacing = 1} puts a one-line margin around each plot.}
 }
 \value{
 an object of class \code{ggarrange}, which is a ggplot or a
