@@ -26,6 +26,10 @@
   subsets were skipped and why (e.g., missing `ref.group` or insufficient levels).
 - Added regression tests for mixed comparable/non-comparable subsets and fully sparse
   subsets.
+- `geom_pwc()` with an explicit list of `comparisons` no longer drops a whole facet/panel
+  when a single requested pair cannot be tested (e.g. a group that is entirely `NA` or has
+  fewer than two observations). The untestable comparison is skipped (with a message) and
+  the remaining valid comparisons are still drawn (#542).
 - `geom_pwc()` now detects an absent `ref.group` in a grouped subset via the
   `rstatix_missing_ref_group` condition class raised by recent `rstatix`
   (walking the parent chain with `rlang::cnd_inherits()`), in addition to

@@ -386,6 +386,99 @@ test_that("geom_pwc skips grouped subsets missing ref.group and keeps valid ones
   expect_gte(nrow(b$data[[2]]), 1)
 })
 
+# Per-comparison survival with explicit comparisons (#542) ----------------
+test_that("geom_pwc keeps valid explicit comparisons when one pair is untestable (#542)", {
+  set.seed(1)
+  # Group D is entirely NA and B has a single finite value, so the B-D
+  # comparison cannot be tested; A-C and C-E remain valid and must survive.
+  dat <- data.frame(
+    Cond = factor(rep(c("A", "B", "C", "D", "E"), each = 3)),
+    Value = c(runif(3, 10, 12), c(NA, 11, NA), runif(3, 8, 13),
+              c(NA, NA, NA), runif(3, 10, 15))
+  )
+  p <- ggboxplot(dat, x = "Cond", y = "Value") +
+    geom_pwc(
+      method = "t_test",
+      method.args = list(comparisons = list(c(1, 3), c(3, 5), c(2, 4)))
+    )
+  expect_message(
+    b <- ggplot2::ggplot_build(p),
+    "geom_pwc\\(\\): skipped 1 untestable comparison\\(s\\): 2 vs 4"
+  )
+  stat.test <- b$data[[2]]
+  # only the two valid comparisons survive (A-C at x 1-3, C-E at x 3-5)
+  surviving <- unique(stat.test[, c("xmin", "xmax", "p", "p.adj")])
+  expect_equal(nrow(surviving), 2)
+  expect_true(all(paste(surviving$xmin, surviving$xmax) %in% c("1 3", "3 5")))
+  expect_false(any(paste(surviving$xmin, surviving$xmax) == "2 4"))
+
+  # The surviving comparisons must be multiplicity-corrected TOGETHER, exactly as
+  # if only those two comparisons had been requested (not left with the raw,
+  # unadjusted p as p.adj). Otherwise p.adj / p.adj.signif would be wrong (#542).
+  clean <- ggboxplot(dat, x = "Cond", y = "Value") +
+    geom_pwc(
+      method = "t_test",
+      method.args = list(comparisons = list(c(1, 3), c(3, 5)))
+    )
+  clean.test <- suppressMessages(ggplot2::ggplot_build(clean))$data[[2]]
+  key <- function(d) paste(d$xmin, d$xmax)
+  ord.s <- order(key(surviving))
+  ord.c <- order(key(unique(clean.test[, c("xmin", "xmax", "p", "p.adj")])))
+  clean.u <- unique(clean.test[, c("xmin", "xmax", "p", "p.adj")])
+  expect_equal(surviving$p[ord.s], clean.u$p[ord.c])
+  expect_equal(surviving$p.adj[ord.s], clean.u$p.adj[ord.c])
+})
+
+test_that("geom_pwc drops only the untestable pair per facet, keeping valid ones (#542 faceted)", {
+  set.seed(1)
+  # Reporter's scenario: two facets; in Sample2 group D is all-NA and B has a
+  # single value, so B-D is untestable there but A-C / C-E are valid. Sample1 is
+  # fully testable. Each facet must keep its own valid comparisons.
+  dataset <- data.frame(
+    Sample = rep(c("Sample1", "Sample2"), each = 15),
+    Cond = factor(rep(rep(c("A", "B", "C", "D", "E"), each = 3), 2)),
+    Value = c(runif(3, 10, 12), runif(3, 11, 14), runif(3, 8, 13),
+              runif(3, 7, 10), runif(3, 10, 15),
+              runif(3, 10, 12), c(NA, 11, NA), runif(3, 8, 13),
+              c(NA, NA, NA), runif(3, 10, 15))
+  )
+  p <- ggplot2::ggplot(dataset, ggplot2::aes(Cond, Value)) +
+    ggplot2::geom_jitter(width = 0.2) +
+    ggplot2::facet_wrap(~Sample) +
+    geom_pwc(
+      method = "t_test",
+      method.args = list(comparisons = list(c(1, 3), c(3, 5), c(2, 4)))
+    )
+  expect_message(
+    b <- ggplot2::ggplot_build(p),
+    "geom_pwc\\(\\): skipped 1 untestable comparison\\(s\\): 2 vs 4"
+  )
+  stat.test <- b$data[[2]]
+  by.panel <- split(stat.test, stat.test$PANEL)
+  pair.set <- function(d) sort(unique(paste(d$xmin, d$xmax)))
+  # Sample1 (PANEL 1): all three comparisons; Sample2 (PANEL 2): 2 vs 4 dropped.
+  expect_equal(pair.set(by.panel[["1"]]), c("1 3", "2 4", "3 5"))
+  expect_equal(pair.set(by.panel[["2"]]), c("1 3", "3 5"))
+})
+
+test_that("geom_pwc explicit comparisons are unchanged when all pairs are testable (#542 no-regression)", {
+  # Same call but on data with no untestable pair: no skip message, and all
+  # three requested comparisons are drawn (byte-identical to previous behavior).
+  df2 <- ToothGrowth
+  df2$dose <- as.factor(df2$dose)
+  p <- ggboxplot(df2, x = "dose", y = "len") +
+    geom_pwc(
+      method = "t_test",
+      method.args = list(comparisons = list(c(1, 2), c(2, 3), c(1, 3)))
+    )
+  expect_no_message(
+    b <- ggplot2::ggplot_build(p),
+    message = "geom_pwc\\(\\): skipped"
+  )
+  stat.test <- b$data[[2]]
+  expect_equal(nrow(unique(stat.test[, c("xmin", "xmax")])), 3)
+})
+
 # All-NA group placement (#575) -----------------------------------
 test_that("geom_pwc places brackets over the correct groups when a group is all-NA (#575)", {
   # Group "a" is entirely NA; its rows are dropped before the stat runs, so the
