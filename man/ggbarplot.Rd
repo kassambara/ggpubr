@@ -152,7 +152,7 @@ positions (e.g. a time axis) instead of at equally-spaced discrete
 categories. Ignored when \code{order} is set or \code{sort.val != "none"},
 which require a discrete x axis.}
 
-\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....}
 

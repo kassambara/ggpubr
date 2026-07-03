@@ -56,6 +56,13 @@
 
 ## New features
 
+- Passing `ggtheme = NULL` to the plotting functions (e.g. `ggscatter()`,
+  `ggboxplot()`, `ggline()`, `gghistogram()`, ...) now skips applying a ggpubr
+  theme, so the plot keeps ggplot2's default theme or the theme set globally with
+  `theme_set()`. Previously an explicit `ggtheme = NULL` was treated like an unset
+  argument and `theme_pubr()` was still applied. Calls that omit `ggtheme` or pass
+  a specific theme are unchanged (#561).
+
 - `ggarrange()` gains a `spacing` argument to increase the gap between the
   arranged plots (a long-requested option). It adds a uniform margin, in
   text-line units, around each plot. Default is `0` (no extra space; each plot
