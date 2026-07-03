@@ -41,6 +41,12 @@ NULL
 #' @param legend.grob a legend grob as returned by the function
 #'   \code{\link{get_legend}()}. If provided, it will be used as the common
 #'   legend.
+#' @param spacing numeric value giving the margin, in text-line units, set
+#'   uniformly around each plot to increase the gap between the arranged plots.
+#'   Default is 0, which leaves each plot's own margins untouched (existing
+#'   arrangements are unchanged). A positive value sets a uniform margin of that
+#'   many lines around every plot, replacing the plots' default margin; e.g.
+#'   \code{spacing = 1} puts a one-line margin around each plot.
 #' @return an object of class \code{ggarrange}, which is a ggplot or a
 #'   list of ggplots.
 #' @author Laszlo Erdey \email{erdey.laszlo@@econ.unideb.hu}
@@ -77,7 +83,8 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
                       font.label = list(size = 14, color = "black", face = "bold", family = NULL),
                       align = c("none", "h", "v", "hv"),
                       widths = 1, heights = 1, byrow = TRUE,
-                      legend = NULL, common.legend = FALSE, legend.grob = NULL) {
+                      legend = NULL, common.legend = FALSE, legend.grob = NULL,
+                      spacing = 0) {
   # Open null device to avoid blank page before plot------
   # see cowplot:::as_grob.ggplot
   null_device <- base::getOption("ggpubr.null_device", default = cowplot::pdf_null_device)
@@ -92,6 +99,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
 
 
   plots <- c(list(...), plotlist)
+  plots <- .add_plot_spacing(plots, spacing)
   align <- match.arg(align)
   nb.plots <- length(plots)
   page.layout <- .get_layout(ncol, nrow, nb.plots)
@@ -182,6 +190,26 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   }
 }
 
+
+# Increase the space between arranged plots by adding a uniform margin (in
+# text-line units) around each ggplot. spacing = 0 (default) leaves the plots
+# untouched, so the arrangement is unchanged (#151). Non-ggplot entries (NULL
+# spacers, grobs) are returned as-is.
+.add_plot_spacing <- function(plots, spacing = 0) {
+  if (is.null(spacing)) {
+    return(plots)
+  }
+  if (!is.numeric(spacing) || anyNA(spacing)) {
+    stop("`spacing` must be a single non-missing numeric value.", call. = FALSE)
+  }
+  if (all(spacing == 0)) {
+    return(plots)
+  }
+  margin <- grid::unit(rep(spacing[1], 4), "lines")
+  purrr::map(plots, function(x) {
+    if (inherits(x, "ggplot")) x + ggplot2::theme(plot.margin = margin) else x
+  })
+}
 
 .plot_grid <- function(plotlist, legend = "top", common.legend.grob = NULL, ...) {
   res <- cowplot::plot_grid(plotlist = plotlist, ...)
