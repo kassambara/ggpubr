@@ -81,7 +81,7 @@
 #' ) +
 #'   gradient_fill(c("blue", "white", "red"))
 #'
-#' # Streched contingency table
+#' # Stretched contingency table
 #' # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 #'
 #' # Create an Example Data Frame Containing Car x Color data
@@ -158,7 +158,7 @@ ggballoonplot <- function(
   # case 2: x and y are not specified
   # - check if the data is stretched:
   #     If yes, then consider the first 3 columns as x, y and size values
-  #     If no, then strech the data and continu
+  #     If no, then stretch the data and continue
   else if (is.null(x) | is.null(y)) {
     if (.is_stretched(data)) {
       .cnames <- colnames(data)
@@ -171,7 +171,7 @@ ggballoonplot <- function(
       y.val <- dplyr::pull(data, 2)
       data[[2]] <- y.val %>% factor(levels = rev(.levels(y.val)))
     } else {
-      data <- .df_strech(data) # Strech the data into 3 columns: .row|.col|.value
+      data <- .df_stretch(data) # Stretch the data into 3 columns: .row|.col|.value
       x <- ".col"
       y <- ".row"
       if (missing(size)) size <- "value"
@@ -233,16 +233,16 @@ ggballoonplot <- function(
 }
 
 
-# strech a data frame with row names
+# Stretch a data frame with row names
 # returns a data frame with 3 columns .row, .col, value
-.df_strech <- function(data) {
+.df_stretch <- function(data) {
   .col.names <- colnames(data)
   .row.names <- rownames(data)
   data <- data %>%
     dplyr::mutate(.row = .row.names) %>%
     dplyr::select(.row, dplyr::everything())
 
-  # Sretch the data into three columns
+  # Stretch the data into three columns
   .col <- .row <- NULL
   data <- data %>%
     tidyr::pivot_longer(
@@ -284,7 +284,7 @@ ggballoonplot <- function(
   all(apply(x, 2, is.numeric))
 }
 
-# For tible data. The first column should be row names
+# For tibble data. The first column should be row names
 .is_correct_tbl <- function(x) {
   ok <- FALSE
   if (inherits(x, "tbl_df")) ok <- TRUE

@@ -84,8 +84,8 @@ unique legend will be created for arranged plots.}
 legend.}
 }
 \value{
-return an object of class \code{ggarrange}, which is a ggplot or a
-  list of ggplot.
+an object of class \code{ggarrange}, which is a ggplot or a
+  list of ggplots.
 }
 \description{
 Arrange multiple ggplots on the same page. Wrapper around

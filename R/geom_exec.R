@@ -1,15 +1,15 @@
 #' Execute ggplot2 functions
 #' @description A helper function used by ggpubr functions to execute any geom_*
 #'   functions in ggplot2. Useful only when you want to call a geom_* function
-#'   without carrying about the arguments to put in aes(). Basic users of ggpubr
+#'   without worrying about the arguments to put in aes(). Basic users of ggpubr
 #'   don't need this function.
 #' @param geomfunc a ggplot2 function (e.g.: geom_point)
 #' @param data a data frame to be used for mapping
 #' @param position Position adjustment, either as a string, or the result of a
 #'   call to a position adjustment function.
 #' @param ... arguments accepted by the function
-#' @return return a plot if geomfunc!=Null or a list(option, mapping) if
-#'   geomfunc = NULL.
+#' @return a plot if geomfunc != NULL or a list(option, mapping) if
+#'   geomfunc is NULL.
 #' @examples
 #' \dontrun{
 #' ggplot() +

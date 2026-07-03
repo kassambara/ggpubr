@@ -55,7 +55,7 @@ NULL
 #' @param line.color color of the horizontal threshold lines (the central line
 #'   at 0 and the two fold-change cutoff lines). Default is "black".
 #' @param ... other arguments to be passed to \code{\link{ggpar}}.
-#' @return returns a ggplot.
+#' @return a ggplot.
 #' @examples
 #' data(diff_express)
 #'

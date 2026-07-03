@@ -17,13 +17,13 @@ call to a position adjustment function.}
 \item{...}{arguments accepted by the function}
 }
 \value{
-return a plot if geomfunc!=Null or a list(option, mapping) if
-  geomfunc = NULL.
+a plot if geomfunc != NULL or a list(option, mapping) if
+  geomfunc is NULL.
 }
 \description{
 A helper function used by ggpubr functions to execute any geom_*
   functions in ggplot2. Useful only when you want to call a geom_* function
-  without carrying about the arguments to put in aes(). Basic users of ggpubr
+  without worrying about the arguments to put in aes(). Basic users of ggpubr
   don't need this function.
 }
 \examples{

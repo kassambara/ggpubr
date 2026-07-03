@@ -118,7 +118,7 @@ ggballoonplot(data,
 ) +
   gradient_fill(c("blue", "white", "red"))
 
-# Streched contingency table
+# Stretched contingency table
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 # Create an Example Data Frame Containing Car x Color data

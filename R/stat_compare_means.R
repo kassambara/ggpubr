@@ -1,7 +1,7 @@
 #' @include utilities.R utilities_label.R utils_stat_test_label.R p_format_utils.R
 NULL
 #' Add Mean Comparison P-values to a ggplot
-#' @description Add mean comparison p-values to a ggplot, such as box blots, dot
+#' @description Add mean comparison p-values to a ggplot, such as box plots, dot
 #'  plots and stripcharts.
 #' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer

@@ -2,18 +2,18 @@
 #' @importFrom dplyr pull
 #' @importFrom glue glue
 NULL
-#' Add Manually P-values to a ggplot
+#' Add P-values Manually to a ggplot
 #'
-#' @description Add manually p-values to a ggplot, such as box blots, dot plots
+#' @description Add p-values manually to a ggplot, such as box plots, dot plots
 #'  and stripcharts. Frequently asked questions are available on \href{https://www.datanovia.com/en/blog/tag/ggpubr/}{Datanovia ggpubr FAQ page}, for example:
 #'  \itemize{
-#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-basic-ggplots/}{How to Add P-Values onto Basic GGPLOTS}
+#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-basic-ggplots/}{How to Add P-Values onto Basic GGPlots}
 #'  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-adjusted-p-values-to-a-multi-panel-ggplot/}{How to Add Adjusted P-values to a Multi-Panel GGPlot}
-#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-to-ggplot-facets/}{How to Add P-values to GGPLOT Facets}
-#'  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-p-values-generated-elsewhere-to-a-ggplot/}{How to Add P-Values Generated Elsewhere to a GGPLOT}
-#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-a-grouped-ggplot-using-the-ggpubr-r-package/}{How to Add P-Values onto a Grouped GGPLOT using the GGPUBR R Package}
+#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-to-ggplot-facets/}{How to Add P-values to GGPlot Facets}
+#'  \item \href{https://www.datanovia.com/en/blog/ggpubr-how-to-add-p-values-generated-elsewhere-to-a-ggplot/}{How to Add P-Values Generated Elsewhere to a GGPlot}
+#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-a-grouped-ggplot-using-the-ggpubr-r-package/}{How to Add P-Values onto a Grouped GGPlot using the ggpubr R Package}
 #'  \item \href{https://www.datanovia.com/en/blog/how-to-create-stacked-bar-plots-with-error-bars-and-p-values/}{How to Create Stacked Bar Plots with Error Bars and P-values}
-#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-horizontal-ggplots/}{How to Add P-Values onto Horizontal GGPLOTS}
+#'  \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-onto-horizontal-ggplots/}{How to Add P-Values onto Horizontal GGPlots}
 #'  }
 #' @inheritParams geom_bracket
 #' @param data a data frame containing statistical test results. The expected
@@ -96,7 +96,7 @@ NULL
 #' )
 #' stat.test
 #'
-#' # Add manually p-values from stat.test data
+#' # Add p-values manually from stat.test data
 #' # First specify the y.position of each comparison
 #' stat.test <- stat.test %>%
 #'   mutate(y.position = c(29, 35, 39))

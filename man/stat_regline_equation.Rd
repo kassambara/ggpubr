@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat_regline_equation.R
 \name{stat_regline_equation}
 \alias{stat_regline_equation}
-\title{Add Regression Line Equation and R-Square to a GGPLOT.}
+\title{Add Regression Line Equation and R-Square to a GGPlot.}
 \usage{
 stat_regline_equation(
   mapping = NULL,

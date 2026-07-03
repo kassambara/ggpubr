@@ -7,7 +7,7 @@ NULL
 # by Pedro J. Aphalo. For an actively maintained version with additional features and
 # bug fixes, see the 'ggpmisc' package.
 
-#' Add Regression Line Equation and R-Square to a GGPLOT.
+#' Add Regression Line Equation and R-Square to a GGPlot.
 #' @description Add regression line equation and R^2 to a ggplot. Regression
 #'  model is fitted using the function \code{\link[stats]{lm}}.
 #' @inheritParams ggpubr-common-params

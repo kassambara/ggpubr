@@ -78,7 +78,7 @@ keep_only_tbl_df_classes <- function(x) {
 # geomfunc : gem_*() functions
 # data data for mapping
 # ... argument accepeted by the function
-# return a plot if geomfunc!=Null or a list(option, mapping) if  geomfunc = NULL
+# return a plot if geomfunc != NULL or a list(option, mapping) if geomfunc is NULL
 .geom_exec <- function(geomfunc = NULL, data = NULL,
                        position = NULL, ...) {
   geom_exec(geomfunc = geomfunc, data = data, position = position, ...)
@@ -867,7 +867,7 @@ keep_only_tbl_df_classes <- function(x) {
   # Special case for density and histograms:
   # x are variables and y is ..count.. or ..density..
   # after merging ggpubr add a new column .y. which hold x variables
-  # User might want to color by x variables as follow color = ".x." and
+  # User might want to color by x variables as follows: color = ".x." and
   # he aren't aware that the column is ".y." --> so we should translate this (see from line 1055)
 
   user.add.color <- add.params$color

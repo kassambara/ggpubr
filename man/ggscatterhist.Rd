@@ -104,7 +104,7 @@ hide ylab.}
 \item{...}{other arguments passed to the function \code{\link{ggscatter}()}.}
 }
 \value{
-an object of class \code{ggscatterhist}, which is list of ggplots,
+an object of class \code{ggscatterhist}, which is a list of ggplots,
  including the following elements: \itemize{\item sp: main scatter plot;
  \item xplot: marginal x-axis plot; \item yplot: marginal y-axis plot. }.
 

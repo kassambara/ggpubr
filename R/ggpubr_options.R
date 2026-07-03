@@ -1,4 +1,4 @@
-#' Global Options for GGPubr
+#' Global Options for ggpubr
 #' @description Displays allowed global options in ggpubr.
 #' @examples
 #'

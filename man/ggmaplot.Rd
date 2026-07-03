@@ -110,7 +110,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 \item{...}{other arguments to be passed to \code{\link{ggpar}}.}
 }
 \value{
-returns a ggplot.
+a ggplot.
 }
 \description{
 Make MA-plot which is a scatter plot of log2 fold changes (M, on

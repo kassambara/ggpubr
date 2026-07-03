@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggpubr_options.R
 \name{ggpubr_options}
 \alias{ggpubr_options}
-\title{Global Options for GGPubr}
+\title{Global Options for ggpubr}
 \usage{
 ggpubr_options()
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat_central_tendency.R
 \name{stat_central_tendency}
 \alias{stat_central_tendency}
-\title{Add Central Tendency Measures to a GGPLot}
+\title{Add Central Tendency Measures to a GGPlot}
 \usage{
 stat_central_tendency(
   mapping = NULL,
@@ -90,11 +90,11 @@ Add central tendency measures (mean, median, mode) to density
   and histogram plots created using ggplots.
 
   Note that, normally, the mode is used for categorical data where we wish to
-  know which is the most common category. Therefore, we can have have two or
+  know which is the most common category. Therefore, we can have two or
   more values that share the highest frequency. This might be problematic for
-  continuous variable.
+  a continuous variable.
 
-  For continuous variable, we can consider using mean or median as the
+  For a continuous variable, we can consider using mean or median as the
   measures of the central tendency.
 }
 \examples{

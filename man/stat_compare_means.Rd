@@ -236,7 +236,7 @@ shouldn't inherit behaviour from the default plot specification. Set to
 \code{\link[ggplot2:geom_text]{geom_label}}.}
 }
 \description{
-Add mean comparison p-values to a ggplot, such as box blots, dot
+Add mean comparison p-values to a ggplot, such as box plots, dot
  plots and stripcharts.
 }
 \details{

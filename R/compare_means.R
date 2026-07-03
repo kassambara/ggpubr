@@ -77,7 +77,7 @@ NULL
 #'  show exact values. If provided, overrides the style default.
 #' @param p.decimal.mark character string to use as the decimal mark. If NULL,
 #'  uses \code{getOption("OutDec")}.
-#' @return return a data frame with the following columns:
+#' @return a data frame with the following columns:
 #' \itemize{
 #' \item \code{.y.}: the y variable used in the test.
 #' \item \code{group1,group2}: the compared groups in the pairwise tests.

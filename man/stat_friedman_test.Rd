@@ -176,7 +176,7 @@ as described in \code{?plotmath}.}
 }
 \description{
 Add automatically Friedman test p-values to a ggplot, such as
- box blots, dot plots and stripcharts.
+box plots, dot plots and stripcharts.
 }
 \section{Computed variables}{
  \itemize{

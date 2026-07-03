@@ -24,7 +24,7 @@ NULL
 #'  \code{\link{theme_pubr}()}.
 #' @param print logical value. If \code{TRUE} (default), print the plot.
 #' @param ... other arguments passed to the function \code{\link{ggscatter}()}.
-#' @return an object of class \code{ggscatterhist}, which is list of ggplots,
+#' @return an object of class \code{ggscatterhist}, which is a list of ggplots,
 #'  including the following elements: \itemize{\item sp: main scatter plot;
 #'  \item xplot: marginal x-axis plot; \item yplot: marginal y-axis plot. }.
 #'
@@ -83,8 +83,8 @@ ggscatterhist <- function(
 ) {
   if (!has_cowplot_v0.9()) {
     warning("Install the latest developmental version of cowplot on github ",
-      "to fully use all the feature of ggscatterhist",
-      .call = FALSE
+      "to fully use all the features of ggscatterhist",
+      call. = FALSE
     )
     # margin.space = TRUE
   }
@@ -292,7 +292,7 @@ has_cowplot_v0.9 <- function() {
   )
 }
 
-.check_margin_params <- function(params, data, color = "black", fill = NA, linetype = "slid") {
+.check_margin_params <- function(params, data, color = "black", fill = NA, linetype = "solid") {
   if (is.null(params$color)) {
     if (color %in% colnames(data)) {
       col.val <- dplyr::pull(data, color)

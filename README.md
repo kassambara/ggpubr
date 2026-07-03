@@ -10,13 +10,13 @@ Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](h
 
 [ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an
 excellent and flexible package for elegant data visualization in R.
-However the default generated plots requires some formatting before we
+However the default generated plots require some formatting before we
 can send them for publication. Furthermore, to customize a ggplot, the
 syntax is opaque and this raises the level of difficulty for researchers
 with no advanced R programming skills.
 
 The 'ggpubr' package provides some easy-to-use functions for creating
-and customizing 'ggplot2'- based publication ready plots.
+and customizing 'ggplot2'-based publication ready plots.
 
 Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
 
@@ -36,14 +36,14 @@ Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
 ## Installation and loading
 
 - Install from [CRAN](https://cran.r-project.org/package=ggpubr) as
-  follow:
+  follows:
 
 ``` r
 install.packages("ggpubr")
 ```
 
 - Or, install the latest version from
-  [GitHub](https://github.com/kassambara/ggpubr) as follow:
+  [GitHub](https://github.com/kassambara/ggpubr) as follows:
 
 ``` r
 # Install
@@ -181,8 +181,8 @@ done globally, but not by groups.
 ggbarplot(dfm, x = "name", y = "mpg",
           fill = "cyl",               # change fill color by cyl
           color = "white",            # Set bar border colors to white
-          palette = "jco",            # jco journal color palett. see ?ggpar
-          sort.val = "desc",          # Sort the value in dscending order
+          palette = "jco",            # jco journal color palette. see ?ggpar
+          sort.val = "desc",          # Sort the value in descending order
           sort.by.groups = FALSE,     # Don't sort inside each group
           x.text.angle = 90           # Rotate vertically x axis texts
           )
@@ -196,8 +196,8 @@ Sort bars inside each group. Use the argument **sort.by.groups = TRUE**.
 ggbarplot(dfm, x = "name", y = "mpg",
           fill = "cyl",               # change fill color by cyl
           color = "white",            # Set bar border colors to white
-          palette = "jco",            # jco journal color palett. see ?ggpar
-          sort.val = "asc",           # Sort the value in dscending order
+          palette = "jco",            # jco journal color palette. see ?ggpar
+          sort.val = "asc",           # Sort the value in ascending order
           sort.by.groups = TRUE,      # Sort inside each group
           x.text.angle = 90           # Rotate vertically x axis texts
           )
@@ -235,7 +235,7 @@ Create an ordered barplot, colored according to the level of mpg:
 ggbarplot(dfm, x = "name", y = "mpg_z",
           fill = "mpg_grp",           # change fill color by mpg_level
           color = "white",            # Set bar border colors to white
-          palette = "jco",            # jco journal color palett. see ?ggpar
+          palette = "jco",            # jco journal color palette. see ?ggpar
           sort.val = "asc",           # Sort the value in ascending order
           sort.by.groups = FALSE,     # Don't sort inside each group
           x.text.angle = 90,          # Rotate vertically x axis texts
@@ -253,7 +253,7 @@ Rotate the plot: use rotate = TRUE and sort.val = "desc"
 ggbarplot(dfm, x = "name", y = "mpg_z",
           fill = "mpg_grp",           # change fill color by mpg_level
           color = "white",            # Set bar border colors to white
-          palette = "jco",            # jco journal color palett. see ?ggpar
+          palette = "jco",            # jco journal color palette. see ?ggpar
           sort.val = "desc",          # Sort the value in descending order
           sort.by.groups = FALSE,     # Don't sort inside each group
           x.text.angle = 90,          # Rotate vertically x axis texts

@@ -5,7 +5,7 @@
 \alias{ggsummarystats}
 \alias{print.ggsummarystats}
 \alias{print.ggsummarystats_list}
-\title{GGPLOT with Summary Stats Table Under the Plot}
+\title{GGPlot with Summary Stats Table Under the Plot}
 \usage{
 ggsummarytable(
   data,
