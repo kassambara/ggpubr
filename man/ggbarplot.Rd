@@ -69,7 +69,7 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}
 
-\item{width}{numeric value between 0 and 1 specifying box width.}
+\item{width}{numeric value between 0 and 1 specifying the width of the plot elements.}
 
 \item{title}{plot main title.}
 
@@ -144,9 +144,7 @@ Used only when sort.val != "none".}
 
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
-Used to control the spacing between boxes of grouped box plots. Applies to
-the box and box-error-bar layers; layers added via \code{add} (e.g.
-"jitter") keep their own default positioning.}
+Used to control the spacing between grouped elements.}
 
 \item{numeric.x.axis}{logical. If TRUE, x axis will be treated as numeric.
 Default is FALSE. Useful, for example, to plot bars at their numeric x

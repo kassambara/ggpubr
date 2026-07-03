@@ -164,9 +164,7 @@ text, making it easier to read.}
 
 \item{position}{position adjustment, either as a string, or the result of a
 call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
-Used to control the spacing between boxes of grouped box plots. Applies to
-the box and box-error-bar layers; layers added via \code{add} (e.g.
-"jitter") keep their own default positioning.}
+Used to control the spacing between grouped elements.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

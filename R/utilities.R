@@ -1085,9 +1085,9 @@ keep_only_tbl_df_classes <- function(x) {
       mean(data[[x]], na.rm = TRUE),
       stats::median(data[[x]], na.rm = TRUE)
     )
-    # ggpubr requires ggplot2 (>= 3.5.2); geom_vline takes `linewidth`, not the
-    # deprecated `size`. Only pass it when set, so the default width is used
-    # otherwise (avoids an "empty aesthetic" warning when no width is supplied).
+    # geom_vline takes `linewidth`, not the deprecated `size` (ggplot2 >= 3.4.0).
+    # Only pass it when set, so the default width is used otherwise (avoids an
+    # "empty aesthetic" warning when no width is supplied).
     width_opt <- if (!is.null(size)) list(linewidth = size) else list()
     p <- p + do.call(
       ggplot2::geom_vline,

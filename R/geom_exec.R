@@ -98,8 +98,13 @@ geom_exec <- function(geomfunc = NULL, data = NULL,
     return(FALSE)
   }
 
-  # Auto-convert size to linewidth for line-based geoms
-  if (is_line_geom(geomfunc) && "size" %in% names(params) && !"linewidth" %in% names(params)) {
+  # Auto-convert size to linewidth for line-based geoms. A `linewidth` that was
+  # passed but is NULL must not block the conversion: callers forward
+  # `linewidth = <maybe-NULL>` alongside `size`, and a named NULL is dropped
+  # later anyway (see the NULL check in the loop below).
+  if (is_line_geom(geomfunc) && "size" %in% names(params) &&
+      (!"linewidth" %in% names(params) || is.null(params[["linewidth"]]))) {
+    params[["linewidth"]] <- NULL
     names(params)[names(params) == "size"] <- "linewidth"
   }
 
