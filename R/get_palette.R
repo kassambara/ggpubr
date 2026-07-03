@@ -1,6 +1,6 @@
 #' Generate Color Palettes
 #'
-#' @description Generate a palette of k colors from ggsci palettes, RColorbrewer
+#' @description Generate a palette of k colors from ggsci palettes, RColorBrewer
 #'  palettes and custom color palettes. Useful to extend RColorBrewer and ggsci to support more colors.
 #' @param palette Color palette. Allowed values include: \itemize{ \item
 #'  \strong{Grey color palettes}: "grey" or "gray"; \item \strong{RColorBrewer

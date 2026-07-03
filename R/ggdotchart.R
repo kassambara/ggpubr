@@ -227,12 +227,10 @@ ggdotchart_core <- function(data, x, y, group = NULL,
       option$linewidth <- add.params$size
     }
 
-    if ("linewidth" %in% names(formals(ggplot2::geom_linerange))) {
-      option$size <- NULL
-    } else {
-      if (is.null(option$size) && !is.null(option$linewidth)) option$size <- option$linewidth
-      option$linewidth <- NULL
-    }
+    # ggpubr requires ggplot2 (>= 3.5.2); geom_linerange takes `linewidth`, not the
+    # deprecated `size`. Migrate any size value to linewidth, then drop size.
+    if (is.null(option$linewidth) && !is.null(option$size)) option$linewidth <- option$size
+    option$size <- NULL
 
     option[["mapping"]] <- create_aes(mapping)
     p <- p + do.call(geom_linerange, option)

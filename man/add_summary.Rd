@@ -64,7 +64,7 @@ frame with variables ymin, y, and ymax. Allowed values are one of: "mean",
 
 \item{color}{point or outline color.}
 
-\item{fill}{fill color. Used only whne \code{error.plot = "crossbar"}.}
+\item{fill}{fill color. Used only when \code{error.plot = "crossbar"}.}
 
 \item{group}{grouping variable. Allowed values are 1 (for one group) or a
 character vector specifying the name of the grouping variable. Used only for

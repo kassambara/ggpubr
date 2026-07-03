@@ -70,7 +70,7 @@ NULL
 #' @param tip.length numeric vector with the fraction that the bracket tips go
 #'  down to indicate the precise column. Default is 0.03. Can be of
 #'  same length as the number of comparisons to adjust specifically the tip
-#'  lenth of each comparison. For example tip.length = c(0.01, 0.03).
+#'  length of each comparison. For example tip.length = c(0.01, 0.03).
 #'
 #'  If too short they will be recycled.
 #'

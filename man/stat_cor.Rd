@@ -113,11 +113,6 @@ decimal point in the correlation coefficient (e.g., \code{"0.73"} vs
 \code{".73"}). Default (NULL) keeps the leading zero; set to \code{FALSE}
 for APA-style reporting.}
 
-\item{p.coef.name}{character. Symbol used for the p-value label. Default is
-\code{"p"}; use \code{"P"} for an uppercase p-value label. For
-\code{output.type = "expression"} this should be a single valid plotmath
-symbol (e.g. \code{"P"}), since it is parsed as an expression.}
-
 \item{p.format.style}{character specifying the p-value formatting style.
 One of "default", "apa", "nejm", "lancet", "ama", "graphpad", "scientific".
 Default is "default" for backward compatibility.}
@@ -127,6 +122,11 @@ point (e.g., "0.05" vs ".05"). If NULL, uses the style's default setting.}
 
 \item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
 uses \code{getOption("OutDec")}.}
+
+\item{p.coef.name}{character. Symbol used for the p-value label. Default is
+\code{"p"}; use \code{"P"} for an uppercase p-value label. For
+\code{output.type = "expression"} this should be a single valid plotmath
+symbol (e.g. \code{"P"}), since it is parsed as an expression.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
@@ -183,7 +183,7 @@ Add correlation coefficients with p-values to a scatter plot. Can
  \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
  for the correlation coefficient} \item{rr.label}{formatted label for the
  squared correlation coefficient} \item{p.label}{label for the p-value}
- \item{label}{default labeldisplayed by \code{stat_cor()}} }
+ \item{label}{default label displayed by \code{stat_cor()}} }
 }
 
 \examples{
@@ -230,13 +230,13 @@ sp + stat_cor(aes(color = cyl), label.x = 3)
 }
 \references{
 \code{stat_cor()}'s label-positioning logic was adapted from
-\code{stat_correlation()} / \code{stat_poly_eq()} in the 'ggpmisc' package by
-Pedro J. Aphalo. For an actively maintained correlation statistic with more features,
-see \code{ggpmisc::stat_correlation()}.
+ \code{stat_correlation()} / \code{stat_poly_eq()} in the 'ggpmisc' package by
+ Pedro J. Aphalo. For an actively maintained correlation statistic with more features,
+ see \code{ggpmisc::stat_correlation()}.
 }
 \seealso{
 \code{\link{ggscatter}}. For an alternative implementation with more
-control over label positioning (native NPC coordinates, per-group vertical and
-horizontal steps), see \code{ggpmisc::stat_correlation()}, from which some of
-the label-positioning logic in \code{stat_cor()} was originally adapted.
+ control over label positioning (native NPC coordinates, per-group vertical and
+ horizontal steps), see \code{ggpmisc::stat_correlation()}, from which some of
+ the label-positioning logic in \code{stat_cor()} was originally adapted.
 }

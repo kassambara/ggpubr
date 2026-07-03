@@ -14,7 +14,7 @@ yscale(.scale, .format = FALSE)
 \item{.scale}{axis scale. Allowed values are one of c("none", "log2", "log10",
 "sqrt", "percent", "dollar", "scientific"); e.g.: .scale="log2".}
 
-\item{.format}{ogical value. If TRUE, axis tick mark labels will be formatted
+\item{.format}{logical value. If TRUE, axis tick mark labels will be formatted
 when .scale  = "log2" or "log10".}
 }
 \description{

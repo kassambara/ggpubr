@@ -116,7 +116,7 @@ when add != "none" and add contains one "mean_*" or "med_*" where "*" = sd,
 se, ....}
 
 \item{label}{specify whether to add labels on the bar plot. Allowed values
-are: \itemize{ \item \strong{logical value}: If TRUE, y values is added as
+are: \itemize{ \item \strong{logical value}: If TRUE, y values are added as
 labels on the bar plot \item \strong{character vector}: Used as text
 labels; must be the same length as y. }}
 
@@ -142,24 +142,17 @@ Used only when sort.val != "none".}
 
 \item{top}{a numeric value specifying the number of top elements to be shown.}
 
+\item{position}{position adjustment, either as a string, or the result of a
+call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
+Used to control the spacing between boxes of grouped box plots. Applies to
+the box and box-error-bar layers; layers added via \code{add} (e.g.
+"jitter") keep their own default positioning.}
+
 \item{numeric.x.axis}{logical. If TRUE, x axis will be treated as numeric.
 Default is FALSE. Useful, for example, to plot bars at their numeric x
 positions (e.g. a time axis) instead of at equally-spaced discrete
 categories. Ignored when \code{order} is set or \code{sort.val != "none"},
 which require a discrete x axis.}
-
-\item{position}{A position adjustment to use on the data for this layer. This
-can be used in various ways, including to prevent overplotting and
-improving the display. The \code{position} argument accepts the following:
-\itemize{
-\item The result of calling a position function, such as \code{position_jitter()}.
-This method allows for passing extra arguments to the position.
-\item A string naming the position adjustment. To give the position as a
-string, strip the function name of the \code{position_} prefix. For example,
-to use \code{position_jitter()}, give the position as \code{"jitter"}.
-\item For more information and other ways to specify the position, see the
-\link[ggplot2:layer_positions]{layer position} documentation.
-}}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

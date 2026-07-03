@@ -87,7 +87,7 @@ variables. Allowed values include "holm", "hochberg", "hommel",
 "bonferroni", "BH", "BY", "fdr", "none". If you don't want to adjust the p
 value (not recommended), use p.adjust.method = "none".}
 
-\item{significance}{a list of arguments specifying the signifcance cutpoints
+\item{significance}{a list of arguments specifying the significance cutpoints
  and symbols. For example, \code{significance <- list(cutpoints = c(0,
  0.0001, 0.001, 0.01, 0.05, Inf), symbols = c("****", "***", "**", "*",
  "ns"))}.
@@ -180,9 +180,9 @@ Add Kruskal-Wallis test p-values to a ggplot, such as
  \item{p.adj}: Adjusted p-values.
  \item{p.signif}: P-value significance.
  \item{p.adj.signif}: Adjusted p-value significance.
- \item{p.format}: Formated p-value.
- \item{p.format.signif}: Formated p-value with significance symbols.
- \item{p.adj.format}: Formated adjusted p-value.
+ \item{p.format}: Formatted p-value.
+ \item{p.format.signif}: Formatted p-value with significance symbols.
+ \item{p.adj.format}: Formatted adjusted p-value.
  \item{n}: number of samples.
   }
 }

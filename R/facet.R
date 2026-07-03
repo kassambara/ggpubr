@@ -29,7 +29,7 @@ NULL
 #'  panel.labs.background = list(color = "blue", fill = "pink", linetype =
 #'  "dashed", linewidth = 0.5). Note: \code{size} is deprecated, use
 #'  \code{linewidth} instead.
-#' @param panel.labs.font a list of aestheics indicating the size (e.g.: 14), the
+#' @param panel.labs.font a list of aesthetics indicating the size (e.g.: 14), the
 #'  face/style (e.g.: "plain", "bold", "italic", "bold.italic") and the color
 #'  (e.g.: "red") and the orientation angle (e.g.: 45) of panel labels.
 #' @param panel.labs.font.x,panel.labs.font.y same as panel.labs.font but for

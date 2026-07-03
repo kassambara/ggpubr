@@ -7,7 +7,7 @@
 #' }
 #' @param .scale axis scale. Allowed values are one of c("none", "log2", "log10",
 #'  "sqrt", "percent", "dollar", "scientific"); e.g.: .scale="log2".
-#' @param .format ogical value. If TRUE, axis tick mark labels will be formatted
+#' @param .format logical value. If TRUE, axis tick mark labels will be formatted
 #'  when .scale  = "log2" or "log10".
 #'
 #'

@@ -1,6 +1,6 @@
 #' Convert Character Coordinates into Normalized Parent Coordinates (NPC)
 #'
-#' Convert character coordinates to npc units and shift postions to avoid
+#' Convert character coordinates to npc units and shift positions to avoid
 #' overlaps when grouping is active. If numeric validate npc values.
 #'
 #' @param value numeric (in [0-1]) or character vector of coordinates. If

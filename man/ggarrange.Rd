@@ -34,10 +34,6 @@ either ggplot2 plot objects or arbitrary gtables.}
 
 \item{nrow}{(optional) number of rows in the plot grid.}
 
-\item{byrow}{logical. If \code{TRUE} (default), the plots are filled into the
-grid by row; set to \code{FALSE} to fill by column. Passed to
-\code{\link[cowplot]{plot_grid}()}.}
-
 \item{labels}{(optional) list of labels to be added to the plots. You can
 also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
 to auto-generate lower-case labels.}
@@ -71,6 +67,10 @@ example, in a two-column grid, widths = c(2, 1) would make the first column
 twice as wide as the second column.}
 
 \item{heights}{same as \code{widths} but for column heights.}
+
+\item{byrow}{logical. If \code{TRUE} (default), the plots are filled into the
+grid by row; set to \code{FALSE} to fill by column. Passed to
+\code{\link[cowplot]{plot_grid}()}.}
 
 \item{legend}{character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use

@@ -102,7 +102,7 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
     }
   }
   if (is.null(layer)) {
-    stop("Can't find any layer containing statiscal tests")
+    stop("Can't find any layer containing statistical tests")
   }
 
   stat_test <- .build$data[[layer]]

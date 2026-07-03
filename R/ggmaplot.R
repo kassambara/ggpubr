@@ -24,7 +24,7 @@ NULL
 #'
 #'  \itemize{ \item baseMean: the mean expression of genes in the two groups.
 #'  \item log2FoldChange: the log2 fold changes of group 2 compared to group 1
-#'  \item padj: the adjusted p-value of the used statiscal test. }
+#'  \item padj: the adjusted p-value of the used statistical test. }
 #' @param fdr Accepted false discovery rate for considering genes as
 #'  differentially expressed.
 #' @param fc the fold change threshold. Only genes with a fold change >= fc and
@@ -36,7 +36,7 @@ NULL
 #'  detection_call = c(1, 1, 0, 1, 0, 1). Default is NULL. If detection_call
 #'  column is available in data, it will be used.
 #' @param size points size.
-#' @param alpha numeric value betwenn 0 an 1 specifying point alpha for
+#' @param alpha numeric value between 0 and 1 specifying point alpha for
 #'  controlling transparency. For example, use alpha = 0.5.
 #' @param seed Random seed passed to \code{set.seed}. if
 #'  \code{NA}, set.seed will not be called. Default is 42 for reproducibility.
@@ -198,8 +198,14 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
 
   # Plot
   mean <- lfc <- sig <- name <- padj <- NULL
-  p <- ggplot(data, aes(x = mean, y = lfc)) +
-    geom_point(aes(color = sig), size = size, alpha = alpha)
+  # `size` defaults to NULL; passing it as an empty aesthetic warns, so only set
+  # it when the user supplied a value (NULL keeps ggplot2's default point size).
+  p <- ggplot(data, aes(x = mean, y = lfc))
+  if (is.null(size)) {
+    p <- p + geom_point(aes(color = sig), alpha = alpha)
+  } else {
+    p <- p + geom_point(aes(color = sig), size = size, alpha = alpha)
+  }
 
   max.overlaps <- getOption("ggrepel.max.overlaps", default = Inf)
 

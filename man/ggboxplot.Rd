@@ -159,7 +159,7 @@ specifying some labels to show. \item a list containing one or the
 combination of the following components: \itemize{ \item \code{top.up} and
 \code{top.down}: to display the labels  of the top up/down points. For
 example, \code{label.select = list(top.up = 10, top.down = 4)}. \item
-\code{criteria}: to filter, for example, by x and y variabes values, use
+\code{criteria}: to filter, for example, by x and y variables values, use
 this: \code{label.select = list(criteria = "`y` > 2 & `y` < 5 & `x` \%in\%
 c('A', 'B')")}. } }}
 
@@ -170,10 +170,10 @@ text labels or not.}
 text, making it easier to read.}
 
 \item{position}{position adjustment, either as a string, or the result of a
-call to a position adjustment function (e.g. \code{position_dodge(0.8)}). Used
-to control the spacing between boxes of grouped box plots. Applies to the box
-and box-error-bar layers; layers added via \code{add} (e.g. "jitter") keep
-their own default positioning.}
+call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
+Used to control the spacing between boxes of grouped box plots. Applies to
+the box and box-error-bar layers; layers added via \code{add} (e.g.
+"jitter") keep their own default positioning.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),

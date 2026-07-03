@@ -45,7 +45,7 @@ NULL
 #' @param alpha numeric value specifying fill color transparency.
 #' Value should be in [0, 1], where 0 is full transparency and 1 is no transparency.
 #' @param at.row a numeric vector of row indexes; for example \code{at.row = c(1, 2)}.
-#' @param row.side row side to which the horinzotal line should be added. Can be one of \code{c("bottom", "top")}.
+#' @param row.side row side to which the horizontal line should be added. Can be one of \code{c("bottom", "top")}.
 #' @param from.column integer indicating the column from which to start drawing the horizontal line.
 #' @param to.column integer indicating the column to which the horizontal line should end.
 #' @param linetype line type

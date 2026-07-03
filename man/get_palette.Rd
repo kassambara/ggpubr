@@ -22,7 +22,7 @@ e.g.: "npg", "aaas", "lancet", "jco", "ucscgb", "uchicago", "simpsons" and
 Returns a vector of color palettes.
 }
 \description{
-Generate a palette of k colors from ggsci palettes, RColorbrewer
+Generate a palette of k colors from ggsci palettes, RColorBrewer
  palettes and custom color palettes. Useful to extend RColorBrewer and ggsci to support more colors.
 }
 \details{

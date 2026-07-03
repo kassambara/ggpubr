@@ -190,7 +190,7 @@ ggbarplot(dfm, x = "name", y = "mpg",
 
 ### Deviation graphs
 
-The deviation graph shows the deviation of quantitatives values to a reference value. In the R code below, we'll plot the mpg z-score from the mtcars dataset.
+The deviation graph shows the deviation of quantitative values to a reference value. In the R code below, we'll plot the mpg z-score from the mtcars dataset.
 
 
 Calculate the z-score of the mpg data:
@@ -264,7 +264,7 @@ ggdotchart(dfm, x = "name", y = "mpg",
 
 
 
-- Sort in decending order. **sorting = "descending"**.
+- Sort in descending order. **sorting = "descending"**.
 - Rotate the plot vertically, using **rotate = TRUE**.
 - Sort the mpg value inside each group by using **group = "cyl"**.
 - Set **dot.size** to 6.

@@ -40,7 +40,7 @@ A numeric vector with values in the range [0-1] representing npc
   coordinates.
 }
 \description{
-Convert character coordinates to npc units and shift postions to avoid
+Convert character coordinates to npc units and shift positions to avoid
 overlaps when grouping is active. If numeric validate npc values.
 }
 \details{

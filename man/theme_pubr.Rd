@@ -64,12 +64,12 @@ axis.}
 }
 \details{
 \code{theme_pubr()} sets \code{strip.clip = "off"} so that the facet
-strip background border is drawn at its full width (with the ggplot2 default
-\code{strip.clip = "on"} the border is clipped to the strip area and renders
-thinner than requested). As a side effect, a facet label that is wider than
-its panel will overflow the strip instead of being truncated; if that is a
-problem for very long labels, restore clipping with
-\code{+ theme(strip.clip = "on")}.
+ strip background border is drawn at its full width (with the ggplot2 default
+ \code{strip.clip = "on"} the border is clipped to the strip area and renders
+ thinner than requested). As a side effect, a facet label that is wider than
+ its panel will overflow the strip instead of being truncated; if that is a
+ problem for very long labels, restore clipping with
+ \code{+ theme(strip.clip = "on")}.
 }
 \examples{
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +

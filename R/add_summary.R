@@ -12,7 +12,7 @@ NULL
 #'  "lower_errorbar", "upper_pointrange", "lower_pointrange", "upper_linerange",
 #'  "lower_linerange")}. Default value is "pointrange".
 #' @param color point or outline color.
-#' @param fill fill color. Used only whne \code{error.plot = "crossbar"}.
+#' @param fill fill color. Used only when \code{error.plot = "crossbar"}.
 #' @param group grouping variable. Allowed values are 1 (for one group) or a
 #'  character vector specifying the name of the grouping variable. Used only for
 #'  adding statistical summary per group.

@@ -106,13 +106,6 @@ labelled only by variable grouping levels.}
 \item{trim}{If \code{TRUE} (default), trim the tails of the violins
 to the range of the data. If \code{FALSE}, don't trim the tails.}
 
-\item{size}{Numeric value (e.g.: size = 1). change the size of points and
-outlines.}
-
-\item{linewidth}{constant value specifying the line width.}
-
-\item{width}{violin width.}
-
 \item{drop}{logical, passed to \code{\link[ggplot2]{geom_violin}()}. When
 \code{TRUE} (the default, unchanged behavior), grouped sub-samples with fewer
 than two data points (for which no density can be computed) are dropped,
@@ -123,6 +116,13 @@ longer line up with other layers (e.g. added boxplots or dot plots). Set
 empty dodge lane so the violins stay aligned with the other geoms. Both are
 needed: \code{drop = FALSE} keeps the sparse group and \code{preserve =
 "single"} keeps its lane width (#381).}
+
+\item{size}{Numeric value (e.g.: size = 1). change the size of points and
+outlines.}
+
+\item{linewidth}{constant value specifying the line width.}
+
+\item{width}{violin width.}
 
 \item{quantiles}{numeric vector of quantiles to draw on the violin.}
 
@@ -173,7 +173,7 @@ specifying some labels to show. \item a list containing one or the
 combination of the following components: \itemize{ \item \code{top.up} and
 \code{top.down}: to display the labels  of the top up/down points. For
 example, \code{label.select = list(top.up = 10, top.down = 4)}. \item
-\code{criteria}: to filter, for example, by x and y variabes values, use
+\code{criteria}: to filter, for example, by x and y variables values, use
 this: \code{label.select = list(criteria = "`y` > 2 & `y` < 5 & `x` \%in\%
 c('A', 'B')")}. } }}
 
@@ -183,18 +183,11 @@ text labels or not.}
 \item{label.rectangle}{logical value. If TRUE, add rectangle underneath the
 text, making it easier to read.}
 
-\item{position}{A position adjustment to use on the data for this layer. This
-can be used in various ways, including to prevent overplotting and
-improving the display. The \code{position} argument accepts the following:
-\itemize{
-\item The result of calling a position function, such as \code{position_jitter()}.
-This method allows for passing extra arguments to the position.
-\item A string naming the position adjustment. To give the position as a
-string, strip the function name of the \code{position_} prefix. For example,
-to use \code{position_jitter()}, give the position as \code{"jitter"}.
-\item For more information and other ways to specify the position, see the
-\link[ggplot2:layer_positions]{layer position} documentation.
-}}
+\item{position}{position adjustment, either as a string, or the result of a
+call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
+Used to control the spacing between boxes of grouped box plots. Applies to
+the box and box-error-bar layers; layers added via \code{add} (e.g.
+"jitter") keep their own default positioning.}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
