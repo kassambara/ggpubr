@@ -414,7 +414,55 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
           stop(e)
         }
         if (!is.grouped.plots) {
-          return(data.frame())
+          # Non-grouped panel: when the user supplies an explicit list of
+          # comparisons, a single untestable pair (e.g. a group that is entirely
+          # NA, or has < 2 observations) makes the batched rstatix call abort the
+          # WHOLE panel, dropping the valid comparisons too (#542). Retry each
+          # requested comparison on its own and keep the ones that succeed, so
+          # only the untestable pair is dropped. This runs ONLY on the error
+          # path, so panels whose batched test succeeds are unaffected.
+          comparisons <- method.args$comparisons
+          if (is.null(comparisons)) {
+            return(data.frame())
+          }
+          run_one_comparison <- function(pair) {
+            args.one <- method.args
+            args.one$comparisons <- list(pair)
+            tryCatch(do.call(method, args.one), error = function(e) NULL)
+          }
+          per.comparison <- lapply(comparisons, run_one_comparison)
+          kept <- !vapply(per.comparison, is.null, logical(1))
+          if (!any(kept)) {
+            return(data.frame())
+          }
+          if (any(!kept)) {
+            skipped.desc <- vapply(
+              comparisons[!kept],
+              function(p) paste(as.character(p), collapse = " vs "),
+              character(1)
+            )
+            message(
+              "geom_pwc(): skipped ", sum(!kept),
+              " untestable comparison(s): ",
+              paste(skipped.desc, collapse = ", ")
+            )
+          }
+          survivors <- per.comparison[kept]
+          combined <- dplyr::bind_rows(survivors)
+          # bind_rows() drops the rstatix attributes/classes that downstream
+          # steps (get_description(), add_x_position(), ...) rely on; restore
+          # them from the first surviving single-comparison result.
+          first.survivor <- survivors[[1]]
+          attr(combined, "args") <- attr(first.survivor, "args")
+          class(combined) <- class(first.survivor)
+          # Each survivor was tested in its OWN rstatix call, so its p.adj is
+          # just its raw p (multiplicity correction over a single value = none).
+          # Drop it so the downstream adjustment re-computes p.adj across the
+          # surviving set, matching what a single test of only those comparisons
+          # would report (otherwise survivors would show under-adjusted p.adj /
+          # p.adj.signif under the default p.adjust.by = "group").
+          combined$p.adj <- NULL
+          return(combined)
         }
 
         # Retry using only grouped subsets with at least two comparison levels.
