@@ -67,7 +67,7 @@ NULL
 #'   orientation to horizontal.
 #' @param orientation change the orientation of the plot. Allowed values are one
 #'   of c( "vertical", "horizontal", "reverse"). Partial match is allowed.
-#' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
+#' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
 #'   Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'   theme_minimal(), theme_classic(), theme_void(), ....
 #' @param ... not used

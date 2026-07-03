@@ -61,7 +61,7 @@ NULL
 #' @param position position adjustment, either as a string, or the result of a
 #'  call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
 #'  Used to control the spacing between grouped elements.
-#' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr().
+#' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
 #'  Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'  theme_minimal(), theme_classic(), theme_void(), ....
 #' @param ... other arguments to be passed to
@@ -206,6 +206,10 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
   if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
   }
+  # Honor an explicit `ggtheme = NULL` (skip theming). The NULL-filter loop above
+  # drops it like an unset argument, so restore any explicitly passed value here,
+  # keeping an explicit NULL intact via single-bracket list assignment (#561).
+  if (!missing(ggtheme)) .opts["ggtheme"] <- list(ggtheme)
   p <- do.call(.plotter, .opts)
 
   if (.is_list(p) & length(p) == 1) p <- p[[1]]

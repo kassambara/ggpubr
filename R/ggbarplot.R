@@ -236,6 +236,10 @@ ggbarplot <- function(data, x, y, combine = FALSE, merge = FALSE,
   if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
   }
+  # Honor an explicit `ggtheme = NULL` (skip theming). The NULL-filter loop above
+  # drops it like an unset argument, so restore any explicitly passed value here,
+  # keeping an explicit NULL intact via single-bracket list assignment (#561).
+  if (!missing(ggtheme)) .opts["ggtheme"] <- list(ggtheme)
   p <- do.call(.plotter, .opts)
 
   if (.is_list(p) & length(p) == 1) p <- p[[1]]
