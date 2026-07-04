@@ -73,16 +73,39 @@ test_that("id validation rejects unsupported combinations", {
   expect_error(compare_means(value ~ sampleType, d, id = "ID"), "paired = TRUE")
   expect_error(compare_means(value ~ sampleType, d, method = "anova", paired = TRUE, id = "ID"),
                "wilcox.test")
-  expect_error(compare_means(value ~ sampleType, d, paired = TRUE, id = "ID", ref.group = "Normal"),
-               "ref.group")
   expect_error(compare_means(value ~ sampleType, d, paired = TRUE, id = "nope"),
                "can't find")
-  # more than two groups
-  g3 <- data.frame(g = rep(c("A", "B", "C"), each = 4), value = rnorm(12), ID = rep(1:4, 3))
-  expect_error(compare_means(value ~ g, g3, paired = TRUE, id = "ID"), "exactly two")
+  # ref.group = ".all." (basemean) is unsupported with id
+  expect_error(compare_means(value ~ sampleType, d, paired = TRUE, id = "ID", ref.group = ".all."),
+               "\\.all\\.")
   # duplicate id within a group is rejected (by the underlying paired test)
   dup <- data.frame(g = c("A", "A", "B", "B"), value = c(1, 2, 3, 4.5), ID = c(1, 1, 1, 2))
   expect_error(compare_means(value ~ g, dup, method = "t.test", paired = TRUE, id = "ID"))
+})
+
+test_that("id works for pairwise (>2 groups) comparisons, matching rstatix (#560)", {
+  set.seed(3)
+  d <- data.frame(g = rep(c("A", "B", "C"), each = 8),
+                  value = rnorm(24),
+                  ID = c(1:8, sample(1:8), sample(1:8)))  # unsorted
+  got <- compare_means(value ~ g, d, method = "wilcox.test", paired = TRUE, id = "ID")
+  ref <- rstatix::wilcox_test(d, value ~ g, paired = TRUE, id = "ID", p.adjust.method = "none")
+  # same set of comparisons and p-values as a direct rstatix call
+  key <- function(x) paste(x$group1, x$group2, signif(x$p, 6))
+  expect_setequal(key(got), key(ref))
+  expect_equal(nrow(got), 3L)  # A-B, A-C, B-C
+})
+
+test_that("id works together with ref.group (only ref comparisons, matching rstatix)", {
+  set.seed(4)
+  d <- data.frame(g = rep(c("ctrl", "t1", "t2"), each = 8),
+                  value = rnorm(24), ID = c(1:8, sample(1:8), sample(1:8)))
+  got <- compare_means(value ~ g, d, method = "t.test", paired = TRUE, id = "ID", ref.group = "ctrl")
+  expect_equal(nrow(got), 2L)                 # ctrl vs t1, ctrl vs t2
+  expect_true(all(got$group1 == "ctrl"))      # ref is always group1
+  ref <- rstatix::t_test(d, value ~ g, paired = TRUE, id = "ID", ref.group = "ctrl",
+                         p.adjust.method = "none")
+  expect_equal(sort(got$p), sort(ref$p))
 })
 
 test_that("id path works with a non-syntactic (hyphenated) group column (#385 parity)", {

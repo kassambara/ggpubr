@@ -99,13 +99,19 @@
   text-line units, around each plot. Default is `0` (no extra space; each plot
   keeps its own margins, so existing arrangements are unchanged) (#151).
 
-- `compare_means()` gains an `id` argument for paired two-group comparisons.
-  Without it, a paired test (`paired = TRUE`) pairs observations by row order, so
-  the p-value is wrong when the data are not sorted so that the two groups align
-  by subject. Passing `id` (the name of a subject-identifier column) pairs the
-  observations by id instead — row-order independent, using only the complete
-  pairs. Default (`id = NULL`) is unchanged. Supported for a two-group `t.test`
-  or `wilcox.test` (#560).
+- `compare_means()` gains an `id` argument for paired comparisons. Without it, a
+  paired test (`paired = TRUE`) pairs observations by row order, so the p-value is
+  wrong when the data are not sorted so that the compared groups align by subject.
+  Passing `id` (the name of a subject-identifier column) pairs the observations by
+  id instead — row-order independent, using only the complete pairs (via
+  `rstatix`, so the result matches a direct `rstatix::t_test()`/`wilcox_test()`
+  call). It works for a two-group, a pairwise (more than two groups) and a
+  `ref.group` comparison with `t.test`/`wilcox.test`. Default (`id = NULL`) is
+  unchanged (#560).
+
+- The minimum required `rstatix` version is now `>= 1.0.0` (the version that
+  introduced the `id` argument used by `compare_means(id = )`, and the
+  full-precision pairwise p-values relied on by the p-value formatting).
 
 - `geom_pwc()` and `stat_pwc()` gain a `p.adjust.n` argument giving the number of
   comparisons to use for the p-value adjustment (passed as `n` to

@@ -42,7 +42,7 @@ Imports:
     glue,
     polynom,
     rlang (>= 1.1.7),
-    rstatix (>= 0.7.3),
+    rstatix (>= 1.0.0),
     tibble,
     magrittr
 Suggests:
