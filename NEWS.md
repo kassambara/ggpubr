@@ -36,6 +36,13 @@
   matching the error message. This keeps the "skip ref-less subsets" behaviour
   working after `rstatix` made that error message clearer (rstatix #153); older
   `rstatix` versions are still handled via the message fallback.
+- `compare_means()` and `stat_compare_means()` now forward extra test options
+  (e.g. `alternative = "greater"`) to the paired tests aligned by subject `id`,
+  which were previously ignored on that path. Grouped and faceted paired-`id`
+  comparisons also skip a subset that cannot be tested (fewer than two groups or
+  no complete pairs) instead of failing the whole result/layer, while still
+  reporting genuinely ambiguous data (e.g. duplicated ids). Thanks to
+  @erdeyl (#732).
 
 ## P-value formatting
 
