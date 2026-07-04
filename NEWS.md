@@ -183,6 +183,14 @@
   their group. The jitter now dodges by the same width. Plots without a
   `position_dodge()` (the default `position = "identity"`) are unchanged (#436).
 
+- `ggbarplot()` now lines the error bars up with the bars when
+  `position = position_dodge2()` is used. `position_dodge2()` places elements
+  according to their own width, so the thin error bars did not sit on the centre
+  of the wider bars they belong to (most visible with `preserve = "single"` when
+  one x group has fewer bars than another). The error bars are now drawn at the
+  actual bar positions. Other positions (`identity`, `position_dodge()`,
+  `position_stack()`) are unchanged (#363).
+
 - `geom_bracket()` and `stat_pvalue_manual()` now place brackets correctly on a
   transformed y axis (e.g. `scale_y_log10()`). `y.position` is given in data units
   but was previously used directly in the scale's transformed space, so brackets
@@ -334,6 +342,10 @@
 ## Credits
 
 - Contributor: Laszlo Erdey (Faculty of Economics and Business, University of Debrecen, Hungary).
+- Thanks to @gumeo (#418), @byzheng (#608) and @JulesROBIN15 (#625) whose pull
+  requests proposed features shipped in this release: the `stat_cor()`
+  confidence interval, the `stat_cor()` RMSE label, and a manual number of
+  comparisons for p-value adjustment in `geom_pwc()`/`stat_pwc()`.
 
 # ggpubr 0.6.3
 

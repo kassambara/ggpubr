@@ -375,6 +375,32 @@ ggbarplot_core <- function(data, x, y,
         func = .get_summary_func(add), error.plot = error.plot
       )
     }
+  } else if (inherits(position, "PositionDodge2") &&
+             nb.bars.by.xposition >= 2 &&
+             any(.errorbar_functions() %in% add) &&
+             error.plot %in% .narrow_error_plots()) {
+    # position_dodge2() misplaces thin error bars relative to the dodged bars
+    # (#363). Draw any non-error add layers normally, then re-center the error
+    # bars on the actual bar positions.
+    p <- add.params %>%
+      .add_item(add = .remove_errorbar_func(add), position = add.position) %>%
+      do.call(ggadd, .)
+    cap.width <- (add.params$width %||% 0.1) / nb.bars.by.xposition
+    eb <- .geom_dodge2_errorbar(
+      p, data_sum, x, y,
+      color = add.params$color, fill = add.params$fill,
+      group = add.params$group, facet.by = facet.by,
+      func = .get_summary_func(add), error.plot = error.plot,
+      width = cap.width
+    )
+    if (!is.null(eb)) {
+      p <- p + eb
+    } else {
+      # Could not match centres -> keep the standard (unaligned) error layer
+      p <- add.params %>%
+        .add_item(add = .get_summary_func(add), position = add.position) %>%
+        do.call(ggadd, .)
+    }
   } else {
     p <- add.params %>%
       .add_item(add = add, position = add.position) %>%
@@ -487,6 +513,92 @@ ggbarplot_core <- function(data, x, y,
 
 .is_stacked <- function(p) {
   inherits(p$layers[[1]]$position, "PositionStack")
+}
+
+# Error plots that draw as a thin element (vertical line/cap or a point) and so
+# do NOT self-align with the wide bars under position_dodge2(). These are the
+# ones that need the manual re-centering done by .geom_dodge2_errorbar() (#363).
+.narrow_error_plots <- function() {
+  c(
+    "errorbar", "lower_errorbar", "upper_errorbar",
+    "pointrange", "lower_pointrange", "upper_pointrange",
+    "linerange", "lower_linerange", "upper_linerange"
+  )
+}
+
+# Aligned error bars for position_dodge2() bars (#363).
+# position_dodge2() packs elements according to their own width, so a thin error
+# bar is not placed on the centre of the wide bar it belongs to: bars and error
+# bars end up at different x (the reported bug). Here we read the actual dodged
+# bar centres from the built plot and redraw the error layer at those x with
+# position = "identity", so each error bar sits exactly on its bar while keeping
+# a normal thin cap. Only used for position_dodge2(); every other position keeps
+# the standard ggadd() path unchanged. Returns NULL (caller falls back) if the
+# centres cannot be matched.
+.geom_dodge2_errorbar <- function(p, data_sum, x, y, color = NULL, fill = NULL,
+                                  group = NULL, facet.by = NULL, func = "mean_se",
+                                  error.plot = "errorbar", width = 0.1) {
+  legend.var <- intersect(unique(c(color, fill, group)), colnames(data_sum))
+  if (length(legend.var) == 0) return(NULL)
+  legend.var <- legend.var[1]
+
+  # Error limits (centre +/- error), honouring upper_/lower_/both, from data_sum.
+  # Only symmetric summaries whose error half-width is a data_sum column are
+  # handled here (mean_se/sd/ci/range, median_iqr/mad/range). Asymmetric quantile
+  # summaries (median_hilow(_)/median_q1q3) have no such column and are NOT a
+  # centre +/- error, so we bail out (return NULL) and let the caller keep the
+  # standard path, which draws their correct (if unaligned) interval.
+  error <- .get_errorbar_error_func(func)
+  if (is.null(error) || !(error %in% colnames(data_sum))) return(NULL)
+  err.val <- data_sum[[error]]
+  limit <- unlist(strsplit(error.plot, "_", fixed = TRUE))[1]
+  if (!(limit %in% c("upper", "lower"))) limit <- "both"
+  yc <- data_sum[[y]]
+  ds <- data_sum
+  ds$.yc. <- yc
+  ds$.ymin. <- if (limit %in% c("both", "lower")) yc - err.val else yc
+  ds$.ymax. <- if (limit %in% c("both", "upper")) yc + err.val else yc
+
+  # Actual dodged bar centres from the built plot. Faceting is applied later (by
+  # .plotter), so build against a temporarily-faceted copy: dodge2 positions
+  # depend on which groups are present *within each panel*.
+  build.p <- p
+  if (!is.null(facet.by)) build.p <- p + ggplot2::facet_wrap(facet.by)
+  built <- ggplot2::ggplot_build(build.p)
+  bar.layer <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomBar"), logical(1)))
+  if (length(bar.layer) == 0) return(NULL)
+  bd <- built$data[[bar.layer[1]]]
+  bd <- bd[order(bd$PANEL, bd$x), , drop = FALSE]
+
+  # Map each summary row to its panel, then to a bar centre. Bars are laid out
+  # per panel left-to-right by x tick then group; sorting data_sum the same way
+  # aligns it 1:1 with the ordered bar centres (robust to input row order).
+  layout <- built$layout$layout
+  if (!is.null(facet.by) && all(facet.by %in% colnames(layout))) {
+    ds <- dplyr::left_join(ds, layout[, c("PANEL", facet.by), drop = FALSE], by = facet.by)
+  } else {
+    ds$PANEL <- factor(1L)
+  }
+  as.int <- function(v) if (is.factor(v)) as.integer(v) else as.integer(factor(v))
+  ds <- ds[order(as.int(ds$PANEL), as.int(ds[[x]]), as.int(ds[[legend.var]])), , drop = FALSE]
+  if (nrow(ds) != nrow(bd)) return(NULL)
+  ds$.ebx. <- bd$x
+
+  geom.error <- .get_geom_error_function(error.plot)
+  color.is.var <- !is.null(color) && length(color) == 1 && color %in% colnames(ds)
+  if (color.is.var) {
+    mapping <- ggplot2::aes(
+      x = .data$.ebx., ymin = .data$.ymin., ymax = .data$.ymax.,
+      colour = .data[[color]]
+    )
+  } else {
+    mapping <- ggplot2::aes(x = .data$.ebx., ymin = .data$.ymin., ymax = .data$.ymax.)
+  }
+  if (identical(geom.error, ggplot2::geom_pointrange)) mapping$y <- ggplot2::aes(y = .data$.yc.)$y
+  opts <- list(data = ds, mapping = mapping, inherit.aes = FALSE, position = "identity")
+  if (!color.is.var && !is.null(color) && length(color) == 1) opts$colour <- color
+  if (identical(geom.error, ggplot2::geom_errorbar)) opts$width <- width
+  do.call(geom.error, opts)
 }
 
 # remove "mean_se", "mean_sd", etc
