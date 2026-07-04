@@ -70,6 +70,12 @@
     `expression` output).
   - `p.coef.name` — symbol for the p-value label; use `"P"` for an uppercase
     p-value (#541).
+- `stat_cor()` exposes two new computed variables, `rmse` and `rmse.label`, for
+  the root mean square deviation (RMSE/RMSD) between `x` and `y` — useful for
+  reporting agreement between paired measurements on the same scale (e.g.
+  predicted vs. reference values). Display it with
+  `aes(label = after_stat(rmse.label))`, or combine it with the correlation
+  coefficient using `paste()`. The default label is unchanged (#458).
 
 ## New features
 

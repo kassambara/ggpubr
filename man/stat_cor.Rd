@@ -180,10 +180,15 @@ Add correlation coefficients with p-values to a scatter plot. Can
 }
 \section{Computed variables}{
  \describe{ \item{r}{correlation coefficient}
- \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
- for the correlation coefficient} \item{rr.label}{formatted label for the
- squared correlation coefficient} \item{p.label}{label for the p-value}
- \item{label}{default label displayed by \code{stat_cor()}} }
+ \item{rr}{correlation coefficient squared} \item{rmse}{root mean square
+ deviation (RMSE/RMSD) between \code{x} and \code{y}, computed on the complete
+ pairs; meaningful when \code{x} and \code{y} are on the same scale (e.g.
+ predicted vs. reference values). Rounded and formatted with the coefficient
+ settings (\code{r.digits} / \code{r.accuracy}).} \item{r.label}{formatted
+ label for the correlation coefficient} \item{rr.label}{formatted label for
+ the squared correlation coefficient} \item{p.label}{label for the p-value}
+ \item{rmse.label}{formatted label for the RMSE/RMSD} \item{label}{default
+ label displayed by \code{stat_cor()}} }
 }
 
 \examples{
@@ -217,6 +222,16 @@ ggscatter(df, x = "wt", y = "mpg", add = "reg.line") +
     aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
     label.x = 3
   )
+
+# Show the RMSE/RMSD (root mean square deviation) between x and y
+# (useful for agreement between paired measurements on the same scale)
+sp + stat_cor(aes(label = after_stat(rmse.label)), label.x = 3)
+
+# Combine the correlation coefficient and the RMSE (comma-separated)
+sp + stat_cor(
+  aes(label = paste(after_stat(r.label), after_stat(rmse.label), sep = "~`,`~")),
+  label.x = 3
+)
 
 # Color by groups and facet
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::
