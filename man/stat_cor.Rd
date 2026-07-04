@@ -27,6 +27,7 @@ stat_cor(
   p.leading.zero = NULL,
   p.decimal.mark = NULL,
   p.coef.name = "p",
+  conf.level = 0.95,
   geom = "text",
   position = "identity",
   na.rm = FALSE,
@@ -128,6 +129,14 @@ uses \code{getOption("OutDec")}.}
 \code{output.type = "expression"} this should be a single valid plotmath
 symbol (e.g. \code{"P"}), since it is parsed as an expression.}
 
+\item{conf.level}{confidence level for the confidence interval of the
+correlation coefficient, used to compute the \code{conf.int.low},
+\code{conf.int.high} and \code{conf.int.label} computed variables (see the
+\strong{Computed variables} section). Default is 0.95. A confidence interval
+is only available for \code{method = "pearson"} (with at least 4 complete
+observations); for \code{"spearman"}/\code{"kendall"} the confidence-interval
+variables are \code{NA}.}
+
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
 can be used to override the default coupling between stats and geoms. The
@@ -187,8 +196,13 @@ Add correlation coefficients with p-values to a scatter plot. Can
  settings (\code{r.digits} / \code{r.accuracy}).} \item{r.label}{formatted
  label for the correlation coefficient} \item{rr.label}{formatted label for
  the squared correlation coefficient} \item{p.label}{label for the p-value}
- \item{rmse.label}{formatted label for the RMSE/RMSD} \item{label}{default
- label displayed by \code{stat_cor()}} }
+ \item{rmse.label}{formatted label for the RMSE/RMSD}
+ \item{conf.int.low, conf.int.high}{lower and upper bounds of the confidence
+ interval of the correlation coefficient (Pearson only; \code{NA} for
+ Spearman/Kendall), at the level given by \code{conf.level}}
+ \item{conf.int.label}{formatted label for the confidence interval, e.g.
+ \code{"95\% CI [0.21, 0.75]"} (\code{NA} when the interval is unavailable)}
+ \item{label}{default label displayed by \code{stat_cor()}} }
 }
 
 \examples{
@@ -231,6 +245,15 @@ sp + stat_cor(aes(label = after_stat(rmse.label)), label.x = 3)
 sp + stat_cor(
   aes(label = paste(after_stat(r.label), after_stat(rmse.label), sep = "~`,`~")),
   label.x = 3
+)
+
+# Show the confidence interval of the correlation coefficient (Pearson)
+sp + stat_cor(aes(label = after_stat(conf.int.label)), label.x = 3)
+
+# Correlation coefficient with its confidence interval
+sp + stat_cor(
+  aes(label = paste(after_stat(r.label), after_stat(conf.int.label), sep = "~`,`~")),
+  label.x = 1.5
 )
 
 # Color by groups and facet
