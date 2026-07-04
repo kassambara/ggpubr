@@ -84,6 +84,19 @@ NULL
 #'  performed, then the p-values are adjusted for each group level
 #'  independently. P-values are adjusted by panel when \code{p.adjust.by =
 #'  "panel"}.
+#' @param p.adjust.n optional single number giving the number of comparisons to
+#'  use for the p-value adjustment, passed as \code{n} to
+#'  \code{\link[stats]{p.adjust}}. Default is \code{NULL}, which uses the number
+#'  of p-values actually computed (the standard behavior). Set it when the
+#'  displayed comparisons are a subset of a larger family and the adjustment
+#'  should reflect that larger family size. As required by
+#'  \code{\link[stats]{p.adjust}}, \code{p.adjust.n} must be greater than or
+#'  equal to the number of p-values being adjusted. It affects the adjustment
+#'  that \code{geom_pwc()} performs itself: the panel-level adjustment
+#'  (\code{p.adjust.by = "panel"}) and cases where the test returns a single set
+#'  of p-values (a single comparison, or grouped comparisons with two levels per
+#'  group). It does not alter the adjustment that pairwise tests already perform
+#'  internally per group.
 #' @param symnum.args a list of arguments to pass to the function
 #'  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
 #'  example, \code{symnum.args = list(cutpoints = c(0, 0.0001, 0.001, 0.01,
@@ -277,6 +290,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      step.increase = 0.12, tip.length = 0.03,
                      size = 0.3, label.size = 3.88, family = "", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
+                     p.adjust.n = NULL,
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
@@ -326,6 +340,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       remove.bracket = remove.bracket,
       family = family, vjust = vjust, hjust = hjust, na.rm = na.rm,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
+      p.adjust.n = p.adjust.n,
       symnum.args = symnum.args,
       hide.ns = hide.ns, parse = parse,
       p.format.style = p.format.style, p.digits = p.digits,
@@ -355,7 +370,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
   compute_panel = function(self, data, scales, method, method.args, ref.group,
                            tip.length, stat.label, y.position, step.increase,
                            bracket.nudge.y, bracket.shorten, bracket.group.by,
-                           p.adjust.method, p.adjust.by,
+                           p.adjust.method, p.adjust.by, p.adjust.n = NULL,
                            symnum.args, hide.ns, group.by, dodge, remove.bracket,
                            p.format.style, p.digits, p.leading.zero,
                            p.min.threshold, p.decimal.mark) {
@@ -555,15 +570,14 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
     # P-value adjustment, formatting and significance
     if (!("p.adj" %in% colnames(stat.test))) {
       # Case of one comparison of two groups
-      stat.test <- stat.test %>% rstatix::adjust_pvalue(method = p.adjust.method)
+      stat.test <- .pwc_adjust_pvalue(stat.test, p.adjust.method, p.adjust.n)
     }
 
     # Adjust all the p-values in a given panel
     # no matter the grouping
     if (p.adjust.by == "panel") {
       if ("p" %in% colnames(stat.test)) {
-        stat.test <- stat.test %>%
-          rstatix::adjust_pvalue(method = p.adjust.method)
+        stat.test <- .pwc_adjust_pvalue(stat.test, p.adjust.method, p.adjust.n)
       } else {
         warning(
           "p-values can't be adjusted by panel for the specified stat method.\n",
@@ -710,6 +724,32 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 )
 
 
+# Adjust the p-values of a pwc stat.test, optionally against a user-supplied
+# number of comparisons `n` (#612). With n = NULL (default) this is exactly
+# rstatix::adjust_pvalue(method = method) -- byte-identical to the previous
+# behavior. With n set, stats::p.adjust(p, method, n = n) is used so the
+# adjustment reflects a custom family size (e.g. when the displayed comparisons
+# are a subset of a larger set); `n` must be >= the number of p-values adjusted,
+# matching stats::p.adjust()'s own requirement.
+.pwc_adjust_pvalue <- function(stat.test, method, n = NULL) {
+  if (is.null(n)) {
+    return(rstatix::adjust_pvalue(stat.test, method = method))
+  }
+  if (!is.numeric(n) || length(n) != 1L || is.na(n) || n < 1) {
+    stop("`p.adjust.n` must be a single positive number or NULL.", call. = FALSE)
+  }
+  n.pvalues <- sum(!is.na(stat.test$p))
+  if (n < n.pvalues) {
+    stop(
+      "`p.adjust.n` (", n, ") must be >= the number of p-values being adjusted (",
+      n.pvalues, ").", call. = FALSE
+    )
+  }
+  stat.test$p.adj <- stats::p.adjust(stat.test$p, method = method, n = n)
+  stat.test
+}
+
+
 #' @rdname geom_pwc
 #' @export
 geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
@@ -720,6 +760,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      bracket.nudge.y = 0.05, bracket.shorten = 0, bracket.group.by = c("x.var", "legend.var"),
                      size = 0.3, label.size = 3.88, family = "", vjust = 0, hjust = 0.5,
                      p.adjust.method = "holm", p.adjust.by = c("group", "panel"),
+                     p.adjust.n = NULL,
                      symnum.args = list(), hide.ns = FALSE, remove.bracket = FALSE,
                      p.format.style = "default", p.digits = NULL,
                      p.leading.zero = NULL, p.min.threshold = NULL,
@@ -774,6 +815,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       size = size, label.size = label.size,
       family = family, na.rm = na.rm, hjust = hjust, vjust = vjust,
       p.adjust.method = p.adjust.method, p.adjust.by = p.adjust.by,
+      p.adjust.n = p.adjust.n,
       symnum.args = symnum.args,
       hide.ns = hide.ns, remove.bracket = remove.bracket,
       p.format.style = p.format.style, p.digits = p.digits,
