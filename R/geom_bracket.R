@@ -18,6 +18,22 @@ NULL
   trans$transform
 }
 
+# Companion to .stat_bracket_y_transform: the INVERSE of a scale's transformation
+# (e.g. 10^x for a log10 scale), or NULL. Used by vertical brackets to undo the
+# x-scale transform that ggplot2 automatically applies to the xmin/xmax columns
+# (which, for a vertical bracket, actually carry y-axis values) before those are
+# re-expressed in the y scale (#456).
+.stat_bracket_scale_inverse <- function(scale) {
+  trans <- NULL
+  if (is.function(scale$get_transformation)) {
+    trans <- tryCatch(scale$get_transformation(), error = function(e) NULL)
+  }
+  if (is.null(trans)) trans <- scale$transformation
+  if (is.null(trans)) trans <- scale$trans
+  if (is.null(trans) || !is.function(trans$inverse)) return(NULL)
+  trans$inverse
+}
+
 StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
   required_aes = c("x", "y", "group"),
   setup_params = function(data, params) {
@@ -25,50 +41,107 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
     if (length(params$tip.length) == length(params$xmin)) params$tip.length <- rep(params$tip.length, each = 2)
     return(params)
   },
-  compute_group = function(data, scales, tip.length, tip.length.ref = "data") {
-    yrange <- scales$y$range$range
-    y.scale.range <- yrange[2] - yrange[1]
+  compute_group = function(data, scales, tip.length, tip.length.ref = "data",
+                           orientation = "horizontal") {
+    # A bracket has a SPAN axis (where its two ends sit) and a POSITION axis
+    # (where the connecting bar sits, with the tips extending toward the data).
+    # For the default horizontal bracket the span is x and the position is y.
+    # For a vertical bracket (#456) the axes swap: the span is y and the bar sits
+    # along x. Selecting the two scales here keeps the geometry identical for the
+    # horizontal (default) path while enabling the vertical one; every quantity
+    # that used to be tied to the y scale (tip length, step increase, the log
+    # transform) follows the POSITION axis, and the character/level mapping and
+    # the log transform of the ENDS follow the SPAN axis.
+    vertical <- identical(orientation, "vertical")
+    span.scale <- if (vertical) scales$y else scales$x
+    pos.scale <- if (vertical) scales$x else scales$y
+    pos.range <- pos.scale$range$range
+    if (is.numeric(pos.range)) {
+      pos.scale.range <- pos.range[2] - pos.range[1]
+    } else {
+      # discrete position axis (e.g. a vertical bracket over a categorical x):
+      # the numeric positions are 1..n_levels, so the usable range is n-1.
+      pos.scale.range <- max(length(pos.range) - 1, 1)
+    }
     # Reference range used to convert the fractional `tip.length` into data units.
     # Default ("data"): fraction of the trained data range (historical behavior) -
     # tips scale with the data, so plots with different data ranges get different
-    # absolute tips. "axis": fraction of the y-axis range (limits set via ylim /
-    # scale_y_*), which renders at the same physical fraction across plots and so
-    # gives visually constant tips regardless of the data (#362).
-    tip.scale.range <- y.scale.range
+    # absolute tips. "axis": fraction of the position-axis range (limits set via
+    # ylim / scale_*), which renders at the same physical fraction across plots
+    # and so gives visually constant tips regardless of the data (#362).
+    tip.scale.range <- pos.scale.range
     if (identical(tip.length.ref, "axis")) {
-      axis.limits <- scales$y$get_limits()
+      axis.limits <- pos.scale$get_limits()
       if (length(axis.limits) == 2 && all(is.finite(axis.limits))) {
         tip.scale.range <- axis.limits[2] - axis.limits[1]
       }
     }
-    # Place the bracket in the transformed space of the y scale, so a user-supplied
-    # y.position given in data units lands correctly on e.g. scale_y_log10(). The
-    # trained range/tips above are already in transformed units. For an identity
-    # scale the transform is a no-op, so default output is unchanged (#342).
-    y.transform <- .stat_bracket_y_transform(scales$y)
-    if (!is.null(y.transform)) {
-      data$y.position <- y.transform(data$y.position)
+    # Place the bracket in the transformed space of the position scale, so a
+    # user-supplied position given in data units lands correctly on e.g.
+    # scale_y_log10(). The trained range/tips above are already in transformed
+    # units. For an identity scale the transform is a no-op, so default output is
+    # unchanged (#342).
+    pos.transform <- .stat_bracket_y_transform(pos.scale)
+    if (!is.null(pos.transform)) {
+      data$y.position <- pos.transform(data$y.position)
     }
     bracket.shorten <- data$bracket.shorten / 2
-    xmin <- data$xmin + bracket.shorten
-    xmax <- data$xmax - bracket.shorten
-    y.position <- data$y.position + (y.scale.range * data$step.increase) + data$bracket.nudge.y
-    label <- data$label
-    if (is.character(xmin)) {
-      xmin <- scales$x$map(xmin)
+    span.min <- data$xmin
+    span.max <- data$xmax
+    # A vertical bracket's ends carry Y-axis values, but they travel in the
+    # xmin/xmax columns, which ggplot2 has already transformed with the X scale
+    # (the position scale here). Undo that x transform so the ends are back in
+    # raw data units before we re-express them in the Y (span) scale below; this
+    # keeps a non-identity x scale (log/sqrt/reverse) from corrupting the span
+    # (#456). The horizontal path skips this entirely and is unchanged.
+    if (vertical) {
+      pos.inverse <- .stat_bracket_scale_inverse(pos.scale)
+      if (!is.null(pos.inverse)) {
+        if (is.numeric(span.min)) span.min <- pos.inverse(span.min)
+        if (is.numeric(span.max)) span.max <- pos.inverse(span.max)
+      }
     }
-    if (is.character(xmax)) {
-      xmax <- scales$x$map(xmax)
+    span.min <- span.min + bracket.shorten
+    span.max <- span.max - bracket.shorten
+    position <- data$y.position + (pos.scale.range * data$step.increase) + data$bracket.nudge.y
+    label <- data$label
+    if (is.character(span.min)) {
+      span.min <- span.scale$map(span.min)
+    }
+    if (is.character(span.max)) {
+      span.max <- span.scale$map(span.max)
+    }
+    # For a vertical bracket the ends run along the (value) y axis; express them
+    # in that scale's transformed space so a log-y span lands correctly.
+    # Horizontal keeps the ends on x with no transform, exactly as before.
+    if (vertical) {
+      span.transform <- .stat_bracket_y_transform(span.scale)
+      if (!is.null(span.transform)) {
+        if (is.numeric(span.min)) span.min <- span.transform(span.min)
+        if (is.numeric(span.max)) span.max <- span.transform(span.max)
+      }
     }
     if ("tip.length" %in% colnames(data)) {
       tip.length <- rep(data$tip.length, each = 2)
     }
-    # Preparing bracket data
+    # Preparing bracket data: three segments (tip, bar, tip) in (span, position)
+    # space, then assigned to x/y according to the orientation.
     data <- dplyr::bind_rows(data, data, data)
-    data$x <- c(xmin, xmin, xmax)
-    data$xend <- c(xmin, xmax, xmax)
-    data$y <- c(y.position - tip.scale.range * tip.length[seq_along(tip.length) %% 2 == 1], y.position, y.position)
-    data$yend <- c(y.position, y.position, y.position - tip.scale.range * tip.length[seq_along(tip.length) %% 2 == 0])
+    span <- c(span.min, span.min, span.max)
+    span.end <- c(span.min, span.max, span.max)
+    pos.v <- c(position - tip.scale.range * tip.length[seq_along(tip.length) %% 2 == 1], position, position)
+    pos.end <- c(position, position, position - tip.scale.range * tip.length[seq_along(tip.length) %% 2 == 0])
+    if (vertical) {
+      data$x <- pos.v
+      data$xend <- pos.end
+      data$y <- span
+      data$yend <- span.end
+    } else {
+      data$x <- span
+      data$xend <- span.end
+      data$y <- pos.v
+      data$yend <- pos.end
+    }
     data$annotation <- rep(label, 3)
     data
   }
@@ -123,6 +196,22 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #'   p-values to a horizontal ggplot (generated using
 #'   \code{\link[ggplot2]{coord_flip}()}), you need to specify the option
 #'   \code{coord.flip = TRUE}.
+#' @param orientation the bracket orientation. Either \code{"horizontal"} (the
+#'   default, a bracket spanning the x axis with the bar at \code{y.position}) or
+#'   \code{"vertical"} (a bracket spanning the y axis with the bar at
+#'   \code{x.position}, tips pointing left and the label rotated to the side).
+#'   Vertical brackets are useful to annotate plots where the comparison runs
+#'   along the y axis, e.g. Kaplan-Meier curves. They are designed for a
+#'   continuous x axis; specify the span with \code{ymin}/\code{ymax} and the
+#'   position with \code{x.position}. Cannot be combined with
+#'   \code{coord.flip = TRUE}.
+#' @param ymin,ymax numeric vectors with the positions, along the y axis, of the
+#'   two ends of each vertical bracket. Used only when
+#'   \code{orientation = "vertical"} (the vertical-bracket analogue of
+#'   \code{xmin}/\code{xmax}).
+#' @param x.position numeric vector with the x positions of the vertical
+#'   brackets. Used only when \code{orientation = "vertical"} (the
+#'   vertical-bracket analogue of \code{y.position}).
 #' @param ... other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
 #'   aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 #'   "red"} or \code{size = 3}. They may also be parameters to the paired
@@ -184,6 +273,14 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #'     aes(xmin = group1, xmax = group2, label = signif(p, 2)),
 #'     data = stat.test, y.position = c(32, 35, 38)
 #'   )
+#'
+#' # Vertical bracket (e.g. to annotate a plot with a continuous x axis)
+#' ggscatter(df, x = "len", y = "len") +
+#'   geom_bracket(
+#'     orientation = "vertical",
+#'     ymin = 10, ymax = 25, x.position = 34,
+#'     label = "p < 0.05"
+#'   )
 #' @rdname geom_bracket
 #' @export
 stat_bracket <- function(mapping = NULL, data = NULL,
@@ -229,7 +326,7 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
   # for legend:
   draw_key = draw_key_path,
   draw_group = function(data, panel_params, coord, type = "text",
-                        coord.flip = FALSE) {
+                        coord.flip = FALSE, orientation = "horizontal") {
     lab <- as.character(data$annotation)
     if (type == "expression") {
       lab <- parse_as_expression(lab)
@@ -238,7 +335,13 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
     label.x <- mean(c(coords$x[1], tail(coords$xend, n = 1)))
     label.y <- max(c(coords$y, coords$yend)) + 0.01
     label.angle <- coords$angle
-    if (coord.flip) {
+    if (identical(orientation, "vertical")) {
+      # native vertical bracket (#456): the bar spans y, tips point left, so the
+      # label sits to the RIGHT of the bar, centered on the span and rotated.
+      label.x <- max(c(coords$x, coords$xend)) + 0.02
+      label.y <- mean(c(coords$y[1], tail(coords$yend, n = 1)))
+      if (is.null(label.angle)) label.angle <- -90
+    } else if (coord.flip) {
       label.y <- mean(c(coords$y[1], tail(coords$yend, n = 1)))
       label.x <- max(c(coords$x, coords$xend)) + 0.01
       if (is.null(label.angle)) label.angle <- -90
@@ -286,16 +389,34 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
                          bracket.nudge.y = 0, bracket.shorten = 0,
                          size = 0.3, linewidth = size, label.size = 3.88, family = "", vjust = 0,
                          coord.flip = FALSE,
+                         orientation = c("horizontal", "vertical"),
+                         ymin = NULL, ymax = NULL, x.position = NULL,
                          ...) {
   type <- match.arg(type)
   tip.length.ref <- match.arg(tip.length.ref)
+  orientation <- match.arg(orientation)
+  vertical <- identical(orientation, "vertical")
+  if (vertical) {
+    # A vertical bracket takes its span from the value (y) axis and its bar
+    # position from the x axis. Accept the axis-appropriate argument names and
+    # feed them through the same internal slots the horizontal path uses.
+    if (coord.flip) {
+      stop("`orientation = 'vertical'` cannot be combined with `coord.flip = TRUE`. ",
+           "Use `orientation = 'vertical'` for a native vertical bracket on an ",
+           "unflipped plot, or `coord.flip = TRUE` for a plot flipped with coord_flip().",
+           call. = FALSE)
+    }
+    if (!is.null(ymin)) xmin <- ymin
+    if (!is.null(ymax)) xmax <- ymax
+    if (!is.null(x.position)) y.position <- x.position
+  }
   data <- build_signif_data(
     data = data, label = label, y.position = y.position,
     xmin = xmin, xmax = xmax, step.increase = step.increase,
     bracket.nudge.y = bracket.nudge.y, bracket.shorten = bracket.shorten,
     step.group.by = step.group.by, vjust = vjust
   )
-  mapping <- build_signif_mapping(mapping, data)
+  mapping <- build_signif_mapping(mapping, data, orientation)
   ggplot2::layer(
     stat = stat, geom = GeomBracket, mapping = mapping, data = data,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -304,6 +425,7 @@ geom_bracket <- function(mapping = NULL, data = NULL, stat = "bracket",
       tip.length = tip.length, tip.length.ref = tip.length.ref,
       size = linewidth, label.size = label.size,
       family = family, na.rm = na.rm, coord.flip = coord.flip,
+      orientation = orientation,
       ...
     )
   )
@@ -368,7 +490,7 @@ build_signif_data <- function(data = NULL, label = NULL, y.position = NULL,
 }
 
 
-build_signif_mapping <- function(mapping, data) {
+build_signif_mapping <- function(mapping, data, orientation = "horizontal") {
   if (is.null(mapping)) {
     # Check if required variables are present in data
     required.vars <- c("xmin", "xmax", "y.position")
@@ -394,11 +516,17 @@ build_signif_mapping <- function(mapping, data) {
   if (is.null(mapping$vjust)) mapping$vjust <- data$vjust
   if (is.null(mapping$bracket.nudge.y)) mapping$bracket.nudge.y <- data$bracket.nudge.y
   if (is.null(mapping$bracket.shorten)) mapping$bracket.shorten <- data$bracket.shorten
-  if (!"x" %in% names(mapping)) {
-    mapping$x <- mapping$xmin
-  }
-  if (!"y" %in% names(mapping)) {
-    mapping$y <- mapping$y.position
+  # Anchor aesthetics that position the bracket for scale training and the
+  # stat's required `x`/`y`. For a vertical bracket the roles swap: the bar sits
+  # along x (from y.position, which holds the x position) and the span runs along
+  # y (from xmin). Mapping them the horizontal way would send an x position into
+  # the y scale and drop the bracket as out-of-range (#456).
+  if (identical(orientation, "vertical")) {
+    if (!"x" %in% names(mapping)) mapping$x <- mapping$y.position
+    if (!"y" %in% names(mapping)) mapping$y <- mapping$xmin
+  } else {
+    if (!"x" %in% names(mapping)) mapping$x <- mapping$xmin
+    if (!"y" %in% names(mapping)) mapping$y <- mapping$y.position
   }
   mapping
 }

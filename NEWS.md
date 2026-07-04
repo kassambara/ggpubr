@@ -87,6 +87,14 @@
 
 ## New features
 
+- `geom_bracket()` gains an `orientation` argument. `orientation = "vertical"`
+  draws a native vertical bracket (the bar spans the y axis, the tips point left
+  and the label is rotated), specified with `ymin`/`ymax`/`x.position` — useful
+  to annotate plots where the comparison runs along the y axis, e.g.
+  Kaplan-Meier curves (it is designed for a continuous x axis). The default
+  `orientation = "horizontal"` is unchanged, and it cannot be combined with
+  `coord.flip = TRUE` (#456).
+
 - `ggpaired()` gains an opt-in `jitter` argument that spreads the paired points
   horizontally to reduce overlap. Each subject (`id`) gets a single offset, so
   its two points move together and the connecting line stays intact, and only

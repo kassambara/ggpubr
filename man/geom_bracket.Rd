@@ -56,6 +56,10 @@ geom_bracket(
   family = "",
   vjust = 0,
   coord.flip = FALSE,
+  orientation = c("horizontal", "vertical"),
+  ymin = NULL,
+  ymax = NULL,
+  x.position = NULL,
   ...
 )
 }
@@ -187,6 +191,25 @@ horizontal becomes vertical, and vertical, horizontal. When adding the
 p-values to a horizontal ggplot (generated using
 \code{\link[ggplot2]{coord_flip}()}), you need to specify the option
 \code{coord.flip = TRUE}.}
+
+\item{orientation}{the bracket orientation. Either \code{"horizontal"} (the
+default, a bracket spanning the x axis with the bar at \code{y.position}) or
+\code{"vertical"} (a bracket spanning the y axis with the bar at
+\code{x.position}, tips pointing left and the label rotated to the side).
+Vertical brackets are useful to annotate plots where the comparison runs
+along the y axis, e.g. Kaplan-Meier curves. They are designed for a
+continuous x axis; specify the span with \code{ymin}/\code{ymax} and the
+position with \code{x.position}. Cannot be combined with
+\code{coord.flip = TRUE}.}
+
+\item{ymin, ymax}{numeric vectors with the positions, along the y axis, of the
+two ends of each vertical bracket. Used only when
+\code{orientation = "vertical"} (the vertical-bracket analogue of
+\code{xmin}/\code{xmax}).}
+
+\item{x.position}{numeric vector with the x positions of the vertical
+brackets. Used only when \code{orientation = "vertical"} (the
+vertical-bracket analogue of \code{y.position}).}
 }
 \description{
 add brackets with label annotation to a ggplot. Helpers for
@@ -246,5 +269,13 @@ ggboxplot(df, x = "dose", y = "len") +
   geom_bracket(
     aes(xmin = group1, xmax = group2, label = signif(p, 2)),
     data = stat.test, y.position = c(32, 35, 38)
+  )
+
+# Vertical bracket (e.g. to annotate a plot with a continuous x axis)
+ggscatter(df, x = "len", y = "len") +
+  geom_bracket(
+    orientation = "vertical",
+    ymin = 10, ymax = 25, x.position = 34,
+    label = "p < 0.05"
   )
 }
