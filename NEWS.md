@@ -43,6 +43,13 @@
   no complete pairs) instead of failing the whole result/layer, while still
   reporting genuinely ambiguous data (e.g. duplicated ids). Thanks to
   @erdeyl (#732).
+- `geom_bracket()` (and `stat_pvalue_manual()`) now draw visible tips for a single
+  bracket placed over a stat-computed `y` such as `geom_bar()`/`geom_histogram()`.
+  Previously the bracket tips collapsed into a flat line because the y-axis range
+  was trained only on the bracket's single `y.position`; the tips are now sized
+  against the fully-trained panel range at draw time, so they render correctly even
+  with `coord_cartesian(ylim = ...)`. Brackets with an already non-zero y range are
+  unchanged (#631).
 
 ## P-value formatting
 

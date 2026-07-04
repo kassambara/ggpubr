@@ -143,6 +143,18 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
       data$yend <- pos.end
     }
     data$annotation <- rep(label, 3)
+    # #631: when the POSITION axis is trained to a zero-width range - e.g. a single
+    # bracket over a stat-computed y such as geom_bar()/geom_histogram(), whose bar
+    # counts do not train the y scale by the time this stat runs - tip.scale.range
+    # is 0 and the tips above collapse to zero length (an invisible flat bar).
+    # Record that so GeomBracket$draw_group can re-derive the tips against the
+    # fully-trained panel range at draw time (the only place the real range,
+    # including coord_cartesian(ylim=), is known). These internal columns are
+    # ignored by rendering; for a normal, non-zero range the flag is FALSE and
+    # nothing downstream changes, so existing plots are byte-identical.
+    data$.bracket.tip.zero. <- !is.finite(tip.scale.range) || isTRUE(tip.scale.range == 0)
+    data$.bracket.tip.left. <- tip.length[seq_along(tip.length) %% 2 == 1][1]
+    data$.bracket.tip.right. <- tip.length[seq_along(tip.length) %% 2 == 0][1]
     data
   }
 )
@@ -332,6 +344,24 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
       lab <- parse_as_expression(lab)
     }
     coords <- coord$transform(data, panel_params)
+    # #631: rescue tips that collapsed because the position axis trained to a
+    # zero-width data range (StatBracket flagged it via .bracket.tip.zero.). Here,
+    # after transform, the panel maps to npc [0, 1] over its FULLY-trained range
+    # (which includes coord_cartesian(ylim=) and scale limits), so a tip length
+    # given as a fraction of that range is simply the fraction itself in npc units.
+    # Rebuild the two tips against that range. Gated to the default horizontal,
+    # non-flipped bracket and to the flagged degenerate case, so every normal plot
+    # (tip.scale.range > 0 -> flag FALSE) keeps its exact current tips.
+    if (identical(orientation, "horizontal") && !isTRUE(coord.flip) &&
+        nrow(coords) == 3 && isTRUE(coords$.bracket.tip.zero.[1])) {
+      bar.npc <- coords$y[2]                       # flat bar level (row 2)
+      tip.left <- coords$.bracket.tip.left.[1]     # untransformed fraction
+      tip.right <- coords$.bracket.tip.right.[1]
+      if (is.finite(bar.npc)) {
+        if (is.finite(tip.left) && tip.left > 0) coords$y[1] <- bar.npc - tip.left
+        if (is.finite(tip.right) && tip.right > 0) coords$yend[3] <- bar.npc - tip.right
+      }
+    }
     label.x <- mean(c(coords$x[1], tail(coords$xend, n = 1)))
     label.y <- max(c(coords$y, coords$yend)) + 0.01
     label.angle <- coords$angle
