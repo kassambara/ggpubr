@@ -60,14 +60,14 @@ P-value formatting conventions vary across scientific disciplines and journals:
 \strong{APA Style} (Psychology, Social Sciences):
 \itemize{
   \item No leading zero (write ".05" not "0.05")
-  \item 2-3 decimal places
+  \item 3 decimal places
   \item Report as "p < .001" for very small values
 }
 
 \strong{NEJM/Medical Journals}:
 \itemize{
-  \item P > 0.01: 2 decimal places
-  \item P between 0.001 and 0.01: 3 decimal places
+  \item Leading zero (write "0.05" not ".05")
+  \item 3 decimal places
   \item P < 0.001: report as "< 0.001"
 }
 

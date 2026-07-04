@@ -387,7 +387,8 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
     # aligned by id. Gated on `paired` so a stray mapped `id` aesthetic on a
     # non-paired plot is ignored (unchanged vs. before).
     if (isTRUE(paired) && "id" %in% names(data)) {
-      method.args <- method.args %>% .add_item(id = "id")
+      method.args <- method.args %>%
+        .add_item(id = "id", .skip_insufficient_id_pairs = TRUE)
     }
 
     if (.is.multiple.grouping.vars) {

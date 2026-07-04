@@ -6,4 +6,7 @@ docs/
 TODO.Rmd
 _tmp
 Rplots.pdf
+*.tar.gz
+*.Rcheck/
 CLAUDE.md
+.codex/

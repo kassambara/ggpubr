@@ -3,6 +3,8 @@
 ^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.git$
+^.*[.]tar[.]gz$
 ^README\.Rmd$
 ^README-.*\.png$
 ^cran-comments\.md$
@@ -16,6 +18,7 @@
 ^_tmp$
 ^CRAN-SUBMISSION$
 ^\.claude$
+^\.codex$
 ^check-as-cran\.sh$
 ^Rplots\.pdf$
 ^PR_SYNC_NOTES\.md$

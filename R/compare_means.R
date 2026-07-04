@@ -160,6 +160,9 @@ compare_means <- function(formula, data, method = "wilcox.test",
                           signif.cutoffs = NULL, signif.symbols = NULL,
                           ns.symbol = "ns", use.four.stars = FALSE, ...) {
   . <- NULL
+  extra.args <- list(...)
+  .skip_insufficient_id_pairs <- isTRUE(extra.args$.skip_insufficient_id_pairs)
+  extra.args$.skip_insufficient_id_pairs <- NULL
 
   method.info <- .method_info(method)
   method <- method.info$method
@@ -275,19 +278,31 @@ compare_means <- function(formula, data, method = "wilcox.test",
   }
 
   if (is.null(group.by)) {
-    res <- test.func(
-      formula = formula, data = data, method = method,
-      paired = paired, id = id, p.adjust.method = "none", ...
+    res <- do.call(
+      test.func,
+      c(
+        list(
+          formula = formula, data = data, method = method,
+          paired = paired, id = id,
+          .skip_insufficient_id_pairs = .skip_insufficient_id_pairs,
+          p.adjust.method = "none"
+        ),
+        extra.args
+      )
     )
   } else {
     grouped.d <- .group_by(data, group.by)
-    res <- grouped.d %>%
-      mutate(p = purrr::map(
-        data,
-        test.func,
+    test.args <- c(
+      list(
         formula = formula,
-        method = method, paired = paired, id = id, p.adjust.method = "none", ...
-      )) %>%
+        method = method, paired = paired, id = id,
+        .skip_insufficient_id_pairs = TRUE,
+        p.adjust.method = "none"
+      ),
+      extra.args
+    )
+    res <- grouped.d %>%
+      mutate(p = purrr::map(data, ~do.call(test.func, c(list(data = .x), test.args)))) %>%
       df_select(vars = c(group.by, "p")) %>%
       unnest(cols = "p")
   }
@@ -426,7 +441,7 @@ compare_means <- function(formula, data, method = "wilcox.test",
 # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .test_pairwise <- function(data, formula, method = "wilcox.test",
                            paired = FALSE, pool.sd = !paired,
-                           id = NULL, ...) {
+                           id = NULL, .skip_insufficient_id_pairs = FALSE, ...) {
   x <- .strip_backticks(deparse(formula[[2]]))
   group <- .strip_backticks(attr(stats::terms(formula), "term.labels"))
 
@@ -436,7 +451,11 @@ compare_means <- function(formula, data, method = "wilcox.test",
   # `id` is captured as an explicit formal so it never leaks into the base
   # pairwise test's `...`.
   if (!is.null(id) && isTRUE(paired) && !.is_empty(group)) {
-    return(.paired_test_by_id(data, x = x, group = group, method = method, id = id))
+    return(.paired_test_by_id(
+      data, x = x, group = group, method = method, id = id,
+      .skip_insufficient_pairs = .skip_insufficient_id_pairs,
+      ...
+    ))
   }
 
   # One sample test
@@ -498,7 +517,17 @@ compare_means <- function(formula, data, method = "wilcox.test",
 # yield the statistically correct paired p-value(s). Handles two-group and
 # pairwise (>2 groups) comparisons; ref.group is applied by the caller's
 # post-filter. Returns the same group1 | group2 | p shape as .test_pairwise().
-.paired_test_by_id <- function(data, x, group, method, id) {
+.paired_test_by_id <- function(data, x, group, method, id,
+                               .skip_insufficient_pairs = FALSE, ...) {
+  group.values <- .select_vec(data, group)
+  groups <- .paired_id_group_names(group.values)
+  if (length(groups) < 2L) {
+    return(tibble::tibble(
+      group1 = character(),
+      group2 = character(),
+      p = numeric()
+    ))
+  }
   test.fun <- switch(method,
     t.test = rstatix::t_test,
     wilcox.test = rstatix::wilcox_test
@@ -508,14 +537,26 @@ compare_means <- function(formula, data, method = "wilcox.test",
   # group values in group1/group2, so the labels are preserved.
   d2 <- data.frame(
     outcome = .select_vec(data, x),
-    grp = .select_vec(data, group),
+    grp = group.values,
     subject = .select_vec(data, id),
     stringsAsFactors = FALSE
   )
-  res <- suppressWarnings(test.fun(
-    d2, formula = outcome ~ grp, paired = TRUE, id = "subject",
-    p.adjust.method = "none", detailed = FALSE
+  test.args <- list(...)
+  test.args$p.adjust.method <- "none"
+  test.args$detailed <- FALSE
+  if (isTRUE(.skip_insufficient_pairs)) {
+    test.args$error.as.na <- TRUE
+  }
+  res <- suppressWarnings(do.call(
+    test.fun,
+    c(
+      list(data = d2, formula = outcome ~ grp, paired = TRUE, id = "subject"),
+      test.args
+    )
   ))
+  if (isTRUE(.skip_insufficient_pairs)) {
+    res <- res[!is.na(res$p), , drop = FALSE]
+  }
   tibble::tibble(
     group1 = as.character(res$group1),
     group2 = as.character(res$group2),
@@ -523,10 +564,20 @@ compare_means <- function(formula, data, method = "wilcox.test",
   )
 }
 
+.paired_id_group_names <- function(group.values) {
+  group.values <- group.values[!is.na(group.values)]
+  if (is.factor(group.values)) {
+    as.character(levels(droplevels(group.values)))
+  } else {
+    unique(as.character(group.values))
+  }
+}
+
 # Compare multiple groups
 # ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-.test_multigroups <- function(data, formula, method = c("anova", "kruskal.test"), ...) {
+.test_multigroups <- function(data, formula, method = c("anova", "kruskal.test"),
+                              .skip_insufficient_id_pairs = FALSE, ...) {
   method <- match.arg(method)
   . <- NULL
 
