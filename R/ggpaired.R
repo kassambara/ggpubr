@@ -18,6 +18,14 @@ NULL
 #' @param linetype line type.
 #' @param point.size,line.size point and line size, respectively.
 #' @param width box plot width.
+#' @param jitter numeric value (default 0, no jitter) giving the amount of
+#'   horizontal jitter added to the paired points to reduce overlap. Points are
+#'   nudged sideways within \code{[-jitter, jitter]}; each subject (\code{id})
+#'   gets a single offset so its two points move together and the connecting
+#'   line stays intact. Only the horizontal positions change (the values are
+#'   never moved). Typical values are small relative to the box \code{width}
+#'   (e.g. \code{jitter = 0.05} to \code{0.1}). \code{jitter = 0} leaves the plot
+#'   unchanged.
 #' @param ... other arguments to be passed to be passed to \link{ggpar}().
 #' @examples
 #'
@@ -50,6 +58,7 @@ ggpaired <- function(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
                      label = NULL, font.label = list(size = 11, color = "black"),
                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                      ggtheme = theme_pubr(),
+                     jitter = 0,
                      ...) {
   grouping.vars <- c(x, color, fill) %>%
     unique() %>%
@@ -80,7 +89,8 @@ ggpaired <- function(data, cond1, cond2, x = NULL, y = NULL, id = NULL,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     label = label, font.label = font.label, label.select = label.select,
-    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme, ...
+    repel = repel, label.rectangle = label.rectangle, ggtheme = ggtheme,
+    jitter = jitter, ...
   )
 
   # User options
@@ -117,6 +127,7 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
                           width = 0.5, point.size = 1.2, line.size = 0.5, line.color = "black",
                           linetype = "solid", title = NULL, xlab = "Condition", ylab = "Value",
                           ggtheme = theme_pubr(),
+                          jitter = 0,
                           ...) {
   if (!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
 
@@ -133,6 +144,31 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
   }
   data$id <- id
 
+  # Optional horizontal jitter of the paired points (#407). Spreads the points
+  # to reduce overlap while keeping each pair's connecting line intact: one
+  # offset per subject id (so the connecting lines stay parallel and readable),
+  # applied to BOTH the points and the lines, and horizontal only (the values
+  # `y` are never moved). A fixed seed keeps a given plot reproducible; the
+  # caller's RNG stream is left untouched. Default jitter = 0 leaves the output
+  # exactly unchanged (no jittered-x column, no RNG use).
+  jitter.x <- NULL
+  if (!is.null(jitter) && length(jitter) == 1 && is.numeric(jitter) &&
+      !is.na(jitter) && jitter > 0) {
+    ids <- unique(data$id)
+    if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
+      old.seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+      on.exit(assign(".Random.seed", old.seed, envir = .GlobalEnv), add = TRUE)
+    } else {
+      # no RNG used yet: remove the seed we are about to create, so ggpaired()
+      # leaves the caller's random stream exactly as it found it
+      on.exit(suppressWarnings(rm(".Random.seed", envir = .GlobalEnv)), add = TRUE)
+    }
+    set.seed(123)
+    offsets <- stats::runif(length(ids), -jitter, jitter)
+    names(offsets) <- as.character(ids)
+    data$.ggpubr.x.jitter. <- as.integer(data[[x]]) + offsets[as.character(data$id)]
+    jitter.x <- ".ggpubr.x.jitter."
+  }
 
   position <- "identity"
   # if(length(grouping.vars) > 1)
@@ -145,12 +181,12 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
       position = position
     ) +
     geom_exec(geom_line,
-      data = data, group = "id",
+      data = data, x = jitter.x, group = "id",
       color = line.color, linewidth = line.size, linetype = linetype,
       position = position
     ) +
     geom_exec(geom_point,
-      data = data, color = color, size = point.size,
+      data = data, x = jitter.x, color = color, size = point.size,
       position = position
     )
 
