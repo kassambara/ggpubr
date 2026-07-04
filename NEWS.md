@@ -55,6 +55,12 @@
   `0.015625`) with rstatix `>= 1.0.0`, which now returns full-precision pairwise
   p-values. Character labels (significance symbols, pre-formatted strings, glue
   expressions) are unaffected. Set `p.digits = NULL` to print the raw value.
+- `stat_pvalue_manual()` additionally gains `p.format.style`, `p.leading.zero`,
+  `p.min.threshold` and `p.decimal.mark`, matching the p-value formatting
+  arguments already available in `stat_compare_means()`, `geom_pwc()` and
+  `stat_anova_test()`. These are opt-in and default so that the rendered labels
+  are unchanged; for example `p.min.threshold = 0.001` displays very small
+  p-values as `< 0.001`, and `p.format.style = "nejm"` applies a journal style.
 - `stat_cor()` gains two label-formatting arguments:
   - `r.leading.zero` — set to `FALSE` to drop the leading zero of the
     correlation coefficient (e.g. `.73` instead of `0.73`), completing

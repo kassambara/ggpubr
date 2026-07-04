@@ -14,6 +14,10 @@ stat_pvalue_manual(
   size = 3.88,
   label.size = size,
   p.digits = 3,
+  p.format.style = "default",
+  p.leading.zero = NULL,
+  p.min.threshold = NULL,
+  p.decimal.mark = NULL,
   bracket.size = 0.3,
   bracket.nudge.y = 0,
   bracket.shorten = 0,
@@ -65,17 +69,42 @@ p-value as text (without brackets).}
 
 \item{size, label.size}{size of label text.}
 
-\item{p.digits}{integer indicating the number of significant digits used to
+\item{p.digits}{integer indicating the number of digits used to
 format recognized \strong{numeric} p-value label columns (\code{label} is one
-of \code{"p"}, \code{"p.adj"}, \code{"p.value"}, \code{"p.val"}, \code{"pval"},
-\code{"padj"}). Default is 3. Set to \code{NULL} to print the raw value without
-rounding. All other labels are left unchanged: other numeric columns (e.g.
-\code{"statistic"}, \code{"n"}, effect sizes), significance symbols
-(\code{"p.signif"}, \code{"p.adj.signif"}), already-formatted strings, and
-\code{\link[glue]{glue}} expressions. A p-named column whose values fall outside
-\code{[0, 1]} is also left as-is. Uses the same formatting engine
-(\code{\link{format_p_value}()}) as \code{\link{stat_anova_test}()} for
-consistency across layers.}
+of \code{"p"}, \code{"p.adj"}, \code{"p.value"}, \code{"p.val"},
+\code{"pval"}, \code{"padj"}). Default is 3. Set to \code{NULL} to print the
+raw value without rounding (this also disables \code{p.format.style} and the
+related formatting arguments). All other labels are left unchanged: other
+numeric columns (e.g. \code{"statistic"}, \code{"n"}, effect sizes),
+significance symbols (\code{"p.signif"}, \code{"p.adj.signif"}),
+already-formatted strings, and \code{\link[glue]{glue}} expressions. A
+p-named column whose values fall outside \code{[0, 1]} is also left as-is.
+Uses the same formatting engine (\code{\link{format_p_value}()}) as
+\code{\link{stat_anova_test}()} for consistency across layers. The style of
+this formatting is further controlled by \code{p.format.style},
+\code{p.leading.zero}, \code{p.min.threshold} and \code{p.decimal.mark}
+(same arguments as \code{\link{stat_compare_means}()}).}
+
+\item{p.format.style}{character string specifying the p-value formatting style
+applied to recognized numeric p-value label columns (see \code{p.digits}).
+One of: \code{"default"} (backward compatible, uses scientific notation),
+\code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
+\code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS). See
+\code{\link{list_p_format_styles}} for details. Default is \code{"default"},
+which leaves the rendered p-value labels unchanged.}
+
+\item{p.leading.zero}{logical indicating whether to include the leading zero
+before the decimal point (e.g., "0.05" vs ".05"). If provided, overrides the
+style default.}
+
+\item{p.min.threshold}{numeric specifying the minimum p-value to display
+exactly. Values below this threshold are shown as "< threshold" (e.g.
+\code{p.min.threshold = 0.001} renders very small p-values as "< 0.001"). If
+provided, overrides the style default.}
+
+\item{p.decimal.mark}{character string to use as the decimal mark. If
+\code{NULL}, uses \code{getOption("OutDec")}.}
 
 \item{bracket.size}{Width of the lines of the bracket.}
 
