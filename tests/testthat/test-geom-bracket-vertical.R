@@ -115,6 +115,27 @@ test_that("a discrete position axis does not crash the vertical bracket", {
   expect_error(suppressWarnings(ggplot2::ggplotGrob(p)), NA)
 })
 
+test_that("vertical label sits to the right of the bar and is rotated -90", {
+  .label_grob <- function(p) {
+    g <- ggplot2::ggplotGrob(p)
+    txt <- NULL
+    find_txt <- function(gr) {
+      if (inherits(gr, "text")) { txt <<- gr; return(invisible()) }
+      if (!is.null(gr$children)) for (ch in gr$children) find_txt(ch)
+      if (inherits(gr, "gTree") && !is.null(gr$grobs)) for (ch in gr$grobs) find_txt(ch)
+    }
+    for (pi in which(grepl("panel", g$layout$name))) find_txt(g$grobs[[pi]])
+    txt
+  }
+  t <- .label_grob(ggscatter(df, "len", "len") +
+    geom_bracket(orientation = "vertical", ymin = 10, ymax = 25,
+                 x.position = 34, label = "V"))
+  expect_false(is.null(t))
+  expect_equal(t$rot, -90)                                # rotated
+  expect_gt(as.numeric(t$x), 0.85)                        # to the right (near the bar)
+  expect_equal(as.numeric(t$y), 0.45, tolerance = 0.08)   # centered on the span
+})
+
 test_that("expression labels work for vertical brackets", {
   p <- ggscatter(df, "len", "len") +
     geom_bracket(orientation = "vertical", ymin = 10, ymax = 25, x.position = 30,

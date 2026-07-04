@@ -107,3 +107,37 @@ test_that("a plain horizontal geom_bracket() draws without warning", {
     )
   )
 })
+
+# The label is drawn in GeomBracket$draw_group (not in the built layer data), so
+# these render-and-inspect tests pin its ANGLE and PANEL position - guarding the
+# label control flow (horizontal vs coord.flip vs vertical branches).
+.label_grob <- function(p) {
+  g <- ggplot2::ggplotGrob(p)
+  txt <- NULL
+  find_txt <- function(gr) {
+    if (inherits(gr, "text")) { txt <<- gr; return(invisible()) }
+    if (!is.null(gr$children)) for (ch in gr$children) find_txt(ch)
+    if (inherits(gr, "gTree") && !is.null(gr$grobs)) for (ch in gr$grobs) find_txt(ch)
+  }
+  for (pi in which(grepl("panel", g$layout$name))) find_txt(g$grobs[[pi]])
+  txt
+}
+
+test_that("horizontal label is centered above the bracket, not rotated", {
+  t <- .label_grob(ggboxplot(df, "dose", "len") +
+    geom_bracket(xmin = "0.5", xmax = "1", y.position = 30, label = "H"))
+  expect_false(is.null(t))
+  expect_equal(t$rot, 0)                                  # horizontal: no rotation
+  expect_equal(as.numeric(t$x), 0.344, tolerance = 0.03)  # centered over the span
+  expect_equal(as.numeric(t$y), 0.845, tolerance = 0.03)  # above the bar
+})
+
+test_that("coord.flip label sits to the side and is rotated -90", {
+  t <- .label_grob(ggboxplot(df, "dose", "len") +
+    geom_bracket(xmin = "0.5", xmax = "1", y.position = 30, label = "C",
+                 coord.flip = TRUE) + ggplot2::coord_flip())
+  expect_false(is.null(t))
+  expect_equal(t$rot, -90)
+  expect_equal(as.numeric(t$x), 0.845, tolerance = 0.03)
+  expect_equal(as.numeric(t$y), 0.344, tolerance = 0.03)
+})
