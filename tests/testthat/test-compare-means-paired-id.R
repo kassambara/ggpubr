@@ -16,11 +16,11 @@ suppressMessages(library(dplyr))
   )
 }
 
-.hand_paired <- function(d, method = "wilcox.test") {
+.hand_paired <- function(d, method = "wilcox.test", ...) {
   x <- d %>% filter(sampleType == "Normal") %>% arrange(ID) %>% pull(value)
   y <- d %>% filter(sampleType == "Tumor") %>% arrange(ID) %>% pull(value)
   fun <- match.fun(method)
-  suppressWarnings(fun(x, y, paired = TRUE))$p.value
+  suppressWarnings(fun(x, y, paired = TRUE, ...))$p.value
 }
 
 test_that("id yields the correct paired p-value regardless of row order (#560)", {
@@ -47,6 +47,24 @@ test_that("id works for both wilcox.test and t.test", {
                .hand_paired(d, "wilcox.test"))
   expect_equal(compare_means(value ~ sampleType, d, method = "t.test", paired = TRUE, id = "ID")$p,
                .hand_paired(d, "t.test"))
+})
+
+test_that("id forwards one-sided paired test alternatives", {
+  d <- .make_paired()
+  for (method in c("wilcox.test", "t.test")) {
+    for (alternative in c("greater", "less")) {
+      got <- compare_means(
+        value ~ sampleType, d,
+        method = method, paired = TRUE, id = "ID",
+        alternative = alternative
+      )$p
+      expect_equal(got, .hand_paired(d, method, alternative = alternative))
+      expect_false(isTRUE(all.equal(
+        got,
+        compare_means(value ~ sampleType, d, method = method, paired = TRUE, id = "ID")$p
+      )))
+    }
+  }
 })
 
 test_that("group1/group2 labels match the default convention", {
@@ -83,6 +101,23 @@ test_that("id validation rejects unsupported combinations", {
   expect_error(compare_means(value ~ g, dup, method = "t.test", paired = TRUE, id = "ID"))
 })
 
+test_that("id duplicate errors are preserved in grouped comparisons", {
+  dup_grouped <- data.frame(
+    block = c(rep("x", 4), rep("y", 4)),
+    g = c("A", "A", "B", "B", "A", "A", "B", "B"),
+    value = c(1, 2, 3, 5, 10, 11, 20, 21),
+    ID = c(1, 2, 1, 2, 1, 1, 1, 2)
+  )
+  expect_error(
+    compare_means(
+      value ~ g, dup_grouped,
+      method = "t.test", paired = TRUE, id = "ID",
+      group.by = "block"
+    ),
+    "duplicated ids"
+  )
+})
+
 test_that("id works for pairwise (>2 groups) comparisons, matching rstatix (#560)", {
   set.seed(3)
   d <- data.frame(g = rep(c("A", "B", "C"), each = 8),
@@ -94,6 +129,80 @@ test_that("id works for pairwise (>2 groups) comparisons, matching rstatix (#560
   key <- function(x) paste(x$group1, x$group2, signif(x$p, 6))
   expect_setequal(key(got), key(ref))
   expect_equal(nrow(got), 3L)  # A-B, A-C, B-C
+})
+
+test_that("id skips grouped subsets with fewer than two levels", {
+  d <- data.frame(
+    block = c(rep("x", 6), rep("y", 3)),
+    g = c("A", "A", "A", "B", "B", "B", "A", "A", "A"),
+    value = c(1, 2.5, 4, 2.1, 3, 6.2, 5, 6.5, 8),
+    ID = c(1, 2, 3, 1, 2, 3, 1, 2, 3)
+  )
+  expect_no_error(
+    got <- compare_means(
+      value ~ g, d,
+      method = "t.test", paired = TRUE, id = "ID",
+      group.by = "block"
+    )
+  )
+  expect_equal(unique(as.character(got$block)), "x")
+  expect_equal(nrow(got), 1L)
+  expect_equal(c(got$group1, got$group2), c("A", "B"))
+})
+
+test_that("id skips grouped t-test subsets with too few complete pairs", {
+  d <- data.frame(
+    block = c(rep("x", 6), rep("y", 4)),
+    g = c("A", "A", "A", "B", "B", "B", "A", "A", "B", "B"),
+    value = c(1, 2.5, 4, 2.1, 3, 6.2, 5, 6.5, 8, 9),
+    ID = c(1, 2, 3, 1, 2, 3, 1, 2, 3, 4)
+  )
+  expect_no_error(
+    got <- compare_means(
+      value ~ g, d,
+      method = "t.test", paired = TRUE, id = "ID",
+      group.by = "block"
+    )
+  )
+  expect_equal(unique(as.character(got$block)), "x")
+  expect_equal(nrow(got), 1L)
+  expect_equal(c(got$group1, got$group2), c("A", "B"))
+})
+
+test_that("id skips only invalid grouped pairwise t-test comparisons", {
+  d <- data.frame(
+    block = c(rep("x", 9), rep("y", 6)),
+    g = c(rep(c("A", "B", "C"), each = 3), rep(c("A", "B", "C"), each = 2)),
+    value = c(1, 2, 4, 2.2, 4.1, 7.4, 1.4, 2.9, 5.5, 10, 11, 20, 21, 30, 32),
+    ID = c(1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 4, 1, 2)
+  )
+  expect_no_error(
+    got <- compare_means(
+      value ~ g, d,
+      method = "t.test", paired = TRUE, id = "ID",
+      group.by = "block"
+    )
+  )
+  got$key <- paste(as.character(got$block), got$group1, got$group2)
+  expect_setequal(got$key, c("x A B", "x A C", "x B C", "y A C"))
+})
+
+test_that("id keeps grouped Wilcoxon comparisons with one complete pair", {
+  d <- data.frame(
+    block = c(rep("x", 4), rep("y", 2)),
+    g = c("A", "A", "B", "B", "A", "B"),
+    value = c(1, 3, 2, 5, 10, 12),
+    ID = c(1, 2, 1, 2, 1, 1)
+  )
+  expect_no_error(
+    got <- compare_means(
+      value ~ g, d,
+      method = "wilcox.test", paired = TRUE, id = "ID",
+      group.by = "block"
+    )
+  )
+  expect_setequal(as.character(got$block), c("x", "y"))
+  expect_equal(nrow(got), 2L)
 })
 
 test_that("id works together with ref.group (only ref comparisons, matching rstatix)", {

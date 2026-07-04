@@ -77,6 +77,67 @@ test_that("id works with ref.group in the plot (matches compare_means)", {
   expect_equal(length(labs), 2L)
 })
 
+test_that("id forwards one-sided alternatives supplied through method.args", {
+  one_sided <- .stat_label(
+    ggpaired(.d, x = "sampleType", y = "value") +
+      stat_compare_means(
+        paired = TRUE, id = "ID", method = "t.test",
+        method.args = list(alternative = "greater"),
+        label = "p.format"
+      )
+  )
+  two_sided <- .stat_label(
+    ggpaired(.d, x = "sampleType", y = "value") +
+      stat_compare_means(
+        paired = TRUE, id = "ID", method = "t.test",
+        label = "p.format"
+      )
+  )
+  expected <- compare_means(
+    value ~ sampleType, .d,
+    paired = TRUE, id = "ID", method = "t.test",
+    alternative = "greater"
+  )$p.format
+  expect_true(grepl(expected, one_sided, fixed = TRUE))
+  expect_false(identical(one_sided, two_sided))
+})
+
+test_that("id skips sparse faceted subsets in the stat layer", {
+  d <- data.frame(
+    block = c(rep("x", 6), rep("y", 4)),
+    g = c("A", "A", "A", "B", "B", "B", "A", "A", "B", "B"),
+    value = c(1, 2.5, 4, 2.1, 3, 6.2, 5, 6.5, 8, 9),
+    ID = c(1, 2, 3, 1, 2, 3, 1, 2, 3, 4)
+  )
+  warnings <- .warnings_of(
+    built <- ggplot2::ggplot_build(
+      ggboxplot(d, x = "g", y = "value", facet.by = "block") +
+        stat_compare_means(method = "t.test", paired = TRUE, id = "ID")
+    )
+  )
+  expect_false(any(grepl("Computation failed|not enough", warnings)))
+  labels <- unlist(lapply(built$data, function(x) {
+    if ("label" %in% names(x)) as.character(x$label) else NULL
+  }))
+  expect_true(length(labels) >= 1L)
+})
+
+test_that("id duplicate errors are surfaced in faceted stat layers", {
+  d <- data.frame(
+    block = c(rep("x", 4), rep("y", 4)),
+    g = c("A", "A", "B", "B", "A", "A", "B", "B"),
+    value = c(1, 2, 3, 5, 10, 11, 20, 21),
+    ID = c(1, 2, 1, 2, 1, 1, 1, 2)
+  )
+  warnings <- .warnings_of(
+    ggplot2::ggplot_build(
+      ggboxplot(d, x = "g", y = "value", facet.by = "block") +
+        stat_compare_means(method = "t.test", paired = TRUE, id = "ID")
+    )
+  )
+  expect_true(any(grepl("duplicated ids", warnings)))
+})
+
 test_that("id errors clearly on unsupported combinations (not a silent wrong p)", {
   # with `comparisons`, id can't be honored (ggsignif path) -> error, do not
   # silently draw a row-order p-value
