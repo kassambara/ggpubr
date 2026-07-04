@@ -135,6 +135,7 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      label = NULL, font.label = list(size = 11, color = "black"),
                      label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                      position = position_dodge(0.8), ggtheme = theme_pubr(),
+                     show.n = FALSE,
                      ...) {
   # Default options
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -178,6 +179,16 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
   if (!missing(ggtheme)) .opts["ggtheme"] <- list(ggtheme)
 
   p <- do.call(.plotter, .opts)
+
+  if (isTRUE(show.n) && !missing(x)) {
+    if (.is_list(p)) {
+      p <- purrr::map(p, .add_show_n, x = x, color = color, fill = fill,
+                      facet.by = facet.by, position = position)
+    } else {
+      p <- .add_show_n(p, x = x, color = color, fill = fill,
+                       facet.by = facet.by, position = position)
+    }
+  }
 
   if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)

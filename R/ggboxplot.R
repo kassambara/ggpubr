@@ -61,6 +61,12 @@ NULL
 #' @param position position adjustment, either as a string, or the result of a
 #'  call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
 #'  Used to control the spacing between grouped elements.
+#' @param show.n logical. If TRUE, displays the number of observations
+#'  (\code{"n = <count>"}) at the top of each group. Off by default. When the
+#'  groups are dodged (a \code{color}/\code{fill} grouping with a dodging
+#'  \code{position}), one count is shown per group; otherwise a single count is
+#'  shown per x-axis tick. Counts respect \code{select}/\code{remove} and are
+#'  computed per facet.
 #' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
 #'  Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'  theme_minimal(), theme_classic(), theme_void(), ....
@@ -170,7 +176,7 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       label = NULL, font.label = list(size = 11, color = "black"),
                       label.select = NULL, repel = FALSE, label.rectangle = FALSE,
                       position = position_dodge(0.8),
-                      ggtheme = theme_pubr(), ...) {
+                      ggtheme = theme_pubr(), show.n = FALSE, ...) {
   # Default options
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .opts <- list(
@@ -211,6 +217,16 @@ ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
   # keeping an explicit NULL intact via single-bracket list assignment (#561).
   if (!missing(ggtheme)) .opts["ggtheme"] <- list(ggtheme)
   p <- do.call(.plotter, .opts)
+
+  if (isTRUE(show.n) && !missing(x)) {
+    if (.is_list(p)) {
+      p <- purrr::map(p, .add_show_n, x = x, color = color, fill = fill,
+                      facet.by = facet.by, position = position)
+    } else {
+      p <- .add_show_n(p, x = x, color = color, fill = fill,
+                       facet.by = facet.by, position = position)
+    }
+  }
 
   if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)
