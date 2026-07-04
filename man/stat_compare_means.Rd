@@ -9,6 +9,7 @@ stat_compare_means(
   data = NULL,
   method = NULL,
   paired = FALSE,
+  id = NULL,
   method.args = list(),
   ref.group = NULL,
   comparisons = NULL,
@@ -68,6 +69,14 @@ comparing means.}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
+
+\item{id}{optional character string naming a column that identifies matched
+subjects for a \strong{paired} comparison (\code{paired = TRUE}, with
+\code{method = "t.test"} or \code{"wilcox.test"}, and without
+\code{comparisons}). Without it the paired test pairs observations by row
+order, so the p-value is wrong when the data are not sorted so that the
+compared groups align by subject. Providing \code{id} pairs the observations
+by subject id instead (row-order independent); see \code{\link{compare_means}}.}
 
 \item{method.args}{a list of additional arguments used for the test method.
 For example one might use \code{method.args = list(alternative = "greater")}
@@ -270,6 +279,15 @@ ggpaired(ToothGrowth,
   palette = "npg"
 ) +
   stat_compare_means(paired = TRUE)
+
+# Paired samples matched by a subject id column (row-order independent):
+# `id` gives the correct p-value even when the rows are not in subject order.
+# :::::::::::::::::::::::::::::::::::::::::::::::::
+tg <- ToothGrowth
+tg$id <- c(1:30, 30:1) # subjects, with the second group in reverse order
+ggpaired(tg, x = "supp", y = "len", color = "supp",
+  line.color = "gray", palette = "npg") +
+  stat_compare_means(paired = TRUE, id = "id")
 
 # More than two groups
 # :::::::::::::::::::::::::::::::::::::::::::::::::

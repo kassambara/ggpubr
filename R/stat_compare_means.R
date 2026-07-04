@@ -11,6 +11,13 @@ NULL
 #' @param method.args a list of additional arguments used for the test method.
 #'  For example one might use \code{method.args = list(alternative = "greater")}
 #'  for wilcoxon test.
+#' @param id optional character string naming a column that identifies matched
+#'  subjects for a \strong{paired} comparison (\code{paired = TRUE}, with
+#'  \code{method = "t.test"} or \code{"wilcox.test"}, and without
+#'  \code{comparisons}). Without it the paired test pairs observations by row
+#'  order, so the p-value is wrong when the data are not sorted so that the
+#'  compared groups align by subject. Providing \code{id} pairs the observations
+#'  by subject id instead (row-order independent); see \code{\link{compare_means}}.
 #' @param comparisons A list of length-2 vectors. The entries in the vector are
 #'  either the names of 2 values on the x-axis or the 2 integers that correspond
 #'  to the index of the groups of interest, to be compared.
@@ -123,6 +130,15 @@ NULL
 #' ) +
 #'   stat_compare_means(paired = TRUE)
 #'
+#' # Paired samples matched by a subject id column (row-order independent):
+#' # `id` gives the correct p-value even when the rows are not in subject order.
+#' # :::::::::::::::::::::::::::::::::::::::::::::::::
+#' tg <- ToothGrowth
+#' tg$id <- c(1:30, 30:1) # subjects, with the second group in reverse order
+#' ggpaired(tg, x = "supp", y = "len", color = "supp",
+#'   line.color = "gray", palette = "npg") +
+#'   stat_compare_means(paired = TRUE, id = "id")
+#'
 #' # More than two groups
 #' # :::::::::::::::::::::::::::::::::::::::::::::::::
 #' # Pairwise comparisons: Specify the comparisons you want
@@ -161,7 +177,7 @@ NULL
 #'
 #' @export
 stat_compare_means <- function(mapping = NULL, data = NULL,
-                               method = NULL, paired = FALSE, method.args = list(), ref.group = NULL,
+                               method = NULL, paired = FALSE, id = NULL, method.args = list(), ref.group = NULL,
                                comparisons = NULL, hide.ns = FALSE, label.sep = ", ",
                                label = NULL, label.x.npc = "left", label.y.npc = "top",
                                label.x = NULL, label.y = NULL, vjust = 0, tip.length = 0.03,
@@ -174,6 +190,19 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
                                ns.symbol = "ns", use.four.stars = FALSE, show.signif = TRUE,
                                geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
                                inherit.aes = TRUE, ...) {
+  # #560: `id` (subject matching for a paired test) is only meaningful for a
+  # paired comparison and is not supported on the `comparisons` (ggsignif) path.
+  # Error early rather than silently ignoring it and drawing a row-order p-value.
+  if (!is.null(id)) {
+    if (!isTRUE(paired)) {
+      stop("`id` is only used for paired comparisons; set `paired = TRUE`.", call. = FALSE)
+    }
+    if (!is.null(comparisons)) {
+      stop("`id` is not supported together with `comparisons`. Compute the test ",
+           "with `compare_means(..., id = )` and draw it with `stat_pvalue_manual()`.",
+           call. = FALSE)
+    }
+  }
   # Handle show.signif = FALSE with label = "p.format.signif"
   if (!show.signif && identical(label, "p.format.signif")) {
     warning("show.signif = FALSE with label = 'p.format.signif': ",
@@ -276,9 +305,18 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     )
   } else {
     mapping <- .update_mapping(mapping, label)
+    # #560: for a paired test, carry the subject `id` column into the stat's
+    # compute data as an aesthetic (a ggplot layer only sees mapped columns).
+    # check.aes is disabled ONLY when id is supplied, so the geom does not warn
+    # about the non-standard `id` aesthetic; default layers are unchanged.
+    if (!is.null(id)) {
+      if (is.null(mapping)) mapping <- ggplot2::aes()
+      mapping$id <- as.name(id)
+    }
     layer(
       stat = StatCompareMeans, data = data, mapping = mapping, geom = geom,
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+      check.aes = is.null(id),
       params = list(
         label.x.npc = label.x.npc, label.y.npc = label.y.npc,
         label.x = label.x, label.y = label.y, label.sep = label.sep,
@@ -344,6 +382,13 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
         p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
         p.decimal.mark = p.decimal.mark
       )
+    # #560: when a subject id column was mapped (via the `id` argument) AND a
+    # paired test is requested, pass it to compare_means() so the pairing is
+    # aligned by id. Gated on `paired` so a stray mapped `id` aesthetic on a
+    # non-paired plot is ignored (unchanged vs. before).
+    if (isTRUE(paired) && "id" %in% names(data)) {
+      method.args <- method.args %>% .add_item(id = "id")
+    }
 
     if (.is.multiple.grouping.vars) {
       method.args <- method.args %>%

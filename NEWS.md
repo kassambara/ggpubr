@@ -109,6 +109,12 @@
   `ref.group` comparison with `t.test`/`wilcox.test`. Default (`id = NULL`) is
   unchanged (#560).
 
+- `stat_compare_means()` also gains the `id` argument, so a paired test can be
+  aligned by subject id directly on a plot (e.g. `ggpaired(...) +
+  stat_compare_means(paired = TRUE, id = "subject")`), displaying the correct
+  p-value even when the data are not sorted by subject. Plots without `id` are
+  unchanged (#560).
+
 - The minimum required `rstatix` version is now `>= 1.0.0` (the version that
   introduced the `id` argument used by `compare_means(id = )`, and the
   full-precision pairwise p-values relied on by the p-value formatting).
