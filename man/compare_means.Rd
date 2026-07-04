@@ -9,6 +9,7 @@ compare_means(
   data,
   method = "wilcox.test",
   paired = FALSE,
+  id = NULL,
   group.by = NULL,
   ref.group = NULL,
   symnum.args = list(),
@@ -47,6 +48,16 @@ test comparing multiple groups. }}
 
 \item{paired}{a logical indicating whether you want a paired test. Used only
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
+
+\item{id}{optional character string naming a column that identifies matched
+subjects for a \strong{paired} two-group comparison (\code{method =
+"t.test"} or \code{"wilcox.test"}). By default (\code{id = NULL}) a paired
+test pairs observations by \emph{row order}, so a p-value can be wrong if the
+data are not sorted so that the two groups align. Providing \code{id} pairs
+the observations by subject id instead (row-order independent), using only
+the complete pairs. Supported for a comparison of exactly two groups; it is
+an error to combine \code{id} with \code{ref.group}, more than two groups, or
+\code{anova}/\code{kruskal.test}.}
 
 \item{group.by}{a character vector containing the name of grouping variables.}
 
@@ -156,6 +167,11 @@ compare_means(len ~ supp, df)
 # Two-samples paired test
 # :::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ supp, df, paired = TRUE)
+
+# Paired test pairing by a subject id column (row-order independent)
+# :::::::::::::::::::::::::::::::::::::::::
+df$id <- rep(1:30, 2) # pairs the two supp levels by subject
+compare_means(len ~ supp, df, paired = TRUE, id = "id")
 
 # Compare supp levels after grouping the data by "dose"
 # ::::::::::::::::::::::::::::::::::::::::

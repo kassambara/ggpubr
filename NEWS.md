@@ -99,6 +99,14 @@
   text-line units, around each plot. Default is `0` (no extra space; each plot
   keeps its own margins, so existing arrangements are unchanged) (#151).
 
+- `compare_means()` gains an `id` argument for paired two-group comparisons.
+  Without it, a paired test (`paired = TRUE`) pairs observations by row order, so
+  the p-value is wrong when the data are not sorted so that the two groups align
+  by subject. Passing `id` (the name of a subject-identifier column) pairs the
+  observations by id instead — row-order independent, using only the complete
+  pairs. Default (`id = NULL`) is unchanged. Supported for a two-group `t.test`
+  or `wilcox.test` (#560).
+
 - `geom_pwc()` and `stat_pwc()` gain a `p.adjust.n` argument giving the number of
   comparisons to use for the p-value adjustment (passed as `n` to
   `stats::p.adjust()`). Default is `NULL` (adjust by the number of computed
