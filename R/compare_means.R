@@ -21,14 +21,15 @@ NULL
 #' @param paired a logical indicating whether you want a paired test. Used only
 #'  in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.
 #' @param id optional character string naming a column that identifies matched
-#'  subjects for a \strong{paired} two-group comparison (\code{method =
-#'  "t.test"} or \code{"wilcox.test"}). By default (\code{id = NULL}) a paired
-#'  test pairs observations by \emph{row order}, so a p-value can be wrong if the
-#'  data are not sorted so that the two groups align. Providing \code{id} pairs
-#'  the observations by subject id instead (row-order independent), using only
-#'  the complete pairs. Supported for a comparison of exactly two groups; it is
-#'  an error to combine \code{id} with \code{ref.group}, more than two groups, or
-#'  \code{anova}/\code{kruskal.test}.
+#'  subjects for a \strong{paired} comparison (\code{method = "t.test"} or
+#'  \code{"wilcox.test"}). By default (\code{id = NULL}) a paired test pairs
+#'  observations by \emph{row order}, so a p-value can be wrong if the data are
+#'  not sorted so that the compared groups align. Providing \code{id} pairs the
+#'  observations by subject id instead (row-order independent), using only the
+#'  complete pairs (per-comparison pairwise deletion, via \pkg{rstatix}). It
+#'  works for a two-group, a pairwise (more than two groups) and a
+#'  \code{ref.group} comparison; it is an error to combine \code{id} with
+#'  \code{anova}/\code{kruskal.test} or with \code{ref.group = ".all."}.
 #' @param group.by  a character vector containing the name of grouping variables.
 #' @param ref.group a character string specifying the reference group. If
 #'  specified, for a given grouping variable, each of the group levels will be
@@ -165,8 +166,10 @@ compare_means <- function(formula, data, method = "wilcox.test",
   method.name <- method.info$name
 
   # #560: validate id-based pairing. When `id` is supplied the paired test is
-  # aligned by subject id (row-order independent) instead of by row position.
-  # Scoped to a two-group paired t-/Wilcoxon test.
+  # aligned by subject id (row-order independent) instead of by row position,
+  # via rstatix, which handles two-group, pairwise and ref.group comparisons
+  # (per-comparison complete pairs). Only `ref.group = ".all."` (basemean, which
+  # duplicates each observation) is unsupported.
   if (!is.null(id)) {
     if (!isTRUE(paired)) {
       stop("`id` is only used for paired comparisons; set `paired = TRUE`.", call. = FALSE)
@@ -175,8 +178,8 @@ compare_means <- function(formula, data, method = "wilcox.test",
       stop("`id`-based pairing is only supported for `method = \"t.test\"` or ",
            "`method = \"wilcox.test\"`.", call. = FALSE)
     }
-    if (!is.null(ref.group)) {
-      stop("`id`-based pairing is not supported together with `ref.group`.", call. = FALSE)
+    if (!is.null(ref.group) && ref.group == ".all.") {
+      stop("`id`-based pairing is not supported with `ref.group = \".all.\"`.", call. = FALSE)
     }
     if (length(id) != 1L || !is.character(id)) {
       stop("`id` must be a single column name (a character string).", call. = FALSE)
@@ -489,22 +492,13 @@ compare_means <- function(formula, data, method = "wilcox.test",
   pvalues
 }
 
-# Paired two-group test aligned by subject id (#560). Delegates to rstatix's
-# id-aware paired test, which joins the two groups on the id column (row-order
-# independent) and uses only the complete pairs, so mis-sorted or unbalanced
-# data yield the statistically correct paired p-value. Returns the same
-# group1 | group2 | p shape as .test_pairwise().
+# Paired test(s) aligned by subject id (#560). Delegates to rstatix's id-aware
+# paired test, which joins groups on the id column (row-order independent) and
+# uses only the complete pairs per comparison, so mis-sorted or unbalanced data
+# yield the statistically correct paired p-value(s). Handles two-group and
+# pairwise (>2 groups) comparisons; ref.group is applied by the caller's
+# post-filter. Returns the same group1 | group2 | p shape as .test_pairwise().
 .paired_test_by_id <- function(data, x, group, method, id) {
-  group.vec <- .select_vec(data, group)
-  if (is.factor(group.vec)) {
-    g.levels <- levels(droplevels(group.vec))
-  } else {
-    g.levels <- unique(group.vec[!is.na(group.vec)])
-  }
-  if (length(g.levels) != 2L) {
-    stop("`id`-based pairing is only supported for a comparison of exactly two ",
-         "groups (found ", length(g.levels), ").", call. = FALSE)
-  }
   test.fun <- switch(method,
     t.test = rstatix::t_test,
     wilcox.test = rstatix::wilcox_test

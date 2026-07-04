@@ -50,14 +50,15 @@ test comparing multiple groups. }}
 in \code{\link[stats]{t.test}} and in \link[stats]{wilcox.test}.}
 
 \item{id}{optional character string naming a column that identifies matched
-subjects for a \strong{paired} two-group comparison (\code{method =
-"t.test"} or \code{"wilcox.test"}). By default (\code{id = NULL}) a paired
-test pairs observations by \emph{row order}, so a p-value can be wrong if the
-data are not sorted so that the two groups align. Providing \code{id} pairs
-the observations by subject id instead (row-order independent), using only
-the complete pairs. Supported for a comparison of exactly two groups; it is
-an error to combine \code{id} with \code{ref.group}, more than two groups, or
-\code{anova}/\code{kruskal.test}.}
+subjects for a \strong{paired} comparison (\code{method = "t.test"} or
+\code{"wilcox.test"}). By default (\code{id = NULL}) a paired test pairs
+observations by \emph{row order}, so a p-value can be wrong if the data are
+not sorted so that the compared groups align. Providing \code{id} pairs the
+observations by subject id instead (row-order independent), using only the
+complete pairs (per-comparison pairwise deletion, via \pkg{rstatix}). It
+works for a two-group, a pairwise (more than two groups) and a
+\code{ref.group} comparison; it is an error to combine \code{id} with
+\code{anova}/\code{kruskal.test} or with \code{ref.group = ".all."}.}
 
 \item{group.by}{a character vector containing the name of grouping variables.}
 
