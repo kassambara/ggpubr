@@ -91,6 +91,15 @@
   text-line units, around each plot. Default is `0` (no extra space; each plot
   keeps its own margins, so existing arrangements are unchanged) (#151).
 
+- `annotate_figure()` gains `column.titles` and `row.titles` arguments to add a
+  title above each column and to the left of each row of an arranged grid
+  (useful for publication panels). Each accepts a character vector (one title
+  per column / per row, rendered in bold) or a list of grobs (e.g. built with
+  `text_grob()`) for full styling control; `row.titles` are rotated 90 degrees.
+  The titles are placed in reserved space (they do not overlap the plots) and
+  are evenly spaced, so they assume equal-sized columns / rows (the `ggarrange()`
+  default). Default is `NULL` (no titles; existing figures are unchanged) (#573).
+
 - `ggbarplot()` gains a `numeric.x.axis` argument (already available in
   `ggline()` and `ggerrorplot()`). With `numeric.x.axis = TRUE` the x variable
   is kept numeric instead of being coerced to a discrete factor, so bars are

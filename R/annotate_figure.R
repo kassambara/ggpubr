@@ -14,6 +14,15 @@ NULL
 #' @param fig.lab.size optional size of the figure label.
 #' @param fig.lab.face optional font face of the figure label. Allowed values
 #'  include: "plain", "bold", "italic", "bold.italic".
+#' @param column.titles,row.titles optional character vector giving one title per
+#'  column / per row of the arranged figure, adding titles above each column and
+#'  to the left of each row (useful for publication grids, see
+#'  \code{\link{ggarrange}()}). Can also be a list of grobs (e.g. built with
+#'  \code{\link{text_grob}()}) for full control over styling; a character vector
+#'  is rendered in bold using the current theme text settings. The titles are
+#'  evenly spaced and therefore assume equal-sized columns / rows (the
+#'  \code{ggarrange()} default), with one entry per column / row. \code{row.titles}
+#'  are rotated 90 degrees.
 #' @author Laszlo Erdey \email{erdey.laszlo@@econ.unideb.hu}
 #' @seealso \code{\link{ggarrange}()}
 #' @examples
@@ -50,6 +59,14 @@ NULL
 #'   fig.lab = "Figure 1", fig.lab.face = "bold"
 #' )
 #'
+#' # Add a title to each column and each row of an arranged grid
+#' # ::::::::::::::::::::::::::::::::::::::::::::::::::
+#' grid <- ggarrange(bxp, dp, dens, bxp, ncol = 2, nrow = 2)
+#' annotate_figure(grid,
+#'   column.titles = c("Column 1", "Column 2"),
+#'   row.titles = c("Row 1", "Row 2")
+#' )
+#'
 #' @export
 annotate_figure <- function(p,
                             top = NULL, bottom = NULL, left = NULL, right = NULL,
@@ -58,7 +75,8 @@ annotate_figure <- function(p,
                               "top.left", "top", "top.right",
                               "bottom.left", "bottom", "bottom.right"
                             ),
-                            fig.lab.size, fig.lab.face) {
+                            fig.lab.size, fig.lab.face,
+                            column.titles = NULL, row.titles = NULL) {
   fig.lab.pos <- match.arg(fig.lab.pos)
   annot.args <- list(top = top, bottom = bottom, left = left, right = right) %>%
     .compact()
@@ -84,6 +102,18 @@ annotate_figure <- function(p,
   lab.args$fontface <- if (!missing(fig.lab.face)) fig.lab.face else ggplot2::theme_get()$text$face
 
 
+  # Per-column / per-row titles (#573). Wrapped closest to the plots (inside any
+  # figure-wide top/left labels) using space-reserving strips so they do not
+  # overlap the plot content. Evenly spaced -> assumes equal column/row sizes.
+  has.col.titles <- !is.null(column.titles) && length(column.titles) > 0
+  has.row.titles <- !is.null(row.titles) && length(row.titles) > 0
+  if (has.col.titles || has.row.titles) {
+    col.grob <- if (has.col.titles) .titles_grob(column.titles, rot = 0) else NULL
+    row.grob <- if (has.row.titles) .titles_grob(row.titles, rot = 90) else NULL
+    p <- gridExtra::arrangeGrob(p, top = col.grob, left = row.grob) %>%
+      as_ggplot()
+  }
+
   if (!.is_empty(annot.args)) {
     p <- gridExtra::arrangeGrob(p, top = top, bottom = bottom, left = left, right = right) %>%
       as_ggplot()
@@ -94,4 +124,30 @@ annotate_figure <- function(p,
   }
 
   p
+}
+
+# Build an evenly-spaced strip of per-column (rot = 0) or per-row (rot = 90)
+# titles for annotate_figure() (#573). `titles` is a character vector (rendered
+# in bold via text_grob()), a single grob, or a list of grobs.
+.titles_grob <- function(titles, rot = 0) {
+  if (is.character(titles)) {
+    grobs <- lapply(titles, function(x) text_grob(x, face = "bold", rot = rot))
+  } else if (grid::is.grob(titles)) {
+    grobs <- list(titles)
+  } else if (is.list(titles)) {
+    grobs <- titles
+  } else {
+    stop(
+      "`column.titles`/`row.titles` must be a character vector or a list of grobs.",
+      call. = FALSE
+    )
+  }
+  n <- length(grobs)
+  if (rot == 0) {
+    # per-column titles: a single row of n evenly spaced cells
+    gridExtra::arrangeGrob(grobs = grobs, nrow = 1, ncol = n)
+  } else {
+    # per-row titles: a single column of n evenly spaced cells
+    gridExtra::arrangeGrob(grobs = grobs, ncol = 1, nrow = n)
+  }
 }
