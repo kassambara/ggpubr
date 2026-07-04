@@ -87,6 +87,12 @@
 
 ## New features
 
+- `ggpaired()` gains an opt-in `jitter` argument that spreads the paired points
+  horizontally to reduce overlap. Each subject (`id`) gets a single offset, so
+  its two points move together and the connecting line stays intact, and only
+  the horizontal positions change (the values are never moved). Default
+  `jitter = 0` leaves the plot unchanged (#407).
+
 - `ggboxplot()`, `ggviolin()` and `ggstripchart()` gain an opt-in `show.n`
   argument. When `show.n = TRUE`, the number of observations (`"n = <count>"`)
   is displayed at the top of each group. When the groups are dodged (a
