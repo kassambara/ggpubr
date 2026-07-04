@@ -25,7 +25,11 @@ NULL
 #'  "p.adj"), where \code{p} is the p-value. Can be also an expression that can
 #'  be formatted by the \code{\link[glue]{glue}()} package. For example, when
 #'  specifying label = "t-test, p = \{p\}", the expression \{p\} will be
-#'  replaced by its value.
+#'  replaced by its value. Values inserted through a glue expression are taken
+#'  from the raw data column and are \strong{not} rounded by \code{p.digits}; to
+#'  round within a glue expression, wrap the value, e.g.
+#'  \code{label = "p = \{signif(p, 3)\}"} (or \code{\{format_p_value(p)\}} for the
+#'  p-value house style).
 #' @param y.position column containing the coordinates (in data units) to be used
 #'  for absolute positioning of the label. Default value is "y.position". Can be
 #'  also a numeric vector.
