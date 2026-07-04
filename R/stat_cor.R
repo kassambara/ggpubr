@@ -79,10 +79,15 @@ NULL
 #'  horizontal steps), see \code{ggpmisc::stat_correlation()}, from which some of
 #'  the label-positioning logic in \code{stat_cor()} was originally adapted.
 #' @section Computed variables: \describe{ \item{r}{correlation coefficient}
-#'  \item{rr}{correlation coefficient squared} \item{r.label}{formatted label
-#'  for the correlation coefficient} \item{rr.label}{formatted label for the
-#'  squared correlation coefficient} \item{p.label}{label for the p-value}
-#'  \item{label}{default label displayed by \code{stat_cor()}} }
+#'  \item{rr}{correlation coefficient squared} \item{rmse}{root mean square
+#'  deviation (RMSE/RMSD) between \code{x} and \code{y}, computed on the complete
+#'  pairs; meaningful when \code{x} and \code{y} are on the same scale (e.g.
+#'  predicted vs. reference values). Rounded and formatted with the coefficient
+#'  settings (\code{r.digits} / \code{r.accuracy}).} \item{r.label}{formatted
+#'  label for the correlation coefficient} \item{rr.label}{formatted label for
+#'  the squared correlation coefficient} \item{p.label}{label for the p-value}
+#'  \item{rmse.label}{formatted label for the RMSE/RMSD} \item{label}{default
+#'  label displayed by \code{stat_cor()}} }
 #'
 #' @examples
 #' # Load data
@@ -115,6 +120,16 @@ NULL
 #'     aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
 #'     label.x = 3
 #'   )
+#'
+#' # Show the RMSE/RMSD (root mean square deviation) between x and y
+#' # (useful for agreement between paired measurements on the same scale)
+#' sp + stat_cor(aes(label = after_stat(rmse.label)), label.x = 3)
+#'
+#' # Combine the correlation coefficient and the RMSE (comma-separated)
+#' sp + stat_cor(
+#'   aes(label = paste(after_stat(r.label), after_stat(rmse.label), sep = "~`,`~")),
+#'   label.x = 3
+#' )
 #'
 #' # Color by groups and facet
 #' # ::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -222,12 +237,19 @@ StatCor <- ggproto("StatCor", Stat,
     method = method, alternative = alternative,
     use = "complete.obs"
   ))
-  estimate <- p.value <- p <- r <- rr <- NULL
+  # Root Mean Square Deviation (RMSE/RMSD) between x and y, computed on the same
+  # complete pairs used by cor.test() (#458). Meaningful when x and y are on the
+  # same scale (e.g. predicted vs. reference values).
+  ok <- stats::complete.cases(x, y)
+  rmse.value <- sqrt(mean((x[ok] - y[ok])^2))
+
+  estimate <- p.value <- p <- r <- rr <- rmse <- NULL
   z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method) %>%
     mutate(
       r = signif(estimate, r.digits),
       rr = signif(estimate^2, r.digits),
-      p = signif(p.value, p.digits)
+      p = signif(p.value, p.digits),
+      rmse = signif(rmse.value, r.digits)
     )
 
   # Defining p and r labels
@@ -251,6 +273,9 @@ StatCor <- ggproto("StatCor", Stat,
         p.digits = p.digits, accuracy = p.accuracy, type = output.type,
         p.format.style = p.format.style, p.leading.zero = p.leading.zero,
         p.decimal.mark = p.decimal.mark, p.coef.name = p.coef.name
+      ),
+      rmse.label = get_rmse_label(
+        rmse.value, accuracy = r.accuracy, digits = r.digits, type = output.type
       )
     )
 
@@ -390,6 +415,32 @@ get_corcoef_label <- function(x, accuracy = 0.01, prefix = "R", cor.coef.name = 
     }
   }
   label <- gsub(pattern = "R", cor.coef.name, x = label, fixed = TRUE)
+  label
+}
+
+# Format the RMSE/RMSD label (#458). Kept separate from get_corcoef_label()
+# because the latter substitutes "R" -> cor.coef.name, which would corrupt
+# "RMSE". `x` is the RAW rmse value: unlike the correlation coefficient it is
+# not bounded to [-1, 1], so it is formatted from the raw value (significant
+# digits when `accuracy` is NULL, else fixed decimal places) rather than a
+# pre-rounded one, to avoid losing precision for values > 1.
+get_rmse_label <- function(x, accuracy = NULL, digits = 2, type = "expression") {
+  if (is.null(accuracy)) {
+    value <- signif(x, digits)
+    label <- paste0("RMSE = ", value)
+  } else if (!(accuracy < 1)) {
+    stop(
+      "Accuracy should be < 1; For example use 0.01, 0.001, 0.0001, etc.",
+      call. = FALSE
+    )
+  } else {
+    nb_decimal_places <- round(abs(log10(accuracy)))
+    value <- formatC(x, digits = nb_decimal_places, format = "f", decimal.mark = ".")
+    label <- paste0("RMSE = ", value)
+  }
+  if (type == "expression") {
+    label <- gsub(pattern = "RMSE = ", replacement = "italic(RMSE)~`=`~", x = label, fixed = TRUE)
+  }
   label
 }
 
