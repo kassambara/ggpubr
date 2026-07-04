@@ -91,6 +91,15 @@
   text-line units, around each plot. Default is `0` (no extra space; each plot
   keeps its own margins, so existing arrangements are unchanged) (#151).
 
+- `geom_pwc()` and `stat_pwc()` gain a `p.adjust.n` argument giving the number of
+  comparisons to use for the p-value adjustment (passed as `n` to
+  `stats::p.adjust()`). Default is `NULL` (adjust by the number of computed
+  p-values, unchanged behavior); set it when the displayed comparisons are a
+  subset of a larger family so the adjustment reflects that larger size. It must
+  be at least the number of p-values being adjusted, and applies to the
+  panel-level adjustment (`p.adjust.by = "panel"`) and the single-comparison
+  case (#612).
+
 - `annotate_figure()` gains `column.titles` and `row.titles` arguments to add a
   title above each column and to the left of each row of an arranged grid
   (useful for publication panels). Each accepts a character vector (one title

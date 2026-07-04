@@ -27,6 +27,7 @@ stat_pwc(
   hjust = 0.5,
   p.adjust.method = "holm",
   p.adjust.by = c("group", "panel"),
+  p.adjust.n = NULL,
   symnum.args = list(),
   hide.ns = FALSE,
   remove.bracket = FALSE,
@@ -71,6 +72,7 @@ geom_pwc(
   hjust = 0.5,
   p.adjust.method = "holm",
   p.adjust.by = c("group", "panel"),
+  p.adjust.n = NULL,
   symnum.args = list(),
   hide.ns = FALSE,
   remove.bracket = FALSE,
@@ -207,6 +209,20 @@ Default is \code{"group"}: for a grouped data, if pairwise test is
 performed, then the p-values are adjusted for each group level
 independently. P-values are adjusted by panel when \code{p.adjust.by =
 "panel"}.}
+
+\item{p.adjust.n}{optional single number giving the number of comparisons to
+use for the p-value adjustment, passed as \code{n} to
+\code{\link[stats]{p.adjust}}. Default is \code{NULL}, which uses the number
+of p-values actually computed (the standard behavior). Set it when the
+displayed comparisons are a subset of a larger family and the adjustment
+should reflect that larger family size. As required by
+\code{\link[stats]{p.adjust}}, \code{p.adjust.n} must be greater than or
+equal to the number of p-values being adjusted. It affects the adjustment
+that \code{geom_pwc()} performs itself: the panel-level adjustment
+(\code{p.adjust.by = "panel"}) and cases where the test returns a single set
+of p-values (a single comparison, or grouped comparisons with two levels per
+group). It does not alter the adjustment that pairwise tests already perform
+internally per group.}
 
 \item{symnum.args}{a list of arguments to pass to the function
  \code{\link[stats]{symnum}} for symbolic number coding of p-values. For
