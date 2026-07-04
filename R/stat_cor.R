@@ -40,6 +40,16 @@ NULL
 #'  factor is mapped to an aesthetic that also defines the facets. This places the
 #'  labels flush with the top of each panel; it is similar in spirit to the
 #'  \code{aes(group = 1)} workaround, which instead leaves them one text line lower.
+#' @param label.anchor character. How \code{label.x.npc}/\code{label.y.npc} are
+#'  interpreted. \code{"data"} (default) converts them to data coordinates using
+#'  the data range, so the label follows the data; the output is unchanged from
+#'  previous versions. \code{"panel"} places the label at the true panel-relative
+#'  position (npc), so the labels stay aligned across panels/facets whose axis
+#'  ranges differ - e.g. with \code{facet_wrap(scales = "free_y")}, with
+#'  \code{geom_smooth()} extending each panel by a different amount, or across
+#'  separate plots combined with \code{\link{ggarrange}()}. An explicit
+#'  \code{label.x}/\code{label.y} always stays in data units regardless of
+#'  \code{label.anchor}. Requires ggplot2 >= 3.5.0 (already a dependency).
 #' @param output.type character One of "expression", "latex", "tex" or "text".
 #' @param digits,r.digits,p.digits integer indicating the number of decimal
 #'  places (round) or significant digits (signif) to be used for the correlation
@@ -167,6 +177,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      cor.coef.name = c("R", "rho", "tau"), label.sep = ", ",
                      label.x.npc = "left", label.y.npc = "top",
                      label.x = NULL, label.y = NULL, label.y.step = 1.4,
+                     label.anchor = c("data", "panel"),
                      output.type = "expression",
                      digits = 2, r.digits = digits, p.digits = digits,
                      r.accuracy = NULL, p.accuracy = NULL,
@@ -177,6 +188,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
   cor.coef.name <- cor.coef.name[1]
+  label.anchor <- match.arg(label.anchor)
   if (!is.numeric(conf.level) || length(conf.level) != 1L || is.na(conf.level) ||
       conf.level <= 0 || conf.level >= 1) {
     stop("`conf.level` must be a single number between 0 and 1.", call. = FALSE)
@@ -187,6 +199,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
     params = list(
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
       label.x = label.x, label.y = label.y, label.y.step = label.y.step,
+      label.anchor = label.anchor,
       label.sep = label.sep,
       method = method, alternative = alternative, output.type = output.type, digits = digits,
       r.digits = r.digits, p.digits = p.digits, r.accuracy = r.accuracy,
@@ -205,7 +218,8 @@ StatCor <- ggproto("StatCor", Stat,
   required_aes = c("x", "y"),
   default_aes = aes(hjust = after_stat(hjust), vjust = after_stat(vjust)),
   compute_group = function(data, scales, method, alternative, label.x.npc, label.y.npc,
-                           label.x, label.y, label.y.step = 1.4, label.sep, output.type, digits,
+                           label.x, label.y, label.y.step = 1.4, label.anchor = "data",
+                           label.sep, output.type, digits,
                            r.digits, p.digits, r.accuracy, p.accuracy, r.leading.zero,
                            p.format.style, p.leading.zero, p.decimal.mark, cor.coef.name,
                            p.coef.name, conf.level = 0.95) {
@@ -230,7 +244,8 @@ StatCor <- ggproto("StatCor", Stat,
     .label.pms <- .label_params(
       data = data, scales = scales,
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-      label.x = label.x, label.y = label.y, label.y.step = label.y.step
+      label.x = label.x, label.y = label.y, label.y.step = label.y.step,
+      label.anchor = label.anchor
     ) %>%
       mutate(hjust = 0)
     cbind(.test, .label.pms)

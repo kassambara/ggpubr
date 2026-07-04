@@ -29,6 +29,13 @@ NULL
 #'  units) between the labels of successive groups. Default is 1.4 (unchanged
 #'  behavior). Set \code{label.y.step = 0} to stop the per-group vertical shift so
 #'  labels align across facet panels.
+#' @param label.anchor character. How \code{label.x.npc}/\code{label.y.npc} are
+#'  interpreted. \code{"data"} (default) converts them to data coordinates (the
+#'  previous behavior). \code{"panel"} places the label at the true panel-relative
+#'  position (npc), so labels stay aligned across panels/facets with different
+#'  axis ranges (e.g. \code{scales = "free_y"} or \code{geom_smooth()} extending
+#'  each panel). An explicit \code{label.x}/\code{label.y} always stays in data
+#'  units. Requires ggplot2 >= 3.5.0 (already a dependency).
 #' @param output.type character One of "expression", "latex" or "text".
 #' @param decreasing logical. If \code{TRUE} (the default), the equation is
 #'   formatted in standard mathematical convention with terms in decreasing
@@ -110,12 +117,14 @@ stat_regline_equation <- function(
   mapping = NULL, data = NULL, formula = y ~ x,
   label.x.npc = "left", label.y.npc = "top",
   label.x = NULL, label.y = NULL, label.y.step = 1.4,
+  label.anchor = c("data", "panel"),
   output.type = "expression", decreasing = TRUE,
   coef.digits = 2, rr.digits = 2,
   geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
   inherit.aes = TRUE, ...
 ) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
+  label.anchor <- match.arg(label.anchor)
   # Convert any dot-dot notation in user-provided mapping
   mapping <- convert_label_dotdot_notation_to_after_stat(mapping)
 
@@ -125,6 +134,7 @@ stat_regline_equation <- function(
     params = list(
       formula = formula, label.x.npc = label.x.npc, label.y.npc = label.y.npc,
       label.x = label.x, label.y = label.y, label.y.step = label.y.step,
+      label.anchor = label.anchor,
       output.type = output.type, decreasing = decreasing,
       coef.digits = coef.digits, rr.digits = rr.digits,
       parse = parse, na.rm = na.rm, ...
@@ -137,7 +147,8 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
   required_aes = c("x", "y"),
   default_aes = aes(label = after_stat(eq.label), hjust = after_stat(hjust), vjust = after_stat(vjust)),
   compute_group = function(data, scales, formula, label.x.npc, label.y.npc,
-                           label.x, label.y, label.y.step = 1.4, output.type, decreasing,
+                           label.x, label.y, label.y.step = 1.4, label.anchor = "data",
+                           output.type, decreasing,
                            coef.digits = 2, rr.digits = 2) {
     force(data)
 
@@ -151,7 +162,8 @@ StatReglineEquation <- ggproto("StatReglineEquation", Stat,
     .label.pms <- .label_params(
       data = data, scales = scales,
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
-      label.x = label.x, label.y = label.y, label.y.step = label.y.step
+      label.x = label.x, label.y = label.y, label.y.step = label.y.step,
+      label.anchor = label.anchor
     ) %>%
       mutate(hjust = 0)
     cbind(.test, .label.pms)

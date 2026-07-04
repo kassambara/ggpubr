@@ -87,6 +87,14 @@
 
 ## New features
 
+- `stat_cor()` and `stat_regline_equation()` gain a `label.anchor` argument.
+  With `label.anchor = "panel"` the label is placed at the true panel-relative
+  position (npc), so labels stay aligned across panels or facets whose axis
+  ranges differ - e.g. `facet_wrap(scales = "free_y")`, `geom_smooth()`
+  extending each panel by a different amount, or separate plots combined with
+  `ggarrange()`. The default `label.anchor = "data"` keeps the previous
+  data-range placement, so existing plots are unchanged (#248).
+
 - `geom_bracket()` gains an `orientation` argument. `orientation = "vertical"`
   draws a native vertical bracket (the bar spans the y axis, the tips point left
   and the label is rotated), specified with `ymin`/`ymax`/`x.position` — useful

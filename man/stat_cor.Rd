@@ -16,6 +16,7 @@ stat_cor(
   label.x = NULL,
   label.y = NULL,
   label.y.step = 1.4,
+  label.anchor = c("data", "panel"),
   output.type = "expression",
   digits = 2,
   r.digits = digits,
@@ -93,6 +94,17 @@ per-group vertical shift, so that labels align across facet panels when a
 factor is mapped to an aesthetic that also defines the facets. This places the
 labels flush with the top of each panel; it is similar in spirit to the
 \code{aes(group = 1)} workaround, which instead leaves them one text line lower.}
+
+\item{label.anchor}{character. How \code{label.x.npc}/\code{label.y.npc} are
+interpreted. \code{"data"} (default) converts them to data coordinates using
+the data range, so the label follows the data; the output is unchanged from
+previous versions. \code{"panel"} places the label at the true panel-relative
+position (npc), so the labels stay aligned across panels/facets whose axis
+ranges differ - e.g. with \code{facet_wrap(scales = "free_y")}, with
+\code{geom_smooth()} extending each panel by a different amount, or across
+separate plots combined with \code{\link{ggarrange}()}. An explicit
+\code{label.x}/\code{label.y} always stays in data units regardless of
+\code{label.anchor}. Requires ggplot2 >= 3.5.0 (already a dependency).}
 
 \item{output.type}{character One of "expression", "latex", "tex" or "text".}
 
