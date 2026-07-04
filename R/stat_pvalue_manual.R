@@ -44,8 +44,9 @@ NULL
 #'  raw value without rounding. All other labels are left unchanged: other
 #'  numeric columns (e.g. \code{"statistic"}, \code{"n"}, effect sizes),
 #'  significance symbols (\code{"p.signif"}, \code{"p.adj.signif"}),
-#'  already-formatted strings, and \code{\link[glue]{glue}} expressions. Uses the
-#'  same formatting engine (\code{\link{format_p_value}()}) as
+#'  already-formatted strings, and \code{\link[glue]{glue}} expressions. A
+#'  p-named column whose values fall outside \code{[0, 1]} is also left as-is.
+#'  Uses the same formatting engine (\code{\link{format_p_value}()}) as
 #'  \code{\link{stat_anova_test}()} for consistency across layers.
 #' @param bracket.size Width of the lines of the bracket.
 #' @param color text and line color. Can be variable name in the data for coloring by groups.
@@ -211,13 +212,18 @@ stat_pvalue_manual <- function(
   # Round recognized numeric p-value label columns for display (e.g.
   # label = "p"/"p.adj"). Restricted to known p-value column names so that other
   # numeric label columns (e.g. "statistic", "n", effect sizes, fold changes) are
-  # left untouched -- format_p_value() only accepts values in [0, 1]. Character
+  # left untouched. The extra range check leaves the column as-is unless the
+  # values actually look like probabilities in [0, 1] -- format_p_value() rejects
+  # out-of-range values (NA + warning), so a numeric column merely *named* like a
+  # p-value but holding other quantities passes through unchanged. Character
   # labels (significance symbols, pre-formatted strings, glue output) also pass
   # through unchanged. Opt out with p.digits = NULL.
   .p_value_label_columns <- c("p", "p.adj", "p.value", "p.val", "pval", "padj")
+  .label_values <- data[[label]]
   if (!is.null(p.digits) && label %in% .p_value_label_columns &&
-      is.numeric(data[[label]])) {
-    data[[label]] <- format_p_value(data[[label]], digits = p.digits)
+      is.numeric(.label_values) &&
+      all(.label_values >= 0 & .label_values <= 1, na.rm = TRUE)) {
+    data[[label]] <- format_p_value(.label_values, digits = p.digits)
   }
 
   y.position <- .valide_y_position(y.position, data)

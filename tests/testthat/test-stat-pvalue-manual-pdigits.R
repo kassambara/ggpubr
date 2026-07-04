@@ -96,6 +96,18 @@ test_that("numeric NON-p label columns are left untouched (no NA, no warning)", 
   expect_equal(labs_n, as.character(st$n))
 })
 
+test_that("a p-named column holding out-of-[0,1] values is left untouched", {
+  # A numeric column merely NAMED like a p-value but holding other quantities
+  # must NOT be routed through format_p_value() (which would return NA + warn).
+  # The range guard leaves the whole column as-is if any value is outside [0, 1].
+  st <- .make_stat(p = c(5.3, 0.2, 0.7))
+  expect_warning(
+    labs <- .plotted_labels(stat_pvalue_manual(st, label = "p")),
+    NA
+  )
+  expect_equal(labs, as.character(st$p))
+})
+
 test_that("glue label expressions are unaffected (documented limitation)", {
   st <- .make_stat()
   # glue is evaluated on the raw numeric column, so it keeps full precision;

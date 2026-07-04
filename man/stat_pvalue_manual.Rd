@@ -68,7 +68,8 @@ of \code{"p"}, \code{"p.adj"}, \code{"p.value"}, \code{"p.val"}, \code{"pval"},
 rounding. All other labels are left unchanged: other numeric columns (e.g.
 \code{"statistic"}, \code{"n"}, effect sizes), significance symbols
 (\code{"p.signif"}, \code{"p.adj.signif"}), already-formatted strings, and
-\code{\link[glue]{glue}} expressions. Uses the same formatting engine
+\code{\link[glue]{glue}} expressions. A p-named column whose values fall outside
+\code{[0, 1]} is also left as-is. Uses the same formatting engine
 (\code{\link{format_p_value}()}) as \code{\link{stat_anova_test}()} for
 consistency across layers.}
 
