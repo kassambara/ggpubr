@@ -1137,3 +1137,71 @@ keep_only_tbl_df_classes <- function(x) {
   }
   return(legend)
 }
+
+
+# show.n: per-group observation counts on box/violin/strip charts (#598, #627)
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Dodge width implied by a position (NULL = the layer is not dodged).
+.dodge_width_of <- function(position) {
+  if (is.null(position)) return(NULL)
+  if (is.character(position)) {
+    if (position %in% c("dodge", "dodge2")) return(0.8)
+    if (position == "jitterdodge") return(0.75)
+    return(NULL)
+  }
+  if (inherits(position, "PositionJitterdodge")) return(position$dodge.width %||% 0.75)
+  if (inherits(position, c("PositionDodge2", "PositionDodge"))) return(position$width %||% 0.8)
+  NULL
+}
+
+# Facet variables actually used by the plot. Reads them from the facet object so
+# the internal `.y.` panel of combine = TRUE is handled like any other facet.
+.plot_facet_vars <- function(p) {
+  f <- p$facet
+  if (is.null(f) || inherits(f, "FacetNull")) return(character(0))
+  pr <- f$params
+  unique(c(names(pr$facets), names(pr$rows), names(pr$cols)))
+}
+
+# Add "n = <count>" labels at the top of each panel, one per group. Counts are
+# taken from the plot's own data (so select/remove/order and combine's reshaped
+# data are respected). When the groups are dodged (a dodging position + a
+# colour/fill grouping), the labels dodge to sit above each box; otherwise a
+# single count per x tick is shown. Opt-in via show.n = TRUE; default output is
+# unchanged.
+.add_show_n <- function(p, x, color = NULL, fill = NULL, facet.by = NULL,
+                        position = NULL, size = 3.2, vjust = 1.4) {
+  d <- p$data
+  if (is.null(d) || !(x %in% colnames(d))) return(p)
+  group <- intersect(unique(c(color, fill)), colnames(d))
+  facet.vars <- intersect(unique(c(.plot_facet_vars(p), facet.by)), colnames(d))
+  dodge.w <- .dodge_width_of(position)
+  dodged <- length(group) > 0 && !is.null(dodge.w)
+  keys <- if (dodged) unique(c(facet.vars, x, group)) else unique(c(facet.vars, x))
+  keys <- intersect(keys, colnames(d))
+  cnt <- d %>%
+    dplyr::group_by(dplyr::across(dplyr::all_of(keys))) %>%
+    dplyr::summarise(.n = dplyr::n(), .groups = "drop") %>%
+    as.data.frame()
+  if (nrow(cnt) == 0) return(p)
+  cnt$.n. <- paste0("n = ", cnt$.n)
+  # y = Inf pins the label to the top of each panel (facet-robust); the .data
+  # pronoun keeps non-syntactic column names (spaces/hyphens) working.
+  if (dodged) {
+    # dodge by the interaction of all grouping columns, matching the boxes.
+    # Use a collision-proof temp column name (never a real data column).
+    grp.col <- ".ggpubr_show_n_grp."
+    cnt[[grp.col]] <- interaction(cnt[group], drop = TRUE, lex.order = TRUE)
+    mapping <- ggplot2::aes(
+      x = .data[[x]], y = Inf, label = .data$.n., group = .data[[grp.col]]
+    )
+    pos <- ggplot2::position_dodge(width = dodge.w)
+  } else {
+    mapping <- ggplot2::aes(x = .data[[x]], y = Inf, label = .data$.n.)
+    pos <- "identity"
+  }
+  p + ggplot2::geom_text(
+    data = cnt, mapping = mapping, position = pos, vjust = vjust,
+    size = size, colour = "black", inherit.aes = FALSE, show.legend = FALSE
+  )
+}

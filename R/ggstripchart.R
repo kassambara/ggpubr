@@ -118,6 +118,7 @@ ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
                          jitter = 0.2,
                          position = position_jitter(jitter, seed = 123),
                          ggtheme = theme_pubr(),
+                         show.n = FALSE,
                          ...) {
   # Default options
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -157,6 +158,16 @@ ggstripchart <- function(data, x, y, combine = FALSE, merge = FALSE,
   # keeping an explicit NULL intact via single-bracket list assignment (#561).
   if (!missing(ggtheme)) .opts["ggtheme"] <- list(ggtheme)
   p <- do.call(.plotter, .opts)
+
+  if (isTRUE(show.n) && !missing(x)) {
+    if (.is_list(p)) {
+      p <- purrr::map(p, .add_show_n, x = x, color = color, fill = fill,
+                      facet.by = facet.by, position = position)
+    } else {
+      p <- .add_show_n(p, x = x, color = color, fill = fill,
+                       facet.by = facet.by, position = position)
+    }
+  }
 
   if (.is_list(p) & length(p) == 1) p <- p[[1]]
   return(p)

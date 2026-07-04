@@ -87,6 +87,14 @@
 
 ## New features
 
+- `ggboxplot()`, `ggviolin()` and `ggstripchart()` gain an opt-in `show.n`
+  argument. When `show.n = TRUE`, the number of observations (`"n = <count>"`)
+  is displayed at the top of each group. When the groups are dodged (a
+  `color`/`fill` grouping with a dodging `position`), one count is shown per
+  group; otherwise a single count is shown per x-axis tick. Counts respect
+  `select`/`remove` and are computed per facet. Default is `show.n = FALSE`, so
+  existing plots are unchanged (#598, #627).
+
 - Passing `ggtheme = NULL` to the plotting functions (e.g. `ggscatter()`,
   `ggboxplot()`, `ggline()`, `gghistogram()`, ...) now skips applying a ggpubr
   theme, so the plot keeps ggplot2's default theme or the theme set globally with
