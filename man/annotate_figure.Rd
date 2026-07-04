@@ -14,7 +14,9 @@ annotate_figure(
   fig.lab.pos = c("top.left", "top", "top.right", "bottom.left", "bottom",
     "bottom.right"),
   fig.lab.size,
-  fig.lab.face
+  fig.lab.face,
+  column.titles = NULL,
+  row.titles = NULL
 )
 }
 \arguments{
@@ -32,6 +34,16 @@ annotate_figure(
 
 \item{fig.lab.face}{optional font face of the figure label. Allowed values
 include: "plain", "bold", "italic", "bold.italic".}
+
+\item{column.titles, row.titles}{optional character vector giving one title per
+column / per row of the arranged figure, adding titles above each column and
+to the left of each row (useful for publication grids, see
+\code{\link{ggarrange}()}). Can also be a list of grobs (e.g. built with
+\code{\link{text_grob}()}) for full control over styling; a character vector
+is rendered in bold using the current theme text settings. The titles are
+evenly spaced and therefore assume equal-sized columns / rows (the
+\code{ggarrange()} default), with one entry per column / row. \code{row.titles}
+are rotated 90 degrees.}
 }
 \description{
 Annotate figures including: i) ggplots, ii) arranged ggplots from
@@ -70,6 +82,14 @@ annotate_figure(figure,
   left = text_grob("Figure arranged using ggpubr", color = "green", rot = 90),
   right = text_grob(bquote("Superscript: (" * kg ~ NH[3] ~ ha^-1 ~ yr^-1 * ")"), rot = 90),
   fig.lab = "Figure 1", fig.lab.face = "bold"
+)
+
+# Add a title to each column and each row of an arranged grid
+# ::::::::::::::::::::::::::::::::::::::::::::::::::
+grid <- ggarrange(bxp, dp, dens, bxp, ncol = 2, nrow = 2)
+annotate_figure(grid,
+  column.titles = c("Column 1", "Column 2"),
+  row.titles = c("Row 1", "Row 2")
 )
 
 }
