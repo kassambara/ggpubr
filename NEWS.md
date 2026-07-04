@@ -77,6 +77,14 @@
   `aes(label = after_stat(rmse.label))`, or combine it with the correlation
   coefficient using `paste()`. The default label is unchanged (#458).
 
+- `stat_cor()` can now display the confidence interval of the correlation
+  coefficient, via the new computed variables `conf.int.low`, `conf.int.high`
+  and `conf.int.label` (e.g. `"95% CI [0.21, 0.75]"`) and a `conf.level` argument
+  (default `0.95`). Show it with `aes(label = after_stat(conf.int.label))`, or
+  combine it with the coefficient using `paste()`. The confidence interval is
+  available for `method = "pearson"` only; it is `NA` for Spearman/Kendall. The
+  default label is unchanged (#418).
+
 ## New features
 
 - Passing `ggtheme = NULL` to the plotting functions (e.g. `ggscatter()`,

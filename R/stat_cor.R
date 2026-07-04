@@ -66,6 +66,13 @@ NULL
 #'  point (e.g., "0.05" vs ".05"). If NULL, uses the style's default setting.
 #' @param p.decimal.mark character string to use as the decimal mark. If NULL,
 #'  uses \code{getOption("OutDec")}.
+#' @param conf.level confidence level for the confidence interval of the
+#'  correlation coefficient, used to compute the \code{conf.int.low},
+#'  \code{conf.int.high} and \code{conf.int.label} computed variables (see the
+#'  \strong{Computed variables} section). Default is 0.95. A confidence interval
+#'  is only available for \code{method = "pearson"} (with at least 4 complete
+#'  observations); for \code{"spearman"}/\code{"kendall"} the confidence-interval
+#'  variables are \code{NA}.
 #' @param ... other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 #'  \code{\link[ggplot2:geom_text]{geom_label}}.
 #' @param na.rm If FALSE (the default), removes missing values with a warning. If
@@ -86,8 +93,13 @@ NULL
 #'  settings (\code{r.digits} / \code{r.accuracy}).} \item{r.label}{formatted
 #'  label for the correlation coefficient} \item{rr.label}{formatted label for
 #'  the squared correlation coefficient} \item{p.label}{label for the p-value}
-#'  \item{rmse.label}{formatted label for the RMSE/RMSD} \item{label}{default
-#'  label displayed by \code{stat_cor()}} }
+#'  \item{rmse.label}{formatted label for the RMSE/RMSD}
+#'  \item{conf.int.low, conf.int.high}{lower and upper bounds of the confidence
+#'  interval of the correlation coefficient (Pearson only; \code{NA} for
+#'  Spearman/Kendall), at the level given by \code{conf.level}}
+#'  \item{conf.int.label}{formatted label for the confidence interval, e.g.
+#'  \code{"95\% CI [0.21, 0.75]"} (\code{NA} when the interval is unavailable)}
+#'  \item{label}{default label displayed by \code{stat_cor()}} }
 #'
 #' @examples
 #' # Load data
@@ -131,6 +143,15 @@ NULL
 #'   label.x = 3
 #' )
 #'
+#' # Show the confidence interval of the correlation coefficient (Pearson)
+#' sp + stat_cor(aes(label = after_stat(conf.int.label)), label.x = 3)
+#'
+#' # Correlation coefficient with its confidence interval
+#' sp + stat_cor(
+#'   aes(label = paste(after_stat(r.label), after_stat(conf.int.label), sep = "~`,`~")),
+#'   label.x = 1.5
+#' )
+#'
 #' # Color by groups and facet
 #' # ::::::::::::::::::::::::::::::::::::::::::::::::::::
 #' sp <- ggscatter(df,
@@ -151,11 +172,15 @@ stat_cor <- function(mapping = NULL, data = NULL,
                      r.accuracy = NULL, p.accuracy = NULL,
                      r.leading.zero = NULL,
                      p.format.style = "default", p.leading.zero = NULL,
-                     p.decimal.mark = NULL, p.coef.name = "p",
+                     p.decimal.mark = NULL, p.coef.name = "p", conf.level = 0.95,
                      geom = "text", position = "identity", na.rm = FALSE, show.legend = NA,
                      inherit.aes = TRUE, ...) {
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
   cor.coef.name <- cor.coef.name[1]
+  if (!is.numeric(conf.level) || length(conf.level) != 1L || is.na(conf.level) ||
+      conf.level <= 0 || conf.level >= 1) {
+    stop("`conf.level` must be a single number between 0 and 1.", call. = FALSE)
+  }
   layer(
     stat = StatCor, data = data, mapping = mapping, geom = geom,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
@@ -169,6 +194,7 @@ stat_cor <- function(mapping = NULL, data = NULL,
       p.format.style = p.format.style,
       p.leading.zero = p.leading.zero, p.decimal.mark = p.decimal.mark,
       cor.coef.name = cor.coef.name, p.coef.name = p.coef.name,
+      conf.level = conf.level,
       parse = parse, na.rm = na.rm, ...
     )
   )
@@ -182,7 +208,7 @@ StatCor <- ggproto("StatCor", Stat,
                            label.x, label.y, label.y.step = 1.4, label.sep, output.type, digits,
                            r.digits, p.digits, r.accuracy, p.accuracy, r.leading.zero,
                            p.format.style, p.leading.zero, p.decimal.mark, cor.coef.name,
-                           p.coef.name) {
+                           p.coef.name, conf.level = 0.95) {
     if (length(unique(data$x)) < 2) {
       # Not enough data to perform test
       return(data.frame())
@@ -197,7 +223,8 @@ StatCor <- ggproto("StatCor", Stat,
       r.leading.zero = r.leading.zero,
       p.format.style = p.format.style, p.leading.zero = p.leading.zero,
       p.decimal.mark = p.decimal.mark,
-      cor.coef.name = cor.coef.name, p.coef.name = p.coef.name
+      cor.coef.name = cor.coef.name, p.coef.name = p.coef.name,
+      conf.level = conf.level
     )
     # Returns a data frame with label: x, y, hjust, vjust
     .label.pms <- .label_params(
@@ -220,7 +247,7 @@ StatCor <- ggproto("StatCor", Stat,
                       r.accuracy = NULL, p.accuracy = NULL, r.leading.zero = NULL,
                       p.format.style = "default", p.leading.zero = NULL,
                       p.decimal.mark = NULL,
-                      cor.coef.name = "R", p.coef.name = "p") {
+                      cor.coef.name = "R", p.coef.name = "p", conf.level = 0.95) {
   # Overwritting digits by accuracy, if specified
   if (!is.null(p.accuracy)) {
     nb_decimal_places <- round(abs(log10(p.accuracy)))
@@ -235,8 +262,20 @@ StatCor <- ggproto("StatCor", Stat,
   .cor <- suppressWarnings(stats::cor.test(
     x, y,
     method = method, alternative = alternative,
+    conf.level = conf.level,
     use = "complete.obs"
   ))
+  # Confidence interval of the correlation coefficient (#418). Only Pearson's
+  # cor.test() returns a conf.int (and only for n >= 4); Spearman/Kendall do not,
+  # so the bounds are NA in those cases (never an error).
+  ci <- .cor$conf.int
+  if (is.null(ci) || length(ci) < 2) {
+    conf.low.value <- NA_real_
+    conf.high.value <- NA_real_
+  } else {
+    conf.low.value <- ci[1]
+    conf.high.value <- ci[2]
+  }
   # Root Mean Square Deviation (RMSE/RMSD) between x and y, computed on the same
   # complete pairs used by cor.test() (#458). Meaningful when x and y are on the
   # same scale (e.g. predicted vs. reference values).
@@ -244,12 +283,15 @@ StatCor <- ggproto("StatCor", Stat,
   rmse.value <- sqrt(mean((x[ok] - y[ok])^2))
 
   estimate <- p.value <- p <- r <- rr <- rmse <- NULL
+  conf.int.low <- conf.int.high <- NULL
   z <- data.frame(estimate = .cor$estimate, p.value = .cor$p.value, method = method) %>%
     mutate(
       r = signif(estimate, r.digits),
       rr = signif(estimate^2, r.digits),
       p = signif(p.value, p.digits),
-      rmse = signif(rmse.value, r.digits)
+      rmse = signif(rmse.value, r.digits),
+      conf.int.low = signif(conf.low.value, r.digits),
+      conf.int.high = signif(conf.high.value, r.digits)
     )
 
   # Defining p and r labels
@@ -276,6 +318,11 @@ StatCor <- ggproto("StatCor", Stat,
       ),
       rmse.label = get_rmse_label(
         rmse.value, accuracy = r.accuracy, digits = r.digits, type = output.type
+      ),
+      conf.int.label = get_conf_int_label(
+        conf.low.value, conf.high.value, conf.level = conf.level,
+        accuracy = r.accuracy, digits = r.digits,
+        leading.zero = r.leading.zero, type = output.type
       )
     )
 
@@ -442,6 +489,37 @@ get_rmse_label <- function(x, accuracy = NULL, digits = 2, type = "expression") 
     label <- gsub(pattern = "RMSE = ", replacement = "italic(RMSE)~`=`~", x = label, fixed = TRUE)
   }
   label
+}
+
+# Format the confidence interval label of the correlation coefficient (#418),
+# e.g. "95% CI [0.21, 0.75]". Returns NA when the CI is unavailable (Spearman /
+# Kendall / n < 4). For the expression output the whole label is a single quoted
+# plotmath string, so the percent sign and the brackets render literally and the
+# bounds are not re-normalized (e.g. a dropped leading zero survives).
+get_conf_int_label <- function(low, high, conf.level = 0.95, accuracy = NULL,
+                               digits = 2, leading.zero = NULL, type = "expression") {
+  if (length(low) == 0 || length(high) == 0 || is.na(low) || is.na(high)) {
+    return(NA_character_)
+  }
+  fmt <- function(x) {
+    if (is.null(accuracy)) {
+      value <- as.character(signif(x, digits))
+    } else {
+      nb_decimal_places <- round(abs(log10(accuracy)))
+      value <- formatC(x, digits = nb_decimal_places, format = "f", decimal.mark = ".")
+    }
+    if (!is.null(leading.zero) && !leading.zero) {
+      value <- sub("^(-?)0\\.", "\\1.", value)
+    }
+    value
+  }
+  ci.prefix <- paste0(format(conf.level * 100), "% CI")
+  body <- paste0(ci.prefix, " [", fmt(low), ", ", fmt(high), "]")
+  if (type == "expression") {
+    # Quote the whole label so plotmath renders it literally.
+    body <- paste0("\"", body, "\"")
+  }
+  body
 }
 
 # In plotmath, a bare value whose leading zero was dropped (e.g. .87) is parsed
