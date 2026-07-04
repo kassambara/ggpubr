@@ -13,6 +13,7 @@ stat_regline_equation(
   label.x = NULL,
   label.y = NULL,
   label.y.step = 1.4,
+  label.anchor = c("data", "panel"),
   output.type = "expression",
   decreasing = TRUE,
   coef.digits = 2,
@@ -66,6 +67,14 @@ for absolute positioning of the label. If too short they will be recycled.}
 units) between the labels of successive groups. Default is 1.4 (unchanged
 behavior). Set \code{label.y.step = 0} to stop the per-group vertical shift so
 labels align across facet panels.}
+
+\item{label.anchor}{character. How \code{label.x.npc}/\code{label.y.npc} are
+interpreted. \code{"data"} (default) converts them to data coordinates (the
+previous behavior). \code{"panel"} places the label at the true panel-relative
+position (npc), so labels stay aligned across panels/facets with different
+axis ranges (e.g. \code{scales = "free_y"} or \code{geom_smooth()} extending
+each panel). An explicit \code{label.x}/\code{label.y} always stays in data
+units. Requires ggplot2 >= 3.5.0 (already a dependency).}
 
 \item{output.type}{character One of "expression", "latex" or "text".}
 
