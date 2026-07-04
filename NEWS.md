@@ -48,6 +48,13 @@
   - `p.min.threshold`
   - `p.decimal.mark`
 - Added `p.format.signif` support and related label handling paths.
+- `stat_pvalue_manual()` gains a `p.digits` argument (default `3`) that formats
+  **numeric** p-value label columns for display (e.g. `label = "p"` or
+  `label = "p.adj"`), using the same `format_p_value()` engine as
+  `stat_anova_test()`. This restores clean labels (e.g. `0.0156` instead of
+  `0.015625`) with rstatix `>= 1.0.0`, which now returns full-precision pairwise
+  p-values. Character labels (significance symbols, pre-formatted strings, glue
+  expressions) are unaffected. Set `p.digits = NULL` to print the raw value.
 - `stat_cor()` gains two label-formatting arguments:
   - `r.leading.zero` — set to `FALSE` to drop the leading zero of the
     correlation coefficient (e.g. `.73` instead of `0.73`), completing

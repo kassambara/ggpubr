@@ -13,6 +13,7 @@ stat_pvalue_manual(
   x = NULL,
   size = 3.88,
   label.size = size,
+  p.digits = 3,
   bracket.size = 0.3,
   bracket.nudge.y = 0,
   bracket.shorten = 0,
@@ -59,6 +60,18 @@ as a simple text.}
 p-value as text (without brackets).}
 
 \item{size, label.size}{size of label text.}
+
+\item{p.digits}{integer indicating the number of significant digits used to
+format recognized \strong{numeric} p-value label columns (\code{label} is one
+of \code{"p"}, \code{"p.adj"}, \code{"p.value"}, \code{"p.val"}, \code{"pval"},
+\code{"padj"}). Default is 3. Set to \code{NULL} to print the raw value without
+rounding. All other labels are left unchanged: other numeric columns (e.g.
+\code{"statistic"}, \code{"n"}, effect sizes), significance symbols
+(\code{"p.signif"}, \code{"p.adj.signif"}), already-formatted strings, and
+\code{\link[glue]{glue}} expressions. A p-named column whose values fall outside
+\code{[0, 1]} is also left as-is. Uses the same formatting engine
+(\code{\link{format_p_value}()}) as \code{\link{stat_anova_test}()} for
+consistency across layers.}
 
 \item{bracket.size}{Width of the lines of the bracket.}
 

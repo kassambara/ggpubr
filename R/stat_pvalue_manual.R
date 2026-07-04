@@ -37,6 +37,17 @@ NULL
 #' @param x x position of the p-value. Should be used only when you want plot the
 #'  p-value as text (without brackets).
 #' @param size,label.size size of label text.
+#' @param p.digits integer indicating the number of significant digits used to
+#'  format recognized \strong{numeric} p-value label columns (\code{label} is one
+#'  of \code{"p"}, \code{"p.adj"}, \code{"p.value"}, \code{"p.val"},
+#'  \code{"pval"}, \code{"padj"}). Default is 3. Set to \code{NULL} to print the
+#'  raw value without rounding. All other labels are left unchanged: other
+#'  numeric columns (e.g. \code{"statistic"}, \code{"n"}, effect sizes),
+#'  significance symbols (\code{"p.signif"}, \code{"p.adj.signif"}),
+#'  already-formatted strings, and \code{\link[glue]{glue}} expressions. A
+#'  p-named column whose values fall outside \code{[0, 1]} is also left as-is.
+#'  Uses the same formatting engine (\code{\link{format_p_value}()}) as
+#'  \code{\link{stat_anova_test}()} for consistency across layers.
 #' @param bracket.size Width of the lines of the bracket.
 #' @param color text and line color. Can be variable name in the data for coloring by groups.
 #' @param linetype linetype. Can be variable name in the data for changing linetype by groups.
@@ -135,7 +146,7 @@ NULL
 stat_pvalue_manual <- function(
   data, label = NULL, y.position = "y.position",
   xmin = "group1", xmax = "group2", x = NULL,
-  size = 3.88, label.size = size, bracket.size = 0.3,
+  size = 3.88, label.size = size, p.digits = 3, bracket.size = 0.3,
   bracket.nudge.y = 0, bracket.shorten = 0,
   color = "black", linetype = 1, tip.length = 0.03,
   tip.length.ref = c("data", "axis"),
@@ -196,6 +207,23 @@ stat_pvalue_manual <- function(
   }
   if (!(xmin %in% available.variables)) {
     stop("can't find the xmin variable '", xmin, "' in the data")
+  }
+
+  # Round recognized numeric p-value label columns for display (e.g.
+  # label = "p"/"p.adj"). Restricted to known p-value column names so that other
+  # numeric label columns (e.g. "statistic", "n", effect sizes, fold changes) are
+  # left untouched. The extra range check leaves the column as-is unless the
+  # values actually look like probabilities in [0, 1] -- format_p_value() rejects
+  # out-of-range values (NA + warning), so a numeric column merely *named* like a
+  # p-value but holding other quantities passes through unchanged. Character
+  # labels (significance symbols, pre-formatted strings, glue output) also pass
+  # through unchanged. Opt out with p.digits = NULL.
+  .p_value_label_columns <- c("p", "p.adj", "p.value", "p.val", "pval", "padj")
+  .label_values <- data[[label]]
+  if (!is.null(p.digits) && label %in% .p_value_label_columns &&
+      is.numeric(.label_values) &&
+      all(.label_values >= 0 & .label_values <= 1, na.rm = TRUE)) {
+    data[[label]] <- format_p_value(.label_values, digits = p.digits)
   }
 
   y.position <- .valide_y_position(y.position, data)
