@@ -104,7 +104,21 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   # :::::::::::::::::::::::::::::::::::::::::::
   .jitter <- jitter
   if (is.numeric(jitter)) jitter <- position_jitter(jitter, seed = seed)
-  if (p_geom == "geom_line" & ngrps > 1) {} else if (ngrps > 1) jitter <- position_jitterdodge(jitter.width = .jitter, dodge.width = 0.8, seed = seed)
+  if (p_geom == "geom_line" & ngrps > 1) {
+    # #436: for a grouped line plot, jitter points are centered by default
+    # (position = "identity"), matching the non-dodged line. When the user
+    # requests a position_dodge, dodge the jitter too -- with the SAME dodge
+    # width as the line / error bars -- so the points sit under their group.
+    # Scoped to plain position_dodge(): position_dodge2() packs zero-width
+    # summary geoms differently, so dodging the jitter by its width would
+    # overshoot; leave those centered (unchanged).
+    if (inherits(position, "PositionDodge") && !inherits(position, "PositionDodge2") &&
+        !is.null(position$width)) {
+      jitter <- position_jitterdodge(
+        jitter.width = .jitter, dodge.width = position$width, seed = seed
+      )
+    }
+  } else if (ngrps > 1) jitter <- position_jitterdodge(jitter.width = .jitter, dodge.width = 0.8, seed = seed)
 
   common.opts <- opts <- list(
     data = data, color = color, fill = fill,
