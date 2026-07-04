@@ -164,6 +164,13 @@
 
 ## Bug fixes
 
+- `ggline()` now dodges the jittered points together with the line and error
+  bars. Previously, in a grouped line plot with `add = "jitter"` and
+  `position = position_dodge()`, only the line and summary (e.g. `mean_se`) were
+  dodged while the jittered points stayed centered, so they no longer sat under
+  their group. The jitter now dodges by the same width. Plots without a
+  `position_dodge()` (the default `position = "identity"`) are unchanged (#436).
+
 - `geom_bracket()` and `stat_pvalue_manual()` now place brackets correctly on a
   transformed y axis (e.g. `scale_y_log10()`). `y.position` is given in data units
   but was previously used directly in the scale's transformed space, so brackets
