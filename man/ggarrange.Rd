@@ -77,8 +77,20 @@ grid by row; set to \code{FALSE} to fill by column. Passed to
 c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none".}
 
-\item{common.legend}{logical value. Default is FALSE. If TRUE, a common
-unique legend will be created for arranged plots.}
+\item{common.legend}{logical value or a plot index. Default is FALSE. If
+\code{TRUE}, a single shared legend is used for all the arranged plots.
+Note that this legend is \strong{not} merged or validated across plots: it
+is simply the legend of the \emph{first} plot, and the other legends are
+dropped. It is therefore only correct when every plot shares the same scale
+(same groups/levels, order and color range). If the first plot's legend is
+not representative - for example a group is missing in the first plot, or a
+continuous color scale spans a different range - the shared legend will
+misrepresent the other plots. In that case you can: (i) give the plots a
+consistent scale yourself (e.g. \code{scale_fill_manual(limits = ...)} or
+\code{scale_color_continuous(limits = ...)}) so a single legend is valid,
+and/or (ii) choose which plot's legend to use by passing that plot's index,
+e.g. \code{common.legend = 2} to use the second plot's legend (equivalent to
+\code{legend.grob = get_legend(plots[[2]])}).}
 
 \item{legend.grob}{a legend grob as returned by the function
 \code{\link{get_legend}()}. If provided, it will be used as the common
