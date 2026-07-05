@@ -102,6 +102,51 @@ NULL
 #'
 #' }
 #' @param ... Other arguments to be passed to the test function.
+#' @section Significance letters (compact letter display):
+#' To label groups with letters instead of p-values or stars - groups that share a
+#' letter are not significantly different - compute the pairwise comparisons and
+#' derive the letters with \code{rstatix::add_cld()} (available without any extra
+#' package, as \code{rstatix} is already a dependency), then place them with
+#' \code{geom_text()}:
+#'
+#' \preformatted{
+#' library(ggpubr)
+#' library(rstatix)
+#' library(dplyr)
+#' df <- ToothGrowth
+#' df$dose <- factor(df$dose)
+#'
+#' # all-pairwise comparisons, then compact letters (columns: group, cld)
+#' cld <- df \%>\% tukey_hsd(len ~ dose) \%>\% add_cld()
+#'
+#' # one letter per group, placed above each box
+#' ypos <- df \%>\% group_by(dose) \%>\%
+#'   summarise(y.position = max(len) + 2, .groups = "drop")
+#' cld$y.position <- ypos$y.position[match(cld$group, as.character(ypos$dose))]
+#'
+#' ggboxplot(df, "dose", "len") +
+#'   geom_text(data = cld, aes(x = group, y = y.position, label = cld))
+#' }
+#'
+#' \code{add_cld()} expects an all-pairwise result (\code{tukey_hsd()},
+#' \code{dunn_test()}, \code{games_howell_test()}, pairwise
+#' \code{wilcox_test()}/\code{t_test()}, or \code{compare_means()}); it is not
+#' defined for a single \code{ref.group} comparison.
+#'
+#' To instead flag each treatment by which of several controls it differs from
+#' (e.g. \code{"a"} for a negative control and \code{"b"} for a positive control),
+#' run one comparison per control and assemble the letters:
+#'
+#' \preformatted{
+#' trts <- c("trtA", "trtB", "trtC")
+#' cn <- compare_means(value ~ group, df, ref.group = "neg.ctrl")
+#' cp <- compare_means(value ~ group, df, ref.group = "pos.ctrl")
+#' pv <- function(cc, g) dplyr::filter(cc, group1 == g | group2 == g)$p[1]
+#' lab <- sapply(trts, function(g)
+#'   paste0(if (pv(cn, g) < .05) "a" else "",
+#'          if (pv(cp, g) < .05) "b" else ""))
+#' # then place `lab` above each treatment with geom_text()
+#' }
 #' @examples
 #' # Load data
 #' # :::::::::::::::::::::::::::::::::::::::

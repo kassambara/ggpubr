@@ -58,6 +58,10 @@
   labels are placed with `ggrepel::geom_text_repel()` and connected to their slice with
   leader lines, so the labels of many small slices no longer overlap (or get dropped). The
   default output is unchanged (#655).
+- Documented a recipe for labelling groups with significance letters (compact letter display):
+  compute the pairwise comparisons and derive the letters with `rstatix::add_cld()`, then place
+  them with `geom_text()` (see the "Significance letters" section in `?compare_means`). Also covers
+  the per-control letters case (a = differs from control 1, b = differs from control 2) (#464, #434).
 - Documented that a summarized `ggbarplot()` (e.g. `add = "mean_se"`) must be faceted with
   the `facet.by=` argument, not by appending `+ facet_wrap()`/`+ facet_grid()`: the summaries
   are pre-computed over `facet.by`, so a manually added facet pools the bars (and, for stacked
