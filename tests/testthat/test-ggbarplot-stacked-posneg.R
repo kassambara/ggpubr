@@ -64,8 +64,9 @@ test_that("error bars line up with the actual stacked bar mean-ends (#426)", {
                        inherits(l$geom, "GeomBar"), logical(1)))[1]
   ei <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomErrorbar"), logical(1)))[1]
   bar <- b$data[[bi]]
-  # the mean-end of each segment is its non-zero boundary
-  bar$meanend <- ifelse(bar$ymin == 0, bar$ymax, ifelse(bar$ymax == 0, bar$ymin, bar$ymax))
+  # a stacked segment's mean-end is its boundary farther from zero (robust to
+  # multiple same-sign segments, not just the one that touches zero).
+  bar$meanend <- ifelse(abs(bar$ymax) >= abs(bar$ymin), bar$ymax, bar$ymin)
   eb <- b$data[[ei]]; eb$center <- (eb$ymin + eb$ymax) / 2
   m <- merge(eb[, c("x", "colour", "center")], bar[, c("x", "colour", "meanend")],
              by = c("x", "colour"))
@@ -82,7 +83,9 @@ test_that("the corrected side is independent of the factor-level order (#426)", 
                        inherits(l$geom, "GeomBar"), logical(1)))[1]
   ei <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomErrorbar"), logical(1)))[1]
   bar <- b$data[[bi]]
-  bar$meanend <- ifelse(bar$ymin == 0, bar$ymax, ifelse(bar$ymax == 0, bar$ymin, bar$ymax))
+  # a stacked segment's mean-end is its boundary farther from zero (robust to
+  # multiple same-sign segments, not just the one that touches zero).
+  bar$meanend <- ifelse(abs(bar$ymax) >= abs(bar$ymin), bar$ymax, bar$ymin)
   eb <- b$data[[ei]]; eb$center <- (eb$ymin + eb$ymax) / 2
   m <- merge(eb[, c("x", "colour", "center")], bar[, c("x", "colour", "meanend")],
              by = c("x", "colour"))
