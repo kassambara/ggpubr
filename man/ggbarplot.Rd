@@ -170,6 +170,18 @@ The plot can be easily customized using the function ggpar(). Read
   labels and position: legend = "right" \item plot orientation : orientation
   = c("vertical", "horizontal", "reverse") }
 }
+\section{Faceting a summarized bar plot}{
+
+When the bars show a computed summary (e.g. \code{add = "mean_se"}), facet the
+plot with the \code{facet.by} argument - \strong{not} by appending
+\code{+ facet_wrap()} / \code{+ facet_grid()}. The summaries are pre-computed,
+grouping by \code{x}, \code{color}/\code{fill} and \code{facet.by}; a facet added
+afterwards is not part of that grouping, so the bars (and, for stacked bars, the
+error bars) are pooled over the whole data set and repeated identically in every
+panel. Use \code{ggbarplot(..., facet.by = "group")} for correct per-panel
+summaries.
+}
+
 \examples{
 # Data
 df <- data.frame(
