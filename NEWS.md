@@ -19,6 +19,12 @@
 
 ## Robustness fixes
 
+- `ggbarplot()` now supports mapping `alpha` to a discrete grouping variable together
+  with a summary (e.g. `alpha = clarity, add = "mean_ci", position = position_dodge()`).
+  Previously this errored at draw time (`"alpha * 255": non-numeric argument to binary
+  operator`). The mean/CI is now computed per subgroup, the bars are faded per the `alpha`
+  variable, and the error bars are dodged to stay aligned with their bars. Bar plots
+  without an `alpha` grouping variable are unchanged (#404).
 - `ggpar()` no longer errors on `ggsurvplot` objects (or any plot whose theme uses
   `ggtext::element_markdown()`, e.g. survminer's risk-table strata labels). Such
   markdown label elements are now left intact instead of triggering an "Only elements
