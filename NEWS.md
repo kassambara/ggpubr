@@ -43,6 +43,14 @@
   no complete pairs) instead of failing the whole result/layer, while still
   reporting genuinely ambiguous data (e.g. duplicated ids). Thanks to
   @erdeyl (#732).
+- `ggviolin()` now keeps grouped violins aligned with their added box/dot layers by
+  default when a sub-group is too sparse for `geom_violin()` to compute a density
+  (a single data point). Previously the sparse sub-group was dropped from the dodge,
+  so the remaining violin re-centered and no longer lined up. When `drop`/`position`
+  are left at their defaults and such a one-point grouped cell is present, the empty
+  dodge lane is now reserved automatically. Balanced, ungrouped, faceted, and
+  legitimately-unbalanced plots are unchanged, and an explicit `drop`/`position`
+  still takes precedence (#381).
 - `geom_bracket()` (and `stat_pvalue_manual()`) now draw visible tips for a single
   bracket placed over a stat-computed `y` such as `geom_bar()`/`geom_histogram()`.
   Previously the bracket tips collapsed into a flat line because the y-axis range

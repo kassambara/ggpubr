@@ -6,16 +6,17 @@ NULL
 #' data at different values.
 #' @inheritParams ggboxplot
 #' @param width violin width.
-#' @param drop logical, passed to \code{\link[ggplot2]{geom_violin}()}. When
-#'  \code{TRUE} (the default, unchanged behavior), grouped sub-samples with fewer
-#'  than two data points (for which no density can be computed) are dropped,
-#'  including from the dodge position, so the remaining violins re-center and no
-#'  longer line up with other layers (e.g. added boxplots or dot plots). Set
-#'  \code{drop = FALSE} \emph{together with} a "preserve single" dodge, i.e.
-#'  \code{position = position_dodge(0.8, preserve = "single")}, to reserve the
-#'  empty dodge lane so the violins stay aligned with the other geoms. Both are
-#'  needed: \code{drop = FALSE} keeps the sparse group and \code{preserve =
-#'  "single"} keeps its lane width (#381).
+#' @param drop logical, passed to \code{\link[ggplot2]{geom_violin}()}, controlling
+#'  whether grouped sub-samples with fewer than two data points (for which no
+#'  density can be computed) are dropped from the plot and the dodge position. By
+#'  default \code{ggviolin()} keeps grouped violins aligned with their other layers
+#'  (e.g. added boxplots or dot plots) automatically: when you do not set \code{drop}
+#'  or \code{position} and a grouped sub-group has a single data point, the empty
+#'  dodge lane is reserved (equivalent to \code{drop = FALSE} together with
+#'  \code{position = position_dodge(0.8, preserve = "single")}) so the violins stay
+#'  aligned. Balanced, ungrouped, and faceted plots are unaffected. Setting
+#'  \code{drop} or \code{position} explicitly turns off this automatic handling and
+#'  uses exactly what you supply (#381).
 #' @param alpha color transparency. Values should be between 0 and 1.
 #' @param linewidth constant value specifying the line width.
 #' @param quantiles numeric vector of quantiles to draw on the violin.
@@ -195,10 +196,33 @@ ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
 }
 
 
+# #381: TRUE when a grouped (dodged) violin has a color/fill x x cell that
+# contains exactly ONE non-missing y value - geom_violin's density-drop trigger
+# (ggplot2 >= 4.0 drops groups with fewer than two points from the plot AND from
+# position adjustment, so the remaining violins re-center and misalign). Used to
+# decide whether to auto-reserve the empty dodge lane. Returns FALSE when there
+# is no grouping aesthetic (no dodge in play), so ungrouped violins never change.
+# A genuinely-absent cell (0 points, e.g. a legitimately-unbalanced design) has
+# Freq 0 and is deliberately NOT treated as a trigger, keeping that case
+# byte-identical to ggplot2's default centered position.
+.violin_has_singleton_group <- function(data, x, color = NULL, fill = NULL, y = NULL) {
+  group.vars <- unique(c(color, fill))
+  group.vars <- group.vars[!is.na(group.vars)]
+  group.vars <- setdiff(intersect(group.vars, colnames(data)), x)
+  if (length(group.vars) == 0) return(FALSE)          # no dodge -> never trigger
+  key.cols <- c(x, group.vars)
+  keep <- if (!is.null(y) && y %in% colnames(data)) !is.na(data[[y]]) else rep(TRUE, nrow(data))
+  df <- data[keep, key.cols, drop = FALSE]
+  if (nrow(df) == 0) return(FALSE)
+  df[] <- lapply(df, function(col) factor(as.character(col)))
+  counts <- table(df)
+  any(counts == 1)                                     # an OBSERVED 1-point cell
+}
+
 ggviolin_core <- function(data, x, y,
                           color = "black", fill = "white", palette = NULL, alpha = 1,
                           title = NULL, xlab = NULL, ylab = NULL,
-                          linetype = "solid", trim = FALSE, drop = TRUE, size = NULL, linewidth = NULL, width = 1,
+                          linetype = "solid", trim = FALSE, drop = NULL, size = NULL, linewidth = NULL, width = 1,
                           quantiles = NULL, quantile.linetype = NULL, quantile.type = NULL,
                           quantile.alpha = NULL, quantile.colour = NULL, quantile.color = NULL,
                           quantile.linewidth = NULL, quantile.size = NULL,
@@ -206,7 +230,7 @@ ggviolin_core <- function(data, x, y,
                           add = "mean_se", add.params = list(),
                           error.plot = "pointrange",
                           ggtheme = theme_pubr(),
-                          position = position_dodge(0.8),
+                          position = NULL,
                           ...) {
   line_width <- .resolve_linewidth_args(
     size = size, linewidth = linewidth, default_linewidth = NULL
@@ -215,6 +239,21 @@ ggviolin_core <- function(data, x, y,
   linewidth <- line_width$linewidth
 
   if (!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
+
+  # #381: keep grouped violins aligned with their box/dot layers by default when a
+  # sub-group is too sparse for geom_violin to compute a density. `drop`/`position`
+  # arrive as NULL when the user did not set them; only then (and only when the data
+  # actually has a grouped one-point cell) do we reserve the empty dodge lane via
+  # `drop = FALSE` + a "preserve single" dodge - both are needed together. Any other
+  # input keeps the historical default (drop = TRUE, position = position_dodge(0.8)),
+  # so balanced / ungrouped / faceted / legitimately-unbalanced plots are unchanged.
+  auto.align <- is.null(drop) && is.null(position)
+  if (is.null(drop)) drop <- TRUE
+  if (is.null(position)) position <- position_dodge(0.8)
+  if (auto.align && .violin_has_singleton_group(data, x, color = color, fill = fill, y = y)) {
+    drop <- FALSE
+    position <- position_dodge(0.8, preserve = "single")
+  }
 
   if (!is.null(quantile.color) && is.null(quantile.colour)) {
     quantile.colour <- quantile.color
