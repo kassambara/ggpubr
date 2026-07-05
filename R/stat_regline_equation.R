@@ -4,8 +4,8 @@
 NULL
 
 # stat_regline_equation() was adapted from the source code of ggpmisc::stat_poly_eq()
-# by Pedro J. Aphalo. For an actively maintained version with additional features and
-# bug fixes, see the 'ggpmisc' package.
+# by Pedro J. Aphalo. See ggpmisc::stat_poly_eq() as an alternative with additional
+# features.
 
 #' Add Regression Line Equation and R-Square to a GGPlot.
 #' @description Add regression line equation and R^2 to a ggplot. Regression
@@ -51,9 +51,8 @@ NULL
 #'  TRUE silently removes missing values.
 #' @seealso \code{\link{ggscatter}}
 #' @references \code{stat_regline_equation()} was adapted from the source code of
-#'  \code{stat_poly_eq()} in the 'ggpmisc' package by Pedro J. Aphalo. For an actively
-#'  maintained version of this statistic, with additional features and bug fixes, see
-#'  \code{ggpmisc::stat_poly_eq()}.
+#'  \code{stat_poly_eq()} in the 'ggpmisc' package by Pedro J. Aphalo. See
+#'  \code{ggpmisc::stat_poly_eq()} as an alternative with additional features.
 #'
 #' @section Computed variables:
 #'   \describe{ \item{x}{x position for left edge}
