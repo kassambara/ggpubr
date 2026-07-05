@@ -286,8 +286,26 @@ ggbarplot_core <- function(data, x, y,
   label <- as.vector(label)
   if ("none" %in% add) add <- "none"
 
-  grouping.vars <- intersect(c(x, color, fill, facet.by), names(data))
   . <- NULL
+
+  # #404: an `alpha` aesthetic mapped to a discrete data column defines an extra
+  # dodge subgroup (e.g. fill = cut, alpha = clarity -> 2 bars per cut). Detect it
+  # so the summary keeps that column and the error layer dodges by it too. Scoped
+  # to plain position_dodge(): the alpha subgroup adds a second dodge dimension,
+  # which position_stack()/position_dodge2() do not resolve here (they are left
+  # exactly as before, unchanged by this fix).
+  alpha.var <- list(...)[["alpha"]]   # [[ ]] avoids $ partial-matching a `...` arg
+  has.alpha.group <- !is.null(alpha.var) && length(alpha.var) == 1 &&
+    is.character(alpha.var) && alpha.var %in% names(data) &&
+    !is.numeric(.select_vec(data, alpha.var)) &&
+    inherits(position, "PositionDodge") && !inherits(position, "PositionDodge2")
+
+  grouping.vars <- intersect(c(x, color, fill, facet.by), names(data))
+  # Include the alpha subgroup in the summary grouping. Otherwise the summarized
+  # data drops the alpha column, which (a) makes geom_exec pass alpha as a static
+  # value -> the "alpha * 255" draw error (#404), and (b) collapses the mean/CI
+  # across the subgroups. Left unchanged when no discrete alpha var is mapped.
+  if (has.alpha.group) grouping.vars <- unique(c(grouping.vars, alpha.var))
 
   # static summaries for computing mean/median and adding errors
   if (is.null(add.params$fill)) add.params$fill <- "white"
@@ -295,6 +313,19 @@ ggbarplot_core <- function(data, x, y,
     if (fill %in% names(data)) {
       add.params$group <- fill
     } else if (color %in% names(data)) add.params$group <- color
+  }
+  # #404: the bars dodge by the interaction of fill/x and the alpha subgroup, so
+  # the error layer must dodge by that same interaction to stay aligned; otherwise
+  # the error bars are centered on each x while the bars are split (misaligned). We
+  # materialise the interaction as a real column with a safe name (rather than an
+  # "interaction(a, b)" mapping string), so it is robust to special characters in
+  # the variable names and to options(ggpubr.parse_aes = FALSE).
+  if (has.alpha.group) {
+    base.group <- add.params$group %||% x
+    data[[".ggpubr.alpha.group."]] <- interaction(
+      .select_vec(data, base.group), .select_vec(data, alpha.var), drop = TRUE
+    )
+    add.params$group <- ".ggpubr.alpha.group."
   }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 
