@@ -202,9 +202,8 @@ ggpar(p, palette = "jco")
 }
 \references{
 \code{stat_regline_equation()} was adapted from the source code of
- \code{stat_poly_eq()} in the 'ggpmisc' package by Pedro J. Aphalo. For an actively
- maintained version of this statistic, with additional features and bug fixes, see
- \code{ggpmisc::stat_poly_eq()}.
+ \code{stat_poly_eq()} in the 'ggpmisc' package by Pedro J. Aphalo. See
+ \code{ggpmisc::stat_poly_eq()} as an alternative with additional features.
 }
 \seealso{
 \code{\link{ggscatter}}
