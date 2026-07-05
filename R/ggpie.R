@@ -85,24 +85,6 @@ NULL
 #' )
 #'
 #' @export
-# #655: opt-in ggrepel labels for pie / donut charts. With many small slices the
-# default labels collide; this spreads them around the ring with leader lines,
-# instead of dropping any. Shared by ggpie() and ggdonutchart(). `x.pos` is the
-# radius at which the labels are anchored (just outside the ring) and
-# `.lab.ypos.` (already on `data`) is the slice mid-point along the angular axis.
-# Returns a ggrepel::geom_text_repel layer.
-.ggpie_repel_labels <- function(data, label, x.pos, lab.font, font.family) {
-  data[[".lab.xpos."]] <- x.pos
-  max.overlaps <- getOption("ggrepel.max.overlaps", default = Inf)
-  ggrepel::geom_text_repel(
-    data = data,
-    mapping = create_aes(list(x = ".lab.xpos.", y = ".lab.ypos.", label = label)),
-    size = lab.font$size, fontface = lab.font$face, colour = lab.font$color,
-    family = font.family, show.legend = FALSE, max.overlaps = max.overlaps,
-    segment.size = 0.3, segment.colour = "grey50", box.padding = 0.4
-  )
-}
-
 ggpie <- function(
   data, x, label = x, lab.pos = c("out", "in"), lab.adjust = 0,
   lab.font = c(4, "plain", "black"), label.repel = FALSE, font.family = "",
@@ -161,9 +143,13 @@ ggpie <- function(
   # :::::::::::::::::::::::::::::::::::
   if (!is.null(label)) {
     if (isTRUE(label.repel)) {
-      # #655: spread overlapping labels around the ring with ggrepel.
+      # #655: spread overlapping labels around the ring with ggrepel. The pie's
+      # x (radius) axis is discrete, so add outward expansion to give the repelled
+      # labels room to clear the pie face (the donut already reserves this via its
+      # xlim). Only applied on the repel path, so the default output is unchanged.
       p <- p +
         .ggpie_repel_labels(data, label, x.pos = 1.6, lab.font, font.family) +
+        ggplot2::scale_x_discrete(expand = ggplot2::expansion(add = c(0.6, 1.1))) +
         clean_theme()
     } else if (lab.pos == "out") {
       # Label each slice at the middle of the slice
@@ -275,4 +261,22 @@ ggpie_1 <- function(data, x, label = NULL, lab.pos = c("out", "in"), lab.adjust 
   lab.font$color <- ifelse(is.null(lab.font$color), "black", lab.font$color)
   lab.font$face <- ifelse(is.null(lab.font$face), "plain", lab.font$face)
   lab.font
+}
+
+# #655: opt-in ggrepel labels for pie / donut charts. With many small slices the
+# default labels collide; this spreads them around the ring with leader lines,
+# instead of dropping any. Shared by ggpie() and ggdonutchart(). `x.pos` is the
+# radius at which the labels are anchored (just outside the ring) and
+# `.lab.ypos.` (already on `data`) is the slice mid-point along the angular axis.
+# Returns a ggrepel::geom_text_repel layer.
+.ggpie_repel_labels <- function(data, label, x.pos, lab.font, font.family) {
+  data[[".lab.xpos."]] <- x.pos
+  max.overlaps <- getOption("ggrepel.max.overlaps", default = Inf)
+  ggrepel::geom_text_repel(
+    data = data,
+    mapping = create_aes(list(x = ".lab.xpos.", y = ".lab.ypos.", label = label)),
+    size = lab.font$size, fontface = lab.font$face, colour = lab.font$color,
+    family = font.family, show.legend = FALSE, max.overlaps = max.overlaps,
+    segment.size = 0.3, segment.colour = "grey50", box.padding = 0.4
+  )
 }
