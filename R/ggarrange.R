@@ -36,7 +36,7 @@ NULL
 #' @param legend character specifying legend position. Allowed values are one of
 #'   c("top", "bottom", "left", "right", "none"). To remove the legend use
 #'   legend = "none".
-#' @param common.legend logical value or a plot index. Default is FALSE. If
+#' @param common.legend logical value, or one or several plot indices. Default is FALSE. If
 #'   \code{TRUE}, a single shared legend is used for all the arranged plots.
 #'   Note that this legend is \strong{not} merged or validated across plots: it
 #'   is simply the legend of the \emph{first} plot, and the other legends are
@@ -49,7 +49,11 @@ NULL
 #'   \code{scale_color_continuous(limits = ...)}) so a single legend is valid,
 #'   and/or (ii) choose which plot's legend is shown by passing that plot's index,
 #'   e.g. \code{common.legend = 2} to use the second plot's legend (equivalent to
-#'   \code{legend.grob = get_legend(plots[[2]])}). Note that (ii) only changes
+#'   \code{legend.grob = get_legend(plots[[2]])}). You can also pass several indices,
+#'   e.g. \code{common.legend = c(1, 2)}, to keep and combine the legends of those
+#'   plots into a single shared block (side by side for \code{legend = "top"}/
+#'   \code{"bottom"}, stacked for \code{"left"}/\code{"right"}) - useful when the
+#'   plots genuinely need different legends. Note that (ii) only changes
 #'   \emph{which} legend is displayed; it does not re-map the other plots' color
 #'   scales, so for the legend keys to match every panel you still need a
 #'   consistent scale as in (i). When the plots genuinely cannot be described by a
@@ -124,25 +128,29 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   nrow <- page.layout$nrow
   nb.plots.per.page <- .nbplots_per_page(ncol, nrow)
 
-  # #347: `common.legend` may also be a single plot index, selecting which plot's
-  # legend is used as the shared one (useful when the first plot's legend is not
-  # representative, e.g. it is missing a group present in the other plots). Logical
+  # #347: `common.legend` may also be one or several plot indices, selecting which
+  # plot(s) supply the shared legend (useful when the first plot's legend is not
+  # representative, e.g. a group is missing in the first plot, or when the plots
+  # genuinely need several different legends). A single index uses that plot's
+  # legend; several indices combine those plots' legends into one block. Logical
   # TRUE/FALSE behave exactly as before: is.numeric(TRUE) is FALSE, so this branch
   # is skipped for them and the default output is unchanged.
   legend.plot.index <- NULL
   if (is.numeric(common.legend)) {
-    if (length(common.legend) != 1L || anyNA(common.legend) ||
-        !is.finite(common.legend) ||
-        common.legend != as.integer(common.legend) ||
-        common.legend < 1 || common.legend > nb.plots) {
-      stop("When numeric, `common.legend` must be a single whole number between 1 and ",
-           "the number of plots (", nb.plots, ").", call. = FALSE)
+    idx <- common.legend
+    if (length(idx) < 1L || anyNA(idx) || !all(is.finite(idx)) ||
+        !all(idx == as.integer(idx)) || any(idx < 1) || any(idx > nb.plots)) {
+      stop("When numeric, `common.legend` must be whole-number plot indices between ",
+           "1 and the number of plots (", nb.plots, ").", call. = FALSE)
     }
-    if (is.null(plots[[common.legend]])) {
-      stop("`common.legend = ", common.legend, "` points to an empty (NULL) plot.",
-           call. = FALSE)
+    idx <- as.integer(idx)
+    if (anyDuplicated(idx)) {
+      stop("`common.legend` plot indices must be unique.", call. = FALSE)
     }
-    legend.plot.index <- as.integer(common.legend)
+    if (any(vapply(plots[idx], is.null, logical(1)))) {
+      stop("`common.legend` points to an empty (NULL) plot.", call. = FALSE)
+    }
+    legend.plot.index <- idx
     common.legend <- TRUE
   }
 
@@ -165,7 +173,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   if (common.legend) {
     if (is.null(legend.grob)) {
       legend.grob <- if (!is.null(legend.plot.index)) {
-        get_legend(plots[[legend.plot.index]])
+        .combine_legends(plots, legend.plot.index, legend)
       } else {
         get_legend(plots)
       }
@@ -252,6 +260,35 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   purrr::map(plots, function(x) {
     if (inherits(x, "ggplot")) x + ggplot2::theme(plot.margin = margin) else x
   })
+}
+
+# #347: build the shared legend for a numeric `common.legend`. For a single index
+# this is simply that plot's legend (identical to the scalar path). For several
+# indices the selected plots' legends are combined into one grob: side by side for a
+# horizontal legend strip (legend = "top"/"bottom") and stacked for a vertical one
+# ("left"/"right"). gtable's cbind/rbind (dispatched via the base generics) keep the
+# result a gtable with the same $height/$width interface a single legend has, so
+# `.plot_grid` needs no change and the single-legend / TRUE / FALSE paths stay
+# byte-identical. Selected plots whose legend is empty are skipped; if none remain
+# the result is NULL (no shared legend, no error). The plots passed here already have
+# `legend.position` set to `legend`, so the extracted legends have the right
+# orientation for the strip.
+.combine_legends <- function(plots, index, legend = "top") {
+  legs <- lapply(index, function(i) get_legend(plots[[i]]))
+  legs <- Filter(function(g) !is.null(g) && !inherits(g, "zeroGrob"), legs)
+  if (length(legs) == 0) {
+    return(NULL)
+  }
+  if (length(legs) == 1) {
+    return(legs[[1]])
+  }
+  horizontal <- isTRUE(legend %in% c("top", "bottom"))
+  combine2 <- if (horizontal) {
+    function(a, b) cbind(a, b, size = "max")
+  } else {
+    function(a, b) rbind(a, b, size = "max")
+  }
+  Reduce(combine2, legs)
 }
 
 .plot_grid <- function(plotlist, legend = "top", common.legend.grob = NULL, ...) {

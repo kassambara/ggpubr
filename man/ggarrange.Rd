@@ -77,7 +77,7 @@ grid by row; set to \code{FALSE} to fill by column. Passed to
 c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none".}
 
-\item{common.legend}{logical value or a plot index. Default is FALSE. If
+\item{common.legend}{logical value, or one or several plot indices. Default is FALSE. If
 \code{TRUE}, a single shared legend is used for all the arranged plots.
 Note that this legend is \strong{not} merged or validated across plots: it
 is simply the legend of the \emph{first} plot, and the other legends are
@@ -90,7 +90,11 @@ consistent scale yourself (e.g. \code{scale_fill_manual(limits = ...)} or
 \code{scale_color_continuous(limits = ...)}) so a single legend is valid,
 and/or (ii) choose which plot's legend is shown by passing that plot's index,
 e.g. \code{common.legend = 2} to use the second plot's legend (equivalent to
-\code{legend.grob = get_legend(plots[[2]])}). Note that (ii) only changes
+\code{legend.grob = get_legend(plots[[2]])}). You can also pass several indices,
+e.g. \code{common.legend = c(1, 2)}, to keep and combine the legends of those
+plots into a single shared block (side by side for \code{legend = "top"}/
+\code{"bottom"}, stacked for \code{"left"}/\code{"right"}) - useful when the
+plots genuinely need different legends. Note that (ii) only changes
 \emph{which} legend is displayed; it does not re-map the other plots' color
 scales, so for the legend keys to match every panel you still need a
 consistent scale as in (i). When the plots genuinely cannot be described by a

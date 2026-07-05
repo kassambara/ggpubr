@@ -43,14 +43,17 @@
   no complete pairs) instead of failing the whole result/layer, while still
   reporting genuinely ambiguous data (e.g. duplicated ids). Thanks to
   @erdeyl (#732).
-- `ggarrange()` gained the ability to choose which plot supplies the shared legend:
-  `common.legend` now also accepts a plot index (e.g. `common.legend = 2` uses the
-  second plot's legend). This helps when the first plot's legend is not representative
-  of the others (e.g. a group missing in the first plot). The documentation of
-  `common.legend` was also clarified: `common.legend = TRUE` keeps the first plot's
-  legend (it does not merge or validate legends), so plots should share a consistent
-  scale for the shared legend to be correct. Logical `TRUE`/`FALSE` behave exactly as
-  before (#347).
+- `ggarrange()` gained the ability to choose which plot(s) supply the shared legend:
+  `common.legend` now also accepts one or several plot indices. `common.legend = 2`
+  uses the second plot's legend (handy when the first plot's legend is not
+  representative, e.g. a group is missing in the first plot), and
+  `common.legend = c(1, 2)` keeps and combines the legends of the listed plots into a
+  single shared block (side by side for `legend = "top"`/`"bottom"`, stacked for
+  `"left"`/`"right"`) - useful when the arranged plots genuinely need different
+  legends. The documentation of `common.legend` was also clarified: `common.legend =
+  TRUE` keeps the first plot's legend (it does not merge or validate legends), so plots
+  should share a consistent scale for a single shared legend to be correct. Logical
+  `TRUE`/`FALSE` behave exactly as before (#347).
 - `ggbarplot()` now places the error bars of a **stacked** bar chart correctly when the
   data mix positive and negative values (e.g. above/below-ground measurements). The
   stacked error bars are cumulated per sign, matching `position_stack()`, so a negative

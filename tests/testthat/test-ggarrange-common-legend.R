@@ -39,13 +39,48 @@ test_that("common.legend = TRUE / FALSE are unchanged and render", {
 })
 
 test_that("invalid numeric common.legend is rejected with a clear error", {
-  expect_error(ggarrange(p1, p2, common.legend = 5), "between 1 and")   # out of range
-  expect_error(ggarrange(p1, p2, common.legend = 0), "between 1 and")   # < 1
-  expect_error(ggarrange(p1, p2, common.legend = 1.5), "whole number")  # non-integer
-  expect_error(ggarrange(p1, p2, common.legend = c(1, 2)))              # length > 1
-  expect_error(ggarrange(p1, p2, common.legend = NA_real_))            # NA
+  expect_error(ggarrange(p1, p2, common.legend = 5), "between")     # out of range
+  expect_error(ggarrange(p1, p2, common.legend = 0), "between")     # < 1
+  expect_error(ggarrange(p1, p2, common.legend = 1.5), "whole")     # non-integer
+  expect_error(ggarrange(p1, p2, common.legend = NA_real_))         # NA
 })
 
 test_that("common.legend index pointing to a NULL plot errors clearly", {
   expect_error(ggarrange(p1, NULL, p2, common.legend = 2), "NULL")
+})
+
+# ---- D3: several indices combine the selected plots' legends ----
+
+# a third plot with a DIFFERENT (continuous) legend
+p3 <- ggscatter(mtcars, "wt", "mpg", color = "cyl")
+
+test_that("a vector common.legend combines the selected plots' legends", {
+  # combining two DIFFERENT legends must differ from either single legend alone
+  h_1   <- .arr_hash(ggarrange(p2, p3, ncol = 2, common.legend = 1))
+  h_3   <- .arr_hash(ggarrange(p2, p3, ncol = 2, common.legend = 2))
+  h_13  <- .arr_hash(ggarrange(p2, p3, ncol = 2, common.legend = c(1, 2)))
+  expect_false(identical(h_13, h_1))
+  expect_false(identical(h_13, h_3))
+})
+
+test_that("vector common.legend renders for every legend position", {
+  for (pos in c("top", "bottom", "left", "right")) {
+    expect_error(
+      cowplot::as_grob(ggarrange(p2, p3, ncol = 2, common.legend = c(1, 2), legend = pos)),
+      NA
+    )
+  }
+})
+
+test_that("vector common.legend validation: duplicates and out-of-range are rejected", {
+  expect_error(ggarrange(p1, p2, common.legend = c(1, 1)), "unique")       # duplicate index
+  expect_error(ggarrange(p1, p2, common.legend = c(1, 9)), "between")      # out of range
+  expect_error(ggarrange(p1, p2, common.legend = c(1, 2.5)))               # non-integer element
+  expect_error(ggarrange(p1, p2, common.legend = c(1, NA)))                # NA element
+})
+
+test_that("single-element vector behaves like the scalar index", {
+  h_scalar <- .arr_hash(ggarrange(p1, p2, ncol = 2, common.legend = 2))
+  h_vec1   <- .arr_hash(ggarrange(p1, p2, ncol = 2, common.legend = c(2)))
+  expect_identical(h_vec1, h_scalar)
 })
