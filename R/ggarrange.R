@@ -132,6 +132,7 @@ ggarrange <- function(..., plotlist = NULL, ncol = NULL, nrow = NULL,
   legend.plot.index <- NULL
   if (is.numeric(common.legend)) {
     if (length(common.legend) != 1L || anyNA(common.legend) ||
+        !is.finite(common.legend) ||
         common.legend != as.integer(common.legend) ||
         common.legend < 1 || common.legend > nb.plots) {
       stop("When numeric, `common.legend` must be a single whole number between 1 and ",
