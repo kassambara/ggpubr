@@ -107,16 +107,17 @@ labelled only by variable grouping levels.}
 \item{trim}{If \code{TRUE} (default), trim the tails of the violins
 to the range of the data. If \code{FALSE}, don't trim the tails.}
 
-\item{drop}{logical, passed to \code{\link[ggplot2]{geom_violin}()}. When
-\code{TRUE} (the default, unchanged behavior), grouped sub-samples with fewer
-than two data points (for which no density can be computed) are dropped,
-including from the dodge position, so the remaining violins re-center and no
-longer line up with other layers (e.g. added boxplots or dot plots). Set
-\code{drop = FALSE} \emph{together with} a "preserve single" dodge, i.e.
-\code{position = position_dodge(0.8, preserve = "single")}, to reserve the
-empty dodge lane so the violins stay aligned with the other geoms. Both are
-needed: \code{drop = FALSE} keeps the sparse group and \code{preserve =
-"single"} keeps its lane width (#381).}
+\item{drop}{logical, passed to \code{\link[ggplot2]{geom_violin}()}, controlling
+whether grouped sub-samples with fewer than two data points (for which no
+density can be computed) are dropped from the plot and the dodge position. By
+default \code{ggviolin()} keeps grouped violins aligned with their other layers
+(e.g. added boxplots or dot plots) automatically: when you do not set \code{drop}
+or \code{position} and a grouped sub-group has a single data point, the empty
+dodge lane is reserved (equivalent to \code{drop = FALSE} together with
+\code{position = position_dodge(0.8, preserve = "single")}) so the violins stay
+aligned. Balanced, ungrouped, and faceted plots are unaffected. Setting
+\code{drop} or \code{position} explicitly turns off this automatic handling and
+uses exactly what you supply (#381).}
 
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}

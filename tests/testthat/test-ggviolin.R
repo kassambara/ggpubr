@@ -78,22 +78,38 @@ test_that("ggviolin warns when quantiles are provided without linetype", {
   sort(unique(round(s$x, 3)))
 }
 
-test_that("ggviolin forwards drop to geom_violin", {
+test_that("ggviolin forwards an explicit drop to geom_violin", {
   p <- ggviolin(.viol_sparse, "dose", "len", color = "supp", add = "boxplot", drop = FALSE)
   expect_false(p$layers[[1]]$stat_params$drop)
-  p2 <- ggviolin(.viol_sparse, "dose", "len", color = "supp", add = "boxplot")
+  # An explicit drop = TRUE is respected (it turns the automatic alignment off).
+  p2 <- ggviolin(.viol_sparse, "dose", "len", color = "supp", add = "boxplot", drop = TRUE)
   expect_true(p2$layers[[1]]$stat_params$drop)
 })
 
-test_that("ggviolin default (drop = TRUE) is byte-identical to omitting drop (#381)", {
-  omitted  <- ggviolin(.viol_sparse, "dose", "len", color = "supp", add = "boxplot")
+test_that("ggviolin auto-aligns a sparse grouped violin by default (#381)", {
+  # Omitting drop/position now reserves the empty dodge lane for the single-point
+  # sub-group, so the sparse dose = 1 keeps TWO aligned lanes and the auto-applied
+  # drop is FALSE.
+  omitted <- ggviolin(.viol_sparse, "dose", "len", color = "supp", add = "boxplot")
+  expect_length(.violin_lanes(omitted, 1), 2)
+  expect_false(omitted$layers[[1]]$stat_params$drop)
+  # Explicit drop = TRUE opts out -> historical behavior: the sparse lane is dropped
+  # and the remaining violin re-centers (a single lane at dose = 1).
   explicit <- ggviolin(.viol_sparse, "dose", "len", color = "supp", add = "boxplot", drop = TRUE)
+  expect_length(.violin_lanes(explicit, 1), 1)
+})
+
+test_that("omitting drop is byte-identical to drop = TRUE for balanced data (#381)", {
+  # The automatic alignment only fires on a sparse one-point cell; for balanced
+  # grouped data the default is unchanged, so omitting drop equals drop = TRUE.
+  bal <- ToothGrowth
+  bal$dose <- factor(bal$dose)
+  omitted  <- ggviolin(bal, "dose", "len", color = "supp", add = "boxplot")
+  explicit <- ggviolin(bal, "dose", "len", color = "supp", add = "boxplot", drop = TRUE)
   expect_equal(
     suppressWarnings(ggplot2::ggplot_build(omitted))$data[[1]],
     suppressWarnings(ggplot2::ggplot_build(explicit))$data[[1]]
   )
-  # default drops the sparse group's lane -> violin is centered (single lane)
-  expect_length(.violin_lanes(omitted, 1), 1)
 })
 
 test_that("drop = FALSE + preserve = 'single' aligns violins with added boxplots (#381)", {
