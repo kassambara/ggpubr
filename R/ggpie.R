@@ -14,6 +14,10 @@ NULL
 #'  14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
 #'  color (e.g.: "red") of label font. For example \emph{lab.font= c(4, "bold",
 #'  "red")}.
+#' @param label.repel logical. Default is FALSE. If TRUE, the slice labels are
+#'  placed around the chart with \code{ggrepel::geom_text_repel()} and connected
+#'  to their slice with leader lines, so that the labels of many small slices no
+#'  longer overlap. When TRUE, \code{lab.pos} is ignored.
 #' @param font.family character vector specifying font family.
 #' @param color,fill outline and fill colors.
 #' @param ... other arguments to be passed to be passed to ggpar().
@@ -81,9 +85,27 @@ NULL
 #' )
 #'
 #' @export
+# #655: opt-in ggrepel labels for pie / donut charts. With many small slices the
+# default labels collide; this spreads them around the ring with leader lines,
+# instead of dropping any. Shared by ggpie() and ggdonutchart(). `x.pos` is the
+# radius at which the labels are anchored (just outside the ring) and
+# `.lab.ypos.` (already on `data`) is the slice mid-point along the angular axis.
+# Returns a ggrepel::geom_text_repel layer.
+.ggpie_repel_labels <- function(data, label, x.pos, lab.font, font.family) {
+  data[[".lab.xpos."]] <- x.pos
+  max.overlaps <- getOption("ggrepel.max.overlaps", default = Inf)
+  ggrepel::geom_text_repel(
+    data = data,
+    mapping = create_aes(list(x = ".lab.xpos.", y = ".lab.ypos.", label = label)),
+    size = lab.font$size, fontface = lab.font$face, colour = lab.font$color,
+    family = font.family, show.legend = FALSE, max.overlaps = max.overlaps,
+    segment.size = 0.3, segment.colour = "grey50", box.padding = 0.4
+  )
+}
+
 ggpie <- function(
   data, x, label = x, lab.pos = c("out", "in"), lab.adjust = 0,
-  lab.font = c(4, "plain", "black"), font.family = "",
+  lab.font = c(4, "plain", "black"), label.repel = FALSE, font.family = "",
   color = "black", fill = "white", palette = NULL,
   size = NULL, ggtheme = theme_pubr(), ...
 ) {
@@ -138,8 +160,13 @@ ggpie <- function(
   # Annotate pie slice
   # :::::::::::::::::::::::::::::::::::
   if (!is.null(label)) {
-    # Label each slice at the middle of the slice
-    if (lab.pos == "out") {
+    if (isTRUE(label.repel)) {
+      # #655: spread overlapping labels around the ring with ggrepel.
+      p <- p +
+        .ggpie_repel_labels(data, label, x.pos = 1.6, lab.font, font.family) +
+        clean_theme()
+    } else if (lab.pos == "out") {
+      # Label each slice at the middle of the slice
       p <- p + scale_y_continuous(
         breaks = cumsum(.x) - .x / 2,
         labels = dplyr::pull(data, label)
@@ -148,9 +175,8 @@ ggpie <- function(
           face = lab.font$face, color = lab.font$color, size = 2.5 * lab.font$size,
           family = font.family
         ))
-    }
-    # Compute the cumulative sum as label ypos
-    if (lab.pos == "in") {
+    } else if (lab.pos == "in") {
+      # Compute the cumulative sum as label ypos
       p <- p + geom_text(
         create_aes(list(y = ".lab.ypos.", label = label)),
         size = lab.font$size, fontface = lab.font$face,
