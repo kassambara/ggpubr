@@ -198,7 +198,7 @@ ggpar <- function(p, palette = NULL, gradient.cols = NULL,
       if (!is.null(ggtheme)) p <- p + ggtheme # labs_pubr() +
       if (!is.null(gradient.cols)) p <- p + .gradient_col(gradient.cols)
 
-      p <- p + .set_ticks(ticks, tickslab, font.tickslab,
+      p <- .set_ticks(p, ticks, tickslab, font.tickslab,
         xtickslab.rt, ytickslab.rt,
         font.xtickslab = font.xtickslab, font.ytickslab = font.ytickslab
       )

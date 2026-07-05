@@ -19,6 +19,10 @@
 
 ## Robustness fixes
 
+- `ggpar()` no longer errors on `ggsurvplot` objects (or any plot whose theme uses
+  `ggtext::element_markdown()`, e.g. survminer's risk-table strata labels). Such
+  markdown label elements are now left intact instead of triggering an "Only elements
+  of the same class can be merged" error; output for all other plots is unchanged (#382).
 - Hardened sparse-group handling in `stat_compare_means()` and `geom_pwc()`.
 - Non-comparable grouped subsets (insufficient levels/observations) are now skipped
   while preserving valid inferential comparisons in the same layer.

@@ -236,45 +236,34 @@ keep_only_tbl_df_classes <- function(x) {
   }
 
   if (!is.null(font.main)) {
-    p <-
-      p + theme(
-        plot.title = element_text(
-          size = font.main$size,
-          lineheight = 1.0, face = font.main$face, colour = font.main$color
-        )
-      )
+    p <- .add_text_theme(p, "plot.title", element_text(
+      size = font.main$size,
+      lineheight = 1.0, face = font.main$face, colour = font.main$color
+    ))
   }
   if (!is.null(font.submain)) {
-    p <-
-      p + theme(
-        plot.subtitle = element_text(
-          size = font.submain$size,
-          lineheight = 1.0, face = font.submain$face, colour = font.submain$color
-        )
-      )
+    p <- .add_text_theme(p, "plot.subtitle", element_text(
+      size = font.submain$size,
+      lineheight = 1.0, face = font.submain$face, colour = font.submain$color
+    ))
   }
   if (!is.null(font.caption)) {
-    p <-
-      p + theme(
-        plot.caption = element_text(
-          size = font.caption$size,
-          lineheight = 1.0, face = font.caption$face, colour = font.caption$color
-        )
-      )
+    p <- .add_text_theme(p, "plot.caption", element_text(
+      size = font.caption$size,
+      lineheight = 1.0, face = font.caption$face, colour = font.caption$color
+    ))
   }
   if (!is.null(font.x)) {
-    p <-
-      p + theme(axis.title.x = element_text(
-        size = font.x$size,
-        face = font.x$face, colour = font.x$color
-      ))
+    p <- .add_text_theme(p, "axis.title.x", element_text(
+      size = font.x$size,
+      face = font.x$face, colour = font.x$color
+    ))
   }
   if (!is.null(font.y)) {
-    p <-
-      p + theme(axis.title.y = element_text(
-        size = font.y$size,
-        face = font.y$face, colour = font.y$color
-      ))
+    p <- .add_text_theme(p, "axis.title.y", element_text(
+      size = font.y$size,
+      face = font.y$face, colour = font.y$color
+    ))
   }
 
 
@@ -282,10 +271,26 @@ keep_only_tbl_df_classes <- function(x) {
 }
 
 
+# Merge a text theme element into a single theme slot, unless the plot already
+# carries a markdown element there. ggtext's element_markdown()/element_textbox()
+# (used e.g. by survminer on risk-table strata labels) cannot be merged with a
+# plain element_text(): ggplot2 errors "Only elements of the same class can be
+# merged". For such slots we leave the existing element untouched, so ggpar() no
+# longer crashes on ggsurvplot objects. Normal element_text/element_blank/NULL
+# slots are handled exactly as before (p + theme(...)), so output is unchanged
+# (#382).
+.add_text_theme <- function(p, slot, element) {
+  existing <- p$theme[[slot]]
+  if (inherits(existing, c("element_markdown", "element_textbox"))) {
+    return(p)
+  }
+  p + do.call(ggplot2::theme, stats::setNames(list(element), slot))
+}
+
 # ticks
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 .set_ticks <-
-  function(ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
+  function(p, ticks = TRUE, tickslab = TRUE, font.tickslab = NULL,
            xtickslab.rt = NULL, ytickslab.rt = NULL,
            font.xtickslab = font.tickslab, font.ytickslab = font.tickslab) {
     . <- xhjust <- xvjust <- NULL
@@ -314,6 +319,7 @@ keep_only_tbl_df_classes <- function(x) {
       font.y <- .parse_font(font.ytickslab)
     }
 
+    p <- p + theme(axis.ticks = ticks)
     if (tickslab) {
       xtickslab <- font.x %>%
         .add_item(hjust = xhjust, vjust = xvjust, angle = xtickslab.rt) %>%
@@ -321,13 +327,13 @@ keep_only_tbl_df_classes <- function(x) {
       ytickslab <- font.y %>%
         .add_item(angle = ytickslab.rt) %>%
         do.call(element_text, .)
+      # Skip a slot whose existing element is markdown (see .add_text_theme, #382)
+      p <- .add_text_theme(p, "axis.text.x", xtickslab)
+      p <- .add_text_theme(p, "axis.text.y", ytickslab)
     } else {
-      xtickslab <- element_blank()
-      ytickslab <- element_blank()
+      p <- p + theme(axis.text.x = element_blank(), axis.text.y = element_blank())
     }
-    theme(
-      axis.ticks = ticks, axis.text.x = xtickslab, axis.text.y = ytickslab
-    )
+    p
   }
 
 
@@ -427,16 +433,14 @@ keep_only_tbl_df_classes <- function(x) {
   }
 
   if (!is.null(font)) {
-    p <- p + theme(
-      legend.text = element_text(
-        size = font$size,
-        face = font$face, colour = font$color
-      ),
-      legend.title = element_text(
-        size = font$size,
-        face = font$face, colour = font$color
-      )
-    )
+    p <- .add_text_theme(p, "legend.text", element_text(
+      size = font$size,
+      face = font$face, colour = font$color
+    ))
+    p <- .add_text_theme(p, "legend.title", element_text(
+      size = font$size,
+      face = font$face, colour = font$color
+    ))
   }
 
   p
