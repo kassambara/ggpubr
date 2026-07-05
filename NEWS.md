@@ -43,6 +43,12 @@
   no complete pairs) instead of failing the whole result/layer, while still
   reporting genuinely ambiguous data (e.g. duplicated ids). Thanks to
   @erdeyl (#732).
+- `ggbarplot()` now places the error bars of a **stacked** bar chart correctly when the
+  data mix positive and negative values (e.g. above/below-ground measurements). The
+  stacked error bars are cumulated per sign, matching `position_stack()`, so a negative
+  segment's error bar is drawn on its own side instead of being displaced to the other
+  side (previously the misplacement also flipped with the factor-level order). Stacked
+  charts with single-sign data are unchanged (#426).
 - `ggviolin()` now keeps grouped violins aligned with their added box/dot layers by
   default when a sub-group is too sparse for `geom_violin()` to compute a density
   (a single data point). Previously the sparse sub-group was dropped from the dodge,

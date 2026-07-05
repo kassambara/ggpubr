@@ -478,10 +478,19 @@ ggbarplot_core <- function(data, x, y,
     group_by(!!!syms(stack.groups)) %>%
     dplyr::arrange(!!sym(x), desc(!!sym(legend.var))) %>%
     dplyr::mutate(
-      y = cumsum(!!sym(y)),
+      # position_stack() accumulates positive and negative segments SEPARATELY
+      # (positives stack up from 0, negatives stack down from 0), so a mixed-sign
+      # stack must cumulate each sign on its own. A single cumsum() over both signs
+      # places the error bars of one sign on the wrong side (#426). For single-sign
+      # data one of the two cumulative sums is identically zero, so this reduces to
+      # the original cumsum() and the output is byte-identical.
+      .ggpubr_cum_pos = cumsum(pmax(!!sym(y), 0)),
+      .ggpubr_cum_neg = cumsum(pmin(!!sym(y), 0)),
+      y = ifelse(!!sym(y) >= 0, .data$.ggpubr_cum_pos, .data$.ggpubr_cum_neg),
       ymin = .data$y - !!sym(error),
       ymax = .data$y + !!sym(error)
     ) %>%
+    dplyr::select(-".ggpubr_cum_pos", -".ggpubr_cum_neg") %>%
     dplyr::ungroup()
   geom_error <- .get_geom_error_function(error.plot)
 
