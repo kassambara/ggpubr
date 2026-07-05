@@ -54,10 +54,10 @@
   TRUE` keeps the first plot's legend (it does not merge or validate legends), so plots
   should share a consistent scale for a single shared legend to be correct. Logical
   `TRUE`/`FALSE` behave exactly as before (#347).
-- `ggpie()` and `ggdonutchart()` gained a `label.repel` argument (default `FALSE`). When
-  `TRUE`, slice labels are placed with `ggrepel::geom_text_repel()` and connected to their
-  slice with leader lines, so the labels of many small slices no longer overlap (or get
-  dropped). The default output is unchanged (#655).
+- `ggdonutchart()` gained a `label.repel` argument (default `FALSE`). When `TRUE`, slice
+  labels are placed with `ggrepel::geom_text_repel()` and connected to their slice with
+  leader lines, so the labels of many small slices no longer overlap (or get dropped). The
+  default output is unchanged (#655).
 - Documented that a summarized `ggbarplot()` (e.g. `add = "mean_se"`) must be faceted with
   the `facet.by=` argument, not by appending `+ facet_wrap()`/`+ facet_grid()`: the summaries
   are pre-computed over `facet.by`, so a manually added facet pools the bars (and, for stacked
