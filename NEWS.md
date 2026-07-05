@@ -54,6 +54,10 @@
   TRUE` keeps the first plot's legend (it does not merge or validate legends), so plots
   should share a consistent scale for a single shared legend to be correct. Logical
   `TRUE`/`FALSE` behave exactly as before (#347).
+- Documented that a summarized `ggbarplot()` (e.g. `add = "mean_se"`) must be faceted with
+  the `facet.by=` argument, not by appending `+ facet_wrap()`/`+ facet_grid()`: the summaries
+  are pre-computed over `facet.by`, so a manually added facet pools the bars (and, for stacked
+  bars, the error bars) across all panels (#739).
 - `ggbarplot()` now places the error bars of a **stacked** bar chart correctly when the
   data mix positive and negative values (e.g. above/below-ground measurements). The
   stacked error bars are cumulated per sign, matching `position_stack()`, so a negative
