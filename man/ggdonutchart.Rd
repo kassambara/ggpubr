@@ -11,6 +11,7 @@ ggdonutchart(
   lab.pos = c("out", "in"),
   lab.adjust = 0,
   lab.font = c(4, "plain", "black"),
+  label.repel = FALSE,
   font.family = "",
   color = "black",
   fill = "white",
@@ -37,6 +38,11 @@ are "out" (for outside) or "in" (for inside).}
 14), the style (e.g.: "plain", "bold", "italic", "bold.italic") and the
 color (e.g.: "red") of label font. For example \emph{lab.font= c(4, "bold",
 "red")}.}
+
+\item{label.repel}{logical. Default is FALSE. If TRUE, the slice labels are
+placed around the chart with \code{ggrepel::geom_text_repel()} and connected
+to their slice with leader lines, so that the labels of many small slices no
+longer overlap. When TRUE, \code{lab.pos} is ignored.}
 
 \item{font.family}{character vector specifying font family.}
 
