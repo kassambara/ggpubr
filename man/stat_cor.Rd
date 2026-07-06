@@ -110,7 +110,10 @@ separate plots combined with \code{\link{ggarrange}()}. An explicit
 
 \item{digits, r.digits, p.digits}{integer indicating the number of decimal
 places (round) or significant digits (signif) to be used for the correlation
-coefficient and the p-value, respectively..}
+coefficient and the p-value, respectively. In the default p-value label style,
+the displayed p-value keeps the legacy raw value unless \code{p.accuracy} is
+set; \code{p.digits} is used by non-default \code{p.format.style} outputs and
+the computed \code{p} variable.}
 
 \item{r.accuracy}{a real value specifying the number of decimal places of
 precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01

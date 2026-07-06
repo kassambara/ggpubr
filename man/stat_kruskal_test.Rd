@@ -97,8 +97,9 @@ value (not recommended), use p.adjust.method = "none".}
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }
 
- Note: \code{significance} is kept for backward compatibility. If provided,
- it takes precedence over \code{signif.cutoffs} and related parameters.}
+ Note: \code{significance} is kept for backward compatibility. For functions
+ that also expose \code{signif.cutoffs} and related parameters,
+ \code{significance} takes precedence when provided.}
 
 \item{p.format.style}{character string specifying the p-value formatting style.
 One of: \code{"default"} (backward compatible, uses scientific notation),

@@ -64,7 +64,7 @@ NULL
 #'  using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
 #'  the p-value (equivalent to \code{label = "p.format"}) with a warning.
 #' @param label.sep a character string to separate the terms. Default is ", ", to
-#'  separate the correlation coefficient and the p.value.
+#'  separate the test method name and the p-value.
 #' @param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
 #'  vector of the same length as the number of groups and/or panels. If too
 #'  short they will be recycled. \itemize{ \item If \code{numeric}, value should
