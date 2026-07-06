@@ -146,7 +146,8 @@ list_p_format_styles <- function() {
 #'   decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 #' @param min.threshold Numeric specifying the minimum p-value to display exactly.
 #'   Values below this threshold are shown as "< threshold" (e.g., "< 0.001").
-#'   Set to NULL to always show exact values. If provided, overrides the style default.
+#'   If NULL, the selected style's default threshold is used; styles without a
+#'   threshold show exact values. If provided, overrides the style default.
 #'   Must be a single positive finite number.
 #' @param decimal.mark Character string to use as the decimal mark. If NULL,
 #'   uses \code{getOption("OutDec")}.
