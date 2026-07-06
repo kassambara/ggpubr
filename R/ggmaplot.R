@@ -52,6 +52,11 @@ NULL
 #'  values include "padj" and "fc" for selecting by adjusted p values or fold
 #'  changes, respectively.
 #' @param label.select character vector specifying some labels to show.
+#' @param facet.by character vector, of length 1 or 2, specifying grouping
+#'   variables for faceting the plot into multiple panels (one MA plot per group).
+#'   The variable(s) must be columns of \code{data} (supplied as a data frame). The
+#'   top genes and the point colors are computed \emph{per panel}. Default is NULL
+#'   (no faceting), in which case the output is unchanged.
 #' @param line.color color of the horizontal threshold lines (the central line
 #'   at 0 and the two fold-change cutoff lines). Default is "black".
 #' @param ... other arguments to be passed to \code{\link{ggpar}}.
@@ -102,7 +107,7 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
                      font.label = c(12, "plain", "black"), label.rectangle = FALSE,
                      palette = c("#B31B21", "#1465AC", "darkgray"),
                      top = 15, select.top.method = c("padj", "fc"),
-                     label.select = NULL,
+                     label.select = NULL, facet.by = NULL,
                      main = NULL, xlab = "Log2 mean expression", ylab = "Log2 fold change",
                      line.color = "black",
                      ggtheme = theme_classic(), ...) {
@@ -144,6 +149,21 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
     stop("genenames should be of length nrow(data).")
   }
 
+  # #498: an optional facet.by builds a faceted MA plot. Capture the faceting
+  # column(s) now - before the data frame is rebuilt below - so they can be
+  # carried into the plotted layers; the top genes are then selected per facet.
+  if (!is.null(facet.by)) {
+    facet.by <- as.character(facet.by)
+    miss <- base::setdiff(facet.by, colnames(data))
+    if (length(miss) > 0) {
+      stop("facet.by column(s) not found in data: ", paste(miss, collapse = ", "),
+           ". Provide 'data' as a data frame containing the faceting variable(s).")
+    }
+    facet_data <- as.data.frame(data)[, facet.by, drop = FALSE]
+  } else {
+    facet_data <- NULL
+  }
+
   sig <- rep(3, nrow(data))
   sig[which(data$padj <= fdr & data$log2FoldChange < 0 & abs(data$log2FoldChange) >= log2(fc) & detection_call == 1)] <- 2
   sig[which(data$padj <= fdr & data$log2FoldChange > 0 & abs(data$log2FoldChange) >= log2(fc) & detection_call == 1)] <- 1
@@ -151,17 +171,27 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
     name = genenames, mean = data$baseMean, lfc = data$log2FoldChange,
     padj = data$padj, sig = sig
   )
+  # #498: carry the faceting column(s) into the plotted data (only when faceting,
+  # so an external facet() without facet.by still errors honestly instead of
+  # silently using globally-selected top genes). Row order is preserved above.
+  if (!is.null(facet_data)) data <- cbind(data, facet_data)
 
   # Change level labels
   . <- NULL
   data$sig <- as.factor(data$sig)
   .lev <- .levels(data$sig) %>% as.numeric()
   palette <- palette[.lev]
-  new.levels <- c(
-    paste0("Up: ", sum(sig == 1)),
-    paste0("Down: ", sum(sig == 2)),
-    "NS"
-  ) %>% .[.lev]
+  if (is.null(facet.by)) {
+    new.levels <- c(
+      paste0("Up: ", sum(sig == 1)),
+      paste0("Down: ", sum(sig == 2)),
+      "NS"
+    ) %>% .[.lev]
+  } else {
+    # #498: the Up/Down counts are global and cannot be shown per-panel in one
+    # shared legend, so use plain labels when faceting to avoid misleading counts.
+    new.levels <- c("Up", "Down", "NS") %>% .[.lev]
+  }
 
   data$sig <- factor(data$sig, labels = new.levels)
 
@@ -174,7 +204,18 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   # select data for top genes
   complete_data <- stats::na.omit(data)
   labs_data <- subset(complete_data, padj <= fdr & name != "" & abs(lfc) >= log2(fc))
-  labs_data <- utils::head(labs_data, top)
+  if (is.null(facet.by)) {
+    labs_data <- utils::head(labs_data, top)
+  } else {
+    # #498: select the top genes PER facet. `data` is already ordered by the
+    # select.top.method key, so taking the first `top` rows within each facet
+    # group keeps that ordering.
+    labs_data <- labs_data %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(facet.by))) %>%
+      dplyr::slice_head(n = top) %>%
+      dplyr::ungroup() %>%
+      as.data.frame()
+  }
   # Select some specific labels to show
   if (!is.null(label.select)) {
     selected_labels <- complete_data %>%
@@ -230,12 +271,24 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   }
 
   p <- p + scale_x_continuous(breaks = seq(0, max(data$mean), 2)) +
-    labs(x = xlab, y = ylab, title = main, color = "") + # to remove legend title use color = ""
-    geom_hline(
+    labs(x = xlab, y = ylab, title = main, color = "") # to remove legend title use color = ""
+  if (is.null(facet.by)) {
+    p <- p + geom_hline(
       yintercept = c(0, -log2(fc), log2(fc)), linetype = c(1, 2, 2),
       color = line.color
     )
+  } else {
+    # #498: a single geom_hline with a vectorised linetype breaks under faceting
+    # (the yintercept recycles per panel but the linetype does not), so draw the
+    # solid zero line and the two dashed threshold lines as separate facet-safe
+    # layers. The rendered result is the same three lines.
+    p <- p +
+      geom_hline(yintercept = 0, linetype = 1, color = line.color) +
+      geom_hline(yintercept = c(-log2(fc), log2(fc)), linetype = 2, color = line.color)
+  }
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  # #498: split into one panel per facet.by group
+  if (!is.null(facet.by)) p <- facet(p, facet.by = facet.by)
   p
 }

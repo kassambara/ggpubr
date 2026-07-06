@@ -17,6 +17,12 @@
 - Relaxed minimum `ggrepel` dependency to `>= 0.9.2` to keep Ubuntu oldrel
   (`R 4.4.x`) CI dependency resolution working.
 
+## New features
+
+- `ggmaplot()` gains an optional `facet.by` argument to split the MA plot into
+  multiple panels (e.g. one per contrast or species). The top genes and point
+  colors are computed per panel. Default output (no `facet.by`) is unchanged (#498).
+
 ## Robustness fixes
 
 - `ggbarplot()` now supports mapping `alpha` to a discrete grouping variable together
