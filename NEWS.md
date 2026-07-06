@@ -10,8 +10,9 @@
 ### New arguments, computed variables, and input support
 
 - `ggmaplot()` gains an optional `facet.by` argument to split the MA plot into
-  multiple panels (e.g. one per contrast or species). The top genes and point
-  colors are computed per panel. Default output (no `facet.by`) is unchanged (#498).
+  multiple panels (e.g. one per contrast or species). Top genes are selected per
+  panel, while point colors use the same significance thresholds in every panel.
+  Default output (no `facet.by`) is unchanged (#498).
 
 - `stat_cor()` and `stat_regline_equation()` gain a `label.anchor` argument.
   With `label.anchor = "panel"` the label is placed at the true panel-relative
@@ -267,6 +268,10 @@
   the `facet.by=` argument, not by appending `+ facet_wrap()`/`+ facet_grid()`: the summaries
   are pre-computed over `facet.by`, so a manually added facet pools the bars (and, for stacked
   bars, the error bars) across all panels (#739).
+- Clarified documentation to match existing behavior: the `ggtheme` default per
+  function, the p-value threshold/precision defaults, the `stat_compare_means()`
+  label separator (test method name, not correlation coefficient), and the
+  package Description's list of p-value formatting styles. Thanks to @erdeyl (#749).
 - Expanded test coverage for formatting helpers and compatibility paths.
 - Regenerated manuals and package documentation after source sync.
 - Closes #663 (`stat_compare_means()` fatal warning/error in sparse grouped subsets with modern `tidyr`).
@@ -311,6 +316,9 @@
 
 ## Bug fixes
 
+- `stat_welch_anova_test(label = "as_detailed_italic")` and
+  `stat_welch_anova_test(label = "as_detailed_expression")` now display the numeric
+  F statistic instead of `FALSE`. Thanks to @erdeyl (#749).
 - `ggbarplot()` now supports mapping `alpha` to a discrete grouping variable together
   with a summary (e.g. `alpha = clarity, add = "mean_ci", position = position_dodge()`).
   Previously this errored at draw time (`"alpha * 255": non-numeric argument to binary

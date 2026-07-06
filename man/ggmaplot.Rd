@@ -96,8 +96,9 @@ changes, respectively.}
 \item{facet.by}{character vector, of length 1 or 2, specifying grouping
 variables for faceting the plot into multiple panels (one MA plot per group).
 The variable(s) must be columns of \code{data} (supplied as a data frame). The
-top genes and the point colors are computed \emph{per panel}. Default is NULL
-(no faceting), in which case the output is unchanged.}
+top genes are selected \emph{per panel}; point colors use the same
+significance thresholds in every panel. Default is NULL (no faceting), in
+which case the output is unchanged.}
 
 \item{main}{plot main title.}
 
@@ -110,9 +111,10 @@ hide ylab.}
 \item{line.color}{color of the horizontal threshold lines (the central line
 at 0 and the two fold-change cutoff lines). Default is "black".}
 
-\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
-Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
-theme_minimal(), theme_classic(), theme_void(), ....}
+\item{ggtheme}{function, ggplot2 theme name. Default value is
+\code{theme_classic()}. Set \code{ggtheme = NULL} to skip applying a ggpubr
+theme, so the plot keeps ggplot2 default theme or the theme set globally via
+\code{theme_set()}.}
 
 \item{...}{other arguments to be passed to \code{\link{ggpar}}.}
 }

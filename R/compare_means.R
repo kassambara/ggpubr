@@ -83,8 +83,9 @@ NULL
 #' @param p.leading.zero logical indicating whether to include leading zero before
 #'  decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.
 #' @param p.min.threshold numeric specifying the minimum p-value to display exactly.
-#'  Values below this threshold are shown as "< threshold". Set to NULL to always
-#'  show exact values. If provided, overrides the style default.
+#'  Values below this threshold are shown as "< threshold". If NULL, the selected
+#'  style's default threshold is used; styles without a threshold show exact
+#'  values. If provided, overrides the style default.
 #' @param p.decimal.mark character string to use as the decimal mark. If NULL,
 #'  uses \code{getOption("OutDec")}.
 #' @return a data frame with the following columns:

@@ -165,6 +165,34 @@ test_that("add_stat_label works with Kruskal-Wallis stats label formats", {
 })
 
 
+test_that("add_stat_label works with Welch ANOVA detailed label formats", {
+  res <- data.frame(
+    stringsAsFactors = FALSE,
+    x = c("1"),
+    y = c(36.4),
+    n = c(60L),
+    statistic = c(45.57),
+    DFn = c(2),
+    DFd = c(37.7432475430268),
+    p = c(1.23e-10),
+    method = c("Welch Anova"),
+    p.adj = c(1.23e-10),
+    p.signif = c("****"),
+    p.adj.signif = c("****"),
+    p.format = c("<0.0001"),
+    p.adj.format = c("<0.0001")
+  )
+  res.detailed <- add_stat_label(res, label = get_welch_anova_test_label_template("as_detailed"))
+  res.detailed.italic <- add_stat_label(res, label = get_welch_anova_test_label_template("as_detailed_italic"))
+  res.detailed.expression <- add_stat_label(res, label = get_welch_anova_test_label_template("as_detailed_expression"))
+
+  expect_equal(res.detailed$label, "Welch Anova, F(2, 37.7432475430268) = 45.57, p < 0.0001, n = 60")
+  expect_equal(res.detailed.italic$label, "list(Welch~Anova,~italic(F)('2',~'37.7432475430268')~`=`~'45.57',~italic(p)~`<`~'0.0001',~italic(n)~`=`~'60')")
+  expect_equal(res.detailed.expression$label, "list(Welch~Anova,~italic(F)('2',~'37.7432475430268')~`=`~'45.57',~italic(p)~`<`~'0.0001',~italic(n)~`=`~'60')")
+  expect_false(any(grepl("FALSE", c(res.detailed.italic$label, res.detailed.expression$label), fixed = TRUE)))
+})
+
+
 # Tests for build_symnum_args helper function
 test_that("build_symnum_args uses symnum.args when provided (backward compatibility)", {
   result <- build_symnum_args(

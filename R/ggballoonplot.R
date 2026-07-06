@@ -38,6 +38,10 @@
 #'   "bold", "red"). To specify only the size and the style, use font.label =
 #'   c(14, "plain").
 #' @param rotate.x.text logical. If TRUE (default), rotate the x axis text.
+#' @param ggtheme function, ggplot2 theme name. Default value is
+#'   \code{theme_minimal()}. Set \code{ggtheme = NULL} to skip applying a ggpubr
+#'   theme, so the plot keeps ggplot2 default theme or the theme set globally via
+#'   \code{theme_set()}.
 #' @param ... other arguments passed to the function \code{\link{ggpar}}
 #'
 #' @examples
