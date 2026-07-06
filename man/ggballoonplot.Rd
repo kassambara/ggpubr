@@ -66,7 +66,10 @@ c(14, "plain").}
 
 \item{rotate.x.text}{logical. If TRUE (default), rotate the x axis text.}
 
-\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
+\item{ggtheme}{function, ggplot2 theme name. Default value is
+\code{theme_minimal()}. Set \code{ggtheme = NULL} to skip applying a ggpubr
+theme, so the plot keeps ggplot2 default theme or the theme set globally via
+\code{theme_set()}.
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....}
 
