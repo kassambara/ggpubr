@@ -20,11 +20,15 @@
 ## New features
 
 - `ggmaplot()` gains an optional `facet.by` argument to split the MA plot into
-  multiple panels (e.g. one per contrast or species). The top genes and point
-  colors are computed per panel. Default output (no `facet.by`) is unchanged (#498).
+  multiple panels (e.g. one per contrast or species). Top genes are selected per
+  panel, while point colors use the same significance thresholds in every panel.
+  Default output (no `facet.by`) is unchanged (#498).
 
 ## Robustness fixes
 
+- `stat_welch_anova_test(label = "as_detailed_italic")` and
+  `stat_welch_anova_test(label = "as_detailed_expression")` now display the
+  numeric F statistic instead of `FALSE`.
 - `ggbarplot()` now supports mapping `alpha` to a discrete grouping variable together
   with a summary (e.g. `alpha = clarity, add = "mean_ci", position = position_dodge()`).
   Previously this errored at draw time (`"alpha * 255": non-numeric argument to binary
@@ -428,6 +432,9 @@
 ## Tests and docs
 
 - Expanded test coverage for formatting helpers and compatibility paths.
+- Clarified `ggtheme` default documentation, p-value threshold/display
+  documentation, and statistical label-separator documentation to match function
+  usage and style-default behavior.
 - Regenerated manuals and package documentation after source sync.
 
 ## Issue closures
