@@ -247,7 +247,7 @@ text up or down. }}
 }
 \description{
 Adds automatically one-way and two-way ANOVA test p-values to a
-ggplot, such as box plots, dot plots and stripcharts.
+ ggplot, such as box plots, dot plots and stripcharts.
 }
 \section{Computed variables}{
  \itemize{ \item{DFn}: Degrees of Freedom in the

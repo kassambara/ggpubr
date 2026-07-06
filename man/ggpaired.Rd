@@ -65,15 +65,6 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 
 \item{point.size, line.size}{point and line size, respectively.}
 
-\item{jitter}{numeric value (default 0, no jitter) giving the amount of
-horizontal jitter added to the paired points to reduce overlap. Points are
-nudged sideways within \code{[-jitter, jitter]}; each subject (\code{id})
-gets a single offset so its two points move together and the connecting
-line stays intact. Only the horizontal positions change (the values are
-never moved). Typical values are small relative to the box \code{width}
-(e.g. \code{jitter = 0.05} to \code{0.1}). \code{jitter = 0} leaves the plot
-unchanged.}
-
 \item{line.color}{line color.}
 
 \item{linetype}{line type.}
@@ -126,6 +117,15 @@ text, making it easier to read.}
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
 Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 theme_minimal(), theme_classic(), theme_void(), ....}
+
+\item{jitter}{numeric value (default 0, no jitter) giving the amount of
+horizontal jitter added to the paired points to reduce overlap. Points are
+nudged sideways within \code{[-jitter, jitter]}; each subject (\code{id})
+gets a single offset so its two points move together and the connecting
+line stays intact. Only the horizontal positions change (the values are
+never moved). Typical values are small relative to the box \code{width}
+(e.g. \code{jitter = 0.05} to \code{0.1}). \code{jitter = 0} leaves the plot
+unchanged.}
 
 \item{...}{other arguments to be passed to be passed to \link{ggpar}().}
 }
