@@ -19,6 +19,7 @@ ggmaplot(
   top = 15,
   select.top.method = c("padj", "fc"),
   label.select = NULL,
+  facet.by = NULL,
   main = NULL,
   xlab = "Log2 mean expression",
   ylab = "Log2 fold change",
@@ -91,6 +92,12 @@ values include "padj" and "fc" for selecting by adjusted p values or fold
 changes, respectively.}
 
 \item{label.select}{character vector specifying some labels to show.}
+
+\item{facet.by}{character vector, of length 1 or 2, specifying grouping
+variables for faceting the plot into multiple panels (one MA plot per group).
+The variable(s) must be columns of \code{data} (supplied as a data frame). The
+top genes and the point colors are computed \emph{per panel}. Default is NULL
+(no faceting), in which case the output is unchanged.}
 
 \item{main}{plot main title.}
 
