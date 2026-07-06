@@ -208,7 +208,6 @@ The plot can be easily customized using the function ggpar(). Read
 }
 
 \examples{
-\donttest{
 # Load data
 data("ToothGrowth")
 df <- ToothGrowth
@@ -284,7 +283,6 @@ ggboxplot(df, "dose", "len",
   palette = c("#00AFBB", "#E7B800")
 )
 
-}
 }
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}}

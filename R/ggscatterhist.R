@@ -31,7 +31,6 @@ NULL
 #'  User can modify each of plot before printing.
 #'
 #' @examples
-#' \donttest{
 #' # Basic scatter plot with marginal density plot
 #' ggscatterhist(iris,
 #'   x = "Sepal.Length", y = "Sepal.Width",
@@ -66,7 +65,6 @@ NULL
 #'   geom_vline(xintercept = 6, linetype = "dashed", color = "red")
 #' plots
 #'
-#' }
 #' @export
 ggscatterhist <- function(
   data, x, y, group = NULL,

@@ -115,7 +115,6 @@ Create a scatter plot with marginal histograms, density plots or
  box plots.
 }
 \examples{
-\donttest{
 # Basic scatter plot with marginal density plot
 ggscatterhist(iris,
   x = "Sepal.Length", y = "Sepal.Width",
@@ -150,5 +149,4 @@ plots$sp <- plots$sp +
   geom_vline(xintercept = 6, linetype = "dashed", color = "red")
 plots
 
-}
 }

@@ -105,7 +105,6 @@ NULL
 #'  subsets are still tested. This avoids fatal layer failures in sparse grouped
 #'  data settings (Issue #663).
 #' @examples
-#' \donttest{
 #' # Load data
 #' data("ToothGrowth")
 #' head(ToothGrowth)
@@ -176,7 +175,6 @@ NULL
 #'   aes(label = paste0("p = ", after_stat(p.format)))
 #' )
 #'
-#' }
 #' @export
 stat_compare_means <- function(mapping = NULL, data = NULL,
                                method = NULL, paired = FALSE, id = NULL, method.args = list(), ref.group = NULL,

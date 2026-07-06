@@ -33,7 +33,6 @@ NULL
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}, \code{\link{ggbarplot}}
 #' @examples
-#' \donttest{
 #' # Data
 #' df <- data.frame(
 #'   dose = c("D0.5", "D1", "D2"),
@@ -142,7 +141,6 @@ NULL
 #' )
 #' #
 #'
-#' }
 #' @export
 ggline <- function(data, x, y, group = 1,
                    numeric.x.axis = FALSE,

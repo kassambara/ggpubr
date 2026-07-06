@@ -255,7 +255,6 @@ For grouped plots, if one or more subsets do not contain enough levels
  data settings (Issue #663).
 }
 \examples{
-\donttest{
 # Load data
 data("ToothGrowth")
 head(ToothGrowth)
@@ -326,7 +325,6 @@ p + stat_compare_means(
   aes(label = paste0("p = ", after_stat(p.format)))
 )
 
-}
 }
 \seealso{
 \code{\link{compare_means}}

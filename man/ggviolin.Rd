@@ -219,7 +219,6 @@ The plot can be easily customized using the function ggpar(). Read
  c("vertical", "horizontal", "reverse") }
 }
 \examples{
-\donttest{
 # Load data
 data("ToothGrowth")
 df <- ToothGrowth
@@ -302,7 +301,6 @@ ggviolin(df, "dose", "len",
   palette = c("#00AFBB", "#E7B800"), add = "boxplot"
 )
 
-}
 }
 \seealso{
 \code{\link{ggpar}}
