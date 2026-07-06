@@ -31,3 +31,7 @@
 ## Additional comments
 - The package metadata requires ggplot2 >= 3.5.2; this check was also run against
   ggplot2 4.0.3.
+- win-builder (R-devel and R-release) flags "APA", "NEJM" and "GraphPad" in the
+  Description as possibly misspelled. These are journal / style names used by the new
+  p-value formatting presets (APA, NEJM, Lancet, AMA, GraphPad styles), not
+  misspellings.
