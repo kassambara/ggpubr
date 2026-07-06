@@ -9,4 +9,5 @@ Rplots.pdf
 *.tar.gz
 *.Rcheck/
 CLAUDE.md
+.claude/
 .codex/
