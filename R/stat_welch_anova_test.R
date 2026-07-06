@@ -122,8 +122,8 @@ get_welch_anova_test_label_template <- function(label) {
   switch(label,
     as_italic = "{method}, italic(p) = {p.format}",
     as_detailed = "{method}, F({DFn}, {DFd}) = {statistic}, p = {p.format}, n = {n}",
-    as_detailed_italic = "{method}, italic(F)({DFn}, {DFd}) = {F}, italic(p) = {p.format}, italic(n) = {n}",
-    as_detailed_expression = "{method}, italic(F)({DFn}, {DFd}) = {F}, italic(p) = {p.format}, italic(n) = {n}",
+    as_detailed_italic = "{method}, italic(F)({DFn}, {DFd}) = {statistic}, italic(p) = {p.format}, italic(n) = {n}",
+    as_detailed_expression = "{method}, italic(F)({DFn}, {DFd}) = {statistic}, italic(p) = {p.format}, italic(n) = {n}",
     label
   )
 }
