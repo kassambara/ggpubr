@@ -103,7 +103,7 @@ for wilcoxon test.}
 significance levels.}
 
 \item{label.sep}{a character string to separate the terms. Default is ", ", to
-separate the correlation coefficient and the p.value.}
+separate the test method name and the p-value.}
 
 \item{label}{character string specifying label type. Allowed values include
 \code{"p.signif"} (shows the significance levels), \code{"p.format"} (shows

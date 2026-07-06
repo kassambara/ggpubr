@@ -1,158 +1,18 @@
-# ggpubr 0.6.3.999
-
-## Compatibility updates
-
-- Added compatibility updates for modern `ggplot2`, `dplyr`, and `tidyr`.
-- Updated legacy `size` usage to `linewidth` where required by recent `ggplot2`.
-- Completed the `size` -> `linewidth` migration for the remaining line layers that
-  still passed the deprecated `size` argument: the mean/median reference line added
-  by `gghistogram(add = ...)` and `ggdensity(add = ...)`, and the connector segments
-  of `ggdotchart(add = "segments")`. These no longer emit ggplot2's "`size` aesthetic
-  for lines was deprecated" or "Ignoring empty aesthetic: `size`" warnings, and the
-  requested line width is now applied via `linewidth`.
-- `ggmaplot()` no longer emits an "Ignoring empty aesthetic: `size`" warning on its
-  default call; the point layer sets `size` only when the user supplies a value.
-- Replaced deprecated tidyverse APIs in affected helper functions.
-- Added package startup lock-file checks and `clean_lock_files()` helper.
-- Relaxed minimum `ggrepel` dependency to `>= 0.9.2` to keep Ubuntu oldrel
-  (`R 4.4.x`) CI dependency resolution working.
+# ggpubr 1.0.0
 
 ## New features
 
-- `ggmaplot()` gains an optional `facet.by` argument to split the MA plot into
-  multiple panels (e.g. one per contrast or species). The top genes and point
-  colors are computed per panel. Default output (no `facet.by`) is unchanged (#498).
-
-## Robustness fixes
-
-- `ggbarplot()` now supports mapping `alpha` to a discrete grouping variable together
-  with a summary (e.g. `alpha = clarity, add = "mean_ci", position = position_dodge()`).
-  Previously this errored at draw time (`"alpha * 255": non-numeric argument to binary
-  operator`). The mean/CI is now computed per subgroup, the bars are faded per the `alpha`
-  variable, and the error bars are dodged to stay aligned with their bars. Bar plots
-  without an `alpha` grouping variable are unchanged (#404).
-- `ggpar()` no longer errors on `ggsurvplot` objects (or any plot whose theme uses
-  `ggtext::element_markdown()`, e.g. survminer's risk-table strata labels). Such
-  markdown label elements are now left intact instead of triggering an "Only elements
-  of the same class can be merged" error; output for all other plots is unchanged (#382).
-- Hardened sparse-group handling in `stat_compare_means()` and `geom_pwc()`.
-- Non-comparable grouped subsets (insufficient levels/observations) are now skipped
-  while preserving valid inferential comparisons in the same layer.
-- Added per-group skip diagnostics in `geom_pwc()` so users can see which grouped
-  subsets were skipped and why (e.g., missing `ref.group` or insufficient levels).
-- Added regression tests for mixed comparable/non-comparable subsets and fully sparse
-  subsets.
-- `geom_pwc()` with an explicit list of `comparisons` no longer drops a whole facet/panel
-  when a single requested pair cannot be tested (e.g. a group that is entirely `NA` or has
-  fewer than two observations). The untestable comparison is skipped (with a message) and
-  the remaining valid comparisons are still drawn (#542).
-- `geom_pwc()` now detects an absent `ref.group` in a grouped subset via the
-  `rstatix_missing_ref_group` condition class raised by recent `rstatix`
-  (walking the parent chain with `rlang::cnd_inherits()`), in addition to
-  matching the error message. This keeps the "skip ref-less subsets" behaviour
-  working after `rstatix` made that error message clearer (rstatix #153); older
-  `rstatix` versions are still handled via the message fallback.
-- `compare_means()` and `stat_compare_means()` now forward extra test options
-  (e.g. `alternative = "greater"`) to the paired tests aligned by subject `id`,
-  which were previously ignored on that path. Grouped and faceted paired-`id`
-  comparisons also skip a subset that cannot be tested (fewer than two groups or
-  no complete pairs) instead of failing the whole result/layer, while still
-  reporting genuinely ambiguous data (e.g. duplicated ids). Thanks to
-  @erdeyl (#732).
-- `ggarrange()` gained the ability to choose which plot(s) supply the shared legend:
-  `common.legend` now also accepts one or several plot indices. `common.legend = 2`
-  uses the second plot's legend (handy when the first plot's legend is not
-  representative, e.g. a group is missing in the first plot), and
-  `common.legend = c(1, 2)` keeps and combines the legends of the listed plots into a
-  single shared block (side by side for `legend = "top"`/`"bottom"`, stacked for
-  `"left"`/`"right"`) - useful when the arranged plots genuinely need different
-  legends. The documentation of `common.legend` was also clarified: `common.legend =
-  TRUE` keeps the first plot's legend (it does not merge or validate legends), so plots
-  should share a consistent scale for a single shared legend to be correct. Logical
-  `TRUE`/`FALSE` behave exactly as before (#347).
-- `ggdonutchart()` gained a `label.repel` argument (default `FALSE`). When `TRUE`, slice
-  labels are placed with `ggrepel::geom_text_repel()` and connected to their slice with
-  leader lines, so the labels of many small slices no longer overlap (or get dropped). The
-  default output is unchanged (#655).
-- Documented a recipe for labelling groups with significance letters (compact letter display):
-  compute the pairwise comparisons and derive the letters with `rstatix::add_cld()`, then place
-  them with `geom_text()` (see the "Significance letters" section in `?compare_means`). Also covers
-  the per-control letters case (a = differs from control 1, b = differs from control 2) (#464, #434).
-- Documented that a summarized `ggbarplot()` (e.g. `add = "mean_se"`) must be faceted with
-  the `facet.by=` argument, not by appending `+ facet_wrap()`/`+ facet_grid()`: the summaries
-  are pre-computed over `facet.by`, so a manually added facet pools the bars (and, for stacked
-  bars, the error bars) across all panels (#739).
-- `ggbarplot()` now places the error bars of a **stacked** bar chart correctly when the
-  data mix positive and negative values (e.g. above/below-ground measurements). The
-  stacked error bars are cumulated per sign, matching `position_stack()`, so a negative
-  segment's error bar is drawn on its own side instead of being displaced to the other
-  side (previously the misplacement also flipped with the factor-level order). Stacked
-  charts with single-sign data are unchanged (#426).
-- `ggviolin()` now keeps grouped violins aligned with their added box/dot layers by
-  default when a sub-group is too sparse for `geom_violin()` to compute a density
-  (a single data point). Previously the sparse sub-group was dropped from the dodge,
-  so the remaining violin re-centered and no longer lined up. When `drop`/`position`
-  are left at their defaults and such a one-point grouped cell is present, the empty
-  dodge lane is now reserved automatically. Balanced, ungrouped, faceted, and
-  legitimately-unbalanced plots are unchanged, and an explicit `drop`/`position`
-  still takes precedence (#381).
-- `geom_bracket()` (and `stat_pvalue_manual()`) now draw visible tips for a single
-  bracket placed over a stat-computed `y` such as `geom_bar()`/`geom_histogram()`.
-  Previously the bracket tips collapsed into a flat line because the y-axis range
-  was trained only on the bracket's single `y.position`; the tips are now sized
-  against the fully-trained panel range at draw time, so they render correctly even
-  with `coord_cartesian(ylim = ...)`. Brackets with an already non-zero y range are
-  unchanged (#631).
-
-## P-value formatting
+### New functions
 
 - Added `format_p_value()`, `get_p_format_style()`, and `list_p_format_styles()`.
 - Added style presets (`default`, `apa`, `nejm`, `lancet`, `ama`, `graphpad`, `scientific`).
-- Added formatting parameters to statistical helpers:
-  - `p.format.style`
-  - `p.digits`
-  - `p.leading.zero`
-  - `p.min.threshold`
-  - `p.decimal.mark`
-- Added `p.format.signif` support and related label handling paths.
-- `stat_pvalue_manual()` gains a `p.digits` argument (default `3`) that formats
-  **numeric** p-value label columns for display (e.g. `label = "p"` or
-  `label = "p.adj"`), using the same `format_p_value()` engine as
-  `stat_anova_test()`. This restores clean labels (e.g. `0.0156` instead of
-  `0.015625`) with rstatix `>= 1.0.0`, which now returns full-precision pairwise
-  p-values. Character labels (significance symbols, pre-formatted strings, glue
-  expressions) are unaffected. Set `p.digits = NULL` to print the raw value.
-- `stat_pvalue_manual()` additionally gains `p.format.style`, `p.leading.zero`,
-  `p.min.threshold` and `p.decimal.mark`, matching the p-value formatting
-  arguments already available in `stat_compare_means()`, `geom_pwc()` and
-  `stat_anova_test()`. These are opt-in and default so that the rendered labels
-  are unchanged; for example `p.min.threshold = 0.001` displays very small
-  p-values as `< 0.001`, and `p.format.style = "nejm"` applies a journal style.
-- `stat_cor()` gains two label-formatting arguments:
-  - `r.leading.zero` — set to `FALSE` to drop the leading zero of the
-    correlation coefficient (e.g. `.73` instead of `0.73`), completing
-    APA-style reporting together with `p.leading.zero` (#540). The dropped
-    leading zero is preserved through plotmath rendering (the value is quoted
-    so it is not silently re-normalized back to `0.73` in the default
-    `expression` output).
-  - `p.coef.name` — symbol for the p-value label; use `"P"` for an uppercase
-    p-value (#541).
-- `stat_cor()` exposes two new computed variables, `rmse` and `rmse.label`, for
-  the root mean square deviation (RMSE/RMSD) between `x` and `y` — useful for
-  reporting agreement between paired measurements on the same scale (e.g.
-  predicted vs. reference values). Display it with
-  `aes(label = after_stat(rmse.label))`, or combine it with the correlation
-  coefficient using `paste()`. The default label is unchanged (#458).
 
-- `stat_cor()` can now display the confidence interval of the correlation
-  coefficient, via the new computed variables `conf.int.low`, `conf.int.high`
-  and `conf.int.label` (e.g. `"95% CI [0.21, 0.75]"`) and a `conf.level` argument
-  (default `0.95`). Show it with `aes(label = after_stat(conf.int.label))`, or
-  combine it with the coefficient using `paste()`. The confidence interval is
-  available for `method = "pearson"` only; it is `NA` for Spearman/Kendall. The
-  default label is unchanged (#418).
+### New arguments, computed variables, and input support
 
-## New features
+- `ggmaplot()` gains an optional `facet.by` argument to split the MA plot into
+  multiple panels (e.g. one per contrast or species). Top genes are selected per
+  panel, while point colors use the same significance thresholds in every panel.
+  Default output (no `facet.by`) is unchanged (#498).
 
 - `stat_cor()` and `stat_regline_equation()` gain a `label.anchor` argument.
   With `label.anchor = "panel"` the label is placed at the true panel-relative
@@ -184,13 +44,6 @@
   `select`/`remove` and are computed per facet. Default is `show.n = FALSE`, so
   existing plots are unchanged (#598, #627).
 
-- Passing `ggtheme = NULL` to the plotting functions (e.g. `ggscatter()`,
-  `ggboxplot()`, `ggline()`, `gghistogram()`, ...) now skips applying a ggpubr
-  theme, so the plot keeps ggplot2's default theme or the theme set globally with
-  `theme_set()`. Previously an explicit `ggtheme = NULL` was treated like an unset
-  argument and `theme_pubr()` was still applied. Calls that omit `ggtheme` or pass
-  a specific theme are unchanged (#561).
-
 - `ggarrange()` gains a `spacing` argument to increase the gap between the
   arranged plots (a long-requested option). It adds a uniform margin, in
   text-line units, around each plot. Default is `0` (no extra space; each plot
@@ -211,10 +64,6 @@
   stat_compare_means(paired = TRUE, id = "subject")`), displaying the correct
   p-value even when the data are not sorted by subject. Plots without `id` are
   unchanged (#560).
-
-- The minimum required `rstatix` version is now `>= 1.0.0` (the version that
-  introduced the `id` argument used by `compare_means(id = )`, and the
-  full-precision pairwise p-values relied on by the p-value formatting).
 
 - `geom_pwc()` and `stat_pwc()` gain a `p.adjust.n` argument giving the number of
   comparisons to use for the p-value adjustment (passed as `n` to
@@ -271,29 +120,22 @@
   `drop = FALSE` together with `position = position_dodge(0.8, preserve = "single")`
   now reserves the empty dodge lane so all geoms stay aligned (#381).
 
-## Bug fixes
+- `ggarrange()` gained the ability to choose which plot(s) supply the shared legend:
+  `common.legend` now also accepts one or several plot indices. `common.legend = 2`
+  uses the second plot's legend (handy when the first plot's legend is not
+  representative, e.g. a group is missing in the first plot), and
+  `common.legend = c(1, 2)` keeps and combines the legends of the listed plots into a
+  single shared block (side by side for `legend = "top"`/`"bottom"`, stacked for
+  `"left"`/`"right"`) - useful when the arranged plots genuinely need different
+  legends. The documentation of `common.legend` was also clarified: `common.legend =
+  TRUE` keeps the first plot's legend (it does not merge or validate legends), so plots
+  should share a consistent scale for a single shared legend to be correct. Logical
+  `TRUE`/`FALSE` behave exactly as before (#347).
 
-- `ggline()` now dodges the jittered points together with the line and error
-  bars. Previously, in a grouped line plot with `add = "jitter"` and
-  `position = position_dodge()`, only the line and summary (e.g. `mean_se`) were
-  dodged while the jittered points stayed centered, so they no longer sat under
-  their group. The jitter now dodges by the same width. Plots without a
-  `position_dodge()` (the default `position = "identity"`) are unchanged (#436).
-
-- `ggbarplot()` now lines the error bars up with the bars when
-  `position = position_dodge2()` is used. `position_dodge2()` places elements
-  according to their own width, so the thin error bars did not sit on the centre
-  of the wider bars they belong to (most visible with `preserve = "single"` when
-  one x group has fewer bars than another). The error bars are now drawn at the
-  actual bar positions. Other positions (`identity`, `position_dodge()`,
-  `position_stack()`) are unchanged (#363).
-
-- `geom_bracket()` and `stat_pvalue_manual()` now place brackets correctly on a
-  transformed y axis (e.g. `scale_y_log10()`). `y.position` is given in data units
-  but was previously used directly in the scale's transformed space, so brackets
-  landed far off (e.g. at `10^30`) and squashed the plot. The bracket `y.position`
-  is now run through the scale's transformation; on an untransformed (identity)
-  scale this is a no-op, so existing plots are unchanged (#342).
+- `ggdonutchart()` gained a `label.repel` argument (default `FALSE`). When `TRUE`, slice
+  labels are placed with `ggrepel::geom_text_repel()` and connected to their slice with
+  leader lines, so the labels of many small slices no longer overlap (or get dropped). The
+  default output is unchanged (#655).
 
 - `ggboxplot()` now accepts a `position` argument (e.g.
   `position = position_dodge(0.9)`), like `ggviolin()`/`ggdotplot()` already do.
@@ -301,6 +143,243 @@
   multiple actual arguments`) because the dodge was hardcoded; the default is
   unchanged (`position_dodge(0.8)`), so grouped box plots look the same unless
   you set it (#615).
+
+- `ggsummarytable()` gains an `angle` argument to rotate the summary-table text;
+  default (`angle = 0`) is unchanged (#595).
+
+- `ggmaplot()` gains a `line.color` argument to set the threshold line color;
+  default ("black") is unchanged (#322).
+
+- `ggarrange()` gains a `byrow` argument (default `TRUE`) to fill the plot grid
+  by column (`byrow = FALSE`) instead of by row; forwarded to
+  `cowplot::plot_grid()` (#225).
+
+- `stat_regline_equation()` gains `coef.digits` and `rr.digits` arguments to
+  control the number of significant digits shown for the regression-equation
+  coefficients and R2; defaults (`2`) reproduce the previous output (#312).
+
+- Added formatting parameters to statistical helpers:
+  - `p.format.style`
+  - `p.digits`
+  - `p.leading.zero`
+  - `p.min.threshold`
+  - `p.decimal.mark`
+- Added `p.format.signif` support and related label handling paths.
+
+- `stat_pvalue_manual()` gains a `p.digits` argument (default `3`) that formats
+  **numeric** p-value label columns for display (e.g. `label = "p"` or
+  `label = "p.adj"`), using the same `format_p_value()` engine as
+  `stat_anova_test()`. This restores clean labels (e.g. `0.0156` instead of
+  `0.015625`) with rstatix `>= 1.0.0`, which now returns full-precision pairwise
+  p-values. Character labels (significance symbols, pre-formatted strings, glue
+  expressions) are unaffected. Set `p.digits = NULL` to print the raw value.
+
+- `stat_pvalue_manual()` additionally gains `p.format.style`, `p.leading.zero`,
+  `p.min.threshold` and `p.decimal.mark`, matching the p-value formatting
+  arguments already available in `stat_compare_means()`, `geom_pwc()` and
+  `stat_anova_test()`. These are opt-in and default so that the rendered labels
+  are unchanged; for example `p.min.threshold = 0.001` displays very small
+  p-values as `< 0.001`, and `p.format.style = "nejm"` applies a journal style.
+
+- `stat_cor()` gains two label-formatting arguments:
+  - `r.leading.zero` — set to `FALSE` to drop the leading zero of the
+    correlation coefficient (e.g. `.73` instead of `0.73`), completing
+    APA-style reporting together with `p.leading.zero` (#540). The dropped
+    leading zero is preserved through plotmath rendering (the value is quoted
+    so it is not silently re-normalized back to `0.73` in the default
+    `expression` output).
+  - `p.coef.name` — symbol for the p-value label; use `"P"` for an uppercase
+    p-value (#541).
+
+- `stat_cor()` exposes two new computed variables, `rmse` and `rmse.label`, for
+  the root mean square deviation (RMSE/RMSD) between `x` and `y` — useful for
+  reporting agreement between paired measurements on the same scale (e.g.
+  predicted vs. reference values). Display it with
+  `aes(label = after_stat(rmse.label))`, or combine it with the correlation
+  coefficient using `paste()`. The default label is unchanged (#458).
+
+- `stat_cor()` can now display the confidence interval of the correlation
+  coefficient, via the new computed variables `conf.int.low`, `conf.int.high`
+  and `conf.int.label` (e.g. `"95% CI [0.21, 0.75]"`) and a `conf.level` argument
+  (default `0.95`). Show it with `aes(label = after_stat(conf.int.label))`, or
+  combine it with the coefficient using `paste()`. The confidence interval is
+  available for `method = "pearson"` only; it is `NA` for Spearman/Kendall. The
+  default label is unchanged (#418).
+
+## Main changes
+
+### Compatibility
+
+- Added compatibility updates for modern `ggplot2`, `dplyr`, and `tidyr`.
+- Updated legacy `size` usage to `linewidth` where required by recent `ggplot2`.
+- Completed the `size` -> `linewidth` migration for the remaining line layers that
+  still passed the deprecated `size` argument: the mean/median reference line added
+  by `gghistogram(add = ...)` and `ggdensity(add = ...)`, and the connector segments
+  of `ggdotchart(add = "segments")`. These no longer emit ggplot2's "`size` aesthetic
+  for lines was deprecated" or "Ignoring empty aesthetic: `size`" warnings, and the
+  requested line width is now applied via `linewidth`.
+- `ggmaplot()` no longer emits an "Ignoring empty aesthetic: `size`" warning on its
+  default call; the point layer sets `size` only when the user supplies a value.
+- Replaced deprecated tidyverse APIs in affected helper functions.
+- Added package startup lock-file checks and `clean_lock_files()` helper.
+- Relaxed minimum `ggrepel` dependency to `>= 0.9.2` to keep Ubuntu oldrel
+  (`R 4.4.x`) CI dependency resolution working.
+- `geom_pwc()` now detects an absent `ref.group` in a grouped subset via the
+  `rstatix_missing_ref_group` condition class raised by recent `rstatix`
+  (walking the parent chain with `rlang::cnd_inherits()`), in addition to
+  matching the error message. This keeps the "skip ref-less subsets" behaviour
+  working after `rstatix` made that error message clearer (rstatix #153); older
+  `rstatix` versions are still handled via the message fallback.
+- The minimum required `rstatix` version is now `>= 1.0.0` (the version that
+  introduced the `id` argument used by `compare_means(id = )`, and the
+  full-precision pairwise p-values relied on by the p-value formatting).
+
+### Validation and messaging
+
+- Hardened sparse-group handling in `stat_compare_means()` and `geom_pwc()`.
+- Non-comparable grouped subsets (insufficient levels/observations) are now skipped
+  while preserving valid inferential comparisons in the same layer.
+- Added per-group skip diagnostics in `geom_pwc()` so users can see which grouped
+  subsets were skipped and why (e.g., missing `ref.group` or insufficient levels).
+- Added regression tests for mixed comparable/non-comparable subsets and fully sparse
+  subsets.
+- Passing `ggtheme = NULL` to the plotting functions (e.g. `ggscatter()`,
+  `ggboxplot()`, `ggline()`, `gghistogram()`, ...) now skips applying a ggpubr
+  theme, so the plot keeps ggplot2's default theme or the theme set globally with
+  `theme_set()`. Previously an explicit `ggtheme = NULL` was treated like an unset
+  argument and `theme_pubr()` was still applied. Calls that omit `ggtheme` or pass
+  a specific theme are unchanged (#561).
+- `compare_means()` now adjusts p-values **within** each `group.by` level (and
+  response) rather than pooling all groups together, so a grouped adjustment
+  matches filtering to one group and adjusting there. This changes `p.adj` values
+  for calls that use `group.by`; ungrouped calls are unchanged (#200).
+- `stat_compare_means(comparisons = )` now emits a one-time message (and the docs
+  note) clarifying that the displayed pairwise p-values are **not** adjusted for
+  multiple comparisons, pointing to `geom_pwc()` / `stat_pvalue_manual()` +
+  `compare_means(p.adjust.method = )` for corrected p-values (#293).
+
+### Documentation
+
+- Documented a recipe for labelling groups with significance letters (compact letter display):
+  compute the pairwise comparisons and derive the letters with `rstatix::add_cld()`, then place
+  them with `geom_text()` (see the "Significance letters" section in `?compare_means`). Also covers
+  the per-control letters case (a = differs from control 1, b = differs from control 2) (#464, #434).
+- Documented that a summarized `ggbarplot()` (e.g. `add = "mean_se"`) must be faceted with
+  the `facet.by=` argument, not by appending `+ facet_wrap()`/`+ facet_grid()`: the summaries
+  are pre-computed over `facet.by`, so a manually added facet pools the bars (and, for stacked
+  bars, the error bars) across all panels (#739).
+- Clarified documentation to match existing behavior: the `ggtheme` default per
+  function, the p-value threshold/precision defaults, the `stat_compare_means()`
+  label separator (test method name, not correlation coefficient), and the
+  package Description's list of p-value formatting styles. Thanks to @erdeyl (#749).
+- Expanded test coverage for formatting helpers and compatibility paths.
+- Regenerated manuals and package documentation after source sync.
+- Closes #663 (`stat_compare_means()` fatal warning/error in sparse grouped subsets with modern `tidyr`).
+- Closes #334 (`stat_compare_means(label = "p.format")` rounding and formatting control).
+- Related: #540, #626.
+
+### Credits
+
+- Contributor: Laszlo Erdey (Faculty of Economics and Business, University of Debrecen, Hungary).
+- Thanks to @gumeo (#418), @byzheng (#608) and @JulesROBIN15 (#625) whose pull
+  requests proposed features shipped in this release: the `stat_cor()`
+  confidence interval, the `stat_cor()` RMSE label, and a manual number of
+  comparisons for p-value adjustment in `geom_pwc()`/`stat_pwc()`.
+
+## Minor changes
+
+- Fixed ColorBrewer sequential palette parsing in `.get_brewer_pal()` so
+  `"YlOrBr"` is recognized correctly.
+- Updated `ggexport()` to respect `verbose = FALSE` by suppressing filename
+  `print()` output in multi-file raster/vector exports.
+- Hardened `format_p_value()` by validating non-NULL `p.min.threshold` as a
+  single positive finite number.
+- Updated `create_p_label()` to preserve `NA` values in `p.format` (returning
+  `NA_character_` instead of stringifying to `"p = NA"`).
+- `theme_pubr()` now draws the axis tick marks in black with linewidth `0.5`,
+  matching the axis lines; previously the ticks inherited a lighter grey/thinner
+  style, visibly inconsistent when zoomed (#668).
+- `theme_pubr()` now sets `strip.clip = "off"` so the facet strip background
+  border renders at its full `linewidth`. With the `ggplot2` (>= 3.5.0) default
+  (`strip.clip = "on"`) the border was clipped to the strip area, cutting the
+  outer half of the stroke so it looked thinner and misaligned with the panel
+  when zoomed (follow-up to #668). Note: a facet label wider than its panel now
+  overflows the strip instead of being truncated; restore clipping with
+  `+ theme(strip.clip = "on")` if needed.
+- `xticks.by`/`yticks.by` now anchor the axis breaks to round multiples of the
+  step (e.g. 0, 100, 200) instead of the slightly-negative expanded axis minimum,
+  which produced odd labels such as `-20, 80, 180` on bar plots with
+  `ylim = c(0, 400)` (#313).
+- Import the `%||%` operator from `rlang`; it is used in `geom_bracket()` and
+  `geom_pwc()` but base R only provides it since R 4.4, so it could be unresolved
+  on the R (>= 4.1) versions the package supports (#665).
+
+## Bug fixes
+
+- `stat_welch_anova_test(label = "as_detailed_italic")` and
+  `stat_welch_anova_test(label = "as_detailed_expression")` now display the numeric
+  F statistic instead of `FALSE`. Thanks to @erdeyl (#749).
+- `ggbarplot()` now supports mapping `alpha` to a discrete grouping variable together
+  with a summary (e.g. `alpha = clarity, add = "mean_ci", position = position_dodge()`).
+  Previously this errored at draw time (`"alpha * 255": non-numeric argument to binary
+  operator`). The mean/CI is now computed per subgroup, the bars are faded per the `alpha`
+  variable, and the error bars are dodged to stay aligned with their bars. Bar plots
+  without an `alpha` grouping variable are unchanged (#404).
+- `ggpar()` no longer errors on `ggsurvplot` objects (or any plot whose theme uses
+  `ggtext::element_markdown()`, e.g. survminer's risk-table strata labels). Such
+  markdown label elements are now left intact instead of triggering an "Only elements
+  of the same class can be merged" error; output for all other plots is unchanged (#382).
+- `geom_pwc()` with an explicit list of `comparisons` no longer drops a whole facet/panel
+  when a single requested pair cannot be tested (e.g. a group that is entirely `NA` or has
+  fewer than two observations). The untestable comparison is skipped (with a message) and
+  the remaining valid comparisons are still drawn (#542).
+- `compare_means()` and `stat_compare_means()` now forward extra test options
+  (e.g. `alternative = "greater"`) to the paired tests aligned by subject `id`,
+  which were previously ignored on that path. Grouped and faceted paired-`id`
+  comparisons also skip a subset that cannot be tested (fewer than two groups or
+  no complete pairs) instead of failing the whole result/layer, while still
+  reporting genuinely ambiguous data (e.g. duplicated ids). Thanks to
+  @erdeyl (#732).
+- `ggbarplot()` now places the error bars of a **stacked** bar chart correctly when the
+  data mix positive and negative values (e.g. above/below-ground measurements). The
+  stacked error bars are cumulated per sign, matching `position_stack()`, so a negative
+  segment's error bar is drawn on its own side instead of being displaced to the other
+  side (previously the misplacement also flipped with the factor-level order). Stacked
+  charts with single-sign data are unchanged (#426).
+- `ggviolin()` now keeps grouped violins aligned with their added box/dot layers by
+  default when a sub-group is too sparse for `geom_violin()` to compute a density
+  (a single data point). Previously the sparse sub-group was dropped from the dodge,
+  so the remaining violin re-centered and no longer lined up. When `drop`/`position`
+  are left at their defaults and such a one-point grouped cell is present, the empty
+  dodge lane is now reserved automatically. Balanced, ungrouped, faceted, and
+  legitimately-unbalanced plots are unchanged, and an explicit `drop`/`position`
+  still takes precedence (#381).
+- `geom_bracket()` (and `stat_pvalue_manual()`) now draw visible tips for a single
+  bracket placed over a stat-computed `y` such as `geom_bar()`/`geom_histogram()`.
+  Previously the bracket tips collapsed into a flat line because the y-axis range
+  was trained only on the bracket's single `y.position`; the tips are now sized
+  against the fully-trained panel range at draw time, so they render correctly even
+  with `coord_cartesian(ylim = ...)`. Brackets with an already non-zero y range are
+  unchanged (#631).
+- `ggline()` now dodges the jittered points together with the line and error
+  bars. Previously, in a grouped line plot with `add = "jitter"` and
+  `position = position_dodge()`, only the line and summary (e.g. `mean_se`) were
+  dodged while the jittered points stayed centered, so they no longer sat under
+  their group. The jitter now dodges by the same width. Plots without a
+  `position_dodge()` (the default `position = "identity"`) are unchanged (#436).
+- `ggbarplot()` now lines the error bars up with the bars when
+  `position = position_dodge2()` is used. `position_dodge2()` places elements
+  according to their own width, so the thin error bars did not sit on the centre
+  of the wider bars they belong to (most visible with `preserve = "single"` when
+  one x group has fewer bars than another). The error bars are now drawn at the
+  actual bar positions. Other positions (`identity`, `position_dodge()`,
+  `position_stack()`) are unchanged (#363).
+- `geom_bracket()` and `stat_pvalue_manual()` now place brackets correctly on a
+  transformed y axis (e.g. `scale_y_log10()`). `y.position` is given in data units
+  but was previously used directly in the scale's transformed space, so brackets
+  landed far off (e.g. at `10^30`) and squashed the plot. The bracket `y.position`
+  is now run through the scale's transformation; on an untransformed (identity)
+  scale this is a no-op, so existing plots are unchanged (#342).
 - The core plotting functions (`ggscatter()`, `ggboxplot()`, `ggviolin()`,
   `ggline()`, `ggbarplot()`, `gghistogram()`, `ggdensity()`, `ggdotplot()`,
   `ggstripchart()`, `ggerrorplot()`, `ggecdf()`, `ggdotchart()`, `ggpaired()`,
@@ -326,20 +405,8 @@
   which shifted the remaining brackets left. The bracket positions are now
   anchored to the discrete x scale so they stay aligned with the plotted groups
   (#575).
-- Fixed ColorBrewer sequential palette parsing in `.get_brewer_pal()` so
-  `"YlOrBr"` is recognized correctly.
-- Updated `ggexport()` to respect `verbose = FALSE` by suppressing filename
-  `print()` output in multi-file raster/vector exports.
-- Hardened `format_p_value()` by validating non-NULL `p.min.threshold` as a
-  single positive finite number.
-- Updated `create_p_label()` to preserve `NA` values in `p.format` (returning
-  `NA_character_` instead of stringifying to `"p = NA"`).
 - `ggballoonplot()` now honors user-supplied `xlab`/`ylab` instead of always
   blanking the axis titles; axis titles are still blank by default (#639).
-- `ggsummarytable()` gains an `angle` argument to rotate the summary-table text;
-  default (`angle = 0`) is unchanged (#595).
-- `ggmaplot()` gains a `line.color` argument to set the threshold line color;
-  default ("black") is unchanged (#322).
 - `ggpar(legend.title = )` now also titles `size` and `alpha` legends, not just
   `colour`/`fill`/`linetype`/`shape` (#412).
 - `facet()`/`panel.labs`: a NAMED `panel.labs` vector is now matched to the data
@@ -377,45 +444,14 @@
   when a formula variable name contains a space (e.g. ``len ~ `spa ced` ``); the
   backticks that R adds to non-syntactic term names are now stripped before
   matching data columns (#385).
-- `ggarrange()` gains a `byrow` argument (default `TRUE`) to fill the plot grid
-  by column (`byrow = FALSE`) instead of by row; forwarded to
-  `cowplot::plot_grid()` (#225).
-- `stat_regline_equation()` gains `coef.digits` and `rr.digits` arguments to
-  control the number of significant digits shown for the regression-equation
-  coefficients and R2; defaults (`2`) reproduce the previous output (#312).
 - `table_cell_font()` and `table_cell_bg()` can now style an individual header
   cell (`row = 1`), not only body cells; they previously matched only the
   `core-*` grobs and silently did nothing for the header (#535).
-- `theme_pubr()` now draws the axis tick marks in black with linewidth `0.5`,
-  matching the axis lines; previously the ticks inherited a lighter grey/thinner
-  style, visibly inconsistent when zoomed (#668).
-- `theme_pubr()` now sets `strip.clip = "off"` so the facet strip background
-  border renders at its full `linewidth`. With the `ggplot2` (>= 3.5.0) default
-  (`strip.clip = "on"`) the border was clipped to the strip area, cutting the
-  outer half of the stroke so it looked thinner and misaligned with the panel
-  when zoomed (follow-up to #668). Note: a facet label wider than its panel now
-  overflows the strip instead of being truncated; restore clipping with
-  `+ theme(strip.clip = "on")` if needed.
-- `xticks.by`/`yticks.by` now anchor the axis breaks to round multiples of the
-  step (e.g. 0, 100, 200) instead of the slightly-negative expanded axis minimum,
-  which produced odd labels such as `-20, 80, 180` on bar plots with
-  `ylim = c(0, 400)` (#313).
 - `ggmaplot()` now draws the non-significant ("NS") points behind the significant
   ones, so the up/down-regulated hits are no longer hidden under the grey NS
   cloud; the legend order (Up, Down, NS) is unchanged (#365).
-- `compare_means()` now adjusts p-values **within** each `group.by` level (and
-  response) rather than pooling all groups together, so a grouped adjustment
-  matches filtering to one group and adjusting there. This changes `p.adj` values
-  for calls that use `group.by`; ungrouped calls are unchanged (#200).
-- `stat_compare_means(comparisons = )` now emits a one-time message (and the docs
-  note) clarifying that the displayed pairwise p-values are **not** adjusted for
-  multiple comparisons, pointing to `geom_pwc()` / `stat_pvalue_manual()` +
-  `compare_means(p.adjust.method = )` for corrected p-values (#293).
 - `ggboxplot()` now forwards `coef` to `geom_boxplot()`, so `coef = 0` can be used
   to omit the whiskers; it was previously dropped by `geom_exec()` (#517).
-- Import the `%||%` operator from `rlang`; it is used in `geom_bracket()` and
-  `geom_pwc()` but base R only provides it since R 4.4, so it could be unresolved
-  on the R (>= 4.1) versions the package supports (#665).
 - `tab_add_title()` / `tab_add_footnote()`: the `just` argument now actually
   positions the text — `"center"`/`"right"` anchor the title/footnote across the
   table width instead of around a fixed point — and the text is no longer clipped
@@ -424,25 +460,6 @@
   horizontal justification, so labels of different lengths keep the same anchor
   and captions align across figures; previously a longer label was shifted away
   from the corner (#185).
-
-## Tests and docs
-
-- Expanded test coverage for formatting helpers and compatibility paths.
-- Regenerated manuals and package documentation after source sync.
-
-## Issue closures
-
-- Closes #663 (`stat_compare_means()` fatal warning/error in sparse grouped subsets with modern `tidyr`).
-- Closes #334 (`stat_compare_means(label = "p.format")` rounding and formatting control).
-- Related: #540, #626.
-
-## Credits
-
-- Contributor: Laszlo Erdey (Faculty of Economics and Business, University of Debrecen, Hungary).
-- Thanks to @gumeo (#418), @byzheng (#608) and @JulesROBIN15 (#625) whose pull
-  requests proposed features shipped in this release: the `stat_cor()`
-  confidence interval, the `stat_cor()` RMSE label, and a manual number of
-  comparisons for p-value adjustment in `geom_pwc()`/`stat_pwc()`.
 
 # ggpubr 0.6.3
 

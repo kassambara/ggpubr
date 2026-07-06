@@ -105,8 +105,9 @@ If provided, overrides the style default.}
 decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
 
 \item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
-Values below this threshold are shown as "< threshold". Set to NULL to always
-show exact values. If provided, overrides the style default.}
+Values below this threshold are shown as "< threshold". If NULL, the selected
+style's default threshold is used; styles without a threshold show exact
+values. If provided, overrides the style default.}
 
 \item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
 uses \code{getOption("OutDec")}.}

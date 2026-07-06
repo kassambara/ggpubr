@@ -55,10 +55,15 @@ NULL
 #' @param facet.by character vector, of length 1 or 2, specifying grouping
 #'   variables for faceting the plot into multiple panels (one MA plot per group).
 #'   The variable(s) must be columns of \code{data} (supplied as a data frame). The
-#'   top genes and the point colors are computed \emph{per panel}. Default is NULL
-#'   (no faceting), in which case the output is unchanged.
+#'   top genes are selected \emph{per panel}; point colors use the same
+#'   significance thresholds in every panel. Default is NULL (no faceting), in
+#'   which case the output is unchanged.
 #' @param line.color color of the horizontal threshold lines (the central line
 #'   at 0 and the two fold-change cutoff lines). Default is "black".
+#' @param ggtheme function, ggplot2 theme name. Default value is
+#'   \code{theme_classic()}. Set \code{ggtheme = NULL} to skip applying a ggpubr
+#'   theme, so the plot keeps ggplot2 default theme or the theme set globally via
+#'   \code{theme_set()}.
 #' @param ... other arguments to be passed to \code{\link{ggpar}}.
 #' @return a ggplot.
 #' @examples
@@ -124,8 +129,6 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
     detection_call <- rep(1, nrow(data))
   }
 
-  # Legend position
-  if (is.null(list(...)$legend)) legend <- c(0.12, 0.9)
   # If basemean logged, we'll leave it as is, otherwise log2 transform
   is.basemean.logged <- "baseMeanLog2" %in% colnames(data)
   if (is.basemean.logged) {

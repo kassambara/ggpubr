@@ -189,16 +189,16 @@ text, making it easier to read.}
 call to a position adjustment function (e.g. \code{position_dodge(0.8)}).
 Used to control the spacing between grouped elements.}
 
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
+Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
+theme_minimal(), theme_classic(), theme_void(), ....}
+
 \item{show.n}{logical. If TRUE, displays the number of observations
 (\code{"n = <count>"}) at the top of each group. Off by default. When the
 groups are dodged (a \code{color}/\code{fill} grouping with a dodging
 \code{position}), one count is shown per group; otherwise a single count is
 shown per x-axis tick. Counts respect \code{select}/\code{remove} and are
 computed per facet.}
-
-\item{ggtheme}{function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
-Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
-theme_minimal(), theme_classic(), theme_void(), ....}
 
 \item{...}{other arguments to be passed to
 \code{\link[ggplot2]{geom_violin}}, \code{\link{ggpar}} and

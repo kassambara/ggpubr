@@ -68,7 +68,11 @@ test is performed between the x-groups for each legend level. }}
 "p.adj"), where \code{p} is the p-value. Can be also an expression that can
 be formatted by the \code{\link[glue]{glue}()} package. For example, when
 specifying label = "t-test, p = \{p\}", the expression \{p\} will be
-replaced by its value.}
+replaced by its value. Values inserted through a glue expression are taken
+from the raw data column and are \strong{not} rounded by \code{p.digits}; to
+round within a glue expression, wrap the value, e.g.
+\code{label = "p = \{signif(p, 3)\}"} (or \code{\{format_p_value(p)\}} for the
+p-value house style).}
 
 \item{label.x.npc, label.y.npc}{can be \code{numeric} or \code{character}
 vector of the same length as the number of groups and/or panels. If too
@@ -102,28 +106,46 @@ value (not recommended), use p.adjust.method = "none".}
  \code{*}: p <= 0.05 \item \code{**}: p <= 0.01 \item \code{***}: p <= 0.001
  \item \code{****}:  p <= 0.0001 }
 
- Note: \code{significance} is kept for backward compatibility. If provided,
- it takes precedence over \code{signif.cutoffs} and related parameters.}
+ Note: \code{significance} is kept for backward compatibility. For functions
+ that also expose \code{signif.cutoffs} and related parameters,
+ \code{significance} takes precedence when provided.}
 
-\item{p.format.style}{character string specifying the p-value formatting style.
+\item{p.format.style}{character string specifying the p-value formatting style
+applied to recognized numeric p-value label columns (see \code{p.digits}).
 One of: \code{"default"} (backward compatible, uses scientific notation),
 \code{"apa"} (APA style, no leading zero), \code{"nejm"} (NEJM style),
 \code{"lancet"} (Lancet style), \code{"ama"} (AMA style), \code{"graphpad"}
-(GraphPad style), or \code{"scientific"} (scientific notation for GWAS).
-See \code{\link{list_p_format_styles}} for details.}
+(GraphPad style), or \code{"scientific"} (scientific notation for GWAS). See
+\code{\link{list_p_format_styles}} for details. Default is \code{"default"},
+which leaves the rendered p-value labels unchanged.}
 
-\item{p.digits}{integer specifying the number of decimal places for p-values.
-If provided, overrides the style default.}
+\item{p.digits}{integer indicating the number of digits used to
+format recognized \strong{numeric} p-value label columns (\code{label} is one
+of \code{"p"}, \code{"p.adj"}, \code{"p.value"}, \code{"p.val"},
+\code{"pval"}, \code{"padj"}). Default is 3. Set to \code{NULL} to print the
+raw value without rounding (this also disables \code{p.format.style} and the
+related formatting arguments). All other labels are left unchanged: other
+numeric columns (e.g. \code{"statistic"}, \code{"n"}, effect sizes),
+significance symbols (\code{"p.signif"}, \code{"p.adj.signif"}),
+already-formatted strings, and \code{\link[glue]{glue}} expressions. A
+p-named column whose values fall outside \code{[0, 1]} is also left as-is.
+Uses the same formatting engine (\code{\link{format_p_value}()}) as
+\code{\link{stat_anova_test}()} for consistency across layers. The style of
+this formatting is further controlled by \code{p.format.style},
+\code{p.leading.zero}, \code{p.min.threshold} and \code{p.decimal.mark}
+(same arguments as \code{\link{stat_compare_means}()}).}
 
-\item{p.leading.zero}{logical indicating whether to include leading zero before
-decimal point (e.g., "0.05" vs ".05"). If provided, overrides the style default.}
+\item{p.leading.zero}{logical indicating whether to include the leading zero
+before the decimal point (e.g., "0.05" vs ".05"). If provided, overrides the
+style default.}
 
-\item{p.min.threshold}{numeric specifying the minimum p-value to display exactly.
-Values below this threshold are shown as "< threshold". If provided, overrides
-the style default.}
+\item{p.min.threshold}{numeric specifying the minimum p-value to display
+exactly. Values below this threshold are shown as "< threshold" (e.g.
+\code{p.min.threshold = 0.001} renders very small p-values as "< 0.001"). If
+provided, overrides the style default.}
 
-\item{p.decimal.mark}{character string to use as the decimal mark. If NULL,
-uses \code{getOption("OutDec")}.}
+\item{p.decimal.mark}{character string to use as the decimal mark. If
+\code{NULL}, uses \code{getOption("OutDec")}.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
@@ -176,7 +198,7 @@ as described in \code{?plotmath}.}
 }
 \description{
 Add automatically Friedman test p-values to a ggplot, such as
-box plots, dot plots and stripcharts.
+ box plots, dot plots and stripcharts.
 }
 \section{Computed variables}{
  \itemize{
