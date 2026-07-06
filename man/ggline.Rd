@@ -185,6 +185,7 @@ The plot can be easily customized using the function ggpar(). Read
   = c("vertical", "horizontal", "reverse") }
 }
 \examples{
+\donttest{
 # Data
 df <- data.frame(
   dose = c("D0.5", "D1", "D2"),
@@ -293,6 +294,7 @@ ggline(df3,
 )
 #
 
+}
 }
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggbarplot}}

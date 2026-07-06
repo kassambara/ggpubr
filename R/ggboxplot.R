@@ -87,6 +87,7 @@ NULL
 #' @seealso \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}}
 #'  and \code{\link{ggstripchart}}.
 #' @examples
+#' \donttest{
 #' # Load data
 #' data("ToothGrowth")
 #' df <- ToothGrowth
@@ -162,6 +163,7 @@ NULL
 #'   palette = c("#00AFBB", "#E7B800")
 #' )
 #'
+#' }
 #' @export
 ggboxplot <- function(data, x, y, combine = FALSE, merge = FALSE,
                       color = "black", fill = "white", palette = NULL,

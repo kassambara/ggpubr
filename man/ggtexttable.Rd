@@ -297,6 +297,7 @@ Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
   }
 }
 \examples{
+\donttest{
 # data
 df <- head(iris)
 
@@ -461,4 +462,5 @@ ggarrange(density.p, stable.p,
   heights = c(1, 0.5)
 )
 
+}
 }

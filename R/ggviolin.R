@@ -38,6 +38,7 @@ NULL
 #'  c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}
 #' @examples
+#' \donttest{
 #' # Load data
 #' data("ToothGrowth")
 #' df <- ToothGrowth
@@ -120,6 +121,7 @@ NULL
 #'   palette = c("#00AFBB", "#E7B800"), add = "boxplot"
 #' )
 #'
+#' }
 #' @export
 ggviolin <- function(data, x, y, combine = FALSE, merge = FALSE,
                      color = "black", fill = "white", palette = NULL, alpha = 1,

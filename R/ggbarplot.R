@@ -39,6 +39,7 @@ NULL
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}, \code{\link{ggline}}
 #' @examples
+#' \donttest{
 #' # Data
 #' df <- data.frame(
 #'   dose = c("D0.5", "D1", "D2"),
@@ -171,6 +172,7 @@ NULL
 #' )
 #' #
 #'
+#' }
 #' @section Faceting a summarized bar plot:
 #' When the bars show a computed summary (e.g. \code{add = "mean_se"}), facet the
 #' plot with the \code{facet.by} argument - \strong{not} by appending

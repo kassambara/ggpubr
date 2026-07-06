@@ -60,6 +60,7 @@ NULL
 #'
 #'
 #' @examples
+#' \donttest{
 #' # data
 #' df <- head(iris)
 #'
@@ -224,6 +225,7 @@ NULL
 #'   heights = c(1, 0.5)
 #' )
 #'
+#' }
 #' @rdname ggtexttable
 #' @export
 ggtexttable <- function(x, rows = rownames(x), cols = colnames(x), vp = NULL,

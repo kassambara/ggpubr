@@ -183,6 +183,7 @@ summaries.
 }
 
 \examples{
+\donttest{
 # Data
 df <- data.frame(
   dose = c("D0.5", "D1", "D2"),
@@ -315,6 +316,7 @@ ggbarplot(df3,
 )
 #
 
+}
 }
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggline}}
