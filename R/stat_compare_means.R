@@ -561,10 +561,13 @@ StatCompareMeans <- ggproto("StatCompareMeans", Stat,
   allowed.label <- list(
     "p.signif" = quote(ggplot2::after_stat(p.signif)),
     "..p.signif.." = quote(ggplot2::after_stat(p.signif)),
-    "p.format" = quote(ggplot2::after_stat(create_p_label(p.format))),
-    "..p.format.." = quote(ggplot2::after_stat(create_p_label(p.format))),
-    "p" = quote(ggplot2::after_stat(create_p_label(p.format))),
-    "..p.." = quote(ggplot2::after_stat(create_p_label(p.format))),
+    # create_p_label() is resolved inside after_stat()'s data mask, which does
+    # not see the ggpubr namespace unless the package is attached. Qualify it so
+    # `ggpubr::stat_compare_means()` works without library(ggpubr) (#751).
+    "p.format" = quote(ggplot2::after_stat(ggpubr::create_p_label(p.format))),
+    "..p.format.." = quote(ggplot2::after_stat(ggpubr::create_p_label(p.format))),
+    "p" = quote(ggplot2::after_stat(ggpubr::create_p_label(p.format))),
+    "..p.." = quote(ggplot2::after_stat(ggpubr::create_p_label(p.format))),
     "p.format.signif" = quote(ggplot2::after_stat(p.format.signif))
   )
 

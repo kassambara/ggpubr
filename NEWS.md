@@ -1,5 +1,13 @@
 # ggpubr 1.0.0.9000
 
+## Bug fixes
+
+- `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
+  with `could not find function "create_p_label"` when ggpubr is called via
+  `ggpubr::` without being attached by `library(ggpubr)`. The label helper is now
+  namespace-qualified inside `after_stat()` so it resolves off the search path.
+  Reported by @pwwang (#751).
+
 
 # ggpubr 1.0.0
 
