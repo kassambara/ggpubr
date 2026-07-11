@@ -846,12 +846,16 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
   shelf <- integer(n)
   for (i in ord) {
     placed <- FALSE
-    for (s in seq_along(shelf.right)) {
-      if (lo[i] >= shelf.right[s]) {
-        shelf[i] <- s
-        shelf.right[s] <- hi[i]
-        placed <- TRUE
-        break
+    # A bracket with an unknown (NA) span cannot be tested for overlap, so it is
+    # given its own shelf rather than risking a wrong placement.
+    if (!is.na(lo[i]) && !is.na(hi[i])) {
+      for (s in seq_along(shelf.right)) {
+        if (!is.na(shelf.right[s]) && lo[i] >= shelf.right[s]) {
+          shelf[i] <- s
+          shelf.right[s] <- hi[i]
+          placed <- TRUE
+          break
+        }
       }
     }
     if (!placed) {

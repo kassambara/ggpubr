@@ -45,6 +45,16 @@ test_that(".pack_bracket_shelves lets touching spans share a shelf", {
   expect_equal(length(unique(shelves)), 1)
 })
 
+test_that(".pack_bracket_shelves handles NA spans without erroring", {
+  # An NA span must not crash; it is given its own shelf and must not disturb
+  # the packing of the well-defined spans ([1,2] and [3,4] still share a shelf).
+  shelves <- ggpubr:::.pack_bracket_shelves(c(1, NA, 3), c(2, 4, 4))
+  expect_length(shelves, 3)
+  expect_false(anyNA(shelves))
+  expect_equal(shelves[1], shelves[3])
+  expect_false(shelves[2] %in% shelves[c(1, 3)])
+})
+
 # ---- integration tests -----------------------------------------------------
 set.seed(1)
 df6 <- data.frame(
