@@ -40,6 +40,14 @@ NULL
 #'  plotmath expressions and glue expressions. You may want some of the
 #'  statistical parameter in italic; for example:\code{label = "Wilcoxon,
 #'  italic(p)= {p}"}}.
+#'
+#'  The glue expression can also include the token \code{\{effsize\}} to display
+#'  the pairwise effect size next to the p-value, e.g. \code{label =
+#'  "\{p.adj.signif\}, d=\{effsize\}"}. \code{\{effsize\}} is the effect size
+#'  returned by the chosen \code{method} (Cohen's d for \code{"t_test"} and
+#'  \code{"games_howell_test"}, Cliff's delta for \code{"wilcox_test"}, and the r
+#'  effect size for \code{"dunn_test"}), rounded to two decimals; it is available
+#'  only for those four methods.
 #' @param y.position numeric vector with the y positions of the brackets
 #' @param group.by (optional) character vector specifying the grouping variable;
 #'  it should be used only for grouped plots. Possible values are : \itemize{
@@ -220,6 +228,13 @@ NULL
 #'   hide.ns = TRUE
 #' )
 #'
+#' # Show the significance and the effect size (Cohen's d) on each bracket
+#' ggboxplot(df, x = "dose", y = "len") +
+#'   geom_pwc(
+#'     method = "t_test", label = "{p.adj.signif}, d={effsize}"
+#'   ) +
+#'   scale_y_continuous(expand = expansion(mult = c(0.05, 0.15)))
+#'
 #' # Complex cases
 #' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # 1. Add p-values of OJ vs VC at each dose group
@@ -363,6 +378,23 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       method.args$p.adjust.method <- params$p.adjust.method
     }
     pwc_func <- get_pwc_stat_function(method, method.args)
+    # Pairwise effect-size token: when the label references {effsize}, request
+    # the effect size from the underlying rstatix test (this adds a cohens.d /
+    # cliff.delta / r column, depending on the method). This runs ONLY when the
+    # label asks for it, so labels without {effsize} keep the exact previous
+    # method arguments and output.
+    if (grepl("effsize", params$stat.label, fixed = TRUE)) {
+      if ("effect.size" %in% names(formals(pwc_func$method))) {
+        pwc_func$method.args$effect.size <- TRUE
+      } else {
+        warning(
+          "The '{effsize}' label token is only available for method = 't_test', ",
+          "'wilcox_test', 'dunn_test' or 'games_howell_test'; {effsize} will show ",
+          "NA for the current method.",
+          call. = FALSE
+        )
+      }
+    }
     params$method <- pwc_func$method
     params$method.args <- pwc_func$method.args
     return(params)
@@ -566,6 +598,21 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       stat.label <- gsub(pattern = "\\{method\\},\\s?", replacement = "", stat.label)
     }
     stat.test$method <- method.name
+
+    # Pairwise effect-size token: unify the per-method effect-size column
+    # (cohens.d for t_test / games_howell_test, cliff.delta for wilcox_test,
+    # r for dunn_test) into a single {effsize} value used by the label. Only
+    # runs when the label requests {effsize}; the column is created NA when the
+    # method provides no effect size, so the label degrades to "NA" rather than
+    # erroring.
+    if (grepl("effsize", stat.label, fixed = TRUE)) {
+      es.col <- intersect(c("cohens.d", "cliff.delta", "r"), colnames(stat.test))
+      stat.test$effsize <- if (length(es.col) >= 1) {
+        round(stat.test[[es.col[1]]], 2)
+      } else {
+        NA_real_
+      }
+    }
 
     # P-value adjustment, formatting and significance
     if (!("p.adj" %in% colnames(stat.test))) {

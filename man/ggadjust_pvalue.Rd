@@ -39,16 +39,24 @@ method. Allowed values include "holm", "hochberg", "hommel", "bonferroni",
 recommended), use p.adjust.method = "none".}
 
 \item{label}{character string specifying label. Can be: \itemize{ \item the
-column containing the label (e.g.: \code{label = "p"} or \code{label =
-"p.adj"}), where \code{p} is the p-value. Other possible values are
-\code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
-\item an
-expression that can be formatted by the \code{\link[glue]{glue}()} package.
-For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
-expression \{p\} will be replaced by its value. \item a combination of
-plotmath expressions and glue expressions. You may want some of the
-statistical parameter in italic; for example:\code{label = "Wilcoxon,
-italic(p)= {p}"}}.}
+ column containing the label (e.g.: \code{label = "p"} or \code{label =
+ "p.adj"}), where \code{p} is the p-value. Other possible values are
+ \code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+ \item an
+ expression that can be formatted by the \code{\link[glue]{glue}()} package.
+ For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
+ expression \{p\} will be replaced by its value. \item a combination of
+ plotmath expressions and glue expressions. You may want some of the
+ statistical parameter in italic; for example:\code{label = "Wilcoxon,
+ italic(p)= {p}"}}.
+
+ The glue expression can also include the token \code{\{effsize\}} to display
+ the pairwise effect size next to the p-value, e.g. \code{label =
+ "\{p.adj.signif\}, d=\{effsize\}"}. \code{\{effsize\}} is the effect size
+ returned by the chosen \code{method} (Cohen's d for \code{"t_test"} and
+ \code{"games_howell_test"}, Cliff's delta for \code{"wilcox_test"}, and the r
+ effect size for \code{"dunn_test"}), rounded to two decimals; it is available
+ only for those four methods.}
 
 \item{hide.ns}{can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).}
 
