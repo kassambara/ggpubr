@@ -143,16 +143,24 @@ for wilcoxon test.}
  basemean). }}
 
 \item{label}{character string specifying label. Can be: \itemize{ \item the
-column containing the label (e.g.: \code{label = "p"} or \code{label =
-"p.adj"}), where \code{p} is the p-value. Other possible values are
-\code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
-\item an
-expression that can be formatted by the \code{\link[glue]{glue}()} package.
-For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
-expression \{p\} will be replaced by its value. \item a combination of
-plotmath expressions and glue expressions. You may want some of the
-statistical parameter in italic; for example:\code{label = "Wilcoxon,
-italic(p)= {p}"}}.}
+ column containing the label (e.g.: \code{label = "p"} or \code{label =
+ "p.adj"}), where \code{p} is the p-value. Other possible values are
+ \code{"p.signif", "p.adj.signif", "p.format", "p.format.signif", "p.adj.format"}.
+ \item an
+ expression that can be formatted by the \code{\link[glue]{glue}()} package.
+ For example, when specifying \code{label = "Wilcoxon, p = \{p\}"}, the
+ expression \{p\} will be replaced by its value. \item a combination of
+ plotmath expressions and glue expressions. You may want some of the
+ statistical parameter in italic; for example:\code{label = "Wilcoxon,
+ italic(p)= {p}"}}.
+
+ The glue expression can also include the token \code{\{effsize\}} to display
+ the pairwise effect size next to the p-value, e.g. \code{label =
+ "\{p.adj.signif\}, d=\{effsize\}"}. \code{\{effsize\}} is the effect size
+ returned by the chosen \code{method} (Cohen's d for \code{"t_test"} and
+ \code{"games_howell_test"}, Cliff's delta for \code{"wilcox_test"}, and the r
+ effect size for \code{"dunn_test"}), rounded to two decimals; it is available
+ only for those four methods.}
 
 \item{y.position}{numeric vector with the y positions of the brackets}
 
@@ -405,6 +413,13 @@ bxp + geom_pwc(
   p.adjust.method = "bonferroni", p.adjust.by = "panel",
   hide.ns = TRUE
 )
+
+# Show the significance and the effect size (Cohen's d) on each bracket
+ggboxplot(df, x = "dose", y = "len") +
+  geom_pwc(
+    method = "t_test", label = "{p.adj.signif}, d={effsize}"
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.15)))
 
 # Complex cases
 # \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
