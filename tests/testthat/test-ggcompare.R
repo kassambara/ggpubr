@@ -66,6 +66,19 @@ test_that("ggcompare rejects comparisons for all-pairwise-only methods", {
     )),
     1
   )
+  # the same guard applies to a method passed as a function object
+  expect_error(
+    ggcompare(df, "dose", "len", method = rstatix::dunn_test,
+      comparisons = list(c("0.5", "1"))
+    ),
+    "not supported for method"
+  )
+  expect_equal(
+    n_brackets(ggcompare(df, "dose", "len", method = rstatix::t_test,
+      comparisons = list(c("0.5", "1"))
+    )),
+    1
+  )
 })
 
 test_that("ggcompare effsize uses the method-appropriate symbol", {

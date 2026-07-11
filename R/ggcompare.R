@@ -148,20 +148,24 @@ ggcompare <- function(data, x, y,
     # Only tests that accept a `comparisons` argument can draw a subset; the
     # all-pairwise-only tests (dunn_test, games_howell_test, tukey_hsd) would
     # silently drop the subset and render nothing, so refuse with a clear
-    # message rather than producing an empty figure.
-    method.name <- if (is.character(method)) gsub("[.]", "_", method) else NA_character_
-    if (!is.na(method.name)) {
-      method.name <- switch(method.name,
+    # message rather than producing an empty figure. This covers both a method
+    # name and a method function object.
+    test.fun <- NULL
+    if (is.function(method)) {
+      test.fun <- method
+    } else if (is.character(method)) {
+      method.name <- switch(gsub("[.]", "_", method),
         wilcoxon = "wilcox_test", emmeans = "emmeans_test",
-        games_howell = "games_howell_test", method.name
+        games_howell = "games_howell_test", gsub("[.]", "_", method)
       )
+      if (exists(method.name, envir = asNamespace("rstatix"), inherits = FALSE)) {
+        test.fun <- get(method.name, envir = asNamespace("rstatix"))
+      }
     }
-    is.rstatix.fn <- !is.na(method.name) &&
-      exists(method.name, envir = asNamespace("rstatix"), inherits = FALSE)
-    if (is.rstatix.fn &&
-      !("comparisons" %in% names(formals(get(method.name, envir = asNamespace("rstatix")))))) {
+    if (!is.null(test.fun) && !("comparisons" %in% names(formals(test.fun)))) {
       stop(
-        "`comparisons` subsetting is not supported for method = '", method,
+        "`comparisons` subsetting is not supported for method = '",
+        if (is.character(method)) method else "<function>",
         "' (it computes all pairwise comparisons). Use `ref.group`, a method ",
         "such as 't_test' or 'wilcox_test', or omit `comparisons` to draw all ",
         "pairwise comparisons.",
