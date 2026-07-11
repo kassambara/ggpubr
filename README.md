@@ -6,7 +6,7 @@
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
 
-# ggpubr: ‘ggplot2’ Based Publication Ready Plots
+# ggpubr: 'ggplot2' Based Publication Ready Plots
 
 [ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an
 excellent and flexible package for elegant data visualization in R.
@@ -15,8 +15,8 @@ can send them for publication. Furthermore, to customize a ggplot, the
 syntax is opaque and this raises the level of difficulty for researchers
 with no advanced R programming skills.
 
-The ‘ggpubr’ package provides some easy-to-use functions for creating
-and customizing ‘ggplot2’-based publication ready plots.
+The 'ggpubr' package provides some easy-to-use functions for creating
+and customizing 'ggplot2'-based publication ready plots.
 
 Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
 
@@ -215,7 +215,7 @@ ggbarplot(dfm, x = "name", y = "mpg",
 ### Deviation graphs
 
 The deviation graph shows the deviation of quantitative values to a
-reference value. In the R code below, we’ll plot the mpg z-score from
+reference value. In the R code below, we'll plot the mpg z-score from
 the mtcars dataset.
 
 Calculate the z-score of the mpg data:
@@ -348,7 +348,7 @@ ggdotchart(dfm, x = "name", y = "mpg_z",
 
 ![](man/figures/README-lollipop-chart-deviation-1.png)<!-- -->
 
-### Cleveland’s dot plot
+### Cleveland's dot plot
 
 Color y text by groups. Use y.text.col = TRUE.
 
