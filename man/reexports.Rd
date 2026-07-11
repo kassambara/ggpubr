@@ -6,6 +6,11 @@
 \alias{mutate}
 \alias{group_by}
 \alias{get_summary_stats}
+\alias{get_test_label}
+\alias{get_pwc_label}
+\alias{create_test_label}
+\alias{add_cld}
+\alias{add_xy_position}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -15,6 +20,6 @@ below to see their documentation.
 \describe{
   \item{dplyr}{\code{\link[dplyr]{group_by}}, \code{\link[dplyr]{mutate}}}
 
-  \item{rstatix}{\code{\link[rstatix]{get_summary_stats}}}
+  \item{rstatix}{\code{\link[rstatix]{add_cld}}, \code{\link[rstatix:get_pvalue_position]{add_xy_position}}, \code{\link[rstatix:get_test_label]{create_test_label}}, \code{\link[rstatix:get_test_label]{get_pwc_label}}, \code{\link[rstatix]{get_summary_stats}}, \code{\link[rstatix]{get_test_label}}}
 }}
 
