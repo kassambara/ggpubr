@@ -60,6 +60,19 @@ test_that("add_test_label returns a themeable ggplot (subtitle overridable)", {
   expect_s3_class(out, "ggplot")
 })
 
+test_that("add_test_label (caption = FALSE) preserves an existing caption", {
+  p <- ggboxplot(df, x = "dose", y = "len") +
+    ggplot2::labs(caption = "Source: study X")
+  out <- add_test_label(p) # default caption = FALSE
+  expect_equal(out$labels$caption, "Source: study X")
+  # and caption = TRUE replaces it with the pairwise description
+  out2 <- add_test_label(p, caption = TRUE, type = "text")
+  expect_equal(
+    out2$labels$caption,
+    rstatix::get_pwc_label(rstatix::tukey_hsd(df, len ~ dose), type = "text")
+  )
+})
+
 test_that("add_test_label warns for faceted plots", {
   p <- ggboxplot(df, x = "dose", y = "len", facet.by = "supp")
   expect_warning(add_test_label(p), "pooling all facet panels")

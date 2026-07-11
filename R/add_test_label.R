@@ -98,7 +98,12 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
     omnibus, detailed = detailed, type = type, ...
   )
 
-  caption.label <- NULL
+  # Only set the labels we actually produce, using separate labs() calls. In
+  # particular, when caption = FALSE we must NOT touch the caption at all,
+  # because labs(caption = NULL) would remove a caption the user had already
+  # added to the plot. (A single do.call(labs, ...) is avoided because it would
+  # evaluate the plotmath expression label rather than pass it through.)
+  p <- p + ggplot2::labs(subtitle = subtitle.label)
   if (caption) {
     if (is.null(pwc.method)) {
       pwc.method <- if (method == "anova") "tukey_hsd" else "dunn_test"
@@ -109,8 +114,7 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
       pwc.args$p.adjust.method <- p.adjust.method
     }
     pwc <- do.call(pwc.fun, pwc.args)
-    caption.label <- rstatix::get_pwc_label(pwc, type = type)
+    p <- p + ggplot2::labs(caption = rstatix::get_pwc_label(pwc, type = type))
   }
-
-  p + ggplot2::labs(subtitle = subtitle.label, caption = caption.label)
+  p
 }
