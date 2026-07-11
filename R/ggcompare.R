@@ -37,6 +37,11 @@ NULL
 #' @param add.params a list of parameters passed to the \code{add} layers.
 #' @param comparisons a list of length-2 vectors giving the group levels to
 #'   compare. If \code{NULL} (default), all pairwise comparisons are drawn.
+#'   Subsetting is supported for the tests that accept a \code{comparisons}
+#'   argument (\code{"t_test"}, \code{"wilcox_test"}, \code{"sign_test"},
+#'   \code{"emmeans_test"}); the all-pairwise-only tests (\code{"dunn_test"},
+#'   \code{"games_howell_test"}, \code{"tukey_hsd"}) draw all pairs, so
+#'   \code{comparisons} is not allowed with them (use \code{ref.group} instead).
 #' @param ref.group a group level used as the reference; each other group is
 #'   compared to it. See \code{\link{geom_pwc}()}.
 #' @param method the pairwise comparison test. Default \code{"t_test"}. See
@@ -140,6 +145,29 @@ ggcompare <- function(data, x, y,
   # (3) Translate a subset of comparisons from group levels to the 1-based
   # x-axis positions that geom_pwc()'s StatPwc expects.
   if (!is.null(comparisons)) {
+    # Only tests that accept a `comparisons` argument can draw a subset; the
+    # all-pairwise-only tests (dunn_test, games_howell_test, tukey_hsd) would
+    # silently drop the subset and render nothing, so refuse with a clear
+    # message rather than producing an empty figure.
+    method.name <- if (is.character(method)) gsub("[.]", "_", method) else NA_character_
+    if (!is.na(method.name)) {
+      method.name <- switch(method.name,
+        wilcoxon = "wilcox_test", emmeans = "emmeans_test",
+        games_howell = "games_howell_test", method.name
+      )
+    }
+    is.rstatix.fn <- !is.na(method.name) &&
+      exists(method.name, envir = asNamespace("rstatix"), inherits = FALSE)
+    if (is.rstatix.fn &&
+      !("comparisons" %in% names(formals(get(method.name, envir = asNamespace("rstatix")))))) {
+      stop(
+        "`comparisons` subsetting is not supported for method = '", method,
+        "' (it computes all pairwise comparisons). Use `ref.group`, a method ",
+        "such as 't_test' or 'wilcox_test', or omit `comparisons` to draw all ",
+        "pairwise comparisons.",
+        call. = FALSE
+      )
+    }
     lv <- levels(data[[x]])
     pos <- lapply(comparisons, function(pair) as.character(match(as.character(pair), lv)))
     if (any(vapply(pos, anyNA, logical(1)))) {

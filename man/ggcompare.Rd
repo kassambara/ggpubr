@@ -60,7 +60,12 @@ builder (e.g. \code{"jitter"}, \code{"mean"}, \code{"mean_sd"}). Default
 \item{add.params}{a list of parameters passed to the \code{add} layers.}
 
 \item{comparisons}{a list of length-2 vectors giving the group levels to
-compare. If \code{NULL} (default), all pairwise comparisons are drawn.}
+compare. If \code{NULL} (default), all pairwise comparisons are drawn.
+Subsetting is supported for the tests that accept a \code{comparisons}
+argument (\code{"t_test"}, \code{"wilcox_test"}, \code{"sign_test"},
+\code{"emmeans_test"}); the all-pairwise-only tests (\code{"dunn_test"},
+\code{"games_howell_test"}, \code{"tukey_hsd"}) draw all pairs, so
+\code{comparisons} is not allowed with them (use \code{ref.group} instead).}
 
 \item{ref.group}{a group level used as the reference; each other group is
 compared to it. See \code{\link{geom_pwc}()}.}

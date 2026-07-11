@@ -48,6 +48,26 @@ test_that("ggcompare errors on a comparison level that does not exist", {
   )
 })
 
+test_that("ggcompare rejects comparisons for all-pairwise-only methods", {
+  # dunn_test / games_howell_test / tukey_hsd do not accept `comparisons`;
+  # ggcompare must error clearly instead of drawing an empty figure.
+  for (m in c("dunn_test", "games_howell_test", "tukey_hsd")) {
+    expect_error(
+      ggcompare(df, x = "dose", y = "len", method = m,
+        comparisons = list(c("0.5", "1"))
+      ),
+      "not supported for method"
+    )
+  }
+  # the comparison-accepting methods still work
+  expect_equal(
+    n_brackets(ggcompare(df, "dose", "len", method = "wilcox_test",
+      comparisons = list(c("0.5", "1"))
+    )),
+    1
+  )
+})
+
 test_that("ggcompare effsize uses the method-appropriate symbol", {
   # t_test -> Cohen's d
   labs_t <- pwc_labels(ggcompare(df, "dose", "len", method = "t_test", effsize = TRUE))
