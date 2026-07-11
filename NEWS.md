@@ -1,5 +1,13 @@
 # ggpubr 1.0.0.9000
 
+## New features
+
+- Re-exported the rstatix annotation helpers `get_test_label()`,
+  `get_pwc_label()`, `create_test_label()`, `add_cld()`, and
+  `add_xy_position()`, so they can be used directly from ggpubr without
+  attaching rstatix (e.g. `ggpubr::add_xy_position()`). These track rstatix's
+  signatures.
+
 ## Bug fixes
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
