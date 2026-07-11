@@ -72,6 +72,14 @@ NULL
 #'  include \code{"x.var"} and \code{"legend.var"}.
 #' @param step.increase numeric vector with the increase in fraction of total
 #'  height for every additional comparison to minimize overlap.
+#' @param pack how the pairwise brackets are stacked vertically within a panel.
+#'  \itemize{ \item \code{"none"} (default): one bracket per level, in the order
+#'  the comparisons are computed (the previous behavior). \item \code{"auto"}:
+#'  brackets are packed onto the fewest possible levels so that comparisons whose
+#'  x-spans do not overlap share a level. This keeps the annotation compact and
+#'  guarantees that no two brackets on the same level overlap within a panel;
+#'  the vertical spacing between levels is still controlled by
+#'  \code{step.increase} and \code{bracket.nudge.y}. }
 #' @param tip.length numeric vector with the fraction of total height that the
 #'  bar goes down to indicate the precise column/
 #' @param size change the width of the lines of the bracket
@@ -235,6 +243,14 @@ NULL
 #'   ) +
 #'   scale_y_continuous(expand = expansion(mult = c(0.05, 0.15)))
 #'
+#' # Compactly pack many brackets so non-overlapping comparisons share a level
+#' ggboxplot(df, x = "dose", y = "len") +
+#'   geom_pwc(
+#'     method = "t_test", label = "p.adj.signif",
+#'     hide.ns = TRUE, pack = "auto"
+#'   ) +
+#'   scale_y_continuous(expand = expansion(mult = c(0.05, 0.15)))
+#'
 #' # Complex cases
 #' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #' # 1. Add p-values of OJ vs VC at each dose group
@@ -313,7 +329,8 @@ stat_pwc <- function(mapping = NULL, data = NULL,
                      signif.cutoffs = NULL, signif.symbols = NULL,
                      ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE, show.legend = NA,
-                     inherit.aes = TRUE, parse = FALSE, ...) {
+                     inherit.aes = TRUE, parse = FALSE, pack = c("none", "auto"), ...) {
+  pack <- match.arg(pack)
   # Build symnum.args from new parameters
   symnum.args <- build_symnum_args(
     signif.cutoffs = signif.cutoffs,
@@ -360,7 +377,7 @@ stat_pwc <- function(mapping = NULL, data = NULL,
       hide.ns = hide.ns, parse = parse,
       p.format.style = p.format.style, p.digits = p.digits,
       p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
-      p.decimal.mark = p.decimal.mark, ...
+      p.decimal.mark = p.decimal.mark, pack = pack, ...
     )
   )
 }
@@ -405,7 +422,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
                            p.adjust.method, p.adjust.by, p.adjust.n = NULL,
                            symnum.args, hide.ns, group.by, dodge, remove.bracket,
                            p.format.style, p.digits, p.leading.zero,
-                           p.min.threshold, p.decimal.mark) {
+                           p.min.threshold, p.decimal.mark, pack = "none") {
     # Compute the statistical tests
     df <- data %>% mutate(x = as.factor(.data$x))
     is.grouped.plots <- contains_multiple_grouping_vars(df)
@@ -727,6 +744,17 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       }
     }
 
+    # Intra-panel bracket packing (opt-in). Reassign each bracket to the lowest
+    # vertical shelf on which it does not overlap another bracket, so
+    # non-overlapping comparisons share a level and the stack is as short as
+    # possible while staying collision-free within the panel. The default
+    # (pack = "none") keeps the previous one-shelf-per-comparison stacking.
+    if (identical(pack, "auto") && nrow(stat.test) > 1) {
+      bracket.group <- .pack_bracket_shelves(
+        as.numeric(stat.test$xmin), as.numeric(stat.test$xmax)
+      )
+    }
+
     # Parameters for customizing brackets
     group <- 1
     if (nrow(stat.test) > 1) group <- seq_len(nrow(stat.test))
@@ -797,6 +825,48 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 }
 
 
+# Greedy interval-graph packing of pairwise-comparison brackets. Assigns each
+# bracket (x-span [xmin, xmax]) to the lowest vertical "shelf" (1-based) such
+# that brackets sharing a shelf never have overlapping x-spans, so the stack is
+# as short as possible while remaining collision-free within a panel. Processing
+# brackets left-to-right and placing each on the first shelf whose current right
+# edge is at or before the bracket's left edge is the classic first-fit interval
+# colouring, which uses the minimum number of shelves. Touching spans (one
+# bracket's xmax equal to the next's xmin) may share a shelf. Returns an integer
+# shelf index per input bracket, in the original order.
+.pack_bracket_shelves <- function(xmin, xmax) {
+  n <- length(xmin)
+  if (n <= 1) {
+    return(rep(1L, n))
+  }
+  lo <- pmin(xmin, xmax)
+  hi <- pmax(xmin, xmax)
+  ord <- order(lo, hi)
+  shelf.right <- numeric(0) # current rightmost edge on each open shelf
+  shelf <- integer(n)
+  for (i in ord) {
+    placed <- FALSE
+    # A bracket with an unknown (NA) span cannot be tested for overlap, so it is
+    # given its own shelf rather than risking a wrong placement.
+    if (!is.na(lo[i]) && !is.na(hi[i])) {
+      for (s in seq_along(shelf.right)) {
+        if (!is.na(shelf.right[s]) && lo[i] >= shelf.right[s]) {
+          shelf[i] <- s
+          shelf.right[s] <- hi[i]
+          placed <- TRUE
+          break
+        }
+      }
+    }
+    if (!placed) {
+      shelf.right <- c(shelf.right, hi[i])
+      shelf[i] <- length(shelf.right)
+    }
+  }
+  shelf
+}
+
+
 #' @rdname geom_pwc
 #' @export
 geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
@@ -815,7 +885,9 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
                      signif.cutoffs = NULL, signif.symbols = NULL,
                      ns.symbol = "ns", use.four.stars = FALSE,
                      position = "identity", na.rm = FALSE,
-                     show.legend = NA, inherit.aes = TRUE, parse = FALSE, ...) {
+                     show.legend = NA, inherit.aes = TRUE, parse = FALSE,
+                     pack = c("none", "auto"), ...) {
+  pack <- match.arg(pack)
   # Build symnum.args from new parameters
   symnum.args <- build_symnum_args(
     signif.cutoffs = signif.cutoffs,
@@ -868,7 +940,7 @@ geom_pwc <- function(mapping = NULL, data = NULL, stat = "pwc",
       p.format.style = p.format.style, p.digits = p.digits,
       p.leading.zero = p.leading.zero, p.min.threshold = p.min.threshold,
       p.decimal.mark = p.decimal.mark,
-      parse = parse,
+      parse = parse, pack = pack,
       ...
     )
   )

@@ -45,6 +45,7 @@ stat_pwc(
   show.legend = NA,
   inherit.aes = TRUE,
   parse = FALSE,
+  pack = c("none", "auto"),
   ...
 )
 
@@ -90,6 +91,7 @@ geom_pwc(
   show.legend = NA,
   inherit.aes = TRUE,
   parse = FALSE,
+  pack = c("none", "auto"),
   ...
 )
 }
@@ -321,6 +323,15 @@ shouldn't inherit behaviour from the default plot specification. Set to
 
 \item{parse}{logical for parsing plotmath expression.}
 
+\item{pack}{how the pairwise brackets are stacked vertically within a panel.
+\itemize{ \item \code{"none"} (default): one bracket per level, in the order
+the comparisons are computed (the previous behavior). \item \code{"auto"}:
+brackets are packed onto the fewest possible levels so that comparisons whose
+x-spans do not overlap share a level. This keeps the annotation compact and
+guarantees that no two brackets on the same level overlap within a panel;
+the vertical spacing between levels is still controlled by
+\code{step.increase} and \code{bracket.nudge.y}. }}
+
 \item{...}{other arguments passed on to \code{\link[ggplot2]{layer}()}). These are often
 aesthetics, used to set an aesthetic to a fixed value, like \code{color =
 "red"} or \code{size = 3}. They may also be parameters to the paired
@@ -418,6 +429,14 @@ bxp + geom_pwc(
 ggboxplot(df, x = "dose", y = "len") +
   geom_pwc(
     method = "t_test", label = "{p.adj.signif}, d={effsize}"
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.15)))
+
+# Compactly pack many brackets so non-overlapping comparisons share a level
+ggboxplot(df, x = "dose", y = "len") +
+  geom_pwc(
+    method = "t_test", label = "p.adj.signif",
+    hide.ns = TRUE, pack = "auto"
   ) +
   scale_y_continuous(expand = expansion(mult = c(0.05, 0.15)))
 
