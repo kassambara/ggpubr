@@ -48,10 +48,17 @@ test_that("ggcompare errors on a comparison level that does not exist", {
   )
 })
 
-test_that("ggcompare effsize appends the effect size to the bracket label", {
-  p <- ggcompare(df, x = "dose", y = "len", method = "t_test", effsize = TRUE)
-  labs <- pwc_labels(p)
-  expect_true(all(grepl("d=", labs)))
+test_that("ggcompare effsize uses the method-appropriate symbol", {
+  # t_test -> Cohen's d
+  labs_t <- pwc_labels(ggcompare(df, "dose", "len", method = "t_test", effsize = TRUE))
+  expect_true(all(grepl("d=", labs_t, fixed = TRUE)))
+  # wilcox_test -> Cliff's delta (must NOT be mislabelled as d=)
+  labs_w <- pwc_labels(ggcompare(df, "dose", "len", method = "wilcox_test", effsize = TRUE))
+  expect_true(all(grepl("delta=", labs_w, fixed = TRUE)))
+  expect_false(any(grepl("d=", labs_w, fixed = TRUE)))
+  # dunn_test -> r
+  labs_d <- pwc_labels(ggcompare(df, "dose", "len", method = "dunn_test", effsize = TRUE))
+  expect_true(all(grepl("r=", labs_d, fixed = TRUE)))
 })
 
 test_that("ggcompare omnibus modes set the matching subtitle / none omits it", {

@@ -46,8 +46,11 @@ NULL
 #' @param label the bracket label, a \code{\link[glue]{glue}} template. Default
 #'   \code{"\{p.adj.signif\}"} (significance stars).
 #' @param effsize logical. If \code{TRUE}, the effect size is appended to each
-#'   bracket label (e.g. \code{"\{p.adj.signif\}, d=\{effsize\}"}). See
-#'   \code{\link{geom_pwc}()} for the supported methods.
+#'   bracket label. The symbol matches the effect size the \code{method}
+#'   reports: \code{"d"} (Cohen's d) for \code{"t_test"} and
+#'   \code{"games_howell_test"}, \code{"delta"} (Cliff's delta) for
+#'   \code{"wilcox_test"}, and \code{"r"} for \code{"dunn_test"}. See
+#'   \code{\link{geom_pwc}()}.
 #' @param hide.ns logical or character; hide non-significant brackets. See
 #'   \code{\link{geom_pwc}()}.
 #' @param pack how the brackets are stacked; \code{"auto"} (default) packs them
@@ -119,11 +122,19 @@ ggcompare <- function(data, x, y,
     add = add, add.params = add.params, ...
   )
 
-  # (2) Append the effect-size token to the (glue) label when requested. A bare
-  # column token is braced first so it stays a valid glue template.
+  # (2) Append the effect-size token to the (glue) label when requested. The
+  # symbol reflects the effect size the chosen method reports (Cohen's d for
+  # t_test/games_howell_test, Cliff's delta for wilcox_test, r for dunn_test),
+  # so a rank-based effect size is not mislabelled as "d". A bare column token
+  # is braced first so it stays a valid glue template.
   if (isTRUE(effsize)) {
+    es.symbol <- switch(method,
+      t_test = "d", games_howell_test = "d",
+      wilcox_test = "delta", dunn_test = "r",
+      "effsize"
+    )
     if (!grepl("\\{", label)) label <- paste0("{", label, "}")
-    label <- paste0(label, ", d={effsize}")
+    label <- paste0(label, ", ", es.symbol, "={effsize}")
   }
 
   # (3) Translate a subset of comparisons from group levels to the 1-based

@@ -76,8 +76,11 @@ compared to it. See \code{\link{geom_pwc}()}.}
 \code{"\{p.adj.signif\}"} (significance stars).}
 
 \item{effsize}{logical. If \code{TRUE}, the effect size is appended to each
-bracket label (e.g. \code{"\{p.adj.signif\}, d=\{effsize\}"}). See
-\code{\link{geom_pwc}()} for the supported methods.}
+bracket label. The symbol matches the effect size the \code{method}
+reports: \code{"d"} (Cohen's d) for \code{"t_test"} and
+\code{"games_howell_test"}, \code{"delta"} (Cliff's delta) for
+\code{"wilcox_test"}, and \code{"r"} for \code{"dunn_test"}. See
+\code{\link{geom_pwc}()}.}
 
 \item{hide.ns}{logical or character; hide non-significant brackets. See
 \code{\link{geom_pwc}()}.}
