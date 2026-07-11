@@ -44,14 +44,14 @@ NULL
 #' df <- ToothGrowth
 #' df$dose <- as.factor(df$dose)
 #'
-#' # Omnibus ANOVA subtitle
-#' ggboxplot(df, x = "dose", y = "len") +
-#'   add_test_label()
+#' # Omnibus ANOVA subtitle (pass the plot to add_test_label())
+#' p <- ggboxplot(df, x = "dose", y = "len")
+#' add_test_label(p)
 #'
 #' # Kruskal-Wallis, with a pairwise (Dunn) caption
-#' ggboxplot(df, x = "dose", y = "len") +
-#'   geom_pwc(method = "dunn_test", label = "p.adj.signif", hide.ns = TRUE) +
-#'   add_test_label(method = "kruskal", caption = TRUE)
+#' p2 <- ggboxplot(df, x = "dose", y = "len") +
+#'   geom_pwc(method = "dunn_test", label = "p.adj.signif", hide.ns = TRUE)
+#' add_test_label(p2, method = "kruskal", caption = TRUE)
 #'
 #' @export
 add_test_label <- function(p, method = c("anova", "kruskal"),
