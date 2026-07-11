@@ -2,6 +2,12 @@
 
 ## New features
 
+- New `add_test_label()` adds, in one call, the omnibus test result (one-way
+  ANOVA or Kruskal-Wallis) as a plot subtitle, and optionally a pairwise
+  comparison description as a caption (`caption = TRUE`). It reproduces the
+  common `+ labs(subtitle = get_test_label(...), caption = get_pwc_label(...))`
+  idiom, reusing the re-exported rstatix label helpers (#758).
+
 - `geom_pwc()` and `stat_pwc()` gain a `pack` argument. With `pack = "auto"`,
   pairwise comparison brackets are packed onto the fewest possible levels so
   that comparisons whose x-spans do not overlap share a level, keeping the

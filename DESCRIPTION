@@ -65,6 +65,7 @@ Collate:
     'desc_statby.R'
     'utilities.R'
     'add_summary.R'
+    'add_test_label.R'
     'annotate_figure.R'
     'as_ggplot.R'
     'as_npc.R'
