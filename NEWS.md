@@ -7,7 +7,7 @@
   `label = "{p.adj.signif}, d={effsize}"`. The effect size is the one returned
   by the chosen `method` (Cohen's d for `"t_test"`/`"games_howell_test"`,
   Cliff's delta for `"wilcox_test"`, r for `"dunn_test"`), rounded to two
-  decimals. Labels without `{effsize}` are unchanged.
+  decimals. Labels without `{effsize}` are unchanged (#756).
 
 - New `stat_cld()` adds a compact letter display (CLD) of all-pairwise
   comparisons to a plot: one letter per group, placed above each box/violin,
