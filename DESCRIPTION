@@ -97,6 +97,7 @@ Collate:
     'ggpar.R'
     'ggbarplot.R'
     'ggboxplot.R'
+    'ggcompare.R'
     'ggdensity.R'
     'ggpie.R'
     'ggdonutchart.R'

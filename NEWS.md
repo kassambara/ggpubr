@@ -2,6 +2,16 @@
 
 ## New features
 
+- New `ggcompare()` draws a publication-ready group comparison figure in one
+  call: a box plot (or violin/stripchart) with jittered points and means,
+  pairwise comparison brackets with adjusted p-values (packed compactly), and an
+  omnibus test subtitle. It composes existing ggpubr layers (`geom_pwc()`,
+  `add_test_label()`) into one customizable `ggplot`; every piece can be turned on
+  or off. It follows the `ggfunc` contract, so `ggsummarystats(ggfunc =
+  ggcompare)` places a summary table under the comparison figure. As a
+  shortcut, `ggsummarystats(comparisons = ...)` now routes to `ggcompare()`
+  automatically (previously `comparisons` was silently dropped) (#759).
+
 - New `add_test_label()` adds, in one call, the omnibus test result (one-way
   ANOVA or Kruskal-Wallis) as a plot subtitle, and optionally a pairwise
   comparison description as a caption (`caption = TRUE`). It reproduces the
