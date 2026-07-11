@@ -42,7 +42,7 @@ Imports:
     glue,
     polynom,
     rlang (>= 1.1.7),
-    rstatix (>= 1.0.0),
+    rstatix (>= 1.1.0),
     tibble,
     magrittr
 Suggests:
@@ -51,6 +51,8 @@ Suggests:
     RColorBrewer,
     gtable,
     testthat
+Remotes:
+    kassambara/rstatix@release/1.1.0
 URL: https://rpkgs.datanovia.com/ggpubr/,
     https://github.com/kassambara/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
