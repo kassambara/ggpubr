@@ -2,6 +2,13 @@
 
 ## New features
 
+- `geom_pwc()` and `stat_pwc()` gain a `pack` argument. With `pack = "auto"`,
+  pairwise comparison brackets are packed onto the fewest possible levels so
+  that comparisons whose x-spans do not overlap share a level, keeping the
+  annotation compact while guaranteeing that no two brackets on the same level
+  overlap within a panel. The default `pack = "none"` keeps the previous
+  one-bracket-per-level stacking, so existing plots are unchanged (#757).
+
 - `geom_pwc()` and `stat_pwc()` gain a `{effsize}` label token to display the
   pairwise effect size on each bracket, e.g.
   `label = "{p.adj.signif}, d={effsize}"`. The effect size is the one returned
