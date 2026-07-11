@@ -23,6 +23,7 @@ Description: The 'ggplot2' package is excellent and flexible for elegant data
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
+Language: en-US
 Depends:
     R (>= 4.1.0),
     ggplot2 (>= 3.5.2)
@@ -50,7 +51,8 @@ Suggests:
     knitr,
     RColorBrewer,
     gtable,
-    testthat
+    testthat,
+    spelling
 Remotes:
     kassambara/rstatix@release/1.1.0
 URL: https://rpkgs.datanovia.com/ggpubr/,
@@ -136,6 +138,7 @@ Collate:
     'show_point_shapes.R'
     'stat_anova_test.R'
     'stat_central_tendency.R'
+    'stat_cld.R'
     'stat_compare_means.R'
     'stat_friedman_test.R'
     'stat_kruskal_test.R'

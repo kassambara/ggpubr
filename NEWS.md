@@ -2,6 +2,14 @@
 
 ## New features
 
+- New `stat_cld()` adds a compact letter display (CLD) of all-pairwise
+  comparisons to a plot: one letter per group, placed above each box/violin,
+  where groups that do not share a letter are significantly different. Letters
+  are derived with `rstatix::add_cld()` from an all-pairwise post-hoc test
+  (`method`: `"tukey_hsd"` (default), `"games_howell_test"`, `"dunn_test"`,
+  `"wilcox_test"` or `"t_test"`). This is a compact alternative to drawing many
+  significance brackets when comparing several groups.
+
 - Re-exported the rstatix annotation helpers `get_test_label()`,
   `get_pwc_label()`, `create_test_label()`, `add_cld()`, and
   `add_xy_position()`, so they can be used directly from ggpubr without
