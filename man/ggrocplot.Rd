@@ -18,6 +18,8 @@ ggrocplot(
   diag = TRUE,
   diag.color = "grey60",
   diag.linetype = "dashed",
+  youden = FALSE,
+  youden.color = "grey30",
   title = NULL,
   xlab = "1 - Specificity",
   ylab = "Sensitivity",
@@ -68,6 +70,15 @@ is computed (Hanley-McNeil) and shown next to the AUC.}
 reference line is drawn.}
 
 \item{diag.color, diag.linetype}{color and line type of the diagonal reference.}
+
+\item{youden}{logical. If \code{TRUE}, the optimal cut-point is marked on each
+curve - the operating point maximizing the Youden index (\eqn{J =
+sensitivity + specificity - 1}) - and its predictor threshold is labelled.
+Default \code{FALSE}. A predictor with AUC \eqn{\le} 0.5 has no meaningful
+cut-point and is not marked.}
+
+\item{youden.color}{the color of the optimal cut-point marker and label for a
+single curve (several curves are colored by predictor).}
 
 \item{title}{plot main title.}
 
@@ -128,6 +139,9 @@ df <- data.frame(
 
 # Single ROC curve with AUC + 95\% CI annotated
 ggrocplot(df, response = "outcome", predictor = "marker1")
+
+# Mark the optimal cut-point (the Youden index) with its threshold
+ggrocplot(df, response = "outcome", predictor = "marker1", youden = TRUE)
 
 # Compare two markers on the same axes
 ggrocplot(

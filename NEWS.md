@@ -12,7 +12,9 @@
   bootstrap intervals, ROC smoothing, or tests between curves, use the `pROC`
   package. When a predictor's AUC falls below 0.5 (higher values indicate the
   negative class), a message hints that the predictor or the response levels may
-  need reversing; the curve is never flipped automatically.
+  need reversing; the curve is never flipped automatically. Set `youden = TRUE`
+  to mark the optimal cut-point (the operating point maximizing the Youden index,
+  sensitivity + specificity - 1) on each curve and label its threshold.
 
 - New `ggestimates()` draws a publication-ready forest plot: one row per group
   with a point estimate, its confidence interval, a reference (null) line and an
