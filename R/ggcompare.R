@@ -127,13 +127,41 @@ ggcompare <- function(data, x, y,
     add = add, add.params = add.params, ...
   )
 
+  # Resolve the pairwise method to a canonical rstatix name (used for the
+  # effect-size symbol) and its test function (used for the comparisons guard).
+  # `method` may be a name, a name with dots/aliases, or a function object.
+  method.name <- NA_character_
+  test.fun <- NULL
+  if (is.character(method)) {
+    method.name <- switch(gsub("[.]", "_", method),
+      wilcoxon = "wilcox_test", emmeans = "emmeans_test",
+      games_howell = "games_howell_test", gsub("[.]", "_", method)
+    )
+    if (exists(method.name, envir = asNamespace("rstatix"), inherits = FALSE)) {
+      test.fun <- get(method.name, envir = asNamespace("rstatix"))
+    }
+  } else if (is.function(method)) {
+    test.fun <- method
+    known <- c(
+      "t_test", "wilcox_test", "dunn_test", "games_howell_test",
+      "sign_test", "tukey_hsd", "emmeans_test"
+    )
+    for (nm in known) {
+      if (exists(nm, envir = asNamespace("rstatix"), inherits = FALSE) &&
+        identical(method, get(nm, envir = asNamespace("rstatix")))) {
+        method.name <- nm
+        break
+      }
+    }
+  }
+
   # (2) Append the effect-size token to the (glue) label when requested. The
   # symbol reflects the effect size the chosen method reports (Cohen's d for
   # t_test/games_howell_test, Cliff's delta for wilcox_test, r for dunn_test),
   # so a rank-based effect size is not mislabelled as "d". A bare column token
   # is braced first so it stays a valid glue template.
   if (isTRUE(effsize)) {
-    es.symbol <- switch(method,
+    es.symbol <- switch(if (is.na(method.name)) "" else method.name,
       t_test = "d", games_howell_test = "d",
       wilcox_test = "delta", dunn_test = "r",
       "effsize"
@@ -148,20 +176,7 @@ ggcompare <- function(data, x, y,
     # Only tests that accept a `comparisons` argument can draw a subset; the
     # all-pairwise-only tests (dunn_test, games_howell_test, tukey_hsd) would
     # silently drop the subset and render nothing, so refuse with a clear
-    # message rather than producing an empty figure. This covers both a method
-    # name and a method function object.
-    test.fun <- NULL
-    if (is.function(method)) {
-      test.fun <- method
-    } else if (is.character(method)) {
-      method.name <- switch(gsub("[.]", "_", method),
-        wilcoxon = "wilcox_test", emmeans = "emmeans_test",
-        games_howell = "games_howell_test", gsub("[.]", "_", method)
-      )
-      if (exists(method.name, envir = asNamespace("rstatix"), inherits = FALSE)) {
-        test.fun <- get(method.name, envir = asNamespace("rstatix"))
-      }
-    }
+    # message rather than producing an empty figure.
     if (!is.null(test.fun) && !("comparisons" %in% names(formals(test.fun)))) {
       stop(
         "`comparisons` subsetting is not supported for method = '",

@@ -94,6 +94,18 @@ test_that("ggcompare effsize uses the method-appropriate symbol", {
   expect_true(all(grepl("r=", labs_d, fixed = TRUE)))
 })
 
+test_that("ggcompare effsize works with a method passed as a function object", {
+  # A function-object method + effsize must not crash the switch() and should
+  # keep the method-appropriate symbol.
+  expect_silent(ggplot2::ggplotGrob(
+    ggcompare(df, "dose", "len", method = rstatix::t_test, effsize = TRUE)
+  ))
+  labs_t <- pwc_labels(ggcompare(df, "dose", "len", method = rstatix::t_test, effsize = TRUE))
+  expect_true(all(grepl("d=", labs_t, fixed = TRUE)))
+  labs_w <- pwc_labels(ggcompare(df, "dose", "len", method = rstatix::wilcox_test, effsize = TRUE))
+  expect_true(all(grepl("delta=", labs_w, fixed = TRUE)))
+})
+
 test_that("ggcompare omnibus modes set the matching subtitle / none omits it", {
   # kruskal
   p_k <- ggcompare(df, x = "dose", y = "len", omnibus = "kruskal")
