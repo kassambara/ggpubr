@@ -35,6 +35,7 @@ HSD
 Hadley
 Huynh
 Kaplan
+Kievit
 LUSC
 Lev
 Licence
@@ -47,6 +48,7 @@ PRGn
 PTEN
 PiYG
 Piepho
+Poggiali
 PuBu
 PuBuGn
 PuOr
@@ -56,6 +58,8 @@ RColorBrewer
 RMSD
 RNAseq
 RTCGA
+Raincloud
+Rainclouds
 RdBu
 RdGy
 RdPu
@@ -66,6 +70,7 @@ Stripchart
 Stripcharts
 TCGA
 Welch
+Wellcome
 Wickham
 XBP
 YlGn
@@ -74,6 +79,7 @@ YlOrBr
 YlOrRd
 aaas
 aes
+al
 ama
 apa
 args
@@ -114,6 +120,7 @@ eps
 erdey
 errorbar
 errored
+et
 fc
 fdr
 futurama
@@ -212,6 +219,7 @@ pubclean
 pubr
 pwc
 qqline
+raincloud
 rect
 rickandmorty
 rstatix

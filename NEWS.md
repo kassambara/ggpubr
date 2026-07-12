@@ -2,6 +2,13 @@
 
 ## New features
 
+- New `ggraincloud()` draws a raincloud plot: a half violin (the "cloud"), a
+  narrow box plot, and the raw jittered data points (the "rain") offset to the
+  opposite side. Supports coloring by group, journal palettes, horizontal
+  (default) or vertical orientation, and faceting. The half violin is provided
+  by the new `geom_violin_half()` / `GeomViolinHalf`, a one-sided
+  `geom_violin()` usable on its own (#760).
+
 - New `ggcompare()` draws a publication-ready group comparison figure in one
   call: a box plot (or violin/stripchart) with jittered points and means,
   pairwise comparison brackets with adjusted p-values (packed compactly), and an
