@@ -34,6 +34,7 @@ NULL
 #'   (the classic raincloud orientation, via \code{\link[ggplot2]{coord_flip}()}).
 #' @param ggtheme a ggplot theme. Default is \code{\link{theme_pubr}()}.
 #' @param facet.by character vector of up to two grouping variables for faceting.
+#' @param labeller passed to \code{\link{facet}()} to label the facet panels.
 #' @param ... other arguments passed to \code{\link{ggpar}()}.
 #' @return a ggplot.
 #' @references Allen, M., Poggiali, D., Whitaker, K., Marshall, T. R., & Kievit,

@@ -74,6 +74,8 @@ hide ylab.}
 
 \item{facet.by}{character vector of up to two grouping variables for faceting.}
 
+\item{labeller}{passed to \code{\link{facet}()} to label the facet panels.}
+
 \item{...}{other arguments passed to \code{\link{ggpar}()}.}
 }
 \value{
