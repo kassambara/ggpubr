@@ -128,17 +128,24 @@ ggraincloud <- function(data, x, y,
   # Apply the horizontal orientation through ggpar(orientation=) rather than a
   # raw coord_flip(): ggpar routes xlim/ylim through coord_flip for the
   # horizontal case, so a limit passed via `...` does not silently replace the
-  # coordinate system and drop the flip (#646).
-  p <- ggpar(
-    p, palette = palette, ggtheme = ggtheme,
-    orientation = if (flip) "horizontal" else "vertical",
-    title = title, xlab = xlab %||% x, ylab = ylab %||% y, ...
-  )
+  # coordinate system and drop the flip (#646). `flip` is the orientation
+  # control, so any user-supplied orientation/rotate in `...` is dropped.
+  dots <- list(...)
+  dots$orientation <- NULL
+  dots$rotate <- NULL
+  p <- do.call(ggpar, c(
+    list(
+      p, palette = palette, ggtheme = ggtheme,
+      orientation = if (flip) "horizontal" else "vertical",
+      title = title, xlab = xlab %||% x, ylab = ylab %||% y
+    ),
+    dots
+  ))
   if (fill.by.group || color.by.group) {
     p <- p + theme(legend.position = "none")
   }
   if (!is.null(facet.by)) {
-    p <- facet(p, facet.by = facet.by, labeller = labeller, ...)
+    p <- do.call(facet, c(list(p, facet.by = facet.by, labeller = labeller), dots))
   }
   p
 }

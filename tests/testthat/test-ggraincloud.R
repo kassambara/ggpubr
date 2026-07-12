@@ -48,6 +48,13 @@ test_that("ggraincloud keeps the horizontal orientation when a limit is passed",
   expect_silent(ggplot2::ggplotGrob(p))
 })
 
+test_that("flip is authoritative over an orientation passed via ...", {
+  # `flip` controls orientation; a stray orientation in ... must not error.
+  p <- ggraincloud(df, "dose", "len", orientation = "vertical")
+  expect_true(inherits(p$coordinates, "CoordFlip")) # flip=TRUE (default) wins
+  expect_silent(ggplot2::ggplotGrob(p))
+})
+
 test_that("ggraincloud rain points are offset opposite the cloud", {
   # side = "right" -> cloud to the right, rain offset to the left (negative)
   pr <- ggraincloud(df, "dose", "len", side = "right")
