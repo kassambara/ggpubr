@@ -114,6 +114,23 @@ an object of class \code{ggscatterhist}, which is a list of ggplots,
 Create a scatter plot with marginal histograms, density plots or
  box plots.
 }
+\details{
+\code{ggscatterhist()} returns a compound object (a list of ggplots
+ of class \code{"ggscatterhist"}), not a single ggplot, so \code{p + theme()}
+ does \strong{not} restyle it. Theme it in one of three ways:
+ \itemize{
+ \item \strong{At build time} - pass a theme to the builder:
+ \code{ggtheme =} for the main scatter plot, and
+ \code{margin.ggtheme =} / \code{margin.params =} for the marginal plots.
+ \item \strong{Per sub-plot} - the elements \code{$sp} (main scatter plot),
+ \code{$xplot} and \code{$yplot} (marginal plots) are ordinary, editable
+ ggplots. Build with \code{print = FALSE}, add to a sub-plot, then print:
+ \code{p <- ggscatterhist(...; print = FALSE); p$sp <- p$sp + theme_bw(); p}.
+ \item \strong{In one call} - \code{\link{style_scatterhist}(p, main = ,
+ margin = )} adds ggplot components to the main and/or marginal plots and
+ returns the updated object.
+ }
+}
 \examples{
 # Basic scatter plot with marginal density plot
 ggscatterhist(iris,

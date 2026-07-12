@@ -2,6 +2,15 @@
 
 ## New features
 
+- New `style_scatterhist()` and `style_summarystats()` restyle the sub-plots of a
+  `ggscatterhist()` or `ggsummarystats()` composite in one call (e.g.
+  `style_scatterhist(p, main = theme_bw(), margin = theme_void())`), returning the
+  same compound object. The documentation now describes the three ways to theme
+  these composites: at build time (`ggtheme=`, `margin.ggtheme=`), by editing the
+  sub-plots (`$sp`/`$xplot`/`$yplot`, `$main.plot`/`$summary.plot`), or via the new
+  helpers. These composites are lists of plots, not single ggplots, so `+` does not
+  restyle them; use one of those options instead (#764).
+
 - `ggcompare()` gains a two-way (grouped) mode. When a second factor is mapped
   through `color` or `fill`, it composes a two-way comparison figure in one
   call: dodged boxes for the two factors, simple pairwise comparison brackets of
