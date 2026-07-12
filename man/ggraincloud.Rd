@@ -34,9 +34,10 @@ ggraincloud(
 \code{y} is numeric.}
 
 \item{color}{the color of the rain (jittered) points. If \code{NULL}
-(default) or \code{"x"}, the points are colored by the \code{x} group;
-otherwise a single color (e.g. \code{"black"}). The box outline is always
-black.}
+(default), it follows \code{fill} (so a single \code{fill} gives a
+monochrome raincloud and a by-group \code{fill} keeps the rain colored by
+group). Use \code{"x"} to color by the \code{x} group, or a single color
+(e.g. \code{"black"}) for all points. The box outline is always black.}
 
 \item{fill}{the fill color of the cloud (half violin) and the box. If
 \code{NULL} (default) or \code{"x"}, filled by the \code{x} group;

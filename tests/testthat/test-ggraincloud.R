@@ -78,6 +78,21 @@ test_that("ggraincloud applies a single color to the rain and a single fill to t
   expect_equal(unique(cloud$fill), "#00AFBB")
 })
 
+test_that("color follows fill by default (single fill -> monochrome rain)", {
+  # A single fill with the default color yields a fully monochrome raincloud.
+  pf <- ggraincloud(df, "dose", "len", fill = "#00AFBB")
+  rain <- ggplot2::ggplot_build(pf)$data[[3]]
+  expect_equal(unique(rain$colour), "#00AFBB")
+  # By-group fill keeps the rain colored by group.
+  d3 <- ggplot2::ggplot_build(ggraincloud(df, "dose", "len"))$data[[3]]
+  expect_gt(length(unique(d3$colour)), 1)
+})
+
+test_that("ggraincloud rejects a length > 1 color or fill", {
+  expect_error(ggraincloud(df, "dose", "len", color = c("red", "blue")), "single value")
+  expect_error(ggraincloud(df, "dose", "len", fill = c("red", "blue")), "single value")
+})
+
 test_that("ggraincloud supports faceting", {
   p <- ggraincloud(df, "supp", "len", facet.by = "dose")
   expect_silent(ggplot2::ggplotGrob(p))

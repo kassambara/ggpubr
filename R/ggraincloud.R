@@ -14,9 +14,10 @@ NULL
 #' @param x,y x and y variables, where \code{x} is a grouping variable and
 #'   \code{y} is numeric.
 #' @param color the color of the rain (jittered) points. If \code{NULL}
-#'   (default) or \code{"x"}, the points are colored by the \code{x} group;
-#'   otherwise a single color (e.g. \code{"black"}). The box outline is always
-#'   black.
+#'   (default), it follows \code{fill} (so a single \code{fill} gives a
+#'   monochrome raincloud and a by-group \code{fill} keeps the rain colored by
+#'   group). Use \code{"x"} to color by the \code{x} group, or a single color
+#'   (e.g. \code{"black"}) for all points. The box outline is always black.
 #' @param fill the fill color of the cloud (half violin) and the box. If
 #'   \code{NULL} (default) or \code{"x"}, filled by the \code{x} group;
 #'   otherwise a single fill color (e.g. \code{"#00AFBB"}).
@@ -65,10 +66,22 @@ ggraincloud <- function(data, x, y,
   side <- match.arg(side)
   if (!is.factor(data[[x]])) data[[x]] <- factor(data[[x]])
 
-  # `fill` colours the cloud and box; `color` colours the rain points. NULL or
-  # the sentinel "x" means "by the x group"; any other value is a fixed colour.
+  if (!is.null(color) && length(color) != 1) {
+    stop("`color` must be a single value.", call. = FALSE)
+  }
+  if (!is.null(fill) && length(fill) != 1) {
+    stop("`fill` must be a single value.", call. = FALSE)
+  }
+  # `fill` colours the cloud and box; `color` colours the rain points. The
+  # sentinel "x" (or `fill = NULL`) means "by the x group". `color = NULL`
+  # (default) follows `fill`, so a single fill yields a monochrome raincloud
+  # while a by-group fill keeps the rain coloured by group.
   if (is.null(fill) || identical(fill, "x")) fill <- x
-  if (is.null(color) || identical(color, "x")) color <- x
+  if (is.null(color)) {
+    color <- fill
+  } else if (identical(color, "x")) {
+    color <- x
+  }
   cloud.nudge <- if (side == "right") boxplot.width else -boxplot.width
   rain.offset <- if (side == "right") -0.20 else 0.20
 
