@@ -2,6 +2,15 @@
 
 ## New features
 
+- New `ggestimates()` draws a publication-ready forest plot: one row per group
+  with a point estimate, its confidence interval, a reference (null) line and an
+  optional right-hand column of the numeric estimate and interval. It is a single
+  point-and-interval builder covering both forest plots (odds/hazard/risk ratios,
+  regression coefficients, meta-analysis) and estimation plots of effect sizes.
+  It draws pre-computed values (e.g. from `broom::tidy(model, conf.int = TRUE)`),
+  with `ref.line`, `log.scale` for ratio estimates, group coloring, row sorting
+  and an optional point-size (weight) mapping (#765).
+
 - New `style_scatterhist()` and `style_summarystats()` restyle the sub-plots of a
   `ggscatterhist()` or `ggsummarystats()` composite in one call (e.g.
   `style_scatterhist(p, main = theme_bw(), margin = theme_void())`), returning the

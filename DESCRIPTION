@@ -112,6 +112,7 @@ Collate:
     'ggdotplot.R'
     'ggecdf.R'
     'ggerrorplot.R'
+    'ggestimates.R'
     'ggexport.R'
     'gghistogram.R'
     'ggline.R'
