@@ -839,12 +839,13 @@ keep_only_tbl_df_classes <- function(x) {
     }
     up <- rank_pool(pool[pool$lfc > 0, , drop = FALSE])
     down <- rank_pool(pool[pool$lfc < 0, , drop = FALSE])
-    half <- ceiling(top / 2)
-    n_up_slots <- min(half, nrow(up))
-    n_down_slots <- min(half, nrow(down))
-    final_up <- min(nrow(up), top - n_down_slots) # spillover
-    final_down <- min(nrow(down), top - n_up_slots)
-    utils::head(rbind(utils::head(up, final_up), utils::head(down, final_down)), top)
+    # Allocate sequentially so the total is min(top, available) with no wasted
+    # slot: the extra (odd) slot goes to the up direction, then any remaining
+    # slots spill into the other direction when one side is short.
+    n_up <- min(ceiling(top / 2), nrow(up))
+    n_down <- min(nrow(down), top - n_up)
+    n_up <- min(nrow(up), top - n_down)
+    utils::head(rbind(utils::head(up, n_up), utils::head(down, n_down)), top)
   }
 
   if (is.null(facet.by)) {

@@ -33,6 +33,27 @@ test_that(".select_top_de_labels balances direction with spillover", {
   expect_equal(sum(out$lfc < 0), 1)
 })
 
+test_that(".select_top_de_labels returns exactly `top` labels (incl. odd top)", {
+  rich <- data.frame(
+    name = paste0("g", 1:200),
+    lfc = c(rep(2, 100), rep(-2, 100)),
+    padj = 1e-5
+  )
+  # odd tops (incl. the package default 15) must not lose a label
+  for (n in c(1, 5, 7, 11, 15)) {
+    expect_equal(nrow(ggpubr:::.select_top_de_labels(rich, n, "padj", TRUE)), n, info = n)
+  }
+  # no wasted slot when one side is short: 8 up + rich down, top = 15 -> 8 up + 7 down
+  short.up <- data.frame(
+    name = paste0("g", 1:108),
+    lfc = c(rep(2, 8), rep(-2, 100)),
+    padj = 1e-5
+  )
+  out <- ggpubr:::.select_top_de_labels(short.up, 15, "padj", TRUE)
+  expect_equal(nrow(out), 15)
+  expect_equal(sum(out$lfc > 0), 8)
+})
+
 test_that(".select_top_de_labels selects within each facet group", {
   df <- data.frame(
     name = c("a1", "a2", "b1", "b2"),
