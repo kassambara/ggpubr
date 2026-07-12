@@ -18,7 +18,7 @@ ggvolcano(
   label.rectangle = FALSE,
   palette = c("#B31B21", "#1465AC", "darkgray"),
   top = 15,
-  select.top.method = c("padj", "fc"),
+  select.top.method = c("padj", "fc", "rank.sum"),
   label.select = NULL,
   facet.by = NULL,
   main = NULL,
@@ -26,6 +26,7 @@ ggvolcano(
   ylab = NULL,
   line.color = "black",
   ggtheme = theme_classic(),
+  top.balanced = FALSE,
   ...
 )
 }
@@ -68,7 +69,9 @@ points, in that order. Default \code{c("#B31B21", "#1465AC", "darkgray")}.}
 with \code{label.select} to label only specific genes.}
 
 \item{select.top.method}{the ranking used to pick the top hits, one of
-\code{"padj"} (default) or \code{"fc"}.}
+\code{"padj"} (default), \code{"fc"}, or \code{"rank.sum"} (ranks by the sum
+of the \eqn{|log2FC|} rank and the adjusted-p rank, so the labeled genes are
+both high-effect and highly significant).}
 
 \item{label.select}{a character vector of specific gene names to label.}
 
@@ -83,6 +86,11 @@ built from \code{y} (e.g. \code{"-Log10 padj"}).}
 \item{line.color}{the color of the threshold lines. Default \code{"black"}.}
 
 \item{ggtheme}{a ggplot theme. Default \code{\link[ggplot2]{theme_classic}()}.}
+
+\item{top.balanced}{logical. If \code{TRUE}, the labeled top genes are
+direction-balanced: about half up-regulated and half down-regulated (with
+spillover when one side has fewer genes), ranked within each direction by
+\code{select.top.method}. Default \code{FALSE}.}
 
 \item{...}{other arguments passed to \code{\link{ggpar}()}.}
 }
@@ -111,6 +119,13 @@ ggvolcano(diff_express,
   fdr = 0.05, fc = 2, size = 0.6,
   genenames = as.vector(diff_express$name),
   top = 0, label.select = c("BUB1", "CD83")
+)
+
+# Rank the labeled genes by effect AND significance, balanced up/down
+ggvolcano(diff_express,
+  fdr = 0.05, fc = 2, size = 0.6,
+  genenames = as.vector(diff_express$name),
+  top = 10, select.top.method = "rank.sum", top.balanced = TRUE
 )
 
 }

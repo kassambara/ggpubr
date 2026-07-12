@@ -2,6 +2,13 @@
 
 ## New features
 
+- `ggmaplot()` and `ggvolcano()` gain two opt-in options for choosing which
+  genes are labeled: `select.top.method = "rank.sum"` ranks by the sum of the
+  `|log2FC|` rank and the adjusted-p rank, so the labeled genes are both
+  high-effect and highly significant; and `top.balanced = TRUE` labels about
+  half up-regulated and half down-regulated genes (with spillover). The default
+  selection is unchanged (#762).
+
 - New `ggvolcano()` draws a publication-ready volcano plot of differential
   expression results: log2 fold change versus `-log10` of the (adjusted)
   p-value, with points colored as up/down/non-significant by fold-change and
