@@ -21,7 +21,10 @@ NULL
 #' @param predictor the name of one or more numeric predictor columns (a marker
 #'   or a fitted probability). A \strong{higher} predictor value is taken to
 #'   indicate the positive class. Passing several columns overlays one curve per
-#'   predictor for model comparison.
+#'   predictor for model comparison. A predictor whose AUC falls below 0.5 is
+#'   negatively associated with the positive class; the curve and AUC are drawn
+#'   as computed (no automatic flipping) and a message notes that the predictor
+#'   or the response levels may need reversing.
 #' @param color line color, used when a single \code{predictor} is drawn. Ignored
 #'   when several predictors are compared (they are colored by predictor).
 #' @param palette the color palette to be used when several predictors are
@@ -99,6 +102,20 @@ ggrocplot <- function(data, response, predictor,
   curve <- roc$curve
   summ <- roc$summary
   multi <- nrow(summ) > 1
+
+  # A predictor whose AUC is below 0.5 is negatively associated with the
+  # positive class: higher values point to the negative class. The curve and
+  # AUC are honest (there is no silent auto-flip), so hint - not warn - that the
+  # predictor or the response levels may need reversing. Suppressible with
+  # suppressMessages().
+  low <- which(summ$auc < 0.5)
+  for (i in low) {
+    message(
+      "ggrocplot: predictor '", summ$model[i], "' has an AUC below 0.5; higher ",
+      "values indicate the negative class. If unexpected, reverse the predictor ",
+      "or set the response factor levels so the positive class is the second level."
+    )
+  }
 
   # Legend labels: append the AUC (+ CI) to each model when several are compared.
   if (multi) {
