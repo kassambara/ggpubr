@@ -4,6 +4,7 @@ Aes
 Anova
 Aphalo
 BH
+BJ
 BRCA
 BrBG
 BuGn
@@ -17,6 +18,7 @@ DF
 DFd
 DFn
 Datanovia
+DeLong
 Debrecen
 Donut
 ECDF
@@ -33,7 +35,9 @@ GraphPad
 Greys
 HSD
 Hadley
+Hanley
 Huynh
+JA
 Kaplan
 Kievit
 LUSC
@@ -69,6 +73,7 @@ Sess
 Stripchart
 Stripcharts
 TCGA
+WebR
 Welch
 Wellcome
 Wickham
@@ -153,8 +158,8 @@ ggscatter
 ggscatterhist
 ggsci
 ggsignif
-ggsummarystats
 ggstripchart
+ggsummarystats
 ggtexttable
 ggtheme
 ggviolin

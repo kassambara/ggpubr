@@ -2,6 +2,16 @@
 
 ## New features
 
+- New `ggrocplot()` draws a publication-ready ROC curve with the area under the
+  curve (AUC) and its confidence interval computed and annotated on the plot;
+  passing several predictor columns overlays one curve per model for comparison,
+  with each AUC shown in the legend. The empirical ROC, the AUC (the Mann-Whitney
+  statistic) and a deterministic large-sample confidence interval (Hanley and
+  McNeil, 1982) are all computed in base R, so the function has no modeling
+  dependency and runs in lightweight environments such as WebR. For DeLong or
+  bootstrap intervals, ROC smoothing, or tests between curves, use the `pROC`
+  package.
+
 - New `ggestimates()` draws a publication-ready forest plot: one row per group
   with a point estimate, its confidence interval, a reference (null) line and an
   optional right-hand column of the numeric estimate and interval. It is a single
