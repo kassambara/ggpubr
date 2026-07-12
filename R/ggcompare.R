@@ -42,6 +42,17 @@ NULL
 #'   \code{"emmeans_test"}); the all-pairwise-only tests (\code{"dunn_test"},
 #'   \code{"games_howell_test"}, \code{"tukey_hsd"}) draw all pairs, so
 #'   \code{comparisons} is not allowed with them (use \code{ref.group} instead).
+#'
+#'   \strong{Two-way / grouped mode.} When a second factor is mapped through
+#'   \code{color} or \code{fill} (a data column other than \code{x}),
+#'   \code{ggcompare()} composes a two-way figure in one call: dodged boxes for
+#'   the two factors, simple pairwise comparison brackets of one factor within
+#'   each level of the other (see \code{pwc.group.by}), and a subtitle from the
+#'   two-way ANOVA that names the interaction. In this mode the pairwise
+#'   \code{method} defaults to \code{"emmeans_test"} (pooled-model simple
+#'   comparisons), \code{p.adjust.method} to \code{"bonferroni"} and
+#'   \code{hide.ns} to \code{TRUE}; each remains overridable. The one-way path is
+#'   unchanged.
 #' @param ref.group a group level used as the reference; each other group is
 #'   compared to it. See \code{\link{geom_pwc}()}.
 #' @param method the pairwise comparison test. Default \code{"t_test"}. See
@@ -67,6 +78,10 @@ NULL
 #' @param omnibus.args additional arguments passed to
 #'   \code{\link{add_test_label}()} (non-faceted plots) or the corresponding stat
 #'   layer (faceted plots).
+#' @param pwc.group.by used only in the two-way (grouped) mode described below.
+#'   Direction of the grouped pairwise comparisons: \code{"x.var"} (default)
+#'   compares the second factor within each \code{x} group; \code{"legend.var"}
+#'   compares the \code{x} groups within each level of the second factor.
 #' @param ... additional arguments passed to the base builder (e.g.
 #'   \code{ggboxplot}), such as \code{title}, \code{xlab}, \code{ylab}.
 #' @return a single customizable \code{ggplot}.
@@ -89,6 +104,16 @@ NULL
 #' # Composed with a summary-statistics table
 #' ggsummarystats(df, x = "dose", y = "len", ggfunc = ggcompare)
 #'
+#' # Two-way / grouped design: a second factor mapped through `color` triggers
+#' # dodged boxes, simple pairwise brackets within each x group, and a subtitle
+#' # naming the interaction. (Uses emmeans_test by default, so guard on emmeans.)
+#' if (requireNamespace("emmeans", quietly = TRUE)) {
+#'   data("ToothGrowth")
+#'   tg <- ToothGrowth
+#'   tg$dose <- as.factor(tg$dose)
+#'   ggcompare(tg, x = "supp", y = "len", color = "dose")
+#' }
+#'
 #' @export
 ggcompare <- function(data, x, y,
                       color = "black", fill = "white", palette = "jco",
@@ -102,16 +127,52 @@ ggcompare <- function(data, x, y,
                       effsize = FALSE, hide.ns = FALSE,
                       pack = c("auto", "none"), pwc.args = list(),
                       omnibus = c("anova", "kruskal", "none"),
-                      omnibus.args = list(), ...) {
+                      omnibus.args = list(),
+                      pwc.group.by = c("x.var", "legend.var"), ...) {
   base <- match.arg(base)
   pack <- match.arg(pack)
   omnibus <- match.arg(omnibus)
+  pwc.group.by <- match.arg(pwc.group.by)
+
+  # Record which comparison controls the caller left at their defaults, so a
+  # two-way call can adopt two-way-appropriate defaults (emmeans / Bonferroni /
+  # hide ns) without overriding an explicit choice. Captured before any coercion.
+  method.missing <- missing(method)
+  padj.missing <- missing(p.adjust.method)
+  hide.ns.missing <- missing(hide.ns)
+  color.missing <- missing(color)
+  fill.missing <- missing(fill)
 
   # Coerce x to a factor so the discrete positions (and the comparison
   # translation below) are well defined; keep an existing factor's level order.
   if (!is.factor(data[[x]])) {
     data[[x]] <- factor(data[[x]])
   }
+
+  # Two-way mode is entered only when a SECOND factor is mapped through
+  # color/fill (a data column distinct from x). Everything below is gated on
+  # this, so a one-way call (color/fill a fixed colour) is byte-identical.
+  # Only an EXPLICITLY supplied color/fill that names a data column (other than
+  # x) is treated as the second factor; the "black"/"white" defaults never
+  # trigger two-way mode, even if the data happens to carry such a column.
+  group.var <- NULL
+  is_col <- function(v) is.character(v) && length(v) == 1L && v %in% colnames(data)
+  if (!color.missing && is_col(color) && color != x) {
+    group.var <- color
+  } else if (!fill.missing && is_col(fill) && fill != x) {
+    group.var <- fill
+  }
+  two.way <- !is.null(group.var)
+  if (two.way) {
+    if (!is.factor(data[[group.var]])) data[[group.var]] <- factor(data[[group.var]])
+    # Simple pairwise comparisons in a two-way design are best drawn from the
+    # pooled-model emmeans test with Bonferroni adjustment; declutter by hiding
+    # ns. These are defaults only - an explicit argument always wins.
+    if (method.missing) method <- "emmeans_test"
+    if (padj.missing) p.adjust.method <- "bonferroni"
+    if (hide.ns.missing) hide.ns <- TRUE
+  }
+
   if (missing(ggtheme) && !is.null(facet.by)) {
     ggtheme <- theme_pubr(border = TRUE)
   }
@@ -167,7 +228,7 @@ ggcompare <- function(data, x, y,
   # t_test/games_howell_test, Cliff's delta for wilcox_test, r for dunn_test),
   # so a rank-based effect size is not mislabelled as "d". A bare column token
   # is braced first so it stays a valid glue template.
-  if (isTRUE(effsize)) {
+  if (isTRUE(effsize) && !two.way) {
     es.symbol <- switch(if (is.na(method.name)) "" else method.name,
       t_test = "d", games_howell_test = "d",
       wilcox_test = "delta", dunn_test = "r",
@@ -175,6 +236,90 @@ ggcompare <- function(data, x, y,
     )
     if (!grepl("\\{", label)) label <- paste0("{", label, "}")
     label <- paste0(label, ", ", es.symbol, "={effsize}")
+  }
+
+  # ---- Two-way / grouped mode ------------------------------------------------
+  # When a second factor is mapped through color/fill, draw simple pairwise
+  # comparisons of one factor within each level of the other, from a PRECOMPUTED
+  # rstatix test (positioned with add_xy_position(), drawn with
+  # stat_pvalue_manual()), plus a two-way omnibus subtitle that names the
+  # interaction. The pooled-model emmeans / per-group pairwise values are
+  # computed directly here because geom_pwc()'s internal grouped test does not
+  # reproduce them for a multi-level legend.
+  if (two.way) {
+    if (!is.null(facet.by)) {
+      stop("`facet.by` is not yet supported in two-way (grouped) mode. Draw the ",
+        "grouped figure without faceting, or facet a one-way plot.",
+        call. = FALSE)
+    }
+    if (isTRUE(effsize)) {
+      warning("`effsize` is not supported in two-way (grouped) mode; ignoring it.",
+        call. = FALSE)
+    }
+    if (!is.null(comparisons)) {
+      stop("`comparisons` subsetting is not supported in two-way (grouped) mode; ",
+        "all pairwise comparisons are drawn within each group. Use `ref.group` ",
+        "to compare against a reference level.", call. = FALSE)
+    }
+    if (is.function(method)) {
+      stop("A function `method` is not supported in two-way (grouped) mode; ",
+        "pass a method name such as 'emmeans_test', 't_test' or 'wilcox_test'.",
+        call. = FALSE)
+    }
+    if (is.na(method.name) ||
+      !exists(method.name, envir = asNamespace("rstatix"), inherits = FALSE)) {
+      stop("Unknown two-way pairwise `method`: '", method, "'.", call. = FALSE)
+    }
+    # group.by = "x.var" (default): group by x, compare the second factor within
+    # each x. "legend.var": the reverse.
+    if (pwc.group.by == "x.var") {
+      grp.var <- x
+      comp.var <- group.var
+    } else {
+      grp.var <- group.var
+      comp.var <- x
+    }
+    test.fun2 <- get(method.name, envir = asNamespace("rstatix"))
+    test.formula <- stats::as.formula(paste(y, "~", comp.var))
+    call.args <- c(
+      list(dplyr::group_by(data, .data[[grp.var]]), test.formula),
+      method.args
+    )
+    if ("p.adjust.method" %in% names(formals(test.fun2))) {
+      call.args$p.adjust.method <- p.adjust.method
+    }
+    if (!is.null(ref.group)) {
+      if (!("ref.group" %in% names(formals(test.fun2)))) {
+        stop("`ref.group` is not supported for method = '", method,
+          "' in two-way mode.", call. = FALSE)
+      }
+      call.args$ref.group <- as.character(ref.group)
+    }
+    pwc <- do.call(test.fun2, call.args)
+    # Position the brackets against the plotted layout: x is always the plot's
+    # x axis and the second factor is the dodge group -- regardless of the
+    # comparison direction. (Positioning on `grp.var` would place legend.var
+    # brackets on the wrong x scale, off the panel.)
+    pwc <- rstatix::add_xy_position(pwc, x = x, group = group.var, dodge = 0.8)
+    spm.call <- c(list(data = pwc, label = label, hide.ns = hide.ns), pwc.args)
+    p <- p + do.call(stat_pvalue_manual, spm.call)
+
+    # Caption describing the pairwise test (kept unless the caller already set
+    # one). Matches the subtitle's output type.
+    cap.type <- if (!is.null(omnibus.args$type)) omnibus.args$type else "expression"
+    if (is.null(p$labels$caption)) {
+      p <- p + ggplot2::labs(caption = rstatix::get_pwc_label(pwc, type = cap.type))
+    }
+
+    if (omnibus == "anova") {
+      p <- do.call(
+        add_test_label,
+        c(list(p, method = "anova", group.by = group.var), omnibus.args)
+      )
+    } else if (omnibus == "kruskal") {
+      p <- do.call(add_test_label, c(list(p, method = "kruskal"), omnibus.args))
+    }
+    return(p)
   }
 
   # (3) Translate a subset of comparisons from group levels to the 1-based

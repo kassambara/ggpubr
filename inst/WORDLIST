@@ -130,6 +130,7 @@ geoms
 ges
 ggbarplot
 ggboxplot
+ggcompare
 ggdensity
 ggdotchart
 ggdotplot
@@ -204,6 +205,7 @@ npg
 nrow
 ns
 oldrel
+overridable
 padj
 params
 pearson

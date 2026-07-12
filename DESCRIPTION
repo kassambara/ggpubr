@@ -49,10 +49,14 @@ Imports:
 Suggests:
     grDevices,
     knitr,
+    rmarkdown,
     RColorBrewer,
     gtable,
     testthat,
-    spelling
+    spelling,
+    datarium,
+    emmeans
+VignetteBuilder: knitr
 Remotes:
     kassambara/rstatix@release/1.1.0
 URL: https://rpkgs.datanovia.com/ggpubr/,

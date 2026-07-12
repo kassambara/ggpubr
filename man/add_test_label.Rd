@@ -12,6 +12,8 @@ add_test_label(
   detailed = TRUE,
   type = c("expression", "text"),
   p.adjust.method = "holm",
+  group.by = NULL,
+  effect = NULL,
   ...
 )
 }
@@ -45,8 +47,22 @@ freedom, effect size, n) is shown.}
 caption (see \code{\link[stats]{p.adjust}}); ignored by \code{"tukey_hsd"}
 and \code{"games_howell_test"}, which adjust internally.}
 
+\item{group.by}{optional name of a second grouping factor (typically the one
+mapped to \code{color}/\code{fill}). When supplied, a two-way ANOVA
+\code{y ~ x * group.by} is computed and the subtitle names the selected
+effect (see \code{effect}). Only used when \code{method = "anova"}. Default
+\code{NULL} (one-way \code{y ~ x}, the historical behavior).}
+
+\item{effect}{which effect of the two-way ANOVA to label (only used when
+\code{group.by} is set). One of \code{"interaction"} (default, the
+\code{x:group.by} row, described as \dQuote{Interaction (x \eqn{\times}
+group.by)}), \code{"all"} (a multi-line label with both main effects and the
+interaction), or a term name (e.g. \code{"gender"} or
+\code{"gender:education_level"}) or a numeric row index of the ANOVA table.}
+
 \item{...}{additional arguments passed to
-\code{\link[rstatix]{get_test_label}} (e.g. \code{style = "apa"}).}
+\code{\link[rstatix]{get_test_label}} (e.g. \code{style = "apa"}, or
+\code{description} to override the auto-derived effect name).}
 }
 \value{
 the input ggplot with the subtitle (and optionally caption) added.
@@ -79,6 +95,10 @@ add_test_label(p)
 p2 <- ggboxplot(df, x = "dose", y = "len") +
   geom_pwc(method = "dunn_test", label = "p.adj.signif", hide.ns = TRUE)
 add_test_label(p2, method = "kruskal", caption = TRUE)
+
+# Two-way design: name the interaction in the subtitle
+p3 <- ggboxplot(df, x = "dose", y = "len", color = "supp")
+add_test_label(p3, group.by = "supp", type = "text")
 
 }
 \seealso{

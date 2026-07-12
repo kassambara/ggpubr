@@ -29,6 +29,7 @@ ggcompare(
   pwc.args = list(),
   omnibus = c("anova", "kruskal", "none"),
   omnibus.args = list(),
+  pwc.group.by = c("x.var", "legend.var"),
   ...
 )
 }
@@ -60,12 +61,23 @@ builder (e.g. \code{"jitter"}, \code{"mean"}, \code{"mean_sd"}). Default
 \item{add.params}{a list of parameters passed to the \code{add} layers.}
 
 \item{comparisons}{a list of length-2 vectors giving the group levels to
-compare. If \code{NULL} (default), all pairwise comparisons are drawn.
-Subsetting is supported for the tests that accept a \code{comparisons}
-argument (\code{"t_test"}, \code{"wilcox_test"}, \code{"sign_test"},
-\code{"emmeans_test"}); the all-pairwise-only tests (\code{"dunn_test"},
-\code{"games_howell_test"}, \code{"tukey_hsd"}) draw all pairs, so
-\code{comparisons} is not allowed with them (use \code{ref.group} instead).}
+  compare. If \code{NULL} (default), all pairwise comparisons are drawn.
+  Subsetting is supported for the tests that accept a \code{comparisons}
+  argument (\code{"t_test"}, \code{"wilcox_test"}, \code{"sign_test"},
+  \code{"emmeans_test"}); the all-pairwise-only tests (\code{"dunn_test"},
+  \code{"games_howell_test"}, \code{"tukey_hsd"}) draw all pairs, so
+  \code{comparisons} is not allowed with them (use \code{ref.group} instead).
+
+  \strong{Two-way / grouped mode.} When a second factor is mapped through
+  \code{color} or \code{fill} (a data column other than \code{x}),
+  \code{ggcompare()} composes a two-way figure in one call: dodged boxes for
+  the two factors, simple pairwise comparison brackets of one factor within
+  each level of the other (see \code{pwc.group.by}), and a subtitle from the
+  two-way ANOVA that names the interaction. In this mode the pairwise
+  \code{method} defaults to \code{"emmeans_test"} (pooled-model simple
+  comparisons), \code{p.adjust.method} to \code{"bonferroni"} and
+  \code{hide.ns} to \code{TRUE}; each remains overridable. The one-way path is
+  unchanged.}
 
 \item{ref.group}{a group level used as the reference; each other group is
 compared to it. See \code{\link{geom_pwc}()}.}
@@ -102,6 +114,11 @@ compactly, \code{"none"} keeps one per level. See \code{\link{geom_pwc}()}.}
 \item{omnibus.args}{additional arguments passed to
 \code{\link{add_test_label}()} (non-faceted plots) or the corresponding stat
 layer (faceted plots).}
+
+\item{pwc.group.by}{used only in the two-way (grouped) mode described below.
+Direction of the grouped pairwise comparisons: \code{"x.var"} (default)
+compares the second factor within each \code{x} group; \code{"legend.var"}
+compares the \code{x} groups within each level of the second factor.}
 
 \item{...}{additional arguments passed to the base builder (e.g.
 \code{ggboxplot}), such as \code{title}, \code{xlab}, \code{ylab}.}
@@ -146,6 +163,16 @@ ggcompare(df, x = "dose", y = "len",
 
 # Composed with a summary-statistics table
 ggsummarystats(df, x = "dose", y = "len", ggfunc = ggcompare)
+
+# Two-way / grouped design: a second factor mapped through `color` triggers
+# dodged boxes, simple pairwise brackets within each x group, and a subtitle
+# naming the interaction. (Uses emmeans_test by default, so guard on emmeans.)
+if (requireNamespace("emmeans", quietly = TRUE)) {
+  data("ToothGrowth")
+  tg <- ToothGrowth
+  tg$dose <- as.factor(tg$dose)
+  ggcompare(tg, x = "supp", y = "len", color = "dose")
+}
 
 }
 \seealso{
