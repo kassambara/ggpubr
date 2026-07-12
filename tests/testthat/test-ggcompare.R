@@ -106,6 +106,20 @@ test_that("ggcompare effsize works with a method passed as a function object", {
   expect_true(all(grepl("delta=", labs_w, fixed = TRUE)))
 })
 
+test_that("a recognized function-object method draws the same brackets as its name", {
+  # An all-pairwise test passed as a function object must not draw an empty
+  # figure; it should match the string-method result.
+  for (m in c("t_test", "wilcox_test", "dunn_test", "games_howell_test", "tukey_hsd")) {
+    fn <- get(m, envir = asNamespace("rstatix"))
+    expect_equal(
+      n_brackets(ggcompare(df, "dose", "len", method = fn)),
+      n_brackets(ggcompare(df, "dose", "len", method = m)),
+      info = m
+    )
+    expect_gt(n_brackets(ggcompare(df, "dose", "len", method = fn)), 0)
+  }
+})
+
 test_that("ggcompare omnibus modes set the matching subtitle / none omits it", {
   # kruskal
   p_k <- ggcompare(df, x = "dose", y = "len", omnibus = "kruskal")

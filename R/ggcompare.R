@@ -154,6 +154,13 @@ ggcompare <- function(data, x, y,
       }
     }
   }
+  # Normalize a recognized function-object method to its canonical name so it
+  # takes the same (string) code path in geom_pwc() - which handles p-value
+  # adjustment internally for the all-pairwise tests - as the equivalent string
+  # method. An unrecognized custom function is passed through untouched.
+  if (is.function(method) && !is.na(method.name)) {
+    method <- method.name
+  }
 
   # (2) Append the effect-size token to the (glue) label when requested. The
   # symbol reflects the effect size the chosen method reports (Cohen's d for
