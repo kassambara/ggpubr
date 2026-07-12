@@ -3,6 +3,21 @@ NULL
 #' Scatter Plot with Marginal Histograms
 #' @description Create a scatter plot with marginal histograms, density plots or
 #'  box plots.
+#' @details \code{ggscatterhist()} returns a compound object (a list of ggplots
+#'  of class \code{"ggscatterhist"}), not a single ggplot, so \code{p + theme()}
+#'  does \strong{not} restyle it. Theme it in one of three ways:
+#'  \itemize{
+#'  \item \strong{At build time} - pass a theme to the builder:
+#'  \code{ggtheme =} for the main scatter plot, and
+#'  \code{margin.ggtheme =} / \code{margin.params =} for the marginal plots.
+#'  \item \strong{Per sub-plot} - the elements \code{$sp} (main scatter plot),
+#'  \code{$xplot} and \code{$yplot} (marginal plots) are ordinary, editable
+#'  ggplots. Build with \code{print = FALSE}, add to a sub-plot, then print:
+#'  \code{p <- ggscatterhist(...; print = FALSE); p$sp <- p$sp + theme_bw(); p}.
+#'  \item \strong{In one call} - \code{\link{style_scatterhist}(p, main = ,
+#'  margin = )} adds ggplot components to the main and/or marginal plots and
+#'  returns the updated object.
+#'  }
 #' @inheritParams ggscatter
 #' @param main.plot.size the width of the main plot. Default is 2.
 #' @param margin.plot.size the width of the marginal plot. Default is 1.
@@ -255,6 +270,75 @@ print.ggscatterhist <- function(x, margin.space = FALSE, main.plot.size = 2,
   invisible(fig)
 }
 
+
+#' Restyle a ggscatterhist Composite
+#' @description Adds ggplot components (themes, labels, scales, ...) to the
+#'  sub-plots of a \code{\link{ggscatterhist}()} object and returns the updated
+#'  object, so the whole composite can be restyled in one call. This is a
+#'  convenience wrapper around editing the \code{$sp}, \code{$xplot} and
+#'  \code{$yplot} elements directly.
+#' @param p a \code{"ggscatterhist"} object, typically built with
+#'  \code{print = FALSE}.
+#' @param main a ggplot component (or a list of components) added to the main
+#'  scatter plot (\code{$sp}). For example \code{theme_bw()} or
+#'  \code{list(theme_bw(), labs(title = "My title"))}.
+#' @param margin a ggplot component (or list of components) added to \emph{both}
+#'  marginal plots (\code{$xplot} and \code{$yplot}).
+#' @param xplot,yplot ggplot components added to only the x-axis or y-axis
+#'  marginal plot, applied after \code{margin}.
+#' @return the updated \code{"ggscatterhist"} object.
+#' @seealso \code{\link{ggscatterhist}}.
+#' @examples
+#' p <- ggscatterhist(iris, x = "Sepal.Length", y = "Sepal.Width",
+#'   color = "Species", margin.plot = "boxplot", print = FALSE)
+#'
+#' # Restyle the main and marginal plots in one call
+#' style_scatterhist(p,
+#'   main = list(theme_bw(), labs(title = "Iris")),
+#'   margin = theme_void()
+#' )
+#' @export
+style_scatterhist <- function(p, main = NULL, margin = NULL,
+                              xplot = NULL, yplot = NULL) {
+  if (!inherits(p, "ggscatterhist")) {
+    stop("`p` must be a `ggscatterhist` object (from ggscatterhist()).",
+      call. = FALSE)
+  }
+  # Add one component or a list of components to a ggplot with `+`.
+  add_all <- function(plot, additions) {
+    if (is.null(additions)) return(plot)
+    if (inherits(additions, "gg") || !is.list(additions)) {
+      additions <- list(additions)
+    }
+    for (a in additions) plot <- plot + a
+    plot
+  }
+  p$sp <- add_all(p$sp, main)
+  p$xplot <- add_all(p$xplot, margin)
+  p$yplot <- add_all(p$yplot, margin)
+  p$xplot <- add_all(p$xplot, xplot)
+  p$yplot <- add_all(p$yplot, yplot)
+  p
+}
+
+#' @method + ggscatterhist
+#' @export
+"+.ggscatterhist" <- function(e1, e2) {
+  # A ggscatterhist is a list of plots, not a single ggplot, so `+` cannot add a
+  # component to "the plot". Replace R's cryptic error with guidance. (For a
+  # ggplot right-hand side, ggplot2's own `+.gg` may intercept first; the
+  # message still applies - the fix is the same.)
+  stop(
+    "Can't add ggplot components to a `ggscatterhist` with `+` - it is a list ",
+    "of plots, not a single ggplot.\n",
+    "To restyle it, either:\n",
+    "  * pass a theme at build time: ggscatterhist(..., ggtheme = , ",
+    "margin.ggtheme = );\n",
+    "  * edit a sub-plot: p$sp <- p$sp + theme_bw() (also p$xplot / p$yplot); or\n",
+    "  * use style_scatterhist(p, main = , margin = ).",
+    call. = FALSE
+  )
+}
 
 has_cowplot_v0.9 <- function() {
   vv <- as.character(utils::packageVersion("cowplot"))

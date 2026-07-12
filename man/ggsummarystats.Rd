@@ -116,6 +116,21 @@ legend = "none".}
 Create a ggplot with summary stats (n, median, mean, iqr) table
   under the plot. Read more: \href{https://www.datanovia.com/en/blog/how-to-create-a-beautiful-plots-in-r-with-summary-statistics-labels/}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
 }
+\details{
+\code{ggsummarystats()} returns a compound object (a list of ggplots
+  of class \code{"ggsummarystats"}), not a single ggplot, so \code{p +
+  theme()} does \strong{not} restyle it. Theme it in one of three ways:
+  \itemize{
+  \item \strong{At build time} - pass \code{ggtheme =} to the builder (applied
+  to both the main plot and the summary table).
+  \item \strong{Per sub-plot} - the elements \code{$main.plot} (the plot) and
+  \code{$summary.plot} (the summary table) are ordinary, editable ggplots:
+  \code{p$main.plot <- p$main.plot + theme_bw(); p}.
+  \item \strong{In one call} - \code{\link{style_summarystats}(p, main = ,
+  table = )} adds ggplot components to the main plot and/or the summary table
+  and returns the updated object.
+  }
+}
 \section{Functions}{
 \itemize{
 \item \code{ggsummarytable()}: Create a table of summary stats

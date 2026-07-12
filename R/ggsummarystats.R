@@ -5,6 +5,19 @@ NULL
 #'
 #' @description Create a ggplot with summary stats (n, median, mean, iqr) table
 #'   under the plot. Read more: \href{https://www.datanovia.com/en/blog/how-to-create-a-beautiful-plots-in-r-with-summary-statistics-labels/}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
+#' @details \code{ggsummarystats()} returns a compound object (a list of ggplots
+#'   of class \code{"ggsummarystats"}), not a single ggplot, so \code{p +
+#'   theme()} does \strong{not} restyle it. Theme it in one of three ways:
+#'   \itemize{
+#'   \item \strong{At build time} - pass \code{ggtheme =} to the builder (applied
+#'   to both the main plot and the summary table).
+#'   \item \strong{Per sub-plot} - the elements \code{$main.plot} (the plot) and
+#'   \code{$summary.plot} (the summary table) are ordinary, editable ggplots:
+#'   \code{p$main.plot <- p$main.plot + theme_bw(); p}.
+#'   \item \strong{In one call} - \code{\link{style_summarystats}(p, main = ,
+#'   table = )} adds ggplot components to the main plot and/or the summary table
+#'   and returns the updated object.
+#'   }
 #' @inheritParams ggboxplot
 #' @param digits integer indicating the number of decimal places (round) to be
 #'   used.
@@ -270,4 +283,64 @@ ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller = "label_va
   names(plots) <- data.grouped$panel
   class(plots) <- c("ggsummarystats_list", "list")
   plots
+}
+
+
+#' Restyle a ggsummarystats Composite
+#' @description Adds ggplot components (themes, labels, scales, ...) to the
+#'   sub-plots of a \code{\link{ggsummarystats}()} object and returns the updated
+#'   object, so the whole composite can be restyled in one call. This is a
+#'   convenience wrapper around editing the \code{$main.plot} and
+#'   \code{$summary.plot} elements directly.
+#' @param p a \code{"ggsummarystats"} object.
+#' @param main a ggplot component (or a list of components) added to the main
+#'   plot (\code{$main.plot}), e.g. \code{theme_bw()} or
+#'   \code{list(theme_bw(), labs(title = "My title"))}.
+#' @param table a ggplot component (or list of components) added to the summary
+#'   table (\code{$summary.plot}).
+#' @return the updated \code{"ggsummarystats"} object.
+#' @seealso \code{\link{ggsummarystats}}.
+#' @examples
+#' data("ToothGrowth")
+#' df <- ToothGrowth
+#' df$dose <- as.factor(df$dose)
+#' p <- ggsummarystats(df, x = "dose", y = "len",
+#'   ggfunc = ggboxplot, color = "dose", palette = "npg")
+#'
+#' # Restyle the main plot in one call
+#' style_summarystats(p, main = list(theme_bw(), labs(title = "Tooth growth")))
+#' @export
+style_summarystats <- function(p, main = NULL, table = NULL) {
+  if (!inherits(p, "ggsummarystats")) {
+    stop("`p` must be a `ggsummarystats` object (from ggsummarystats()).",
+      call. = FALSE)
+  }
+  add_all <- function(plot, additions) {
+    if (is.null(additions)) return(plot)
+    if (inherits(additions, "gg") || !is.list(additions)) {
+      additions <- list(additions)
+    }
+    for (a in additions) plot <- plot + a
+    plot
+  }
+  p$main.plot <- add_all(p$main.plot, main)
+  p$summary.plot <- add_all(p$summary.plot, table)
+  p
+}
+
+#' @method + ggsummarystats
+#' @export
+"+.ggsummarystats" <- function(e1, e2) {
+  # A ggsummarystats is a list of plots, not a single ggplot; `+` cannot add a
+  # component to "the plot". Replace R's cryptic error with guidance.
+  stop(
+    "Can't add ggplot components to a `ggsummarystats` with `+` - it is a list ",
+    "of plots, not a single ggplot.\n",
+    "To restyle it, either:\n",
+    "  * pass a theme at build time: ggsummarystats(..., ggtheme = );\n",
+    "  * edit a sub-plot: p$main.plot <- p$main.plot + theme_bw() (also ",
+    "p$summary.plot); or\n",
+    "  * use style_summarystats(p, main = , table = ).",
+    call. = FALSE
+  )
 }

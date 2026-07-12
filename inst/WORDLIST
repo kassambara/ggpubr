@@ -153,6 +153,7 @@ ggscatter
 ggscatterhist
 ggsci
 ggsignif
+ggsummarystats
 ggstripchart
 ggtexttable
 ggtheme
