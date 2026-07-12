@@ -51,8 +51,10 @@ NULL
 #'   two-way ANOVA that names the interaction. In this mode the pairwise
 #'   \code{method} defaults to \code{"emmeans_test"} (pooled-model simple
 #'   comparisons), \code{p.adjust.method} to \code{"bonferroni"} and
-#'   \code{hide.ns} to \code{TRUE}; each remains overridable. The one-way path is
-#'   unchanged.
+#'   \code{hide.ns} to \code{TRUE}; each remains overridable. With \code{facet.by}
+#'   the pairwise comparisons and the two-way interaction are computed \emph{per
+#'   panel}, and a compact interaction label is drawn inside each panel (in place
+#'   of the single pooled subtitle). The one-way path is unchanged.
 #' @param ref.group a group level used as the reference; each other group is
 #'   compared to it. See \code{\link{geom_pwc}()}.
 #' @param method the pairwise comparison test. Default \code{"t_test"}. See
@@ -247,11 +249,6 @@ ggcompare <- function(data, x, y,
   # computed directly here because geom_pwc()'s internal grouped test does not
   # reproduce them for a multi-level legend.
   if (two.way) {
-    if (!is.null(facet.by)) {
-      stop("`facet.by` is not yet supported in two-way (grouped) mode. Draw the ",
-        "grouped figure without faceting, or facet a one-way plot.",
-        call. = FALSE)
-    }
     if (isTRUE(effsize)) {
       warning("`effsize` is not supported in two-way (grouped) mode; ignoring it.",
         call. = FALSE)
@@ -281,10 +278,12 @@ ggcompare <- function(data, x, y,
     }
     test.fun2 <- get(method.name, envir = asNamespace("rstatix"))
     test.formula <- stats::as.formula(paste(y, "~", comp.var))
-    call.args <- c(
-      list(dplyr::group_by(data, .data[[grp.var]]), test.formula),
-      method.args
+    # Group by the faceting variable(s) as well, so the pairwise test is run
+    # per panel; facet.by is NULL for a single (non-faceted) panel.
+    grouped.data <- dplyr::group_by(
+      data, dplyr::across(dplyr::all_of(c(facet.by, grp.var)))
     )
+    call.args <- c(list(grouped.data, test.formula), method.args)
     if ("p.adjust.method" %in% names(formals(test.fun2))) {
       call.args$p.adjust.method <- p.adjust.method
     }
@@ -311,13 +310,21 @@ ggcompare <- function(data, x, y,
       p <- p + ggplot2::labs(caption = rstatix::get_pwc_label(pwc, type = cap.type))
     }
 
-    if (omnibus == "anova") {
-      p <- do.call(
-        add_test_label,
-        c(list(p, method = "anova", group.by = group.var), omnibus.args)
-      )
-    } else if (omnibus == "kruskal") {
-      p <- do.call(add_test_label, c(list(p, method = "kruskal"), omnibus.args))
+    # Omnibus test. Without facets, one subtitle names the pooled two-way
+    # interaction. With facets, the interaction is per panel, so a compact label
+    # is drawn inside each panel instead (a single subtitle would misleadingly
+    # pool the panels).
+    if (is.null(facet.by)) {
+      if (omnibus == "anova") {
+        p <- do.call(
+          add_test_label,
+          c(list(p, method = "anova", group.by = group.var), omnibus.args)
+        )
+      } else if (omnibus == "kruskal") {
+        p <- do.call(add_test_label, c(list(p, method = "kruskal"), omnibus.args))
+      }
+    } else if (omnibus == "anova") {
+      p <- .add_faceted_interaction_labels(p, data, x, y, group.var, facet.by)
     }
     return(p)
   }
@@ -374,4 +381,50 @@ ggcompare <- function(data, x, y,
   }
 
   p
+}
+
+
+# Draw a compact two-way interaction label inside each facet panel: for a
+# faceted grouped comparison, the interaction (x * group.var) is computed per
+# panel and placed at the top-center of the panel. Returns the updated plot.
+.add_faceted_interaction_labels <- function(p, data, x, y, group.var, facet.by) {
+  fmt.p <- function(pv) {
+    if (is.na(pv)) return("p = NA")
+    if (pv < 0.001) "p < 0.001" else paste0("p = ", formatC(pv, format = "fg", digits = 2))
+  }
+  one <- function(df) {
+    at <- rstatix::get_anova_table(rstatix::anova_test(
+      df, stats::as.formula(paste(y, "~", x, "*", group.var))
+    ))
+    ir <- which(grepl(":", at$Effect))[1]
+    # A degenerate panel (aliased/empty design) has no estimable interaction:
+    # omit its label rather than print "F(NA,NA) = NA".
+    if (is.na(ir) || is.na(at$F[ir])) return(NA_character_)
+    sprintf("Interaction: F(%g,%g) = %.2f, %s",
+      at$DFn[ir], at$DFd[ir], at$F[ir], fmt.p(at$p[ir]))
+  }
+  groups <- do.call(paste, c(data[, facet.by, drop = FALSE], sep = "\r"))
+  parts <- split(seq_len(nrow(data)), groups)
+  labs <- lapply(parts, function(idx) {
+    d <- data[idx, , drop = FALSE]
+    lab <- d[1, facet.by, drop = FALSE]
+    lab$.label <- one(d)
+    lab
+  })
+  labs <- do.call(rbind, labs)
+  labs <- labs[!is.na(labs$.label), , drop = FALSE]
+  if (nrow(labs) == 0L) {
+    return(p + ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0.05, 0.15))))
+  }
+  # Center on the discrete x axis; y = Inf pins to the panel top (extra top
+  # expansion keeps the label clear of the brackets).
+  n.x <- nlevels(factor(data[[x]]))
+  labs$.x <- (1 + n.x) / 2
+  p +
+    ggplot2::geom_text(
+      data = labs, inherit.aes = FALSE,
+      ggplot2::aes(x = .data[[".x"]], y = Inf, label = .data[[".label"]]),
+      vjust = 1.4, size = 3
+    ) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0.05, 0.15)))
 }

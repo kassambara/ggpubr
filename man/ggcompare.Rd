@@ -76,8 +76,10 @@ builder (e.g. \code{"jitter"}, \code{"mean"}, \code{"mean_sd"}). Default
   two-way ANOVA that names the interaction. In this mode the pairwise
   \code{method} defaults to \code{"emmeans_test"} (pooled-model simple
   comparisons), \code{p.adjust.method} to \code{"bonferroni"} and
-  \code{hide.ns} to \code{TRUE}; each remains overridable. The one-way path is
-  unchanged.}
+  \code{hide.ns} to \code{TRUE}; each remains overridable. With \code{facet.by}
+  the pairwise comparisons and the two-way interaction are computed \emph{per
+  panel}, and a compact interaction label is drawn inside each panel (in place
+  of the single pooled subtitle). The one-way path is unchanged.}
 
 \item{ref.group}{a group level used as the reference; each other group is
 compared to it. See \code{\link{geom_pwc}()}.}
