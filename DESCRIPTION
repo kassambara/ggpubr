@@ -55,7 +55,8 @@ Suggests:
     testthat,
     spelling,
     datarium,
-    emmeans
+    emmeans,
+    pROC
 VignetteBuilder: knitr
 Remotes:
     kassambara/rstatix@release/1.1.0
@@ -124,6 +125,7 @@ Collate:
     'ggpubr_options.R'
     'ggqqplot.R'
     'ggraincloud.R'
+    'ggrocplot.R'
     'utilities_label.R'
     'stat_cor.R'
     'stat_stars.R'
