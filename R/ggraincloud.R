@@ -125,10 +125,13 @@ ggraincloud <- function(data, x, y,
   if (!color.by.group) rain.args$colour <- color
   p <- p + do.call(geom_jitter, rain.args)
 
-  if (flip) p <- p + coord_flip()
-
+  # Apply the horizontal orientation through ggpar(orientation=) rather than a
+  # raw coord_flip(): ggpar routes xlim/ylim through coord_flip for the
+  # horizontal case, so a limit passed via `...` does not silently replace the
+  # coordinate system and drop the flip (#646).
   p <- ggpar(
     p, palette = palette, ggtheme = ggtheme,
+    orientation = if (flip) "horizontal" else "vertical",
     title = title, xlab = xlab %||% x, ylab = ylab %||% y, ...
   )
   if (fill.by.group || color.by.group) {

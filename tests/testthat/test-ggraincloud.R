@@ -41,6 +41,13 @@ test_that("ggraincloud flips to the horizontal orientation by default", {
   expect_false(inherits(ggraincloud(df, "dose", "len", flip = FALSE)$coordinates, "CoordFlip"))
 })
 
+test_that("ggraincloud keeps the horizontal orientation when a limit is passed", {
+  # ylim/xlim flow through ggpar; the horizontal flip must not be dropped (#646).
+  p <- ggraincloud(df, "dose", "len", ylim = c(0, 50))
+  expect_true(inherits(p$coordinates, "CoordFlip"))
+  expect_silent(ggplot2::ggplotGrob(p))
+})
+
 test_that("ggraincloud rain points are offset opposite the cloud", {
   # side = "right" -> cloud to the right, rain offset to the left (negative)
   pr <- ggraincloud(df, "dose", "len", side = "right")
