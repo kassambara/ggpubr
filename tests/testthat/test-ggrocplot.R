@@ -107,6 +107,76 @@ test_that("a predictor with AUC < 0.5 triggers a 'reversed' hint message", {
   expect_s3_class(p, "ggplot")
 })
 
+test_that("the Youden optimal cut-point maximizes sensitivity + specificity - 1", {
+  d <- data.frame(
+    y = factor(c("n", "n", "n", "p", "p", "p"), levels = c("n", "p")),
+    x = c(1, 2, 3, 2, 4, 5)
+  )
+  s <- .compute_roc(d, "y", "x", 0.95)$summary
+  # Recompute J over all operating points and confirm the marked point is the max.
+  pts <- ggpubr:::.roc_points(ggpubr:::.roc_binarize(d$y), d$x)
+  jmax <- max(pts$tpr - pts$fpr)
+  expect_equal(s$youden.tpr - s$youden.fpr, jmax, tolerance = 1e-9)
+  # sensitivity = tpr, specificity = 1 - fpr at the marked point.
+  expect_true(s$youden.tpr >= 0 && s$youden.tpr <= 1)
+  expect_true(s$youden.threshold %in% d$x) # threshold is an observed score
+})
+
+test_that("the Youden point matches pROC coords(best, youden)", {
+  skip_if_not_installed("pROC")
+  set.seed(3)
+  n <- 50
+  d <- data.frame(
+    y = factor(rep(c("ctrl", "case"), each = n), levels = c("ctrl", "case")),
+    x = c(stats::rnorm(n), stats::rnorm(n, 1))
+  )
+  s <- .compute_roc(d, "y", "x", 0.95)$summary
+  r <- pROC::roc(d$y, d$x, levels = c("ctrl", "case"), direction = "<", quiet = TRUE)
+  co <- pROC::coords(r, "best", best.method = "youden",
+    ret = c("sensitivity", "specificity"), transpose = FALSE)
+  # Our sensitivity/specificity equal one of pROC's best points (ties possible).
+  expect_true(any(
+    abs(co$sensitivity - s$youden.tpr) < 1e-9 &
+      abs(co$specificity - (1 - s$youden.fpr)) < 1e-9
+  ))
+})
+
+test_that("youden = TRUE adds a marker + label; default draws neither", {
+  set.seed(1)
+  n <- 30
+  d <- data.frame(
+    y = factor(rep(c("n", "p"), each = n), levels = c("n", "p")),
+    x1 = c(stats::rnorm(n), stats::rnorm(n, 1)),
+    x2 = c(stats::rnorm(n), stats::rnorm(n, 0.6))
+  )
+  has_geom <- function(p, g) any(vapply(p$layers, function(l) inherits(l$geom, g), logical(1)))
+  expect_false(has_geom(ggrocplot(d, "y", "x1"), "GeomPoint"))
+  p1 <- ggrocplot(d, "y", "x1", youden = TRUE)
+  expect_true(has_geom(p1, "GeomPoint"))
+  expect_true(has_geom(p1, "GeomText"))
+  # One marked point per predictor with AUC > 0.5 (multi).
+  pm <- ggrocplot(d, "y", c("x1", "x2"), youden = TRUE)
+  i <- which(vapply(pm$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1)))
+  expect_equal(nrow(ggplot2::layer_data(pm, i[1])), 2)
+})
+
+test_that("a predictor with AUC <= 0.5 gets no Youden point", {
+  # Negatively-associated (AUC < 0.5) and constant (AUC = 0.5) predictors.
+  d <- data.frame(
+    y = factor(rep(c("n", "p"), each = 15), levels = c("n", "p")),
+    neg = c(seq(2, 3, length.out = 15), seq(0, 1, length.out = 15)),
+    const = rep(5, 30)
+  )
+  s <- suppressMessages(.compute_roc(d, "y", c("neg", "const"), 0.95)$summary)
+  expect_true(all(is.na(s$youden.fpr)))
+  # No marker layer rows for an AUC<=0.5 predictor even with youden = TRUE.
+  p <- suppressMessages(ggrocplot(d, "y", "const", youden = TRUE))
+  no_point <- !any(vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1))) ||
+    nrow(ggplot2::layer_data(p,
+      which(vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1)))[1])) == 0
+  expect_true(no_point)
+})
+
 test_that("the ROC axes use collision-free breaks and the multi legend wraps", {
   set.seed(1)
   n <- 30

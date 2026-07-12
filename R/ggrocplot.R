@@ -42,6 +42,13 @@ NULL
 #' @param diag logical. If \code{TRUE} (default) the diagonal no-discrimination
 #'   reference line is drawn.
 #' @param diag.color,diag.linetype color and line type of the diagonal reference.
+#' @param youden logical. If \code{TRUE}, the optimal cut-point is marked on each
+#'   curve - the operating point maximizing the Youden index (\eqn{J =
+#'   sensitivity + specificity - 1}) - and its predictor threshold is labelled.
+#'   Default \code{FALSE}. A predictor with AUC \eqn{\le} 0.5 has no meaningful
+#'   cut-point and is not marked.
+#' @param youden.color the color of the optimal cut-point marker and label for a
+#'   single curve (several curves are colored by predictor).
 #' @param legend the legend position. Allowed values: "top", "bottom", "left",
 #'   "right" or "none". Passed to \code{\link{ggpar}}.
 #' @param legend.title the legend title used when several predictors are compared.
@@ -75,6 +82,9 @@ NULL
 #' # Single ROC curve with AUC + 95% CI annotated
 #' ggrocplot(df, response = "outcome", predictor = "marker1")
 #'
+#' # Mark the optimal cut-point (the Youden index) with its threshold
+#' ggrocplot(df, response = "outcome", predictor = "marker1", youden = TRUE)
+#'
 #' # Compare two markers on the same axes
 #' ggrocplot(
 #'   df,
@@ -89,6 +99,7 @@ ggrocplot <- function(data, response, predictor,
                       linetype = "solid", size = NULL,
                       print.auc = TRUE, ci = TRUE, conf.level = 0.95,
                       diag = TRUE, diag.color = "grey60", diag.linetype = "dashed",
+                      youden = FALSE, youden.color = "grey30",
                       title = NULL, xlab = "1 - Specificity", ylab = "Sensitivity",
                       legend = "right", legend.title = "Model",
                       ggtheme = theme_pubr(),
@@ -144,6 +155,47 @@ ggrocplot <- function(data, response, predictor,
   line.args <- list(linewidth = size %||% 0.8, linetype = linetype)
   if (!multi) line.args$color <- color %||% "#2E9FDF"
   p <- p + do.call(geom_line, line.args)
+
+  # Optimal-cutpoint marker (the Youden index J = sensitivity + specificity - 1): the
+  # operating point maximizing tpr - fpr, drawn on top of the curve with its
+  # threshold labelled. Drawn per model (colored to match) and skipped for a
+  # predictor with no meaningful cutpoint (AUC <= 0.5, marked NA upstream).
+  if (youden) {
+    yd <- summ[!is.na(summ$youden.fpr), , drop = FALSE]
+    if (nrow(yd) > 0) {
+      yd$.label <- formatC(yd$youden.threshold, format = "g", digits = 3)
+      if (multi) {
+        yd$.model <- factor(yd$model, levels = summ$model, labels = labels)
+        p <- p +
+          geom_point(
+            data = yd, inherit.aes = FALSE, show.legend = FALSE,
+            aes(x = .data[["youden.fpr"]], y = .data[["youden.tpr"]],
+              color = .data[[".model"]]),
+            shape = 21, fill = "white", size = 2.6, stroke = 1
+          ) +
+          geom_text(
+            data = yd, inherit.aes = FALSE, show.legend = FALSE,
+            aes(x = .data[["youden.fpr"]], y = .data[["youden.tpr"]],
+              label = .data[[".label"]], color = .data[[".model"]]),
+            nudge_x = 0.025, nudge_y = -0.03, hjust = 0, vjust = 1, size = 3
+          )
+      } else {
+        p <- p +
+          geom_point(
+            data = yd, inherit.aes = FALSE,
+            aes(x = .data[["youden.fpr"]], y = .data[["youden.tpr"]]),
+            shape = 21, fill = "white", color = youden.color, size = 2.8, stroke = 1
+          ) +
+          geom_text(
+            data = yd, inherit.aes = FALSE,
+            aes(x = .data[["youden.fpr"]], y = .data[["youden.tpr"]],
+              label = .data[[".label"]]),
+            nudge_x = 0.025, nudge_y = -0.03, hjust = 0, vjust = 1,
+            size = 3.1, color = youden.color
+          )
+      }
+    }
+  }
 
   # AUC annotation for a single curve (multi-curve carries it in the legend).
   # Pin it to the bottom-right of the panel (Inf/-Inf) so it stays visible even
@@ -238,7 +290,10 @@ ggrocplot <- function(data, response, predictor,
   c(lo = max(0, auc - z * se), hi = min(1, auc + z * se))
 }
 
-# Empirical ROC operating points (fpr, tpr), tie-collapsed, with (0,0) prepended.
+# Empirical ROC operating points (fpr, tpr), tie-collapsed, with (0,0)
+# prepended. `threshold` is the predictor value at each point (predict positive
+# when the score is >= it); the (0,0) origin corresponds to +Inf (nothing
+# classified positive).
 .roc_points <- function(d01, score) {
   o <- order(score, decreasing = TRUE)
   d <- d01[o]
@@ -250,7 +305,24 @@ ggrocplot <- function(data, response, predictor,
   keep <- c(s[-length(s)] != s[-1], TRUE) # last index of each tied score run
   data.frame(
     fpr = c(0, fp[keep] / n0),
-    tpr = c(0, tp[keep] / n1)
+    tpr = c(0, tp[keep] / n1),
+    threshold = c(Inf, s[keep])
+  )
+}
+
+# Youden-optimal operating point: the point maximizing J = sensitivity +
+# specificity - 1 = tpr - fpr. Returns the point with its threshold, sensitivity
+# and specificity, or NULL when the optimum is a trivial corner (J <= 0, e.g. a
+# curve on/under the diagonal) where no meaningful cutpoint exists.
+.roc_youden <- function(pts) {
+  j <- pts$tpr - pts$fpr
+  k <- which.max(j)
+  if (length(k) == 0 || j[k] <= 0 || !is.finite(pts$threshold[k])) {
+    return(NULL)
+  }
+  data.frame(
+    fpr = pts$fpr[k], tpr = pts$tpr[k], threshold = pts$threshold[k],
+    sensitivity = pts$tpr[k], specificity = 1 - pts$fpr[k]
   )
 }
 
@@ -273,10 +345,16 @@ ggrocplot <- function(data, response, predictor,
     auc <- .auc_mannwhitney(d01, score)
     ci <- .auc_ci_hanley(auc, n1, n0, conf.level)
     pts <- .roc_points(d01, score)
+    # No meaningful optimal cut-point for a predictor that is not better than
+    # chance (AUC <= 0.5); such a predictor is flagged separately as reversed.
+    y <- if (auc > 0.5) .roc_youden(pts) else NULL
     pts$.model <- pv
-    curve.list[[pv]] <- pts
+    curve.list[[pv]] <- pts[, c("fpr", "tpr", ".model")]
     summary.list[[pv]] <- data.frame(
       model = pv, auc = auc, lo = ci[["lo"]], hi = ci[["hi"]],
+      youden.fpr = if (is.null(y)) NA_real_ else y$fpr,
+      youden.tpr = if (is.null(y)) NA_real_ else y$tpr,
+      youden.threshold = if (is.null(y)) NA_real_ else y$threshold,
       stringsAsFactors = FALSE
     )
   }
