@@ -89,6 +89,24 @@ test_that("a predictor whose NAs remove a whole class errors, not NaN", {
   expect_error(ggrocplot(d, "y", "x"), "both outcome classes")
 })
 
+test_that("a predictor with AUC < 0.5 triggers a 'reversed' hint message", {
+  set.seed(1)
+  n <- 40
+  # x is NEGATIVELY associated with the positive class -> AUC < 0.5.
+  d <- data.frame(
+    y = factor(rep(c("n", "p"), each = n), levels = c("n", "p")),
+    x = c(stats::rnorm(n, 1), stats::rnorm(n, 0)),
+    xpos = c(stats::rnorm(n, 0), stats::rnorm(n, 1)) # AUC > 0.5
+  )
+  expect_message(ggrocplot(d, "y", "x"), "below 0.5")
+  expect_message(ggrocplot(d, "y", "x"), "reverse the predictor")
+  # A well-oriented predictor stays silent (no message).
+  expect_no_message(ggrocplot(d, "y", "xpos"))
+  # The plot object is unaffected by the message (same as suppressing it).
+  p <- suppressMessages(ggrocplot(d, "y", "x"))
+  expect_s3_class(p, "ggplot")
+})
+
 test_that("the ROC axes use collision-free breaks and the multi legend wraps", {
   set.seed(1)
   n <- 30

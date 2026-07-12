@@ -38,7 +38,10 @@ negative one. Set the factor levels explicitly to control this.}
 \item{predictor}{the name of one or more numeric predictor columns (a marker
 or a fitted probability). A \strong{higher} predictor value is taken to
 indicate the positive class. Passing several columns overlays one curve per
-predictor for model comparison.}
+predictor for model comparison. A predictor whose AUC falls below 0.5 is
+negatively associated with the positive class; the curve and AUC are drawn
+as computed (no automatic flipping) and a message notes that the predictor
+or the response levels may need reversing.}
 
 \item{color}{line color, used when a single \code{predictor} is drawn. Ignored
 when several predictors are compared (they are colored by predictor).}

@@ -10,7 +10,9 @@
   McNeil, 1982) are all computed in base R, so the function has no modeling
   dependency and runs in lightweight environments such as WebR. For DeLong or
   bootstrap intervals, ROC smoothing, or tests between curves, use the `pROC`
-  package.
+  package. When a predictor's AUC falls below 0.5 (higher values indicate the
+  negative class), a message hints that the predictor or the response levels may
+  need reversing; the curve is never flipped automatically.
 
 - New `ggestimates()` draws a publication-ready forest plot: one row per group
   with a point estimate, its confidence interval, a reference (null) line and an
