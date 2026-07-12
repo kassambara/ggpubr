@@ -102,7 +102,10 @@ ggrocplot <- function(data, response, predictor,
 
   # Legend labels: append the AUC (+ CI) to each model when several are compared.
   if (multi) {
-    labels <- .auc_label(summ$auc, summ$lo, summ$hi, ci = ci, prefix = paste0(summ$model, "  "))
+    # The model name and its AUC go on two lines so the legend stays narrow -
+    # a single wide "name  AUC = .. [.., ..]" line squeezes the (square) panel
+    # and crowds the axis ticks at small device sizes.
+    labels <- .auc_label(summ$auc, summ$lo, summ$hi, ci = ci, prefix = paste0(summ$model, "\n"))
     if (!print.auc) labels <- summ$model
     curve$.model <- factor(curve$.model, levels = summ$model, labels = labels)
   }
@@ -126,16 +129,20 @@ ggrocplot <- function(data, response, predictor,
   p <- p + do.call(geom_line, line.args)
 
   # AUC annotation for a single curve (multi-curve carries it in the legend).
+  # Pin it to the bottom-right of the panel (Inf/-Inf) so it stays visible even
+  # when the user zooms with xlim/ylim through ggpar().
   if (print.auc && !multi) {
     p <- p + annotate(
-      "text", x = 0.98, y = 0.02, hjust = 1, vjust = 0,
+      "text", x = Inf, y = -Inf, hjust = 1.05, vjust = -0.8,
       label = .auc_label(summ$auc, summ$lo, summ$hi, ci = ci)
     )
   }
 
+  # Few, evenly spaced breaks so the labels never collide, even when a wide
+  # legend shrinks the square panel at small device sizes.
   p <- p +
-    scale_x_continuous(limits = c(0, 1)) +
-    scale_y_continuous(limits = c(0, 1))
+    scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1)) +
+    scale_y_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1))
 
   # The color aesthetic (and its legend title) only exists when several
   # predictors are compared; setting it for a single curve warns.
@@ -240,6 +247,12 @@ ggrocplot <- function(data, response, predictor,
     score <- as.numeric(data[[pv]][ok])
     n1 <- sum(d01 == 1)
     n0 <- sum(d01 == 0)
+    # After dropping rows missing the response or this predictor, both outcome
+    # classes must remain, otherwise the AUC is undefined (division by zero).
+    if (n1 == 0 || n0 == 0) {
+      stop("After removing missing values, predictor '", pv, "' does not have ",
+        "both outcome classes; cannot compute a ROC curve.", call. = FALSE)
+    }
     auc <- .auc_mannwhitney(d01, score)
     ci <- .auc_ci_hanley(auc, n1, n0, conf.level)
     pts <- .roc_points(d01, score)

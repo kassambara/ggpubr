@@ -79,3 +79,28 @@ test_that("invalid input is rejected with a clear message", {
   expect_error(ggrocplot(d, "y", "x"), "two classes")
   expect_error(ggrocplot(d, "missing", "x"), "not found")
 })
+
+test_that("a predictor whose NAs remove a whole class errors, not NaN", {
+  # y has both classes, but x is missing on every positive row.
+  d <- data.frame(
+    y = factor(rep(c("n", "p"), each = 5), levels = c("n", "p")),
+    x = c(1, 2, 3, 4, 5, NA, NA, NA, NA, NA)
+  )
+  expect_error(ggrocplot(d, "y", "x"), "both outcome classes")
+})
+
+test_that("the ROC axes use collision-free breaks and the multi legend wraps", {
+  set.seed(1)
+  n <- 30
+  d <- data.frame(
+    y = factor(rep(c("n", "p"), each = n), levels = c("n", "p")),
+    x1 = c(stats::rnorm(n), stats::rnorm(n, 1)),
+    x2 = c(stats::rnorm(n), stats::rnorm(n, 0.5))
+  )
+  b <- ggplot2::ggplot_build(ggrocplot(d, "y", "x1"))
+  expect_equal(b$layout$panel_params[[1]]$x$get_breaks(), c(0, 0.5, 1))
+  expect_equal(b$layout$panel_params[[1]]$y$get_breaks(), c(0, 0.5, 1))
+  # Multi-predictor legend labels place the AUC on a second line.
+  p2 <- ggrocplot(d, "y", c("x1", "x2"))
+  expect_true(all(grepl("\n", levels(ggplot2::ggplot_build(p2)$plot$data$.model))))
+})
