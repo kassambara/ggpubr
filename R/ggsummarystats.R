@@ -146,6 +146,12 @@ ggsummarystats <- function(data, x, y, summaries = c("n", "median", "iqr"),
   }
 
   env <- c(as.list(environment()), list(...))
+  # Sugar: `comparisons =` implies the comparison-figure builder ggcompare(),
+  # unless `ggfunc` was given explicitly. Without this, `comparisons` would fall
+  # into `...` and be silently dropped. `comparisons = NULL` leaves env unchanged.
+  if (missing(ggfunc) && !is.null(env$comparisons)) {
+    env$ggfunc <- ggcompare
+  }
   if (is.null(facet.by)) {
     results <- do.call(ggsummarystats_core, env)
   } else {
