@@ -102,14 +102,25 @@ test_that("brackets stay on the panel in both comparison directions", {
   expect_gt(brk_x(p_leg)[2], 2)
 })
 
-test_that("two-way mode rejects facet.by with a clear error (no crash)", {
+test_that("faceted two-way draws per-panel brackets and interaction labels", {
   js <- get_js()
   js$region <- factor(rep(c("north", "south"), length.out = nrow(js)))
-  expect_error(
-    ggcompare(js, x = "gender", y = "score", color = "education_level",
-      facet.by = "region"),
-    "not yet supported in two-way"
-  )
+  p <- ggcompare(js, x = "gender", y = "score", color = "education_level",
+    facet.by = "region")
+  expect_silent(ggplot2::ggplotGrob(ggplot2::ggplot_build(p)))
+  # Brackets are computed per panel: 3 education comparisons x 2 genders x 2
+  # regions = 12 (before hide.ns).
+  expect_equal(n_brackets(ggcompare(js, x = "gender", y = "score",
+    color = "education_level", facet.by = "region", hide.ns = FALSE)), 12)
+  # One per-panel interaction label per region.
+  ti <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1)))
+  labs <- ggplot2::layer_data(p, ti[1])
+  expect_equal(nrow(labs), 2)
+  expect_true(all(grepl("^Interaction: F", labs$label)))
+  # omnibus = "none" drops the interaction labels.
+  p0 <- ggcompare(js, x = "gender", y = "score", color = "education_level",
+    facet.by = "region", omnibus = "none")
+  expect_false(any(vapply(p0$layers, function(l) inherits(l$geom, "GeomText"), logical(1))))
 })
 
 test_that("ref.group draws only comparisons to the reference level", {

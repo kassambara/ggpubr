@@ -2,6 +2,11 @@
 
 ## New features
 
+- `ggcompare()` two-way (grouped) mode now supports `facet.by`. The simple
+  pairwise comparisons and the two-way interaction are computed within each
+  facet panel, and a compact interaction label is drawn in each panel (in place
+  of the single pooled subtitle used without faceting) (#769).
+
 - New `ggrocplot()` draws a publication-ready ROC curve with the area under the
   curve (AUC) and its confidence interval computed and annotated on the plot;
   passing several predictor columns overlays one curve per model for comparison,
