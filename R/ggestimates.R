@@ -46,6 +46,9 @@ NULL
 #' @param ci.text.width the fraction of the data x-range reserved on the right
 #'   for the \code{ci.text} column. Increase it for long labels.
 #' @param digits number of decimal places for the \code{ci.text} column.
+#' @param label.hjust horizontal justification of the row (y-axis) labels:
+#'   \code{1} (default) right-aligns them against the axis, \code{0} left-aligns,
+#'   \code{0.5} centers.
 #' @param xlab,ylab,title axis labels and title.
 #' @param ggtheme a ggplot theme. Default \code{\link{theme_pubr}()}.
 #' @param ... other arguments passed to \code{\link{ggpar}()}.
@@ -81,7 +84,7 @@ ggestimates <- function(data, estimate = "estimate",
                         descending = FALSE,
                         point.size = 3, size = NULL, shape = 15,
                         ci.text = TRUE, ci.text.title = "Estimate (95% CI)",
-                        ci.text.width = 0.5, digits = 2,
+                        ci.text.width = 0.5, digits = 2, label.hjust = 1,
                         xlab = "Estimate (95% CI)", ylab = NULL, title = NULL,
                         ggtheme = theme_pubr(), ...) {
   sort <- match.arg(sort)
@@ -236,7 +239,7 @@ ggestimates <- function(data, estimate = "estimate",
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
   p <- p + ggplot2::theme(
     legend.position = "none",
-    axis.text.y = ggplot2::element_text(hjust = 0, face = "bold"),
+    axis.text.y = ggplot2::element_text(hjust = label.hjust, face = "bold"),
     plot.margin = ggplot2::margin(6, 12, 6, 6)
   )
   p

@@ -127,6 +127,18 @@ test_that("labels default to row names; missing columns and NA rows are handled"
   expect_equal(nrow(layer_of(p, "GeomPoint")), 4)
 })
 
+test_that("label.hjust controls the row-label justification (right by default)", {
+  d <- or_data()
+  hjust_of <- function(p) {
+    g <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))
+    p$theme$axis.text.y$hjust
+  }
+  expect_equal(hjust_of(ggestimates(d, label = "term")), 1)             # default right
+  expect_equal(hjust_of(ggestimates(d, label = "term", label.hjust = 0)), 0)
+  expect_silent(ggplot2::ggplotGrob(ggplot2::ggplot_build(
+    ggestimates(d, label = "term", label.hjust = 0))))
+})
+
 test_that("color maps a grouping column and applies the palette", {
   d <- or_data()
   p <- ggestimates(d, label = "term", color = "term", palette = "jco")

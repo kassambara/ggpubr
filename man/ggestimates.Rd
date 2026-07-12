@@ -23,6 +23,7 @@ ggestimates(
   ci.text.title = "Estimate (95\% CI)",
   ci.text.width = 0.5,
   digits = 2,
+  label.hjust = 1,
   xlab = "Estimate (95\% CI)",
   ylab = NULL,
   title = NULL,
@@ -76,6 +77,10 @@ the numeric estimate and interval for each row.}
 for the \code{ci.text} column. Increase it for long labels.}
 
 \item{digits}{number of decimal places for the \code{ci.text} column.}
+
+\item{label.hjust}{horizontal justification of the row (y-axis) labels:
+\code{1} (default) right-aligns them against the axis, \code{0} left-aligns,
+\code{0.5} centers.}
 
 \item{xlab, ylab, title}{axis labels and title.}
 
