@@ -32,7 +32,9 @@ NULL
 #' @param top the number of top hits to label. Default 15. Use \code{top = 0}
 #'   with \code{label.select} to label only specific genes.
 #' @param select.top.method the ranking used to pick the top hits, one of
-#'   \code{"padj"} (default) or \code{"fc"}.
+#'   \code{"padj"} (default), \code{"fc"}, or \code{"rank.sum"} (ranks by the sum
+#'   of the \eqn{|log2FC|} rank and the adjusted-p rank, so the labeled genes are
+#'   both high-effect and highly significant).
 #' @param label.select a character vector of specific gene names to label.
 #' @param facet.by character vector of grouping variable(s) for faceting; the top
 #'   hits are then selected within each panel.
@@ -41,6 +43,10 @@ NULL
 #'   built from \code{y} (e.g. \code{"-Log10 padj"}).
 #' @param line.color the color of the threshold lines. Default \code{"black"}.
 #' @param ggtheme a ggplot theme. Default \code{\link[ggplot2]{theme_classic}()}.
+#' @param top.balanced logical. If \code{TRUE}, the labeled top genes are
+#'   direction-balanced: about half up-regulated and half down-regulated (with
+#'   spillover when one side has fewer genes), ranked within each direction by
+#'   \code{select.top.method}. Default \code{FALSE}.
 #' @param ... other arguments passed to \code{\link{ggpar}()}.
 #' @return a ggplot.
 #' @seealso \code{\link{ggmaplot}}.
@@ -60,17 +66,24 @@ NULL
 #'   top = 0, label.select = c("BUB1", "CD83")
 #' )
 #'
+#' # Rank the labeled genes by effect AND significance, balanced up/down
+#' ggvolcano(diff_express,
+#'   fdr = 0.05, fc = 2, size = 0.6,
+#'   genenames = as.vector(diff_express$name),
+#'   top = 10, select.top.method = "rank.sum", top.balanced = TRUE
+#' )
+#'
 #' @export
 ggvolcano <- function(data, x = "log2FoldChange", y = "padj",
                       fdr = 0.05, fc = 1.5, genenames = NULL,
                       size = NULL, alpha = 1, seed = 42,
                       font.label = c(12, "plain", "black"), label.rectangle = FALSE,
                       palette = c("#B31B21", "#1465AC", "darkgray"),
-                      top = 15, select.top.method = c("padj", "fc"),
+                      top = 15, select.top.method = c("padj", "fc", "rank.sum"),
                       label.select = NULL, facet.by = NULL,
                       main = NULL, xlab = "Log2 fold change", ylab = NULL,
                       line.color = "black",
-                      ggtheme = theme_classic(), ...) {
+                      ggtheme = theme_classic(), top.balanced = FALSE, ...) {
   if (!base::inherits(data, c("matrix", "data.frame", "DataFrame", "DE_Results", "DESeqResults"))) {
     stop("data must be an object of class matrix, data.frame, DataFrame, DE_Results or DESeqResults")
   }
@@ -158,7 +171,14 @@ ggvolcano <- function(data, x = "log2FoldChange", y = "padj",
   }
   complete_data <- stats::na.omit(data)
   labs_data <- subset(complete_data, padj <= fdr & name != "" & abs(lfc) >= log2(fc))
-  if (is.null(facet.by)) {
+  if (select.top.method == "rank.sum" || isTRUE(top.balanced)) {
+    # Opt-in ranking: rank-sum of |log2FC| and adjusted-p ranks and/or a
+    # direction-balanced pick. The default path below is left unchanged.
+    labs_data <- .select_top_de_labels(
+      labs_data, top = top, method = select.top.method,
+      balanced = top.balanced, facet.by = facet.by
+    )
+  } else if (is.null(facet.by)) {
     labs_data <- utils::head(labs_data, top)
   } else {
     labs_data <- labs_data %>%

@@ -50,7 +50,9 @@ NULL
 #'  hide to gene labels.
 #' @param select.top.method methods to be used for selecting top genes. Allowed
 #'  values include "padj" and "fc" for selecting by adjusted p values or fold
-#'  changes, respectively.
+#'  changes, respectively; and "rank.sum", which ranks by the sum of the
+#'  \eqn{|log2FC|} rank and the adjusted-p rank so that the labeled genes are
+#'  those that are both high-effect and highly significant.
 #' @param label.select character vector specifying some labels to show.
 #' @param facet.by character vector, of length 1 or 2, specifying grouping
 #'   variables for faceting the plot into multiple panels (one MA plot per group).
@@ -64,6 +66,11 @@ NULL
 #'   \code{theme_classic()}. Set \code{ggtheme = NULL} to skip applying a ggpubr
 #'   theme, so the plot keeps ggplot2 default theme or the theme set globally via
 #'   \code{theme_set()}.
+#' @param top.balanced logical. If \code{TRUE}, the labeled top genes are
+#'   direction-balanced: about half up-regulated and half down-regulated (with
+#'   spillover into the other direction when one side has fewer genes), using
+#'   \code{select.top.method} to rank within each direction. Default
+#'   \code{FALSE} (top genes chosen regardless of direction).
 #' @param ... other arguments to be passed to \code{\link{ggpar}}.
 #' @return a ggplot.
 #' @examples
@@ -105,17 +112,23 @@ NULL
 #'   top = 0, label.select = c("BUB1", "CD83")
 #' )
 #'
+#' # Rank the labeled genes by effect AND significance, balanced up/down
+#' ggmaplot(diff_express,
+#'   fdr = 0.05, fc = 2, genenames = as.vector(diff_express$name),
+#'   top = 10, select.top.method = "rank.sum", top.balanced = TRUE
+#' )
+#'
 #' @export
 ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
                      detection_call = NULL, size = NULL, alpha = 1,
                      seed = 42,
                      font.label = c(12, "plain", "black"), label.rectangle = FALSE,
                      palette = c("#B31B21", "#1465AC", "darkgray"),
-                     top = 15, select.top.method = c("padj", "fc"),
+                     top = 15, select.top.method = c("padj", "fc", "rank.sum"),
                      label.select = NULL, facet.by = NULL,
                      main = NULL, xlab = "Log2 mean expression", ylab = "Log2 fold change",
                      line.color = "black",
-                     ggtheme = theme_classic(), ...) {
+                     ggtheme = theme_classic(), top.balanced = FALSE, ...) {
   if (!base::inherits(data, c("matrix", "data.frame", "DataFrame", "DE_Results", "DESeqResults"))) {
     stop("data must be an object of class matrix, data.frame, DataFrame, DE_Results or DESeqResults")
   }
@@ -207,7 +220,14 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   # select data for top genes
   complete_data <- stats::na.omit(data)
   labs_data <- subset(complete_data, padj <= fdr & name != "" & abs(lfc) >= log2(fc))
-  if (is.null(facet.by)) {
+  if (select.top.method == "rank.sum" || isTRUE(top.balanced)) {
+    # Opt-in ranking: rank-sum of |log2FC| and adjusted-p ranks and/or a
+    # direction-balanced pick. The default path below is left unchanged.
+    labs_data <- .select_top_de_labels(
+      labs_data, top = top, method = select.top.method,
+      balanced = top.balanced, facet.by = facet.by
+    )
+  } else if (is.null(facet.by)) {
     labs_data <- utils::head(labs_data, top)
   } else {
     # #498: select the top genes PER facet. `data` is already ordered by the

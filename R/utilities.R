@@ -796,6 +796,66 @@ keep_only_tbl_df_classes <- function(x) {
 }
 
 
+# Rank a significance-gated differential-expression label pool (columns: name,
+# lfc, padj) and pick up to `top` rows, optionally direction-balanced and/or per
+# facet group. Used by ggmaplot()/ggvolcano() for the opt-in "rank.sum" method
+# and the top.balanced option; the default (method = "padj"/"fc",
+# top.balanced = FALSE) does NOT call this - it keeps the historical path.
+#
+# - method: ranking key. "padj" (ascending adjusted p), "fc" (descending
+#   |log2FC|), or "rank.sum" (rank of descending |log2FC| + rank of ascending
+#   padj, lowest wins - genes that are both high-effect AND highly significant).
+#   Ties are broken by larger |log2FC|.
+# - balanced: if TRUE, take ceil(top/2) up- and down-regulated genes with
+#   spillover when one direction is short (direction from sign(lfc)).
+# - facet.by: if not NULL, select within each facet group.
+# Returns the selected rows, best-first.
+.select_top_de_labels <- function(df, top, method = c("padj", "fc", "rank.sum"),
+                                   balanced = FALSE, facet.by = NULL) {
+  method <- match.arg(method)
+  if (nrow(df) == 0L || top <= 0L) {
+    return(df[0, , drop = FALSE])
+  }
+
+  rank_pool <- function(pool) {
+    if (nrow(pool) == 0L) {
+      return(pool)
+    }
+    ord <- switch(method,
+      padj = order(pool$padj, -abs(pool$lfc)),
+      fc = order(-abs(pool$lfc), pool$padj),
+      rank.sum = order(
+        rank(-abs(pool$lfc), ties.method = "first") +
+          rank(pool$padj, ties.method = "first"),
+        -abs(pool$lfc)
+      )
+    )
+    pool[ord, , drop = FALSE]
+  }
+
+  pick <- function(pool) {
+    if (!isTRUE(balanced)) {
+      return(utils::head(rank_pool(pool), top))
+    }
+    up <- rank_pool(pool[pool$lfc > 0, , drop = FALSE])
+    down <- rank_pool(pool[pool$lfc < 0, , drop = FALSE])
+    half <- ceiling(top / 2)
+    n_up_slots <- min(half, nrow(up))
+    n_down_slots <- min(half, nrow(down))
+    final_up <- min(nrow(up), top - n_down_slots) # spillover
+    final_down <- min(nrow(down), top - n_up_slots)
+    utils::head(rbind(utils::head(up, final_up), utils::head(down, final_down)), top)
+  }
+
+  if (is.null(facet.by)) {
+    return(pick(df))
+  }
+  groups <- do.call(paste, c(df[, facet.by, drop = FALSE], sep = "\r"))
+  parts <- lapply(split(df, groups), pick)
+  do.call(rbind, parts)
+}
+
+
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Apply ggpubr functions on a data
 # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

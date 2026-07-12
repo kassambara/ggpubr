@@ -17,7 +17,7 @@ ggmaplot(
   label.rectangle = FALSE,
   palette = c("#B31B21", "#1465AC", "darkgray"),
   top = 15,
-  select.top.method = c("padj", "fc"),
+  select.top.method = c("padj", "fc", "rank.sum"),
   label.select = NULL,
   facet.by = NULL,
   main = NULL,
@@ -25,6 +25,7 @@ ggmaplot(
   ylab = "Log2 fold change",
   line.color = "black",
   ggtheme = theme_classic(),
+  top.balanced = FALSE,
   ...
 )
 }
@@ -89,7 +90,9 @@ hide to gene labels.}
 
 \item{select.top.method}{methods to be used for selecting top genes. Allowed
 values include "padj" and "fc" for selecting by adjusted p values or fold
-changes, respectively.}
+changes, respectively; and "rank.sum", which ranks by the sum of the
+\eqn{|log2FC|} rank and the adjusted-p rank so that the labeled genes are
+those that are both high-effect and highly significant.}
 
 \item{label.select}{character vector specifying some labels to show.}
 
@@ -115,6 +118,12 @@ at 0 and the two fold-change cutoff lines). Default is "black".}
 \code{theme_classic()}. Set \code{ggtheme = NULL} to skip applying a ggpubr
 theme, so the plot keeps ggplot2 default theme or the theme set globally via
 \code{theme_set()}.}
+
+\item{top.balanced}{logical. If \code{TRUE}, the labeled top genes are
+direction-balanced: about half up-regulated and half down-regulated (with
+spillover into the other direction when one side has fewer genes), using
+\code{select.top.method} to rank within each direction. Default
+\code{FALSE} (top genes chosen regardless of direction).}
 
 \item{...}{other arguments to be passed to \code{\link{ggpar}}.}
 }
@@ -164,6 +173,12 @@ ggmaplot(diff_express,
   genenames = as.vector(diff_express$name),
   ggtheme = ggplot2::theme_minimal(),
   top = 0, label.select = c("BUB1", "CD83")
+)
+
+# Rank the labeled genes by effect AND significance, balanced up/down
+ggmaplot(diff_express,
+  fdr = 0.05, fc = 2, genenames = as.vector(diff_express$name),
+  top = 10, select.top.method = "rank.sum", top.balanced = TRUE
 )
 
 }
