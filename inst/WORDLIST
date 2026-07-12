@@ -137,6 +137,7 @@ ges
 ggbarplot
 ggboxplot
 ggcompare
+ggcorrplot
 ggdensity
 ggdotchart
 ggdotplot
