@@ -2,6 +2,14 @@
 
 ## New features
 
+- New `ggvolcano()` draws a publication-ready volcano plot of differential
+  expression results: log2 fold change versus `-log10` of the (adjusted)
+  p-value, with points colored as up/down/non-significant by fold-change and
+  significance thresholds, the top hits labeled, and threshold lines. It mirrors
+  the `ggmaplot()` surface (`fdr`, `fc`, `top`, `select.top.method`,
+  `label.select`, `facet.by`) and accepts custom fold-change/p-value column
+  names via `x`/`y` (#761).
+
 - New `ggraincloud()` draws a raincloud plot: a half violin (the "cloud"), a
   narrow box plot, and the raw jittered data points (the "rain") offset to the
   opposite side. Supports coloring by group, journal palettes, horizontal

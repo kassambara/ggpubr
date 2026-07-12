@@ -129,6 +129,7 @@ Collate:
     'ggtext.R'
     'ggtexttable.R'
     'ggviolin.R'
+    'ggvolcano.R'
     'gradient_color.R'
     'grids.R'
     'npc_to_data_coord.R'
