@@ -13,10 +13,13 @@ NULL
 #' @param data a data frame.
 #' @param x,y x and y variables, where \code{x} is a grouping variable and
 #'   \code{y} is numeric.
-#' @param color point and box outline color. If \code{"x"} (or the name of the
-#'   \code{x} variable), colored by group.
-#' @param fill cloud and box fill color. If \code{NULL} (default) or \code{"x"},
-#'   filled by group.
+#' @param color the color of the rain (jittered) points. If \code{NULL}
+#'   (default) or \code{"x"}, the points are colored by the \code{x} group;
+#'   otherwise a single color (e.g. \code{"black"}). The box outline is always
+#'   black.
+#' @param fill the fill color of the cloud (half violin) and the box. If
+#'   \code{NULL} (default) or \code{"x"}, filled by the \code{x} group;
+#'   otherwise a single fill color (e.g. \code{"#00AFBB"}).
 #' @param palette the color palette to be used for coloring or filling by groups.
 #' @param alpha transparency of the cloud and box fill. Default 0.7.
 #' @param width the width of the half violin (cloud). Default 0.9.
@@ -51,7 +54,7 @@ NULL
 #'
 #' @export
 ggraincloud <- function(data, x, y,
-                        color = "black", fill = NULL, palette = NULL,
+                        color = NULL, fill = NULL, palette = NULL,
                         alpha = 0.7, width = 0.9,
                         boxplot.width = 0.1,
                         jitter.width = 0.06, jitter.size = 1.2,
@@ -62,8 +65,10 @@ ggraincloud <- function(data, x, y,
   side <- match.arg(side)
   if (!is.factor(data[[x]])) data[[x]] <- factor(data[[x]])
 
-  # Default to colouring/filling by the x group.
-  if (is.null(fill)) fill <- x
+  # `fill` colours the cloud and box; `color` colours the rain points. NULL or
+  # the sentinel "x" means "by the x group"; any other value is a fixed colour.
+  if (is.null(fill) || identical(fill, "x")) fill <- x
+  if (is.null(color) || identical(color, "x")) color <- x
   cloud.nudge <- if (side == "right") boxplot.width else -boxplot.width
   rain.offset <- if (side == "right") -0.20 else 0.20
 
@@ -72,17 +77,16 @@ ggraincloud <- function(data, x, y,
   # offset numeric positions sit alongside each group.
   data[[".ggpubr.rain.x."]] <- as.numeric(data[[x]]) + rain.offset
 
-  aes.main <- create_aes(list(x = x, y = y))
   fill.by.group <- fill %in% colnames(data)
   color.by.group <- color %in% colnames(data)
-  if (fill.by.group) aes.main$fill <- as.name(fill)
-  if (color.by.group) aes.main$colour <- as.name(color)
 
+  aes.main <- create_aes(list(x = x, y = y))
+  if (fill.by.group) aes.main$fill <- as.name(fill)
   p <- ggplot(data, aes.main)
 
   # Cloud: half violin on `side`, its flat edge nudged to the group centre + box.
-  # `fill`/`colour` are only passed as fixed values when they are NOT mapped from
-  # the data (passing them when mapped would blank the layer).
+  # `fill` is only passed as a fixed value when it is NOT mapped from the data
+  # (passing it when mapped would blank the layer). The cloud has no outline.
   cloud.args <- list(
     side = side, position = position_nudge(x = cloud.nudge),
     trim = FALSE, width = width, alpha = alpha, colour = NA
@@ -90,7 +94,7 @@ ggraincloud <- function(data, x, y,
   if (!fill.by.group) cloud.args$fill <- fill
   p <- p + do.call(geom_violin_half, cloud.args)
 
-  # Box: narrow, at the cloud's flat edge.
+  # Box: narrow, at the cloud's flat edge, with a black outline for contrast.
   box.args <- list(
     position = position_nudge(x = cloud.nudge),
     width = boxplot.width, alpha = alpha, outlier.shape = NA, colour = "black"
@@ -98,15 +102,14 @@ ggraincloud <- function(data, x, y,
   if (!fill.by.group) box.args$fill <- fill
   p <- p + do.call(geom_boxplot, box.args)
 
-  # Rain: raw points offset to the opposite side, with a little jitter.
+  # Rain: raw points offset to the opposite side, coloured by `color`.
   aes.rain <- create_aes(list(x = ".ggpubr.rain.x.", y = y))
-  rain.color.var <- if (color.by.group) color else if (fill.by.group) fill else NULL
-  if (!is.null(rain.color.var)) aes.rain$colour <- as.name(rain.color.var)
+  if (color.by.group) aes.rain$colour <- as.name(color)
   rain.args <- list(
     mapping = aes.rain,
     width = jitter.width, height = 0, size = jitter.size, alpha = alpha
   )
-  if (is.null(rain.color.var)) rain.args$colour <- color
+  if (!color.by.group) rain.args$colour <- color
   p <- p + do.call(geom_jitter, rain.args)
 
   if (flip) p <- p + coord_flip()

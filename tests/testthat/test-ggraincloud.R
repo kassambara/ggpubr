@@ -59,6 +59,25 @@ test_that("ggraincloud supports a single fill and by-group fill", {
   expect_silent(ggplot2::ggplotGrob(ggraincloud(df, "dose", "len", palette = "jco")))
 })
 
+test_that("ggraincloud honors the 'x' sentinel and NULL for color/fill", {
+  # "x" and NULL both mean "by the x group" and must not crash.
+  expect_silent(ggplot2::ggplotGrob(ggraincloud(df, "dose", "len", fill = "x")))
+  expect_silent(ggplot2::ggplotGrob(ggraincloud(df, "dose", "len", color = "x")))
+  # default (NULL) colors the rain by group
+  d3 <- ggplot2::ggplot_build(ggraincloud(df, "dose", "len"))$data[[3]]
+  expect_gt(length(unique(d3$colour)), 1)
+})
+
+test_that("ggraincloud applies a single color to the rain and a single fill to the cloud", {
+  pr <- ggraincloud(df, "dose", "len", color = "red")
+  rain <- ggplot2::ggplot_build(pr)$data[[3]]
+  expect_equal(unique(rain$colour), "red")
+
+  pf <- ggraincloud(df, "dose", "len", fill = "#00AFBB")
+  cloud <- ggplot2::ggplot_build(pf)$data[[1]]
+  expect_equal(unique(cloud$fill), "#00AFBB")
+})
+
 test_that("ggraincloud supports faceting", {
   p <- ggraincloud(df, "supp", "len", facet.by = "dose")
   expect_silent(ggplot2::ggplotGrob(p))

@@ -8,7 +8,7 @@ ggraincloud(
   data,
   x,
   y,
-  color = "black",
+  color = NULL,
   fill = NULL,
   palette = NULL,
   alpha = 0.7,
@@ -33,11 +33,14 @@ ggraincloud(
 \item{x, y}{x and y variables, where \code{x} is a grouping variable and
 \code{y} is numeric.}
 
-\item{color}{point and box outline color. If \code{"x"} (or the name of the
-\code{x} variable), colored by group.}
+\item{color}{the color of the rain (jittered) points. If \code{NULL}
+(default) or \code{"x"}, the points are colored by the \code{x} group;
+otherwise a single color (e.g. \code{"black"}). The box outline is always
+black.}
 
-\item{fill}{cloud and box fill color. If \code{NULL} (default) or \code{"x"},
-filled by group.}
+\item{fill}{the fill color of the cloud (half violin) and the box. If
+\code{NULL} (default) or \code{"x"}, filled by the \code{x} group;
+otherwise a single fill color (e.g. \code{"#00AFBB"}).}
 
 \item{palette}{the color palette to be used for coloring or filling by groups.}
 
