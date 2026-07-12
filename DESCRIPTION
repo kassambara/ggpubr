@@ -56,7 +56,9 @@ Suggests:
     spelling,
     datarium,
     emmeans,
-    pROC
+    pROC,
+    patchwork,
+    ggcorrplot
 VignetteBuilder: knitr
 Remotes:
     kassambara/rstatix@release/1.1.0

@@ -1,0 +1,134 @@
+---
+title: "Combining ggpubr Plots with patchwork"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Combining ggpubr Plots with patchwork}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+# Every plotting chunk needs patchwork; the correlation-matrix section also needs
+# ggcorrplot. Skip gracefully when a Suggests package is absent so the vignette
+# still builds under R CMD check's depends-only flavor.
+has_patchwork <- requireNamespace("patchwork", quietly = TRUE)
+has_ggcorrplot <- requireNamespace("ggcorrplot", quietly = TRUE)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 4.2,
+  dpi = 96,
+  message = FALSE,
+  warning = FALSE,
+  eval = has_patchwork
+)
+```
+
+```{r not-available, echo = FALSE, eval = !has_patchwork, results = "asis"}
+cat("> This vignette needs the **patchwork** package, which is not installed,",
+    "so its output is not shown here.")
+```
+
+Every `ggpubr` function returns a standard `ggplot` object. That means you can
+lay several `ggpubr` plots out together with
+[patchwork](https://patchwork.data-imaginist.com/), whose `+`, `|` and `/`
+operators compose plots with almost no boilerplate. patchwork complements the
+built-in `ggpubr::ggarrange()`, and is handy when you want shared legends, nested
+layouts, or automatic panel tags.
+
+```{r libs}
+library(ggpubr)
+library(patchwork)
+
+# A few publication-ready ggpubr plots to arrange
+data("ToothGrowth")
+tg <- ToothGrowth
+tg$dose <- as.factor(tg$dose)
+
+bxp <- ggboxplot(tg, x = "dose", y = "len", fill = "dose", palette = "jco",
+  add = "jitter") +
+  stat_compare_means(method = "anova")
+
+sctr <- ggscatter(mtcars, x = "wt", y = "mpg",
+  add = "reg.line", conf.int = TRUE,
+  cor.coef = TRUE, cor.method = "pearson")
+
+dens <- ggdensity(tg, x = "len", fill = "dose", palette = "jco")
+```
+
+## Side by side, stacked, and nested
+
+Use `|` to place plots beside each other, `/` to stack them, and parentheses to
+nest layouts.
+
+```{r side-by-side, fig.height = 3.6}
+bxp | sctr
+```
+
+```{r nested, fig.height = 5.5}
+(bxp | sctr) / dens
+```
+
+## Controlling the layout
+
+`plot_layout()` sets the number of columns/rows and the relative sizes.
+
+```{r layout, fig.height = 3.6}
+(bxp | sctr) + plot_layout(widths = c(1, 1.4))
+```
+
+## One shared legend
+
+When panels carry the *same* legend, `plot_layout(guides = "collect")` gathers
+those identical legends into a single one. The `&` operator then applies a theme
+element to every panel at once - here to move the shared legend to the bottom.
+
+```{r shared-legend, fig.height = 3.6}
+oj <- ggboxplot(subset(tg, supp == "OJ"), x = "dose", y = "len",
+  fill = "dose", palette = "jco", add = "jitter") +
+  labs(title = "Orange juice")
+
+vc <- ggboxplot(subset(tg, supp == "VC"), x = "dose", y = "len",
+  fill = "dose", palette = "jco", add = "jitter") +
+  labs(title = "Vitamin C")
+
+(oj | vc) +
+  plot_layout(guides = "collect") &
+  theme(legend.position = "bottom")
+```
+
+## Titles and panel tags
+
+`plot_annotation()` adds a figure title and automatic panel tags (A, B, C ...),
+the layout most journals expect for a multi-panel figure.
+
+```{r annotation, fig.height = 5.5}
+(bxp | sctr) / dens +
+  plot_annotation(
+    title = "Tooth growth and fuel economy",
+    tag_levels = "A"
+  )
+```
+
+## Correlation matrices
+
+`ggpubr` does not draw correlation matrices; for that, use
+[ggcorrplot](https://rpkgs.datanovia.com/ggcorrplot/), which also returns a
+`ggplot` and so composes with patchwork in exactly the same way.
+
+```{r corr, eval = has_patchwork && has_ggcorrplot, fig.width = 8, fig.height = 4}
+library(ggcorrplot)
+
+corr <- round(cor(mtcars[, c("mpg", "disp", "hp", "drat", "wt", "qsec")]), 2)
+cmat <- ggcorrplot(corr, hc.order = TRUE, type = "lower",
+  lab = TRUE, colors = c("#6D9EC1", "white", "#E46726"))
+
+cmat | sctr
+```
+
+## See also
+
+- `ggpubr::ggarrange()` for the built-in arrangement helper.
+- [patchwork](https://patchwork.data-imaginist.com/) for the full composition API.
+- [ggcorrplot](https://rpkgs.datanovia.com/ggcorrplot/) for correlation matrices.

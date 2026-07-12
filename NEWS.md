@@ -2,6 +2,10 @@
 
 ## New features
 
+- New vignette "Combining ggpubr Plots with patchwork" shows how to arrange
+  ggpubr figures with the patchwork package (shared legends, panel tags,
+  nested layouts) and points to ggcorrplot for correlation matrices (#770).
+
 - `ggcompare()` two-way (grouped) mode now supports `facet.by`. The simple
   pairwise comparisons and the two-way interaction are computed within each
   facet panel, and a compact interaction label is drawn in each panel (in place
