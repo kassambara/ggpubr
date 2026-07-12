@@ -127,6 +127,31 @@ test_that("labels default to row names; missing columns and NA rows are handled"
   expect_equal(nrow(layer_of(p, "GeomPoint")), 4)
 })
 
+test_that("the forest-plot default drops the y-axis line and uses clean log breaks", {
+  d <- or_data()
+  p <- ggestimates(d, label = "term", log.scale = TRUE)
+  expect_s3_class(p$theme$axis.line.y, "element_blank")
+  expect_s3_class(p$theme$axis.ticks.y, "element_blank")
+  # Log breaks are 1-2-5 multiples of powers of ten (no odd "3").
+  brks <- 10^ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x$get_breaks()
+  brks <- brks[is.finite(brks)]
+  mant <- brks / 10^floor(log10(brks))
+  expect_true(all(round(mant, 6) %in% c(1, 2, 5)))
+})
+
+test_that("banding shades alternate rows only when requested", {
+  d <- or_data()
+  has_rect <- function(p) any(vapply(p$layers,
+    function(l) inherits(l$geom, "GeomRect"), logical(1)))
+  expect_false(has_rect(ggestimates(d, label = "term")))          # default off
+  p <- ggestimates(d, label = "term", banding = TRUE)
+  expect_true(has_rect(p))
+  i <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomRect"), logical(1)))
+  # 5 rows -> 2 shaded (2nd and 4th from the top).
+  expect_equal(nrow(ggplot2::layer_data(p, i[1])), 2)
+  expect_silent(ggplot2::ggplotGrob(ggplot2::ggplot_build(p)))
+})
+
 test_that("label.hjust controls the row-label justification (right by default)", {
   d <- or_data()
   hjust_of <- function(p) {

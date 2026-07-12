@@ -49,6 +49,9 @@ NULL
 #' @param label.hjust horizontal justification of the row (y-axis) labels:
 #'   \code{1} (default) right-aligns them against the axis, \code{0} left-aligns,
 #'   \code{0.5} centers.
+#' @param banding logical. If \code{TRUE}, alternate rows are shaded with a light
+#'   band (as in \code{survminer::ggforest()}) to help read across to the
+#'   \code{ci.text} column. Default \code{FALSE}.
 #' @param xlab,ylab,title axis labels and title.
 #' @param ggtheme a ggplot theme. Default \code{\link{theme_pubr}()}.
 #' @param ... other arguments passed to \code{\link{ggpar}()}.
@@ -85,6 +88,7 @@ ggestimates <- function(data, estimate = "estimate",
                         point.size = 3, size = NULL, shape = 15,
                         ci.text = TRUE, ci.text.title = "Estimate (95% CI)",
                         ci.text.width = 0.5, digits = 2, label.hjust = 1,
+                        banding = FALSE,
                         xlab = "Estimate (95% CI)", ylab = NULL, title = NULL,
                         ggtheme = theme_pubr(), ...) {
   sort <- match.arg(sort)
@@ -197,6 +201,24 @@ ggestimates <- function(data, estimate = "estimate",
     ggplot2::aes(x = .data$.estimate, y = .data$.label)
   }
   p <- ggplot2::ggplot(df, point.aes)
+  if (isTRUE(banding) && n > 1L) {
+    # Shade alternate rows (2nd, 4th, ... from the top) behind everything. The
+    # band spans the whole plotted width - including the ci.text gutter - so the
+    # numeric column sits on the same stripe as its row. Positions are integer
+    # row indices (deterministic); x-extent reuses the reserved region.
+    pos <- seq_len(n)
+    shade <- pos[(n - pos) %% 2 == 1]
+    band.xmax <- if (ci.text) text.x else from.axis(a.hi + 0.04 * a.span)
+    band.df <- data.frame(ymin = shade - 0.5, ymax = shade + 0.5)
+    p <- p + ggplot2::geom_rect(
+      data = band.df, inherit.aes = FALSE,
+      mapping = ggplot2::aes(
+        xmin = left.x, xmax = band.xmax,
+        ymin = .data$ymin, ymax = .data$ymax
+      ),
+      fill = "grey93"
+    )
+  }
   if (!is.na(ref.line)) {
     p <- p + ggplot2::geom_vline(
       xintercept = ref.line, linetype = "dashed", color = "grey50"
@@ -234,13 +256,35 @@ ggestimates <- function(data, estimate = "estimate",
       ylim = c(1, n + if (ci.text) 0.9 else 0.4),
       clip = "off"
     )
-  if (log.scale) p <- p + ggplot2::scale_x_log10()
+  if (log.scale) {
+    p <- p + ggplot2::scale_x_log10(
+      breaks = .nice_log_breaks(from.axis(a.lo), from.axis(a.hi))
+    )
+  }
 
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  # Forest-plot convention: no vertical (categorical) axis line or ticks - the
+  # rows are labelled, and the reference line is the only meaningful vertical.
   p <- p + ggplot2::theme(
     legend.position = "none",
     axis.text.y = ggplot2::element_text(hjust = label.hjust, face = "bold"),
+    axis.line.y = ggplot2::element_blank(),
+    axis.ticks.y = ggplot2::element_blank(),
     plot.margin = ggplot2::margin(6, 12, 6, 6)
   )
   p
+}
+
+# Clean 1-2-5 breaks (and their powers of ten) within [lo, hi], for a log x
+# axis. Falls back to the default breaks when the range is unusable.
+.nice_log_breaks <- function(lo, hi) {
+  if (!is.finite(lo) || !is.finite(hi) || lo <= 0 || hi <= 0) {
+    return(ggplot2::waiver())
+  }
+  decades <- seq(floor(log10(lo)), ceiling(log10(hi)))
+  cand <- sort(unique(as.vector(outer(c(1, 2, 5), 10^decades))))
+  brks <- cand[cand >= lo & cand <= hi]
+  if (length(brks) < 2) brks <- cand[cand >= lo / 2 & cand <= hi * 2]
+  if (length(brks) < 2) return(ggplot2::waiver())
+  brks
 }

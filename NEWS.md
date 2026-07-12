@@ -9,7 +9,9 @@
   regression coefficients, meta-analysis) and estimation plots of effect sizes.
   It draws pre-computed values (e.g. from `broom::tidy(model, conf.int = TRUE)`),
   with `ref.line`, `log.scale` for ratio estimates, group coloring, row sorting
-  and an optional point-size (weight) mapping (#765).
+  and an optional point-size (weight) mapping. The default follows the forest-plot
+  convention (no vertical axis line, right-aligned row labels); set
+  `banding = TRUE` for shaded alternate rows (#765).
 
 - New `style_scatterhist()` and `style_summarystats()` restyle the sub-plots of a
   `ggscatterhist()` or `ggsummarystats()` composite in one call (e.g.
