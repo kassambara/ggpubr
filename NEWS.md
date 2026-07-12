@@ -2,6 +2,22 @@
 
 ## New features
 
+- `ggcompare()` gains a two-way (grouped) mode. When a second factor is mapped
+  through `color` or `fill`, it composes a two-way comparison figure in one
+  call: dodged boxes for the two factors, simple pairwise comparison brackets of
+  one factor within each level of the other (`pwc.group.by`), and a subtitle
+  from the two-way ANOVA that names the interaction (e.g.
+  "Interaction (gender × education_level), F(2,52) = 7.34, p = 0.002"). In this
+  mode the pairwise `method` defaults to `"emmeans_test"`, `p.adjust.method` to
+  `"bonferroni"` and `hide.ns` to `TRUE`; each remains overridable. The one-way
+  behavior is unchanged (#763).
+
+- `add_test_label()` gains `group.by` and `effect` arguments to label a two-way
+  ANOVA effect. With `group.by` set, the subtitle reports the two-way
+  `y ~ x * group.by` model; `effect` selects the interaction (default), a named
+  term, or `"all"` for a multi-line label of both main effects and the
+  interaction (#763).
+
 - `ggmaplot()` and `ggvolcano()` gain two opt-in options for choosing which
   genes are labeled: `select.top.method = "rank.sum"` ranks by the sum of the
   `|log2FC|` rank and the adjusted-p rank, so the labeled genes are both

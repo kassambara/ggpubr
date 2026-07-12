@@ -35,8 +35,20 @@ NULL
 #' @param p.adjust.method method for adjusting the pairwise p-values used by the
 #'   caption (see \code{\link[stats]{p.adjust}}); ignored by \code{"tukey_hsd"}
 #'   and \code{"games_howell_test"}, which adjust internally.
+#' @param group.by optional name of a second grouping factor (typically the one
+#'   mapped to \code{color}/\code{fill}). When supplied, a two-way ANOVA
+#'   \code{y ~ x * group.by} is computed and the subtitle names the selected
+#'   effect (see \code{effect}). Only used when \code{method = "anova"}. Default
+#'   \code{NULL} (one-way \code{y ~ x}, the historical behavior).
+#' @param effect which effect of the two-way ANOVA to label (only used when
+#'   \code{group.by} is set). One of \code{"interaction"} (default, the
+#'   \code{x:group.by} row, described as \dQuote{Interaction (x \eqn{\times}
+#'   group.by)}), \code{"all"} (a multi-line label with both main effects and the
+#'   interaction), or a term name (e.g. \code{"gender"} or
+#'   \code{"gender:education_level"}) or a numeric row index of the ANOVA table.
 #' @param ... additional arguments passed to
-#'   \code{\link[rstatix]{get_test_label}} (e.g. \code{style = "apa"}).
+#'   \code{\link[rstatix]{get_test_label}} (e.g. \code{style = "apa"}, or
+#'   \code{description} to override the auto-derived effect name).
 #' @return the input ggplot with the subtitle (and optionally caption) added.
 #' @seealso \code{\link{stat_anova_test}}, \code{\link{stat_kruskal_test}},
 #'   \code{\link[rstatix]{get_test_label}}, \code{\link[rstatix]{get_pwc_label}}.
@@ -53,11 +65,16 @@ NULL
 #'   geom_pwc(method = "dunn_test", label = "p.adj.signif", hide.ns = TRUE)
 #' add_test_label(p2, method = "kruskal", caption = TRUE)
 #'
+#' # Two-way design: name the interaction in the subtitle
+#' p3 <- ggboxplot(df, x = "dose", y = "len", color = "supp")
+#' add_test_label(p3, group.by = "supp", type = "text")
+#'
 #' @export
 add_test_label <- function(p, method = c("anova", "kruskal"),
                            caption = FALSE, pwc.method = NULL,
                            detailed = TRUE, type = c("expression", "text"),
-                           p.adjust.method = "holm", ...) {
+                           p.adjust.method = "holm",
+                           group.by = NULL, effect = NULL, ...) {
   if (!inherits(p, "ggplot")) {
     stop("`p` must be a ggplot.", call. = FALSE)
   }
@@ -78,6 +95,24 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
     )
   }
 
+  # A second grouping factor turns the omnibus into a two-way ANOVA whose named
+  # effect (by default the interaction) becomes the subtitle. This is gated
+  # entirely behind a non-NULL `group.by`, so the one-way call below is
+  # byte-identical to the historical behavior.
+  two.way <- !is.null(group.by)
+  if (two.way && method != "anova") {
+    warning(
+      "Naming a two-way effect requires method = 'anova'; ignoring `group.by`.",
+      call. = FALSE
+    )
+    two.way <- FALSE
+  }
+  if (two.way && !(group.by %in% colnames(p$data))) {
+    stop("`group.by` column ('", group.by, "') not found in the plot data.",
+      call. = FALSE
+    )
+  }
+
   if (!inherits(p$facet, "FacetNull")) {
     warning(
       "add_test_label() computes a single test pooling all facet panels. ",
@@ -90,13 +125,20 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
   .formula <- stats::as.formula(paste(y, "~", x))
 
   # Omnibus test -> subtitle
-  omnibus <- switch(method,
-    anova = rstatix::anova_test(.data, .formula),
-    kruskal = rstatix::kruskal_test(.data, .formula)
-  )
-  subtitle.label <- rstatix::get_test_label(
-    omnibus, detailed = detailed, type = type, ...
-  )
+  if (two.way) {
+    subtitle.label <- .two_way_test_label(
+      .data, x = x, y = y, group.by = group.by, effect = effect,
+      detailed = detailed, type = type, ...
+    )
+  } else {
+    omnibus <- switch(method,
+      anova = rstatix::anova_test(.data, .formula),
+      kruskal = rstatix::kruskal_test(.data, .formula)
+    )
+    subtitle.label <- rstatix::get_test_label(
+      omnibus, detailed = detailed, type = type, ...
+    )
+  }
 
   # Only set the labels we actually produce, using separate labs() calls. In
   # particular, when caption = FALSE we must NOT touch the caption at all,
@@ -117,4 +159,65 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
     p <- p + ggplot2::labs(caption = rstatix::get_pwc_label(pwc, type = type))
   }
   p
+}
+
+# Build the subtitle label for a two-way ANOVA y ~ x * group.by, naming the
+# selected effect. `effect` is "interaction" (default), "all", a term name, or a
+# numeric row index. Returns a text/expression label from get_test_label().
+.two_way_test_label <- function(.data, x, y, group.by, effect = NULL,
+                                detailed = TRUE, type = "expression", ...) {
+  .formula <- stats::as.formula(paste(y, "~", x, "*", group.by))
+  res.aov <- rstatix::anova_test(.data, .formula)
+  atab <- rstatix::get_anova_table(res.aov)
+  terms <- as.character(atab$Effect)
+  # A term's readable description: the interaction term "A:B" reads
+  # "Interaction (A x B)"; a main effect keeps its term name.
+  describe_term <- function(term) {
+    if (grepl(":", term)) {
+      paste0("Interaction (", gsub(":", " \u00d7 ", term), ")")
+    } else {
+      term
+    }
+  }
+  dots <- list(...)
+  user.description <- "description" %in% names(dots)
+
+  # Resolve `effect` to the ANOVA-table row(s) to label.
+  if (is.null(effect)) effect <- "interaction"
+  if (identical(effect, "all")) {
+    rows <- seq_along(terms)
+  } else if (identical(effect, "interaction")) {
+    rows <- which(grepl(":", terms))
+    if (length(rows) == 0L) rows <- length(terms) # fall back to the last row
+  } else if (is.numeric(effect)) {
+    rows <- as.integer(effect)
+  } else {
+    # Match a term name, tolerating "A:B" / "A*B" and reversed factor order.
+    key <- function(z) paste(sort(strsplit(gsub("[*]", ":", z), ":")[[1]]), collapse = ":")
+    rows <- which(vapply(terms, function(t) key(t) == key(effect), logical(1)))
+    if (length(rows) == 0L) {
+      stop("`effect` = '", effect, "' does not match an ANOVA term. Available: ",
+        paste(terms, collapse = ", "), ".", call. = FALSE)
+    }
+  }
+
+  make_label <- function(row) {
+    args <- c(
+      list(res.aov, row = row, detailed = detailed, type = type),
+      if (!user.description) list(description = describe_term(terms[row])),
+      dots
+    )
+    do.call(rstatix::get_test_label, args)
+  }
+
+  if (length(rows) == 1L) {
+    return(make_label(rows))
+  }
+  # Multi-line: stack one line per effect. Plain text joins with newlines;
+  # plotmath stacks the per-line expressions with atop().
+  labels <- lapply(rows, make_label)
+  if (type == "text") {
+    return(paste(unlist(labels), collapse = "\n"))
+  }
+  Reduce(function(a, b) substitute(atop(a, b), list(a = a, b = b)), labels)
 }

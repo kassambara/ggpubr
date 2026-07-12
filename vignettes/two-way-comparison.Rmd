@@ -1,0 +1,118 @@
+---
+title: "Two-Way Comparison Figures with ggcompare()"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Two-Way Comparison Figures with ggcompare()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+# Every computed chunk needs datarium (the example data) and emmeans (the
+# pooled-model simple comparisons). Skip gracefully if either is absent so the
+# vignette still builds.
+has_deps <- requireNamespace("datarium", quietly = TRUE) &&
+  requireNamespace("emmeans", quietly = TRUE)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  dpi = 96,
+  eval = has_deps
+)
+```
+
+```{r not-available, echo = FALSE, eval = !has_deps, results = "asis"}
+cat("> This vignette needs the **datarium** and **emmeans** packages, which are",
+    "not installed, so its output is not shown here.")
+```
+
+A common publication figure compares an outcome across **two** categorical
+factors at once -- for example a score across *gender* and *education level* --
+and annotates it with the interaction from a two-way ANOVA plus pairwise
+comparisons within each group. `ggcompare()` assembles this figure in a single
+call.
+
+## The one-call two-way figure
+
+Map the first factor to `x` and the second factor to `color` (or `fill`). That
+second mapping switches `ggcompare()` into its two-way mode.
+
+```{r two-way}
+library(ggpubr)
+library(rstatix)
+
+data("jobsatisfaction", package = "datarium")
+
+ggcompare(
+  jobsatisfaction,
+  x = "gender", y = "score", color = "education_level"
+)
+```
+
+The figure carries:
+
+- **dodged boxes** for the two factors, with jittered points and group means;
+- **pairwise comparison brackets** of the education levels *within each gender*;
+- a **subtitle** naming the two-way ANOVA interaction; and
+- a **caption** describing the pairwise test.
+
+In two-way mode the pairwise `method` defaults to `"emmeans_test"` (simple
+comparisons from the pooled model), `p.adjust.method` to `"bonferroni"`, and
+`hide.ns` to `TRUE`. Each of these is a default only -- pass the argument to
+override it.
+
+## It matches the by-hand analysis
+
+The annotation reproduces the numbers you would compute by hand. The subtitle is
+the interaction row of the two-way ANOVA:
+
+```{r anova}
+jobsatisfaction %>% anova_test(score ~ gender * education_level)
+```
+
+and the brackets are the pooled-model emmeans comparisons within each gender:
+
+```{r pwc}
+jobsatisfaction %>%
+  group_by(gender) %>%
+  emmeans_test(score ~ education_level, p.adjust.method = "bonferroni") %>%
+  select(gender, group1, group2, p.adj, p.adj.signif)
+```
+
+## Customizing
+
+Every element is overridable. For instance, compare the *genders within each
+education level* instead (swap the comparison direction with `pwc.group.by`),
+switch the base geometry, and show non-significant brackets:
+
+```{r customize}
+ggcompare(
+  jobsatisfaction,
+  x = "gender", y = "score", color = "education_level",
+  base = "violin",
+  pwc.group.by = "legend.var",
+  hide.ns = FALSE
+)
+```
+
+You can also compare each group to a reference level (`ref.group`), choose a
+different pairwise `method`/`p.adjust.method`, or pass extra styling through
+`pwc.args`, `add.params` and `...` (forwarded to the base builder). See
+`?ggcompare` for the full argument list.
+
+## Naming an effect on any plot
+
+The subtitle machinery is also available directly through `add_test_label()`.
+Given a plot with `x` and a second factor, `group.by` computes the two-way
+ANOVA and `effect` chooses which effect to report -- the interaction (default),
+a named term, or `"all"` for a multi-line label of both main effects and the
+interaction:
+
+```{r add-test-label}
+p <- ggboxplot(jobsatisfaction, x = "gender", y = "score",
+  color = "education_level")
+
+add_test_label(p, group.by = "education_level", effect = "all", type = "text")
+```
