@@ -321,25 +321,6 @@ style_scatterhist <- function(p, main = NULL, margin = NULL,
   p
 }
 
-#' @method + ggscatterhist
-#' @export
-"+.ggscatterhist" <- function(e1, e2) {
-  # A ggscatterhist is a list of plots, not a single ggplot, so `+` cannot add a
-  # component to "the plot". Replace R's cryptic error with guidance. (For a
-  # ggplot right-hand side, ggplot2's own `+.gg` may intercept first; the
-  # message still applies - the fix is the same.)
-  stop(
-    "Can't add ggplot components to a `ggscatterhist` with `+` - it is a list ",
-    "of plots, not a single ggplot.\n",
-    "To restyle it, either:\n",
-    "  * pass a theme at build time: ggscatterhist(..., ggtheme = , ",
-    "margin.ggtheme = );\n",
-    "  * edit a sub-plot: p$sp <- p$sp + theme_bw() (also p$xplot / p$yplot); or\n",
-    "  * use style_scatterhist(p, main = , margin = ).",
-    call. = FALSE
-  )
-}
-
 has_cowplot_v0.9 <- function() {
   vv <- as.character(utils::packageVersion("cowplot"))
   cc <- utils::compareVersion(vv, "0.8.0.8") > 0
