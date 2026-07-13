@@ -58,7 +58,10 @@ effect (see \code{effect}). Only used when \code{method = "anova"}. Default
 \code{x:group.by} row, described as \dQuote{Interaction (x \eqn{\times}
 group.by)}), \code{"all"} (a multi-line label with both main effects and the
 interaction), or a term name (e.g. \code{"gender"} or
-\code{"gender:education_level"}) or a numeric row index of the ANOVA table.}
+\code{"gender:education_level"}) or a numeric row index of the ANOVA table.
+The default interaction label is drawn on two lines (the effect name above
+the statistics) so it does not overflow at single-column figure widths; a
+caller-supplied \code{description} keeps it on one line.}
 
 \item{...}{additional arguments passed to
 \code{\link[rstatix]{get_test_label}} (e.g. \code{style = "apa"}, or
