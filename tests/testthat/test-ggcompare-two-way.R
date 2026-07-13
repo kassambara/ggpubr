@@ -206,3 +206,90 @@ test_that("add_test_label(group.by=) names the interaction and selects effects",
     "requires method = 'anova'"
   )
 })
+
+# ---- simple.effects: per-group simple main effects on the plot --------------
+# Number of GeomText layers (the simple-effect F labels), excluding the mean and
+# bracket layers.
+n_text_layers <- function(p) {
+  sum(vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1)))
+}
+text_labels <- function(p) {
+  i <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1)))
+  if (length(i) == 0L) return(character(0))
+  as.character(p$layers[[i[1]]]$data$.label)
+}
+
+test_that("simple.effects = TRUE draws pooled-error simple main effects (132 / 62.8)", {
+  js <- get_js()
+  p <- ggcompare(js, x = "gender", y = "score", color = "education_level",
+    simple.effects = TRUE)
+
+  # Exactly one GeomText layer carrying one label per x group (2 genders).
+  expect_equal(n_text_layers(p), 1)
+  labs <- text_labels(p)
+  expect_equal(length(labs), 2)
+
+  # The labels reproduce the pooled-error simple main effects from the lesson:
+  # F(2,52) for BOTH genders (the full-model residual df, not a per-subset df).
+  expect_true(all(grepl("F\\(2,52\\)", labs)))
+  expect_true(any(grepl("132", labs)))    # male
+  expect_true(any(grepl("62.8", labs)))   # female
+
+  # Cross-check against the direct pooled-error computation.
+  model <- stats::lm(score ~ gender * education_level, data = js)
+  truth <- js %>%
+    dplyr::group_by(gender) %>%
+    rstatix::anova_test(score ~ education_level, error = model) %>%
+    rstatix::get_anova_table()
+  expect_equal(sort(truth$DFd), c(52, 52))
+  expect_equal(round(truth$F[truth$gender == "male"]), 132)
+  expect_equal(round(truth$F[truth$gender == "female"], 1), 62.8)
+})
+
+test_that("simple.effects default (FALSE) adds no text layer (no regression)", {
+  js <- get_js()
+  p <- ggcompare(js, x = "gender", y = "score", color = "education_level")
+  expect_equal(n_text_layers(p), 0)
+})
+
+test_that("simple.effects warns and is skipped outside its supported config", {
+  js <- get_js()
+
+  # One-way mode: no second factor -> warn, no text.
+  df <- ToothGrowth
+  df$dose <- as.factor(df$dose)
+  expect_warning(
+    p1 <- ggcompare(df, x = "dose", y = "len", simple.effects = TRUE),
+    "only in two-way"
+  )
+  expect_equal(n_text_layers(p1), 0)
+
+  # legend.var direction -> warn, no text.
+  expect_warning(
+    p2 <- ggcompare(js, x = "gender", y = "score", color = "education_level",
+      pwc.group.by = "legend.var", simple.effects = TRUE),
+    "pwc.group.by"
+  )
+  expect_equal(n_text_layers(p2), 0)
+
+  # With facet.by -> warn.
+  js$grp <- rep(c("A", "B"), length.out = nrow(js))
+  expect_warning(
+    ggcompare(js, x = "gender", y = "score", color = "education_level",
+      facet.by = "grp", simple.effects = TRUE),
+    "not supported together with `facet.by`"
+  )
+})
+
+test_that("simple.effects is robust to an x column named like add_xy_position's synthetic columns", {
+  js <- get_js()
+  # Name the x-axis factor literally "x" (collides with add_xy_position's `x`).
+  names(js)[names(js) == "gender"] <- "x"
+  p <- ggcompare(js, x = "x", y = "score", color = "education_level",
+    simple.effects = TRUE)
+  labs <- text_labels(p)
+  # The labels must still be drawn (not silently dropped) with the right numbers.
+  expect_equal(length(labs), 2)
+  expect_true(any(grepl("132", labs)))
+  expect_true(any(grepl("62.8", labs)))
+})

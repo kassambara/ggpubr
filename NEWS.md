@@ -11,6 +11,12 @@
   facet panel, and a compact interaction label is drawn in each panel (in place
   of the single pooled subtitle used without faceting) (#769).
 
+- `ggcompare()` two-way (grouped) mode gains an opt-in `simple.effects`
+  argument. With `simple.effects = TRUE`, each x group's simple main effect of
+  the compared factor is drawn above its brackets, computed with the pooled
+  error term from the full two-way model so the denominator degrees of freedom
+  are the full-model residual df. Default `FALSE` (existing output unchanged).
+
 - The "Two-Way Comparison Figures with ggcompare()" vignette gains a section
   showing how to add per-group simple main effects to the figure, computed with
   the pooled error from the full two-way model (`anova_test(..., error = model)`)

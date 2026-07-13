@@ -54,7 +54,10 @@ NULL
 #'   \code{hide.ns} to \code{TRUE}; each remains overridable. With \code{facet.by}
 #'   the pairwise comparisons and the two-way interaction are computed \emph{per
 #'   panel}, and a compact interaction label is drawn inside each panel (in place
-#'   of the single pooled subtitle). The one-way path is unchanged.
+#'   of the single pooled subtitle). Set \code{simple.effects = TRUE} to also draw
+#'   each \code{x} group's simple main effect of the compared factor above its
+#'   brackets, computed with the pooled error from the full two-way model. The
+#'   one-way path is unchanged.
 #' @param ref.group a group level used as the reference; each other group is
 #'   compared to it. See \code{\link{geom_pwc}()}.
 #' @param method the pairwise comparison test. Default \code{"t_test"}. See
@@ -84,6 +87,13 @@ NULL
 #'   Direction of the grouped pairwise comparisons: \code{"x.var"} (default)
 #'   compares the second factor within each \code{x} group; \code{"legend.var"}
 #'   compares the \code{x} groups within each level of the second factor.
+#' @param simple.effects logical, used only in the two-way (grouped) mode. When
+#'   \code{TRUE}, the simple main effect of the compared factor within each
+#'   \code{x} group is drawn above that group's brackets, computed with the
+#'   pooled error term from the full two-way model (so its denominator degrees of
+#'   freedom are the full-model residual df). Default \code{FALSE}. Supported for
+#'   the default \code{pwc.group.by = "x.var"} direction and without
+#'   \code{facet.by}; other configurations issue a warning and are skipped.
 #' @param ... additional arguments passed to the base builder (e.g.
 #'   \code{ggboxplot}), such as \code{title}, \code{xlab}, \code{ylab}.
 #' @return a single customizable \code{ggplot}.
@@ -114,6 +124,9 @@ NULL
 #'   tg <- ToothGrowth
 #'   tg$dose <- as.factor(tg$dose)
 #'   ggcompare(tg, x = "supp", y = "len", color = "dose")
+#'
+#'   # Add each x group's simple main effect (pooled-error F) above its brackets
+#'   ggcompare(tg, x = "supp", y = "len", color = "dose", simple.effects = TRUE)
 #' }
 #'
 #' @export
@@ -130,7 +143,8 @@ ggcompare <- function(data, x, y,
                       pack = c("auto", "none"), pwc.args = list(),
                       omnibus = c("anova", "kruskal", "none"),
                       omnibus.args = list(),
-                      pwc.group.by = c("x.var", "legend.var"), ...) {
+                      pwc.group.by = c("x.var", "legend.var"),
+                      simple.effects = FALSE, ...) {
   base <- match.arg(base)
   pack <- match.arg(pack)
   omnibus <- match.arg(omnibus)
@@ -173,6 +187,10 @@ ggcompare <- function(data, x, y,
     if (method.missing) method <- "emmeans_test"
     if (padj.missing) p.adjust.method <- "bonferroni"
     if (hide.ns.missing) hide.ns <- TRUE
+  }
+  if (isTRUE(simple.effects) && !two.way) {
+    warning("`simple.effects` applies only in two-way (grouped) mode ",
+      "(map a second factor via `color`/`fill`); ignoring it.", call. = FALSE)
   }
 
   if (missing(ggtheme) && !is.null(facet.by)) {
@@ -310,6 +328,22 @@ ggcompare <- function(data, x, y,
       p <- p + ggplot2::labs(caption = rstatix::get_pwc_label(pwc, type = cap.type))
     }
 
+    # Optional per-group simple main effects drawn above each cluster's brackets.
+    # Supported for the default comparison direction (grp.var = the x axis) and
+    # without facets; other configurations warn and are skipped rather than
+    # placing a label with no clear anchor.
+    if (isTRUE(simple.effects)) {
+      if (!is.null(facet.by)) {
+        warning("`simple.effects` is not supported together with `facet.by`; ",
+          "ignoring it.", call. = FALSE)
+      } else if (pwc.group.by != "x.var") {
+        warning("`simple.effects = TRUE` is only supported with ",
+          "`pwc.group.by = \"x.var\"`; ignoring it.", call. = FALSE)
+      } else {
+        p <- .add_simple_effect_labels(p, data, x, y, group.var, grp.var, comp.var, pwc)
+      }
+    }
+
     # Omnibus test. Without facets, one subtitle names the pooled two-way
     # interaction. With facets, the interaction is per panel, so a compact label
     # is drawn inside each panel instead (a single subtitle would misleadingly
@@ -427,4 +461,60 @@ ggcompare <- function(data, x, y,
       vjust = 1.4, size = 3
     ) +
     ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0.05, 0.15)))
+}
+
+
+# Draw per-group simple-main-effect F labels above each cluster's brackets. The
+# simple main effect of `comp.var` within each level of `grp.var` is computed
+# with the pooled error term from the full two-way model
+# lm(y ~ x * group.var), so its denominator df is the full-model residual df
+# (not a smaller per-subset df). `grp.var` is the x-axis variable (the default
+# pwc.group.by = "x.var" direction), so each label sits at that x position, just
+# above the tallest bracket of the cluster (read from the already-positioned
+# `pwc`). Returns the updated plot; a degenerate group with no estimable simple
+# effect is skipped rather than labelled "F(NA,NA)".
+.add_simple_effect_labels <- function(p, data, x, y, group.var, grp.var, comp.var, pwc) {
+  model <- stats::lm(
+    stats::as.formula(paste(y, "~", x, "*", group.var)), data = data
+  )
+  grouped <- dplyr::group_by(data, dplyr::across(dplyr::all_of(grp.var)))
+  sme <- tryCatch(
+    rstatix::get_anova_table(rstatix::anova_test(
+      grouped, stats::as.formula(paste(y, "~", comp.var)), error = model
+    )),
+    error = function(e) NULL
+  )
+  if (is.null(sme) || nrow(sme) == 0L) {
+    return(p)
+  }
+  sme <- as.data.frame(sme)
+  # Format one compact "F(df1,df2) = F, p" label per group, matching the
+  # documented simple-effects recipe.
+  fmt.p <- function(pv) {
+    ifelse(pv < 1e-4, "p < 0.0001", paste0("p = ", signif(pv, 2)))
+  }
+  lv <- levels(factor(data[[grp.var]]))
+  # Key the tallest-bracket height by the integer x position (the midpoint of
+  # each bracket's xmin/xmax) rather than by pwc[[grp.var]]: add_xy_position()
+  # adds synthetic columns (x, xmin, xmax, groups, ...) that can shadow the
+  # grouping column when the x variable is itself named, e.g., "x".
+  x.idx <- round((pwc$xmin + pwc$xmax) / 2)
+  tops <- tapply(pwc$y.position, x.idx, max)
+  gap <- 0.06 * diff(range(data[[y]], na.rm = TRUE))
+  sme$.x <- match(as.character(sme[[grp.var]]), lv)
+  sme$.y <- as.numeric(tops[as.character(sme$.x)]) + gap
+  sme$.label <- sprintf(
+    "F(%g,%g) = %.3g, %s", sme$DFn, sme$DFd, sme$F, fmt.p(sme$p)
+  )
+  sme <- sme[is.finite(sme$.y) & is.finite(sme$F) & !is.na(sme$.label), , drop = FALSE]
+  if (nrow(sme) == 0L) {
+    return(p)
+  }
+  p +
+    ggplot2::geom_text(
+      data = sme, inherit.aes = FALSE,
+      ggplot2::aes(x = .data[[".x"]], y = .data[[".y"]], label = .data[[".label"]]),
+      size = 3, vjust = 0, fontface = "italic"
+    ) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0.05, 0.28)))
 }
