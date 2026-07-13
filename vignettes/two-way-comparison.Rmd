@@ -81,6 +81,67 @@ jobsatisfaction %>%
   select(gender, group1, group2, p.adj, p.adj.signif)
 ```
 
+## Simple main effects on the plot
+
+When the interaction is significant, interpret it by breaking it into **simple
+main effects** -- the effect of the focal factor *within each level* of the
+other. Group by the moderator and run a one-way `anova_test()`, passing the full
+two-way model as `error` so the test borrows the **pooled error term** from the
+whole design:
+
+```{r simple-effects}
+model <- lm(score ~ gender * education_level, data = jobsatisfaction)
+
+sme <- jobsatisfaction %>%
+  group_by(gender) %>%
+  anova_test(score ~ education_level, error = model)
+sme
+```
+
+The pooled error is what keeps the denominator degrees of freedom at the
+full-model residual df -- here `F(2, 52)` for both genders. Dropping
+`error = model` would instead use each subset's own residuals, giving a
+different (smaller) df and a different F, so keep the `error` argument when you
+report a simple main effect.
+
+Layer those per-group F values onto the `ggcompare()` figure with a
+`geom_text()`, placing each label above its cluster's brackets:
+
+```{r simple-effects-plot}
+p <- ggcompare(
+  jobsatisfaction,
+  x = "gender", y = "score", color = "education_level"
+)
+
+# position each label just above that group's tallest bracket
+pwc <- jobsatisfaction %>%
+  group_by(gender) %>%
+  emmeans_test(score ~ education_level, p.adjust.method = "bonferroni") %>%
+  add_xy_position(x = "gender")
+tops <- tapply(pwc$y.position, pwc$gender, max)
+
+sme_lab <- transform(
+  sme,
+  x = as.integer(factor(gender, levels = levels(jobsatisfaction$gender))),
+  y = tops[as.character(gender)] + 0.4,
+  label = sprintf(
+    "F(%g,%g) = %.3g, %s", DFn, DFd, F,
+    ifelse(p < 0.0001, "p < 0.0001", paste0("p = ", signif(p, 2)))
+  )
+)
+
+p +
+  geom_text(
+    data = sme_lab, inherit.aes = FALSE,
+    aes(x = x, y = y, label = label), size = 3, fontface = "italic"
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.28)))
+```
+
+The figure now reports itself completely: the interaction on top, each gender's
+simple main effect of education above its boxes, and which education levels
+differ within each gender marked by the brackets.
+
 ## Customizing
 
 Every element is overridable. For instance, compare the *genders within each
