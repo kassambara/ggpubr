@@ -11,6 +11,11 @@
   facet panel, and a compact interaction label is drawn in each panel (in place
   of the single pooled subtitle used without faceting) (#769).
 
+- The "Two-Way Comparison Figures with ggcompare()" vignette gains a section
+  showing how to add per-group simple main effects to the figure, computed with
+  the pooled error from the full two-way model (`anova_test(..., error = model)`)
+  and drawn above each group's brackets.
+
 - New `ggrocplot()` draws a publication-ready ROC curve with the area under the
   curve (AUC) and its confidence interval computed and annotated on the plot;
   passing several predictor columns overlays one curve per model for comparison,
