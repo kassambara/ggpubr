@@ -6,7 +6,7 @@
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
 
-# ggpubr: 'ggplot2' Based Publication Ready Plots
+# ggpubr: 'ggplot2' Based Publication Ready Plots <img src="man/figures/logo.png" align="right" height="139" alt="ggpubr hex logo" />
 
 [ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an
 excellent and flexible package for elegant data visualization in R.

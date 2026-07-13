@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
 
 
-# ggpubr: 'ggplot2' Based Publication Ready Plots
+# ggpubr: 'ggplot2' Based Publication Ready Plots <img src="man/figures/logo.png" align="right" height="139" alt="ggpubr hex logo" />
 
 [ggplot2, by Hadley Wickham, ](https://ggplot2.tidyverse.org/) is an excellent and flexible package for elegant data visualization in R. However the default generated plots require some formatting before we can send them for publication. Furthermore, to customize a ggplot, the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills.
 
