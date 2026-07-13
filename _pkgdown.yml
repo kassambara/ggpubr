@@ -23,6 +23,8 @@ reference:
     contents:
       - ggboxplot
       - ggviolin
+      - ggraincloud
+      - geom_violin_half
       - ggdotplot
       - ggstripchart
       - ggbarplot
@@ -32,6 +34,7 @@ reference:
       - ggdonutchart
       - ggdotchart
       - ggsummarystats
+      - style_summarystats
   - title: Plot Two Continuous Variables
     desc: Scatter plots
     contents:
@@ -40,12 +43,14 @@ reference:
       - stat_regline_equation
       - stat_stars
       - ggscatterhist
+      - style_scatterhist
   - title: Plot Paired Data
     desc: Paired data
     contents:
       - ggpaired
   - title: Comparing Means and Adding p-values
     contents:
+      - ggcompare
       - compare_means
       - stat_compare_means
       - stat_pvalue_manual
@@ -53,9 +58,19 @@ reference:
       - stat_kruskal_test
       - stat_welch_anova_test
       - stat_friedman_test
+      - stat_cld
       - geom_pwc
       - geom_bracket
+      - add_test_label
       - ggadjust_pvalue
+  - title: ROC Curves and Diagnostics
+    desc: Receiver operating characteristic (ROC) curves with AUC.
+    contents:
+      - ggrocplot
+  - title: Forest and Estimation Plots
+    desc: Point estimates with confidence intervals (odds/hazard/risk ratios, coefficients, meta-analysis).
+    contents:
+      - ggestimates
   - title: P-Value Formatting
     contents:
       - format_p_value
@@ -74,6 +89,7 @@ reference:
     desc: Plotting data obtained from genomic data analyses.
     contents:
       - ggmaplot
+      - ggvolcano
   - title: Themes
     contents:
       - theme_pubr
@@ -135,3 +151,19 @@ reference:
       - stat_mean
       - stat_central_tendency
       - reexports
+
+articles:
+  - title: Comparing groups
+    navbar: Comparisons
+    contents:
+      - statistical-annotations
+      - two-way-comparison
+  - title: Diagnostics and estimation
+    navbar: Diagnostics & estimation
+    contents:
+      - roc-curves
+      - forest-estimation-plots
+  - title: Composing figures
+    navbar: Composing figures
+    contents:
+      - ggpubr-with-patchwork

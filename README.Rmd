@@ -33,6 +33,19 @@ Find out more at https://rpkgs.datanovia.com/ggpubr/.
 
 ## Highlights in the development version
 
+New publication-ready plot types and figure builders:
+
+- `ggcompare()` — one-call group-comparison figures (box/violin/strip plus points, means, adjusted-p brackets and an omnibus test label), including two-way designs with simple main effects.
+- `ggrocplot()` — ROC curves with the AUC and its confidence interval, an optional optimal cut-point marker, and multi-marker overlays.
+- `ggestimates()` — forest and estimation plots (odds/hazard/risk ratios, regression coefficients, meta-analysis).
+- `ggraincloud()` — raincloud plots (half-violin plus box plus jittered points).
+- `ggvolcano()` — volcano plots for differential-expression results.
+- Statistical annotation helpers: `stat_cld()` (compact letter display), `add_test_label()` (omnibus test subtitle) and automatic bracket packing with `geom_pwc(pack = "auto")`.
+
+See the [articles](https://rpkgs.datanovia.com/ggpubr/articles/) for worked examples.
+
+Other updates:
+
 - Modern compatibility updates for current `ggplot2`, `dplyr`, and `tidyr`.
 - New p-value formatting helpers: `format_p_value()`, `get_p_format_style()`, `list_p_format_styles()`.
 - Extended p-value formatting parameters across statistical layers: `p.format.style`, `p.digits`, `p.leading.zero`, `p.min.threshold`, `p.decimal.mark`.

@@ -1,0 +1,155 @@
+---
+title: "Forest and Estimation Plots with ggestimates()"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Forest and Estimation Plots with ggestimates()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+# The "from a fitted model" section uses datarium's example data; skip it
+# gracefully if datarium is not installed so the vignette still builds.
+has_datarium <- requireNamespace("datarium", quietly = TRUE)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6.5,
+  fig.height = 3.6,
+  dpi = 96,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+A **forest plot** shows a point estimate and its confidence interval for each of
+several groups or model terms on one axis, against a reference line -- the
+standard way to report odds/hazard/risk ratios, regression coefficients, or a
+meta-analysis. `ggestimates()` draws one from a data frame of **pre-computed**
+estimates: you supply the numbers, it draws a publication-ready figure with an
+optional right-hand column of the estimate and interval.
+
+Because it takes ready-made values, `ggestimates()` fits *any* source -- a model
+you fitted, a table from a paper, a meta-analysis -- with no modeling
+dependency of its own.
+
+```{r libs}
+library(ggpubr)
+```
+
+## From a table of estimates
+
+The simplest case: a data frame with an estimate and its confidence bounds. For
+**ratios** (odds/hazard/risk ratios) set `log.scale = TRUE` so the axis is
+symmetric around the null, and put the reference line at 1.
+
+```{r or}
+or <- data.frame(
+  term = c("Age (per year)", "Male sex", "BMI", "Current smoker", "Treatment"),
+  estimate = c(1.03, 1.45, 0.98, 2.10, 0.62),
+  conf.low = c(0.99, 1.05, 0.94, 1.40, 0.45),
+  conf.high = c(1.07, 2.00, 1.02, 3.15, 0.85)
+)
+
+ggestimates(or, label = "term", ref.line = 1, log.scale = TRUE,
+  xlab = "Odds ratio (95% CI)")
+```
+
+Each row shows the point estimate (filled square) and its 95% interval; the
+right-hand column prints the same numbers, and the dashed line marks the null
+(no effect). An interval that crosses the line is not significant at that level.
+
+## From a fitted model
+
+The usual workflow: fit a model, pull out the coefficients and confidence
+intervals, and hand them to `ggestimates()`. Here we model survival on the
+Titanic with logistic regression and plot the **odds ratios** -- all in base R.
+
+```{r model, eval = has_datarium}
+data("titanic.raw", package = "datarium")
+
+fit <- glm(Survived ~ Class + Sex + Age, data = titanic.raw,
+  family = binomial)
+
+# Odds ratios = exp(coefficients); 95% CI = exp(confint)
+est <- data.frame(
+  term = c("2nd class", "3rd class", "Crew", "Female", "Adult"),
+  estimate = exp(coef(fit))[-1],
+  conf.low = exp(confint.default(fit))[-1, 1],
+  conf.high = exp(confint.default(fit))[-1, 2]
+)
+
+ggestimates(est, label = "term", ref.line = 1, log.scale = TRUE,
+  sort = "estimate", xlab = "Odds ratio of survival (95% CI)",
+  title = "Titanic survival")
+```
+
+```{r model-note, echo = FALSE, eval = !has_datarium, results = "asis"}
+cat("> The fitted-model example needs the **datarium** package, which is not",
+    "installed, so its figure is not shown here.")
+```
+
+Read against the reference groups (1st class, male, child): women had far higher
+odds of survival, while 3rd-class passengers and adults had lower odds. The same
+recipe works for any model -- use `exp(coef)`/`exp(confint)` for a Cox or
+logistic model, or the raw coefficients (below) for a linear one.
+
+## Mean differences and linear coefficients
+
+For estimates on the **original (additive) scale** -- mean differences,
+linear-model coefficients -- keep `log.scale = FALSE` (the default) and put the
+reference line at 0.
+
+```{r md}
+md <- data.frame(
+  group = c("Low dose", "Medium dose", "High dose"),
+  estimate = c(1.8, 3.6, 5.9),
+  conf.low = c(0.4, 2.1, 4.0),
+  conf.high = c(3.2, 5.1, 7.8)
+)
+
+ggestimates(md, label = "group", color = "group", palette = "jco",
+  ref.line = 0, xlab = "Mean difference vs control (95% CI)")
+```
+
+## Sorting, banding, and the estimate column
+
+Order the rows by their estimate with `sort = "estimate"`, add zebra
+**banding** to guide the eye across a wide figure, and tune the right-hand
+estimate column with `ci.text.title` and `digits`:
+
+```{r styling, fig.height = 3.8}
+ggestimates(or, label = "term",
+  ref.line = 1, log.scale = TRUE,
+  sort = "estimate", descending = TRUE,
+  banding = TRUE,
+  ci.text.title = "OR (95% CI)", digits = 2,
+  xlab = "Odds ratio (95% CI)")
+```
+
+Turn the estimate column off with `ci.text = FALSE`, weight the point size by a
+column (e.g. a study's sample size) with `size =`, and see `?ggestimates` for
+the full argument list.
+
+## A meta-analysis forest
+
+The same primitive draws a meta-analysis: one row per study plus a pooled
+estimate. Weight the study markers by their precision with `size =`.
+
+```{r meta, fig.height = 3.8}
+meta <- data.frame(
+  study = c("Study A", "Study B", "Study C", "Study D", "Pooled"),
+  estimate = c(0.82, 0.75, 0.91, 0.68, 0.79),
+  conf.low = c(0.61, 0.55, 0.70, 0.48, 0.70),
+  conf.high = c(1.10, 1.02, 1.18, 0.96, 0.89),
+  weight = c(0.8, 1.0, 0.9, 0.7, 2.2)
+)
+
+ggestimates(meta, label = "study", size = "weight",
+  ref.line = 1, log.scale = TRUE,
+  ci.text.title = "RR (95% CI)",
+  xlab = "Risk ratio (95% CI)")
+```
+
+The larger pooled marker sits below the individual studies with a tighter
+interval -- the familiar bottom row of a meta-analysis forest.
