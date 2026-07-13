@@ -46,6 +46,9 @@ NULL
 #'   group.by)}), \code{"all"} (a multi-line label with both main effects and the
 #'   interaction), or a term name (e.g. \code{"gender"} or
 #'   \code{"gender:education_level"}) or a numeric row index of the ANOVA table.
+#'   The default interaction label is drawn on two lines (the effect name above
+#'   the statistics) so it does not overflow at single-column figure widths; a
+#'   caller-supplied \code{description} keeps it on one line.
 #' @param ... additional arguments passed to
 #'   \code{\link[rstatix]{get_test_label}} (e.g. \code{style = "apa"}, or
 #'   \code{description} to override the auto-derived effect name).
@@ -210,7 +213,28 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
     do.call(rstatix::get_test_label, args)
   }
 
+  # Two-line variant: the effect description on its own line above the
+  # statistics. A one-line interaction label ("Interaction (A x B), F(...), ...,
+  # n = N") overflows the right edge at single-column figure widths; wrapping
+  # keeps it fully visible with no loss of information.
+  wrap_label <- function(row) {
+    desc <- describe_term(terms[row])
+    stats <- do.call(rstatix::get_test_label, c(
+      list(res.aov, row = row, detailed = detailed, type = type, description = ""),
+      dots
+    ))
+    if (type == "text") {
+      return(paste(desc, stats, sep = "\n"))
+    }
+    substitute(atop(d, s), list(d = desc, s = stats))
+  }
+
   if (length(rows) == 1L) {
+    # Wrap only the (long) default interaction label. A short main-effect label,
+    # or a caller-supplied `description`, stays on a single line.
+    if (!user.description && grepl(":", terms[rows])) {
+      return(wrap_label(rows))
+    }
     return(make_label(rows))
   }
   # Multi-line: stack one line per effect. Plain text joins with newlines;

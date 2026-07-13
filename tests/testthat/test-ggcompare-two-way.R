@@ -293,3 +293,33 @@ test_that("simple.effects is robust to an x column named like add_xy_position's 
   expect_true(any(grepl("132", labs)))
   expect_true(any(grepl("62.8", labs)))
 })
+
+# ---- two-way interaction subtitle wraps to two lines ------------------------
+test_that("the default two-way interaction subtitle wraps onto two lines", {
+  js <- get_js()
+  p <- ggboxplot(js, x = "gender", y = "score", color = "education_level")
+
+  # Expression mode: the wrapped label is an atop() call (line 1 = the effect
+  # name, line 2 = the statistics) so it does not overflow at narrow widths.
+  expr <- add_test_label(p, group.by = "education_level")$labels$subtitle
+  expect_true(is.call(expr) && identical(expr[[1]], as.name("atop")))
+
+  # Text mode: two newline-separated lines, description above the statistics,
+  # with every value retained (F, p, ges, n).
+  txt <- add_test_label(p, group.by = "education_level", type = "text")$labels$subtitle
+  lines <- strsplit(txt, "\n")[[1]]
+  expect_equal(length(lines), 2)
+  expect_match(lines[1], "^Interaction \\(gender")
+  expect_match(lines[2], "F\\(2,52\\)")
+  expect_match(lines[2], "n = 58")
+
+  # A main-effect label is short, so it stays on one line (no wrap).
+  main <- add_test_label(p, group.by = "education_level", effect = "gender",
+    type = "text")$labels$subtitle
+  expect_false(grepl("\n", main))
+
+  # A caller-supplied description keeps the single-line form (escape hatch).
+  usr <- add_test_label(p, group.by = "education_level", description = "Int",
+    type = "text")$labels$subtitle
+  expect_false(grepl("\n", usr))
+})
