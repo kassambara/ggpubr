@@ -30,6 +30,7 @@ ggcompare(
   omnibus = c("anova", "kruskal", "none"),
   omnibus.args = list(),
   pwc.group.by = c("x.var", "legend.var"),
+  simple.effects = FALSE,
   ...
 )
 }
@@ -79,7 +80,10 @@ builder (e.g. \code{"jitter"}, \code{"mean"}, \code{"mean_sd"}). Default
   \code{hide.ns} to \code{TRUE}; each remains overridable. With \code{facet.by}
   the pairwise comparisons and the two-way interaction are computed \emph{per
   panel}, and a compact interaction label is drawn inside each panel (in place
-  of the single pooled subtitle). The one-way path is unchanged.}
+  of the single pooled subtitle). Set \code{simple.effects = TRUE} to also draw
+  each \code{x} group's simple main effect of the compared factor above its
+  brackets, computed with the pooled error from the full two-way model. The
+  one-way path is unchanged.}
 
 \item{ref.group}{a group level used as the reference; each other group is
 compared to it. See \code{\link{geom_pwc}()}.}
@@ -121,6 +125,14 @@ layer (faceted plots).}
 Direction of the grouped pairwise comparisons: \code{"x.var"} (default)
 compares the second factor within each \code{x} group; \code{"legend.var"}
 compares the \code{x} groups within each level of the second factor.}
+
+\item{simple.effects}{logical, used only in the two-way (grouped) mode. When
+\code{TRUE}, the simple main effect of the compared factor within each
+\code{x} group is drawn above that group's brackets, computed with the
+pooled error term from the full two-way model (so its denominator degrees of
+freedom are the full-model residual df). Default \code{FALSE}. Supported for
+the default \code{pwc.group.by = "x.var"} direction and without
+\code{facet.by}; other configurations issue a warning and are skipped.}
 
 \item{...}{additional arguments passed to the base builder (e.g.
 \code{ggboxplot}), such as \code{title}, \code{xlab}, \code{ylab}.}
@@ -174,6 +186,9 @@ if (requireNamespace("emmeans", quietly = TRUE)) {
   tg <- ToothGrowth
   tg$dose <- as.factor(tg$dose)
   ggcompare(tg, x = "supp", y = "len", color = "dose")
+
+  # Add each x group's simple main effect (pooled-error F) above its brackets
+  ggcompare(tg, x = "supp", y = "len", color = "dose", simple.effects = TRUE)
 }
 
 }
