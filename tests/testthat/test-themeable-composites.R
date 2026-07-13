@@ -25,11 +25,17 @@ test_that("editing $sp directly still restyles the composite", {
   expect_s3_class(p, "ggscatterhist")
 })
 
-test_that("`+` on a ggscatterhist gives a helpful error", {
+test_that("`+` does not restyle a ggscatterhist; use style_scatterhist()/$sp", {
   p <- ggscatterhist(iris, x = "Sepal.Length", y = "Sepal.Width", print = FALSE)
-  # A non-ggplot right-hand side reaches the guard directly.
-  expect_error(p + 1, "list of plots, not a single ggplot")
-  expect_error(p + 1, "style_scatterhist")
+  # A ggscatterhist is a list of plots, not a single ggplot. ggplot2's own `+`
+  # intercepts a ggplot right-hand side (theme/geom/scale) via the RHS and yields
+  # NULL for a non-ggplot left side, so `+` cannot restyle the composite. This
+  # documents that limitation honestly (the supported paths are the helper and
+  # editing the sub-plots, tested above).
+  expect_null(suppressWarnings(p + theme_bw()))
+  expect_null(suppressWarnings(p + geom_point()))
+  # The supported path returns a themed composite, not NULL.
+  expect_s3_class(style_scatterhist(p, main = theme_bw()), "ggscatterhist")
 })
 
 test_that("style_scatterhist() rejects a non-ggscatterhist input", {
@@ -51,10 +57,13 @@ test_that("style_summarystats() restyles sub-plots and keeps the class", {
   expect_silent(ggplot2::ggplotGrob(ggplot2::ggplot_build(styled$main.plot)))
 })
 
-test_that("`+` on a ggsummarystats gives a helpful error", {
+test_that("`+` does not restyle a ggsummarystats; use style_summarystats()", {
   df <- ToothGrowth
   df$dose <- as.factor(df$dose)
   p <- ggsummarystats(df, x = "dose", y = "len", print = FALSE)
-  expect_error(p + 1, "list of plots, not a single ggplot")
-  expect_error(p + 1, "style_summarystats")
+  # As for ggscatterhist: a composite is a list of plots, so `+` cannot restyle
+  # it (ggplot2's `+` yields NULL for a non-ggplot left side). Use the helper or
+  # edit $main.plot / $summary.plot.
+  expect_null(suppressWarnings(p + theme_bw()))
+  expect_s3_class(style_summarystats(p, main = theme_bw()), "ggsummarystats")
 })

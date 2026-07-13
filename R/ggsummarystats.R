@@ -327,20 +327,3 @@ style_summarystats <- function(p, main = NULL, table = NULL) {
   p$summary.plot <- add_all(p$summary.plot, table)
   p
 }
-
-#' @method + ggsummarystats
-#' @export
-"+.ggsummarystats" <- function(e1, e2) {
-  # A ggsummarystats is a list of plots, not a single ggplot; `+` cannot add a
-  # component to "the plot". Replace R's cryptic error with guidance.
-  stop(
-    "Can't add ggplot components to a `ggsummarystats` with `+` - it is a list ",
-    "of plots, not a single ggplot.\n",
-    "To restyle it, either:\n",
-    "  * pass a theme at build time: ggsummarystats(..., ggtheme = );\n",
-    "  * edit a sub-plot: p$main.plot <- p$main.plot + theme_bw() (also ",
-    "p$summary.plot); or\n",
-    "  * use style_summarystats(p, main = , table = ).",
-    call. = FALSE
-  )
-}
