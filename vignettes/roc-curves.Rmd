@@ -1,0 +1,117 @@
+---
+title: "ROC Curves and Diagnostic Accuracy with ggrocplot()"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ROC Curves and Diagnostic Accuracy with ggrocplot()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 5.5,
+  fig.height = 5,
+  dpi = 96,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+A **receiver operating characteristic (ROC) curve** shows how well a continuous
+marker or score separates two groups, across every possible cut-point. The area
+under the curve (**AUC**) summarizes it in one number: 0.5 is no better than
+chance, 1.0 is perfect. `ggrocplot()` draws a publication-ready ROC with the AUC
+and its confidence interval annotated, and can overlay several markers for
+comparison -- all in base R, with no modeling dependency.
+
+```{r libs}
+library(ggpubr)
+
+# A small biomarker study: disease status and two candidate markers
+set.seed(2024)
+n <- 120
+dx <- data.frame(
+  status = factor(
+    rep(c("healthy", "diseased"), each = n / 2),
+    levels = c("healthy", "diseased") # "diseased" = the positive class
+  ),
+  marker_A = c(rnorm(n / 2, 0), rnorm(n / 2, 1.4)),
+  marker_B = c(rnorm(n / 2, 0), rnorm(n / 2, 0.6))
+)
+```
+
+## A single ROC curve
+
+Pass the outcome (`response`) and the marker (`predictor`). The AUC and its 95%
+confidence interval -- computed in closed form (Hanley and McNeil, 1982) -- are
+printed on the plot.
+
+```{r single}
+ggrocplot(dx, response = "status", predictor = "marker_A")
+```
+
+The curve bows toward the top-left corner; the further from the diagonal (the
+grey chance line), the better the marker. Here the AUC is well above 0.5, so
+higher `marker_A` values indicate disease.
+
+### Which way round? The positive class and AUC below 0.5
+
+`ggrocplot()` treats the **second factor level** of `response` as the positive
+class and assumes **higher predictor values** indicate it -- it never silently
+flips the curve. If a marker is *lower* in cases, its AUC comes out below 0.5 and
+you get a message suggesting you reverse the predictor (or the factor levels):
+
+```{r reversed, message = TRUE}
+# A protective marker: LOWER values indicate disease
+dx$marker_low <- c(rnorm(n / 2, 1), rnorm(n / 2, 0))
+
+ggrocplot(dx, response = "status", predictor = "marker_low")
+```
+
+Negate the predictor to orient it (`transform()` a new column, or pass a
+pre-negated one) and the AUC flips above 0.5:
+
+```{r reversed-fixed}
+dx$marker_low_rev <- -dx$marker_low
+ggrocplot(dx, response = "status", predictor = "marker_low_rev")
+```
+
+## The optimal cut-point
+
+For a diagnostic threshold, `youden = TRUE` marks the point that maximizes the
+**Youden index** (sensitivity + specificity - 1) -- the cut-point furthest above
+the chance line -- and labels its value:
+
+```{r youden}
+ggrocplot(dx, response = "status", predictor = "marker_A", youden = TRUE)
+```
+
+## Comparing several markers
+
+Pass several predictors to overlay their curves on one plot; the legend shows
+each marker's AUC and CI, so you can compare discriminative ability at a glance:
+
+```{r compare, fig.width = 6}
+ggrocplot(
+  dx,
+  response = "status",
+  predictor = c("marker_A", "marker_B"),
+  palette = "jco"
+)
+```
+
+`marker_A` (the higher AUC) is the better discriminator. Customize with
+`palette`, `linetype`, `size`, `legend`/`legend.title`, and toggle the diagonal
+(`diag`), the AUC print-out (`print.auc`) or the CI (`ci`).
+
+## Notes
+
+- The empirical ROC, the AUC (equal to the Mann-Whitney statistic) and the
+  large-sample CI are all computed in base R, so `ggrocplot()` has no modeling
+  dependency and runs in lightweight environments.
+- For DeLong or bootstrap confidence intervals, ROC smoothing, or formal tests
+  between curves, use the `pROC` package.
+
+See `?ggrocplot` for the full argument list.

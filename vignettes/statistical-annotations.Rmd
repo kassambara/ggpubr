@@ -1,0 +1,150 @@
+---
+title: "Adding Statistical Test Results to Plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Adding Statistical Test Results to Plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6,
+  fig.height = 4,
+  dpi = 96,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+A publication figure should carry its own statistics. `ggpubr` gives you three
+complementary ways to put a test result on a plot, and the right choice depends
+on how many groups you have and what you want the reader to see:
+
+- **Pairwise brackets** -- one bracket per comparison, with a p-value or
+  significance stars (`geom_pwc()`, `stat_compare_means()`). Best for a **few
+  groups** where every pair matters.
+- **Compact letter display** -- one letter per group; groups that share a letter
+  are not significantly different (`stat_cld()`). Best for **many groups**, where
+  a full set of brackets becomes unreadable.
+- **An omnibus label** -- the single overall test (ANOVA / Kruskal-Wallis) as a
+  subtitle (`add_test_label()`). Answers "is there *any* difference?" before the
+  pairwise detail.
+
+This vignette shows each, and when to reach for which. All the examples use
+`rstatix` under the hood (already a `ggpubr` dependency).
+
+```{r libs}
+library(ggpubr)
+
+data("ToothGrowth")
+tg <- ToothGrowth
+tg$dose <- factor(tg$dose)
+```
+
+## Pairwise brackets
+
+`geom_pwc()` ("pairwise comparisons") adds a bracket for every pair of groups,
+with the adjusted p-value or significance stars. Add it to any `ggpubr` plot.
+
+```{r brackets-basic, fig.height = 4.2}
+ggboxplot(tg, x = "dose", y = "len", color = "dose", palette = "jco") +
+  geom_pwc(method = "t_test", label = "p.adj.format")
+```
+
+### Automatic bracket packing
+
+With several groups the brackets stack into a tall tower. `pack = "auto"` packs
+non-overlapping comparisons onto the same level, so the figure stays compact --
+compare the two panels below (same comparisons, packed on the right):
+
+```{r brackets-pack, fig.width = 7, fig.height = 4}
+p <- ggboxplot(tg, x = "dose", y = "len", color = "dose", palette = "jco")
+
+ggarrange(
+  p + geom_pwc(method = "t_test", label = "p.adj.signif") +
+    labs(title = "pack = \"none\" (default)"),
+  p + geom_pwc(method = "t_test", label = "p.adj.signif", pack = "auto") +
+    labs(title = "pack = \"auto\""),
+  ncol = 2, common.legend = TRUE, legend = "bottom"
+)
+```
+
+Hide the non-significant brackets with `hide.ns = TRUE`, and append an effect
+size with the `{effsize}` token:
+
+```{r brackets-effsize, fig.height = 4.2}
+ggboxplot(tg, x = "dose", y = "len", color = "dose", palette = "jco") +
+  geom_pwc(
+    method = "t_test", label = "{p.adj.signif} (d = {effsize})",
+    hide.ns = TRUE
+  )
+```
+
+## Compact letter display
+
+When you have **many** groups, a full set of pairwise brackets is unreadable.
+A **compact letter display** (CLD) is the standard alternative: each group gets
+one or more letters, and **groups that share a letter are not significantly
+different**. `stat_cld()` computes the letters from all-pairwise comparisons and
+places one label above each group.
+
+`InsectSprays` has six groups -- far too many for brackets, ideal for letters:
+
+```{r cld, fig.width = 6.5, fig.height = 4.2}
+ggboxplot(InsectSprays, x = "spray", y = "count",
+  color = "spray", palette = "jco") +
+  stat_cld() +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.1))) +
+  labs(x = "Spray", y = "Insect count")
+```
+
+Read it as: sprays sharing a letter (e.g. the group labelled `a`) are
+statistically indistinguishable, while sprays with no letter in common differ.
+Switch the underlying test with `method =` (e.g. `"dunn_test"` for a
+non-parametric analysis), and set a common label height with `label.y`.
+
+### Brackets or letters?
+
+| Situation | Use |
+|---|---|
+| 2-4 groups, every pair of interest | pairwise **brackets** (`geom_pwc()`) |
+| 5+ groups, or a crowded bracket tower | **compact letters** (`stat_cld()`) |
+| You only need "is there any difference?" | **omnibus label** (below) |
+
+## The omnibus label
+
+Before the pairwise detail, readers often want the single overall test.
+`add_test_label()` adds it as a subtitle -- pass the plot in, get the plot back:
+
+```{r omnibus, fig.height = 4.2}
+p <- ggboxplot(tg, x = "dose", y = "len", color = "dose", palette = "jco") +
+  geom_pwc(method = "t_test", label = "p.adj.signif", hide.ns = TRUE)
+
+add_test_label(p, method = "anova")
+```
+
+Use `method = "kruskal"` for the non-parametric Kruskal-Wallis test. When a
+second factor is mapped, `group.by =` computes a two-way ANOVA and names the
+effect -- by default the interaction:
+
+```{r omnibus-twoway, fig.width = 7, fig.height = 4.2}
+p2 <- ggboxplot(tg, x = "supp", y = "len", color = "dose", palette = "jco")
+
+add_test_label(p2, group.by = "dose", type = "text")
+```
+
+## All three in one call
+
+`ggcompare()` assembles the whole figure -- base plot, jittered points, group
+means, packed adjusted-p brackets, and the omnibus subtitle -- in a single call:
+
+```{r ggcompare, fig.height = 4.5}
+ggcompare(tg, x = "dose", y = "len")
+```
+
+See the *"Two-Way Comparison Figures with ggcompare()"* vignette for the grouped
+(two-way) design, and `?geom_pwc`, `?stat_cld`, `?add_test_label` for the full
+argument lists.

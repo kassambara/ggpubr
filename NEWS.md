@@ -1,5 +1,17 @@
 # ggpubr 1.0.0.9000
 
+## Documentation
+
+- Three new vignettes: "Adding Statistical Test Results to Plots" (pairwise
+  brackets, compact letter display and omnibus labels, and when to use each),
+  "Forest and Estimation Plots with ggestimates()" (from a table or a fitted
+  model), and "ROC Curves and Diagnostic Accuracy with ggrocplot()".
+- The pkgdown reference index now lists the plot functions and helpers added in
+  this development cycle (`ggcompare()`, `ggrocplot()`, `ggestimates()`,
+  `ggraincloud()`, `ggvolcano()`, `stat_cld()`, `add_test_label()`,
+  `geom_violin_half()`, `style_scatterhist()`, `style_summarystats()`), and the
+  README highlights them.
+
 ## New features
 
 - New vignette "Combining ggpubr Plots with patchwork" shows how to arrange

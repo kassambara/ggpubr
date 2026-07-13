@@ -59,6 +59,7 @@ PuOr
 PuRd
 PubMed
 RColorBrewer
+README
 RMSD
 RNAseq
 RTCGA
@@ -115,6 +116,7 @@ cystadenocarcinoma
 desc
 df
 dfm
+discriminative
 donut
 dotdash
 dotplot
@@ -143,6 +145,7 @@ ggdotchart
 ggdotplot
 ggecdf
 ggerrorplot
+ggestimates
 gghistogram
 ggline
 ggmaplot
@@ -156,6 +159,7 @@ ggproto
 ggpubr's
 ggqqplot
 ggrepel
+ggrocplot
 ggscatter
 ggscatterhist
 ggsci
@@ -218,6 +222,7 @@ padj
 params
 pearson
 pes
+pkgdown
 plotmath
 png
 pointrange
