@@ -395,4 +395,4 @@ Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
 ## Blog posts
 
   - A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready
-    Plots](https://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/)
+    Plots](https://www.datanovia.com/learn/data-visualization/ggpubr/)

@@ -152,6 +152,24 @@
 
 ## Bug fixes
 
+- `ggbarplot()` keeps each error bar on its own bar when one extra variable is
+  mapped to `alpha` and the bars are dodged with `position_dodge()`. The error
+  layer's dodge key was ordered differently from the bars' own grouping, so in a
+  design with three discrete variables half the error bars were centered on the
+  mean of an adjacent bar (#404). This changes the appearance of such a plot,
+  which was previously drawn with the error bars permuted. Unchanged, and still
+  not aligned: an `alpha` column containing `NA`, a fourth discrete aesthetic,
+  `top =`, a user-set `add.params$group`, `position_dodge2()`, and the stacked
+  default. A character `alpha` naming no column now reports the misspelled name
+  instead of failing inside grid.
+
+- `show.n = TRUE` counts the marks the panel draws rather than the rows, so a
+  group holding missing values is no longer labelled with a larger `n` than the
+  points beside it. Infinite values are still counted, because ggplot2 keeps them
+  and draws them on the panel edge.
+
+- Updated the help-page links that had started redirecting.
+
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via
   `ggpubr::` without being attached by `library(ggpubr)`. The label helper is now

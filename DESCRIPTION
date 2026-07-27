@@ -60,8 +60,6 @@ Suggests:
     patchwork,
     ggcorrplot
 VignetteBuilder: knitr
-Remotes:
-    kassambara/rstatix@release/1.1.0
 URL: https://rpkgs.datanovia.com/ggpubr/,
     https://github.com/kassambara/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues

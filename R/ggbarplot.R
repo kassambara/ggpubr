@@ -290,14 +290,42 @@ ggbarplot_core <- function(data, x, y,
 
   # #404: an `alpha` aesthetic mapped to a discrete data column defines an extra
   # dodge subgroup (e.g. fill = cut, alpha = clarity -> 2 bars per cut). Detect it
-  # so the summary keeps that column and the error layer dodges by it too. Scoped
-  # to plain position_dodge(): the alpha subgroup adds a second dodge dimension,
-  # which position_stack()/position_dodge2() do not resolve here (they are left
-  # exactly as before, unchanged by this fix).
+  # so the summary keeps that column and the error layer dodges by it too. Both
+  # dodges keep the column; only the interaction dodge KEY below is specific to
+  # plain position_dodge(), position_dodge2() being re-centred separately (#363).
   alpha.var <- list(...)[["alpha"]]   # [[ ]] avoids $ partial-matching a `...` arg
-  has.alpha.group <- !is.null(alpha.var) && length(alpha.var) == 1 &&
+  alpha.is.col <- !is.null(alpha.var) && length(alpha.var) == 1 &&
     is.character(alpha.var) && alpha.var %in% names(data) &&
-    !is.numeric(.select_vec(data, alpha.var)) &&
+    !is.numeric(.select_vec(data, alpha.var))
+  # A character `alpha` that names no column cannot be an opacity either, so it
+  # reaches the drawing code as a static value and fails there with
+  # "non-numeric argument to binary operator" from alpha * 255 - naming neither
+  # the argument nor the typo. Say which it is.
+  if (!is.null(alpha.var) && length(alpha.var) == 1 && is.character(alpha.var) &&
+    !(alpha.var %in% names(data))) {
+    stop("`alpha` must be a number between 0 and 1, or the name of a column in ",
+      "`data`. '", alpha.var, "' is not a column of `data`.", call. = FALSE)
+  }
+  # Carrying the alpha column into the summary is what makes the subgroup drawable
+  # at all: without it the summarised frame loses the column, geom_exec can no
+  # longer map it, and the column NAME reaches grid as a static opacity - the
+  # "alpha * 255" draw error of #404. But carrying it also SPLITS the summary into
+  # one row per (x, legend, alpha) cell, and only the interaction dodge key built
+  # below can place that many rows on the right bars. It is specific to plain
+  # position_dodge(), so the column is carried only there.
+  #
+  # position_dodge2() is deliberately NOT included, even though its error layer is
+  # re-centred on the bars (#363): that re-centring matches summary rows to bars by
+  # SORT POSITION, and with the alpha column carried the sort key
+  # (PANEL, x, legend) is no longer total - the alpha subgroup is only a stable
+  # tie. Anything that reorders the summary (`sort.val`, `top`, `sort.by.groups`)
+  # or that resolves a different key (`add.params$color`/`$fill` naming another
+  # column) then silently permutes the match, so an error bar lands on a
+  # neighbouring bar carrying ITS mean and ITS error. Making dodge2 work needs the
+  # row-to-bar match keyed on the bars' own identity rather than on rank, which is
+  # a focused change of its own; until then position_dodge2() keeps the released
+  # behaviour exactly, rather than trading a draw error for a wrong number.
+  has.alpha.group <- alpha.is.col &&
     inherits(position, "PositionDodge") && !inherits(position, "PositionDodge2")
 
   grouping.vars <- intersect(c(x, color, fill, facet.by), names(data))
@@ -322,8 +350,15 @@ ggbarplot_core <- function(data, x, y,
   # the variable names and to options(ggpubr.parse_aes = FALSE).
   if (has.alpha.group) {
     base.group <- add.params$group %||% x
+    # lex.order = TRUE is load-bearing, not tidy-up. interaction() otherwise
+    # varies the FIRST factor fastest, while ggplot2 numbers the bars' own group
+    # ids with the first one slowest. The two orderings then disagree and the
+    # dodge ranks permute, so an error bar was centred on a DIFFERENT bar's mean
+    # - 4 of 8 misplaced in a 2x2x2 design, which is the misalignment #404 was
+    # about. ggline() and .add_show_n() build the analogous key the same way.
     data[[".ggpubr.alpha.group."]] <- interaction(
-      .select_vec(data, base.group), .select_vec(data, alpha.var), drop = TRUE
+      .select_vec(data, base.group), .select_vec(data, alpha.var),
+      drop = TRUE, lex.order = TRUE
     )
     add.params$group <- ".ggpubr.alpha.group."
   }
