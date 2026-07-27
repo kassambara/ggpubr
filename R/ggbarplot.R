@@ -297,15 +297,6 @@ ggbarplot_core <- function(data, x, y,
   alpha.is.col <- !is.null(alpha.var) && length(alpha.var) == 1 &&
     is.character(alpha.var) && alpha.var %in% names(data) &&
     !is.numeric(.select_vec(data, alpha.var))
-  # A character `alpha` that names no column cannot be an opacity either, so it
-  # reaches the drawing code as a static value and fails there with
-  # "non-numeric argument to binary operator" from alpha * 255 - naming neither
-  # the argument nor the typo. Say which it is.
-  if (!is.null(alpha.var) && length(alpha.var) == 1 && is.character(alpha.var) &&
-    !(alpha.var %in% names(data))) {
-    stop("`alpha` must be a number between 0 and 1, or the name of a column in ",
-      "`data`. '", alpha.var, "' is not a column of `data`.", call. = FALSE)
-  }
   # Carrying the alpha column into the summary is what makes the subgroup drawable
   # at all: without it the summarised frame loses the column, geom_exec can no
   # longer map it, and the column NAME reaches grid as a static opacity - the

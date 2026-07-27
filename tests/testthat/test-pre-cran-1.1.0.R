@@ -28,37 +28,13 @@ test_that("ggbarplot() keeps each dodged error bar on its own bar (#404)", {
   # element-wise, so a permutation cannot pass
   expect_equal(as.numeric(bar$y), (eb$ymin + eb$ymax) / 2, tolerance = 1e-8)
   expect_equal(sort((eb$ymax - eb$ymin) / 2), sort(ref.se$v), tolerance = 1e-8)
-  # a character `alpha` naming no column reports the typo instead of failing in grid
-  expect_error(
-    ggbarplot(d, x = "g", y = "v", fill = "f", alpha = "zzz", add = "mean_se"),
-    "not a column of", fixed = TRUE
-  )
-})
-
-test_that("show.n counts the marks the panel draws, NA excluded and Inf kept", {
-  # ggplot2 removes NA/NaN before drawing but KEEPS +/-Inf, squeezing it onto the
-  # panel edge, so an infinite value is still a visible mark. The label must
-  # match the marks in both directions.
-  d <- data.frame(
-    g = rep(c("a", "b", "c"), each = 8),
-    y = c(1:6, NA, NaN,        # a: 6 drawn
-      1:6, Inf, Inf,           # b: 8 drawn (Inf is drawn)
-      1:8)                     # c: 8 drawn
-  )
-  labs <- function(p) {
-    b <- suppressWarnings(ggplot2::ggplot_build(p))
-    ggplot2::ggplotGrob(b)
-    z <- unlist(lapply(b$data, function(q) if ("label" %in% names(q)) as.character(q$label)))
-    as.integer(sub("^n = ", "", z[grepl("^n = ", z)]))
-  }
-  # base-R reference: what ggplot2 will actually draw, per group
-  ref <- as.integer(tapply(d$y, d$g, function(v) sum(!is.na(v))))
-  expect_equal(ref, c(6L, 8L, 8L))
-  for (p in list(
-    suppressWarnings(ggstripchart(d, "g", "y", show.n = TRUE)),
-    suppressWarnings(ggboxplot(d, "g", "y", add = "jitter", show.n = TRUE)),
-    suppressWarnings(ggviolin(d, "g", "y", show.n = TRUE))
-  )) {
-    expect_equal(sort(labs(p)), sort(ref))
+  # An `alpha` naming one of desc_statby()'s summary columns is legitimate - the
+  # bar layer is drawn from that summary, so geom_exec() resolves the mapping
+  # against it - and must keep rendering.
+  for (a in c("se", "sd", "ci")) {
+    p2 <- suppressWarnings(ggbarplot(d, x = "g", y = "v", fill = "f",
+      add = "mean_se", position = ggplot2::position_dodge(0.8), alpha = a))
+    expect_s3_class(ggplot2::ggplotGrob(suppressWarnings(
+      ggplot2::ggplot_build(p2))), "gtable")
   }
 })

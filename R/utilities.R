@@ -1238,21 +1238,6 @@ keep_only_tbl_df_classes <- function(x) {
                         position = NULL, size = 3.2, vjust = 1.4) {
   d <- p$data
   if (is.null(d) || !(x %in% colnames(d))) return(p)
-  # Count what the panel DRAWS. ggplot2 removes NA/NaN before drawing, so a
-  # group holding them was labelled with a larger n than the marks beside it.
-  # `!is.na()`, NOT is.finite(): ggplot2 KEEPS +/-Inf in the layer data and the
-  # coord squeezes it onto the panel edge, so an infinite value is still a mark
-  # on the figure and must still be counted. is.na(NaN) is TRUE, so NaN is
-  # covered. Counting fewer than the visible marks would be the same defect in
-  # the other direction.
-  y.vals <- tryCatch(
-    if (is.null(p$mapping$y)) NULL else suppressWarnings(rlang::eval_tidy(p$mapping$y, d)),
-    error = function(e) NULL
-  )
-  if (!is.null(y.vals) && length(y.vals) == nrow(d)) {
-    d <- d[!is.na(y.vals), , drop = FALSE]
-    if (nrow(d) == 0) return(p)
-  }
   group <- intersect(unique(c(color, fill)), colnames(d))
   facet.vars <- intersect(unique(c(.plot_facet_vars(p), facet.by)), colnames(d))
   dodge.w <- .dodge_width_of(position)

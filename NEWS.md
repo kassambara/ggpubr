@@ -160,13 +160,7 @@
   which was previously drawn with the error bars permuted. Unchanged, and still
   not aligned: an `alpha` column containing `NA`, a fourth discrete aesthetic,
   `top =`, a user-set `add.params$group`, `position_dodge2()`, and the stacked
-  default. A character `alpha` naming no column now reports the misspelled name
-  instead of failing inside grid.
-
-- `show.n = TRUE` counts the marks the panel draws rather than the rows, so a
-  group holding missing values is no longer labelled with a larger `n` than the
-  points beside it. Infinite values are still counted, because ggplot2 keeps them
-  and draws them on the panel edge.
+  default.
 
 - Updated the help-page links that had started redirecting.
 
