@@ -13,7 +13,7 @@ General resources:
 
 \itemize{
 \item \href{https://rpkgs.datanovia.com/ggpubr/}{ggpubr documentation}
-\item \href{https://www.datanovia.com/en/blog/tag/ggpubr/}{ggpubr tutorials}
+\item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/}{ggpubr tutorials}
 }
 }
 \section{P-Value Formatting}{
