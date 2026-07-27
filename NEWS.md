@@ -157,10 +157,13 @@
   layer's dodge key was ordered differently from the bars' own grouping, so in a
   design with three discrete variables half the error bars were centered on the
   mean of an adjacent bar (#404). This changes the appearance of such a plot,
-  which was previously drawn with the error bars permuted. Unchanged, and still
-  not aligned: an `alpha` column containing `NA`, a fourth discrete aesthetic,
-  `top =`, a user-set `add.params$group`, `position_dodge2()`, and the stacked
-  default.
+  which was previously drawn with the error bars permuted. An `alpha` column
+  containing `NA` is aligned too: those rows keep a dodge slot of their own
+  instead of being dropped from the key. `position_dodge2()` and the stacked
+  default are unchanged. Three configurations remain unaligned, and their error
+  bars may sit differently than in 1.0.0 although they were not correct there
+  either: a fourth discrete aesthetic (`fill` and `color` and `alpha` together),
+  `top =`, and a user-set `add.params$group`.
 
 - Updated the help-page links that had started redirecting.
 

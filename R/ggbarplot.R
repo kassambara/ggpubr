@@ -347,8 +347,15 @@ ggbarplot_core <- function(data, x, y,
     # dodge ranks permute, so an error bar was centred on a DIFFERENT bar's mean
     # - 4 of 8 misplaced in a 2x2x2 design, which is the misalignment #404 was
     # about. ggline() and .add_show_n() build the analogous key the same way.
+    # addNA(): interaction() returns NA for a row whose key column is NA, so those
+    # rows get no dodge rank at all, while ggplot2's own id_var(drop = TRUE) sorts
+    # with na.last = TRUE and keeps NA as a real trailing level. The two orderings
+    # then disagree from the NA cell onward and an error bar is drawn on a
+    # neighbour's bar carrying ITS mean and ITS error. A missing value in a
+    # grouping column is ordinary research data, not a degenerate input.
     data[[".ggpubr.alpha.group."]] <- interaction(
-      .select_vec(data, base.group), .select_vec(data, alpha.var),
+      addNA(factor(.select_vec(data, base.group)), ifany = TRUE),
+      addNA(factor(.select_vec(data, alpha.var)), ifany = TRUE),
       drop = TRUE, lex.order = TRUE
     )
     add.params$group <- ".ggpubr.alpha.group."

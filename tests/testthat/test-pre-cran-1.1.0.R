@@ -37,4 +37,28 @@ test_that("ggbarplot() keeps each dodged error bar on its own bar (#404)", {
     expect_s3_class(ggplot2::ggplotGrob(suppressWarnings(
       ggplot2::ggplot_build(p2))), "gtable")
   }
+
+  # A missing value in the alpha column is ordinary research data. interaction()
+  # returns NA for such a row, giving it no dodge rank, while ggplot2's own
+  # id_var(drop = TRUE) sorts na.last = TRUE and keeps NA as a real trailing
+  # level - so without addNA() the two orderings diverge from the NA cell onward
+  # and an error bar is drawn on a neighbour's bar with ITS mean and ITS error.
+  set.seed(7)
+  dna <- data.frame(
+    g = rep(c("A", "B"), each = 12), f = rep(c("f1", "f2"), 12),
+    a = rep(c("a1", "a2"), each = 6, times = 2), v = stats::rnorm(24, 10)
+  )
+  dna$a[dna$g == "A" & dna$f == "f1"] <- NA
+  pna <- suppressWarnings(ggbarplot(dna, x = "g", y = "v", fill = "f",
+    alpha = "a", add = "mean_se", position = ggplot2::position_dodge(0.8)))
+  bna <- suppressWarnings(ggplot2::ggplot_build(pna))
+  expect_s3_class(ggplot2::ggplotGrob(bna), "gtable")
+  nbar <- bna$data[[1]]
+  neb <- bna$data[[2]]
+  expect_equal(nrow(neb), nrow(nbar))
+  expect_equal(
+    as.numeric(nbar$y)[order(as.numeric(nbar$x))],
+    ((neb$ymin + neb$ymax) / 2)[order(as.numeric(neb$x))],
+    tolerance = 1e-8
+  )
 })
