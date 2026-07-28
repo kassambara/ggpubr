@@ -1,5 +1,5 @@
 #' @include utilities.R ggpar.R
-#' @importFrom rstatix df_split_by get_summary_stats
+#' @importFrom rstatix get_summary_stats
 NULL
 #' GGPlot with Summary Stats Table Under the Plot
 #'
@@ -353,7 +353,7 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
   as.character(scales.x[[1]]$get_limits())
 }
 
-# Build one panel label per row of a df_split_by() result, from that row's own
+# Build one panel label per row of a nested frame, from that row's own
 # grouping key, so the label cannot drift away from the data beside it. Mirrors
 # rstatix's labellers: "label_value" joins the key values with ", ";
 # "label_both" prefixes each with "<variable>:".
@@ -393,37 +393,32 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
 }
 
 ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller = "label_value", ...) {
-  labeller_func <- switch(labeller,
-    label_both = rstatix::df_label_both,
-    label_value = rstatix::df_label_value
-  )
-  # Normalise exactly as df_split_by() does internally (df_get_var_names() takes
-  # unique(), and names on the vector become the grouped column's name), so the
-  # key read below and the split stay in lockstep by construction. Without this a
-  # duplicated facet.by nests two columns of the same name, and a named one nests
-  # the key under that name, neither of which df_split_by() itself does.
+  # `labeller` used to be validated only as a side effect of looking the function
+  # up, which failed with whatever the lookup happened to raise. It is checked
+  # here instead, so the same inputs are still refused and say why.
+  if (!is.character(labeller) || length(labeller) != 1L ||
+      !labeller %in% c("label_value", "label_both")) {
+    stop(
+      "`labeller` should be one of \"label_value\" or \"label_both\".",
+      call. = FALSE
+    )
+  }
+  # Normalise the way rstatix's own df_get_var_names() does - unique(), and drop
+  # names - so a duplicated facet.by does not nest two columns of the same name
+  # and a named one does not nest the key under that name.
   groups <- unique(unname(facet.by))
-  # Read the grouping keys BEFORE splitting. df_split_by() writes its label into
-  # the column named by label_col, so a facet variable that is itself called
-  # "panel" has its key overwritten by the label - and re-formatting that yields
-  # "panel:panel:East", or "Alpha, p, p" with two facet variables. df_split_by()
-  # nests first and its labeller only mutates, so df_nest_by() returns the same
-  # rows in the same order with the keys still intact.
-  panel <- .panel_label(
-    rstatix::df_nest_by(data, vars = groups), groups, labeller
-  )
-  data.grouped <- data %>%
-    df_split_by(vars = groups, label_col = "panel", labeller = labeller_func)
-  # A panel must be titled with the name of the group whose rows it draws.
-  # rstatix's df_unite_factors() sorts the rows with arrange() before building
-  # the label, and the label is then assigned back onto the *unsorted* nested
-  # frame - so whenever that sort reorders the groups, every panel is titled with
-  # another group's name while drawing this one's data. It bites for any facet
-  # column whose sorted order differs from the order the groups appear in, and
-  # for labeller = "label_both" even when that column is a factor. The keys read
-  # above ARE aligned with the nested frames, so the label is rebuilt from them.
-  # Where rstatix's own ordering already agrees, this reproduces its label and
-  # its factor levels exactly.
+  # Nest, and build the panel label from the grouping keys sitting beside each
+  # nested frame. That pairing is the point: a label built from a sorted copy of
+  # the rows and assigned back to the unsorted frame is how a panel came to be
+  # titled with another group's name while drawing this one's data.
+  #
+  # df_split_by() would do the nesting, build its own label and stamp it onto
+  # each frame - and all three of those results were then overwritten here. Only
+  # the nesting was ever wanted, so only the nesting is asked for; that also
+  # keeps this path independent of what the labeller does with an empty grouping
+  # vector.
+  data.grouped <- rstatix::df_nest_by(data, vars = groups)
+  panel <- .panel_label(data.grouped, groups, labeller)
   data.grouped$panel <- panel
   data.grouped$data <- map2(
     data.grouped$data, as.character(panel),
