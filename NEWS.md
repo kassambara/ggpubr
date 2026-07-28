@@ -167,9 +167,9 @@
   in sorted order was unaffected. `labeller = "label_both"` was hit more often,
   because it sorts the formatted `variable:value` strings rather than the
   underlying values, so it also transposed factor and numeric columns that
-  `label_value` got right. The faceted example on `?ggsummarystats` had all four
-  of its panels transposed; if you have produced such a figure it is worth
-  re-checking.
+  `label_value` got right. A two-variable case such as
+  `facet.by = c("supp", "qc")` with `free.panels = TRUE` had all four of its
+  panels transposed; if you have produced such a figure it is worth re-checking.
 
   Each panel keeps its position and its data; what changes is the name written on
   it, so the titles now read in the order the groups appear in the data rather

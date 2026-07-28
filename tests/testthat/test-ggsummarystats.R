@@ -113,10 +113,11 @@ test_that("ggsummarystats(free.panels) survives a facet column named 'panel'", {
   }
 })
 
-test_that("the faceted ?ggsummarystats example labels all four panels correctly", {
-  # The two-variable example on the help page had ALL FOUR panels transposed:
-  # the panel headed "supp:OJ, qc:fail" drew VC/pass's boxes and its n/median/iqr.
-  # Expected medians below are recomputed from ToothGrowth with base R.
+test_that("a two-variable free.panels facet labels all four panels correctly", {
+  # The help page's faceted example plus free.panels = TRUE: ALL FOUR panels were
+  # transposed, the panel headed "supp:OJ, qc:fail" drawing VC/pass's boxes and
+  # its n/median/iqr. (The shipped example itself does not set free.panels, so it
+  # was never affected.) Expected medians recomputed from ToothGrowth in base R.
   df <- ToothGrowth
   df$dose <- as.factor(df$dose)
   set.seed(123)
@@ -241,10 +242,10 @@ test_that("ggsummarystats(free.panels) panel titles follow the data, not the alp
 })
 
 test_that("ggsummarystats(free.panels) survives facet columns named like paste()'s formals", {
-  # The label is assembled with do.call(paste, ...). Map() names its result after
-  # the facet variables, so without unname() those names reach paste() as
-  # arguments: a column called `sep` or `recycle0` errored, and `collapse`
-  # silently produced a blank title for every panel.
+  # The label used to be assembled with do.call(paste, values). Map() names its
+  # result after the facet variables, so those names reached paste() as arguments:
+  # a column called `sep` or `recycle0` errored, and `collapse` silently produced a
+  # blank title for every panel. The join is a fold now, which cannot pass a name.
   set.seed(1)
   for (nm in c("sep", "collapse", "recycle0")) {
     d <- data.frame(
