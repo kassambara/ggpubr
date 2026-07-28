@@ -288,19 +288,27 @@ ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller = "label_va
     label_value = rstatix::df_label_value
   )
   groups <- facet.by
+  # Read the grouping keys BEFORE splitting. df_split_by() writes its label into
+  # the column named by label_col, so a facet variable that is itself called
+  # "panel" has its key overwritten by the label - and re-formatting that yields
+  # "panel:panel:East", or "Alpha, p, p" with two facet variables. df_split_by()
+  # nests first and its labeller only mutates, so df_nest_by() returns the same
+  # rows in the same order with the keys still intact.
+  panel <- .panel_label(
+    rstatix::df_nest_by(data, vars = groups), groups, labeller
+  )
   data.grouped <- data %>%
     df_split_by(vars = groups, label_col = "panel", labeller = labeller_func)
   # A panel must be titled with the name of the group whose rows it draws.
   # rstatix's df_unite_factors() sorts the rows with arrange() before building
   # the label, and the label is then assigned back onto the *unsorted* nested
   # frame - so whenever that sort reorders the groups, every panel is titled with
-  # another group's name while drawing this one's data. It bites for a character
-  # facet column that is not in alphabetical order, and for labeller =
-  # "label_both" even when the column is a factor. The grouping key that
-  # df_split_by() returns beside each nested frame IS aligned with it, so rebuild
-  # the label from that. Where rstatix's own ordering already agrees, this
-  # reproduces its label and its factor levels exactly.
-  panel <- .panel_label(data.grouped, groups, labeller)
+  # another group's name while drawing this one's data. It bites for any facet
+  # column whose sorted order differs from the order the groups appear in, and
+  # for labeller = "label_both" even when that column is a factor. The keys read
+  # above ARE aligned with the nested frames, so the label is rebuilt from them.
+  # Where rstatix's own ordering already agrees, this reproduces its label and
+  # its factor levels exactly.
   data.grouped$panel <- panel
   data.grouped$data <- map2(
     data.grouped$data, as.character(panel),

@@ -154,14 +154,26 @@
 
 - `ggsummarystats(free.panels = TRUE)` now titles every panel with the group
   whose data it draws. The panel label was taken from a split that sorts its rows
-  before building the label but attaches it to the unsorted data, so the panels
-  could be titled with each other's names: with `facet.by` naming a character
-  column whose groups are not in alphabetical order, a panel headed `East` drew
-  `North`'s boxes, and the summary table under it carried `North`'s n, median and
-  IQR. The label is now built from the grouping key that travels with each
-  panel's own rows, so it cannot drift. This affected `labeller = "label_both"`
-  even when the facet column was a factor. Panel order and label formatting are
-  unchanged.
+  before building the label but attaches it to the unsorted data, so panels were
+  titled with each other's names: a panel headed `East` drew `North`'s boxes, and
+  the summary table under it carried `North`'s n, median and IQR. The label is now
+  built from the grouping key that travels with each panel's own rows, so it
+  cannot drift.
+
+  This affected **any** `facet.by` column whose groups do not already appear in
+  sorted order — a character column that is not alphabetical, a factor whose
+  levels are ordered differently from the rows, and numeric, integer, logical and
+  `Date` columns — as well as every `labeller = "label_both"` call, and any data
+  containing `NA` in the facet column. Only a column whose groups happen to appear
+  in sorted order was safe, which is why the faceted example on
+  `?ggsummarystats` showed it: all four of its panels were transposed. If you
+  have produced such a figure, it is worth re-checking.
+
+  Each panel keeps its position and its data; what changes is the name written on
+  it, so the titles now read in data order rather than sorted order. Label
+  formatting is unchanged, with one exception: a facet column named `label` with
+  `labeller = "label_both"` now gets the `label:` prefix it asks for, which was
+  previously dropped.
 
 - `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
   `alpha` and the bars are dodged with `position_dodge()`. Thanks to @zuooonz
