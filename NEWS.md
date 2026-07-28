@@ -160,20 +160,31 @@
   built from the grouping key that travels with each panel's own rows, so it
   cannot drift.
 
-  This affected **any** `facet.by` column whose groups do not already appear in
-  sorted order — a character column that is not alphabetical, a factor whose
-  levels are ordered differently from the rows, and numeric, integer, logical and
-  `Date` columns — as well as every `labeller = "label_both"` call, and any data
-  containing `NA` in the facet column. Only a column whose groups happen to appear
-  in sorted order was safe, which is why the faceted example on
-  `?ggsummarystats` showed it: all four of its panels were transposed. If you
-  have produced such a figure, it is worth re-checking.
+  This affected any `facet.by` column whose groups do not already appear in sorted
+  order: a character column that is not alphabetical, a factor whose levels are
+  ordered differently from its rows, numeric, integer, logical and `Date` columns,
+  and a frame whose `NA` group is not last. A column whose groups happen to appear
+  in sorted order was unaffected. `labeller = "label_both"` was hit more often,
+  because it sorts the formatted `variable:value` strings rather than the
+  underlying values, so it also transposed factor and numeric columns that
+  `label_value` got right. The faceted example on `?ggsummarystats` had all four
+  of its panels transposed; if you have produced such a figure it is worth
+  re-checking.
 
   Each panel keeps its position and its data; what changes is the name written on
-  it, so the titles now read in data order rather than sorted order. Label
-  formatting is unchanged, with one exception: a facet column named `label` with
-  `labeller = "label_both"` now gets the `label:` prefix it asks for, which was
-  previously dropped.
+  it, so the titles now read in the order the groups appear in the data rather
+  than in sorted order. Label formatting is otherwise unchanged, except where a
+  facet column is named after something the label machinery uses internally: a
+  column named `label` now keeps the `label:` prefix that `label_both` asks for,
+  and keeps the other facet variables in the label under `label_value`, where
+  both were previously dropped; and a column named `panel` is no longer formatted
+  twice.
+
+  The underlying defect was reported upstream (rstatix issue 324) and is fixed in
+  rstatix's development version, so with that installed the labels were already
+  right. ggpubr requires `rstatix (>= 1.1.0)`, the released version carrying the
+  defect, and the cases above involving a facet column named `panel` or `label`
+  are wrong on any rstatix version, so the fix is applied here regardless.
 
 - `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
   `alpha` and the bars are dodged with `position_dodge()`. Thanks to @zuooonz

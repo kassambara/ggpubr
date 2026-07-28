@@ -141,3 +141,100 @@ test_that("the faceted ?ggsummarystats example labels all four panels correctly"
       tolerance = 1e-8)
   }
 })
+
+test_that("ggsummarystats(free.panels) survives facet columns named like internals", {
+  # These configurations are wrong on the old code path regardless of which
+  # rstatix is installed, because the label is written into a column named
+  # "panel" and rstatix's labeller has a local variable named `label`. With
+  # facet.by = c("panel", "label") the "panel" variable used to vanish from every
+  # title and the returned names came out DUPLICATED ("q", "p", "q", "p"), so
+  # p[["q"]] could only ever reach the first of the two.
+  set.seed(4)
+  d <- data.frame(
+    panel = rep(c("Z", "Y"), each = 12),
+    label = rep(c("q", "p"), 12),
+    grp = rep(c("a", "b"), 12),
+    stringsAsFactors = FALSE
+  )
+  d$val <- ifelse(d$panel == "Z", 0, 30) + stats::rnorm(24)
+
+  p <- suppressWarnings(ggsummarystats(d, x = "grp", y = "val",
+    facet.by = c("panel", "label"), free.panels = TRUE, labeller = "label_both"))
+  expect_equal(
+    names(p),
+    c("panel:Z, label:q", "panel:Z, label:p", "panel:Y, label:q", "panel:Y, label:p")
+  )
+  expect_false(any(duplicated(names(p))))
+
+  pv <- suppressWarnings(ggsummarystats(d, x = "grp", y = "val",
+    facet.by = c("panel", "label"), free.panels = TRUE, labeller = "label_value"))
+  expect_equal(names(pv), c("Z, q", "Z, p", "Y, q", "Y, p"))
+
+  # every panel draws its own cell, checked against base R
+  for (nm in names(pv)) {
+    parts <- strsplit(nm, ", ", fixed = TRUE)[[1]]
+    cell <- d[d$panel == parts[1] & d$label == parts[2], ]
+    expected <- sort(as.numeric(tapply(cell$val, cell$grp, stats::median)))
+    built <- suppressWarnings(ggplot2::ggplot_build(pv[[nm]]$main.plot))
+    expect_equal(as.character(built$layout$layout$panel), nm)
+    expect_equal(sort(as.numeric(built$data[[1]]$middle)), expected,
+      tolerance = 1e-8)
+  }
+
+  # a facet column named `label` keeps the prefix label_both asks for; rstatix's
+  # own labeller has it shadowed by the data column and silently drops it
+  d2 <- data.frame(
+    label = rep(c("North", "East"), each = 12), grp = rep(c("a", "b"), 12),
+    val = c(stats::rnorm(12, 100), stats::rnorm(12, 10)), stringsAsFactors = FALSE
+  )
+  p2 <- suppressWarnings(ggsummarystats(d2, x = "grp", y = "val",
+    facet.by = "label", free.panels = TRUE, labeller = "label_both"))
+  expect_equal(names(p2), c("label:North", "label:East"))
+
+  # a duplicated or named facet.by must keep working (df_split_by normalises both)
+  d3 <- data.frame(
+    region = rep(c("North", "East"), each = 12), grp = rep(c("a", "b"), 12),
+    val = c(stats::rnorm(12, 100), stats::rnorm(12, 10)), stringsAsFactors = FALSE
+  )
+  expect_equal(
+    names(suppressWarnings(ggsummarystats(d3, x = "grp", y = "val",
+      facet.by = c("region", "region"), free.panels = TRUE))),
+    c("North", "East")
+  )
+  expect_equal(
+    names(suppressWarnings(ggsummarystats(d3, x = "grp", y = "val",
+      facet.by = c(a = "region"), free.panels = TRUE))),
+    c("North", "East")
+  )
+})
+
+test_that("ggsummarystats(free.panels) panel titles follow the data, not the alphabet", {
+  # Deliberate choice, pinned here: panels are returned in the order the groups
+  # appear in the data (which is the order they have always been drawn in), and
+  # each title names the panel it sits on. Before, the titles came from a sorted
+  # copy, so they read in sorted order while the panels did not - which is how a
+  # title came to name a different panel from the one it was drawn over.
+  set.seed(1)
+  d <- data.frame(
+    region = rep(c("North", "East", "South"), each = 12),
+    grp = rep(c("a", "b"), 18),
+    val = c(stats::rnorm(12, 100), stats::rnorm(12, 10), stats::rnorm(12, 50)),
+    stringsAsFactors = FALSE
+  )
+  p <- suppressWarnings(ggsummarystats(d, x = "grp", y = "val",
+    facet.by = "region", free.panels = TRUE))
+
+  # data order, not sort order
+  expect_equal(names(p), c("North", "East", "South"))
+  expect_false(identical(names(p), sort(names(p))))
+
+  # and the panel each title sits on draws that group's rows
+  for (nm in names(p)) {
+    cell <- d[d$region == nm, ]
+    expected <- sort(as.numeric(tapply(cell$val, cell$grp, stats::median)))
+    built <- suppressWarnings(ggplot2::ggplot_build(p[[nm]]$main.plot))
+    expect_equal(as.character(built$layout$layout$panel), nm)
+    expect_equal(sort(as.numeric(built$data[[1]]$middle)), expected,
+      tolerance = 1e-8)
+  }
+})

@@ -271,8 +271,14 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
 # Build one panel label per row of a df_split_by() result, from that row's own
 # grouping key, so the label cannot drift away from the data beside it. Mirrors
 # rstatix's labellers: "label_value" joins the key values with ", ";
-# "label_both" prefixes each with "<variable>:". Levels follow the row order, as
-# df_unite_factors() does, so panel order is unchanged.
+# "label_both" prefixes each with "<variable>:".
+#
+# Levels follow the ROW order, which is the order the groups appear in the data
+# and therefore the order the panels are drawn in. That is deliberately NOT what
+# df_unite_factors() does - it arrange()s first, so its levels are sorted - and
+# it is the reason a title used to be able to name a different panel from the one
+# it sat on. Only one level is ever present in a given sub-plot, so the level set
+# is not drawn; it is the label VALUES that must track the rows.
 .panel_label <- function(grouped, groups, labeller = "label_value") {
   values <- lapply(groups, function(g) as.character(grouped[[g]]))
   if (identical(labeller, "label_both")) {
@@ -287,7 +293,12 @@ ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller = "label_va
     label_both = rstatix::df_label_both,
     label_value = rstatix::df_label_value
   )
-  groups <- facet.by
+  # Normalise exactly as df_split_by() does internally (df_get_var_names() takes
+  # unique(), and names on the vector become the grouped column's name), so the
+  # key read below and the split stay in lockstep by construction. Without this a
+  # duplicated facet.by nests two columns of the same name, and a named one nests
+  # the key under that name, neither of which df_split_by() itself does.
+  groups <- unique(unname(facet.by))
   # Read the grouping keys BEFORE splitting. df_split_by() writes its label into
   # the column named by label_col, so a facet variable that is itself called
   # "panel" has its key overwritten by the label - and re-formatting that yields
