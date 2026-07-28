@@ -158,18 +158,21 @@
   design with three discrete variables half the error bars were centered on an
   adjacent bar's mean and carried its error. The key is now built from every
   mapped discrete aesthetic, in the order ggplot2 lays them out, which also
-  aligns cases that were misplaced before: an `alpha` column whose levels are
-  reversed, unused or ordered, one containing `NA`, a `tibble` or grouped input,
-  `sort.val =`, `orientation = "horizontal"`, and a user-set
-  `add.params$group` naming the fill variable. This changes the appearance of
-  such a plot, which was previously drawn with the error bars permuted.
+  aligns cases that were misplaced before: `fill`, `color` and `alpha` on three
+  different columns; an `alpha` column whose levels are reversed, unused or
+  ordered; one containing `NA`; a `tibble` or grouped input; `facet.by =`,
+  including panels in which a level is absent and `scales = "free_x"`;
+  `sort.val =`, `sort.by.groups = FALSE`, `orientation = "horizontal"`, the
+  `error.plot =` variants, and a user-set `add.params$group`. This changes the
+  appearance of such a plot, which was previously drawn with the error bars
+  permuted.
 
-  Some configurations are still not aligned, among them a fourth discrete
-  aesthetic (`fill` and `color` and `alpha` on three different columns, now with
-  one error bar per bar but half of them still transposed), `facet.by`, `top =`,
-  and an `add.params$group` naming a column that is not mapped to any aesthetic.
-  `position_dodge2()` and the stacked default are unchanged, and a numeric
-  `alpha` column still fails as before.
+  Still unchanged from previous releases: `position_dodge2()` and the stacked
+  default, a numeric `alpha` column, and an `alpha` column named after one of
+  `desc_statby()`'s statistics (`se`, `sd`, `mean`, ...), which maps opacity to
+  that computed statistic. With `top =`, the error bars that fall on a bar are
+  now correct, but the layer still draws one row per summarised group rather than
+  per retained bar, so extra error bars appear where no bar was kept.
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via
