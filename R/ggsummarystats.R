@@ -268,6 +268,20 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
 }
 
 
+# Build one panel label per row of a df_split_by() result, from that row's own
+# grouping key, so the label cannot drift away from the data beside it. Mirrors
+# rstatix's labellers: "label_value" joins the key values with ", ";
+# "label_both" prefixes each with "<variable>:". Levels follow the row order, as
+# df_unite_factors() does, so panel order is unchanged.
+.panel_label <- function(grouped, groups, labeller = "label_value") {
+  values <- lapply(groups, function(g) as.character(grouped[[g]]))
+  if (identical(labeller, "label_both")) {
+    values <- Map(function(g, v) paste0(g, ":", v), groups, values)
+  }
+  labels <- do.call(paste, c(values, list(sep = ", ")))
+  factor(labels, levels = unique(labels))
+}
+
 ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller = "label_value", ...) {
   labeller_func <- switch(labeller,
     label_both = rstatix::df_label_both,
@@ -275,7 +289,27 @@ ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller = "label_va
   )
   groups <- facet.by
   data.grouped <- data %>%
-    df_split_by(vars = groups, label_col = "panel", labeller = labeller_func) %>%
+    df_split_by(vars = groups, label_col = "panel", labeller = labeller_func)
+  # A panel must be titled with the name of the group whose rows it draws.
+  # rstatix's df_unite_factors() sorts the rows with arrange() before building
+  # the label, and the label is then assigned back onto the *unsorted* nested
+  # frame - so whenever that sort reorders the groups, every panel is titled with
+  # another group's name while drawing this one's data. It bites for a character
+  # facet column that is not in alphabetical order, and for labeller =
+  # "label_both" even when the column is a factor. The grouping key that
+  # df_split_by() returns beside each nested frame IS aligned with it, so rebuild
+  # the label from that. Where rstatix's own ordering already agrees, this
+  # reproduces its label and its factor levels exactly.
+  panel <- .panel_label(data.grouped, groups, labeller)
+  data.grouped$panel <- panel
+  data.grouped$data <- map2(
+    data.grouped$data, as.character(panel),
+    function(d, lab) {
+      d[["panel"]] <- factor(lab, levels = levels(panel))
+      d
+    }
+  )
+  data.grouped <- data.grouped %>%
     mutate(
       plots = map(data, ggsummarystats_core, x = x, y = y, facet.by = "panel", ...)
     )

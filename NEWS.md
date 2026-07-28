@@ -152,6 +152,17 @@
 
 ## Bug fixes
 
+- `ggsummarystats(free.panels = TRUE)` now titles every panel with the group
+  whose data it draws. The panel label was taken from a split that sorts its rows
+  before building the label but attaches it to the unsorted data, so the panels
+  could be titled with each other's names: with `facet.by` naming a character
+  column whose groups are not in alphabetical order, a panel headed `East` drew
+  `North`'s boxes, and the summary table under it carried `North`'s n, median and
+  IQR. The label is now built from the grouping key that travels with each
+  panel's own rows, so it cannot drift. This affected `labeller = "label_both"`
+  even when the facet column was a factor. Panel order and label formatting are
+  unchanged.
+
 - `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
   `alpha` and the bars are dodged with `position_dodge()`. Thanks to @zuooonz
   (#404). The error layer dodged by a different key from the one ggplot2 uses to
