@@ -165,6 +165,10 @@
   `numeric.x.axis = TRUE` — and facets with `scales = "free_x"` are not
   affected by this change. See `?ggsummarystats`.
 
+- `ggsummarystats(free.panels = TRUE)` now rejects an invalid `labeller` with a
+  message naming the argument, instead of failing with whatever the internal
+  lookup happened to raise. The accepted values are unchanged.
+
 - `ggsummarystats(free.panels = TRUE)` now titles every panel with the group
   whose data it draws. The panel label was taken from a split that sorts its rows
   before building the label but attaches it to the unsorted data, so panels were

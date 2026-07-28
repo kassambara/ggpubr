@@ -532,3 +532,31 @@ test_that("ggsummarystats() falls back to released behaviour when it cannot foll
     "ggsummarystats"
   )
 })
+
+test_that("ggsummarystats(free.panels) refuses an invalid labeller and says why", {
+  # `labeller` used to be validated only as a side effect of looking the labelling
+  # function up, so an invalid value failed with whatever that lookup raised -
+  # "no applicable method for 'mutate'", or "EXPR must be a length 1 vector".
+  # The same values are still refused; the message now names the argument.
+  d <- ToothGrowth
+  d$dose <- factor(d$dose)
+  for (bad in list("foo", NA, NULL, c("label_value", "label_both"), sum)) {
+    expect_error(
+      suppressWarnings(suppressMessages(ggsummarystats(
+        d, x = "dose", y = "len", facet.by = "supp",
+        free.panels = TRUE, labeller = bad
+      ))),
+      "labeller"
+    )
+  }
+  # and the two documented values still work
+  for (good in c("label_value", "label_both")) {
+    expect_s3_class(
+      suppressWarnings(suppressMessages(ggsummarystats(
+        d, x = "dose", y = "len", facet.by = "supp",
+        free.panels = TRUE, labeller = good
+      ))),
+      "ggsummarystats_list"
+    )
+  }
+})
