@@ -269,3 +269,33 @@ test_that("ggsummarystats(free.panels) survives facet columns named like paste()
     expect_equal(names(p2), "")
   }
 })
+
+test_that("ggsummarystats(free.panels) titles a missing group 'NA' and draws its rows", {
+  # A missing group is titled with the string "NA" - that is how paste() renders
+  # it and how such a panel has always been labelled. Joining the facet variables
+  # without paste()-ing the first one would leave the label a real NA, which
+  # factor() drops rather than levels, losing the panel's title entirely.
+  set.seed(3)
+  d <- data.frame(
+    region = rep(c("North", "East", "South"), each = 8),
+    grp = rep(c("a", "b"), 12), stringsAsFactors = FALSE
+  )
+  d$val <- rep(c(100, 200, 300), each = 8) + stats::rnorm(24)
+  d$region[c(1, 9)] <- NA # NA group is NOT last, so the old path transposed it
+
+  p <- suppressWarnings(ggsummarystats(d, x = "grp", y = "val",
+    facet.by = "region", free.panels = TRUE))
+  expect_true("NA" %in% names(p))
+  expect_false(any(is.na(names(p))))
+
+  truth <- tapply(d$val, addNA(d$region), stats::median)
+  for (nm in names(p)) {
+    rows <- if (nm == "NA") is.na(d$region) else !is.na(d$region) & d$region == nm
+    cell <- d[rows, ]
+    expected <- sort(as.numeric(tapply(cell$val, cell$grp, stats::median)))
+    built <- suppressWarnings(ggplot2::ggplot_build(p[[nm]]$main.plot))
+    expect_equal(as.character(built$layout$layout$panel), nm)
+    expect_equal(sort(as.numeric(built$data[[1]]$middle)), expected,
+      tolerance = 1e-8)
+  }
+})

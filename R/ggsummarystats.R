@@ -293,11 +293,17 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
   if (identical(labeller, "label_both")) {
     values <- Map(function(g, v) paste0(g, ":", v), groups, values)
   }
-  # unname(): Map() names its result after `groups`, and do.call would then hand
-  # those names to paste() as arguments - so a facet column called `sep`,
-  # `collapse` or `recycle0` would collide with paste()'s own formals, erroring
-  # on two of them and silently blanking every label on the third.
-  labels <- do.call(paste, c(unname(values), list(sep = ", ")))
+  # Join by folding rather than do.call(paste, values): the facet variables name
+  # the list, and do.call would hand those names to paste() as arguments, so a
+  # column called `sep`, `collapse` or `recycle0` collided with paste()'s own
+  # formals - two errored and the third silently blanked every label. A fold
+  # cannot reach a formal by name, so the whole class goes away.
+  # paste() on the first element too, not just between elements: it is what turns
+  # a missing group into the string "NA", which is how such a panel has always
+  # been titled. Reduce() alone would return a single vector untouched and leave
+  # the label NA, which factor() then drops instead of levelling.
+  labels <- paste(values[[1]])
+  for (v in values[-1]) labels <- paste(labels, v, sep = ", ")
   factor(labels, levels = unique(labels))
 }
 
