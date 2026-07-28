@@ -291,6 +291,30 @@ test_that("a key that cannot describe the bars keeps the released refusal (#404)
   expect_error(ggplot2::ggplotGrob(p2))
 })
 
+test_that("label = TRUE keeps the released behaviour rather than floating labels (#404)", {
+  # The value labels are drawn by their own layer, which dodges on the legend key
+  # alone. With the alpha subgroup carried they land BETWEEN the bars - measured
+  # 4 of 8 over the bar whose value they show. Aligning the error bars while half
+  # the numbers float would make the figure look trustworthy and read wrong, so a
+  # labelled call is left exactly as released (it does not draw) until the label
+  # layer is keyed too. Same reasoning the plain-dodge fix recorded for `label`.
+  d <- .mk()
+  p <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+    add = "mean_se", position = position_dodge2(), label = TRUE))
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  # the alpha column is NOT carried: one bar per (x, fill), as before
+  expect_equal(nrow(.layer(p, b, "GeomBar")), 6L)
+  expect_error(ggplot2::ggplotGrob(p))
+  # a character label vector is a label too, and is gated the same way
+  p2 <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+    add = "mean_se", position = position_dodge2(),
+    label = as.character(seq_len(6))))
+  expect_equal(nrow(.layer(p2, suppressWarnings(ggplot2::ggplot_build(p2)), "GeomBar")), 6L)
+  # and label = FALSE is unaffected: the subgroup is carried and aligned
+  .expect_on_own_bar(suppressWarnings(ggbarplot(d, "g", "v", fill = "f",
+    alpha = "a", add = "mean_se", position = position_dodge2(), label = FALSE)), d)
+})
+
 test_that("no-regression: dodge2 WITHOUT alpha is untouched by the alpha path (#404)", {
   # Pinned absolute positions, not a sorted set: a permutation of the same values
   # would satisfy a set comparison. Values measured on the released path.

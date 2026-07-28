@@ -270,7 +270,13 @@
   `color`/`fill`/`alpha` column that is not discrete (ggplot2 does not group the
   bars by such a column, so the layer draws more bars than there are dodge
   positions and no error bar can be matched to one bar), and a column named
-  after one of the statistics `desc_statby()` computes. Calls without a discrete
+  after one of the statistics `desc_statby()` computes. `label = TRUE` (or a
+  character label vector) is a third: the value labels are placed by their own
+  layer, which dodges on the legend key alone, so with the `alpha` subgroup
+  carried they land between the bars — four of eight over the bar whose value
+  they show. Aligning the error bars while half the numbers float would make the
+  figure look trustworthy and read wrong, so a labelled call keeps the released
+  behaviour until the label layer is keyed too. Calls without a discrete
   `alpha` column are unchanged, including a faceted `position_dodge2()` with
   `scales = "free_x"`, whose error bars keep the positions they have always had.
 

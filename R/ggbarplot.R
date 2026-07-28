@@ -331,6 +331,9 @@ ggbarplot_core <- function(data, x, y,
   # groups the bars by. We materialise it as a real column with a safe name
   # (rather than an "interaction(a, b)" mapping string), so it survives special
   # characters in the variable names and options(ggpubr.parse_aes = FALSE).
+  # Mirrors how add.label is resolved further down: a non-logical `label` is a
+  # column of user labels and is always drawn.
+  draws.labels <- if (is.logical(label)) isTRUE(label[1]) else TRUE
   alpha.order.vars <- NULL
   if (has.alpha.group) {
     base.group <- add.params$group %||% x
@@ -396,6 +399,13 @@ ggbarplot_core <- function(data, x, y,
     # from. Released behaviour (which refuses to draw at all) is the honest
     # outcome there, so leave that path exactly as it was.
     if (inherits(position, "PositionDodge2") && !key.exact) has.alpha.group <- FALSE
+    # Same reasoning for `label`. The value labels are placed by their own layer,
+    # which dodges on the legend key alone, so with the alpha subgroup carried
+    # they land between the bars - measured 4 of 8 over the bar whose value they
+    # show. Aligning the error bars while half the numbers float between bars
+    # would make the figure look trustworthy and read wrong, so a labelled call
+    # keeps the released behaviour until the label layer is keyed too.
+    if (inherits(position, "PositionDodge2") && draws.labels) has.alpha.group <- FALSE
   }
   # Include the alpha subgroup in the summary grouping. Otherwise the summarized
   # data drops the alpha column, which (a) makes geom_exec pass alpha as a static
