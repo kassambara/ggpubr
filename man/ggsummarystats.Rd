@@ -130,6 +130,20 @@ Create a ggplot with summary stats (n, median, mean, iqr) table
   table = )} adds ggplot components to the main plot and/or the summary table
   and returns the updated object.
   }
+
+  The summary table is drawn on the categories the plot itself was drawn on,
+  so its columns sit under the boxes they describe. It therefore reports the
+  groups the plot draws, and only those: a group excluded by \code{select = },
+  \code{remove = } or \code{order = } gets no column, and
+  \code{$summary.plot$data} holds only
+  the groups drawn, with its x column a factor over those categories. A group
+  the plot draws but has no summary row - for example all its \code{y} values
+  missing - keeps its slot with the column left blank, rather than shifting
+  every later column along. This does not apply to a plot whose x axis is
+  continuous - an integer or \code{Date} x under \code{\link{ggline}()} or
+  \code{\link{ggbarplot}()}, or any builder called with
+  \code{numeric.x.axis = TRUE} - nor to facets with \code{scales = "free_x"}, where
+  one set of categories cannot describe every panel.
 }
 \section{Functions}{
 \itemize{

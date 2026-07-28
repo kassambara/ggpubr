@@ -18,6 +18,20 @@ NULL
 #'   table = )} adds ggplot components to the main plot and/or the summary table
 #'   and returns the updated object.
 #'   }
+#'
+#'   The summary table is drawn on the categories the plot itself was drawn on,
+#'   so its columns sit under the boxes they describe. It therefore reports the
+#'   groups the plot draws, and only those: a group excluded by \code{select = },
+#'   \code{remove = } or \code{order = } gets no column, and
+#'   \code{$summary.plot$data} holds only
+#'   the groups drawn, with its x column a factor over those categories. A group
+#'   the plot draws but has no summary row - for example all its \code{y} values
+#'   missing - keeps its slot with the column left blank, rather than shifting
+#'   every later column along. This does not apply to a plot whose x axis is
+#'   continuous - an integer or \code{Date} x under \code{\link{ggline}()} or
+#'   \code{\link{ggbarplot}()}, or any builder called with
+#'   \code{numeric.x.axis = TRUE} - nor to facets with \code{scales = "free_x"}, where
+#'   one set of categories cannot describe every panel.
 #' @inheritParams ggboxplot
 #' @param digits integer indicating the number of decimal places (round) to be
 #'   used.
@@ -249,6 +263,37 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
     ggtheme = ggtheme,
     facet.by = facet.by, labeller = labeller, ...
   )
+  # The table is built from its own frame, so it trains its own x scale. Whenever
+  # that scale orders the categories differently from the plot's - dplyr returns
+  # group keys sorted, while the builders factor x in the order the groups appear
+  # - every column sits under the wrong box, silently. Move the table's x onto the
+  # categories the plot ACTUALLY drew, so the two cannot disagree.
+  cats <- .plot_x_categories(main.plot)
+  keep.empty <- FALSE
+  if (!is.null(cats) && x %in% colnames(summary.stats)) {
+    keep <- !is.na(match(as.character(summary.stats[[x]]), cats))
+    # If nothing matches, the two key spaces are not what we think they are:
+    # leave the table exactly as released rather than blank it.
+    if (any(keep)) {
+      summary.stats <- summary.stats[keep, , drop = FALSE]
+      # as.character() states the coercion factor() would do anyway, and matches
+      # how ggplot2's discrete scale maps values: match(as.character(x), limits).
+      # exclude = NULL is load-bearing: get_limits() keeps an NA category, and
+      # without it factor() drops NA from the levels, so every column from the NA
+      # group onward rotates onto the wrong box - the very bug being fixed.
+      # ordered = is.ordered(.) because the class picks the default discrete
+      # scale: ggplot2 gives an ordered factor scale_*_ordinal (viridis) and an
+      # unordered one scale_*_hue. Dropping it recoloured the table's numbers
+      # away from the boxes they sit under, so the composite's own colour key
+      # disagreed with itself.
+      summary.stats[[x]] <- factor(
+        as.character(summary.stats[[x]]), levels = cats, exclude = NULL,
+        ordered = is.ordered(summary.stats[[x]])
+      )
+      keep.empty <- !all(cats %in% as.character(summary.stats[[x]]))
+    }
+  }
+
   summary.plot <- ggsummarytable(
     summary.stats,
     x = x, y = summaries,
@@ -258,6 +303,14 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
     digits = digits, size = table.font.size
   ) +
     clean_table_theme()
+  # Only when a category the plot drew has no summarised row - a group whose y is
+  # entirely missing - does the table need telling to keep the empty slot. Adding
+  # a scale is avoided otherwise: a user's own scale_x_discrete() would replace it
+  # and silently restore the misalignment, and $summary.plot is documented as
+  # editable. The factor levels above carry the order, where nothing can undo it.
+  if (keep.empty) {
+    summary.plot <- summary.plot + ggplot2::scale_x_discrete(drop = FALSE)
+  }
 
   plots <- list(
     main.plot = main.plot,
@@ -267,6 +320,38 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
   plots
 }
 
+
+# The categories the main plot's x scale actually trained on, or NULL when the
+# table cannot follow it. Reading the BUILT scale is the whole point: it reports
+# what was drawn, so it distinguishes a dropped level from a kept one - which
+# levels() of the input frame cannot - and it answers "discrete or continuous?"
+# per builder without this function having to know anything about the builders.
+#
+# NULL (leave the table exactly as released) when: the plot will not build; the
+# x scale is continuous (numeric.x.axis, and integer/Date under the builders that
+# do not factor them - the table cannot express a continuous axis); or the facets
+# use free x scales, where one set of categories cannot describe every panel.
+#
+# ggplot2::layer_scales() is the exported equivalent of this lookup, but it builds
+# the plot a second time and cannot report how many x scales there are, which is
+# half the test below.
+.plot_x_categories <- function(p) {
+  built <- tryCatch(
+    suppressMessages(suppressWarnings(ggplot2::ggplot_build(p))),
+    error = function(e) NULL
+  )
+  if (is.null(built)) {
+    return(NULL)
+  }
+  scales.x <- built$layout$panel_scales_x
+  if (length(scales.x) != 1) {
+    return(NULL)
+  }
+  if (!isTRUE(scales.x[[1]]$is_discrete())) {
+    return(NULL)
+  }
+  as.character(scales.x[[1]]$get_limits())
+}
 
 # Build one panel label per row of a df_split_by() result, from that row's own
 # grouping key, so the label cannot drift away from the data beside it. Mirrors
