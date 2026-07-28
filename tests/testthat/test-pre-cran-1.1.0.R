@@ -61,4 +61,58 @@ test_that("ggbarplot() keeps each dodged error bar on its own bar (#404)", {
     ((neb$ymin + neb$ymax) / 2)[order(as.numeric(neb$x))],
     tolerance = 1e-8
   )
+
+  # `color=` mapped to a column is the shape that a two-column key gets WRONG:
+  # ggplot2 orders `colour` BEFORE `fill` in the layer data, so bar groups are
+  # colour-slowest, and keying on (fill, alpha) alone is exactly transposed. That
+  # configuration is CORRECT on the released version, so getting it wrong here
+  # would be a regression - and no earlier test crossed alpha with color.
+  ref.se <- function(dd, keys) {
+    stats::aggregate(stats::reformulate(keys, "v"), data = dd,
+      FUN = function(z) stats::sd(z) / sqrt(length(z)))$v
+  }
+  for (aes.extra in list(
+    list(fill = "f", color = "a"),   # colour and alpha on the SAME column
+    list(color = "a"),               # colour only, no fill
+    list(fill = "a")                 # fill and alpha on the same column
+  )) {
+    args <- c(list(d, x = "g", y = "v", alpha = "a", add = "mean_se",
+      position = ggplot2::position_dodge(0.8)), aes.extra)
+    pc <- suppressWarnings(do.call(ggbarplot, args))
+    bc <- suppressWarnings(ggplot2::ggplot_build(pc))
+    expect_s3_class(ggplot2::ggplotGrob(bc), "gtable")
+    cbar <- bc$data[[1]]
+    ceb <- bc$data[[2]]
+    lab <- paste(names(aes.extra), unlist(aes.extra), collapse = " ")
+    expect_equal(nrow(ceb), nrow(cbar), info = lab)
+    expect_equal(
+      as.numeric(cbar$y)[order(as.numeric(cbar$x))],
+      ((ceb$ymin + ceb$ymax) / 2)[order(as.numeric(ceb$x))],
+      tolerance = 1e-8, info = lab
+    )
+  }
+
+  # The level ORDER of the alpha column must not change the pairing either: a
+  # reversed, an unused and an ordered level set all key the same way ggplot2
+  # groups the bars.
+  for (acol in list(
+    factor(d$a, levels = c("a2", "a1")),
+    factor(d$a, levels = c("a1", "a2", "a3")),
+    factor(d$a, ordered = TRUE)
+  )) {
+    dl <- d
+    dl$a <- acol
+    pl <- suppressWarnings(ggbarplot(dl, x = "g", y = "v", fill = "f",
+      alpha = "a", add = "mean_se", position = ggplot2::position_dodge(0.8)))
+    bl <- suppressWarnings(ggplot2::ggplot_build(pl))
+    expect_s3_class(ggplot2::ggplotGrob(bl), "gtable")
+    lbar <- bl$data[[1]]
+    leb <- bl$data[[2]]
+    expect_equal(nrow(leb), nrow(lbar))
+    expect_equal(
+      as.numeric(lbar$y)[order(as.numeric(lbar$x))],
+      ((leb$ymin + leb$ymax) / 2)[order(as.numeric(leb$x))],
+      tolerance = 1e-8
+    )
+  }
 })

@@ -152,20 +152,24 @@
 
 ## Bug fixes
 
-- `ggbarplot()` keeps each error bar on its own bar when one extra variable is
-  mapped to `alpha` and the bars are dodged with `position_dodge()`. The error
-  layer's dodge key was ordered differently from the bars' own grouping, so in a
-  design with three discrete variables half the error bars were centered on the
-  mean of an adjacent bar (#404). This changes the appearance of such a plot,
-  which was previously drawn with the error bars permuted. An `alpha` column
-  containing `NA` is aligned too: those rows keep a dodge slot of their own
-  instead of being dropped from the key. `position_dodge2()` and the stacked
-  default are unchanged. Three configurations remain unaligned, and their error
-  bars may sit differently than in 1.0.0 although they were not correct there
-  either: a fourth discrete aesthetic (`fill` and `color` and `alpha` together),
-  `top =`, and a user-set `add.params$group`.
+- `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
+  `alpha` and the bars are dodged with `position_dodge()` (#404). The error layer
+  dodged by a different key from the one ggplot2 groups the bars by, so in a
+  design with three discrete variables half the error bars were centered on an
+  adjacent bar's mean and carried its error. The key is now built from every
+  mapped discrete aesthetic, in the order ggplot2 lays them out, which also
+  aligns cases that were misplaced before: an `alpha` column whose levels are
+  reversed, unused or ordered, one containing `NA`, a `tibble` or grouped input,
+  `sort.val =`, `orientation = "horizontal"`, and a user-set
+  `add.params$group` naming the fill variable. This changes the appearance of
+  such a plot, which was previously drawn with the error bars permuted.
 
-- Updated the help-page links that had started redirecting.
+  Some configurations are still not aligned, among them a fourth discrete
+  aesthetic (`fill` and `color` and `alpha` on three different columns, now with
+  one error bar per bar but half of them still transposed), `facet.by`, `top =`,
+  and an `add.params$group` naming a column that is not mapped to any aesthetic.
+  `position_dodge2()` and the stacked default are unchanged, and a numeric
+  `alpha` column still fails as before.
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via

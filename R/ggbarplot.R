@@ -333,30 +333,41 @@ ggbarplot_core <- function(data, x, y,
       add.params$group <- fill
     } else if (color %in% names(data)) add.params$group <- color
   }
-  # #404: the bars dodge by the interaction of fill/x and the alpha subgroup, so
-  # the error layer must dodge by that same interaction to stay aligned; otherwise
-  # the error bars are centered on each x while the bars are split (misaligned). We
-  # materialise the interaction as a real column with a safe name (rather than an
-  # "interaction(a, b)" mapping string), so it is robust to special characters in
-  # the variable names and to options(ggpubr.parse_aes = FALSE).
+  # #404: with a discrete `alpha` the bars are split into more groups than the
+  # error layer knows about, so the error bars are centred on each x while the
+  # bars are dodged apart. The error layer has to dodge by the SAME key ggplot2
+  # groups the bars by. We materialise it as a real column with a safe name
+  # (rather than an "interaction(a, b)" mapping string), so it survives special
+  # characters in the variable names and options(ggpubr.parse_aes = FALSE).
   if (has.alpha.group) {
     base.group <- add.params$group %||% x
-    # lex.order = TRUE is load-bearing, not tidy-up. interaction() otherwise
-    # varies the FIRST factor fastest, while ggplot2 numbers the bars' own group
-    # ids with the first one slowest. The two orderings then disagree and the
-    # dodge ranks permute, so an error bar was centred on a DIFFERENT bar's mean
-    # - 4 of 8 misplaced in a 2x2x2 design, which is the misalignment #404 was
-    # about. ggline() and .add_show_n() build the analogous key the same way.
-    # addNA(): interaction() returns NA for a row whose key column is NA, so those
-    # rows get no dodge rank at all, while ggplot2's own id_var(drop = TRUE) sorts
-    # with na.last = TRUE and keeps NA as a real trailing level. The two orderings
-    # then disagree from the NA cell onward and an error bar is drawn on a
-    # neighbour's bar carrying ITS mean and ITS error. A missing value in a
-    # grouping column is ordinary research data, not a degenerate input.
-    data[[".ggpubr.alpha.group."]] <- interaction(
-      addNA(factor(.select_vec(data, base.group)), ifany = TRUE),
-      addNA(factor(.select_vec(data, alpha.var)), ifany = TRUE),
-      drop = TRUE, lex.order = TRUE
+    # Key on EVERY mapped discrete aesthetic, in the order ggplot2 lays them out
+    # in the layer data - `colour` before `fill` - not on a pair chosen here.
+    # ggplot2's add_group() calls id() over the layer's discrete columns in that
+    # order, first column slowest. Keying on (base.group, alpha) alone is
+    # fill-slowest, so as soon as `color` also names a column the two orderings
+    # are transposed and half the error bars are drawn on a neighbour's bar
+    # carrying ITS mean and ITS error - which released ggpubr got right.
+    #
+    # lex.order = TRUE is load-bearing: interaction() otherwise varies the FIRST
+    # factor fastest, the opposite of id().
+    #
+    # addNA(): interaction() returns NA for a row whose key column is NA, so that
+    # row gets no dodge rank, while id_var(drop = TRUE) sorts na.last = TRUE and
+    # keeps NA as a real trailing level. Without it the orderings diverge from the
+    # NA cell onward. A missing value in a grouping column is ordinary data.
+    key.vars <- unique(c(
+      intersect(c(color, fill), names(data)), base.group, alpha.var
+    ))
+    key.vars <- intersect(key.vars, names(data))
+    data[[".ggpubr.alpha.group."]] <- do.call(
+      interaction,
+      c(
+        lapply(key.vars, function(k) {
+          addNA(factor(.select_vec(data, k)), ifany = TRUE)
+        }),
+        list(drop = TRUE, lex.order = TRUE)
+      )
     )
     add.params$group <- ".ggpubr.alpha.group."
   }
