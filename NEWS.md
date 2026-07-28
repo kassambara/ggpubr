@@ -172,13 +172,14 @@
   default, a numeric `alpha` column, and a grouping column named after one of the
   statistics `desc_statby()` computes (`length`, `min`, `max`, `median`, `mean`,
   `iqr`, `mad`, `sd`, `se`, `ci`, `range`, `cv`, `var`) — the summary's column of
-  that name holds the computed statistic, so opacity follows the statistic
-  rather than the column, and the ones that already failed still fail (`mean` at
-  draw; `ci` when the column is character). A numeric, integer or `Date` column
+  that name holds the computed statistic, so the aesthetic mapped to it follows
+  that statistic rather than the column, and the calls that already failed still
+  fail (such a column on `x` errors for all thirteen; on `alpha`, `mean` fails at
+  draw and `ci` when the column is character). A numeric, integer or `Date` column
   mapped to `color`/`fill` is also unchanged: ggplot2 does not group the bars by
   such a column, so the layer draws more bars than there are dodge positions and
-  no error bar can be matched to a single bar. `label = TRUE` is unchanged too,
-  and this fix moves only the error bars: the value labels still dodge on the
+  no error bar can be matched to a single bar. `label = TRUE` is unchanged too:
+  the value labels are not repositioned by this fix, and still dodge on the
   `fill` key alone, so with a discrete `alpha` they are drawn between the bars,
   two to a position.
 
