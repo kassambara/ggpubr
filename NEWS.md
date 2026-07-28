@@ -173,7 +173,10 @@
   that computed statistic rather than to the column. A numeric, integer or
   `Date` column mapped to `color`/`fill` is also unchanged: ggplot2 does not
   group the bars by such a column, so the layer draws more bars than there are
-  dodge positions and no error bar can be matched to a single bar. `top =` remains unsupported
+  dodge positions and no error bar can be matched to a single bar. `label = TRUE`
+  is unchanged too, and only the error bars are repositioned by this fix: the
+  value labels still dodge on the `fill` key alone, so with a discrete `alpha`
+  they are drawn between the bars, two to a position. `top =` remains unsupported
   alongside a discrete `alpha`: the error layer is still built for every
   summarised group rather than for the bars actually kept, so it draws more
   error bars than there are bars, some over empty space and some overlapping a
