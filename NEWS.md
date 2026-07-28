@@ -155,9 +155,9 @@
 - `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
   `alpha` and the bars are dodged with `position_dodge()`. Thanks to @zuooonz
   (#404). The error layer dodged by a different key from the one ggplot2 uses to
-  group the bars, so in a
-  design with three discrete variables half the error bars were centered on an
-  adjacent bar's mean and carried its error. The key is now built from every
+  group the bars, so in a design with three discrete variables half the error
+  bars were centered on an adjacent bar's mean and carried its error. The key is
+  now built from every
   mapped discrete aesthetic, in the order ggplot2 lays them out, which also
   aligns cases that were misplaced before: `fill`, `color` and `alpha` on three
   different columns; an `alpha` column whose levels are reversed, unused or
@@ -180,11 +180,14 @@
   error bar can be matched to a single bar. `label = TRUE` is unchanged too, and
   this fix moves only the error bars: the value labels still dodge on the `fill`
   key alone, so with a discrete `alpha` they are drawn between the bars, two to
-  a position. `top =` remains unsupported alongside a discrete `alpha`: the
+  a position.
+
+  `top =` remains unsupported alongside a discrete `alpha`, and is the one
+  configuration whose broken output changed rather than staying as released: the
   error layer is still built for every summary group rather than for the bars
-  actually kept, so it draws more error bars than there are bars, some over
-  empty space and some overlapping a kept bar while carrying another group's
-  statistic.
+  actually kept, so it draws more error bars than there are bars, some over empty
+  space and some overlapping a kept bar while carrying another group's statistic
+  — but which stray interval lands where now differs from previous releases.
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via

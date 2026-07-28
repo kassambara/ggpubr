@@ -291,8 +291,11 @@ ggbarplot_core <- function(data, x, y,
   # #404: an `alpha` aesthetic mapped to a discrete data column defines an extra
   # dodge subgroup (e.g. fill = cut, alpha = clarity -> 2 bars per cut). Detect it
   # so the summary keeps that column and the error layer dodges by it too. Both
-  # dodges keep the column; only the interaction dodge KEY below is specific to
-  # plain position_dodge(), position_dodge2() being re-centred separately (#363).
+  # the carrying and the dodge key are scoped to plain position_dodge():
+  # has.alpha.group gates grouping.vars as well, so under position_dodge2() the
+  # column is not carried at all and that path keeps its released behaviour,
+  # including the "alpha * 255" draw error - see the note below on why its
+  # rank-based re-centring (#363) cannot take the column safely.
   alpha.var <- list(...)[["alpha"]]   # [[ ]] avoids $ partial-matching a `...` arg
   alpha.is.col <- !is.null(alpha.var) && length(alpha.var) == 1 &&
     is.character(alpha.var) && alpha.var %in% names(data) &&
@@ -382,17 +385,20 @@ ggbarplot_core <- function(data, x, y,
       is.factor(v) || is.character(v) || is.logical(v)
     }, logical(1))
     # Same degeneracy by a different route: desc_statby() names its own output
-    # columns after the statistics it computes, so a key column sharing one of
-    # those names is REPLACED in the summary by the computed numeric statistic.
-    # geom_exec() then resolves the bar layer's aesthetic against that statistic,
-    # ggplot2 sees a continuous column and does not group the bars by it, and
-    # again no key can match one error bar to one bar. Released behaviour stands.
+    # columns after the statistics it computes, so any column it groups by that
+    # shares one of those names is REPLACED in the summary by the computed
+    # numeric statistic. geom_exec() then resolves the bar layer's aesthetic
+    # against that statistic, ggplot2 sees a continuous column and does not group
+    # the bars by it, and again no key can match one error bar to one bar.
+    # Released behaviour stands. The test covers grouping.vars too, not just the
+    # key: a `facet.by` column named after a statistic is destroyed by the same
+    # collision even though it never enters the key.
     stat.cols <- c(
       "length", "min", "max", "median", "mean", "iqr", "mad", "sd", "se",
       "ci", "range", "cv", "var"
     )
     data[[".ggpubr.alpha.group."]] <- if (all(key.discrete) &&
-      !any(key.vars %in% stat.cols)) {
+      !any(c(key.vars, grouping.vars) %in% stat.cols)) {
       do.call(
         interaction,
         c(

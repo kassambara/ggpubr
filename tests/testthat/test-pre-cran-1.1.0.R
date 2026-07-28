@@ -260,3 +260,37 @@ test_that("ggbarplot() leaves a statistic-named alpha column as released (#404)"
     tolerance = 1e-8
   )
 })
+
+test_that("ggbarplot() guards a statistic-named facet.by column too (#404)", {
+  # desc_statby() groups by facet.by as well, so a facet column named after one
+  # of its output statistics is destroyed by the same name collision as a keyed
+  # column - even though facet.by never enters the dodge key. The guard therefore
+  # tests grouping.vars, not just the key, and this configuration stays exactly
+  # as released.
+  #
+  # Expected values captured from ggpubr 1.0.0 (origin/master, 2dccc55) with:
+  #   ggplot_build(p)$data[[2]][, c("x", "PANEL", "ymin", "ymax")]
+  set.seed(42)
+  d <- expand.grid(
+    g = paste0("x", 1:3), f = paste0("f", 1:2), a = paste0("a", 1:2),
+    rep = 1:6, stringsAsFactors = TRUE
+  )
+  d$v <- stats::rnorm(nrow(d), 10 * as.integer(d$g) + 3 * as.integer(d$f) +
+    as.integer(d$a))
+  d$sd <- rep(c("q1", "q2"), length.out = nrow(d)) # named after desc_statby()'s sd
+  p <- suppressWarnings(ggbarplot(d, x = "g", y = "v", fill = "f", alpha = "a",
+    facet.by = "sd", add = "mean_se",
+    position = ggplot2::position_dodge(0.8)))
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  expect_s3_class(ggplot2::ggplotGrob(b), "gtable")
+  eb <- b$data[[2]]
+  expect_equal(nrow(eb), 12L)
+  expect_equal(as.numeric(eb$x),
+    c(0.8, 2.8, 1.8, 1.2, 3.2, 2.2, 1.8, 0.8, 2.8, 2.2, 1.2, 3.2),
+    tolerance = 1e-8)
+  expect_equal((eb$ymin + eb$ymax) / 2, c(
+    14.04902523, 33.74367984, 27.27242447, 15.11837953, 35.49643750,
+    27.46505087, 23.78600246, 17.02627840, 36.69696830, 25.41977394,
+    17.79843003, 38.57051821
+  ), tolerance = 1e-7)
+})
