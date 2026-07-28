@@ -334,6 +334,13 @@ ggbarplot_core <- function(data, x, y,
   # Mirrors how add.label is resolved further down: a non-logical `label` is a
   # column of user labels and is always drawn.
   draws.labels <- if (is.logical(label)) isTRUE(label[1]) else TRUE
+  # Anything in `add` that is not the summary itself draws the RAW observations
+  # (jitter, point, dotplot, boxplot, violin). Those layers are placed by ggadd()
+  # under the same position, and position_dodge2() packs by each element's own
+  # width - a point has none - so they do not take the bar's slot.
+  draws.raw.layers <- length(setdiff(
+    add, c(.summary_functions(), .errorbar_functions(), "none")
+  )) > 0
   alpha.order.vars <- NULL
   if (has.alpha.group) {
     base.group <- add.params$group %||% x
@@ -406,6 +413,16 @@ ggbarplot_core <- function(data, x, y,
     # would make the figure look trustworthy and read wrong, so a labelled call
     # keeps the released behaviour until the label layer is keyed too.
     if (inherits(position, "PositionDodge2") && draws.labels) has.alpha.group <- FALSE
+    # And for a raw-data layer. Under position_dodge2() those points already sit
+    # off their own bar without any alpha (8 of 12 - pre-existing, and unchanged
+    # here); splitting the bars finer makes it 12 of 24, i.e. half the
+    # observations drawn over a bar they are not from. That is the same
+    # misleading figure the labels would give, so the same disposition: this
+    # combination keeps the released path until dodge2's raw layers are placed
+    # on the bars the way its error layer now is.
+    if (inherits(position, "PositionDodge2") && draws.raw.layers) {
+      has.alpha.group <- FALSE
+    }
   }
   # Include the alpha subgroup in the summary grouping. Otherwise the summarized
   # data drops the alpha column, which (a) makes geom_exec pass alpha as a static

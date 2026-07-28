@@ -315,6 +315,26 @@ test_that("label = TRUE keeps the released behaviour rather than floating labels
     alpha = "a", add = "mean_se", position = position_dodge2(), label = FALSE)), d)
 })
 
+test_that("a raw-data layer keeps the released behaviour rather than stray points (#404)", {
+  # jitter/point/dotplot/boxplot/violin draw the OBSERVATIONS, placed by ggadd()
+  # under the same position - and position_dodge2() packs by each element's own
+  # width, which a point does not have. They already sit off their own bar with
+  # no alpha at all (8 of 12, pre-existing and unchanged); splitting the bars
+  # finer takes it to 12 of 24, half the observations over a bar they are not
+  # from. So this combination is left exactly as released.
+  d <- .mk()
+  for (extra in c("jitter", "point", "dotplot", "boxplot", "violin")) {
+    p <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+      add = c("mean_se", extra), position = position_dodge2()))
+    b <- suppressWarnings(ggplot2::ggplot_build(p))
+    # the alpha column is NOT carried: one bar per (x, fill)
+    expect_equal(nrow(.layer(p, b, "GeomBar")), 6L, info = extra)
+  }
+  # the summary alone is unaffected, with or without an explicit "none"
+  .expect_on_own_bar(suppressWarnings(ggbarplot(d, "g", "v", fill = "f",
+    alpha = "a", add = "mean_se", position = position_dodge2())), d)
+})
+
 test_that("no-regression: dodge2 WITHOUT alpha is untouched by the alpha path (#404)", {
   # Pinned absolute positions, not a sorted set: a permutation of the same values
   # would satisfy a set comparison. Values measured on the released path.

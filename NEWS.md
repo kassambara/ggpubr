@@ -276,7 +276,13 @@
   carried they land between the bars — four of eight over the bar whose value
   they show. Aligning the error bars while half the numbers float would make the
   figure look trustworthy and read wrong, so a labelled call keeps the released
-  behaviour until the label layer is keyed too. Calls without a discrete
+  behaviour until the label layer is keyed too. A raw-data layer
+  (`add = c("mean_se", "jitter")` and likewise `point`, `dotplot`, `boxplot`,
+  `violin`) is the fourth, for the same reason: those layers are placed under
+  the same position, and `position_dodge2()` packs by each element's own width,
+  which a point does not have — they already sit off their own bar without any
+  `alpha` (unchanged by this fix), and the extra subgroup would double it.
+  Calls without a discrete
   `alpha` column are unchanged, including a faceted `position_dodge2()` with
   `scales = "free_x"`, whose error bars keep the positions they have always had.
 
