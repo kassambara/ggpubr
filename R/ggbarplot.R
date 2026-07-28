@@ -369,16 +369,20 @@ ggbarplot_core <- function(data, x, y,
     key.vars <- unique(c(key.vars, alpha.var))
     key.vars <- intersect(key.vars, names(data))
     # ggplot2 ids the bars over the layer's DISCRETE columns only - its
-    # is_discrete() is factor/character/logical. A numeric (or Date) column mapped
-    # to colour/fill contributes nothing to that id, so keying on it would add a
-    # dimension the bars do not have: it becomes the slowest-varying factor here
-    # while the bars ignore it, and the two orderings transpose.
-    key.vars <- key.vars[vapply(key.vars, function(k) {
+    # is_discrete() is factor/character/logical. If EVERY column we would key on
+    # is discrete, the bars and this key describe the same partition and the
+    # error bars can be placed exactly. If any of them is not (a numeric, integer
+    # or Date column mapped to colour/fill/alpha), ggplot2 does not group the bars
+    # by it while desc_statby() still splits the summary on it, so the layer draws
+    # more rects than there are dodge slots and two bars share a slot: there is no
+    # one-to-one bar-to-row mapping left for any key to hit. Rather than trade one
+    # wrong arrangement for another, keep the released key untouched there.
+    key.discrete <- vapply(key.vars, function(k) {
       v <- .select_vec(data, k)
       is.factor(v) || is.character(v) || is.logical(v)
-    }, logical(1))]
-    if (length(key.vars) > 0) {
-      data[[".ggpubr.alpha.group."]] <- do.call(
+    }, logical(1))
+    data[[".ggpubr.alpha.group."]] <- if (all(key.discrete)) {
+      do.call(
         interaction,
         c(
           lapply(key.vars, function(k) {
@@ -387,8 +391,12 @@ ggbarplot_core <- function(data, x, y,
           list(drop = TRUE, lex.order = TRUE)
         )
       )
-      add.params$group <- ".ggpubr.alpha.group."
+    } else {
+      interaction(
+        .select_vec(data, base.group), .select_vec(data, alpha.var), drop = TRUE
+      )
     }
+    add.params$group <- ".ggpubr.alpha.group."
   }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 

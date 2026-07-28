@@ -182,3 +182,39 @@ test_that("ggbarplot() dodge key follows ggplot2's own grouping rule (#404)", {
     tolerance = 1e-8
   )
 })
+
+test_that("ggbarplot() leaves a non-discrete colour/fill exactly as released (#404)", {
+  # When a numeric/integer/Date column is mapped to colour or fill, ggplot2 does
+  # not group the bars by it, but desc_statby() still splits the summary on it -
+  # so the layer draws more rects than there are dodge slots and two bars share a
+  # slot. No key can put an error bar on "its own" bar because the mapping is not
+  # one-to-one. The dodge key therefore falls back to the released pairing rather
+  # than trading one wrong arrangement for another.
+  #
+  # Expected values below were captured from ggpubr 1.0.0 (origin/master,
+  # 2dccc55, R/ggbarplot.R byte-identical to the CRAN 1.0.0 file) with:
+  #   ggplot_build(p)$data[[2]][, c("x", "ymin", "ymax")]
+  set.seed(5)
+  d <- expand.grid(
+    g = paste0("x", 1:3), f = paste0("f", 1:2), a = paste0("a", 1:2),
+    rep = 1:5, stringsAsFactors = TRUE
+  )
+  d$v <- stats::rnorm(nrow(d), 10 * as.integer(d$g) + 3 * as.integer(d$f) +
+    as.integer(d$a))
+  d$f <- as.integer(factor(d$f)) # fill mapped to an INTEGER column
+  p <- suppressWarnings(ggbarplot(d, x = "g", y = "v", fill = "f", alpha = "a",
+    add = "mean_se", position = ggplot2::position_dodge()))
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  expect_s3_class(ggplot2::ggplotGrob(b), "gtable")
+  eb <- b$data[[2]]
+  expect_equal(nrow(eb), 12L)
+  expect_equal(as.numeric(eb$x), c(
+    0.64375, 1.64375, 2.64375, 0.88125, 1.88125, 2.88125,
+    1.11875, 2.11875, 3.11875, 1.35625, 2.35625, 3.35625
+  ), tolerance = 1e-8)
+  expect_equal((eb$ymin + eb$ymax) / 2, c(
+    13.43277994, 23.77273185, 33.75847997, 17.29500968, 27.60582578,
+    35.99321436, 14.97955727, 25.23713646, 35.62538695, 18.54933911,
+    28.64474292, 38.12591724
+  ), tolerance = 1e-7)
+})
