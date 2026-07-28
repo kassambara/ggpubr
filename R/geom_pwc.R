@@ -182,8 +182,7 @@ NULL
 #' \item Using \code{\link{ggadjust_pvalue}(p)} after creating the plot \code{p}
 #' \item or adding the adjusted p-value manually using \code{\link{stat_pvalue_manual}()}. Read more at:
 #' \itemize{
-#'   \item \href{https://www.datanovia.com/en/blog/how-to-add-p-values-to-ggplot-facets/}{How to Add P-values to GGPlot Facets}
-#'   \item \href{https://www.datanovia.com/en/blog/add-p-values-to-ggplot-facets-with-different-scales/}{Add P-values to GGPlot Facets with Different Scales}
+#'   \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from tests on ggplots, including facets with different scales}
 #' }
 #' }
 #' @inheritParams ggpubr-common-params

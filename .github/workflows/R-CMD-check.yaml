@@ -55,6 +55,7 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             cran::ggrepel@0.9.5
+            github::kassambara/rstatix@v1.1.0
           needs: check
 
       - uses: r-lib/actions/setup-r-dependencies@v2

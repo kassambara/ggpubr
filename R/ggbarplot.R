@@ -290,14 +290,36 @@ ggbarplot_core <- function(data, x, y,
 
   # #404: an `alpha` aesthetic mapped to a discrete data column defines an extra
   # dodge subgroup (e.g. fill = cut, alpha = clarity -> 2 bars per cut). Detect it
-  # so the summary keeps that column and the error layer dodges by it too. Scoped
-  # to plain position_dodge(): the alpha subgroup adds a second dodge dimension,
-  # which position_stack()/position_dodge2() do not resolve here (they are left
-  # exactly as before, unchanged by this fix).
+  # so the summary keeps that column and the error layer dodges by it too. Both
+  # the carrying and the dodge key are scoped to plain position_dodge():
+  # has.alpha.group gates grouping.vars as well, so under position_dodge2() the
+  # column is not carried at all and that path keeps its released behaviour,
+  # including the "alpha * 255" draw error - see the note below on why its
+  # rank-based re-centring (#363) cannot take the column safely.
   alpha.var <- list(...)[["alpha"]]   # [[ ]] avoids $ partial-matching a `...` arg
-  has.alpha.group <- !is.null(alpha.var) && length(alpha.var) == 1 &&
+  alpha.is.col <- !is.null(alpha.var) && length(alpha.var) == 1 &&
     is.character(alpha.var) && alpha.var %in% names(data) &&
-    !is.numeric(.select_vec(data, alpha.var)) &&
+    !is.numeric(.select_vec(data, alpha.var))
+  # Carrying the alpha column into the summary is what makes the subgroup drawable
+  # at all: without it the summarised frame loses the column, geom_exec can no
+  # longer map it, and the column NAME reaches grid as a static opacity - the
+  # "alpha * 255" draw error of #404. But carrying it also SPLITS the summary into
+  # one row per (x, legend, alpha) cell, and only the interaction dodge key built
+  # below can place that many rows on the right bars. It is specific to plain
+  # position_dodge(), so the column is carried only there.
+  #
+  # position_dodge2() is deliberately NOT included, even though its error layer is
+  # re-centred on the bars (#363): that re-centring matches summary rows to bars by
+  # SORT POSITION, and with the alpha column carried the sort key
+  # (PANEL, x, legend) is no longer total - the alpha subgroup is only a stable
+  # tie. Anything that reorders the summary (`sort.val`, `top`, `sort.by.groups`)
+  # or that resolves a different key (`add.params$color`/`$fill` naming another
+  # column) then silently permutes the match, so an error bar lands on a
+  # neighbouring bar carrying ITS mean and ITS error. Making dodge2 work needs the
+  # row-to-bar match keyed on the bars' own identity rather than on rank, which is
+  # a focused change of its own; until then position_dodge2() keeps the released
+  # behaviour exactly, rather than trading a draw error for a wrong number.
+  has.alpha.group <- alpha.is.col &&
     inherits(position, "PositionDodge") && !inherits(position, "PositionDodge2")
 
   grouping.vars <- intersect(c(x, color, fill, facet.by), names(data))
@@ -314,17 +336,83 @@ ggbarplot_core <- function(data, x, y,
       add.params$group <- fill
     } else if (color %in% names(data)) add.params$group <- color
   }
-  # #404: the bars dodge by the interaction of fill/x and the alpha subgroup, so
-  # the error layer must dodge by that same interaction to stay aligned; otherwise
-  # the error bars are centered on each x while the bars are split (misaligned). We
-  # materialise the interaction as a real column with a safe name (rather than an
-  # "interaction(a, b)" mapping string), so it is robust to special characters in
-  # the variable names and to options(ggpubr.parse_aes = FALSE).
+  # #404: with a discrete `alpha` the bars are split into more groups than the
+  # error layer knows about, so the error bars are centred on each x while the
+  # bars are dodged apart. The error layer has to dodge by the SAME key ggplot2
+  # groups the bars by. We materialise it as a real column with a safe name
+  # (rather than an "interaction(a, b)" mapping string), so it survives special
+  # characters in the variable names and options(ggpubr.parse_aes = FALSE).
   if (has.alpha.group) {
     base.group <- add.params$group %||% x
-    data[[".ggpubr.alpha.group."]] <- interaction(
-      .select_vec(data, base.group), .select_vec(data, alpha.var), drop = TRUE
+    # Key on EVERY mapped discrete aesthetic, in the order ggplot2 lays them out
+    # in the layer data - `colour` before `fill` - not on a pair chosen here.
+    # ggplot2's add_group() calls id() over the layer's discrete columns in that
+    # order, first column slowest. Keying on (base.group, alpha) alone is
+    # fill-slowest, so as soon as `color` also names a column the two orderings
+    # are transposed and half the error bars are drawn on a neighbour's bar
+    # carrying ITS mean and ITS error - which released ggpubr got right.
+    #
+    # lex.order = TRUE is load-bearing: interaction() otherwise varies the FIRST
+    # factor fastest, the opposite of id().
+    #
+    # addNA(): interaction() returns NA for a row whose key column is NA, so that
+    # row gets no dodge rank, while id_var(drop = TRUE) sorts na.last = TRUE and
+    # keeps NA as a real trailing level. Without it the orderings diverge from the
+    # NA cell onward. A missing value in a grouping column is ordinary data.
+    #
+    # base.group only belongs in the key when it is itself one of the bar's mapped
+    # aesthetics. add.params$group defaults to the fill or colour column, but a
+    # user may point it at a column mapped to nothing; that column does not split
+    # the bars, so keying on it would split the error layer finer than the bars
+    # and leave every interval off-centre.
+    key.vars <- intersect(c(color, fill), names(data))
+    if (!is.null(base.group) && base.group %in% c(key.vars, x, alpha.var)) {
+      key.vars <- c(key.vars, base.group)
+    }
+    key.vars <- unique(c(key.vars, alpha.var))
+    key.vars <- intersect(key.vars, names(data))
+    # ggplot2 ids the bars over the layer's DISCRETE columns only - its
+    # is_discrete() is factor/character/logical. If EVERY column we would key on
+    # is discrete, the bars and this key describe the same partition and the
+    # error bars can be placed exactly. If any of them is not (a numeric, integer
+    # or Date column mapped to colour/fill/alpha), ggplot2 does not group the bars
+    # by it while desc_statby() still splits the summary on it, so the layer draws
+    # more rects than there are dodge slots and two bars share a slot: there is no
+    # one-to-one bar-to-row mapping left for any key to hit. Rather than trade one
+    # wrong arrangement for another, keep the released key untouched there.
+    key.discrete <- vapply(key.vars, function(k) {
+      v <- .select_vec(data, k)
+      is.factor(v) || is.character(v) || is.logical(v)
+    }, logical(1))
+    # Same degeneracy by a different route: desc_statby() names its own output
+    # columns after the statistics it computes, so any column it groups by that
+    # shares one of those names is REPLACED in the summary by the computed
+    # numeric statistic. geom_exec() then resolves the bar layer's aesthetic
+    # against that statistic, ggplot2 sees a continuous column and does not group
+    # the bars by it, and again no key can match one error bar to one bar.
+    # Released behaviour stands. The test covers grouping.vars too, not just the
+    # key: a `facet.by` column named after a statistic is destroyed by the same
+    # collision even though it never enters the key.
+    stat.cols <- c(
+      "length", "min", "max", "median", "mean", "iqr", "mad", "sd", "se",
+      "ci", "range", "cv", "var"
     )
+    data[[".ggpubr.alpha.group."]] <- if (all(key.discrete) &&
+      !any(c(key.vars, grouping.vars) %in% stat.cols)) {
+      do.call(
+        interaction,
+        c(
+          lapply(key.vars, function(k) {
+            addNA(factor(.select_vec(data, k)), ifany = TRUE)
+          }),
+          list(drop = TRUE, lex.order = TRUE)
+        )
+      )
+    } else {
+      interaction(
+        .select_vec(data, base.group), .select_vec(data, alpha.var), drop = TRUE
+      )
+    }
     add.params$group <- ".ggpubr.alpha.group."
   }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)

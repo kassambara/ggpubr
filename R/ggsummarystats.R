@@ -4,7 +4,7 @@ NULL
 #' GGPlot with Summary Stats Table Under the Plot
 #'
 #' @description Create a ggplot with summary stats (n, median, mean, iqr) table
-#'   under the plot. Read more: \href{https://www.datanovia.com/en/blog/how-to-create-a-beautiful-plots-in-r-with-summary-statistics-labels/}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
+#'   under the plot. Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/summary-stats-labels}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
 #' @details \code{ggsummarystats()} returns a compound object (a list of ggplots
 #'   of class \code{"ggsummarystats"}), not a single ggplot, so \code{p +
 #'   theme()} does \strong{not} restyle it. Theme it in one of three ways:
