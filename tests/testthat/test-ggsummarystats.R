@@ -143,12 +143,13 @@ test_that("the faceted ?ggsummarystats example labels all four panels correctly"
 })
 
 test_that("ggsummarystats(free.panels) survives facet columns named like internals", {
-  # These configurations are wrong on the old code path regardless of which
-  # rstatix is installed, because the label is written into a column named
-  # "panel" and rstatix's labeller has a local variable named `label`. With
-  # facet.by = c("panel", "label") the "panel" variable used to vanish from every
-  # title and the returned names came out DUPLICATED ("q", "p", "q", "p"), so
-  # p[["q"]] could only ever reach the first of the two.
+  # facet.by = c("panel", "label") is wrong on the old code path regardless of
+  # which rstatix is installed: rstatix's labeller has a local variable named
+  # `label`, which a data column of that name shadows, so the "panel" variable
+  # vanished from every title and the returned names came out DUPLICATED ("q",
+  # "p", "q", "p") - p[["q"]] could only ever reach the first of the two. The
+  # "panel" name is covered here because the label is written into a column of
+  # that name, which the key read must not be confused by.
   set.seed(4)
   d <- data.frame(
     panel = rep(c("Z", "Y"), each = 12),
@@ -236,5 +237,35 @@ test_that("ggsummarystats(free.panels) panel titles follow the data, not the alp
     expect_equal(as.character(built$layout$layout$panel), nm)
     expect_equal(sort(as.numeric(built$data[[1]]$middle)), expected,
       tolerance = 1e-8)
+  }
+})
+
+test_that("ggsummarystats(free.panels) survives facet columns named like paste()'s formals", {
+  # The label is assembled with do.call(paste, ...). Map() names its result after
+  # the facet variables, so without unname() those names reach paste() as
+  # arguments: a column called `sep` or `recycle0` errored, and `collapse`
+  # silently produced a blank title for every panel.
+  set.seed(1)
+  for (nm in c("sep", "collapse", "recycle0")) {
+    d <- data.frame(
+      grp = rep(c("a", "b"), 12),
+      val = c(stats::rnorm(12, 10), stats::rnorm(12, 20)),
+      stringsAsFactors = FALSE
+    )
+    d[[nm]] <- rep(c("North", "East"), each = 12)
+    p <- suppressWarnings(ggsummarystats(d, x = "grp", y = "val", facet.by = nm,
+      free.panels = TRUE, labeller = "label_both"))
+    expect_equal(names(p), paste0(nm, c(":North", ":East")))
+    expect_false(any(names(p) == ""))
+  }
+
+  # a facet.by that resolves to no grouping column still yields one labelled panel
+  d2 <- ToothGrowth
+  d2$dose <- factor(d2$dose)
+  for (fb in list(character(0), "")) {
+    p2 <- suppressWarnings(ggsummarystats(d2, x = "dose", y = "len",
+      facet.by = fb, free.panels = TRUE))
+    expect_equal(length(p2), 1L)
+    expect_equal(names(p2), "")
   }
 })

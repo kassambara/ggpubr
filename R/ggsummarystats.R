@@ -280,11 +280,24 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
 # it sat on. Only one level is ever present in a given sub-plot, so the level set
 # is not drawn; it is the label VALUES that must track the rows.
 .panel_label <- function(grouped, groups, labeller = "label_value") {
+  # A facet.by that resolves to no grouping column at all - character(0), or ""
+  # which groups by nothing - still yields one panel, labelled "". Drop such
+  # entries rather than building a zero-length label that cannot be assigned back.
+  groups <- groups[vapply(
+    groups, function(g) length(grouped[[g]]) == nrow(grouped), logical(1)
+  )]
+  if (!length(groups)) {
+    return(factor(rep("", nrow(grouped))))
+  }
   values <- lapply(groups, function(g) as.character(grouped[[g]]))
   if (identical(labeller, "label_both")) {
     values <- Map(function(g, v) paste0(g, ":", v), groups, values)
   }
-  labels <- do.call(paste, c(values, list(sep = ", ")))
+  # unname(): Map() names its result after `groups`, and do.call would then hand
+  # those names to paste() as arguments - so a facet column called `sep`,
+  # `collapse` or `recycle0` would collide with paste()'s own formals, erroring
+  # on two of them and silently blanking every label on the third.
+  labels <- do.call(paste, c(unname(values), list(sep = ", ")))
   factor(labels, levels = unique(labels))
 }
 

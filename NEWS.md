@@ -174,17 +174,18 @@
   Each panel keeps its position and its data; what changes is the name written on
   it, so the titles now read in the order the groups appear in the data rather
   than in sorted order. Label formatting is otherwise unchanged, except where a
-  facet column is named after something the label machinery uses internally: a
-  column named `label` now keeps the `label:` prefix that `label_both` asks for,
-  and keeps the other facet variables in the label under `label_value`, where
-  both were previously dropped; and a column named `panel` is no longer formatted
-  twice.
+  facet column is named `label`, which the label machinery uses internally: such
+  a column now keeps the `label:` prefix that `label_both` asks for, and keeps
+  the other facet variables in the label under `label_value`. Both were dropped
+  before, so `facet.by = c("region", "label")` returned two panels named `p` and
+  two named `q` with `region` missing from all four, and only the first of each
+  pair could be reached by name.
 
   The underlying defect was reported upstream (rstatix issue 324) and is fixed in
   rstatix's development version, so with that installed the labels were already
   right. ggpubr requires `rstatix (>= 1.1.0)`, the released version carrying the
-  defect, and the cases above involving a facet column named `panel` or `label`
-  are wrong on any rstatix version, so the fix is applied here regardless.
+  defect, and the `label`-column case above is wrong on any rstatix version, so
+  the fix is applied here regardless.
 
 - `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
   `alpha` and the bars are dodged with `position_dodge()`. Thanks to @zuooonz
