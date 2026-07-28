@@ -152,6 +152,41 @@
 
 ## Bug fixes
 
+- `ggsummarystats(free.panels = TRUE)` now titles every panel with the group
+  whose data it draws. The panel label was taken from a split that sorts its rows
+  before building the label but attaches it to the unsorted data, so panels were
+  titled with each other's names: a panel headed `East` drew `North`'s boxes, and
+  the summary table under it carried `North`'s n, median and IQR. The label is now
+  built from the grouping key that travels with each panel's own rows, so it
+  cannot drift.
+
+  This affected any `facet.by` column whose groups do not already appear in sorted
+  order: a character column that is not alphabetical, a factor whose levels are
+  ordered differently from its rows, numeric, integer, logical and `Date` columns,
+  and a frame whose `NA` group is not last. A column whose groups happen to appear
+  in sorted order was unaffected. `labeller = "label_both"` was hit more often,
+  because it sorts the formatted `variable:value` strings rather than the
+  underlying values, so it also transposed factor and numeric columns that
+  `label_value` got right. A two-variable case such as
+  `facet.by = c("supp", "qc")` with `free.panels = TRUE` had all four of its
+  panels transposed; if you have produced such a figure it is worth re-checking.
+
+  Each panel keeps its position and its data; what changes is the name written on
+  it, so the titles now read in the order the groups appear in the data rather
+  than in sorted order. Label formatting is otherwise unchanged, except where a
+  facet column is named `label`, which the label machinery uses internally: such
+  a column now keeps the `label:` prefix that `label_both` asks for, and keeps
+  the other facet variables in the label under `label_value`. Both were dropped
+  before, so `facet.by = c("region", "label")` returned two panels named `p` and
+  two named `q` with `region` missing from all four, and only the first of each
+  pair could be reached by name.
+
+  The underlying defect was reported upstream (rstatix issue 324) and is fixed in
+  rstatix's development version, so with that installed the labels were already
+  right. ggpubr requires `rstatix (>= 1.1.0)`, the released version carrying the
+  defect, and the `label`-column case above is wrong on any rstatix version, so
+  the fix is applied here regardless.
+
 - `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
   `alpha` and the bars are dodged with `position_dodge()`. Thanks to @zuooonz
   (#404). The error layer dodged by a different key from the one ggplot2 uses to

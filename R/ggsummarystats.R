@@ -268,14 +268,86 @@ ggsummarystats_core <- function(data, x, y, summaries = c("n", "median", "iqr"),
 }
 
 
+# Build one panel label per row of a df_split_by() result, from that row's own
+# grouping key, so the label cannot drift away from the data beside it. Mirrors
+# rstatix's labellers: "label_value" joins the key values with ", ";
+# "label_both" prefixes each with "<variable>:".
+#
+# Levels follow the ROW order, which is the order the groups appear in the data
+# and therefore the order the panels are drawn in. That is deliberately NOT what
+# df_unite_factors() does - it arrange()s first, so its levels are sorted - and
+# it is the reason a title used to be able to name a different panel from the one
+# it sat on. Only one level is ever present in a given sub-plot, so the level set
+# is not drawn; it is the label VALUES that must track the rows.
+.panel_label <- function(grouped, groups, labeller = "label_value") {
+  # A facet.by that resolves to no grouping column at all - character(0), or ""
+  # which groups by nothing - still yields one panel, labelled "". Drop such
+  # entries rather than building a zero-length label that cannot be assigned back.
+  groups <- groups[vapply(
+    groups, function(g) length(grouped[[g]]) == nrow(grouped), logical(1)
+  )]
+  if (!length(groups)) {
+    return(factor(rep("", nrow(grouped))))
+  }
+  values <- lapply(groups, function(g) as.character(grouped[[g]]))
+  if (identical(labeller, "label_both")) {
+    values <- Map(function(g, v) paste0(g, ":", v), groups, values)
+  }
+  # Join by folding rather than do.call(paste, values): the facet variables name
+  # the list, and do.call would hand those names to paste() as arguments, so a
+  # column called `sep`, `collapse` or `recycle0` collided with paste()'s own
+  # formals - two errored and the third silently blanked every label. A fold
+  # cannot reach a formal by name, so the whole class goes away.
+  # paste() on the first element too, not just between elements: it is what turns
+  # a missing group into the string "NA", which is how such a panel has always
+  # been titled. Reduce() alone would return a single vector untouched and leave
+  # the label NA, which factor() then drops instead of levelling.
+  labels <- paste(values[[1]])
+  for (v in values[-1]) labels <- paste(labels, v, sep = ", ")
+  factor(labels, levels = unique(labels))
+}
+
 ggsummarystats_free_facet <- function(data, x, y, facet.by, labeller = "label_value", ...) {
   labeller_func <- switch(labeller,
     label_both = rstatix::df_label_both,
     label_value = rstatix::df_label_value
   )
-  groups <- facet.by
+  # Normalise exactly as df_split_by() does internally (df_get_var_names() takes
+  # unique(), and names on the vector become the grouped column's name), so the
+  # key read below and the split stay in lockstep by construction. Without this a
+  # duplicated facet.by nests two columns of the same name, and a named one nests
+  # the key under that name, neither of which df_split_by() itself does.
+  groups <- unique(unname(facet.by))
+  # Read the grouping keys BEFORE splitting. df_split_by() writes its label into
+  # the column named by label_col, so a facet variable that is itself called
+  # "panel" has its key overwritten by the label - and re-formatting that yields
+  # "panel:panel:East", or "Alpha, p, p" with two facet variables. df_split_by()
+  # nests first and its labeller only mutates, so df_nest_by() returns the same
+  # rows in the same order with the keys still intact.
+  panel <- .panel_label(
+    rstatix::df_nest_by(data, vars = groups), groups, labeller
+  )
   data.grouped <- data %>%
-    df_split_by(vars = groups, label_col = "panel", labeller = labeller_func) %>%
+    df_split_by(vars = groups, label_col = "panel", labeller = labeller_func)
+  # A panel must be titled with the name of the group whose rows it draws.
+  # rstatix's df_unite_factors() sorts the rows with arrange() before building
+  # the label, and the label is then assigned back onto the *unsorted* nested
+  # frame - so whenever that sort reorders the groups, every panel is titled with
+  # another group's name while drawing this one's data. It bites for any facet
+  # column whose sorted order differs from the order the groups appear in, and
+  # for labeller = "label_both" even when that column is a factor. The keys read
+  # above ARE aligned with the nested frames, so the label is rebuilt from them.
+  # Where rstatix's own ordering already agrees, this reproduces its label and
+  # its factor levels exactly.
+  data.grouped$panel <- panel
+  data.grouped$data <- map2(
+    data.grouped$data, as.character(panel),
+    function(d, lab) {
+      d[["panel"]] <- factor(lab, levels = levels(panel))
+      d
+    }
+  )
+  data.grouped <- data.grouped %>%
     mutate(
       plots = map(data, ggsummarystats_core, x = x, y = y, facet.by = "panel", ...)
     )
