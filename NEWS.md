@@ -167,7 +167,19 @@
 
 - `ggsummarystats(free.panels = TRUE)` now rejects an invalid `labeller` with a
   message naming the argument, instead of failing with whatever the internal
-  lookup happened to raise. The accepted values are unchanged.
+  lookup happened to raise. Both documented values, `"label_value"` and
+  `"label_both"`, behave exactly as before. Values outside them are now refused
+  up front: a number, `TRUE`, or a factor used to be accepted and silently
+  produced `"label_value"` titles, because the lookup was a `switch()` that
+  selects by position when its argument is not a character string — so the
+  request was ignored rather than honoured. `free.panels = FALSE` already
+  refused the same values, so the two paths now agree.
+
+- `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,
+  labeller = "label_both")` no longer errors. A `facet.by` that resolves to no
+  grouping column yields a single panel; there is no variable name to build
+  `"<variable>:<value>"` from, so the panel is titled `""`, which is what the
+  same call has always produced with the default `"label_value"`.
 
 - `ggsummarystats(free.panels = TRUE)` now titles every panel with the group
   whose data it draws. The panel label was taken from a split that sorts its rows

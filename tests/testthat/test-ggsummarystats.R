@@ -193,7 +193,8 @@ test_that("ggsummarystats(free.panels) survives facet columns named like interna
     facet.by = "label", free.panels = TRUE, labeller = "label_both"))
   expect_equal(names(p2), c("label:North", "label:East"))
 
-  # a duplicated or named facet.by must keep working (df_split_by normalises both)
+  # a duplicated or named facet.by must keep working (unique(unname()) normalises
+  # both, the way rstatix's df_get_var_names() used to on the way in)
   d3 <- data.frame(
     region = rep(c("North", "East"), each = 12), grp = rep(c("a", "b"), 12),
     val = c(stats::rnorm(12, 100), stats::rnorm(12, 10)), stringsAsFactors = FALSE
@@ -549,14 +550,43 @@ test_that("ggsummarystats(free.panels) refuses an invalid labeller and says why"
       "labeller"
     )
   }
-  # and the two documented values still work
-  for (good in c("label_value", "label_both")) {
-    expect_s3_class(
-      suppressWarnings(suppressMessages(ggsummarystats(
-        d, x = "dose", y = "len", facet.by = "supp",
-        free.panels = TRUE, labeller = good
-      ))),
-      "ggsummarystats_list"
-    )
+  # and the two documented values still work - asserting the TITLES, not just the
+  # class, so a labeller that silently degraded to label_value would be caught
+  titles <- lapply(c("label_value", "label_both"), function(good) {
+    p <- suppressWarnings(suppressMessages(ggsummarystats(
+      d, x = "dose", y = "len", facet.by = "supp",
+      free.panels = TRUE, labeller = good
+    )))
+    expect_s3_class(p, "ggsummarystats_list")
+    names(p)
+  })
+  expect_equal(titles[[1]], c("VC", "OJ"))
+  expect_equal(titles[[2]], c("supp:VC", "supp:OJ"))
+})
+
+test_that("a facet.by naming no column labels its single panel under both labellers", {
+  # `label_both` errored here: the labeller was handed a zero-length grouping
+  # vector and died inside rstatix ("`panel` must be size 1, not 0") before the
+  # panel label was built. With no variable to name there is nothing to prefix,
+  # so the panel is titled "" - which is what `label_value` has always given for
+  # the same call. Both are pinned so neither drifts.
+  d <- ToothGrowth
+  d$dose <- factor(d$dose)
+  for (fb in list(character(0), "")) {
+    for (lb in c("label_value", "label_both")) {
+      p <- suppressWarnings(suppressMessages(ggsummarystats(
+        d, x = "dose", y = "len", facet.by = fb, free.panels = TRUE,
+        labeller = lb
+      )))
+      info <- paste(length(fb), lb)
+      expect_s3_class(p, "ggsummarystats_list")
+      expect_equal(length(p), 1L, info = info)
+      expect_equal(names(p), "", info = info)
+      # and it draws: the panel carries the whole data set's boxes
+      built <- suppressWarnings(ggplot2::ggplot_build(p[[1]]$main.plot))
+      expect_equal(sort(as.numeric(built$data[[1]]$middle)),
+                   sort(as.numeric(tapply(d$len, d$dose, stats::median))),
+                   tolerance = 1e-8, info = info)
+    }
   }
 })
