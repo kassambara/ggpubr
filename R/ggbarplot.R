@@ -381,7 +381,18 @@ ggbarplot_core <- function(data, x, y,
       v <- .select_vec(data, k)
       is.factor(v) || is.character(v) || is.logical(v)
     }, logical(1))
-    data[[".ggpubr.alpha.group."]] <- if (all(key.discrete)) {
+    # Same degeneracy by a different route: desc_statby() names its own output
+    # columns after the statistics it computes, so a key column sharing one of
+    # those names is REPLACED in the summary by the computed numeric statistic.
+    # geom_exec() then resolves the bar layer's aesthetic against that statistic,
+    # ggplot2 sees a continuous column and does not group the bars by it, and
+    # again no key can match one error bar to one bar. Released behaviour stands.
+    stat.cols <- c(
+      "length", "min", "max", "median", "mean", "iqr", "mad", "sd", "se",
+      "ci", "range", "cv", "var"
+    )
+    data[[".ggpubr.alpha.group."]] <- if (all(key.discrete) &&
+      !any(key.vars %in% stat.cols)) {
       do.call(
         interaction,
         c(

@@ -218,3 +218,45 @@ test_that("ggbarplot() leaves a non-discrete colour/fill exactly as released (#4
     28.64474292, 38.12591724
   ), tolerance = 1e-7)
 })
+
+test_that("ggbarplot() leaves a statistic-named alpha column as released (#404)", {
+  # desc_statby() names its output columns after the statistics it computes, so
+  # an `alpha` column called `se`/`sd`/`median`/... is REPLACED in the summary by
+  # the computed numeric statistic. geom_exec() resolves the bar layer's alpha
+  # against that, ggplot2 sees a continuous column and does not group the bars by
+  # it, so no key can match one error bar to one bar - the same degeneracy as a
+  # non-discrete colour/fill, and the released arrangement is likewise kept.
+  #
+  # Expected values captured from ggpubr 1.0.0 (origin/master, 2dccc55) with:
+  #   ggplot_build(p)$data[[2]][, c("x", "ymin", "ymax")]
+  set.seed(1)
+  d <- data.frame(
+    g = rep(c("A", "B"), each = 12), f = rep(c("f1", "f2"), 12),
+    se = rep(c("a1", "a2"), each = 6, times = 2), v = stats::rnorm(24, 10)
+  )
+  p <- suppressWarnings(ggbarplot(d, x = "g", y = "v", fill = "f", alpha = "se",
+    add = "mean_se", position = ggplot2::position_dodge(0.8)))
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  expect_s3_class(ggplot2::ggplotGrob(b), "gtable")
+  eb <- b$data[[2]]
+  expect_equal(as.numeric(eb$x),
+    c(0.7, 1.7, 0.9, 1.9, 1.1, 2.1, 1.3, 2.3), tolerance = 1e-8)
+  expect_equal((eb$ymin + eb$ymax) / 2, c(
+    9.622475116, 10.16250002, 10.31948525, 9.561400905,
+    10.85833052, 10.60492118, 10.27425985, 9.795561975
+  ), tolerance = 1e-7)
+
+  # `len` is NOT one of those columns, so it is an ordinary alpha column and DOES
+  # get the fix: 4 of 8 on their own bar in 1.0.0, 8 of 8 now.
+  names(d)[names(d) == "se"] <- "len"
+  p2 <- suppressWarnings(ggbarplot(d, x = "g", y = "v", fill = "f",
+    alpha = "len", add = "mean_se", position = ggplot2::position_dodge(0.8)))
+  b2 <- suppressWarnings(ggplot2::ggplot_build(p2))
+  bar2 <- b2$data[[1]]
+  eb2 <- b2$data[[2]]
+  expect_equal(
+    as.numeric(bar2$y)[order(as.numeric(bar2$x))],
+    ((eb2$ymin + eb2$ymax) / 2)[order(as.numeric(eb2$x))],
+    tolerance = 1e-8
+  )
+})
