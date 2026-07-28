@@ -169,10 +169,12 @@
 
   Still unchanged from previous releases: `position_dodge2()` and the stacked
   default, a numeric `alpha` column, and an `alpha` column named after one of
-  `desc_statby()`'s statistics (`se`, `sd`, `mean`, ...), which maps opacity to
-  that computed statistic. With `top =`, the error bars that fall on a bar are
-  now correct, but the layer still draws one row per summarised group rather than
-  per retained bar, so extra error bars appear where no bar was kept.
+  `desc_statby()`'s statistics (`se`, `sd`, `ci`, ...), which maps opacity to
+  that computed statistic rather than to the column. `top =` remains unsupported
+  alongside a discrete `alpha`: the error layer is still built for every
+  summarised group rather than for the bars actually kept, so it draws more
+  error bars than there are bars, some over empty space and some overlapping a
+  kept bar while carrying another group's statistic.
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via

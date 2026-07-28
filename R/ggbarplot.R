@@ -356,20 +356,39 @@ ggbarplot_core <- function(data, x, y,
     # row gets no dodge rank, while id_var(drop = TRUE) sorts na.last = TRUE and
     # keeps NA as a real trailing level. Without it the orderings diverge from the
     # NA cell onward. A missing value in a grouping column is ordinary data.
-    key.vars <- unique(c(
-      intersect(c(color, fill), names(data)), base.group, alpha.var
-    ))
+    #
+    # base.group only belongs in the key when it is itself one of the bar's mapped
+    # aesthetics. add.params$group defaults to the fill or colour column, but a
+    # user may point it at a column mapped to nothing; that column does not split
+    # the bars, so keying on it would split the error layer finer than the bars
+    # and leave every interval off-centre.
+    key.vars <- intersect(c(color, fill), names(data))
+    if (!is.null(base.group) && base.group %in% c(key.vars, x, alpha.var)) {
+      key.vars <- c(key.vars, base.group)
+    }
+    key.vars <- unique(c(key.vars, alpha.var))
     key.vars <- intersect(key.vars, names(data))
-    data[[".ggpubr.alpha.group."]] <- do.call(
-      interaction,
-      c(
-        lapply(key.vars, function(k) {
-          addNA(factor(.select_vec(data, k)), ifany = TRUE)
-        }),
-        list(drop = TRUE, lex.order = TRUE)
+    # ggplot2 ids the bars over the layer's DISCRETE columns only - its
+    # is_discrete() is factor/character/logical. A numeric (or Date) column mapped
+    # to colour/fill contributes nothing to that id, so keying on it would add a
+    # dimension the bars do not have: it becomes the slowest-varying factor here
+    # while the bars ignore it, and the two orderings transpose.
+    key.vars <- key.vars[vapply(key.vars, function(k) {
+      v <- .select_vec(data, k)
+      is.factor(v) || is.character(v) || is.logical(v)
+    }, logical(1))]
+    if (length(key.vars) > 0) {
+      data[[".ggpubr.alpha.group."]] <- do.call(
+        interaction,
+        c(
+          lapply(key.vars, function(k) {
+            addNA(factor(.select_vec(data, k)), ifany = TRUE)
+          }),
+          list(drop = TRUE, lex.order = TRUE)
+        )
       )
-    )
-    add.params$group <- ".ggpubr.alpha.group."
+      add.params$group <- ".ggpubr.alpha.group."
+    }
   }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 

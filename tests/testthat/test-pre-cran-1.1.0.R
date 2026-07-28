@@ -116,3 +116,69 @@ test_that("ggbarplot() keeps each dodged error bar on its own bar (#404)", {
     )
   }
 })
+
+test_that("ggbarplot() dodge key follows ggplot2's own grouping rule (#404)", {
+  # ggplot2 ids a layer's groups with id() over its DISCRETE columns only
+  # (is_discrete(): factor/character/logical). A numeric column mapped to
+  # colour/fill therefore contributes nothing to the bars' grouping, and keying
+  # the error layer on it adds a dimension the bars do not have: it becomes the
+  # slowest-varying factor of the key while the bars ignore it, so the two
+  # orderings transpose and every interval carries a neighbour's mean and error.
+  # ggpubr 1.0.0 drew this case correctly; it must stay correct.
+  set.seed(1)
+  d <- data.frame(
+    site = rep(c("S1", "S2"), each = 12),
+    arm = rep(c("Active", "Placebo"), each = 6, times = 2),
+    response = stats::rnorm(24, 10)
+  )
+  d$dose_mg <- ifelse(d$arm == "Active", 10, 5) # a dose recorded as a NUMBER
+  ref <- stats::aggregate(response ~ site + arm, data = d, FUN = mean)
+  ref.se <- stats::aggregate(response ~ site + arm, data = d,
+    FUN = function(z) stats::sd(z) / sqrt(length(z)))
+  p <- suppressWarnings(ggbarplot(d, x = "site", y = "response",
+    fill = "dose_mg", alpha = "arm", add = "mean_se",
+    position = ggplot2::position_dodge(0.8)))
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  expect_s3_class(ggplot2::ggplotGrob(b), "gtable")
+  bar <- b$data[[1]]
+  eb <- b$data[[2]]
+  expect_equal(nrow(eb), nrow(bar))
+  ord.b <- order(as.numeric(bar$x))
+  ord.e <- order(as.numeric(eb$x))
+  # element-wise at matched x: a transposition cannot pass
+  expect_equal(as.numeric(bar$x)[ord.b], as.numeric(eb$x)[ord.e], tolerance = 1e-8)
+  expect_equal(
+    as.numeric(bar$y)[ord.b],
+    ((eb$ymin + eb$ymax) / 2)[ord.e],
+    tolerance = 1e-8
+  )
+  # and the drawn statistics are the independently computed ones
+  expect_equal(sort(as.numeric(bar$y)), sort(ref$response), tolerance = 1e-8)
+  expect_equal(sort((eb$ymax - eb$ymin) / 2), sort(ref.se$response),
+    tolerance = 1e-8)
+
+  # A user-set add.params$group naming a column mapped to NO aesthetic does not
+  # split the bars, so it must not split the error layer either. Keying on it
+  # produced one error row per (fill, group, alpha) cell - twice as many rows as
+  # bars, half of them all-NA and dropped silently, none centred on a bar.
+  set.seed(11)
+  d2 <- expand.grid(
+    g = c("A", "B", "C"), f = c("f1", "f2"), cc = c("c1", "c2"),
+    a = c("a1", "a2"), rep = 1:4, stringsAsFactors = FALSE
+  )
+  d2$v <- stats::rnorm(nrow(d2), 10, 2)
+  p2 <- suppressWarnings(ggbarplot(d2, x = "g", y = "v", fill = "f",
+    alpha = "a", add = "mean_se", position = ggplot2::position_dodge(0.8),
+    add.params = list(group = "cc")))
+  b2 <- suppressWarnings(ggplot2::ggplot_build(p2))
+  expect_s3_class(ggplot2::ggplotGrob(b2), "gtable")
+  bar2 <- b2$data[[1]]
+  eb2 <- b2$data[[2]]
+  expect_equal(nrow(eb2), nrow(bar2))
+  expect_false(any(is.na((eb2$ymin + eb2$ymax) / 2)))
+  expect_equal(
+    as.numeric(bar2$y)[order(as.numeric(bar2$x))],
+    ((eb2$ymin + eb2$ymax) / 2)[order(as.numeric(eb2$x))],
+    tolerance = 1e-8
+  )
+})
