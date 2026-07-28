@@ -136,6 +136,13 @@ test_that("error.plot = 'crossbar' draws a crossbar, not an errorbar, and aligns
   expect_true("GeomCrossbar" %in% geoms)
   expect_false("GeomErrorbar" %in% geoms)
   .expect_on_own_bar(p, d)
+  # Re-centring fixes the crossbar's centre but not its width: left at the
+  # default it is drawn 0.9 wide over a 0.1575-wide bar, spanning the whole x
+  # group. It has to take the width of the bar it belongs to.
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  bd <- .layer(p, b, "GeomBar"); ed <- .layer(p, b, "GeomCrossbar")
+  expect_equal(as.numeric(ed$xmax - ed$xmin), as.numeric(bd$xmax - bd$xmin),
+               tolerance = 1e-9)
 })
 
 test_that("one-sided and point/line error plots also align under dodge2 with alpha (#404)", {
