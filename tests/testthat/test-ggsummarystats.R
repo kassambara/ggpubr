@@ -300,3 +300,235 @@ test_that("ggsummarystats(free.panels) titles a missing group 'NA' and draws its
       tolerance = 1e-8)
   }
 })
+
+# Each summary-table column must sit under the box it describes. Returns the
+# number of drawn columns whose numbers are not that box's own, recomputed here
+# in base R rather than through ggpubr or rstatix.
+.miscounted_columns <- function(p, d, x, y) {
+  bm <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p$main.plot)))
+  bt <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p$summary.plot)))
+  cats <- as.character(bm$layout$panel_scales_x[[1]]$get_limits())
+  lab <- bt$data[[1]]
+  xs <- as.numeric(lab$x)
+  wrong <- 0
+  for (i in seq_along(cats)) {
+    drawn <- gsub("\n", "|", lab$label[abs(xs - i) < 1e-9])
+    v <- d[[y]][if (is.na(cats[i])) is.na(d[[x]]) else
+      (!is.na(d[[x]]) & as.character(d[[x]]) == cats[i])]
+    v <- v[!is.na(v)]
+    if (!length(v)) next
+    expected <- paste(length(v), round(stats::median(v)), round(stats::IQR(v)), sep = "|")
+    if (length(drawn) != 1 || !identical(drawn, expected)) wrong <- wrong + 1
+  }
+  wrong
+}
+
+test_that("ggsummarystats() table columns sit under the boxes they describe", {
+  # The table is built from its own frame and trained its own x scale: dplyr
+  # returns group keys sorted while the builders factor x in the order the groups
+  # appear, so with a non-alphabetical character x every column sat under the
+  # wrong box. Measured before the fix: the column under "Pre" (median 11.5)
+  # printed 22, which is "Mid"'s.
+  d <- data.frame(
+    time = rep(c("Pre", "Post", "Mid"), each = 4),
+    val = c(10:13, 30:33, 20:23), stringsAsFactors = FALSE
+  )
+  for (f in list(ggboxplot, ggviolin, ggdotplot, ggstripchart, ggbarplot,
+                 ggline, ggerrorplot)) {
+    p <- suppressWarnings(suppressMessages(
+      ggsummarystats(d, x = "time", y = "val", ggfunc = f)
+    ))
+    expect_equal(.miscounted_columns(p, d, "time", "val"), 0)
+    # the table now trains the same categories, in the same order, as the plot
+    expect_equal(
+      as.character(suppressWarnings(suppressMessages(
+        ggplot2::ggplot_build(p$summary.plot)))$layout$panel_scales_x[[1]]$get_limits()),
+      c("Pre", "Post", "Mid")
+    )
+  }
+})
+
+test_that("ggsummarystats() follows the plot for numeric, integer and Date x", {
+  # These reach the gate because five of the seven builders factor such a column.
+  # Moving the table's data onto the plot's categories is what keeps it on the
+  # axis it is drawn against; pinning only the axis, and leaving the data
+  # numeric, would shift every column one slot.
+  set.seed(1)
+  frames <- list(
+    numeric = data.frame(k = rep(c(0.5, 1, 2), each = 6), v = rep(c(10, 20, 30), each = 6) + stats::rnorm(18)),
+    integer = data.frame(k = rep(c(0L, 3L, 24L), each = 6), v = rep(c(10, 20, 30), each = 6) + stats::rnorm(18)),
+    date = data.frame(k = rep(as.Date("2020-01-01") + c(0, 10, 40), each = 6),
+                      v = rep(c(10, 20, 30), each = 6) + stats::rnorm(18))
+  )
+  for (nm in names(frames)) {
+    d <- frames[[nm]]
+    p <- suppressWarnings(suppressMessages(ggsummarystats(d, x = "k", y = "v")))
+    expect_equal(.miscounted_columns(p, d, "k", "v"), 0)
+  }
+})
+
+test_that("ggsummarystats() leaves a continuous or free-scaled plot alone", {
+  # The table cannot express a continuous axis, and one set of categories cannot
+  # describe free per-panel scales, so the gate must not fire for either.
+  skip_if_not_installed("ggplot2")
+  disc <- function(p) {
+    suppressWarnings(suppressMessages(
+      ggplot2::ggplot_build(p)))$layout$panel_scales_x[[1]]$is_discrete()
+  }
+  p1 <- suppressWarnings(suppressMessages(ggsummarystats(
+    ToothGrowth, x = "dose", y = "len", ggfunc = ggline, numeric.x.axis = TRUE
+  )))
+  expect_false(disc(p1$main.plot))
+  expect_false(disc(p1$summary.plot)) # untouched: still its own continuous scale
+
+  # free_x with DISJOINT categories per panel: one set of categories cannot
+  # describe both, so the gate must stay off. If it fired, panel 1's categories
+  # would be applied to the whole table and panel 2's groups would be filtered
+  # away - 2 rows instead of 4.
+  set.seed(2)
+  d2 <- data.frame(
+    g = c(rep(c("a", "b"), each = 6), rep(c("c", "d"), each = 6)),
+    p = rep(c("P1", "P2"), each = 12),
+    v = c(stats::rnorm(12, 10), stats::rnorm(12, 50)), stringsAsFactors = FALSE
+  )
+  p2 <- suppressWarnings(suppressMessages(ggsummarystats(
+    d2, x = "g", y = "v", facet.by = "p", scales = "free_x"
+  )))
+  b2 <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p2$summary.plot)))
+  expect_equal(nrow(b2$data[[1]]), 4L)
+  expect_s3_class(ggplot2::ggplotGrob(b2), "gtable")
+})
+
+test_that("ggsummarystats() summarises exactly the groups the plot draws", {
+  # The case that made an earlier attempt print a fabricated statistic: a removed
+  # group plus genuine NAs. Released draws FOUR columns for THREE categories, so
+  # the removed dose 1's median lands under the box labelled 2.
+  skip_if_not_installed("emmeans")
+  d <- ToothGrowth
+  d$dose <- as.character(d$dose)
+  d$dose[c(3, 17)] <- NA
+  p <- suppressWarnings(suppressMessages(ggsummarystats(
+    d, x = "dose", y = "len", comparisons = list(c("0.5", "2")), remove = "1"
+  )))
+  bt <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p$summary.plot)))
+  expect_equal(nrow(bt$data[[1]]), 3L) # not 4
+  expect_equal(.miscounted_columns(p, d, "dose", "len"), 0)
+
+  # a group the plot draws but cannot summarise keeps its slot, and prints nothing
+  d2 <- data.frame(g = rep(c("A", "B", "C"), each = 4),
+                   v = c(1:4, rep(NA_real_, 4), 9:12), stringsAsFactors = FALSE)
+  p2 <- suppressWarnings(suppressMessages(ggsummarystats(d2, x = "g", y = "v")))
+  bt2 <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p2$summary.plot)))
+  expect_equal(
+    as.character(bt2$layout$panel_scales_x[[1]]$get_limits()), c("A", "B", "C")
+  )
+  expect_equal(.miscounted_columns(p2, d2, "g", "v"), 0)
+})
+
+test_that("ggsummarystats() adds no construction-time message and no scale of its own", {
+  # The probe build must stay silent (ggdotplot otherwise reports its bin width at
+  # call time, where released reports nothing), and no scale is added on the
+  # common path - a user's own scale_x_discrete() would replace it and silently
+  # restore the misalignment, and $summary.plot is documented as editable.
+  for (f in list(ggboxplot, ggviolin, ggdotplot, ggstripchart, ggbarplot,
+                 ggline, ggerrorplot)) {
+    expect_message(
+      suppressWarnings(invisible(
+        ggsummarystats(ToothGrowth, x = "dose", y = "len", ggfunc = f)
+      )),
+      NA
+    )
+  }
+  d <- data.frame(time = rep(c("Pre", "Post", "Mid"), each = 4),
+                  val = c(10:13, 30:33, 20:23), stringsAsFactors = FALSE)
+  p <- suppressWarnings(suppressMessages(ggsummarystats(d, x = "time", y = "val")))
+  styled <- style_summarystats(p, table = ggplot2::scale_x_discrete(labels = toupper))
+  b <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(styled$summary.plot)))
+  # the user's own scale must not be able to undo the alignment
+  expect_equal(as.character(b$layout$panel_scales_x[[1]]$get_limits()),
+               c("Pre", "Post", "Mid"))
+})
+
+test_that("ggsummarystats() keeps an ordered x ordered, so the table's colours match", {
+  # The class of the x column picks ggplot2's default discrete scale: an ordered
+  # factor gets scale_*_ordinal (viridis), an unordered one scale_*_hue. Coercing
+  # x without carrying `ordered` through recoloured the table's numbers away from
+  # the boxes they sit under, so the composite's own colour key disagreed with
+  # itself - on a call that was already correct.
+  ord <- data.frame(
+    g = factor(rep(c("lo", "mid", "hi"), each = 5),
+               levels = c("lo", "mid", "hi"), ordered = TRUE),
+    v = c(1:5, 11:15, 21:25)
+  )
+  p <- suppressWarnings(suppressMessages(
+    ggsummarystats(ord, x = "g", y = "v", color = "g")
+  ))
+  expect_true(is.ordered(p$summary.plot$data$g))
+  bm <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p$main.plot)))
+  bt <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p$summary.plot)))
+  bx <- as.numeric(bm$data[[1]]$x)
+  tx <- as.numeric(bt$data[[1]]$x)
+  for (i in 1:3) {
+    expect_equal(
+      unique(bt$data[[1]]$colour[abs(tx - i) < 1e-9]),
+      unique(bm$data[[1]]$colour[abs(bx - i) < 1e-9])
+    )
+  }
+
+  # and with order= the labels follow the re-ordered plot, colours still matching
+  p2 <- suppressWarnings(suppressMessages(ggsummarystats(
+    ord, x = "g", y = "v", color = "g", order = c("hi", "lo", "mid")
+  )))
+  expect_equal(.miscounted_columns(p2, ord, "g", "v"), 0)
+})
+
+test_that("ggsummarystats() keeps an NA category in its slot (exclude = NULL)", {
+  # get_limits() reports NA as a real category. factor() drops NA from its levels
+  # by default, so without exclude = NULL every column from the NA group onward
+  # rotates onto the wrong box - the same defect this fix exists to remove.
+  # Measured with the guard removed: NA's 52 lands on b's box, a's 12 on NA's.
+  k <- factor(c(rep(NA, 4), rep("a", 4), rep("b", 4)),
+              levels = c(NA, "a", "b"), exclude = NULL)
+  d <- data.frame(v = c(50:53, 10:13, 30:33))
+  d$k <- k
+  p <- suppressWarnings(suppressMessages(ggsummarystats(d, x = "k", y = "v")))
+  bt <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p$summary.plot)))
+  lab <- bt$data[[1]]
+  ord <- order(as.numeric(lab$x))
+  expect_equal(as.numeric(lab$x)[ord], c(1, 2, 3))
+  # slot 1 is the NA group (median 51.5 -> 52), then a (11.5 -> 12), then b (32)
+  expect_equal(gsub("\n", "|", lab$label[ord]), c("4|52|2", "4|12|2", "4|32|2"))
+  expect_equal(.miscounted_columns(p, d, "k", "v"), 0)
+})
+
+test_that("ggsummarystats() falls back to released behaviour when it cannot follow the plot", {
+  # Two guards, both load-bearing, neither previously covered.
+  #
+  # 1. If no summarised row matches the plot's categories the two key spaces are
+  #    not what we think they are. Keeping the released table is better than a
+  #    blank one: without the any(keep) guard this draws ZERO columns.
+  d <- data.frame(
+    time = rep(c("Pre", "Post", "Mid"), each = 4),
+    val = c(10:13, 30:33, 20:23), stringsAsFactors = FALSE
+  )
+  p <- suppressWarnings(suppressMessages(
+    ggsummarystats(d, x = "time", y = "val", order = c("zz1", "zz2"))
+  ))
+  bt <- suppressWarnings(suppressMessages(ggplot2::ggplot_build(p$summary.plot)))
+  expect_equal(nrow(bt$data[[1]]), 3L)
+
+  # 2. If the main plot cannot be built, ggsummarystats() must still return its
+  #    object and let the error surface at print, as it always has - not raise it
+  #    at the call. Without the tryCatch the probe build throws here.
+  bad <- function(data, x, y, ...) {
+    ggboxplot(data, x, y, ...) + ggplot2::scale_x_continuous()
+  }
+  d2 <- data.frame(g = rep(c("a", "b"), each = 4), v = c(1:4, 9:12),
+                   stringsAsFactors = FALSE)
+  expect_s3_class(
+    suppressWarnings(suppressMessages(
+      ggsummarystats(d2, x = "g", y = "v", ggfunc = bad)
+    )),
+    "ggsummarystats"
+  )
+})

@@ -152,6 +152,19 @@
 
 ## Bug fixes
 
+- `ggsummarystats()` now draws its summary table on the categories the plot
+  was drawn on, so each column sits under the box it describes. The table
+  trained its own x scale, so when the two orders differed the columns were
+  shuffled relative to the boxes: with `time = Pre/Post/Mid` the column under
+  `Pre` printed `Mid`'s median. The columns were shuffled by `order = ` in the
+  same way, and `select = ` / `remove = ` left behind a column for a group the
+  plot no longer drew. A `POSIXct` x, which could not be printed at all, now
+  draws. `$summary.plot$data` holds only the groups drawn, with its x column a
+  factor over those categories. Plots whose x axis is continuous — `ggline()`
+  or `ggbarplot()` with an integer or `Date` x, or any builder called with
+  `numeric.x.axis = TRUE` — and facets with `scales = "free_x"` are not
+  affected by this change. See `?ggsummarystats`.
+
 - `ggsummarystats(free.panels = TRUE)` now titles every panel with the group
   whose data it draws. The panel label was taken from a split that sorts its rows
   before building the label but attaches it to the unsorted data, so panels were
