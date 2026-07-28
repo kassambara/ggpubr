@@ -423,6 +423,18 @@ ggbarplot_core <- function(data, x, y,
     if (inherits(position, "PositionDodge2") && draws.raw.layers) {
       has.alpha.group <- FALSE
     }
+    # And for an ASYMMETRIC summary. The re-centred layer is built from the
+    # summary's own half-width column, so median_q1q3 / median_hilow - which are
+    # quantile pairs, not centre +/- error - have no such column and the helper
+    # cannot place them. Their intervals are correct but unpaired, and with the
+    # subgroup carried "unpaired" means drawn inside another cell's bar.
+    if (inherits(position, "PositionDodge2") && any(.errorbar_functions() %in% add)) {
+      err.col <- .get_errorbar_error_func(.get_summary_func(add))
+      if (is.null(err.col) ||
+          !err.col %in% c("se", "sd", "ci", "range", "iqr", "mad")) {
+        has.alpha.group <- FALSE
+      }
+    }
   }
   # Include the alpha subgroup in the summary grouping. Otherwise the summarized
   # data drops the alpha column, which (a) makes geom_exec pass alpha as a static
@@ -568,15 +580,32 @@ ggbarplot_core <- function(data, x, y,
       group = add.params$group, facet.by = facet.by,
       func = .get_summary_func(add), error.plot = error.plot,
       width = cap.width, order.vars = alpha.order.vars,
-      facet.scales = .facet_scales_from_dots(list(...))
+      facet.scales = .facet_scales_from_dots(list(...)),
+      reverse = isTRUE(position$reverse), bar.fill = fill
     )
     if (!is.null(eb)) {
       p <- p + eb
-    } else {
-      # Could not match centres -> keep the standard (unaligned) error layer
+    } else if (is.null(alpha.order.vars)) {
+      # Could not match centres -> keep the standard (unaligned) error layer.
+      # Released behaviour, and safe here: without the alpha subgroup there are
+      # two elements per x and each interval still lands on its own bar.
       p <- add.params %>%
         .add_item(add = .get_summary_func(add), position = add.position) %>%
         do.call(ggadd, .)
+    } else {
+      # On the alpha path that same fallback is NOT safe. position_dodge2()
+      # packs by each element's own width, so the thin intervals collapse into a
+      # cluster at the tick centre: with the subgroup carried they land INSIDE
+      # neighbouring bars, and an interval drawn inside a bar is read as that
+      # bar's. Master refuses to draw these calls at all, so there is no working
+      # output to preserve - draw the bars without an error layer and say so,
+      # rather than publish a figure whose intervals belong to other bars.
+      warning(
+        "Could not align the error bars with the dodged bars, so they were not ",
+        "drawn. This combination of `alpha`, `position_dodge2()` and the ",
+        "requested summary is not supported; use `position_dodge()` instead.",
+        call. = FALSE
+      )
     }
   } else {
     p <- add.params %>%
@@ -748,7 +777,8 @@ ggbarplot_core <- function(data, x, y,
 .geom_dodge2_errorbar <- function(p, data_sum, x, y, color = NULL, fill = NULL,
                                   group = NULL, facet.by = NULL, func = "mean_se",
                                   error.plot = "errorbar", width = 0.1,
-                                  order.vars = NULL, facet.scales = "fixed") {
+                                  order.vars = NULL, facet.scales = "fixed",
+                                  reverse = FALSE, bar.fill = NULL) {
   legend.var <- intersect(unique(c(color, fill, group)), colnames(data_sum))
   # order.vars is the full set of discrete columns ggplot2 groups the bars by
   # (#404). It is supplied only when an `alpha` column has split the summary
@@ -819,8 +849,20 @@ ggbarplot_core <- function(data, x, y,
   }
   as.int <- function(v) if (is.factor(v)) as.integer(v) else as.integer(factor(v))
   ord.keys <- if (length(order.vars)) {
-    c(list(as.int(ds$PANEL), as.int(ds[[x]])),
-      lapply(order.vars, function(k) as.int(ds[[k]])))
+    # collide2() lays each x's elements out by ASCENDING group id - or by
+    # DESCENDING group id under position_dodge2(reverse = TRUE), which sorts on
+    # -group. Negating the key here follows it; ordering ascending against
+    # reversed bars matched every row to the mirror bar, so the centre check
+    # below refused and the caller drew an unpaired layer instead.
+    keys <- lapply(order.vars, function(k) {
+      v <- as.int(ds[[k]])
+      # interaction(addNA(...)) keeps NA as a real TRAILING level, and order()
+      # would put it last in either direction. Give it that trailing rank
+      # explicitly so it mirrors with everything else.
+      if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
+      if (isTRUE(reverse)) -v else v
+    })
+    c(list(as.int(ds$PANEL), as.int(ds[[x]])), keys)
   } else {
     list(as.int(ds$PANEL), as.int(ds[[x]]), as.int(ds[[legend.var]]))
   }
@@ -831,23 +873,21 @@ ggbarplot_core <- function(data, x, y,
   # draws each summary row's own centre, so the bar a row has been matched to
   # must carry that row's centre; if it does not, the two orders disagree and we
   # are one line away from drawing one cell's interval on another cell's bar.
-  # Bail out and let the caller keep the standard layer, which is unaligned but
-  # never mislabelled. Only the alpha path is checked - the released key is left
-  # byte-identical, including in the degenerate cases where it is imperfect.
-  if (length(order.vars)) {
-    if (!isTRUE(all.equal(as.numeric(bd$y), as.numeric(ds$.yc.),
-                          tolerance = 1e-9, check.attributes = FALSE))) {
-      return(NULL)
-    }
-    # Two cells sharing a centre within one (panel, x) satisfy that check even
-    # when swapped, and the swap would move a DIFFERENT half-width onto each of
-    # their bars - which a centre cannot reveal. Refuse that case as well.
-    tie <- paste(ds$PANEL, as.character(ds[[x]]),
-                 signif(as.numeric(ds$.yc.), 12), sep = "\r")
-    half <- signif(as.numeric(ds$.ymax. - ds$.ymin.), 12)
-    if (any(vapply(split(half, tie), function(z) length(unique(z)) > 1L, logical(1)))) {
-      return(NULL)
-    }
+  # Only the alpha path is checked - the released key is left byte-identical,
+  # including in the degenerate cases where it is imperfect.
+  #
+  # There is deliberately NO extra guard for two cells that share a centre within
+  # one (panel, x). An earlier revision refused those, reasoning that a swap
+  # between them would move a different half-width onto each bar and the centre
+  # could not reveal it. That was backwards: the order above is built from the
+  # same discrete key ggplot2 groups the bars by, so it is correct whether or not
+  # the centres happen to tie - a tie defeats the VERIFICATION, never the
+  # ordering. Refusing on it only sent ordinary rounded or count data down the
+  # unpaired path, which is the one outcome worth avoiding.
+  if (length(order.vars) &&
+      !isTRUE(all.equal(as.numeric(bd$y), as.numeric(ds$.yc.),
+                        tolerance = 1e-9, check.attributes = FALSE))) {
+    return(NULL)
   }
   ds$.ebx. <- bd$x
   # Each bar's own drawn width, so a crossbar can be given the width of the bar
@@ -876,12 +916,30 @@ ggbarplot_core <- function(data, x, y,
   if (is.crossbar) mapping$width <- ggplot2::aes(width = .data$.ebw.)$width
   opts <- list(data = ds, mapping = mapping, inherit.aes = FALSE, position = "identity")
   if (!color.is.var && !is.null(color) && length(color) == 1) opts$colour <- color
-  if (is.crossbar && !is.null(fill) && length(fill) == 1) {
-    if (fill %in% colnames(ds)) {
-      mapping$fill <- ggplot2::aes(fill = .data[[fill]])$fill
-      opts$mapping <- mapping
+  if (is.crossbar) {
+    # A crossbar is filled, and every other ggpubr crossbar takes its fill from
+    # the MAPPED fill aesthetic (ggadd() never forwards add.params$fill to
+    # add_summary(), so the mapping wins). ggbarplot_core() defaults
+    # add.params$fill to "white" before .check_add.params() can set it, so
+    # reading that here silently turned a released, working call's crossbars
+    # from the group colours to white - and a white cap truncates the coloured
+    # bar at centre - error, which reads as a lower bar. Follow the bar's own
+    # fill, and only fall back to add.params$fill when it is not a column.
+    crossbar.fill <- if (!is.null(bar.fill) && length(bar.fill) == 1 &&
+                         bar.fill %in% colnames(ds)) {
+      bar.fill
+    } else if (!is.null(fill) && length(fill) == 1) {
+      fill
     } else {
-      opts$fill <- fill
+      NULL
+    }
+    if (!is.null(crossbar.fill)) {
+      if (crossbar.fill %in% colnames(ds)) {
+        mapping$fill <- ggplot2::aes(fill = .data[[crossbar.fill]])$fill
+        opts$mapping <- mapping
+      } else {
+        opts$fill <- crossbar.fill
+      }
     }
   }
   if (identical(geom.error, ggplot2::geom_errorbar)) opts$width <- width

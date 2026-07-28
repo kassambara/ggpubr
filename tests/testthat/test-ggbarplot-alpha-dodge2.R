@@ -273,6 +273,111 @@ test_that("no-regression: a faceted dodge2 WITHOUT alpha keeps its released layo
   }
 })
 
+test_that("dodge2(reverse = TRUE) pairs each interval with its own bar (#404)", {
+  # collide2() sorts each x by -group when reverse = TRUE, so ordering the
+  # summary ascending matched every row to the MIRROR bar. The centre check
+  # caught it and refused, and the caller then drew an unpaired layer - four
+  # intervals clustered at the tick centre, two bars carrying two each and two
+  # none. The sort follows `reverse` now, so it aligns instead of bailing.
+  d <- .mk()
+  p <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+    add = "mean_se", position = position_dodge2(reverse = TRUE)))
+  .expect_on_own_bar(p, d)
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  expect_equal(as.numeric(.layer(p, b, "GeomErrorbar")$x),
+               as.numeric(.layer(p, b, "GeomBar")$x), tolerance = 1e-9)
+})
+
+test_that("cells that share a mean still pair with their own bar (#404)", {
+  # An earlier revision refused a centre tied within one (panel, x), reasoning
+  # that a swap could move a different half-width onto each bar. That was
+  # backwards - the order comes from the discrete key ggplot2 groups the bars
+  # by, so it is right whether or not the centres tie; refusing only sent
+  # ordinary rounded/count data down the unpaired path. Two cells here share a
+  # mean of 10 while their standard errors differ.
+  d <- data.frame(
+    g = rep(c("A", "B"), each = 12),
+    f = rep(rep(c("f1", "f2"), each = 6), 2),
+    a = rep(rep(c("a1", "a2"), each = 3), 4),
+    v = c(9, 10, 11,  38, 40, 42,  19, 20, 21,  58, 60, 62,
+          29, 30, 31, 68, 70, 72,  49, 50, 51,  88, 90, 92),
+    stringsAsFactors = FALSE
+  )
+  d$v[d$g == "A" & d$f == "f1" & d$a == "a2"] <- c(5, 10, 15)
+  p <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+    add = "mean_se", position = position_dodge2()))
+  pr <- .pairing(p)
+  expect_false(any(is.na(pr$bar)))
+  expect_equal(sort(pr$bar), seq_len(pr$n.bars))
+  ref <- merge(
+    stats::aggregate(v ~ g + f + a, d, mean),
+    stats::aggregate(v ~ g + f + a, d, function(z) stats::sd(z) / sqrt(length(z))),
+    by = c("g", "f", "a")
+  )
+  names(ref)[4:5] <- c("mean", "se")
+  for (i in seq_along(pr$bar)) {
+    cell <- ref[abs(ref$mean - pr$bar.y[i]) < 1e-9, , drop = FALSE]
+    # both tied cells are acceptable only if the half-width also matches
+    expect_true(any(abs(pr$ymin[i] - (cell$mean - cell$se)) < 1e-9 &
+                      abs(pr$ymax[i] - (cell$mean + cell$se)) < 1e-9))
+  }
+})
+
+test_that("an asymmetric summary keeps the released refusal under dodge2 (#404)", {
+  # median_q1q3 / median_hilow are quantile PAIRS, not centre +/- error, so the
+  # summary has no half-width column and the re-centring helper cannot place
+  # them. Their intervals are correct but unpaired, and with the subgroup
+  # carried "unpaired" means drawn inside another cell's bar - 4 of 8 measured.
+  d <- .mk()
+  for (f in c("median_q1q3", "median_hilow")) {
+    p <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+      add = f, position = position_dodge2()))
+    b <- suppressWarnings(ggplot2::ggplot_build(p))
+    expect_equal(nrow(.layer(p, b, "GeomBar")), 6L, info = f)
+    expect_error(ggplot2::ggplotGrob(p), info = f)
+  }
+  # a symmetric one on the same data is unaffected: it draws, and every interval
+  # is its own cell's median +/- IQR (the ggpubr convention is the FULL IQR on
+  # each side, not Q1-Q3), checked against base R
+  p <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+    add = "median_iqr", position = position_dodge2()))
+  pr <- .pairing(p)
+  expect_false(any(is.na(pr$bar)))
+  expect_equal(sort(pr$bar), seq_len(pr$n.bars))
+  ref <- merge(
+    stats::aggregate(v ~ g + f + a, d, stats::median),
+    stats::aggregate(v ~ g + f + a, d, stats::IQR),
+    by = c("g", "f", "a")
+  )
+  names(ref)[4:5] <- c("mid", "iqr")
+  for (i in seq_along(pr$bar)) {
+    cell <- ref[abs(ref$mid - pr$bar.y[i]) < 1e-9, , drop = FALSE]
+    expect_equal(nrow(cell), 1L)
+    expect_equal(pr$ymin[i], cell$mid - cell$iqr, tolerance = 1e-9)
+    expect_equal(pr$ymax[i], cell$mid + cell$iqr, tolerance = 1e-9)
+  }
+})
+
+test_that("a re-centred crossbar keeps the mapped fill, not add.params$fill (#404)", {
+  # Every other ggpubr crossbar takes its fill from the mapped fill aesthetic.
+  # ggbarplot_core() defaults add.params$fill to "white" before
+  # .check_add.params() can set it, so reading that turned a released, working
+  # call's crossbars from the group colours to white - and a white cap truncates
+  # the coloured bar at centre - error, so the bar reads lower than it is.
+  tg <- ToothGrowth
+  tg$dose <- factor(tg$dose)
+  p <- suppressWarnings(ggbarplot(tg, "dose", "len", fill = "supp", alpha = "supp",
+    add = "mean_se", position = position_dodge2(), error.plot = "crossbar"))
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  bd <- .layer(p, b, "GeomBar"); ed <- .layer(p, b, "GeomCrossbar")
+  expect_equal(sort(unique(as.character(ed$fill))), sort(unique(as.character(bd$fill))))
+  expect_false(any(as.character(ed$fill) == "white"))
+  # and it is centred on its bar, at the bar's width
+  expect_equal(as.numeric(ed$x), as.numeric(bd$x), tolerance = 1e-9)
+  expect_equal(as.numeric(ed$xmax - ed$xmin), as.numeric(bd$xmax - bd$xmin),
+               tolerance = 1e-9)
+})
+
 test_that("a key that cannot describe the bars keeps the released refusal (#404)", {
   # When a keyed column is not discrete, or is named after a desc_statby()
   # statistic, no ordering maps one error bar to one bar. Drawing anyway would

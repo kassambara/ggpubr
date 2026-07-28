@@ -249,13 +249,14 @@
   column splits the summary into one row per (x, legend, alpha) cell;
   `position_dodge2()` places its error layer by re-centring it on the bars, and
   that step now orders the summary on every discrete aesthetic ggplot2 groups
-  the bars by, then checks the pairing it produced against the bars it is about
-  to draw on. Verified against `stats::aggregate` for `sort.val =`,
-  `sort.by.groups = FALSE`, `top =`, shuffled input rows, an `add.params$color`
-  naming the `alpha` column, `facet.by =` of one or two variables with fixed or
-  free scales, an `alpha` column that is ordered, logical, reversed or contains
-  `NA`, unbalanced, singleton and zero-variance cells, and tibble or grouped
-  input.
+  the bars by — in the direction `position_dodge2()` lays them out, so
+  `reverse = TRUE` is included — and then checks the pairing it produced against
+  the bars it is about to draw on. Verified against `stats::aggregate` for
+  `sort.val =`, `sort.by.groups = FALSE`, `top =`, shuffled input rows, an
+  `add.params$color` naming the `alpha` column, `facet.by =` of one or two
+  variables with fixed or free scales, an `alpha` column that is ordered,
+  logical or reversed, cells that share a mean, unbalanced, singleton and
+  zero-variance cells, and tibble or grouped input.
 
   `error.plot = "crossbar"` is included. A crossbar is wide, so it normally
   dodges itself — but `position_dodge2()` packs elements by their own width and
@@ -265,26 +266,35 @@
   it is re-centred like the other error plots and drawn as a crossbar rather
   than falling back to an error bar.
 
-  Two configurations keep the released behaviour of refusing to draw, rather
-  than placing an interval beside a bar it was not computed from: a
-  `color`/`fill`/`alpha` column that is not discrete (ggplot2 does not group the
-  bars by such a column, so the layer draws more bars than there are dodge
-  positions and no error bar can be matched to one bar), and a column named
-  after one of the statistics `desc_statby()` computes. `label = TRUE` (or a
-  character label vector) is a third: the value labels are placed by their own
-  layer, which dodges on the legend key alone, so with the `alpha` subgroup
-  carried they land between the bars — four of eight over the bar whose value
-  they show. Aligning the error bars while half the numbers float would make the
-  figure look trustworthy and read wrong, so a labelled call keeps the released
-  behaviour until the label layer is keyed too. A raw-data layer
-  (`add = c("mean_se", "jitter")` and likewise `point`, `dotplot`, `boxplot`,
-  `violin`) is the fourth, for the same reason: those layers are placed under
-  the same position, and `position_dodge2()` packs by each element's own width,
-  which a point does not have — they already sit off their own bar without any
-  `alpha` (unchanged by this fix), and the extra subgroup would double it.
-  Calls without a discrete
-  `alpha` column are unchanged, including a faceted `position_dodge2()` with
-  `scales = "free_x"`, whose error bars keep the positions they have always had.
+  Four configurations keep the released behaviour of refusing to draw, rather
+  than placing an interval beside a bar it was not computed from:
+
+  - a `color`/`fill`/`alpha` column that is **not discrete** — ggplot2 does not
+    group the bars by such a column, so the layer draws more bars than there are
+    dodge positions and no error bar can be matched to one bar;
+  - **`label = TRUE`** (or a character label vector) — the value labels are
+    placed by their own layer, which dodges on the legend key alone, so with the
+    `alpha` subgroup carried they land between the bars, four of eight over the
+    bar whose value they show;
+  - **a raw-data layer** (`add = c("mean_se", "jitter")`, and likewise `point`,
+    `dotplot`, `boxplot`, `violin`) — placed under the same position, and
+    `position_dodge2()` packs by each element's own width, which a point does
+    not have. They already sit off their own bar without any `alpha` (unchanged
+    by this fix), and the extra subgroup would double it;
+  - **an asymmetric summary** (`median_q1q3`, `median_hilow`) — a quantile pair
+    rather than centre ± error, so the summary has no half-width column for the
+    layer to be rebuilt from.
+
+  Calls without a discrete `alpha` column are unchanged, including a faceted
+  `position_dodge2()` with `scales = "free_x"`, whose error bars keep the
+  positions they have always had.
+
+  One case does change for a call that already drew: an `alpha` mapped to a
+  column that is **already** a grouping variable (for example `fill = "supp",
+  alpha = "supp"`) worked before, because the summary already carried that
+  column. With `error.plot = "crossbar"` its crossbars were drawn off-centre and
+  wider than their bars; they are now centred on the bar at the bar's own width.
+  Their fill is unchanged — it still follows the mapped `fill`.
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via
