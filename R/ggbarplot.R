@@ -291,11 +291,8 @@ ggbarplot_core <- function(data, x, y,
   # #404: an `alpha` aesthetic mapped to a discrete data column defines an extra
   # dodge subgroup (e.g. fill = cut, alpha = clarity -> 2 bars per cut). Detect it
   # so the summary keeps that column and the error layer dodges by it too. Both
-  # the carrying and the dodge key are scoped to plain position_dodge():
-  # has.alpha.group gates grouping.vars as well, so under position_dodge2() the
-  # column is not carried at all and that path keeps its released behaviour,
-  # including the "alpha * 255" draw error - see the note below on why its
-  # rank-based re-centring (#363) cannot take the column safely.
+  # plain position_dodge() and position_dodge2() are covered; every other
+  # position keeps its released behaviour, including its draw errors.
   alpha.var <- list(...)[["alpha"]]   # [[ ]] avoids $ partial-matching a `...` arg
   alpha.is.col <- !is.null(alpha.var) && length(alpha.var) == 1 &&
     is.character(alpha.var) && alpha.var %in% names(data) &&
@@ -305,29 +302,21 @@ ggbarplot_core <- function(data, x, y,
   # longer map it, and the column NAME reaches grid as a static opacity - the
   # "alpha * 255" draw error of #404. But carrying it also SPLITS the summary into
   # one row per (x, legend, alpha) cell, and only the interaction dodge key built
-  # below can place that many rows on the right bars. It is specific to plain
-  # position_dodge(), so the column is carried only there.
+  # below can place that many rows on the right bars.
   #
-  # position_dodge2() is deliberately NOT included, even though its error layer is
-  # re-centred on the bars (#363): that re-centring matches summary rows to bars by
-  # SORT POSITION, and with the alpha column carried the sort key
-  # (PANEL, x, legend) is no longer total - the alpha subgroup is only a stable
-  # tie. Anything that reorders the summary (`sort.val`, `top`, `sort.by.groups`)
-  # or that resolves a different key (`add.params$color`/`$fill` naming another
-  # column) then silently permutes the match, so an error bar lands on a
-  # neighbouring bar carrying ITS mean and ITS error. Making dodge2 work needs the
-  # row-to-bar match keyed on the bars' own identity rather than on rank, which is
-  # a focused change of its own; until then position_dodge2() keeps the released
-  # behaviour exactly, rather than trading a draw error for a wrong number.
-  has.alpha.group <- alpha.is.col &&
-    inherits(position, "PositionDodge") && !inherits(position, "PositionDodge2")
+  # position_dodge2() re-centres its error layer on the bars itself (#363) by
+  # matching summary rows to bars by SORT POSITION. With the alpha column carried
+  # the released key (PANEL, x, legend) is no longer total - the alpha subgroup is
+  # only a stable tie - so anything that reorders the summary (`sort.val`, `top`,
+  # `sort.by.groups`) or that resolves a different key (`add.params$color` naming
+  # another column) permutes the match. It is handed the FULL discrete key below
+  # and then CHECKS the pairing it produced against the bars it is about to draw
+  # on, so a key that does not describe the layout falls back to the standard
+  # layer rather than drawing one cell's interval on another cell's bar.
+  # PositionDodge2 subclasses PositionDodge, so the one test covers both.
+  has.alpha.group <- alpha.is.col && inherits(position, "PositionDodge")
 
   grouping.vars <- intersect(c(x, color, fill, facet.by), names(data))
-  # Include the alpha subgroup in the summary grouping. Otherwise the summarized
-  # data drops the alpha column, which (a) makes geom_exec pass alpha as a static
-  # value -> the "alpha * 255" draw error (#404), and (b) collapses the mean/CI
-  # across the subgroups. Left unchanged when no discrete alpha var is mapped.
-  if (has.alpha.group) grouping.vars <- unique(c(grouping.vars, alpha.var))
 
   # static summaries for computing mean/median and adding errors
   if (is.null(add.params$fill)) add.params$fill <- "white"
@@ -342,6 +331,17 @@ ggbarplot_core <- function(data, x, y,
   # groups the bars by. We materialise it as a real column with a safe name
   # (rather than an "interaction(a, b)" mapping string), so it survives special
   # characters in the variable names and options(ggpubr.parse_aes = FALSE).
+  # Mirrors how add.label is resolved further down: a non-logical `label` is a
+  # column of user labels and is always drawn.
+  draws.labels <- if (is.logical(label)) isTRUE(label[1]) else TRUE
+  # Anything in `add` that is not the summary itself draws the RAW observations
+  # (jitter, point, dotplot, boxplot, violin). Those layers are placed by ggadd()
+  # under the same position, and position_dodge2() packs by each element's own
+  # width - a point has none - so they do not take the bar's slot.
+  draws.raw.layers <- length(setdiff(
+    add, c(.summary_functions(), .errorbar_functions(), "none")
+  )) > 0
+  alpha.order.vars <- NULL
   if (has.alpha.group) {
     base.group <- add.params$group %||% x
     # Key on EVERY mapped discrete aesthetic, in the order ggplot2 lays them out
@@ -397,8 +397,52 @@ ggbarplot_core <- function(data, x, y,
       "length", "min", "max", "median", "mean", "iqr", "mad", "sd", "se",
       "ci", "range", "cv", "var"
     )
-    data[[".ggpubr.alpha.group."]] <- if (all(key.discrete) &&
-      !any(c(key.vars, grouping.vars) %in% stat.cols)) {
+    key.exact <- all(key.discrete) && !any(c(key.vars, grouping.vars) %in% stat.cols)
+    # Under position_dodge2() the alpha column is carried ONLY when that key is
+    # exact. In the degenerate cases the key describes a partition the bars are
+    # not drawn on, so no ordering can place one interval per bar - and unlike
+    # plain dodge, dodge2 has no correctly-valued layout to fall back to: it
+    # would draw an interval next to a bar that is not the one it was computed
+    # from. Released behaviour (which refuses to draw at all) is the honest
+    # outcome there, so leave that path exactly as it was.
+    if (inherits(position, "PositionDodge2") && !key.exact) has.alpha.group <- FALSE
+    # Same reasoning for `label`. The value labels are placed by their own layer,
+    # which dodges on the legend key alone, so with the alpha subgroup carried
+    # they land between the bars - measured 4 of 8 over the bar whose value they
+    # show. Aligning the error bars while half the numbers float between bars
+    # would make the figure look trustworthy and read wrong, so a labelled call
+    # keeps the released behaviour until the label layer is keyed too.
+    if (inherits(position, "PositionDodge2") && draws.labels) has.alpha.group <- FALSE
+    # And for a raw-data layer. Under position_dodge2() those points already sit
+    # off their own bar without any alpha (8 of 12 - pre-existing, and unchanged
+    # here); splitting the bars finer makes it 12 of 24, i.e. half the
+    # observations drawn over a bar they are not from. That is the same
+    # misleading figure the labels would give, so the same disposition: this
+    # combination keeps the released path until dodge2's raw layers are placed
+    # on the bars the way its error layer now is.
+    if (inherits(position, "PositionDodge2") && draws.raw.layers) {
+      has.alpha.group <- FALSE
+    }
+    # And for an ASYMMETRIC summary. The re-centred layer is built from the
+    # summary's own half-width column, so median_q1q3 / median_hilow - which are
+    # quantile pairs, not centre +/- error - have no such column and the helper
+    # cannot place them. Their intervals are correct but unpaired, and with the
+    # subgroup carried "unpaired" means drawn inside another cell's bar.
+    if (inherits(position, "PositionDodge2") && any(.errorbar_functions() %in% add)) {
+      err.col <- .get_errorbar_error_func(.get_summary_func(add))
+      if (is.null(err.col) ||
+          !err.col %in% c("se", "sd", "ci", "range", "iqr", "mad")) {
+        has.alpha.group <- FALSE
+      }
+    }
+  }
+  # Include the alpha subgroup in the summary grouping. Otherwise the summarized
+  # data drops the alpha column, which (a) makes geom_exec pass alpha as a static
+  # value -> the "alpha * 255" draw error (#404), and (b) collapses the mean/CI
+  # across the subgroups. Left unchanged when no discrete alpha var is mapped.
+  if (has.alpha.group) {
+    grouping.vars <- unique(c(grouping.vars, alpha.var))
+    data[[".ggpubr.alpha.group."]] <- if (key.exact) {
       do.call(
         interaction,
         c(
@@ -414,6 +458,12 @@ ggbarplot_core <- function(data, x, y,
       )
     }
     add.params$group <- ".ggpubr.alpha.group."
+    # The same columns, in the same order, are what position_dodge2()'s error
+    # layer must sort on: collide2() lays each x's elements out by ascending
+    # group id, and that id is id() over exactly these columns. Only offered when
+    # the key is exact - in the degenerate cases above no key describes the
+    # layout, so the helper is left on its released rank match.
+    if (key.exact) alpha.order.vars <- key.vars
   }
   add.params <- .check_add.params(add, add.params, error.plot, data, color, fill, ...)
 
@@ -507,10 +557,19 @@ ggbarplot_core <- function(data, x, y,
   } else if (inherits(position, "PositionDodge2") &&
              nb.bars.by.xposition >= 2 &&
              any(.errorbar_functions() %in% add) &&
-             error.plot %in% .narrow_error_plots()) {
+             (error.plot %in% .narrow_error_plots() ||
+              (!is.null(alpha.order.vars) && error.plot == "crossbar"))) {
     # position_dodge2() misplaces thin error bars relative to the dodged bars
     # (#363). Draw any non-error add layers normally, then re-center the error
     # bars on the actual bar positions.
+    #
+    # A crossbar is wide, so it is normally left to dodge itself - but dodge2
+    # packs elements by their OWN width, and the crossbar's width is not the
+    # bar's, so the two only appear to agree while there are few enough
+    # subgroups for the offset to stay inside the bar. Carrying an `alpha`
+    # column doubles the subgroups and the offset then lands the crossbar on a
+    # neighbouring bar, correctly valued and wrongly placed. On that path it is
+    # re-centred like the others; without the alpha column nothing changes.
     p <- add.params %>%
       .add_item(add = .remove_errorbar_func(add), position = add.position) %>%
       do.call(ggadd, .)
@@ -520,15 +579,36 @@ ggbarplot_core <- function(data, x, y,
       color = add.params$color, fill = add.params$fill,
       group = add.params$group, facet.by = facet.by,
       func = .get_summary_func(add), error.plot = error.plot,
-      width = cap.width
+      width = cap.width, order.vars = alpha.order.vars,
+      facet.scales = .facet_scales_from_dots(list(...)),
+      # ggplot2's collide2() branches on `if (reverse)`, which is TRUE for 1 or
+      # "TRUE" as well; isTRUE() alone would read those as FALSE and sort the
+      # summary against mirrored bars.
+      reverse = isTRUE(as.logical(position$reverse)[1]), bar.fill = fill
     )
     if (!is.null(eb)) {
       p <- p + eb
-    } else {
-      # Could not match centres -> keep the standard (unaligned) error layer
+    } else if (is.null(alpha.order.vars)) {
+      # Could not match centres -> keep the standard (unaligned) error layer.
+      # Released behaviour, and safe here: without the alpha subgroup there are
+      # two elements per x and each interval still lands on its own bar.
       p <- add.params %>%
         .add_item(add = .get_summary_func(add), position = add.position) %>%
         do.call(ggadd, .)
+    } else {
+      # On the alpha path that same fallback is NOT safe. position_dodge2()
+      # packs by each element's own width, so the thin intervals collapse into a
+      # cluster at the tick centre: with the subgroup carried they land INSIDE
+      # neighbouring bars, and an interval drawn inside a bar is read as that
+      # bar's. Master refuses to draw these calls at all, so there is no working
+      # output to preserve - draw the bars without an error layer and say so,
+      # rather than publish a figure whose intervals belong to other bars.
+      warning(
+        "Could not align the error bars with the dodged bars, so they were not ",
+        "drawn. This combination of `alpha`, `position_dodge2()` and the ",
+        "requested summary is not supported; use `position_dodge()` instead.",
+        call. = FALSE
+      )
     }
   } else {
     p <- add.params %>%
@@ -649,6 +729,40 @@ ggbarplot_core <- function(data, x, y,
   geom_func
 }
 
+# The `scales` a faceted plot will actually be drawn with. It reaches facet()
+# through `...`, so R matches it PARTIALLY against facet()'s formals: `scale =`
+# and `scal =` all arrive as `scales`, while `s =` is ambiguous with
+# `short.panel.labs`/`strip.position` and reaches nothing. Testing names with
+# `==` would miss every abbreviation - the class of bug that has bitten this
+# package repeatedly. pmatch(duplicates.ok = TRUE) resolves each name the way R
+# itself will; without it one exact name consumes the formal and every other
+# abbreviation of it returns NA.
+.facet_scales_from_dots <- function(dots) {
+  nms <- names(dots)
+  if (is.null(nms) || !length(nms)) return("fixed")
+  target <- names(formals(facet))
+  # R matches an EXACT name first, and an abbreviation of a formal that is
+  # already matched exactly is then left over and swallowed by `...`. So with
+  # both `scales = "free_x"` and `scale = "fixed"`, facet() uses "free_x" and
+  # ignores the other - taking the last partial hit read "fixed" and probed a
+  # layout the plot never draws, putting the intervals on the wrong bars.
+  exact <- which(nms == "scales")
+  hit <- if (length(exact)) {
+    exact
+  } else {
+    m <- pmatch(nms, target, duplicates.ok = TRUE)
+    which(!is.na(m) & target[m] == "scales")
+  }
+  if (!length(hit)) return("fixed")
+  val <- dots[[hit[length(hit)]]]
+  if (is.character(val) && length(val) == 1L &&
+      val %in% c("fixed", "free", "free_x", "free_y")) {
+    val
+  } else {
+    "fixed"
+  }
+}
+
 .is_stacked <- function(p) {
   inherits(p$layers[[1]]$position, "PositionStack")
 }
@@ -675,10 +789,17 @@ ggbarplot_core <- function(data, x, y,
 # centres cannot be matched.
 .geom_dodge2_errorbar <- function(p, data_sum, x, y, color = NULL, fill = NULL,
                                   group = NULL, facet.by = NULL, func = "mean_se",
-                                  error.plot = "errorbar", width = 0.1) {
+                                  error.plot = "errorbar", width = 0.1,
+                                  order.vars = NULL, facet.scales = "fixed",
+                                  reverse = FALSE, bar.fill = NULL) {
   legend.var <- intersect(unique(c(color, fill, group)), colnames(data_sum))
-  if (length(legend.var) == 0) return(NULL)
-  legend.var <- legend.var[1]
+  # order.vars is the full set of discrete columns ggplot2 groups the bars by
+  # (#404). It is supplied only when an `alpha` column has split the summary
+  # finer than the legend variable, and it then replaces the legend-only sort
+  # key; without it every step below is exactly the released path.
+  order.vars <- intersect(order.vars, colnames(data_sum))
+  if (length(legend.var) == 0 && length(order.vars) == 0) return(NULL)
+  legend.var <- if (length(legend.var)) legend.var[1] else NULL
 
   # Error limits (centre +/- error), honouring upper_/lower_/both, from data_sum.
   # Only symmetric summaries whose error half-width is a data_sum column are
@@ -700,8 +821,30 @@ ggbarplot_core <- function(data, x, y,
   # Actual dodged bar centres from the built plot. Faceting is applied later (by
   # .plotter), so build against a temporarily-faceted copy: dodge2 positions
   # depend on which groups are present *within each panel*.
+  #
+  # The probe must be faceted the way the FINAL plot will be. With a free x
+  # scale a panel that is missing an x level renumbers its remaining levels, so
+  # a fixed-scale probe reads centres the drawn panel never uses; with two
+  # facet variables facet() uses facet_grid(), not facet_wrap(). Released calls
+  # keep the original fixed facet_wrap() probe (its imperfection there is
+  # pre-existing behaviour, not something to change under this fix), so the
+  # accurate probe is used only on the alpha path.
   build.p <- p
-  if (!is.null(facet.by)) build.p <- p + ggplot2::facet_wrap(facet.by)
+  if (!is.null(facet.by)) {
+    build.p <- if (length(order.vars) && length(facet.by) == 2) {
+      p + ggplot2::facet_grid(
+        stats::as.formula(paste(glue::backtick(facet.by), collapse = " ~ ")),
+        scales = facet.scales
+      )
+    } else if (length(order.vars)) {
+      p + ggplot2::facet_wrap(
+        stats::as.formula(paste0("~", glue::backtick(facet.by))),
+        scales = facet.scales
+      )
+    } else {
+      p + ggplot2::facet_wrap(facet.by)
+    }
+  }
   built <- ggplot2::ggplot_build(build.p)
   bar.layer <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomBar"), logical(1)))
   if (length(bar.layer) == 0) return(NULL)
@@ -718,11 +861,59 @@ ggbarplot_core <- function(data, x, y,
     ds$PANEL <- factor(1L)
   }
   as.int <- function(v) if (is.factor(v)) as.integer(v) else as.integer(factor(v))
-  ds <- ds[order(as.int(ds$PANEL), as.int(ds[[x]]), as.int(ds[[legend.var]])), , drop = FALSE]
+  ord.keys <- if (length(order.vars)) {
+    # collide2() lays each x's elements out by ASCENDING group id - or by
+    # DESCENDING group id under position_dodge2(reverse = TRUE), which sorts on
+    # -group. Negating the key here follows it; ordering ascending against
+    # reversed bars matched every row to the mirror bar, so the centre check
+    # below refused and the caller drew an unpaired layer instead.
+    keys <- lapply(order.vars, function(k) {
+      v <- as.int(ds[[k]])
+      # interaction(addNA(...)) keeps NA as a real TRAILING level, and order()
+      # would put it last in either direction. Give it that trailing rank
+      # explicitly so it mirrors with everything else.
+      if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
+      if (isTRUE(reverse)) -v else v
+    })
+    c(list(as.int(ds$PANEL), as.int(ds[[x]])), keys)
+  } else {
+    list(as.int(ds$PANEL), as.int(ds[[x]]), as.int(ds[[legend.var]]))
+  }
+  ds <- ds[do.call(order, ord.keys), , drop = FALSE]
   if (nrow(ds) != nrow(bd)) return(NULL)
-  ds$.ebx. <- bd$x
 
-  geom.error <- .get_geom_error_function(error.plot)
+  # Check the pairing instead of trusting the sort. geom_bar(stat = "identity")
+  # draws each summary row's own centre, so the bar a row has been matched to
+  # must carry that row's centre; if it does not, the two orders disagree and we
+  # are one line away from drawing one cell's interval on another cell's bar.
+  # Only the alpha path is checked - the released key is left byte-identical,
+  # including in the degenerate cases where it is imperfect.
+  #
+  # There is deliberately NO extra guard for two cells that share a centre within
+  # one (panel, x). An earlier revision refused those, reasoning that a swap
+  # between them would move a different half-width onto each bar and the centre
+  # could not reveal it. That was backwards: the order above is built from the
+  # same discrete key ggplot2 groups the bars by, so it is correct whether or not
+  # the centres happen to tie - a tie defeats the VERIFICATION, never the
+  # ordering. Refusing on it only sent ordinary rounded or count data down the
+  # unpaired path, which is the one outcome worth avoiding.
+  if (length(order.vars) &&
+      !isTRUE(all.equal(as.numeric(bd$y), as.numeric(ds$.yc.),
+                        tolerance = 1e-9, check.attributes = FALSE))) {
+    return(NULL)
+  }
+  ds$.ebx. <- bd$x
+  # Each bar's own drawn width, so a crossbar can be given the width of the bar
+  # it belongs to instead of dodging itself to a different one.
+  ds$.ebw. <- as.numeric(bd$xmax) - as.numeric(bd$xmin)
+
+  # .get_geom_error_function() has no "crossbar" case and falls back to
+  # geom_errorbar, which would silently draw the wrong geom. It is shared with
+  # the stacked path, so resolve crossbar here rather than there and leave every
+  # other caller on exactly the function it resolves today.
+  is.crossbar <- identical(error.plot, "crossbar")
+  geom.error <- if (is.crossbar) ggplot2::geom_crossbar else
+    .get_geom_error_function(error.plot)
   color.is.var <- !is.null(color) && length(color) == 1 && color %in% colnames(ds)
   if (color.is.var) {
     mapping <- ggplot2::aes(
@@ -732,11 +923,67 @@ ggbarplot_core <- function(data, x, y,
   } else {
     mapping <- ggplot2::aes(x = .data$.ebx., ymin = .data$.ymin., ymax = .data$.ymax.)
   }
-  if (identical(geom.error, ggplot2::geom_pointrange)) mapping$y <- ggplot2::aes(y = .data$.yc.)$y
+  if (identical(geom.error, ggplot2::geom_pointrange) || is.crossbar) {
+    mapping$y <- ggplot2::aes(y = .data$.yc.)$y
+  }
+  if (is.crossbar) mapping$width <- ggplot2::aes(width = .data$.ebw.)$width
   opts <- list(data = ds, mapping = mapping, inherit.aes = FALSE, position = "identity")
-  if (!color.is.var && !is.null(color) && length(color) == 1) opts$colour <- color
+  # color.is.var tests membership in the SUMMARY, so a real data column that is
+  # not one of the grouping variables falls through here and is handed to the
+  # geom as a literal colour ("Unknown colour name: z"). That is released
+  # behaviour for the thin error plots, which have always reached this helper,
+  # so it is left alone. The CROSSBAR had not: it dodged itself, and such a call
+  # drew (silently ignoring the argument). Routing it through here would have
+  # turned that into a crash, so on that path the static colour is set only when
+  # it really is one.
+  if (!color.is.var && !is.null(color) && length(color) == 1 &&
+      (!is.crossbar || .is_color(color))) {
+    opts$colour <- color
+  }
+  if (is.crossbar) {
+    # A crossbar is filled, and every other ggpubr crossbar takes its fill from
+    # the MAPPED fill aesthetic (ggadd() never forwards add.params$fill to
+    # add_summary(), so the mapping wins). ggbarplot_core() defaults
+    # add.params$fill to "white" before .check_add.params() can set it, so
+    # reading that here silently turned a released, working call's crossbars
+    # from the group colours to white - and a white cap truncates the coloured
+    # bar at centre - error, which reads as a lower bar. Follow the bar's own
+    # fill, and only fall back to add.params$fill when it is not a column.
+    crossbar.fill <- if (!is.null(bar.fill) && length(bar.fill) == 1 &&
+                         bar.fill %in% colnames(ds)) {
+      bar.fill
+    } else if (!is.null(fill) && length(fill) == 1) {
+      fill
+    } else {
+      NULL
+    }
+    if (!is.null(crossbar.fill)) {
+      if (crossbar.fill %in% colnames(ds)) {
+        mapping$fill <- ggplot2::aes(fill = .data[[crossbar.fill]])$fill
+        opts$mapping <- mapping
+      } else {
+        opts$fill <- crossbar.fill
+      }
+    }
+  }
   if (identical(geom.error, ggplot2::geom_errorbar)) opts$width <- width
-  do.call(geom.error, opts)
+  if (!is.crossbar) return(do.call(geom.error, opts))
+  # `width` is not in GeomCrossbar$aesthetics(), so layer() warns "Ignoring
+  # unknown aesthetics: width" - but GeomErrorbar$setup_data(), which
+  # GeomCrossbar delegates to, reads `data$width` before falling back to
+  # resolution(x) * 0.9, so the mapping IS honoured and the warning is simply
+  # wrong. It has to be a mapping rather than a parameter, because each crossbar
+  # takes the width of its own bar and those differ across x groups. Muffle that
+  # one message only - every other condition, including ggplot2's own advice
+  # about a discrete alpha, still reaches the user.
+  withCallingHandlers(
+    do.call(geom.error, opts),
+    warning = function(w) {
+      if (grepl("unknown aesthetics.*width", conditionMessage(w))) {
+        invokeRestart("muffleWarning")
+      }
+    }
+  )
 }
 
 # remove "mean_se", "mean_sd", etc
