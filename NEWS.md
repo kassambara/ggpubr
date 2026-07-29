@@ -276,11 +276,12 @@
   `color`/`fill`, so whenever that one column does not describe how the bars are
   grouped, no ordering of it can pair the intervals:
 
-  - `color` and `fill` naming two *different* discrete columns — the second is
-    left ascending inside each reversed block. The arrangement of the misplaced
-    intervals **does change** here (the first column is now mirrored where it
-    was not), but it is no more correct than before: still none of them on the
-    bar whose value they carry;
+  - `color` and `fill` naming two *different* discrete columns — the key is
+    only the first of them, so it cannot account for every bar. Mirroring it
+    would fix nothing and would make the figure harder to read, because each
+    interval would then take the colour of the bar it happens to sit on and
+    lose the mismatch that signals the value belongs to a neighbour. Left
+    exactly as released;
   - a `color` column that is constant or all-`NA` beside a real `fill` grouping
     — the key is then constant, so nothing is reordered and the output is
     identical to previous releases;

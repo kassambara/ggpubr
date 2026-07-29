@@ -158,11 +158,16 @@ test_that("two discrete legend columns stay misplaced under reverse (#783)", {
   # so under reverse the second stays ascending inside each reversed block and
   # no interval lands on its own bar. Pre-existing and left alone.
   #
-  # The ARRANGEMENT of the misplaced intervals does change (the first column is
-  # now mirrored where it was not), so asserting only "0 of 8 correct" would be
-  # true on both revisions and could not detect that. The drawn values are
-  # pinned instead, recomputed here from base R so the pin says what the figure
-  # actually shows rather than echoing the implementation.
+  # An earlier revision mirrored the first column here anyway. That fixed
+  # nothing (still 0 of 8) and made the figure WORSE to read: the interval then
+  # took the colour of the bar it sat on, removing the mismatch that was the
+  # only visual cue the value belonged to a neighbour. The key is now left
+  # un-mirrored whenever it does not account for every bar in an x, so this
+  # output is byte-identical to previous releases.
+  #
+  # Asserting only "0 of 8 correct" would be true either way and could not tell
+  # those apart, so the drawn value is pinned too - recomputed from base R, so
+  # the pin says what the figure shows rather than echoing the implementation.
   set.seed(2)
   d <- expand.grid(x = c("A", "B"), cc = c("c1", "c2"), ff = c("f1", "f2"),
                    r = 1:5, stringsAsFactors = FALSE)
@@ -176,12 +181,24 @@ test_that("two discrete legend columns stay misplaced under reverse (#783)", {
 
   b <- suppressWarnings(ggplot2::ggplot_build(p))
   ed <- .rev_layer(p, b, "GeomErrorbar")
-  # leftmost interval, as drawn: the (A, c2, f1) cell, on a bar that is not its
-  # own. Recomputed with base R, not read off the built data.
-  cell <- d[d$x == "A" & d$cc == "c2" & d$ff == "f1", "y"]
+  # leftmost interval, as drawn: the (A, c1, f1) cell, on a bar that is not its
+  # own. Recomputed with base R, not read off the built data. This is master's
+  # arrangement - an earlier revision of this fix moved it to (A, c2, f1).
+  cell <- d[d$x == "A" & d$cc == "c1" & d$ff == "f1", "y"]
   expect_equal(as.numeric(ed$ymin[1]),
                mean(cell) - stats::sd(cell) / sqrt(length(cell)),
                tolerance = 1e-9)
+
+  # and the interval's colour still MISMATCHES the bar it sits on. That
+  # mismatch is the only visual cue a reader has that the value belongs to a
+  # neighbour; mirroring the key here would make all 8 match and hide it.
+  bd <- .rev_layer(p, b, "GeomBar")
+  matched <- vapply(seq_len(nrow(ed)), function(i) {
+    j <- which(as.numeric(ed$x[i]) >= as.numeric(bd$xmin) - 1e-9 &
+                 as.numeric(ed$x[i]) <= as.numeric(bd$xmax) + 1e-9)
+    length(j) == 1L && identical(as.character(ed$colour[i]), as.character(bd$colour[j]))
+  }, logical(1))
+  expect_equal(sum(matched), 0L)
 })
 
 test_that("a non-discrete color beside a discrete fill is unchanged (#783)", {
@@ -237,6 +254,46 @@ test_that("an all-NA key column ranks without warning (#783)", {
       seen <<- c(seen, conditionMessage(w)); invokeRestart("muffleWarning")
     })
     expect_equal(length(seen), 0L, info = paste("reverse =", rv))
+  }
+})
+
+test_that("every legend column class pairs correctly under reverse (#783)", {
+  # rank.key() mirrors the key only for a class ggplot2 groups the bars by, and
+  # its test duplicates ggplot2's private is_discrete(). Rather than reach into
+  # that namespace, assert the OUTCOME for each class: whichever way ggplot2
+  # decides to lay the bars out, every interval must end up on its own bar. If
+  # a future ggplot2 changes which classes it groups by, this goes red.
+  #
+  # `logical` in particular was uncovered: dropping `|| is.logical(v)` from the
+  # predicate left the whole suite green while taking logical fills from 6/6 to
+  # 0/6 under reverse.
+  set.seed(4)
+  base <- expand.grid(x = c("A", "B", "C"), k = 1:2, r = 1:5,
+                      stringsAsFactors = FALSE)
+  base$y <- round(runif(nrow(base), 5, 40), 3)
+
+  classes <- list(
+    character = function(k) c("g1", "g2")[k],
+    factor    = function(k) factor(c("g1", "g2")[k]),
+    ordered   = function(k) factor(c("g1", "g2")[k], ordered = TRUE),
+    logical   = function(k) k == 1L,
+    integer   = function(k) as.integer(k * 10L),
+    numeric   = function(k) as.numeric(k) * 1.5,
+    Date      = function(k) as.Date("2020-01-01") + k
+  )
+
+  for (nm in names(classes)) {
+    d <- base
+    d$g <- classes[[nm]](d$k)
+    ref <- .rev_ref(d, c("x", "g"), "y")
+    for (rv in c(FALSE, TRUE)) {
+      p <- suppressWarnings(ggbarplot(d, "x", "y", fill = "g", add = "mean_se",
+                                      position = position_dodge2(reverse = rv)))
+      r <- .rev_on_own_bar(p, ref)
+      info <- paste(nm, "reverse =", rv)
+      expect_equal(r$n, 6L, info = info)
+      expect_equal(r$ok, r$n, info = info)
+    }
   }
 })
 

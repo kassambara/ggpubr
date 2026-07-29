@@ -888,9 +888,24 @@ ggbarplot_core <- function(data, x, y,
     if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
     if (isTRUE(reverse) && discrete) -v else v
   }
+  # ...and only when that one column accounts for ALL the bars in an x. With
+  # `color` and `fill` on two different discrete columns the key is just the
+  # first of them, so it is coarser than the grouping and no ordering of it can
+  # pair the intervals - they are misplaced either way. Mirroring it there does
+  # not fix anything, and it makes the figure WORSE to read: the interval then
+  # takes the colour of the bar it happens to sit on (measured 0 of 8 matching
+  # before, 8 of 8 after), removing the mismatch that was the only visual cue
+  # the value belonged to a neighbour. Leave that case exactly as released.
+  key.covers.bars <- function() {
+    blk <- paste(ds$PANEL, as.character(ds[[x]]), sep = "\r")
+    all(vapply(split(as.character(ds[[legend.var]]), blk),
+               function(z) length(unique(z)) == length(z), logical(1)))
+  }
   ord.keys <- if (length(order.vars)) {
     c(list(as.int(ds$PANEL), as.int(ds[[x]])),
       lapply(order.vars, function(k) rank.key(ds[[k]])))
+  } else if (isTRUE(reverse) && !key.covers.bars()) {
+    list(as.int(ds$PANEL), as.int(ds[[x]]), as.int(ds[[legend.var]]))
   } else {
     list(as.int(ds$PANEL), as.int(ds[[x]]), rank.key(ds[[legend.var]]))
   }
