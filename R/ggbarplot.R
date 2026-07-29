@@ -871,10 +871,18 @@ ggbarplot_core <- function(data, x, y,
   # is the trailing level interaction(addNA(...)) keeps and the na.last sort
   # ggplot2's id_var(drop = TRUE) does, and unlike order()'s na.last it mirrors
   # with everything else when the layout is reversed.
+  # Negating is only right for a column ggplot2 actually GROUPS the bars by.
+  # collide2() reverses via -group, and `group` is id() over the DISCRETE
+  # aesthetics only (its is_discrete() is factor/character/logical). Map a
+  # continuous column to colour or fill and every bar in an x shares one group
+  # id, so the -group sort is a stable tie and the layout is NOT reversed -
+  # negating there would mirror the summary against bars that never moved and
+  # put every interval on its neighbour, which is the very defect #783 fixes.
   rank.key <- function(v) {
+    discrete <- is.factor(v) || is.character(v) || is.logical(v)
     v <- as.int(v)
     if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
-    if (isTRUE(reverse)) -v else v
+    if (isTRUE(reverse) && discrete) -v else v
   }
   ord.keys <- if (length(order.vars)) {
     c(list(as.int(ds$PANEL), as.int(ds[[x]])),

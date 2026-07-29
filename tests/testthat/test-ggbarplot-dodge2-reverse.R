@@ -110,6 +110,37 @@ test_that("an NA level mirrors with the rest under reverse (#783)", {
   }
 })
 
+test_that("a CONTINUOUS legend variable is not mirrored under reverse (#783)", {
+  # collide2() reverses via -group, and `group` is id() over the DISCRETE
+  # aesthetics only. Map a continuous column to fill and every bar in an x
+  # shares one group id, so the -group sort is a stable tie and the layout is
+  # NOT reversed. Negating the sort key there mirrors the summary against bars
+  # that never moved and puts every interval on its neighbour - the very defect
+  # this file exists to prevent, reintroduced one configuration over. Master
+  # drew this correctly, so it is a regression, not a missing feature.
+  tg <- ToothGrowth
+  tg$dose <- factor(tg$dose)
+  tg$suppn <- as.integer(factor(tg$supp))   # continuous legend variable
+  ref <- .rev_ref(tg, c("dose", "suppn"), "len")
+
+  for (rv in c(FALSE, TRUE)) {
+    p <- ggbarplot(tg, "dose", "len", fill = "suppn", add = "mean_se",
+                   position = position_dodge2(reverse = rv))
+    r <- .rev_on_own_bar(p, ref)
+    expect_equal(r$ok, r$n, info = paste("reverse =", rv))
+    expect_equal(r$n, 6L, info = paste("reverse =", rv))
+  }
+
+  # the bars really do share a group id, which is why -group cannot reverse them
+  b <- suppressWarnings(ggplot2::ggplot_build(
+    ggbarplot(tg, "dose", "len", fill = "suppn", add = "mean_se",
+              position = position_dodge2(reverse = TRUE))
+  ))
+  bd <- .rev_layer(ggbarplot(tg, "dose", "len", fill = "suppn", add = "mean_se",
+                             position = position_dodge2(reverse = TRUE)), b, "GeomBar")
+  expect_true(anyDuplicated(bd$group) > 0)
+})
+
 test_that("no-regression: dodge2 WITHOUT reverse is untouched (#783)", {
   # Pinned absolute positions and values. The fix also gives the released
   # (legend-only) sort key an explicit NA rank; without `reverse` that is the
