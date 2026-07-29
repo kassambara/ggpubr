@@ -741,8 +741,18 @@ ggbarplot_core <- function(data, x, y,
   nms <- names(dots)
   if (is.null(nms) || !length(nms)) return("fixed")
   target <- names(formals(facet))
-  m <- pmatch(nms, target, duplicates.ok = TRUE)
-  hit <- which(!is.na(m) & target[m] == "scales")
+  # R matches an EXACT name first, and an abbreviation of a formal that is
+  # already matched exactly is then left over and swallowed by `...`. So with
+  # both `scales = "free_x"` and `scale = "fixed"`, facet() uses "free_x" and
+  # ignores the other - taking the last partial hit read "fixed" and probed a
+  # layout the plot never draws, putting the intervals on the wrong bars.
+  exact <- which(nms == "scales")
+  hit <- if (length(exact)) {
+    exact
+  } else {
+    m <- pmatch(nms, target, duplicates.ok = TRUE)
+    which(!is.na(m) & target[m] == "scales")
+  }
   if (!length(hit)) return("fixed")
   val <- dots[[hit[length(hit)]]]
   if (is.character(val) && length(val) == 1L &&

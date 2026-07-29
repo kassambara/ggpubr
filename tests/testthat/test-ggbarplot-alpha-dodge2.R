@@ -52,6 +52,9 @@ context("test-ggbarplot-alpha-dodge2")
   b <- suppressWarnings(ggplot2::ggplot_build(p))
   bd <- .layer(p, b, "GeomBar")
   ed <- .layer(p, b, c("GeomErrorbar", "GeomPointrange", "GeomLinerange", "GeomCrossbar"))
+  # A broken pairing makes the caller drop the error layer entirely. Say so,
+  # instead of crashing in seq_len(nrow(NULL)) and reporting an unrelated error.
+  if (is.null(ed) || !nrow(ed)) stop("no error layer was drawn")
   idx <- vapply(seq_len(nrow(ed)), function(i) {
     hit <- which(as.character(bd$PANEL) == as.character(ed$PANEL[i]) &
                    as.numeric(ed$x[i]) >= as.numeric(bd$xmin) - 1e-9 &
@@ -226,6 +229,17 @@ test_that("`scales` is read through partial matching, as facet() receives it (#4
   expect_equal(ggpubr:::.facet_scales_from_dots(list(s = "free_x")), "fixed")
   expect_equal(ggpubr:::.facet_scales_from_dots(list(scal = "free_x")), "free_x")
   expect_equal(ggpubr:::.facet_scales_from_dots(list()), "fixed")
+  # An EXACT name wins, and an abbreviation of an already-matched formal is left
+  # over for `...` and ignored - so facet() here uses "free_x". Reading the last
+  # partial hit instead gave "fixed" and probed a layout the plot never draws.
+  expect_equal(
+    ggpubr:::.facet_scales_from_dots(list(scales = "free_x", scale = "fixed")),
+    "free_x"
+  )
+  expect_equal(
+    ggpubr:::.facet_scales_from_dots(list(scale = "fixed", scales = "free_x")),
+    "free_x"
+  )
 })
 
 test_that("dodge2 with alpha aligns with two facet variables, which use facet_grid (#404)", {
@@ -457,6 +471,66 @@ test_that("a re-centred crossbar tolerates add.params$color naming a column (#40
     add.params = list(color = "red")))
   b <- suppressWarnings(ggplot2::ggplot_build(p))
   expect_true(all(as.character(.layer(p, b, "GeomCrossbar")$colour) == "red"))
+})
+
+test_that("the key orders colour before fill, as ggplot2 lays the bars out (#404)", {
+  # ggplot2's add_group() ids the bars over the layer's discrete columns in the
+  # order they appear in the layer data - `colour` before `fill`. Keying on the
+  # other order transposes the pairing as soon as `color` and `fill` name
+  # DIFFERENT columns, which is the failure mode released ggpubr got right. No
+  # other test in this file sets colour and fill to different columns alongside
+  # alpha, so transposing the key left the whole suite green.
+  #
+  # Tied cell means make it bite hardest: the centre self-check cannot see a
+  # swap between them, so only a correct key order gets the half-widths right.
+  cells <- expand.grid(
+    g = c("A", "B"), cc = c("c1", "c2"), f = c("f1", "f2"), a = c("a1", "a2"),
+    stringsAsFactors = FALSE
+  )
+  cells$mid <- 50                                  # every cell shares a mean
+  cells$s <- seq(1, by = 1.5, length.out = nrow(cells))  # every spread differs
+  d <- do.call(rbind, lapply(seq_len(nrow(cells)), function(i) {
+    data.frame(
+      g = cells$g[i], cc = cells$cc[i], f = cells$f[i], a = cells$a[i],
+      v = c(cells$mid[i] - cells$s[i], cells$mid[i], cells$mid[i] + cells$s[i]),
+      stringsAsFactors = FALSE
+    )
+  }))
+  p <- suppressWarnings(ggbarplot(d, "g", "v", color = "cc", fill = "f",
+    alpha = "a", add = "mean_se", position = position_dodge2()))
+  pr <- .pairing(p)
+  expect_false(any(is.na(pr$bar)))
+  expect_equal(sort(pr$bar), seq_len(pr$n.bars))
+
+  ref <- merge(
+    stats::aggregate(v ~ g + cc + f + a, d, mean),
+    stats::aggregate(v ~ g + cc + f + a, d, function(z) stats::sd(z) / sqrt(length(z))),
+    by = c("g", "cc", "f", "a")
+  )
+  names(ref)[5:6] <- c("mean", "se")
+
+  # decode each bar from ITS OWN aesthetics, through ggplot2's scales
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  bd <- .layer(p, b, "GeomBar")
+  lv <- function(v) levels(factor(d[[v]]))
+  c.map <- stats::setNames(b$plot$scales$get_scales("colour")$map(lv("cc")), lv("cc"))
+  f.map <- stats::setNames(b$plot$scales$get_scales("fill")$map(lv("f")), lv("f"))
+  a.map <- stats::setNames(b$plot$scales$get_scales("alpha")$map(lv("a")), lv("a"))
+  x.lab <- as.character(b$layout$panel_params[[1]]$x$get_labels())
+
+  for (i in seq_along(pr$bar)) {
+    j <- pr$bar[i]
+    cell <- ref[
+      ref$g == x.lab[round(as.numeric(bd$x[j]))] &
+        ref$cc == names(c.map)[match(as.character(bd$colour[j]), as.character(c.map))] &
+        ref$f == names(f.map)[match(as.character(bd$fill[j]), as.character(f.map))] &
+        ref$a == names(a.map)[which.min(abs(a.map - as.numeric(bd$alpha[j])))], ,
+      drop = FALSE
+    ]
+    expect_equal(nrow(cell), 1L)
+    expect_equal(pr$ymin[i], cell$mean - cell$se, tolerance = 1e-9)
+    expect_equal(pr$ymax[i], cell$mean + cell$se, tolerance = 1e-9)
+  }
 })
 
 test_that("a key that cannot describe the bars keeps the released refusal (#404)", {
