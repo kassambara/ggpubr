@@ -299,7 +299,8 @@
     wider than their bars (`x = 0.75` and width `0.45`, against a bar at
     `x = 0.825` and width `0.315`); they are now centred on the bar at the bar's
     own width. Their fill is unchanged — it still follows the mapped `fill`;
-  - with `position_dodge2(reverse = TRUE)`, every error bar carried the *other*
+  - with `position_dodge2(reverse = TRUE)` — or any value `position_dodge2()`
+    itself treats as true, such as `1` — every error bar carried the *other*
     bar's mean and error, because `position_dodge2()` lays each x out in
     descending group order there while the summary was ordered ascending. They
     are now paired correctly.

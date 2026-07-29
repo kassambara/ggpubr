@@ -918,7 +918,18 @@ ggbarplot_core <- function(data, x, y,
   }
   if (is.crossbar) mapping$width <- ggplot2::aes(width = .data$.ebw.)$width
   opts <- list(data = ds, mapping = mapping, inherit.aes = FALSE, position = "identity")
-  if (!color.is.var && !is.null(color) && length(color) == 1) opts$colour <- color
+  # color.is.var tests membership in the SUMMARY, so a real data column that is
+  # not one of the grouping variables falls through here and is handed to the
+  # geom as a literal colour ("Unknown colour name: z"). That is released
+  # behaviour for the thin error plots, which have always reached this helper,
+  # so it is left alone. The CROSSBAR had not: it dodged itself, and such a call
+  # drew (silently ignoring the argument). Routing it through here would have
+  # turned that into a crash, so on that path the static colour is set only when
+  # it really is one.
+  if (!color.is.var && !is.null(color) && length(color) == 1 &&
+      (!is.crossbar || .is_color(color))) {
+    opts$colour <- color
+  }
   if (is.crossbar) {
     # A crossbar is filled, and every other ggpubr crossbar takes its fill from
     # the MAPPED fill aesthetic (ggadd() never forwards add.params$fill to

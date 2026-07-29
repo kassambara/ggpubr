@@ -418,6 +418,47 @@ test_that("the re-centred crossbar does not emit a spurious aesthetics warning (
   expect_true(any(grepl("alpha for a discrete variable", seen)))
 })
 
+test_that("reverse is read the way collide2() reads it, not just isTRUE (#404)", {
+  # ggplot2 branches on `if (reverse)`, which is TRUE for 1 and "TRUE" as well.
+  # isTRUE() alone saw those as FALSE, so the summary was ordered ascending
+  # against bars laid out descending: the pairing check then refused and the
+  # error layer was dropped entirely. Only `reverse = TRUE` was covered before,
+  # so the coercion could have been reverted with the suite still green.
+  d <- .mk()
+  for (rv in list(TRUE, 1, "TRUE")) {
+    p <- suppressWarnings(ggbarplot(d, "g", "v", fill = "f", alpha = "a",
+      add = "mean_se", position = position_dodge2(reverse = rv)))
+    info <- paste("reverse =", format(rv))
+    b <- suppressWarnings(ggplot2::ggplot_build(p))
+    # the error layer must still be there - dropping it is the failure mode
+    expect_equal(nrow(.layer(p, b, "GeomErrorbar")), 12L, info = info)
+    .expect_on_own_bar(p, d, info = info)
+  }
+})
+
+test_that("a re-centred crossbar tolerates add.params$color naming a column (#404)", {
+  # `color.is.var` tests membership in the SUMMARY, so a data column that is not
+  # a grouping variable falls through and would be passed to the geom as a
+  # literal colour ("Unknown colour name: z"). The released crossbar dodged
+  # itself and never reached that code, so such a call DREW, ignoring the
+  # argument; routing the crossbar through the re-centring turned it into a
+  # crash. It draws again.
+  tg <- ToothGrowth
+  tg$dose <- factor(tg$dose)
+  tg$z <- rep(c("z1", "z2"), length.out = nrow(tg))
+  expect_no_error(suppressWarnings(ggplot2::ggplotGrob(
+    ggbarplot(tg, "dose", "len", fill = "supp", alpha = "supp", add = "mean_se",
+              position = position_dodge2(), error.plot = "crossbar",
+              add.params = list(color = "z"))
+  )))
+  # a real colour is still honoured
+  p <- suppressWarnings(ggbarplot(tg, "dose", "len", fill = "supp", alpha = "supp",
+    add = "mean_se", position = position_dodge2(), error.plot = "crossbar",
+    add.params = list(color = "red")))
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  expect_true(all(as.character(.layer(p, b, "GeomCrossbar")$colour) == "red"))
+})
+
 test_that("a key that cannot describe the bars keeps the released refusal (#404)", {
   # When a keyed column is not discrete, or is named after a desc_statby()
   # statistic, no ordering maps one error bar to one bar. Drawing anyway would
