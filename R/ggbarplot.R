@@ -943,7 +943,23 @@ ggbarplot_core <- function(data, x, y,
     }
   }
   if (identical(geom.error, ggplot2::geom_errorbar)) opts$width <- width
-  do.call(geom.error, opts)
+  if (!is.crossbar) return(do.call(geom.error, opts))
+  # `width` is not in GeomCrossbar$aesthetics(), so layer() warns "Ignoring
+  # unknown aesthetics: width" - but GeomErrorbar$setup_data(), which
+  # GeomCrossbar delegates to, reads `data$width` before falling back to
+  # resolution(x) * 0.9, so the mapping IS honoured and the warning is simply
+  # wrong. It has to be a mapping rather than a parameter, because each crossbar
+  # takes the width of its own bar and those differ across x groups. Muffle that
+  # one message only - every other condition, including ggplot2's own advice
+  # about a discrete alpha, still reaches the user.
+  withCallingHandlers(
+    do.call(geom.error, opts),
+    warning = function(w) {
+      if (grepl("unknown aesthetics.*width", conditionMessage(w))) {
+        invokeRestart("muffleWarning")
+      }
+    }
+  )
 }
 
 # remove "mean_se", "mean_sd", etc

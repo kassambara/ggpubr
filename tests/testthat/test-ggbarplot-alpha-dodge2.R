@@ -378,6 +378,27 @@ test_that("a re-centred crossbar keeps the mapped fill, not add.params$fill (#40
                tolerance = 1e-9)
 })
 
+test_that("the re-centred crossbar does not emit a spurious aesthetics warning (#404)", {
+  # `width` is not in GeomCrossbar$aesthetics(), so layer() warns "Ignoring
+  # unknown aesthetics: width" - but GeomErrorbar$setup_data(), which
+  # GeomCrossbar delegates to, reads data$width first, so the mapping IS
+  # honoured and the warning is wrong. Master never emitted it.
+  d <- .mk()
+  seen <- character(0)
+  withCallingHandlers(
+    invisible(ggbarplot(d, "g", "v", fill = "f", alpha = "a", add = "mean_se",
+      position = position_dodge2(), error.plot = "crossbar")),
+    warning = function(w) {
+      seen <<- c(seen, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  expect_false(any(grepl("unknown aesthetics", seen)))
+  # ...and warnings are NOT blanket-suppressed: ggplot2's own advice about a
+  # discrete alpha must still reach the user, or this test could not fail.
+  expect_true(any(grepl("alpha for a discrete variable", seen)))
+})
+
 test_that("a key that cannot describe the bars keeps the released refusal (#404)", {
   # When a keyed column is not discrete, or is named after a desc_statby()
   # statistic, no ordering maps one error bar to one bar. Drawing anyway would
