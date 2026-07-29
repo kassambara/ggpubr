@@ -211,6 +211,35 @@ test_that("a non-discrete color beside a discrete fill is unchanged (#783)", {
                tolerance = 1e-9)
 })
 
+test_that("an all-NA key column ranks without warning (#783)", {
+  # desc_statby() KEEPS an all-missing grouping column, so `color` naming one
+  # beside a real `fill` resolves the sort key to it and every rank is NA.
+  # rank.key() then takes max(v, na.rm = TRUE), which on an all-NA vector
+  # returns -Inf and warns; the guarded arm returns 1L instead.
+  #
+  # Asserted as "no warning at all" rather than by matching the message: that
+  # text is translated (it arrives in French on this machine), so a grepl() on
+  # the English wording silently passes everywhere else - which is exactly how
+  # this path was mistakenly recorded as unreachable.
+  set.seed(5)
+  d <- data.frame(
+    x = rep(c("x1", "x2"), each = 8), f = rep(c("f1", "f2"), 8),
+    chrallna = NA_character_, y = round(runif(16, 5, 40), 3),
+    stringsAsFactors = FALSE
+  )
+  for (rv in c(FALSE, TRUE)) {
+    seen <- character(0)
+    withCallingHandlers({
+      p <- ggbarplot(d, "x", "y", color = "chrallna", fill = "f",
+                     add = "mean_se", position = position_dodge2(reverse = rv))
+      invisible(ggplot2::ggplotGrob(p))
+    }, warning = function(w) {
+      seen <<- c(seen, conditionMessage(w)); invokeRestart("muffleWarning")
+    })
+    expect_equal(length(seen), 0L, info = paste("reverse =", rv))
+  }
+})
+
 test_that("no-regression: dodge2 WITHOUT reverse is untouched (#783)", {
   # Pinned absolute positions and values. The fix also gives the released
   # (legend-only) sort key an explicit NA rank; without `reverse` that is the
