@@ -581,7 +581,10 @@ ggbarplot_core <- function(data, x, y,
       func = .get_summary_func(add), error.plot = error.plot,
       width = cap.width, order.vars = alpha.order.vars,
       facet.scales = .facet_scales_from_dots(list(...)),
-      reverse = isTRUE(position$reverse), bar.fill = fill
+      # ggplot2's collide2() branches on `if (reverse)`, which is TRUE for 1 or
+      # "TRUE" as well; isTRUE() alone would read those as FALSE and sort the
+      # summary against mirrored bars.
+      reverse = isTRUE(as.logical(position$reverse)[1]), bar.fill = fill
     )
     if (!is.null(eb)) {
       p <- p + eb

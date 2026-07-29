@@ -309,17 +309,36 @@ test_that("cells that share a mean still pair with their own bar (#404)", {
   pr <- .pairing(p)
   expect_false(any(is.na(pr$bar)))
   expect_equal(sort(pr$bar), seq_len(pr$n.bars))
+
   ref <- merge(
     stats::aggregate(v ~ g + f + a, d, mean),
     stats::aggregate(v ~ g + f + a, d, function(z) stats::sd(z) / sqrt(length(z))),
     by = c("g", "f", "a")
   )
   names(ref)[4:5] <- c("mean", "se")
+
+  # Identify each bar by the aesthetics IT was drawn with, decoded through
+  # ggplot2's own scales - NOT by its height. Looking the cell up by height
+  # returns BOTH tied cells, and accepting either makes the assertion pass just
+  # as happily when the two tied intervals are swapped, which is the one failure
+  # this test exists to catch.
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  bd <- .layer(p, b, "GeomBar")
+  f.lv <- levels(factor(d$f)); a.lv <- levels(factor(d$a))
+  f.map <- stats::setNames(b$plot$scales$get_scales("fill")$map(f.lv), f.lv)
+  a.map <- stats::setNames(b$plot$scales$get_scales("alpha")$map(a.lv), a.lv)
+  x.lab <- as.character(b$layout$panel_params[[1]]$x$get_labels())
+
   for (i in seq_along(pr$bar)) {
-    cell <- ref[abs(ref$mean - pr$bar.y[i]) < 1e-9, , drop = FALSE]
-    # both tied cells are acceptable only if the half-width also matches
-    expect_true(any(abs(pr$ymin[i] - (cell$mean - cell$se)) < 1e-9 &
-                      abs(pr$ymax[i] - (cell$mean + cell$se)) < 1e-9))
+    j <- pr$bar[i]
+    cell.g <- x.lab[round(as.numeric(bd$x[j]))]
+    cell.f <- names(f.map)[match(as.character(bd$fill[j]), as.character(f.map))]
+    cell.a <- names(a.map)[which.min(abs(a.map - as.numeric(bd$alpha[j])))]
+    expect_false(is.na(cell.g) || is.na(cell.f) || length(cell.a) != 1L)
+    cell <- ref[ref$g == cell.g & ref$f == cell.f & ref$a == cell.a, , drop = FALSE]
+    expect_equal(nrow(cell), 1L)
+    expect_equal(pr$ymin[i], cell$mean - cell$se, tolerance = 1e-9)
+    expect_equal(pr$ymax[i], cell$mean + cell$se, tolerance = 1e-9)
   }
 })
 

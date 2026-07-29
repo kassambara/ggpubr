@@ -289,12 +289,27 @@
   `position_dodge2()` with `scales = "free_x"`, whose error bars keep the
   positions they have always had.
 
-  One case does change for a call that already drew: an `alpha` mapped to a
-  column that is **already** a grouping variable (for example `fill = "supp",
-  alpha = "supp"`) worked before, because the summary already carried that
-  column. With `error.plot = "crossbar"` its crossbars were drawn off-centre and
-  wider than their bars; they are now centred on the bar at the bar's own width.
-  Their fill is unchanged — it still follows the mapped `fill`.
+  **Two** cases change for calls that already drew. Both need an `alpha` mapped
+  to a column that is **already** a grouping variable (for example
+  `fill = "supp", alpha = "supp"`), which worked before because the summary
+  already carried that column, and in both the annotation was previously drawn
+  on the wrong bar:
+
+  - with `error.plot = "crossbar"`, the crossbars were drawn off-centre and
+    wider than their bars (`x = 0.75` and width `0.45`, against a bar at
+    `x = 0.825` and width `0.315`); they are now centred on the bar at the bar's
+    own width. Their fill is unchanged — it still follows the mapped `fill`;
+  - with `position_dodge2(reverse = TRUE)`, every error bar carried the *other*
+    bar's mean and error, because `position_dodge2()` lays each x out in
+    descending group order there while the summary was ordered ascending. They
+    are now paired correctly.
+
+  The `reverse = TRUE` correction applies only where a discrete `alpha` column
+  is carried. **Without one it is unchanged, and still wrong**:
+  `ggbarplot(ToothGrowth, "dose", "len", fill = "supp", add = "mean_se",
+  position = position_dodge2(reverse = TRUE))` draws each error bar on the
+  neighbouring bar, exactly as it does in previous releases. Fixing that changes
+  released output for every such call and is left for its own change.
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via
