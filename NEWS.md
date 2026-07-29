@@ -289,11 +289,11 @@
   `position_dodge2()` with `scales = "free_x"`, whose error bars keep the
   positions they have always had.
 
-  **Two** cases change for calls that already drew. Both need an `alpha` mapped
-  to a column that is **already** a grouping variable (for example
+  **Five** cases change for calls that already drew. All of them need an `alpha`
+  mapped to a column that is **already** a grouping variable (for example
   `fill = "supp", alpha = "supp"`), which worked before because the summary
-  already carried that column, and in both the annotation was previously drawn
-  on the wrong bar:
+  already carried that column. In the first four the annotation was previously
+  drawn on the wrong bar:
 
   - with `error.plot = "crossbar"`, the crossbars were drawn off-centre and
     wider than their bars (`x = 0.75` and width `0.45`, against a bar at
@@ -303,7 +303,21 @@
     itself treats as true, such as `1` — every error bar carried the *other*
     bar's mean and error, because `position_dodge2()` lays each x out in
     descending group order there while the summary was ordered ascending. They
-    are now paired correctly.
+    are now paired correctly;
+  - with `facet.by =` and `scales = "free_x"` (or `"free"`), a panel that is
+    missing an x level renumbers the levels it does draw, and the error bars
+    were placed at the positions of the un-renumbered panel — off their bars,
+    sometimes past the edge of the panel. They now follow the drawn panel.
+    `scales = "fixed"` and `"free_y"` are unaffected;
+  - with an `add.params$group` naming a column unrelated to the legend, the
+    error layer was summarised by that column instead and every interval
+    carried another cell's statistic (measured 0 of 6 on their own bar); they
+    are now paired with the bars;
+  - with `error.plot = "crossbar"` and an `add.params$color` naming a data
+    column whose name is also a colour (a column called `"red"`, say), the
+    argument used to be dropped and the outline drawn black; it is now used as
+    the colour. This matches what the other `error.plot` values already did with
+    the same input.
 
   The `reverse = TRUE` correction applies only where a discrete `alpha` column
   is carried. **Without one it is unchanged, and still wrong**:

@@ -533,6 +533,55 @@ test_that("the key orders colour before fill, as ggplot2 lays the bars out (#404
   }
 })
 
+test_that("an NA key level keeps its trailing rank, in both directions (#404)", {
+  # interaction(addNA(...)) keeps NA as a real TRAILING level and ggplot2's
+  # id_var(drop = TRUE) sorts na.last, so the ordering gives NA that same
+  # trailing rank explicitly instead of letting order() place it. Removing that
+  # one line leaves the whole suite green while the pairing goes wrong - here
+  # the error layer is dropped entirely, and on other arrangements two
+  # intervals simply swap. Under `reverse` the rank has to mirror with
+  # everything else, which is why both directions are driven.
+  cells <- expand.grid(xg = c("X1", "X2"), fi = c("f1", "f2"),
+                       al = c("a1", NA), stringsAsFactors = FALSE)
+  cells$m <- seq(20, by = 10, length.out = nrow(cells))
+  cells$s <- seq(1, by = 1, length.out = nrow(cells))
+  d <- do.call(rbind, lapply(seq_len(nrow(cells)), function(i) {
+    data.frame(
+      xg = cells$xg[i], fi = cells$fi[i], al = cells$al[i],
+      v = c(cells$m[i] - cells$s[i], cells$m[i], cells$m[i] + cells$s[i]),
+      stringsAsFactors = FALSE
+    )
+  }))
+  k <- interaction(
+    addNA(factor(d$xg), ifany = TRUE), addNA(factor(d$fi), ifany = TRUE),
+    addNA(factor(d$al), ifany = TRUE), drop = TRUE
+  )
+  ref <- do.call(rbind, lapply(split(d$v, k), function(z) {
+    data.frame(m = mean(z), s = stats::sd(z))
+  }))
+
+  for (rv in c(FALSE, TRUE)) {
+    p <- suppressWarnings(ggbarplot(d, "xg", "v", fill = "fi", alpha = "al",
+      add = "mean_sd", position = position_dodge2(reverse = rv)))
+    b <- suppressWarnings(ggplot2::ggplot_build(p))
+    bd <- .layer(p, b, "GeomBar")
+    ed <- .layer(p, b, "GeomErrorbar")
+    info <- paste("reverse =", rv)
+    # the layer must exist at all - dropping it is one of the failure modes
+    expect_false(is.null(ed), info = info)
+    expect_equal(nrow(ed), nrow(bd), info = info)
+    for (i in seq_len(nrow(ed))) {
+      j <- which(as.numeric(ed$x[i]) >= as.numeric(bd$xmin) - 1e-9 &
+                   as.numeric(ed$x[i]) <= as.numeric(bd$xmax) + 1e-9)
+      expect_equal(length(j), 1L, info = info)
+      q <- which(abs(ref$m - as.numeric(bd$y[j])) < 1e-9)
+      expect_equal(length(q), 1L, info = info)
+      expect_equal(ed$ymin[i], ref$m[q] - ref$s[q], tolerance = 1e-9, info = info)
+      expect_equal(ed$ymax[i], ref$m[q] + ref$s[q], tolerance = 1e-9, info = info)
+    }
+  }
+})
+
 test_that("a key that cannot describe the bars keeps the released refusal (#404)", {
   # When a keyed column is not discrete, or is named after a desc_statby()
   # statistic, no ordering maps one error bar to one bar. Drawing anyway would
