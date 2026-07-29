@@ -271,15 +271,31 @@
   `position_dodge2()` call without `reverse` is byte-identical, as is every
   other position.
 
-  Two `reverse = TRUE` configurations are **unchanged and still misplace the
-  intervals**, exactly as in previous releases: `color` and `fill` naming two
-  *different* discrete columns (the error layer keys on the first of them only,
-  so the second is left ascending inside each reversed block), and a `color`
-  column that is constant or all-`NA` alongside a real `fill` grouping (the key
-  is then constant and nothing is reordered). A column mapped to
-  `color`/`fill` that is **not** discrete is also unchanged — ggplot2 does not
-  group the bars by such a column, so `position_dodge2()` does not reverse them
-  either.
+  Three `reverse = TRUE` configurations are **still misplaced**, all of them as
+  wrong as in previous releases. The error layer keys on only the *first* of
+  `color`/`fill`, so whenever that one column does not describe how the bars are
+  grouped, no ordering of it can pair the intervals:
+
+  - `color` and `fill` naming two *different* discrete columns — the second is
+    left ascending inside each reversed block. The arrangement of the misplaced
+    intervals **does change** here (the first column is now mirrored where it
+    was not), but it is no more correct than before: still none of them on the
+    bar whose value they carry;
+  - a `color` column that is constant or all-`NA` beside a real `fill` grouping
+    — the key is then constant, so nothing is reordered and the output is
+    identical to previous releases;
+  - a **non-discrete** `color` beside a discrete `fill` — the bars *are*
+    reversed, because ggplot2 groups them by the discrete column, but the key
+    resolves to the non-discrete one and is therefore not mirrored. Also
+    identical to previous releases.
+
+  A non-discrete column mapped to `color`/`fill` *on its own* is unchanged for a
+  different reason: ggplot2 does not group the bars by such a column at all, so
+  `position_dodge2()` does not reverse them and the ascending key stays correct.
+
+  The verification above covers `facet.by` with fixed scales. A faceted
+  `scales = "free_x"` keeps a pre-existing offset in a panel that is missing an
+  x level, unrelated to `reverse` and present in previous releases (#784).
 
 - `ggbarplot()` now draws a summary with a variable mapped to `alpha` under
   `position_dodge2()`, with each error bar on its own bar (#404). The

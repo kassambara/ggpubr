@@ -153,12 +153,16 @@ test_that("a CONTINUOUS legend variable is not mirrored under reverse (#783)", {
   expect_true(anyDuplicated(bd$group) > 0)
 })
 
-test_that("no-regression: two discrete legend columns are unchanged (#783)", {
-  # `color` and `fill` naming DIFFERENT discrete columns keys on the first only,
+test_that("two discrete legend columns stay misplaced under reverse (#783)", {
+  # `color` and `fill` naming DIFFERENT discrete columns keys on the FIRST only,
   # so under reverse the second stays ascending inside each reversed block and
-  # the intervals are misplaced. That is pre-existing - identical on master -
-  # and NEWS says so rather than claiming a general fix. Pinned so a future
-  # change to this surface is noticed rather than shipped silently.
+  # no interval lands on its own bar. Pre-existing and left alone.
+  #
+  # The ARRANGEMENT of the misplaced intervals does change (the first column is
+  # now mirrored where it was not), so asserting only "0 of 8 correct" would be
+  # true on both revisions and could not detect that. The drawn values are
+  # pinned instead, recomputed here from base R so the pin says what the figure
+  # actually shows rather than echoing the implementation.
   set.seed(2)
   d <- expand.grid(x = c("A", "B"), cc = c("c1", "c2"), ff = c("f1", "f2"),
                    r = 1:5, stringsAsFactors = FALSE)
@@ -168,7 +172,43 @@ test_that("no-regression: two discrete legend columns are unchanged (#783)", {
                  position = position_dodge2(reverse = TRUE))
   r <- .rev_on_own_bar(p, ref)
   expect_equal(r$n, 8L)
-  expect_equal(r$ok, 0L)   # measured on master 3bd111d and unchanged here
+  expect_equal(r$ok, 0L)
+
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  ed <- .rev_layer(p, b, "GeomErrorbar")
+  # leftmost interval, as drawn: the (A, c2, f1) cell, on a bar that is not its
+  # own. Recomputed with base R, not read off the built data.
+  cell <- d[d$x == "A" & d$cc == "c2" & d$ff == "f1", "y"]
+  expect_equal(as.numeric(ed$ymin[1]),
+               mean(cell) - stats::sd(cell) / sqrt(length(cell)),
+               tolerance = 1e-9)
+})
+
+test_that("a non-discrete color beside a discrete fill is unchanged (#783)", {
+  # The bars ARE reversed here - ggplot2 groups them by the discrete `fill` -
+  # but the error layer's key resolves to the non-discrete `color` first, so
+  # nothing is mirrored and the intervals stay misplaced exactly as before.
+  # Pinned because NEWS gives this as a distinct case with its own reason.
+  set.seed(2)
+  d <- expand.grid(x = c("A", "B"), ff = c("f1", "f2"), r = 1:5,
+                   stringsAsFactors = FALSE)
+  d$y <- round(runif(nrow(d), 5, 40), 3)
+  d$num <- as.integer(factor(d$ff)) * 10   # non-discrete, 1:1 with `ff`
+  ref <- .rev_ref(d, c("x", "ff"), "y")
+  p <- ggbarplot(d, "x", "y", color = "num", fill = "ff", add = "mean_se",
+                 position = position_dodge2(reverse = TRUE))
+  r <- .rev_on_own_bar(p, ref)
+  expect_equal(r$n, 4L)
+  expect_equal(r$ok, 0L)
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  ed <- .rev_layer(p, b, "GeomErrorbar")
+  # The intervals stay in ASCENDING (f1, f2) order while the bars are drawn
+  # reversed (f2, f1) - which is the defect. So the leftmost interval carries
+  # f1, on the bar that draws f2.
+  cell <- d[d$x == "A" & d$ff == "f1", "y"]
+  expect_equal(as.numeric(ed$ymin[1]),
+               mean(cell) - stats::sd(cell) / sqrt(length(cell)),
+               tolerance = 1e-9)
 })
 
 test_that("no-regression: dodge2 WITHOUT reverse is untouched (#783)", {
