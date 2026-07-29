@@ -881,6 +881,11 @@ ggbarplot_core <- function(data, x, y,
   rank.key <- function(v) {
     discrete <- is.factor(v) || is.character(v) || is.logical(v)
     v <- as.int(v)
+    # The all-NA arm keeps max() from returning -Inf with a warning. No input
+    # was found that reaches it - desc_statby() drops an all-missing grouping
+    # column before the key is built, checked through colour, fill, alpha and
+    # add.params$group in both directions - so it is defensive only and no test
+    # covers it. Left in because it costs nothing; do not read it as tested.
     if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
     if (isTRUE(reverse) && discrete) -v else v
   }

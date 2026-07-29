@@ -258,16 +258,28 @@
   summary as the bars, so `top =` is aligned there.)
 
 - `ggbarplot(position = position_dodge2(reverse = TRUE))` now draws each error
-  bar on its own bar (#783). Every interval was drawn on the neighbouring bar,
-  carrying that neighbour's mean and error — the values were right, the pairing
-  was not, and nothing in the figure showed it. `position_dodge2()` lays each x
-  out in descending group order when `reverse` is set, while the error layer was
-  ordered ascending, so each row was matched to the mirror bar. Verified against
-  `stats::aggregate` for the `error.plot` variants, `preserve = "single"`, and a
-  grouping column containing `NA`. This changes the appearance of such a plot,
-  which was previously drawn with the intervals transposed; every
+  bar on its own bar when the bars are grouped by a single discrete
+  `color`/`fill` column — the ordinary case (#783). Every interval was drawn on
+  the neighbouring bar, carrying that neighbour's mean and error; the values
+  were right, the pairing was not, and nothing in the figure showed it.
+  `position_dodge2()` lays each x out in descending group order when `reverse`
+  is set, while the error layer was ordered ascending, so each row was matched
+  to the mirror bar. Verified against `stats::aggregate` for the `error.plot`
+  variants, `preserve = "single"`, unused and non-alphabetical levels, facets,
+  and a grouping column containing `NA`. This changes the appearance of such a
+  plot, which was previously drawn with the intervals transposed; every
   `position_dodge2()` call without `reverse` is byte-identical, as is every
   other position.
+
+  Two `reverse = TRUE` configurations are **unchanged and still misplace the
+  intervals**, exactly as in previous releases: `color` and `fill` naming two
+  *different* discrete columns (the error layer keys on the first of them only,
+  so the second is left ascending inside each reversed block), and a `color`
+  column that is constant or all-`NA` alongside a real `fill` grouping (the key
+  is then constant and nothing is reordered). A column mapped to
+  `color`/`fill` that is **not** discrete is also unchanged — ggplot2 does not
+  group the bars by such a column, so `position_dodge2()` does not reverse them
+  either.
 
 - `ggbarplot()` now draws a summary with a variable mapped to `alpha` under
   `position_dodge2()`, with each error bar on its own bar (#404). The

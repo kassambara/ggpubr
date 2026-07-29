@@ -118,6 +118,18 @@ test_that("a CONTINUOUS legend variable is not mirrored under reverse (#783)", {
   # that never moved and puts every interval on its neighbour - the very defect
   # this file exists to prevent, reintroduced one configuration over. Master
   # drew this correctly, so it is a regression, not a missing feature.
+  # Driven with stock ToothGrowth and `dose` left numeric - the form used
+  # throughout ggpubr's own examples - as well as a synthetic integer column.
+  tg0 <- ToothGrowth
+  ref0 <- .rev_ref(tg0, c("supp", "dose"), "len")
+  for (rv in c(FALSE, TRUE)) {
+    p0 <- ggbarplot(tg0, "supp", "len", fill = "dose", add = "mean_se",
+                    position = position_dodge2(reverse = rv))
+    r0 <- .rev_on_own_bar(p0, ref0)
+    expect_equal(r0$ok, r0$n, info = paste("ToothGrowth fill=dose, reverse =", rv))
+    expect_equal(r0$n, 6L, info = paste("ToothGrowth fill=dose, reverse =", rv))
+  }
+
   tg <- ToothGrowth
   tg$dose <- factor(tg$dose)
   tg$suppn <- as.integer(factor(tg$supp))   # continuous legend variable
@@ -139,6 +151,24 @@ test_that("a CONTINUOUS legend variable is not mirrored under reverse (#783)", {
   bd <- .rev_layer(ggbarplot(tg, "dose", "len", fill = "suppn", add = "mean_se",
                              position = position_dodge2(reverse = TRUE)), b, "GeomBar")
   expect_true(anyDuplicated(bd$group) > 0)
+})
+
+test_that("no-regression: two discrete legend columns are unchanged (#783)", {
+  # `color` and `fill` naming DIFFERENT discrete columns keys on the first only,
+  # so under reverse the second stays ascending inside each reversed block and
+  # the intervals are misplaced. That is pre-existing - identical on master -
+  # and NEWS says so rather than claiming a general fix. Pinned so a future
+  # change to this surface is noticed rather than shipped silently.
+  set.seed(2)
+  d <- expand.grid(x = c("A", "B"), cc = c("c1", "c2"), ff = c("f1", "f2"),
+                   r = 1:5, stringsAsFactors = FALSE)
+  d$y <- round(runif(nrow(d), 5, 40), 3)
+  ref <- .rev_ref(d, c("x", "cc", "ff"), "y")
+  p <- ggbarplot(d, "x", "y", color = "cc", fill = "ff", add = "mean_se",
+                 position = position_dodge2(reverse = TRUE))
+  r <- .rev_on_own_bar(p, ref)
+  expect_equal(r$n, 8L)
+  expect_equal(r$ok, 0L)   # measured on master 3bd111d and unchanged here
 })
 
 test_that("no-regression: dodge2 WITHOUT reverse is untouched (#783)", {
