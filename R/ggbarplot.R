@@ -861,23 +861,26 @@ ggbarplot_core <- function(data, x, y,
     ds$PANEL <- factor(1L)
   }
   as.int <- function(v) if (is.factor(v)) as.integer(v) else as.integer(factor(v))
+  # Rank one key column the way collide2() lays the elements out: by ASCENDING
+  # group id, or by DESCENDING group id under position_dodge2(reverse = TRUE),
+  # which sorts on -group. Ordering ascending against reversed bars matches
+  # every row to the MIRROR bar, so each interval is drawn on its neighbour
+  # carrying that neighbour's mean and error (#783).
+  #
+  # NA is given the trailing rank explicitly rather than left to order(): that
+  # is the trailing level interaction(addNA(...)) keeps and the na.last sort
+  # ggplot2's id_var(drop = TRUE) does, and unlike order()'s na.last it mirrors
+  # with everything else when the layout is reversed.
+  rank.key <- function(v) {
+    v <- as.int(v)
+    if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
+    if (isTRUE(reverse)) -v else v
+  }
   ord.keys <- if (length(order.vars)) {
-    # collide2() lays each x's elements out by ASCENDING group id - or by
-    # DESCENDING group id under position_dodge2(reverse = TRUE), which sorts on
-    # -group. Negating the key here follows it; ordering ascending against
-    # reversed bars matched every row to the mirror bar, so the centre check
-    # below refused and the caller drew an unpaired layer instead.
-    keys <- lapply(order.vars, function(k) {
-      v <- as.int(ds[[k]])
-      # interaction(addNA(...)) keeps NA as a real TRAILING level, and order()
-      # would put it last in either direction. Give it that trailing rank
-      # explicitly so it mirrors with everything else.
-      if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
-      if (isTRUE(reverse)) -v else v
-    })
-    c(list(as.int(ds$PANEL), as.int(ds[[x]])), keys)
+    c(list(as.int(ds$PANEL), as.int(ds[[x]])),
+      lapply(order.vars, function(k) rank.key(ds[[k]])))
   } else {
-    list(as.int(ds$PANEL), as.int(ds[[x]]), as.int(ds[[legend.var]]))
+    list(as.int(ds$PANEL), as.int(ds[[x]]), rank.key(ds[[legend.var]]))
   }
   ds <- ds[do.call(order, ord.keys), , drop = FALSE]
   if (nrow(ds) != nrow(bd)) return(NULL)

@@ -257,6 +257,18 @@
   (Under `position_dodge2()` the error layer is built from the same truncated
   summary as the bars, so `top =` is aligned there.)
 
+- `ggbarplot(position = position_dodge2(reverse = TRUE))` now draws each error
+  bar on its own bar (#783). Every interval was drawn on the neighbouring bar,
+  carrying that neighbour's mean and error — the values were right, the pairing
+  was not, and nothing in the figure showed it. `position_dodge2()` lays each x
+  out in descending group order when `reverse` is set, while the error layer was
+  ordered ascending, so each row was matched to the mirror bar. Verified against
+  `stats::aggregate` for the `error.plot` variants, `preserve = "single"`, and a
+  grouping column containing `NA`. This changes the appearance of such a plot,
+  which was previously drawn with the intervals transposed; every
+  `position_dodge2()` call without `reverse` is byte-identical, as is every
+  other position.
+
 - `ggbarplot()` now draws a summary with a variable mapped to `alpha` under
   `position_dodge2()`, with each error bar on its own bar (#404). The
   combination previously failed at draw with `"alpha * 255": non-numeric
