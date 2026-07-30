@@ -861,23 +861,53 @@ ggbarplot_core <- function(data, x, y,
     ds$PANEL <- factor(1L)
   }
   as.int <- function(v) if (is.factor(v)) as.integer(v) else as.integer(factor(v))
+  # Rank one key column the way collide2() lays the elements out: by ASCENDING
+  # group id, or by DESCENDING group id under position_dodge2(reverse = TRUE),
+  # which sorts on -group. Ordering ascending against reversed bars matches
+  # every row to the MIRROR bar, so each interval is drawn on its neighbour
+  # carrying that neighbour's mean and error (#783).
+  #
+  # NA is given the trailing rank explicitly rather than left to order(): that
+  # is the trailing level interaction(addNA(...)) keeps and the na.last sort
+  # ggplot2's id_var(drop = TRUE) does, and unlike order()'s na.last it mirrors
+  # with everything else when the layout is reversed.
+  # Negating is only right for a column ggplot2 actually GROUPS the bars by.
+  # collide2() reverses via -group, and `group` is id() over the DISCRETE
+  # aesthetics only (its is_discrete() is factor/character/logical). Map a
+  # continuous column to colour or fill and every bar in an x shares one group
+  # id, so the -group sort is a stable tie and the layout is NOT reversed -
+  # negating there would mirror the summary against bars that never moved and
+  # put every interval on its neighbour, which is the very defect #783 fixes.
+  rank.key <- function(v) {
+    discrete <- is.factor(v) || is.character(v) || is.logical(v)
+    v <- as.int(v)
+    # The all-NA arm keeps max() from returning -Inf with a warning. It IS
+    # reached: desc_statby() keeps an all-missing grouping column, so
+    # `color = <all-NA column>` beside a real `fill` resolves the sort key to it
+    # and every rank is NA. Covered by a test, in both directions.
+    if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
+    if (isTRUE(reverse) && discrete) -v else v
+  }
+  # ...and only when that one column accounts for ALL the bars in an x. With
+  # `color` and `fill` on two different discrete columns the key is just the
+  # first of them, so it is coarser than the grouping and no ordering of it can
+  # pair the intervals - they are misplaced either way. Mirroring it there does
+  # not fix anything, and it makes the figure WORSE to read: the interval then
+  # takes the colour of the bar it happens to sit on (measured 0 of 8 matching
+  # before, 8 of 8 after), removing the mismatch that was the only visual cue
+  # the value belonged to a neighbour. Leave that case exactly as released.
+  key.covers.bars <- function() {
+    blk <- paste(ds$PANEL, as.character(ds[[x]]), sep = "\r")
+    all(vapply(split(as.character(ds[[legend.var]]), blk),
+               function(z) length(unique(z)) == length(z), logical(1)))
+  }
   ord.keys <- if (length(order.vars)) {
-    # collide2() lays each x's elements out by ASCENDING group id - or by
-    # DESCENDING group id under position_dodge2(reverse = TRUE), which sorts on
-    # -group. Negating the key here follows it; ordering ascending against
-    # reversed bars matched every row to the mirror bar, so the centre check
-    # below refused and the caller drew an unpaired layer instead.
-    keys <- lapply(order.vars, function(k) {
-      v <- as.int(ds[[k]])
-      # interaction(addNA(...)) keeps NA as a real TRAILING level, and order()
-      # would put it last in either direction. Give it that trailing rank
-      # explicitly so it mirrors with everything else.
-      if (anyNA(v)) v[is.na(v)] <- if (all(is.na(v))) 1L else max(v, na.rm = TRUE) + 1L
-      if (isTRUE(reverse)) -v else v
-    })
-    c(list(as.int(ds$PANEL), as.int(ds[[x]])), keys)
-  } else {
+    c(list(as.int(ds$PANEL), as.int(ds[[x]])),
+      lapply(order.vars, function(k) rank.key(ds[[k]])))
+  } else if (isTRUE(reverse) && !key.covers.bars()) {
     list(as.int(ds$PANEL), as.int(ds[[x]]), as.int(ds[[legend.var]]))
+  } else {
+    list(as.int(ds$PANEL), as.int(ds[[x]]), rank.key(ds[[legend.var]]))
   }
   ds <- ds[do.call(order, ord.keys), , drop = FALSE]
   if (nrow(ds) != nrow(bd)) return(NULL)

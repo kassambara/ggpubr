@@ -257,6 +257,47 @@
   (Under `position_dodge2()` the error layer is built from the same truncated
   summary as the bars, so `top =` is aligned there.)
 
+- `ggbarplot(position = position_dodge2(reverse = TRUE))` now draws each error
+  bar on its own bar when the bars are grouped by a single discrete
+  `color`/`fill` column — the ordinary case (#783). Every interval was drawn on
+  the neighbouring bar, carrying that neighbour's mean and error; the values
+  were right, the pairing was not, and nothing in the figure showed it.
+  `position_dodge2()` lays each x out in descending group order when `reverse`
+  is set, while the error layer was ordered ascending, so each row was matched
+  to the mirror bar. Verified against `stats::aggregate` for the `error.plot`
+  variants, `preserve = "single"`, unused and non-alphabetical levels, facets,
+  and a grouping column containing `NA`. This changes the appearance of such a
+  plot, which was previously drawn with the intervals transposed; every
+  `position_dodge2()` call without `reverse` is byte-identical, as is every
+  other position.
+
+  Three `reverse = TRUE` configurations are **still misplaced**, all of them as
+  wrong as in previous releases. The error layer keys on only the *first* of
+  `color`/`fill`, so whenever that one column does not describe how the bars are
+  grouped, no ordering of it can pair the intervals:
+
+  - `color` and `fill` naming two *different* discrete columns — the key is
+    only the first of them, so it cannot account for every bar. Mirroring it
+    would fix nothing and would make the figure harder to read, because each
+    interval would then take the colour of the bar it happens to sit on and
+    lose the mismatch that signals the value belongs to a neighbour. Left
+    exactly as released;
+  - a `color` column that is constant or all-`NA` beside a real `fill` grouping
+    — the key is then constant, so nothing is reordered and the output is
+    identical to previous releases;
+  - a **non-discrete** `color` beside a discrete `fill` — the bars *are*
+    reversed, because ggplot2 groups them by the discrete column, but the key
+    resolves to the non-discrete one and is therefore not mirrored. Also
+    identical to previous releases.
+
+  A non-discrete column mapped to `color`/`fill` *on its own* is unchanged for a
+  different reason: ggplot2 does not group the bars by such a column at all, so
+  `position_dodge2()` does not reverse them and the ascending key stays correct.
+
+  The verification above covers `facet.by` with fixed scales. A faceted
+  `scales = "free_x"` keeps a pre-existing offset in a panel that is missing an
+  x level, unrelated to `reverse` and present in previous releases (#784).
+
 - `ggbarplot()` now draws a summary with a variable mapped to `alpha` under
   `position_dodge2()`, with each error bar on its own bar (#404). The
   combination previously failed at draw with `"alpha * 255": non-numeric
