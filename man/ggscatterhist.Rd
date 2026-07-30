@@ -113,6 +113,7 @@ an object of class \code{ggscatterhist}, which is a list of ggplots,
 \description{
 Create a scatter plot with marginal histograms, density plots or
  box plots.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 }
 \details{
 \code{ggscatterhist()} returns a compound object (a list of ggplots
@@ -166,4 +167,8 @@ plots$sp <- plots$sp +
   geom_vline(xintercept = 6, linetype = "dashed", color = "red")
 plots
 
+}
+\seealso{
+\code{\link{ggscatter}} and \code{\link{style_scatterhist}}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 }

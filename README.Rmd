@@ -31,7 +31,7 @@ The 'ggpubr' package provides some easy-to-use functions for creating and custom
 
 Find out more at https://rpkgs.datanovia.com/ggpubr/.
 
-## Highlights in the development version
+## Highlights in version 1.1.0
 
 New publication-ready plot types and figure builders:
 
@@ -42,7 +42,7 @@ New publication-ready plot types and figure builders:
 - `ggvolcano()` — volcano plots for differential-expression results.
 - Statistical annotation helpers: `stat_cld()` (compact letter display), `add_test_label()` (omnibus test subtitle) and automatic bracket packing with `geom_pwc(pack = "auto")`.
 
-See the [articles](https://rpkgs.datanovia.com/ggpubr/articles/) for worked examples.
+See the package vignettes (`browseVignettes("ggpubr")`) for worked examples.
 
 Other updates:
 
@@ -75,6 +75,8 @@ devtools::install_github("kassambara/ggpubr")
 
 ## Distribution
 
+Read more: [Histogram and Density Plots in R (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels).
+
 
 ```{r ggpubr, fig.width=5.3, fig.height=5, warning=FALSE}
 library(ggpubr)
@@ -106,6 +108,8 @@ gghistogram(wdata, x = "weight",
 
 
 ## Box plots and violin plots
+
+Read more: [Box Plots and Violin Plots in R (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots).
 
 
 ```{r ggpubr-box-plot-dot-plots-strip-charts, fig.width=5.3, fig.height=5,}
@@ -144,6 +148,8 @@ ggviolin(df, x = "dose", y = "len", fill = "dose",
 
 
 ## Bar plots
+
+Read more: [Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts](https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots).
 
 
 ### Demo data set
@@ -259,6 +265,8 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
 
 ## Dot charts
 
+Read more: [Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts](https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots).
+
 ### Lollipop chart
 
 Lollipop chart is an alternative to bar plots, when you have a large set of values to visualize.
@@ -352,6 +360,18 @@ ggdotchart(dfm, x = "name", y = "mpg",
 Find out more at https://rpkgs.datanovia.com/ggpubr/.
 
 
-## Blog posts
+## Related tutorials
 
-- A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready Plots](https://www.datanovia.com/learn/data-visualization/ggpubr/)
+Step-by-step lessons for the main plot types, on Datanovia:
+
+- [Box Plots and Violin Plots in R (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots)
+- [Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts](https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots)
+- [Plot Means and Error Bars in R (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars)
+- [Histogram and Density Plots in R (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels)
+- [Scatter Plots with Correlation in R (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation)
+- [ggpubr Pie Chart in R: Publication-Ready Pie & Donut in One Call](https://www.datanovia.com/learn/data-visualization/ggpubr/pie-donut-charts)
+- [Add P-values to ggplots in R (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values)
+- [Auto P-values in ggplot with geom_pwc (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values)
+- [Arrange and Combine Multiple ggplots in R with ggpubr](https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange)
+- [Customize ggpubr Plots in R with ggpar()](https://www.datanovia.com/learn/data-visualization/ggpubr/customize)
+- [The full ggpubr lesson series](https://www.datanovia.com/learn/data-visualization/ggpubr/)

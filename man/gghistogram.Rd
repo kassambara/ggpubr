@@ -150,6 +150,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 }
 \description{
 Create a histogram plot.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels}{Histogram and Density Plots in R (ggpubr)}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -208,4 +209,6 @@ gghistogram(iris, x = "Sepal.Length", weight = "Petal.Length")
 }
 \seealso{
 \code{\link{ggdensity}} and \code{\link{ggpar}}
+
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels}{Histogram and Density Plots in R (ggpubr)}.
 }

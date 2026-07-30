@@ -4,6 +4,7 @@ NULL
 #' @description Create a violin plot with error bars. Violin plots are similar to
 #' box plots, except that they also show the kernel probability density of the
 #' data at different values.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 #' @inheritParams ggboxplot
 #' @param width violin width.
 #' @param drop logical, passed to \code{\link[ggplot2]{geom_violin}()}, controlling
@@ -37,6 +38,7 @@ NULL
 #'  and position: legend = "right" \item plot orientation : orientation =
 #'  c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 #' @examples
 #' # Load data
 #' data("ToothGrowth")

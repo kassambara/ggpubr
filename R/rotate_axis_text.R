@@ -1,6 +1,7 @@
 #' Rotate Axes Text
 #'
 #' @description Rotate the x-axis text (tick mark labels).
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' \itemize{
 #' \item \code{rotate_x_text}(): Rotate x axis text.
 #' \item \code{rotate_y_text}(): Rotate y axis text.

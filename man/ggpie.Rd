@@ -59,6 +59,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 }
 \description{
 Create a pie chart.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/pie-donut-charts}{ggpubr Pie Chart in R: Publication-Ready Pie & Donut in One Call}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -127,4 +128,5 @@ ggpie(df, "value",
 }
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggline}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/pie-donut-charts}{ggpubr Pie Chart in R: Publication-Ready Pie & Donut in One Call}.
 }

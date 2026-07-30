@@ -2,6 +2,7 @@
 NULL
 #' Bar plot
 #' @description Create a bar plot.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 #' @inheritParams ggboxplot
 #' @inheritParams ggplot2::geom_bar
 #' @param x,y x and y variables for drawing.
@@ -38,6 +39,7 @@ NULL
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}, \code{\link{ggline}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 #' @examples
 #' # Data
 #' df <- data.frame(

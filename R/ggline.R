@@ -2,6 +2,7 @@
 NULL
 #' Line plot
 #' @description Create a line plot.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 #' @inheritParams ggboxplot
 #' @inheritParams ggplot2::geom_line
 #' @param x,y x and y variables for drawing.
@@ -32,6 +33,7 @@ NULL
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}, \code{\link{ggbarplot}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 #' @examples
 #' # Data
 #' df <- data.frame(

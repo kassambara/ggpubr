@@ -5,6 +5,7 @@ NULL
 #' @description Annotate figures including: i) ggplots, ii) arranged ggplots from
 #'  \code{\link{ggarrange}()}, \code{\link[gridExtra:arrangeGrob]{grid.arrange}()} and
 #'  \code{\link[cowplot]{plot_grid}()}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 #' @param p (arranged) ggplots.
 #' @param top,bottom,left,right optional string, or grob.
 #' @param fig.lab figure label (e.g.: "Figure 1").
@@ -25,6 +26,7 @@ NULL
 #'  are rotated 90 degrees.
 #' @author Laszlo Erdey \email{erdey.laszlo@@econ.unideb.hu}
 #' @seealso \code{\link{ggarrange}()}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 #' @examples
 #' data("ToothGrowth")
 #' df <- ToothGrowth

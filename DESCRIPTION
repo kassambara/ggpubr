@@ -1,8 +1,8 @@
 Package: ggpubr
 Type: Package
 Title: 'ggplot2' Based Publication Ready Plots
-Version: 1.0.0.9000
-Date: 2026-07-06
+Version: 1.1.0
+Date: 2026-07-30
 Authors@R: c(
     person("Alboukadel", "Kassambara", role = c("aut", "cre"), email = "alboukadel.kassambara@gmail.com"),
     person("Laszlo", "Erdey", role = "ctb", email = "erdey.laszlo@econ.unideb.hu",
@@ -15,11 +15,14 @@ Description: The 'ggplot2' package is excellent and flexible for elegant data
     the syntax is opaque and this raises the level of difficulty for researchers
     with no advanced R programming skills. 'ggpubr' provides some easy-to-use
     functions for creating and customizing 'ggplot2'-based publication ready plots.
-    This version includes modern R ecosystem compatibility updates and customizable
-    p-value formatting presets ('APA', 'AMA', 'NEJM', 'Lancet', 'GraphPad', and
-    scientific notation) for publication workflows, plus robust sparse-subset handling in
-    statistical annotation layers such as 'stat_compare_means()' and 'geom_pwc()',
-    with informative per-group skip diagnostics for non-comparable subsets.
+    This version adds publication-ready figures for common analysis workflows:
+    ROC curves with the area under the curve and its confidence interval
+    ('ggrocplot()'), one- and two-way group comparison figures with brackets and
+    an omnibus label ('ggcompare()'), volcano plots ('ggvolcano()'), forest and
+    estimation plots ('ggestimates()'), raincloud plots ('ggraincloud()'),
+    compact letter displays ('stat_cld()') and test labels ('add_test_label()'),
+    together with automatic bracket packing for pairwise comparisons
+    ('geom_pwc()').
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
@@ -63,7 +66,6 @@ VignetteBuilder: knitr
 URL: https://rpkgs.datanovia.com/ggpubr/,
     https://github.com/kassambara/ggpubr
 BugReports: https://github.com/kassambara/ggpubr/issues
-RoxygenNote: 7.3.3
 Collate:
     'utilities_color.R'
     'utilities_base.R'
@@ -166,3 +168,4 @@ Collate:
     'utils-pipe.R'
     'utils-tidyr.R'
     'zzz.R'
+RoxygenNote: 7.3.3

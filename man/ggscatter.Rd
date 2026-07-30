@@ -212,6 +212,7 @@ and \code{\link{ggpar}}.}
 }
 \description{
 Create a scatter plot.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -289,4 +290,5 @@ ggscatter(df,
 }
 \seealso{
 \code{\link{stat_cor}}, \code{\link{stat_stars}}, \code{\link{stat_conf_ellipse}} and \code{\link{ggpar}}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 }

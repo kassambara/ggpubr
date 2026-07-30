@@ -122,6 +122,7 @@ Arrange multiple ggplots on the same page. Wrapper around
   multiple pages, compared to the standard
   \code{\link[cowplot]{plot_grid}()}. Can also create a common unique legend
   for multiple plots.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 }
 \examples{
 data("ToothGrowth")
@@ -152,6 +153,7 @@ ggarrange(bxp, dp, common.legend = TRUE)
 }
 \seealso{
 \code{\link{annotate_figure}()}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 }
 \author{
 Laszlo Erdey \email{erdey.laszlo@econ.unideb.hu}

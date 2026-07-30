@@ -3,6 +3,7 @@ NULL
 #' Add Mean Comparison P-values to a ggplot
 #' @description Add mean comparison p-values to a ggplot, such as box plots, dot
 #'  plots and stripcharts.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 #' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @inheritParams compare_means
@@ -100,6 +101,7 @@ NULL
 #' @param na.rm If FALSE (the default), removes missing values with a warning. If
 #'  TRUE silently removes missing values.
 #' @seealso \code{\link{compare_means}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 #' @details For grouped plots, if one or more subsets do not contain enough levels
 #'  to identify the requested comparison, those subsets are skipped and valid
 #'  subsets are still tested. This avoids fatal layer failures in sparse grouped

@@ -2,6 +2,7 @@
 NULL
 #' Donut chart
 #' @description Create a donut chart.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/pie-donut-charts}{ggpubr Pie Chart in R: Publication-Ready Pie & Donut in One Call}.
 #' @inheritParams ggboxplot
 #' @inheritParams ggplot2::geom_errorbar
 #' @param x variable containing values for drawing.
@@ -29,6 +30,7 @@ NULL
 #'  and position: legend = "right" \item plot orientation : orientation =
 #'  c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}, \code{\link{ggpie}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/pie-donut-charts}{ggpubr Pie Chart in R: Publication-Ready Pie & Donut in One Call}.
 #' @examples
 #'
 #' # Data: Create some data

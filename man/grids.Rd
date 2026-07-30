@@ -18,6 +18,7 @@ dotted, dotdash, longdash, twodash). Sess \code{\link{show_line_types}}.}
 }
 \description{
 Add grids to ggplot.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 }
 \examples{
 # Load data

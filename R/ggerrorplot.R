@@ -2,6 +2,7 @@
 NULL
 #' Visualizing Error
 #' @description Visualizing error.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 #' @inheritParams ggboxplot
 #' @inheritParams ggplot2::geom_errorbar
 #' @param ci the percent range of the confidence interval (default is 0.95).
@@ -21,6 +22,7 @@ NULL
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}, \code{\link{ggline}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 #' @examples
 #'
 #' # Data: ToothGrowth data set we'll be used.

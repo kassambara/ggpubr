@@ -10,7 +10,8 @@ NULL
 #'  Create a classic theme with axis lines. \item \strong{clean_theme()}: Remove
 #'  axis lines, ticks, texts and titles. \item \strong{clean_table_theme()}:
 #'  Clean the theme of a table, such as those created by
-#'  \code{\link{ggsummarytable}()}}.
+#'  \code{\link{ggsummarytable}()}.}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' @details \code{theme_pubr()} sets \code{strip.clip = "off"} so that the facet
 #'  strip background border is drawn at its full width (with the ggplot2 default
 #'  \code{strip.clip = "on"} the border is clipped to the strip area and renders
@@ -34,6 +35,8 @@ NULL
 #'  Use 90 for vertical text.
 #' @param flip logical. If TRUE, grid lines are added to y axis instead of x
 #'  axis.
+#' @seealso \code{\link{ggpar}}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' @examples
 #' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'   geom_point(aes(color = gear))

@@ -1,12 +1,12 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![R-CMD-check](https://github.com/kassambara/ggpubr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kassambara/ggpubr/actions/workflows/R-CMD-check.yaml)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggpubr)](https://cran.r-project.org/package=ggpubr)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ggpubr)](https://cran.r-project.org/package=ggpubr)
 [![Downloads](https://cranlogs.r-pkg.org/badges/ggpubr)](https://cran.r-project.org/package=ggpubr)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](https://cran.r-project.org/package=ggpubr)
 
-# ggpubr: 'ggplot2' Based Publication Ready Plots <img src="man/figures/logo.png" align="right" height="139" alt="ggpubr hex logo" />
+# ggpubr: ‘ggplot2’ Based Publication Ready Plots <img src="man/figures/logo.png" align="right" height="139" alt="ggpubr hex logo" />
 
 [ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an
 excellent and flexible package for elegant data visualization in R.
@@ -15,60 +15,56 @@ can send them for publication. Furthermore, to customize a ggplot, the
 syntax is opaque and this raises the level of difficulty for researchers
 with no advanced R programming skills.
 
-The 'ggpubr' package provides some easy-to-use functions for creating
-and customizing 'ggplot2'-based publication ready plots.
+The ‘ggpubr’ package provides some easy-to-use functions for creating
+and customizing ‘ggplot2’-based publication ready plots.
 
 Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
 
-## Highlights in the development version
+## Highlights in version 1.1.0
 
 New publication-ready plot types and figure builders:
 
-  - `ggcompare()` — one-call group-comparison figures (box/violin/strip
-    plus points, means, adjusted-p brackets and an omnibus test label),
-    including two-way designs with simple main effects.
-  - `ggrocplot()` — ROC curves with the AUC and its confidence interval,
-    an optional optimal cut-point marker, and multi-marker overlays.
-  - `ggestimates()` — forest and estimation plots (odds/hazard/risk
-    ratios, regression coefficients, meta-analysis).
-  - `ggraincloud()` — raincloud plots (half-violin plus box plus
-    jittered points).
-  - `ggvolcano()` — volcano plots for differential-expression results.
-  - Statistical annotation helpers: `stat_cld()` (compact letter
-    display), `add_test_label()` (omnibus test subtitle) and automatic
-    bracket packing with `geom_pwc(pack = "auto")`.
+- `ggcompare()` — one-call group-comparison figures (box/violin/strip
+  plus points, means, adjusted-p brackets and an omnibus test label),
+  including two-way designs with simple main effects.
+- `ggrocplot()` — ROC curves with the AUC and its confidence interval,
+  an optional optimal cut-point marker, and multi-marker overlays.
+- `ggestimates()` — forest and estimation plots (odds/hazard/risk
+  ratios, regression coefficients, meta-analysis).
+- `ggraincloud()` — raincloud plots (half-violin plus box plus jittered
+  points).
+- `ggvolcano()` — volcano plots for differential-expression results.
+- Statistical annotation helpers: `stat_cld()` (compact letter display),
+  `add_test_label()` (omnibus test subtitle) and automatic bracket
+  packing with `geom_pwc(pack = "auto")`.
 
-See the [articles](https://rpkgs.datanovia.com/ggpubr/articles/) for
-worked examples.
+See the package vignettes (`browseVignettes("ggpubr")`) for worked
+examples.
 
 Other updates:
 
-  - Modern compatibility updates for current `ggplot2`, `dplyr`, and
-    `tidyr`.
-  - New p-value formatting helpers: `format_p_value()`,
-    `get_p_format_style()`, `list_p_format_styles()`.
-  - Extended p-value formatting parameters across statistical layers:
-    `p.format.style`, `p.digits`, `p.leading.zero`, `p.min.threshold`,
-    `p.decimal.mark`.
-  - Sparse grouped subsets are handled robustly in
-    `stat_compare_means()` and `geom_pwc()`: non-comparable subsets are
-    skipped while valid comparisons are kept (\#663).
+- Modern compatibility updates for current `ggplot2`, `dplyr`, and
+  `tidyr`.
+- New p-value formatting helpers: `format_p_value()`,
+  `get_p_format_style()`, `list_p_format_styles()`.
+- Extended p-value formatting parameters across statistical layers:
+  `p.format.style`, `p.digits`, `p.leading.zero`, `p.min.threshold`,
+  `p.decimal.mark`.
+- Sparse grouped subsets are handled robustly in `stat_compare_means()`
+  and `geom_pwc()`: non-comparable subsets are skipped while valid
+  comparisons are kept (#663).
 
 ## Installation and loading
 
-  - Install from [CRAN](https://cran.r-project.org/package=ggpubr) as
-    follows:
-
-<!-- end list -->
+- Install from [CRAN](https://cran.r-project.org/package=ggpubr) as
+  follows:
 
 ``` r
 install.packages("ggpubr")
 ```
 
-  - Or, install the latest version from
-    [GitHub](https://github.com/kassambara/ggpubr) as follows:
-
-<!-- end list -->
+- Or, install the latest version from
+  [GitHub](https://github.com/kassambara/ggpubr) as follows:
 
 ``` r
 # Install
@@ -78,9 +74,12 @@ devtools::install_github("kassambara/ggpubr")
 
 ## Distribution
 
+Read more: [Histogram and Density Plots in R
+(ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels).
+
 ``` r
 library(ggpubr)
-#> Le chargement a nécessité le package : ggplot2
+#> Loading required package: ggplot2
 # Create some data format
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
 set.seed(1234)
@@ -120,6 +119,9 @@ gghistogram(wdata, x = "weight",
 ![](man/figures/README-ggpubr-2.png)<!-- -->
 
 ## Box plots and violin plots
+
+Read more: [Box Plots and Violin Plots in R
+(ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots).
 
 ``` r
 # Load data
@@ -176,6 +178,9 @@ ggviolin(df, x = "dose", y = "len", fill = "dose",
 ![](man/figures/README-ggpubr-box-plot-dot-plots-strip-charts-3.png)<!-- -->
 
 ## Bar plots
+
+Read more: [Bar Plots in R (ggpubr): Ordered, Lollipop & Dot
+Charts](https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots).
 
 ### Demo data set
 
@@ -236,7 +241,7 @@ ggbarplot(dfm, x = "name", y = "mpg",
 ### Deviation graphs
 
 The deviation graph shows the deviation of quantitative values to a
-reference value. In the R code below, we'll plot the mpg z-score from
+reference value. In the R code below, we’ll plot the mpg z-score from
 the mtcars dataset.
 
 Calculate the z-score of the mpg data:
@@ -296,6 +301,9 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
 
 ## Dot charts
 
+Read more: [Bar Plots in R (ggpubr): Ordered, Lollipop & Dot
+Charts](https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots).
+
 ### Lollipop chart
 
 Lollipop chart is an alternative to bar plots, when you have a large set
@@ -315,14 +323,12 @@ ggdotchart(dfm, x = "name", y = "mpg",
 
 ![](man/figures/README-lollipop-chart-1.png)<!-- -->
 
-  - Sort in descending order. **sorting = “descending”**.
-  - Rotate the plot vertically, using **rotate = TRUE**.
-  - Sort the mpg value inside each group by using **group = “cyl”**.
-  - Set **dot.size** to 6.
-  - Add mpg values as label. **label = “mpg”** or **label =
-    round(dfm$mpg)**.
-
-<!-- end list -->
+- Sort in descending order. **sorting = “descending”**.
+- Rotate the plot vertically, using **rotate = TRUE**.
+- Sort the mpg value inside each group by using **group = “cyl”**.
+- Set **dot.size** to 6.
+- Add mpg values as label. **label = “mpg”** or **label =
+  round(dfm\$mpg)**.
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg",
@@ -344,11 +350,9 @@ ggdotchart(dfm, x = "name", y = "mpg",
 
 Deviation graph:
 
-  - Use y = “mpg\_z”
-  - Change segment color and size: add.params = list(color =
-    “lightgray”, size = 2)
-
-<!-- end list -->
+- Use y = “mpg_z”
+- Change segment color and size: add.params = list(color = “lightgray”,
+  size = 2)
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg_z",
@@ -369,7 +373,7 @@ ggdotchart(dfm, x = "name", y = "mpg_z",
 
 ![](man/figures/README-lollipop-chart-deviation-1.png)<!-- -->
 
-### Cleveland's dot plot
+### Cleveland’s dot plot
 
 Color y text by groups. Use y.text.col = TRUE.
 
@@ -392,7 +396,29 @@ ggdotchart(dfm, x = "name", y = "mpg",
 
 Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
 
-## Blog posts
+## Related tutorials
 
-  - A. Kassambara. [ggpubr R Package: ggplot2-Based Publication Ready
-    Plots](https://www.datanovia.com/learn/data-visualization/ggpubr/)
+Step-by-step lessons for the main plot types, on Datanovia:
+
+- [Box Plots and Violin Plots in R
+  (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots)
+- [Bar Plots in R (ggpubr): Ordered, Lollipop & Dot
+  Charts](https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots)
+- [Plot Means and Error Bars in R
+  (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars)
+- [Histogram and Density Plots in R
+  (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels)
+- [Scatter Plots with Correlation in R
+  (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation)
+- [ggpubr Pie Chart in R: Publication-Ready Pie & Donut in One
+  Call](https://www.datanovia.com/learn/data-visualization/ggpubr/pie-donut-charts)
+- [Add P-values to ggplots in R
+  (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values)
+- [Auto P-values in ggplot with geom_pwc
+  (ggpubr)](https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values)
+- [Arrange and Combine Multiple ggplots in R with
+  ggpubr](https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange)
+- [Customize ggpubr Plots in R with
+  ggpar()](https://www.datanovia.com/learn/data-visualization/ggpubr/customize)
+- [The full ggpubr lesson
+  series](https://www.datanovia.com/learn/data-visualization/ggpubr/)

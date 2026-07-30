@@ -152,7 +152,10 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 \item{...}{not used}
 }
 \description{
-Graphical parameters
+Set and customize the graphical parameters of a ggplot - title,
+ axis labels and limits, legend, color palette, axis scales and plot
+ orientation - in a single call.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 }
 \examples{
 # Load data
@@ -235,4 +238,8 @@ ggpar(p2,
   font.legend = c(10, "bold", "red")
 )
 
+}
+\seealso{
+\code{\link{theme_pubr}}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 }

@@ -1,6 +1,9 @@
-# ggpubr 1.0.0.9000
+# ggpubr 1.1.0
 
 ## Documentation
+
+- Function help pages and the README now link to the corresponding Datanovia
+  tutorials.
 
 - Three new vignettes: "Adding Statistical Test Results to Plots" (pairwise
   brackets, compact letter display and omnibus labels, and when to use each),
@@ -169,11 +172,14 @@
   message naming the argument, instead of failing with whatever the internal
   lookup happened to raise. Both documented values, `"label_value"` and
   `"label_both"`, behave exactly as before. Values outside them are now refused
-  up front: a number, `TRUE`, or a factor used to be accepted and silently
-  produced `"label_value"` titles, because the lookup was a `switch()` that
-  selects by position when its argument is not a character string — so the
-  request was ignored rather than honoured. `free.panels = FALSE` already
-  refused the same values, so the two paths now agree.
+  up front: a number, `TRUE`, or a factor used to be accepted and picked a
+  labeller by *position*, because the lookup was a `switch()` that indexes by
+  integer when its argument is not a character string. Which labeller you got
+  therefore depended on the argument's integer value rather than on what was
+  asked for — `TRUE` and `factor("label_value")` both selected `"label_both"`,
+  the opposite of the request in the second case, and `2` selected
+  `"label_value"`. `free.panels = FALSE` already refused a number and `TRUE`,
+  though it still accepts a factor.
 
 - `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,
   labeller = "label_both")` no longer errors. A `facet.by` that resolves to no
@@ -376,12 +382,13 @@
     the colour. This matches what the other `error.plot` values already did with
     the same input.
 
-  The `reverse = TRUE` correction applies only where a discrete `alpha` column
-  is carried. **Without one it is unchanged, and still wrong**:
+  This note previously said the `reverse = TRUE` correction applied only where a
+  discrete `alpha` column is carried, and that a plain
   `ggbarplot(ToothGrowth, "dose", "len", fill = "supp", add = "mean_se",
-  position = position_dodge2(reverse = TRUE))` draws each error bar on the
-  neighbouring bar, exactly as it does in previous releases. Fixing that changes
-  released output for every such call and is left for its own change.
+  position = position_dodge2(reverse = TRUE))` was left unchanged. That was true
+  when the `alpha` fix landed, but the `reverse = TRUE` fix below covers the
+  plain case as well: it now draws all six error bars on their own bar, where
+  1.0.0 drew all six on the neighbour.
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via

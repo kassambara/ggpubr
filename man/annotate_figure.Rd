@@ -49,6 +49,7 @@ are rotated 90 degrees.}
 Annotate figures including: i) ggplots, ii) arranged ggplots from
  \code{\link{ggarrange}()}, \code{\link[gridExtra:arrangeGrob]{grid.arrange}()} and
  \code{\link[cowplot]{plot_grid}()}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 }
 \examples{
 data("ToothGrowth")
@@ -95,6 +96,7 @@ annotate_figure(grid,
 }
 \seealso{
 \code{\link{ggarrange}()}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 }
 \author{
 Laszlo Erdey \email{erdey.laszlo@econ.unideb.hu}

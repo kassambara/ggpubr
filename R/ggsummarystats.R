@@ -4,7 +4,7 @@ NULL
 #' GGPlot with Summary Stats Table Under the Plot
 #'
 #' @description Create a ggplot with summary stats (n, median, mean, iqr) table
-#'   under the plot. Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/summary-stats-labels}{How to Create a Beautiful Plots in R with Summary Statistics Labels}.
+#'   under the plot. Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/summary-stats-labels}{Summary Statistics on a Plot in R (ggpubr)}.
 #' @details \code{ggsummarystats()} returns a compound object (a list of ggplots
 #'   of class \code{"ggsummarystats"}), not a single ggplot, so \code{p +
 #'   theme()} does \strong{not} restyle it. Theme it in one of three ways:
@@ -56,6 +56,8 @@ NULL
 #'  (panel labelled with only grouping levels).
 #' @param ... other arguments passed to the function \code{\link{ggpar}()},
 #'   \code{\link{facet}()} or \code{\link{ggarrange}()} when printing the plot.
+#' @seealso \code{\link{ggtexttable}}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/summary-stats-labels}{Summary Statistics on a Plot in R (ggpubr)}.
 #' @examples
 #' # Data preparation
 #' # ::::::::::::::::::::::::::::::::::::::::::::::::

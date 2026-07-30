@@ -357,6 +357,7 @@ automatically removed and the \code{dodge} value is set to zero.}
 \description{
 add pairwise comparison p-values to a ggplot such as box plots,
  dot plots and stripcharts.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 }
 \details{
 \bold{Notes on adjusted p-values and facet}. When using the ggplot facet functions, the p-values are computed and adjusted by panel, without taking into account the other panels. This is by design in ggplot2.
@@ -375,7 +376,7 @@ One might want to adjust the p-values of all the facet panels together. There ar
 \item Using \code{\link{ggadjust_pvalue}(p)} after creating the plot \code{p}
 \item or adding the adjusted p-value manually using \code{\link{stat_pvalue_manual}()}. Read more at:
 \itemize{
-  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from tests on ggplots, including facets with different scales}
+  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from Tests on ggplots in R (rstatix)}
 }
 }
 }
@@ -501,4 +502,5 @@ bp +
 }
 \seealso{
 \code{\link{ggadjust_pvalue}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 }

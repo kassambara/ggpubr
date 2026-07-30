@@ -151,6 +151,7 @@ Available only when \code{method = "t.test"} or \code{method = "wilcox.test"}.
 }
 \description{
 Performs one or multiple mean comparisons.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 }
 \section{Significance letters (compact letter display)}{
 
@@ -245,4 +246,8 @@ compare_means(len ~ dose, df, ref.group = ".all.")
 # ::::::::::::::::::::::::::::::::::::::::
 compare_means(len ~ dose, df, method = "anova")
 compare_means(len ~ dose, df, method = "kruskal.test")
+}
+\seealso{
+\code{\link{stat_compare_means}}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 }

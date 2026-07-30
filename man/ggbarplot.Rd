@@ -160,6 +160,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 }
 \description{
 Create a bar plot.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -318,4 +319,5 @@ ggbarplot(df3,
 }
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggline}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 }

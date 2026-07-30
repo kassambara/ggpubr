@@ -2,6 +2,7 @@
 NULL
 #' Histogram plot
 #' @description Create a histogram plot.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels}{Histogram and Density Plots in R (ggpubr)}.
 #' @inheritParams ggboxplot
 #' @param x variable to be drawn.
 #' @param y one of "density" or "count".
@@ -34,6 +35,7 @@ NULL
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggdensity}} and \code{\link{ggpar}}
 #'
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/histogram-density-labels}{Histogram and Density Plots in R (ggpubr)}.
 #' @examples
 #' # Create some data format
 #' set.seed(1234)

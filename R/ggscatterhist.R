@@ -3,6 +3,7 @@ NULL
 #' Scatter Plot with Marginal Histograms
 #' @description Create a scatter plot with marginal histograms, density plots or
 #'  box plots.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 #' @details \code{ggscatterhist()} returns a compound object (a list of ggplots
 #'  of class \code{"ggscatterhist"}), not a single ggplot, so \code{p + theme()}
 #'  does \strong{not} restyle it. Theme it in one of three ways:
@@ -45,6 +46,8 @@ NULL
 #'
 #'  User can modify each of plot before printing.
 #'
+#' @seealso \code{\link{ggscatter}} and \code{\link{style_scatterhist}}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 #' @examples
 #' # Basic scatter plot with marginal density plot
 #' ggscatterhist(iris,

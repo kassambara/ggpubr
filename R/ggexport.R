@@ -2,6 +2,9 @@
 NULL
 #' Export ggplots
 #' @description Export ggplots
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
+#' @seealso \code{\link{ggarrange}()}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 #' @inheritParams ggarrange
 #' @param ... list of plots to be arranged into the grid. The plots can be either
 #'  ggplot2 plot objects, arbitrary gtables or an object of class

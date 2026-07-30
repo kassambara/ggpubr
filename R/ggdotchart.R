@@ -2,6 +2,7 @@
 NULL
 #' Cleveland's Dot Plots
 #' @description Draw a Cleveland dot plot.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 #' @inheritParams ggboxplot
 #' @inheritParams ggpar
 #' @param data a data frame
@@ -30,6 +31,7 @@ NULL
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 #' @examples
 #' # Load data
 #' data("mtcars")

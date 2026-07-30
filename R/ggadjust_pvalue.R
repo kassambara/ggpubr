@@ -6,6 +6,9 @@ NULL
 #'  This is mainly useful when using facet, where p-values are generally
 #'  computed and adjusted by panel without taking into account the other panels.
 #'  In this case, one might want to adjust after the p-values of all panels together.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
+#' @seealso \code{\link{geom_pwc}()}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 #' @inheritParams geom_pwc
 #' @param p a ggplot
 #' @param layer An integer indicating the statistical layer rank in the ggplot

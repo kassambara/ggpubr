@@ -208,6 +208,7 @@ computed per facet.}
 Create a violin plot with error bars. Violin plots are similar to
 box plots, except that they also show the kernel probability density of the
 data at different values.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -304,4 +305,5 @@ ggviolin(df, "dose", "len",
 }
 \seealso{
 \code{\link{ggpar}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 }

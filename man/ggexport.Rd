@@ -44,6 +44,7 @@ plots.}
 }
 \description{
 Export ggplots
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 }
 \examples{
 \dontrun{
@@ -75,6 +76,10 @@ ggarrange(bxp, dp, dens, ncol = 2) \%>\%
   ggexport(filename = "test.png")
 }
 
+}
+\seealso{
+\code{\link{ggarrange}()}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggarrange}{Arrange and Combine Multiple ggplots in R with ggpubr}.
 }
 \author{
 Laszlo Erdey <erdey.laszlo@econ.unideb.hu>

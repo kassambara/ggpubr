@@ -127,6 +127,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 }
 \description{
 Visualizing error.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -201,4 +202,5 @@ ggerrorplot(df,
 }
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggline}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 }

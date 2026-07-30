@@ -1,6 +1,7 @@
 #' Add Grids to a ggplot
 #'
 #' @description Add grids to ggplot.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' @param axis axis for which grid should be added. Allowed values include \code{c("xy", "x", "y")}.
 #' @param color grid line color.
 #' @param size numeric value specifying grid line size.

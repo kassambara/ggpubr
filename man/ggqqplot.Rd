@@ -93,6 +93,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 }
 \description{
 Quantile-Quantile plot.
+ Read more: \href{https://www.datanovia.com/learn/biostatistics/assumptions/normality-test-in-r}{Normality Test in R: Shapiro-Wilk & Q-Q Plots}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -126,4 +127,6 @@ ggqqplot(wdata,
 }
 \seealso{
 \code{\link{ggpar}}
+
+ Read more: \href{https://www.datanovia.com/learn/biostatistics/assumptions/normality-test-in-r}{Normality Test in R: Shapiro-Wilk & Q-Q Plots}.
 }

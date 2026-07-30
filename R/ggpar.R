@@ -2,6 +2,11 @@
 NULL
 #' Graphical parameters
 #'
+#' @description Set and customize the graphical parameters of a ggplot - title,
+#'  axis labels and limits, legend, color palette, axis scales and plot
+#'  orientation - in a single call.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
+#'
 #' @param p an object of class ggplot or a list of ggplots
 #'
 #' @param palette the color palette to be used for coloring or filling by
@@ -75,6 +80,8 @@ NULL
 #'   Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'   theme_minimal(), theme_classic(), theme_void(), ....
 #' @param ... not used
+#' @seealso \code{\link{theme_pubr}}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' @examples
 #' # Load data
 #' data("ToothGrowth")

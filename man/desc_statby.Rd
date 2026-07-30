@@ -35,6 +35,7 @@ A data frame containing descriptive statistics, such as:
 }
 \description{
 Computes descriptive statistics by groups for a measure variable.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 }
 \examples{
 # Load data
