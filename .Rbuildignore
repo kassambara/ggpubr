@@ -23,3 +23,5 @@
 ^Rplots\.pdf$
 ^PR_SYNC_NOTES\.md$
 ^CLAUDE\.md$
+^CLAUDE\.local\.md$
+^Makefile$
