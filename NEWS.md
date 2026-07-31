@@ -354,10 +354,11 @@
   The filter also no longer goes through `subset()`, which evaluated its
   expression inside the data frame, so a column named `select`, `remove` or `x`
   took the place of the argument. This is the one way a single-argument call
-  changes: with such a column present, `select` matched nothing and drew an empty
-  plot, and `remove` was ignored so every group was still drawn — the second case
-  looking like a normal figure with the group the user asked to drop still in it
-  (#788).
+  changes. What was drawn then depended on that column's contents rather than on
+  what was asked for, so the call could drop nothing, drop everything, or drop
+  the wrong group — a frame with a column named `remove` holding `"a"` answered
+  `remove = "c"` by dropping `a` and keeping `c`, which looks like an ordinary
+  figure with the wrong group missing (#788).
 
 ### Other fixes
 

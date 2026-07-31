@@ -70,9 +70,8 @@
 - For the `select`/`remove` change specifically: 55 files, across 32 of the 230
   packages, call one of the fourteen affected functions, and none of those calls
   passes `select =` or `remove =` at all, so neither the corrected filtering nor
-  the new warning can be reached. (Matches for those names in reverse-dependency
-  sources are base R's `subset(df, select = )` and
-  `tidyr::separate(..., remove = )`.)
+  the new warning can be reached. (Within those files the only matches for those
+  names are base R's `subset(df, select = )`.)
 - One further case moves output that was already wrong and remains wrong:
   `ggbarplot(top = )` combined with a discrete `alpha` under `position_dodge()`
   still draws more error bars than there are bars, but which stray interval

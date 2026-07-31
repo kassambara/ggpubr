@@ -142,19 +142,51 @@ test_that("a data column named select/remove/x does not shadow the arguments", {
   )
   keep <- function(p) sort(unique(as.character(p$data$grp)))
 
-  # `subset()` evaluates its expression inside the data frame, so a column of the
-  # same name was used in place of the argument and the plot came back empty.
+  # `subset()` evaluated its expression inside the data frame, so a column of the
+  # same name was used in place of the argument. What got filtered then depended
+  # on that column's contents, so each of these failed differently: empty plot,
+  # nothing dropped, or -- the last one -- the WRONG group dropped.
   d1 <- base
-  d1$select <- "zzz"
+  d1$select <- "zzz" # disjoint contents: drew nothing
   expect_equal(keep(ggboxplot(d1, "grp", "val", select = c("a", "b"))), c("a", "b"))
 
   d2 <- base
-  d2$remove <- "zzz"
-  expect_equal(keep(ggboxplot(d2, "grp", "val", remove = "c")), c("a", "b"))
+  d2$select <- d2$grp # overlapping contents: dropped nothing
+  expect_equal(keep(ggboxplot(d2, "grp", "val", select = c("a", "b"))), c("a", "b"))
 
   d3 <- base
-  d3$x <- 99
-  expect_equal(keep(ggboxplot(d3, "grp", "val", select = c("a", "b"))), c("a", "b"))
+  d3$remove <- "zzz"
+  expect_equal(keep(ggboxplot(d3, "grp", "val", remove = "c")), c("a", "b"))
+
+  d4 <- base
+  d4$remove <- d4$grp # drew nothing
+  expect_equal(keep(ggboxplot(d4, "grp", "val", remove = "c")), c("a", "b"))
+
+  d5 <- base
+  d5$remove <- "a" # dropped "a" and kept "c" -- the wrong group
+  expect_equal(keep(ggboxplot(d5, "grp", "val", remove = "c")), c("a", "b"))
+
+  d6 <- base
+  d6$x <- 99
+  expect_equal(keep(ggboxplot(d6, "grp", "val", select = c("a", "b"))), c("a", "b"))
+})
+
+test_that("as.vector() on the filtered column is kept, so a Date x is unchanged", {
+  # NO-REGRESSION PIN, not a statement of desirable behaviour. The filter applies
+  # as.vector() to the x column before matching, which for a Date strips it to the
+  # day number: a date string matches nothing and the day number matches. That is
+  # a separate pre-existing defect. It is pinned here because dropping as.vector()
+  # silently changes released output for single-argument calls, and without this
+  # test the whole suite stays green when it is removed.
+  d <- data.frame(
+    grp = rep(as.Date(c("2020-01-01", "2020-01-02", "2020-01-03")), each = 4),
+    val = c(1:4, 11:14, 21:24)
+  )
+  n <- function(p) nrow(p$data)
+
+  expect_equal(n(ggboxplot(d, "grp", "val", select = c("2020-01-01", "2020-01-02"))), 0L)
+  expect_equal(n(ggboxplot(d, "grp", "val", remove = "2020-01-03")), 12L)
+  expect_equal(n(ggboxplot(d, "grp", "val", select = as.numeric(as.Date("2020-01-02")))), 4L)
 })
 
 test_that("filtering works on a factor x with non-alphabetical levels", {

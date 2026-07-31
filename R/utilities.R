@@ -982,6 +982,11 @@ keep_only_tbl_df_classes <- function(x) {
   # remaining rows with the wrong mask entries. Indexing with `[` rather than
   # subset() also keeps the arguments from being shadowed by a data column of the
   # same name (a column called "select" would otherwise be used in their place).
+  #
+  # as.vector() is deliberate: it strips a Date x to its day number, so a date
+  # string matches nothing while the day number matches. That is a pre-existing
+  # defect, but correcting it here would change single-argument calls, so the
+  # released semantics are kept and pinned in test-select-remove.R.
   if (!is.null(select) && !is.null(remove)) {
     both <- intersect(select, remove)
     if (length(both) > 0) {
