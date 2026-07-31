@@ -2,6 +2,7 @@
 NULL
 #' QQ Plots
 #' @description Quantile-Quantile plot.
+#'  Read more: \href{https://www.datanovia.com/learn/biostatistics/assumptions/normality-test-in-r}{Normality Test in R: Shapiro-Wilk & Q-Q Plots}.
 #' @inheritParams ggboxplot
 #' @param x variable to be drawn.
 #' @param color point color.
@@ -23,6 +24,7 @@ NULL
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{ggpar}}
 #'
+#'  Read more: \href{https://www.datanovia.com/learn/biostatistics/assumptions/normality-test-in-r}{Normality Test in R: Shapiro-Wilk & Q-Q Plots}.
 #' @examples
 #' # Create some data format
 #' set.seed(1234)

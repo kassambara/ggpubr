@@ -3,6 +3,7 @@
 #' @description Change the appearance of the main title, subtitle, caption, axis
 #'  labels and text, as well as the legend title and texts. Wrapper around
 #'  \code{\link[ggplot2:element]{element_text}()}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #'
 #' @param object character string specifying the plot components. Allowed values
 #'  include: \itemize{ \item \code{"title"} for the main title \item

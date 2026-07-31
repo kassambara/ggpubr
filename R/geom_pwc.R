@@ -4,6 +4,7 @@ NULL
 #' Add Pairwise Comparisons P-values to a GGPlot
 #' @description add pairwise comparison p-values to a ggplot such as box plots,
 #'  dot plots and stripcharts.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 #' @param method a character string indicating which method to be used for
 #'  pairwise comparisons. Default is \code{"wilcox_test"}. Allowed methods
 #'  include pairwise comparisons methods implemented in the \code{rstatix} R
@@ -182,7 +183,7 @@ NULL
 #' \item Using \code{\link{ggadjust_pvalue}(p)} after creating the plot \code{p}
 #' \item or adding the adjusted p-value manually using \code{\link{stat_pvalue_manual}()}. Read more at:
 #' \itemize{
-#'   \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from tests on ggplots, including facets with different scales}
+#'   \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from Tests on ggplots in R (rstatix)}
 #' }
 #' }
 #' @inheritParams ggpubr-common-params
@@ -193,6 +194,7 @@ NULL
 #'
 #' @rdname geom_pwc
 #' @seealso \code{\link{ggadjust_pvalue}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 #' @examples
 #' # Data preparation
 #' # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

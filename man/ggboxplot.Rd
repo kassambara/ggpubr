@@ -192,6 +192,7 @@ computed per facet.}
 \description{
 Create a box plot with points. Box plots display a group of
  numerical data through their quartiles.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -287,4 +288,5 @@ ggboxplot(df, "dose", "len",
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}}
  and \code{\link{ggstripchart}}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 }

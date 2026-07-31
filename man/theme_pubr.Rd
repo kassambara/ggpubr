@@ -60,7 +60,8 @@ axis.}
  Create a classic theme with axis lines. \item \strong{clean_theme()}: Remove
  axis lines, ticks, texts and titles. \item \strong{clean_table_theme()}:
  Clean the theme of a table, such as those created by
- \code{\link{ggsummarytable}()}}.
+ \code{\link{ggsummarytable}()}.}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 }
 \details{
 \code{theme_pubr()} sets \code{strip.clip = "off"} so that the facet
@@ -84,4 +85,8 @@ p + theme_pubr()
 # Format labels
 p + labs_pubr()
 
+}
+\seealso{
+\code{\link{ggpar}}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 }

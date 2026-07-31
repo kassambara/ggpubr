@@ -3,6 +3,7 @@ NULL
 #' Box plot
 #' @description Create a box plot with points. Box plots display a group of
 #'  numerical data through their quartiles.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 #' @param data a data frame
 #' @param x character string containing the name of x variable.
 #' @param y character vector containing one or more variables to plot
@@ -86,6 +87,7 @@ NULL
 #'
 #' @seealso \code{\link{ggpar}}, \code{\link{ggviolin}}, \code{\link{ggdotplot}}
 #'  and \code{\link{ggstripchart}}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/box-violin-plots}{Box Plots and Violin Plots in R (ggpubr)}.
 #' @examples
 #' # Load data
 #' data("ToothGrowth")

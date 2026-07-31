@@ -3,6 +3,9 @@ NULL
 #' Add Anova Test P-values to a GGPlot
 #' @description Adds automatically one-way and two-way ANOVA test p-values to a
 #'  ggplot, such as box plots, dot plots and stripcharts.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
+#' @seealso \code{\link{geom_pwc}()}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 #' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @inheritParams stat_pvalue_manual

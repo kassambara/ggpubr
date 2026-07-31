@@ -3,6 +3,7 @@ NULL
 #' Set Gradient Color
 #'
 #' @description Change gradient color.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' \itemize{
 #' \item \code{gradient_color()}: Change gradient color.
 #' \item \code{gradient_fill()}: Change gradient fill.
@@ -17,6 +18,7 @@ NULL
 #'   \link[grDevices]{palette}.
 #'
 #' @seealso \link{set_palette}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #'
 #'
 #' @examples

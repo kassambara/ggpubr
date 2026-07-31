@@ -1,6 +1,7 @@
 #' Remove a ggplot Component
 #'
 #' @description Remove a specific component from a ggplot.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #'
 #' @param object character string specifying the plot components. Allowed values
 #'  include: \itemize{

@@ -295,6 +295,7 @@ Draw a textual table. \itemize{ \item \code{ggtexttable()}: draw
  \item \code{tab_add_border(), tbody_add_border(), thead_add_border()}: Add borders to table; tbody is for table body and thead is for table head.
  \item \code{tab_add_title(),tab_add_footnote()}: Add title, subtitle and footnote to a table.
   }
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggtexttable}{Draw a Table from a Data Frame in R (ggpubr)}.
 }
 \examples{
 # data
@@ -461,4 +462,8 @@ ggarrange(density.p, stable.p,
   heights = c(1, 0.5)
 )
 
+}
+\seealso{
+\code{\link{ggsummarystats}}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/ggtexttable}{Draw a Table from a Data Frame in R (ggpubr)}.
 }

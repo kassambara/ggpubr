@@ -1,6 +1,7 @@
 #' Descriptive statistics by groups
 #'
 #' @description Computes descriptive statistics by groups for a measure variable.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 #'
 #' @param data a data frame.
 #' @param measure.var the name of a column containing the variable to be summarized.

@@ -1,9 +1,11 @@
 #' Change ggplot Panel Background Color
 #'
 #' @description Change ggplot panel background color.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' @param color background color.
 #'
 #' @seealso \link{border}().
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #'
 #' @examples
 #' # Load data

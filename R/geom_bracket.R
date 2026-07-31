@@ -163,6 +163,7 @@ StatBracket <- ggplot2::ggproto("StatBracket", ggplot2::Stat,
 #' Add Brackets with Labels to a GGPlot
 #' @description add brackets with label annotation to a ggplot. Helpers for
 #'   adding p-value or significance levels to a plot.
+#'   Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from Tests on ggplots in R (rstatix)}.
 #' @param label character vector with alternative label, if not null test is
 #'   ignored
 #' @param type the label type. Can be one of "text" and "expression" (for

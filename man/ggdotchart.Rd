@@ -149,6 +149,7 @@ and \code{\link{ggpar}}.}
 }
 \description{
 Draw a Cleveland dot plot.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -208,4 +209,5 @@ ggdotchart(df2,
 }
 \seealso{
 \code{\link{ggpar}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/bar-plots}{Bar Plots in R (ggpubr): Ordered, Lollipop & Dot Charts}.
 }

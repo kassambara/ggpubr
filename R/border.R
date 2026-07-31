@@ -1,6 +1,7 @@
 #' Set ggplot Panel Border Line
 #'
 #' @description Change or set ggplot panel border.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' @param color border line color.
 #' @param size numeric value specifying border line size.
 #' @param linetype line type. An integer (0:8), a name (blank, solid, dashed,

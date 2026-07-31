@@ -2,6 +2,7 @@
 NULL
 #' Scatter plot
 #' @description Create a scatter plot.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 #' @inheritParams ggboxplot
 #' @inheritParams facet
 #' @inheritParams ggpar
@@ -85,6 +86,7 @@ NULL
 #'   labels and position: legend = "right" \item plot orientation : orientation
 #'   = c("vertical", "horizontal", "reverse") }
 #' @seealso \code{\link{stat_cor}}, \code{\link{stat_stars}}, \code{\link{stat_conf_ellipse}} and \code{\link{ggpar}}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 #' @examples
 #' # Load data
 #' data("mtcars")

@@ -174,6 +174,7 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 }
 \description{
 Create a line plot.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 }
 \details{
 The plot can be easily customized using the function ggpar(). Read
@@ -296,4 +297,5 @@ ggline(df3,
 }
 \seealso{
 \code{\link{ggpar}}, \code{\link{ggbarplot}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/means-error-bars}{Plot Means and Error Bars in R (ggpubr)}.
 }

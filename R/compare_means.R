@@ -2,6 +2,7 @@
 NULL
 #' Comparison of Means
 #' @description Performs one or multiple mean comparisons.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 #' @param formula a formula of the form \code{x ~ group} where \code{x} is a
 #'  numeric variable giving the data values and \code{group} is a factor with
 #'  one or multiple levels giving the corresponding groups. For example,
@@ -148,6 +149,8 @@ NULL
 #'          if (pv(cp, g) < .05) "b" else ""))
 #' # then place `lab` above each treatment with geom_text()
 #' }
+#' @seealso \code{\link{stat_compare_means}}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 #' @examples
 #' # Load data
 #' # :::::::::::::::::::::::::::::::::::::::

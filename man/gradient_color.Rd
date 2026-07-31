@@ -21,6 +21,7 @@ case a basic color palette is created using the function
 }
 \description{
 Change gradient color.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 \itemize{
 \item \code{gradient_color()}: Change gradient color.
 \item \code{gradient_fill()}: Change gradient fill.
@@ -51,4 +52,5 @@ p + gradient_color("npg")
 }
 \seealso{
 \link{set_palette}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 }

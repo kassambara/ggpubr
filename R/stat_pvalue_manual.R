@@ -5,11 +5,12 @@ NULL
 #' Add P-values Manually to a ggplot
 #'
 #' @description Add p-values manually to a ggplot, such as box plots, dot plots
-#'  and stripcharts. Frequently asked questions are available on \href{https://www.datanovia.com/learn/data-visualization/ggpubr/}{Datanovia ggpubr FAQ page}, for example:
+#'  and stripcharts. Step-by-step lessons are available in the
+#'  \href{https://www.datanovia.com/learn/data-visualization/ggpubr/}{Datanovia ggpubr series}, for example:
 #'  \itemize{
-#'  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from tests on ggplots: basic, faceted, grouped and horizontal plots, and p-values generated elsewhere}
-#'  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{How to Add Adjusted P-values to a Multi-Panel GGPlot}
-#'  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/stacked-bar-pvalues}{How to Create Stacked Bar Plots with Error Bars and P-values}
+#'  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from Tests on ggplots in R (rstatix)}
+#'  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}
+#'  \item \href{https://www.datanovia.com/learn/data-visualization/ggpubr/stacked-bar-pvalues}{Stacked Bar Plot with Error Bars & P-values in R}
 #'  }
 #' @inheritParams geom_bracket
 #' @param data a data frame containing statistical test results. The expected
@@ -106,6 +107,7 @@ NULL
 #'  \code{geom_text()}
 #' @rdname stat_pvalue_manual
 #' @seealso \code{\link{stat_compare_means}}
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/p-values-from-tests}{P-values from Tests on ggplots in R (rstatix)}.
 #' @examples
 #'
 #' # T-test

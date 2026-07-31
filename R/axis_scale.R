@@ -1,6 +1,7 @@
 #' Change Axis Scale: log2, log10 and more
 #'
 #' @description Change axis scale.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 #' \itemize{
 #' \item \code{xscale}: change x axis scale.
 #' \item \code{yscale}: change y axis scale.

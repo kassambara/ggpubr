@@ -247,6 +247,7 @@ shouldn't inherit behaviour from the default plot specification. Set to
 \description{
 Add mean comparison p-values to a ggplot, such as box plots, dot
  plots and stripcharts.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 }
 \details{
 For grouped plots, if one or more subsets do not contain enough levels
@@ -328,4 +329,5 @@ p + stat_compare_means(
 }
 \seealso{
 \code{\link{compare_means}}
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/add-p-values}{Add P-values to ggplots in R (ggpubr)}.
 }

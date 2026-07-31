@@ -4,6 +4,7 @@ NULL
 #' Add Correlation Coefficients with P-values to a Scatter Plot
 #' @description Add correlation coefficients with p-values to a scatter plot. Can
 #'  be also used to add `R2`.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 #' @inheritParams ggpubr-common-params
 #' @inheritParams ggplot2::layer
 #' @param method a character string indicating which correlation coefficient (or
@@ -89,6 +90,7 @@ NULL
 #' @seealso \code{\link{ggscatter}}. For an alternative implementation with more
 #'  control over label positioning (native NPC coordinates, per-group vertical and
 #'  horizontal steps), see \code{ggpmisc::stat_correlation()}.
+#'  Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/scatter-correlation}{Scatter Plots with Correlation in R (ggpubr)}.
 #' @section Computed variables: \describe{ \item{r}{correlation coefficient}
 #'  \item{rr}{correlation coefficient squared} \item{rmse}{root mean square
 #'  deviation (RMSE/RMSD) between \code{x} and \code{y}, computed on the complete

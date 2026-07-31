@@ -249,6 +249,7 @@ text up or down. }}
 \description{
 Adds automatically one-way and two-way ANOVA test p-values to a
  ggplot, such as box plots, dot plots and stripcharts.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 }
 \section{Computed variables}{
  \itemize{ \item{DFn}: Degrees of Freedom in the
@@ -357,4 +358,8 @@ ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco") +
     method = "one_way_repeated", wid = "id", group.by = "legend.var"
   )
 }
+}
+\seealso{
+\code{\link{geom_pwc}()}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 }

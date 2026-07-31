@@ -116,6 +116,7 @@ Adjust p-values produced by \code{\link{geom_pwc}()} on a ggplot.
  This is mainly useful when using facet, where p-values are generally
  computed and adjusted by panel without taking into account the other panels.
  In this case, one might want to adjust after the p-values of all panels together.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 }
 \examples{
 # Data preparation
@@ -162,4 +163,8 @@ ggadjust_pvalue(
   p.adjust.method = "bonferroni",
   label = "{p.adj.format}{p.adj.signif}"
 )
+}
+\seealso{
+\code{\link{geom_pwc}()}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/auto-p-values}{Auto P-values in ggplot with geom_pwc (ggpubr)}.
 }

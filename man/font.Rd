@@ -36,6 +36,7 @@ or \code{"axis.text"} for both x and y axis texts }}
 Change the appearance of the main title, subtitle, caption, axis
  labels and text, as well as the legend title and texts. Wrapper around
  \code{\link[ggplot2:element]{element_text}()}.
+ Read more: \href{https://www.datanovia.com/learn/data-visualization/ggpubr/customize}{Customize ggpubr Plots in R with ggpar()}.
 }
 \examples{
 # Load data
