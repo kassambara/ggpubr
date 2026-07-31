@@ -1,41 +1,8 @@
 # ggpubr 1.1.0
 
-## Documentation
-
-- Function help pages and the README now link to the corresponding Datanovia
-  tutorials.
-
-- Three new vignettes: "Adding Statistical Test Results to Plots" (pairwise
-  brackets, compact letter display and omnibus labels, and when to use each),
-  "Forest and Estimation Plots with ggestimates()" (from a table or a fitted
-  model), and "ROC Curves and Diagnostic Accuracy with ggrocplot()".
-- The pkgdown reference index now lists the plot functions and helpers added in
-  this development cycle (`ggcompare()`, `ggrocplot()`, `ggestimates()`,
-  `ggraincloud()`, `ggvolcano()`, `stat_cld()`, `add_test_label()`,
-  `geom_violin_half()`, `style_scatterhist()`, `style_summarystats()`), and the
-  README highlights them.
-
 ## New features
 
-- New vignette "Combining ggpubr Plots with patchwork" shows how to arrange
-  ggpubr figures with the patchwork package (shared legends, panel tags,
-  nested layouts) and points to ggcorrplot for correlation matrices (#770).
-
-- `ggcompare()` two-way (grouped) mode now supports `facet.by`. The simple
-  pairwise comparisons and the two-way interaction are computed within each
-  facet panel, and a compact interaction label is drawn in each panel (in place
-  of the single pooled subtitle used without faceting) (#769).
-
-- `ggcompare()` two-way (grouped) mode gains an opt-in `simple.effects`
-  argument. With `simple.effects = TRUE`, each x group's simple main effect of
-  the compared factor is drawn above its brackets, computed with the pooled
-  error term from the full two-way model so the denominator degrees of freedom
-  are the full-model residual df. Default `FALSE` (existing output unchanged).
-
-- The "Two-Way Comparison Figures with ggcompare()" vignette gains a section
-  showing how to add per-group simple main effects to the figure, computed with
-  the pooled error from the full two-way model (`anova_test(..., error = model)`)
-  and drawn above each group's brackets.
+### New functions
 
 - New `ggrocplot()` draws a publication-ready ROC curve with the area under the
   curve (AUC) and its confidence interval computed and annotated on the plot;
@@ -49,7 +16,41 @@
   negative class), a message hints that the predictor or the response levels may
   need reversing; the curve is never flipped automatically. Set `youden = TRUE`
   to mark the optimal cut-point (the operating point maximizing the Youden index,
-  sensitivity + specificity - 1) on each curve and label its threshold.
+  sensitivity + specificity - 1) on each curve and label its threshold
+  (#766, #767, #768).
+
+- New `ggcompare()` draws a publication-ready group comparison figure in one
+  call: a box plot (or violin/stripchart) with jittered points and means,
+  pairwise comparison brackets with adjusted p-values (packed compactly), and an
+  omnibus test subtitle. It composes existing ggpubr layers (`geom_pwc()`,
+  `add_test_label()`) into one customizable `ggplot`; every piece can be turned on
+  or off. It follows the `ggfunc` contract, so `ggsummarystats(ggfunc =
+  ggcompare)` places a summary table under the comparison figure.
+
+  Mapping a second factor through `color` or `fill` composes a two-way (grouped)
+  comparison figure: dodged boxes for the two factors, simple pairwise comparison
+  brackets of one factor within each level of the other (`pwc.group.by`), and a
+  subtitle from the two-way ANOVA that names the interaction (e.g.
+  "Interaction (gender × education_level), F(2,52) = 7.34, p = 0.002"). In this
+  mode the pairwise `method` defaults to `"emmeans_test"`, `p.adjust.method` to
+  `"bonferroni"` and `hide.ns` to `TRUE`; each remains overridable.
+
+  Two-way mode supports `facet.by`: the simple pairwise comparisons and the
+  two-way interaction are then computed within each facet panel, and a compact
+  interaction label is drawn in each panel in place of the single pooled
+  subtitle. It also accepts an opt-in `simple.effects = TRUE`, which draws each
+  x group's simple main effect of the compared factor above its brackets,
+  computed with the pooled error term from the full two-way model so the
+  denominator degrees of freedom are the full-model residual df
+  (#759, #763, #769, #772).
+
+- New `ggvolcano()` draws a publication-ready volcano plot of differential
+  expression results: log2 fold change versus `-log10` of the (adjusted)
+  p-value, with points colored as up/down/non-significant by fold-change and
+  significance thresholds, the top hits labeled, and threshold lines. It mirrors
+  the `ggmaplot()` surface (`fdr`, `fc`, `top`, `select.top.method` — including
+  `"rank.sum"` — `top.balanced`, `label.select`, `facet.by`) and accepts custom
+  fold-change/p-value column names via `x`/`y` (#761).
 
 - New `ggestimates()` draws a publication-ready forest plot: one row per group
   with a point estimate, its confidence interval, a reference (null) line and an
@@ -62,6 +63,31 @@
   convention (no vertical axis line, right-aligned row labels); set
   `banding = TRUE` for shaded alternate rows (#765).
 
+- New `ggraincloud()` draws a raincloud plot: a half violin (the "cloud"), a
+  narrow box plot, and the raw jittered data points (the "rain") offset to the
+  opposite side. Supports coloring by group, journal palettes, horizontal
+  (default) or vertical orientation, and faceting. The half violin is provided
+  by the new `geom_violin_half()` / `GeomViolinHalf`, a one-sided
+  `geom_violin()` usable on its own (#760).
+
+- New `stat_cld()` adds a compact letter display (CLD) of all-pairwise
+  comparisons to a plot: one letter per group, placed above each box/violin,
+  where groups that do not share a letter are significantly different. Letters
+  are derived with `rstatix::add_cld()` from an all-pairwise post-hoc test
+  (`method`: `"tukey_hsd"` (default), `"games_howell_test"`, `"dunn_test"`,
+  `"wilcox_test"` or `"t_test"`). This is a compact alternative to drawing many
+  significance brackets when comparing several groups (#755).
+
+- New `add_test_label()` adds, in one call, the omnibus test result (one-way
+  ANOVA or Kruskal-Wallis) as a plot subtitle, and optionally a pairwise
+  comparison description as a caption (`caption = TRUE`). It reproduces the
+  common `+ labs(subtitle = get_test_label(...), caption = get_pwc_label(...))`
+  idiom, reusing the re-exported rstatix label helpers. `group.by` and `effect`
+  label a two-way ANOVA effect: with `group.by` set, the subtitle reports the
+  two-way `y ~ x * group.by` model, and `effect` selects the interaction
+  (default), a named term, or `"all"` for a multi-line label of both main effects
+  and the interaction (#758, #763).
+
 - New `style_scatterhist()` and `style_summarystats()` restyle the sub-plots of a
   `ggscatterhist()` or `ggsummarystats()` composite in one call (e.g.
   `style_scatterhist(p, main = theme_bw(), margin = theme_void())`), returning the
@@ -71,66 +97,13 @@
   helpers. These composites are lists of plots, not single ggplots, so `+` does not
   restyle them; use one of those options instead (#764).
 
-- `ggcompare()` gains a two-way (grouped) mode. When a second factor is mapped
-  through `color` or `fill`, it composes a two-way comparison figure in one
-  call: dodged boxes for the two factors, simple pairwise comparison brackets of
-  one factor within each level of the other (`pwc.group.by`), and a subtitle
-  from the two-way ANOVA that names the interaction (e.g.
-  "Interaction (gender × education_level), F(2,52) = 7.34, p = 0.002"). In this
-  mode the pairwise `method` defaults to `"emmeans_test"`, `p.adjust.method` to
-  `"bonferroni"` and `hide.ns` to `TRUE`; each remains overridable. The one-way
-  behavior is unchanged (#763).
+- Re-exported the rstatix annotation helpers `get_test_label()`,
+  `get_pwc_label()`, `create_test_label()`, `add_cld()`, and
+  `add_xy_position()`, so they can be used directly from ggpubr without
+  attaching rstatix (e.g. `ggpubr::add_xy_position()`). These track rstatix's
+  signatures (#754).
 
-- `add_test_label()` gains `group.by` and `effect` arguments to label a two-way
-  ANOVA effect. With `group.by` set, the subtitle reports the two-way
-  `y ~ x * group.by` model; `effect` selects the interaction (default), a named
-  term, or `"all"` for a multi-line label of both main effects and the
-  interaction (#763).
-
-- `ggmaplot()` and `ggvolcano()` gain two opt-in options for choosing which
-  genes are labeled: `select.top.method = "rank.sum"` ranks by the sum of the
-  `|log2FC|` rank and the adjusted-p rank, so the labeled genes are both
-  high-effect and highly significant; and `top.balanced = TRUE` labels about
-  half up-regulated and half down-regulated genes (with spillover). The default
-  selection is unchanged (#762).
-
-- New `ggvolcano()` draws a publication-ready volcano plot of differential
-  expression results: log2 fold change versus `-log10` of the (adjusted)
-  p-value, with points colored as up/down/non-significant by fold-change and
-  significance thresholds, the top hits labeled, and threshold lines. It mirrors
-  the `ggmaplot()` surface (`fdr`, `fc`, `top`, `select.top.method`,
-  `label.select`, `facet.by`) and accepts custom fold-change/p-value column
-  names via `x`/`y` (#761).
-
-- New `ggraincloud()` draws a raincloud plot: a half violin (the "cloud"), a
-  narrow box plot, and the raw jittered data points (the "rain") offset to the
-  opposite side. Supports coloring by group, journal palettes, horizontal
-  (default) or vertical orientation, and faceting. The half violin is provided
-  by the new `geom_violin_half()` / `GeomViolinHalf`, a one-sided
-  `geom_violin()` usable on its own (#760).
-
-- New `ggcompare()` draws a publication-ready group comparison figure in one
-  call: a box plot (or violin/stripchart) with jittered points and means,
-  pairwise comparison brackets with adjusted p-values (packed compactly), and an
-  omnibus test subtitle. It composes existing ggpubr layers (`geom_pwc()`,
-  `add_test_label()`) into one customizable `ggplot`; every piece can be turned on
-  or off. It follows the `ggfunc` contract, so `ggsummarystats(ggfunc =
-  ggcompare)` places a summary table under the comparison figure. As a
-  shortcut, `ggsummarystats(comparisons = ...)` now routes to `ggcompare()`
-  automatically (previously `comparisons` was silently dropped) (#759).
-
-- New `add_test_label()` adds, in one call, the omnibus test result (one-way
-  ANOVA or Kruskal-Wallis) as a plot subtitle, and optionally a pairwise
-  comparison description as a caption (`caption = TRUE`). It reproduces the
-  common `+ labs(subtitle = get_test_label(...), caption = get_pwc_label(...))`
-  idiom, reusing the re-exported rstatix label helpers (#758).
-
-- `geom_pwc()` and `stat_pwc()` gain a `pack` argument. With `pack = "auto"`,
-  pairwise comparison brackets are packed onto the fewest possible levels so
-  that comparisons whose x-spans do not overlap share a level, keeping the
-  annotation compact while guaranteeing that no two brackets on the same level
-  overlap within a panel. The default `pack = "none"` keeps the previous
-  one-bracket-per-level stacking, so existing plots are unchanged (#757).
+### New arguments and annotation options
 
 - `geom_pwc()` and `stat_pwc()` gain a `{effsize}` label token to display the
   pairwise effect size on each bracket, e.g.
@@ -139,21 +112,67 @@
   Cliff's delta for `"wilcox_test"`, r for `"dunn_test"`), rounded to two
   decimals. Labels without `{effsize}` are unchanged (#756).
 
-- New `stat_cld()` adds a compact letter display (CLD) of all-pairwise
-  comparisons to a plot: one letter per group, placed above each box/violin,
-  where groups that do not share a letter are significantly different. Letters
-  are derived with `rstatix::add_cld()` from an all-pairwise post-hoc test
-  (`method`: `"tukey_hsd"` (default), `"games_howell_test"`, `"dunn_test"`,
-  `"wilcox_test"` or `"t_test"`). This is a compact alternative to drawing many
-  significance brackets when comparing several groups.
+- `geom_pwc()` and `stat_pwc()` also gain a `pack` argument. With
+  `pack = "auto"`, pairwise comparison brackets are packed onto the fewest
+  possible levels so that comparisons whose x-spans do not overlap share a level,
+  keeping the annotation compact while guaranteeing that no two brackets on the
+  same level overlap within a panel. The default `pack = "none"` keeps the
+  previous one-bracket-per-level stacking, so existing plots are unchanged
+  (#757).
 
-- Re-exported the rstatix annotation helpers `get_test_label()`,
-  `get_pwc_label()`, `create_test_label()`, `add_cld()`, and
-  `add_xy_position()`, so they can be used directly from ggpubr without
-  attaching rstatix (e.g. `ggpubr::add_xy_position()`). These track rstatix's
-  signatures.
+- `ggmaplot()` and `ggvolcano()` gain two opt-in options for choosing which
+  genes are labeled: `select.top.method = "rank.sum"` ranks by the sum of the
+  `|log2FC|` rank and the adjusted-p rank, so the labeled genes are both
+  high-effect and highly significant; and `top.balanced = TRUE` labels about
+  half up-regulated and half down-regulated genes (with spillover). The default
+  selection is unchanged (#762).
+
+## Main changes
+
+### Documentation
+
+- Five vignettes, where the previous release shipped none: "Adding Statistical
+  Test Results to Plots" (pairwise brackets, compact letter display and omnibus
+  labels, and when to use each), "Two-Way Comparison Figures with ggcompare()"
+  (including a section on adding per-group simple main effects, computed with the
+  pooled error from the full two-way model, `anova_test(..., error = model)`),
+  "Forest and Estimation Plots with ggestimates()" (from a table or a fitted
+  model), "ROC Curves and Diagnostic Accuracy with ggrocplot()", and "Combining
+  ggpubr Plots with patchwork" (shared legends, panel tags, nested layouts;
+  points to ggcorrplot for correlation matrices) (#770, #771).
+
+- Function help pages and the README now link to the corresponding Datanovia
+  tutorials.
+
+### Validation and messaging
+
+- `ggsummarystats(free.panels = TRUE)` now rejects an invalid `labeller` with a
+  message naming the argument, instead of failing with whatever the internal
+  lookup happened to raise. Both documented values, `"label_value"` and
+  `"label_both"`, behave exactly as before. Values outside them are now refused
+  up front: a number, `TRUE`, or a factor used to be accepted and picked a
+  labeller by *position*, because the lookup was a `switch()` that indexes by
+  integer when its argument is not a character string — so `TRUE` and
+  `factor("label_value")` both selected `"label_both"`, the opposite of the
+  request in the second case, and `2` selected `"label_value"`.
+  `free.panels = FALSE` already refused a number and `TRUE`, though it still
+  accepts a factor (#781).
+
+### Compatibility
+
+- The minimum required `rstatix` version is now `>= 1.1.0` (#753).
+
+## Minor changes
+
+- The pkgdown reference index now lists the plot functions and helpers added in
+  this development cycle (`ggcompare()`, `ggrocplot()`, `ggestimates()`,
+  `ggraincloud()`, `ggvolcano()`, `stat_cld()`, `add_test_label()`,
+  `geom_violin_half()`, `style_scatterhist()`, `style_summarystats()`), and the
+  README highlights them (#773).
 
 ## Bug fixes
+
+### Changes to default output
 
 - `ggsummarystats()` now draws its summary table on the categories the plot
   was drawn on, so each column sits under the box it describes. The table
@@ -166,34 +185,14 @@
   factor over those categories. Plots whose x axis is continuous — `ggline()`
   or `ggbarplot()` with an integer or `Date` x, or any builder called with
   `numeric.x.axis = TRUE` — and facets with `scales = "free_x"` are not
-  affected by this change. See `?ggsummarystats`.
-
-- `ggsummarystats(free.panels = TRUE)` now rejects an invalid `labeller` with a
-  message naming the argument, instead of failing with whatever the internal
-  lookup happened to raise. Both documented values, `"label_value"` and
-  `"label_both"`, behave exactly as before. Values outside them are now refused
-  up front: a number, `TRUE`, or a factor used to be accepted and picked a
-  labeller by *position*, because the lookup was a `switch()` that indexes by
-  integer when its argument is not a character string. Which labeller you got
-  therefore depended on the argument's integer value rather than on what was
-  asked for — `TRUE` and `factor("label_value")` both selected `"label_both"`,
-  the opposite of the request in the second case, and `2` selected
-  `"label_value"`. `free.panels = FALSE` already refused a number and `TRUE`,
-  though it still accepts a factor.
-
-- `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,
-  labeller = "label_both")` no longer errors. A `facet.by` that resolves to no
-  grouping column yields a single panel; there is no variable name to build
-  `"<variable>:<value>"` from, so the panel is titled `""`, which is what the
-  same call has always produced with the default `"label_value"`.
+  affected by this change. See `?ggsummarystats` (#780).
 
 - `ggsummarystats(free.panels = TRUE)` now titles every panel with the group
-  whose data it draws. The panel label was taken from a split that sorts its rows
-  before building the label but attaches it to the unsorted data, so panels were
-  titled with each other's names: a panel headed `East` drew `North`'s boxes, and
-  the summary table under it carried `North`'s n, median and IQR. The label is now
-  built from the grouping key that travels with each panel's own rows, so it
-  cannot drift.
+  whose data it draws. The label was built from a sorted copy of the rows and
+  attached to the unsorted data, so panels were titled with each other's names: a
+  panel headed `East` drew `North`'s boxes, and the summary table under it
+  carried `North`'s n, median and IQR. The label is now built from the grouping
+  key that travels with each panel's own rows, so it cannot drift.
 
   This affected any `facet.by` column whose groups do not already appear in sorted
   order: a character column that is not alphabetical, a factor whose levels are
@@ -214,188 +213,128 @@
   the other facet variables in the label under `label_value`. Both were dropped
   before, so `facet.by = c("region", "label")` returned two panels named `p` and
   two named `q` with `region` missing from all four, and only the first of each
-  pair could be reached by name.
+  pair could be reached by name. The panel-title defect was reported upstream
+  (rstatix issue 324) and is fixed in rstatix's development version, so with that
+  installed the labels were already right; ggpubr requires `rstatix (>= 1.1.0)`,
+  the released version carrying the defect, and the `label`-column case above is
+  wrong on any rstatix version, so the fix is applied here regardless (#779).
 
-  The underlying defect was reported upstream (rstatix issue 324) and is fixed in
-  rstatix's development version, so with that installed the labels were already
-  right. ggpubr requires `rstatix (>= 1.1.0)`, the released version carrying the
-  defect, and the `label`-column case above is wrong on any rstatix version, so
-  the fix is applied here regardless.
+- `ggsummarystats(comparisons = ...)` now routes to `ggcompare()` automatically
+  and draws the comparison brackets and omnibus test label that were asked for.
+  Previously `comparisons` was silently dropped and the plot was drawn without
+  them (#759).
 
-- `ggbarplot()` keeps each error bar on its own bar when a variable is mapped to
-  `alpha` and the bars are dodged with `position_dodge()`. Thanks to @zuooonz
-  (#404). The error layer dodged by a different key from the one ggplot2 uses to
-  group the bars, so in a design with three discrete variables half the error
-  bars were centered on an adjacent bar's mean and carried its error. The key is
-  now built from every
-  mapped discrete aesthetic, in the order ggplot2 lays them out, which also
-  aligns cases that were misplaced before: `fill`, `color` and `alpha` on three
-  different columns; an `alpha` column whose levels are reversed, unused or
-  ordered; one containing `NA`; a `tibble` or grouped input; `facet.by =`,
-  including panels in which a level is absent and `scales = "free_x"`;
-  `sort.val =`, `sort.by.groups = FALSE`, `orientation = "horizontal"`, the
-  `error.plot =` variants, and a user-set `add.params$group`. This changes the
-  appearance of such a plot, which was previously drawn with the error bars
-  permuted.
+- `ggbarplot()` now keeps each error bar on its own bar when a variable is mapped
+  to `alpha` and the bars are dodged, under both `position_dodge()` and
+  `position_dodge2()`. Thanks to @zuooonz (#404). The error layer dodged by a
+  different key from the one ggplot2 uses to group the bars, so in a design with
+  three discrete variables half the error bars were centered on an adjacent bar's
+  mean and carried its error. Under `position_dodge2()` most such calls failed at
+  draw, with `"alpha * 255": non-numeric argument to binary operator`, because
+  the summary dropped the `alpha` column and its name reached the graphics engine
+  as a static opacity; the ones that did draw had `alpha` mapped to a column that
+  was *already* a grouping variable (for example `fill = "supp", alpha = "supp"`),
+  so the summary already carried it, and those were drawn with the error bars on
+  the wrong bars.
 
-  Still unchanged from previous releases: the stacked
-  default, a numeric `alpha` column, and a grouping column named after one of the
-  statistics `desc_statby()` computes (`length`, `min`, `max`, `median`, `mean`,
-  `iqr`, `mad`, `sd`, `se`, `ci`, `range`, `cv`, `var`) — the summary's column of
-  that name holds the computed statistic, so the aesthetic mapped to it follows
-  that statistic rather than the column, and the calls that already failed still
-  fail (such a column on `x` errors for all thirteen; on `alpha`, `mean` fails at
-  draw and `ci` when the column is character). A numeric, integer or `Date` column
-  mapped to `color`/`fill` is also unchanged: ggplot2 does not group the bars by
-  such a column, so the layer draws more bars than there are dodge positions and
-  no error bar can be matched to a single bar. `label = TRUE` is unchanged too:
-  the value labels are not moved by this fix, and still dodge on the
-  `fill` key alone, so with a discrete `alpha` they are drawn between the bars,
-  two to a position.
+  The key is now built from every mapped discrete aesthetic, in the order ggplot2
+  lays them out, and the pairing is checked against the bars before they are
+  drawn. This also aligns cases that were misplaced before: `fill`, `color` and
+  `alpha` on three different columns; an `alpha` column whose levels are reversed,
+  unused, ordered or logical; one containing `NA`; a `tibble` or grouped input;
+  shuffled input rows; `facet.by =` of one or two variables, including panels in
+  which a level is absent and `scales = "free_x"` (or `"free"`), where a panel
+  missing an x level renumbers the levels it does draw and the error bars were
+  placed at the un-renumbered positions, sometimes past the edge of the panel
+  (`scales = "fixed"` and `"free_y"` are unaffected); `sort.val =`,
+  `sort.by.groups = FALSE`, `orientation = "horizontal"`; the `error.plot =`
+  variants; `preserve = "single"`; cells that share a mean; unbalanced, singleton
+  and zero-variance cells; an `add.params$color` naming the `alpha` column; and a
+  user-set `add.params$group` naming a column unrelated to the legend, which
+  summarised the error layer by that column so every interval carried another
+  cell's statistic. This changes the appearance of such a plot, which was
+  previously drawn with the error bars permuted.
+
+  With `error.plot = "crossbar"` the crossbars were drawn off-centre and wider
+  than their bars, and are now centred on the bar at the bar's own width and
+  still drawn as crossbars; their fill still follows the mapped `fill`. With
+  `error.plot = "crossbar"` and an `add.params$color` naming a data column whose
+  name is also a colour (a column called `"red"`, say), the argument used to be
+  dropped and the outline drawn black; it is now used as the colour, matching
+  what the other `error.plot` values already did with the same input.
+
+  Unchanged from previous releases: the stacked default; a numeric `alpha`
+  column; a grouping column named after one of the statistics `desc_statby()`
+  computes (`length`, `min`, `max`, `median`, `mean`, `iqr`, `mad`, `sd`, `se`,
+  `ci`, `range`, `cv`, `var`) — the summary's column of that name holds the
+  computed statistic, so the aesthetic mapped to it follows that statistic rather
+  than the column, and the calls that already failed still fail (such a column on
+  `x` errors for all thirteen; on `alpha`, `mean` fails at draw and `ci` when the
+  column is character); a numeric, integer or `Date` column mapped to
+  `color`/`fill`, which ggplot2 does not group the bars by, so the layer draws
+  more bars than there are dodge positions and no error bar can be matched to a
+  single bar; and `label = TRUE`, whose value labels are not moved by this fix and
+  still dodge on the `fill` key alone, so with a discrete `alpha` they are drawn
+  between the bars, two to a position.
+
+  Four configurations keep the released behaviour of refusing to draw under
+  `position_dodge2()` with a discrete `alpha`, rather than placing an interval
+  beside a bar it was not computed from: a `color`/`fill`/`alpha` column that is
+  **not discrete**; `label = TRUE` (or a character label vector); a raw-data layer
+  (`add = c("mean_se", "jitter")`, and likewise `point`, `dotplot`, `boxplot`,
+  `violin`), which already sits off its own bar without any `alpha`; and an
+  asymmetric summary (`median_q1q3`, `median_hilow`), which has no half-width
+  column for the layer to be rebuilt from.
 
   Under plain `position_dodge()`, `top =` remains unsupported alongside a
-  discrete `alpha`, and is the one
-  configuration whose broken output changed rather than staying as released: the
-  error layer is still built for every summary group rather than for the bars
-  actually kept, so it draws more error bars than there are bars, some over empty
-  space and some overlapping a kept bar while carrying another group's statistic
-  — but which stray interval lands where now differs from previous releases.
-  (Under `position_dodge2()` the error layer is built from the same truncated
-  summary as the bars, so `top =` is aligned there.)
+  discrete `alpha`, and is the one configuration whose broken output changed
+  rather than staying as released: the error layer is still built for every
+  summary group rather than for the bars actually kept, so it draws more error
+  bars than there are bars, some over empty space and some overlapping a kept bar
+  while carrying another group's statistic — but which stray interval lands where
+  now differs from previous releases. Under `position_dodge2()` the error layer is
+  built from the same truncated summary as the bars, so `top =` is aligned there.
 
 - `ggbarplot(position = position_dodge2(reverse = TRUE))` now draws each error
   bar on its own bar when the bars are grouped by a single discrete
-  `color`/`fill` column — the ordinary case (#783). Every interval was drawn on
-  the neighbouring bar, carrying that neighbour's mean and error; the values
-  were right, the pairing was not, and nothing in the figure showed it.
-  `position_dodge2()` lays each x out in descending group order when `reverse`
-  is set, while the error layer was ordered ascending, so each row was matched
-  to the mirror bar. Verified against `stats::aggregate` for the `error.plot`
-  variants, `preserve = "single"`, unused and non-alphabetical levels, facets,
-  and a grouping column containing `NA`. This changes the appearance of such a
-  plot, which was previously drawn with the intervals transposed; every
-  `position_dodge2()` call without `reverse` is byte-identical, as is every
-  other position.
+  `color`/`fill` column — the ordinary case, with no `alpha` mapping involved
+  (#783). Every interval was drawn on the neighbouring bar, carrying that
+  neighbour's mean and error; the values were right, the pairing was not, and
+  nothing in the figure showed it. `position_dodge2()` lays each x out in
+  descending group order when `reverse` is set — or any value it treats as true,
+  such as `1` — while the error layer was ordered ascending, so each row was
+  matched to the mirror bar. This changes the appearance of such a plot, which was
+  previously drawn with the intervals transposed; every `position_dodge2()` call
+  without `reverse` is unchanged, as is every other position.
 
-  Three `reverse = TRUE` configurations are **still misplaced**, all of them as
-  wrong as in previous releases. The error layer keys on only the *first* of
-  `color`/`fill`, so whenever that one column does not describe how the bars are
-  grouped, no ordering of it can pair the intervals:
+  Three `reverse = TRUE` configurations are still misplaced, all as wrong as in
+  previous releases. The error layer keys on only the *first* of `color`/`fill`,
+  so whenever that column does not describe how the bars are grouped, no ordering
+  of it can pair the intervals:
 
-  - `color` and `fill` naming two *different* discrete columns — the key is
-    only the first of them, so it cannot account for every bar. Mirroring it
-    would fix nothing and would make the figure harder to read, because each
-    interval would then take the colour of the bar it happens to sit on and
-    lose the mismatch that signals the value belongs to a neighbour. Left
-    exactly as released;
-  - a `color` column that is constant or all-`NA` beside a real `fill` grouping
-    — the key is then constant, so nothing is reordered and the output is
-    identical to previous releases;
-  - a **non-discrete** `color` beside a discrete `fill` — the bars *are*
-    reversed, because ggplot2 groups them by the discrete column, but the key
-    resolves to the non-discrete one and is therefore not mirrored. Also
-    identical to previous releases.
+  - `color` and `fill` naming two *different* discrete columns;
+  - a `color` column that is constant or all-`NA` beside a real `fill` grouping;
+  - a **non-discrete** `color` beside a discrete `fill`.
 
   A non-discrete column mapped to `color`/`fill` *on its own* is unchanged for a
   different reason: ggplot2 does not group the bars by such a column at all, so
   `position_dodge2()` does not reverse them and the ascending key stays correct.
+  A faceted `scales = "free_x"` keeps a pre-existing offset in a panel that is
+  missing an x level, unrelated to `reverse` and present in previous releases
+  (#784).
+### Other fixes
 
-  The verification above covers `facet.by` with fixed scales. A faceted
-  `scales = "free_x"` keeps a pre-existing offset in a panel that is missing an
-  x level, unrelated to `reverse` and present in previous releases (#784).
-
-- `ggbarplot()` now draws a summary with a variable mapped to `alpha` under
-  `position_dodge2()`, with each error bar on its own bar (#404). The
-  combination previously failed at draw with `"alpha * 255": non-numeric
-  argument to binary operator`, because the summary dropped the `alpha` column
-  and its name reached the graphics engine as a static opacity. Carrying the
-  column splits the summary into one row per (x, legend, alpha) cell;
-  `position_dodge2()` places its error layer by re-centring it on the bars, and
-  that step now orders the summary on every discrete aesthetic ggplot2 groups
-  the bars by — in the direction `position_dodge2()` lays them out, so
-  `reverse = TRUE` is included — and then checks the pairing it produced against
-  the bars it is about to draw on. Verified against `stats::aggregate` for
-  `sort.val =`, `sort.by.groups = FALSE`, `top =`, shuffled input rows, an
-  `add.params$color` naming the `alpha` column, `facet.by =` of one or two
-  variables with fixed or free scales, an `alpha` column that is ordered,
-  logical or reversed, cells that share a mean, unbalanced, singleton and
-  zero-variance cells, and tibble or grouped input.
-
-  `error.plot = "crossbar"` is included. A crossbar is wide, so it normally
-  dodges itself — but `position_dodge2()` packs elements by their own width and
-  a crossbar's is not the bar's, so the two only appear to agree while there are
-  few enough subgroups for the offset to stay inside the bar; the `alpha`
-  subgroup doubles them and the crossbar then lands on a neighbour. On this path
-  it is re-centred like the other error plots and drawn as a crossbar rather
-  than falling back to an error bar.
-
-  Four configurations keep the released behaviour of refusing to draw, rather
-  than placing an interval beside a bar it was not computed from:
-
-  - a `color`/`fill`/`alpha` column that is **not discrete** — ggplot2 does not
-    group the bars by such a column, so the layer draws more bars than there are
-    dodge positions and no error bar can be matched to one bar;
-  - **`label = TRUE`** (or a character label vector) — the value labels are
-    placed by their own layer, which dodges on the legend key alone, so with the
-    `alpha` subgroup carried they land between the bars, four of eight over the
-    bar whose value they show;
-  - **a raw-data layer** (`add = c("mean_se", "jitter")`, and likewise `point`,
-    `dotplot`, `boxplot`, `violin`) — placed under the same position, and
-    `position_dodge2()` packs by each element's own width, which a point does
-    not have. They already sit off their own bar without any `alpha` (unchanged
-    by this fix), and the extra subgroup would double it;
-  - **an asymmetric summary** (`median_q1q3`, `median_hilow`) — a quantile pair
-    rather than centre ± error, so the summary has no half-width column for the
-    layer to be rebuilt from.
-
-  Calls without a discrete `alpha` column are unchanged, including a faceted
-  `position_dodge2()` with `scales = "free_x"`, whose error bars keep the
-  positions they have always had.
-
-  **Five** cases change for calls that already drew. All of them need an `alpha`
-  mapped to a column that is **already** a grouping variable (for example
-  `fill = "supp", alpha = "supp"`), which worked before because the summary
-  already carried that column. In the first four the annotation was previously
-  drawn on the wrong bar:
-
-  - with `error.plot = "crossbar"`, the crossbars were drawn off-centre and
-    wider than their bars (`x = 0.75` and width `0.45`, against a bar at
-    `x = 0.825` and width `0.315`); they are now centred on the bar at the bar's
-    own width. Their fill is unchanged — it still follows the mapped `fill`;
-  - with `position_dodge2(reverse = TRUE)` — or any value `position_dodge2()`
-    itself treats as true, such as `1` — every error bar carried the *other*
-    bar's mean and error, because `position_dodge2()` lays each x out in
-    descending group order there while the summary was ordered ascending. They
-    are now paired correctly;
-  - with `facet.by =` and `scales = "free_x"` (or `"free"`), a panel that is
-    missing an x level renumbers the levels it does draw, and the error bars
-    were placed at the positions of the un-renumbered panel — off their bars,
-    sometimes past the edge of the panel. They now follow the drawn panel.
-    `scales = "fixed"` and `"free_y"` are unaffected;
-  - with an `add.params$group` naming a column unrelated to the legend, the
-    error layer was summarised by that column instead and every interval
-    carried another cell's statistic (measured 0 of 6 on their own bar); they
-    are now paired with the bars;
-  - with `error.plot = "crossbar"` and an `add.params$color` naming a data
-    column whose name is also a colour (a column called `"red"`, say), the
-    argument used to be dropped and the outline drawn black; it is now used as
-    the colour. This matches what the other `error.plot` values already did with
-    the same input.
-
-  This note previously said the `reverse = TRUE` correction applied only where a
-  discrete `alpha` column is carried, and that a plain
-  `ggbarplot(ToothGrowth, "dose", "len", fill = "supp", add = "mean_se",
-  position = position_dodge2(reverse = TRUE))` was left unchanged. That was true
-  when the `alpha` fix landed, but the `reverse = TRUE` fix below covers the
-  plain case as well: it now draws all six error bars on their own bar, where
-  1.0.0 drew all six on the neighbour.
+- `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,
+  labeller = "label_both")` no longer errors. A `facet.by` that resolves to no
+  grouping column yields a single panel; there is no variable name to build
+  `"<variable>:<value>"` from, so the panel is titled `""`, which is what the
+  same call has always produced with the default `"label_value"` (#781).
 
 - `stat_compare_means(label = "p.format")` (and `label = "p"`) no longer fail
   with `could not find function "create_p_label"` when ggpubr is called via
   `ggpubr::` without being attached by `library(ggpubr)`. The label helper is now
   namespace-qualified inside `after_stat()` so it resolves off the search path.
   Reported by @pwwang (#751).
-
 
 # ggpubr 1.0.0
 
