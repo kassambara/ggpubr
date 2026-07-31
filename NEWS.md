@@ -158,6 +158,14 @@
   `free.panels = FALSE` already refused a number and `TRUE`, though it still
   accepts a factor (#781).
 
+- Naming the same item in both `select =` and `remove =` is now an error, and the
+  message lists the items in common. Asking to both keep and drop an item has no
+  sensible reading, and the call previously went through and drew something. The
+  arguments can still be combined as long as they name different items, and using
+  either on its own is unchanged. Affects the builders that take both:
+  `ggboxplot()`, `ggviolin()`, `ggbarplot()`, `ggline()`, `ggstripchart()`,
+  `ggdotplot()`, `ggdotchart()` and `ggerrorplot()`.
+
 ### Compatibility
 
 - The minimum required `rstatix` version is now `>= 1.1.0` (#753).
@@ -322,6 +330,24 @@
   A faceted `scales = "free_x"` keeps a pre-existing offset in a panel that is
   missing an x level, unrelated to `reverse` and present in previous releases
   (#784).
+
+- `select =` and `remove =` used together now draw the groups that were asked
+  for. The row filter was built once from the unfiltered data and then reused
+  after `select` had already shrunk it, so the second filter was applied through
+  a mask longer than the data it indexed. Rows of the removed group were kept, a
+  block of `NA` rows formed a phantom category, and the summaries were computed
+  over the wrong rows: `ggboxplot(ToothGrowth, "dose", "len", select =
+  c("0.5", "1"), remove = "2")` drew a median of 7.15 for dose 0.5, a value
+  belonging to no group, where the median is 9.85. This affected every builder
+  taking the two arguments — `ggboxplot()`, `ggviolin()`, `ggbarplot()`,
+  `ggline()`, `ggstripchart()`, `ggdotplot()`, `ggdotchart()` and
+  `ggerrorplot()` — whenever `select` actually dropped a group. Either argument
+  on its own was never affected and is unchanged.
+
+  The filter no longer goes through `subset()`, so a data column named `select`,
+  `remove` or `x` no longer takes the place of the argument. Such a column
+  previously produced a silently empty plot.
+
 ### Other fixes
 
 - `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,

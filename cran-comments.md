@@ -24,9 +24,9 @@
 
 ## Reverse dependencies
 - ggpubr has 318 reverse dependencies (230 Depends/Imports/LinkingTo, 88 Suggests).
-- Six changes in this release alter default output. All are corrections of
-  annotations that were previously drawn against the wrong group or silently
-  dropped, and all are confined to `ggbarplot()` and `ggsummarystats()`:
+- Seven changes in this release alter default output. All are corrections of
+  output that was previously drawn against the wrong group or silently dropped,
+  and all but the last are confined to `ggbarplot()` and `ggsummarystats()`:
   - `ggsummarystats()` now draws its summary table on the categories the plot was
     actually drawn on; previously the table could be transposed relative to the
     plot for a character x axis in non-alphabetical order.
@@ -43,11 +43,20 @@
   - `ggsummarystats(comparisons = )` now draws the comparison brackets and the
     test label that were requested; previously `comparisons` was silently
     dropped and the plot was drawn without them.
-- One previously accepted input is now refused: `ggsummarystats(free.panels =
-  TRUE)` rejects a `labeller` outside the two documented values `"label_value"`
-  and `"label_both"`. A number, `TRUE` or a factor used to be accepted and
-  selected a labeller by position rather than by name, so which one you got
-  depended on the argument's integer value rather than on what was asked for.
+  - `select =` and `remove =` used together now filter to the groups asked for.
+    The row mask was built before `select` subset the data and then reused after
+    it, so the removed group could survive, `NA` rows were introduced, and the
+    summaries were computed over the wrong rows. Affects the eight builders
+    taking both arguments; either argument on its own is unchanged.
+- Two previously accepted inputs are now refused:
+  - `ggsummarystats(free.panels = TRUE)` rejects a `labeller` outside the two
+    documented values `"label_value"` and `"label_both"`. A number, `TRUE` or a
+    factor used to be accepted and selected a labeller by position rather than by
+    name, so which one you got depended on the argument's integer value rather
+    than on what was asked for.
+  - Naming the same item in both `select =` and `remove =` is an error, since the
+    call asks to both keep and drop it. Combining the two arguments on different
+    items is still supported.
 - We downloaded and scanned the sources of all 230 strong reverse dependencies for
   calls to the changed surface. No reverse dependency maps `alpha` in
   `ggbarplot()`, none passes `reverse =` to `position_dodge2()`, none calls

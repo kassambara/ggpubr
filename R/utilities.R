@@ -974,13 +974,29 @@ keep_only_tbl_df_classes <- function(x) {
     }
   }
 
-  # Item to display
-  x <- opts$data[[opts$x]] %>% as.vector()
+  # Item to display.
+  #
+  # The mask is recomputed from opts$data after each step: `select` shrinks
+  # opts$data, so a mask built once from the original data would be longer than
+  # the frame `remove` is applied to, which silently yields NA rows and pairs the
+  # remaining rows with the wrong mask entries. Indexing with `[` rather than
+  # subset() also keeps the arguments from being shadowed by a data column of the
+  # same name (a column called "select" would otherwise be used in their place).
+  if (!is.null(select) && !is.null(remove)) {
+    both <- intersect(select, remove)
+    if (length(both) > 0) {
+      stop("`select` and `remove` have values in common: ", .collapse(both, sep = ", "), ". ",
+        "Each item must be either kept or dropped, not both. ",
+        "Use `select` to name what to keep, or `remove` to name what to drop.",
+        call. = FALSE
+      )
+    }
+  }
   if (!is.null(select)) {
-    opts$data <- subset(opts$data, x %in% select)
+    opts$data <- opts$data[opts$data[[opts$x]] %in% select, , drop = FALSE]
   }
   if (!is.null(remove)) {
-    opts$data <- subset(opts$data, !(x %in% remove))
+    opts$data <- opts$data[!(opts$data[[opts$x]] %in% remove), , drop = FALSE]
   }
   if (!is.null(order)) opts$data[[opts$x]] <- factor(opts$data[[opts$x]], levels = order)
 

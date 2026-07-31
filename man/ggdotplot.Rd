@@ -90,9 +90,12 @@ outlines.}
 \item{binwidth}{numeric value specifying bin width. use value between 0 and 1
 when you have a strong dense dotplot. For example binwidth = 0.2.}
 
-\item{select}{character vector specifying which items to display.}
+\item{select}{character vector specifying which items to display. Can be
+combined with \code{remove}, but the two must not name the same item.}
 
-\item{remove}{character vector specifying which items to remove from the plot.}
+\item{remove}{character vector specifying which items to remove from the plot.
+Can be combined with \code{select}, but the two must not name the same item:
+asking to both keep and drop an item is an error.}
 
 \item{order}{character vector specifying the order of items.}
 
