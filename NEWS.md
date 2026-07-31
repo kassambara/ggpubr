@@ -164,7 +164,7 @@
   arguments can still be combined as long as they name different items, and using
   either on its own is unchanged. Affects the builders that take both:
   `ggboxplot()`, `ggviolin()`, `ggbarplot()`, `ggline()`, `ggstripchart()`,
-  `ggdotplot()`, `ggdotchart()` and `ggerrorplot()`.
+  `ggdotplot()`, `ggdotchart()` and `ggerrorplot()` (#788).
 
 ### Compatibility
 
@@ -346,7 +346,7 @@
 
   The filter no longer goes through `subset()`, so a data column named `select`,
   `remove` or `x` no longer takes the place of the argument. Such a column
-  previously produced a silently empty plot.
+  previously produced a silently empty plot (#788).
 
 ### Other fixes
 
