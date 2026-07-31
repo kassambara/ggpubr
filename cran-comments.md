@@ -64,6 +64,11 @@
   together. One package (jsmodule) calls `ggbarplot()` with a summary and
   `position_dodge()`; we reproduced its call shape against 1.0.0 and against this
   release and the built layer data is identical.
+- For the `select`/`remove` change specifically: 42 files across the 230 packages
+  call one of the eight affected builders, and none of those calls passes
+  `select =` or `remove =` at all, so neither the corrected filtering nor the new
+  error can be reached. (Matches for those names in reverse-dependency sources
+  are base R's `subset(df, select = )` and `tidyr::separate(..., remove = )`.)
 - One further case moves output that was already wrong and remains wrong:
   `ggbarplot(top = )` combined with a discrete `alpha` under `position_dodge()`
   still draws more error bars than there are bars, but which stray interval
