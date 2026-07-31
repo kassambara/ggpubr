@@ -12,18 +12,18 @@ context("test-select-remove")
   suppressWarnings(ggplot2::ggplot_build(p)$data[[1]]$middle)
 }
 
-test_that("select and remove naming the same item is an error", {
-  expect_error(
+test_that("select and remove naming the same item warns", {
+  expect_warning(
     ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1"), remove = "0.5"),
     "have values in common"
   )
   # the offending value is named, so the user can see which one
-  expect_error(
+  expect_warning(
     ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1"), remove = "0.5"),
     "0.5"
   )
   # more than one overlapping value is listed
-  expect_error(
+  expect_warning(
     ggboxplot(ToothGrowth, "dose", "len",
       select = c("0.5", "1", "2"), remove = c("0.5", "2")
     ),
@@ -31,10 +31,47 @@ test_that("select and remove naming the same item is an error", {
   )
 })
 
-test_that("the guard fires only when BOTH are supplied and they overlap", {
-  # select alone, remove alone, and a disjoint pair are all legal
+test_that("an overlapping item is dropped, and the remaining groups are right", {
+  # `remove` is applied after `select`, so the overlap loses; the point of
+  # warning rather than erroring is that the result is still correct.
+  p <- suppressWarnings(
+    ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1"), remove = "0.5")
+  )
+  expect_equal(sort(unique(as.character(p$data$dose))), "1")
+  expect_equal(.drawn_medians(p), .med(1))
+  expect_equal(.drawn_medians(p), 19.25)
+  expect_false(anyNA(p$data$dose))
+
+  # `select` naming every group drops nothing, so only `remove` bites. This call
+  # drew correctly before the change and must still draw correctly.
+  p2 <- suppressWarnings(
+    ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1", "2"), remove = "2")
+  )
+  expect_equal(sort(unique(as.character(p2$data$dose))), c("0.5", "1"))
+  expect_equal(.drawn_medians(p2), .med(c(0.5, 1)))
+})
+
+test_that("the warning fires only when BOTH are supplied and they overlap", {
+  # none of these is contradictory, so none should warn -- assert the ABSENCE of
+  # the condition rather than matching message text, which is translated.
+  seen <- function(expr) {
+    w <- character(0)
+    withCallingHandlers(force(expr),
+      warning = function(cnd) {
+        w <<- c(w, conditionMessage(cnd))
+        invokeRestart("muffleWarning")
+      }
+    )
+    sum(grepl("values in common", w))
+  }
+  expect_equal(seen(ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1"))), 0L)
+  expect_equal(seen(ggboxplot(ToothGrowth, "dose", "len", remove = "0.5")), 0L)
+  expect_equal(
+    seen(ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1"), remove = "2")),
+    0L
+  )
+  # and none of them errors
   expect_error(ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1")), NA)
-  expect_error(ggboxplot(ToothGrowth, "dose", "len", remove = "0.5"), NA)
   expect_error(
     ggboxplot(ToothGrowth, "dose", "len", select = c("0.5", "1"), remove = "2"),
     NA
@@ -50,6 +87,31 @@ test_that("select and remove together draw the right groups with the right value
   expect_equal(.drawn_medians(p), c(9.85, 19.25))
   expect_false(anyNA(p$data$dose))
   expect_equal(sort(unique(as.character(p$data$dose))), c("0.5", "1"))
+})
+
+test_that("a computed summary is right when select and remove are combined", {
+  # ggbarplot(add = "mean_se") derives the bar height and the interval, so a
+  # misaligned row filter shows up as a wrong NUMBER rather than a wrong box.
+  sub <- ToothGrowth[ToothGrowth$dose %in% c(0.5, 1), ]
+  want_mean <- as.numeric(tapply(sub$len, factor(sub$dose), mean))
+  want_se <- as.numeric(tapply(sub$len, factor(sub$dose), function(v) {
+    stats::sd(v) / sqrt(length(v))
+  }))
+
+  p <- ggbarplot(ToothGrowth, "dose", "len",
+    add = "mean_se", select = c("0.5", "1"), remove = "2"
+  )
+  b <- suppressWarnings(ggplot2::ggplot_build(p))
+  expect_equal(b$data[[1]]$y, want_mean)
+  expect_equal(b$data[[1]]$y, c(10.605, 19.735))
+
+  eb <- b$data[[2]]
+  expect_equal(eb$ymax - want_mean, want_se)
+
+  # and the same through ggerrorplot, which draws the summary directly
+  p2 <- ggerrorplot(ToothGrowth, "dose", "len", select = c("0.5", "1"), remove = "2")
+  b2 <- suppressWarnings(ggplot2::ggplot_build(p2))
+  expect_equal(sort(unique(round(b2$data[[1]]$y, 6))), sort(round(want_mean, 6)))
 })
 
 test_that("select alone and remove alone are unchanged", {
@@ -104,9 +166,9 @@ test_that("filtering works on a factor x with non-alphabetical levels", {
   expect_equal(sort(unique(as.character(p$data$grp))), c("a", "b"))
 })
 
-test_that("the guard reaches builders that take select/remove through dots", {
+test_that("the warning reaches builders that take select/remove through dots", {
   # ggscatter does not declare select/remove but forwards ... to .plotter()
-  expect_error(
+  expect_warning(
     ggscatter(ToothGrowth, "dose", "len", select = c("0.5", "1"), remove = "0.5"),
     "have values in common"
   )

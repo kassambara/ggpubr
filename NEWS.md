@@ -158,13 +158,15 @@
   `free.panels = FALSE` already refused a number and `TRUE`, though it still
   accepts a factor (#781).
 
-- Naming the same item in both `select =` and `remove =` is now an error, and the
-  message lists the items in common. Asking to both keep and drop an item has no
-  sensible reading, and the call previously went through and drew something. The
-  arguments can still be combined as long as they name different items, and using
-  either on its own is unchanged. Affects the builders that take both:
-  `ggboxplot()`, `ggviolin()`, `ggbarplot()`, `ggline()`, `ggstripchart()`,
-  `ggdotplot()`, `ggdotchart()` and `ggerrorplot()` (#788).
+- Naming the same item in both `select =` and `remove =` now warns, listing the
+  items in common. The call asks to keep and drop the same item; `remove` is
+  applied after `select`, so the item is dropped. Nothing about the drawn result
+  changes — the warning only makes the resolution visible, since the call
+  previously went through silently. Affects the eight builders that declare both
+  arguments (`ggboxplot()`, `ggviolin()`, `ggbarplot()`, `ggline()`,
+  `ggstripchart()`, `ggdotplot()`, `ggdotchart()`, `ggerrorplot()`) and the six
+  that accept them through `...` (`ggscatter()`, `ggdensity()`, `gghistogram()`,
+  `ggecdf()`, `ggqqplot()`, `ggpaired()`) (#788).
 
 ### Compatibility
 
@@ -337,16 +339,22 @@
   a mask longer than the data it indexed. Rows of the removed group were kept, a
   block of `NA` rows formed a phantom category, and the summaries were computed
   over the wrong rows: `ggboxplot(ToothGrowth, "dose", "len", select =
-  c("0.5", "1"), remove = "2")` drew a median of 7.15 for dose 0.5, a value
-  belonging to no group, where the median is 9.85. This affected every builder
-  taking the two arguments — `ggboxplot()`, `ggviolin()`, `ggbarplot()`,
-  `ggline()`, `ggstripchart()`, `ggdotplot()`, `ggdotchart()` and
-  `ggerrorplot()` — whenever `select` actually dropped a group. Either argument
-  on its own was never affected and is unchanged.
+  c("0.5", "1"), remove = "2")` drew a median of 7.15 for the dose-0.5 box, where
+  that group's median is 9.85 — 7.15 is the median of a subgroup the box does not
+  represent. This affected every builder taking the two arguments —
+  `ggboxplot()`, `ggviolin()`, `ggbarplot()`, `ggline()`, `ggstripchart()`,
+  `ggdotplot()`, `ggdotchart()` and `ggerrorplot()`, and the six that accept the
+  two arguments through `...`: `ggscatter()`, `ggdensity()`, `gghistogram()`,
+  `ggecdf()`, `ggqqplot()` and `ggpaired()` — whenever `select` actually dropped
+  a group. Using one argument on its own was never affected.
 
-  The filter no longer goes through `subset()`, so a data column named `select`,
-  `remove` or `x` no longer takes the place of the argument. Such a column
-  previously produced a silently empty plot (#788).
+  The filter also no longer goes through `subset()`, which evaluated its
+  expression inside the data frame, so a column named `select`, `remove` or `x`
+  took the place of the argument. This is the one way a single-argument call
+  changes: with such a column present, `select` matched nothing and drew an empty
+  plot, and `remove` was ignored so every group was still drawn — the second case
+  looking like a normal figure with the group the user asked to drop still in it
+  (#788).
 
 ### Other fixes
 

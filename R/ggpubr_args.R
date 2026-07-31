@@ -30,10 +30,10 @@
 #'   \item{\code{size}}{Numeric value (e.g.: size = 1). change the size of points
 #'     and outlines.}
 #'   \item{\code{select}}{character vector specifying which items to display. Can
-#'     be combined with \code{remove}, but the two must not name the same item.}
+#'     be combined with \code{remove}.}
 #'   \item{\code{remove}}{character vector specifying which items to remove from
-#'     the plot. Can be combined with \code{select}, but the two must not name the
-#'     same item: asking to both keep and drop an item is an error.}
+#'     the plot. Can be combined with \code{select}; \code{remove} is applied
+#'     second, so an item named in both is dropped, with a warning.}
 #'   \item{\code{order}}{character vector specifying the order of items.}
 #'   \item{\code{add}}{character vector for adding another plot element (e.g.: dot
 #'     plot or error bars). Allowed values are one or the combination of: "none",

@@ -985,18 +985,20 @@ keep_only_tbl_df_classes <- function(x) {
   if (!is.null(select) && !is.null(remove)) {
     both <- intersect(select, remove)
     if (length(both) > 0) {
-      stop("`select` and `remove` have values in common: ", .collapse(both, sep = ", "), ". ",
-        "Each item must be either kept or dropped, not both. ",
-        "Use `select` to name what to keep, or `remove` to name what to drop.",
+      warning("`select` and `remove` have values in common: ", .collapse(both, sep = ", "), ". ",
+        "`remove` is applied after `select`, so these items are dropped. ",
+        "Name each item in only one of the two to silence this.",
         call. = FALSE
       )
     }
   }
   if (!is.null(select)) {
-    opts$data <- opts$data[opts$data[[opts$x]] %in% select, , drop = FALSE]
+    keep <- as.vector(opts$data[[opts$x]]) %in% select
+    opts$data <- opts$data[keep, , drop = FALSE]
   }
   if (!is.null(remove)) {
-    opts$data <- opts$data[!(opts$data[[opts$x]] %in% remove), , drop = FALSE]
+    keep <- !(as.vector(opts$data[[opts$x]]) %in% remove)
+    opts$data <- opts$data[keep, , drop = FALSE]
   }
   if (!is.null(order)) opts$data[[opts$x]] <- factor(opts$data[[opts$x]], levels = order)
 

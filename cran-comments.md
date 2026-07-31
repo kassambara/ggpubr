@@ -47,16 +47,19 @@
     The row mask was built before `select` subset the data and then reused after
     it, so the removed group could survive, `NA` rows were introduced, and the
     summaries were computed over the wrong rows. Affects the eight builders
-    taking both arguments; either argument on its own is unchanged.
-- Two previously accepted inputs are now refused:
-  - `ggsummarystats(free.panels = TRUE)` rejects a `labeller` outside the two
-    documented values `"label_value"` and `"label_both"`. A number, `TRUE` or a
-    factor used to be accepted and selected a labeller by position rather than by
-    name, so which one you got depended on the argument's integer value rather
-    than on what was asked for.
-  - Naming the same item in both `select =` and `remove =` is an error, since the
-    call asks to both keep and drop it. Combining the two arguments on different
-    items is still supported.
+    declaring both arguments and the six that accept them through `...`, fourteen
+    functions in all. Calls using one argument on its own are unchanged,
+    except where the data carries a column named `select`, `remove` or `x`: the
+    filter no longer goes through `subset()`, which evaluated its expression
+    inside the data frame and let such a column take the place of the argument.
+- One previously accepted input is now refused: `ggsummarystats(free.panels =
+  TRUE)` rejects a `labeller` outside the two documented values `"label_value"`
+  and `"label_both"`. A number, `TRUE` or a factor used to be accepted and
+  selected a labeller by position rather than by name, so which one you got
+  depended on the argument's integer value rather than on what was asked for.
+- One new warning: naming the same item in both `select =` and `remove =` now
+  warns that the item will be dropped, since `remove` is applied after `select`.
+  The drawn result is unaffected.
 - We downloaded and scanned the sources of all 230 strong reverse dependencies for
   calls to the changed surface. No reverse dependency maps `alpha` in
   `ggbarplot()`, none passes `reverse =` to `position_dodge2()`, none calls
@@ -64,11 +67,12 @@
   together. One package (jsmodule) calls `ggbarplot()` with a summary and
   `position_dodge()`; we reproduced its call shape against 1.0.0 and against this
   release and the built layer data is identical.
-- For the `select`/`remove` change specifically: 42 files across the 230 packages
-  call one of the eight affected builders, and none of those calls passes
-  `select =` or `remove =` at all, so neither the corrected filtering nor the new
-  error can be reached. (Matches for those names in reverse-dependency sources
-  are base R's `subset(df, select = )` and `tidyr::separate(..., remove = )`.)
+- For the `select`/`remove` change specifically: 55 files, across 32 of the 230
+  packages, call one of the fourteen affected functions, and none of those calls
+  passes `select =` or `remove =` at all, so neither the corrected filtering nor
+  the new warning can be reached. (Matches for those names in reverse-dependency
+  sources are base R's `subset(df, select = )` and
+  `tidyr::separate(..., remove = )`.)
 - One further case moves output that was already wrong and remains wrong:
   `ggbarplot(top = )` combined with a discrete `alpha` under `position_dodge()`
   still draws more error bars than there are bars, but which stray interval
