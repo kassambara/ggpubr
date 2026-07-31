@@ -346,7 +346,10 @@
   `ggdotplot()`, `ggdotchart()` and `ggerrorplot()`, and the six that accept the
   two arguments through `...`: `ggscatter()`, `ggdensity()`, `gghistogram()`,
   `ggecdf()`, `ggqqplot()` and `ggpaired()` — whenever `select` actually dropped
-  a group. Using one argument on its own was never affected.
+  a group. Using one argument on its own was never affected. A `data.table` was
+  the one input that caught the mismatch: it refused the over-long mask and the
+  call errored rather than drawing, so for that input the combination now works
+  where it previously stopped.
 
   The filter also no longer goes through `subset()`, which evaluated its
   expression inside the data frame, so a column named `select`, `remove` or `x`
