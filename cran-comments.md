@@ -48,10 +48,14 @@
     it, so the removed group could survive, `NA` rows were introduced, and the
     summaries were computed over the wrong rows. Affects the eight builders
     declaring both arguments and the six that accept them through `...`, fourteen
-    functions in all. Calls using one argument on its own are unchanged,
+    functions in all. Calls using one argument on its own draw identically,
     except where the data carries a column named `select`, `remove` or `x`: the
     filter no longer goes through `subset()`, which evaluated its expression
     inside the data frame and let such a column take the place of the argument.
+    Two side effects of that change touch no drawn output: the row names of a
+    filtered `data.table` are preserved rather than renumbered, and an unbalanced
+    `ggpaired()` call that previously drew a frame padded with `NA` rows now
+    raises the same error it already raised on equivalent pre-filtered data.
 - One previously accepted input is now refused: `ggsummarystats(free.panels =
   TRUE)` rejects a `labeller` outside the two documented values `"label_value"`
   and `"label_both"`. A number, `TRUE` or a factor used to be accepted and
@@ -70,8 +74,9 @@
 - For the `select`/`remove` change specifically: 55 files, across 32 of the 230
   packages, call one of the fourteen affected functions, and none of those calls
   passes `select =` or `remove =` at all, so neither the corrected filtering nor
-  the new warning can be reached. (Within those files the only matches for those
-  names are base R's `subset(df, select = )`.)
+  the new warning can be reached. (Matches for those names within those files are
+  base R's `subset(df, select = )` and packages' own `select` formals, not the
+  ggpubr arguments.)
 - One further case moves output that was already wrong and remains wrong:
   `ggbarplot(top = )` combined with a discrete `alpha` under `position_dodge()`
   still draws more error bars than there are bars, but which stray interval
