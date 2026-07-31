@@ -974,13 +974,36 @@ keep_only_tbl_df_classes <- function(x) {
     }
   }
 
-  # Item to display
-  x <- opts$data[[opts$x]] %>% as.vector()
+  # Item to display.
+  #
+  # The mask is recomputed from opts$data after each step: `select` shrinks
+  # opts$data, so a mask built once from the original data would be longer than
+  # the frame `remove` is applied to, which silently yields NA rows and pairs the
+  # remaining rows with the wrong mask entries. Indexing with `[` rather than
+  # subset() also keeps the arguments from being shadowed by a data column of the
+  # same name (a column called "select" would otherwise be used in their place).
+  #
+  # as.vector() is deliberate: it strips a Date x to its day number, so a date
+  # string matches nothing while the day number matches. That is a pre-existing
+  # defect, but correcting it here would change single-argument calls, so the
+  # released semantics are kept and pinned in test-select-remove.R.
+  if (!is.null(select) && !is.null(remove)) {
+    both <- intersect(select, remove)
+    if (length(both) > 0) {
+      warning("`select` and `remove` have values in common: ", .collapse(both, sep = ", "), ". ",
+        "`remove` is applied after `select`, so these items are dropped. ",
+        "Name each item in only one of the two to silence this.",
+        call. = FALSE
+      )
+    }
+  }
   if (!is.null(select)) {
-    opts$data <- subset(opts$data, x %in% select)
+    keep <- as.vector(opts$data[[opts$x]]) %in% select
+    opts$data <- opts$data[keep, , drop = FALSE]
   }
   if (!is.null(remove)) {
-    opts$data <- subset(opts$data, !(x %in% remove))
+    keep <- !(as.vector(opts$data[[opts$x]]) %in% remove)
+    opts$data <- opts$data[keep, , drop = FALSE]
   }
   if (!is.null(order)) opts$data[[opts$x]] <- factor(opts$data[[opts$x]], levels = order)
 

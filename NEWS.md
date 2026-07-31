@@ -158,6 +158,16 @@
   `free.panels = FALSE` already refused a number and `TRUE`, though it still
   accepts a factor (#781).
 
+- Naming the same item in both `select =` and `remove =` now warns, listing the
+  items in common. The call asks to keep and drop the same item; `remove` is
+  applied after `select`, so the item is dropped. Nothing about the drawn result
+  changes — the warning only makes the resolution visible, since the call
+  previously went through silently. Affects the eight builders that declare both
+  arguments (`ggboxplot()`, `ggviolin()`, `ggbarplot()`, `ggline()`,
+  `ggstripchart()`, `ggdotplot()`, `ggdotchart()`, `ggerrorplot()`) and the six
+  that accept them through `...` (`ggscatter()`, `ggdensity()`, `gghistogram()`,
+  `ggecdf()`, `ggqqplot()`, `ggpaired()`) (#788).
+
 ### Compatibility
 
 - The minimum required `rstatix` version is now `>= 1.1.0` (#753).
@@ -322,6 +332,34 @@
   A faceted `scales = "free_x"` keeps a pre-existing offset in a panel that is
   missing an x level, unrelated to `reverse` and present in previous releases
   (#784).
+
+- `select =` and `remove =` used together now draw the groups that were asked
+  for. The row filter was built once from the unfiltered data and then reused
+  after `select` had already shrunk it, so the second filter was applied through
+  a mask longer than the data it indexed. Rows of the removed group were kept, a
+  block of `NA` rows formed a phantom category, and the summaries were computed
+  over the wrong rows: `ggboxplot(ToothGrowth, "dose", "len", select =
+  c("0.5", "1"), remove = "2")` drew a median of 7.15 for the dose-0.5 box, where
+  that group's median is 9.85 — 7.15 is the median of a subgroup the box does not
+  represent. This affected every builder taking the two arguments —
+  `ggboxplot()`, `ggviolin()`, `ggbarplot()`, `ggline()`, `ggstripchart()`,
+  `ggdotplot()`, `ggdotchart()` and `ggerrorplot()`, and the six that accept the
+  two arguments through `...`: `ggscatter()`, `ggdensity()`, `gghistogram()`,
+  `ggecdf()`, `ggqqplot()` and `ggpaired()` — whenever `select` actually dropped
+  a group. Using one argument on its own was never affected. A `data.table` was
+  the one input that caught the mismatch: it refused the over-long mask and the
+  call errored rather than drawing, so for that input the combination now works
+  where it previously stopped.
+
+  The filter also no longer goes through `subset()`, which evaluated its
+  expression inside the data frame, so a column named `select`, `remove` or `x`
+  took the place of the argument. This is the one way a single-argument call
+  changes. What was drawn then depended on that column's contents rather than on
+  what was asked for, so the call could drop nothing, drop everything, or drop
+  the wrong group — a frame with a column named `remove` holding `"a"` answered
+  `remove = "c"` by dropping `a` and keeping `c`, which looks like an ordinary
+  figure with the wrong group missing (#788).
+
 ### Other fixes
 
 - `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,

@@ -37,8 +37,11 @@ NULL
 #' @inheritParams facet
 #' @inheritParams ggpar
 #' @inheritParams ggtext
-#' @param select character vector specifying which items to display.
+#' @param select character vector specifying which items to display. Can be
+#'   combined with \code{remove}.
 #' @param remove character vector specifying which items to remove from the plot.
+#'   Can be combined with \code{select}; \code{remove} is applied second, so an
+#'   item named in both is dropped, with a warning.
 #' @param order character vector specifying the order of items.
 #' @param add character vector for adding another plot element (e.g.: dot plot or
 #'  error bars). Allowed values are one or the combination of: "none",

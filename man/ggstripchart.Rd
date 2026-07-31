@@ -92,9 +92,12 @@ labelled only by variable grouping levels.}
 \item{size}{Numeric value (e.g.: size = 1). change the size of points and
 outlines.}
 
-\item{select}{character vector specifying which items to display.}
+\item{select}{character vector specifying which items to display. Can be
+combined with \code{remove}.}
 
-\item{remove}{character vector specifying which items to remove from the plot.}
+\item{remove}{character vector specifying which items to remove from the plot.
+Can be combined with \code{select}; \code{remove} is applied second, so an
+item named in both is dropped, with a warning.}
 
 \item{order}{character vector specifying the order of items.}
 
