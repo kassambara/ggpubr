@@ -273,11 +273,12 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     method.args <- .add_item(method.args, paired = paired)
 
     pms <- list(...)
-    size <- ifelse(is.null(pms$size), 3.88, pms$size)
-    color <- ifelse(is.null(pms$color), "black", pms$color)
+    size <- pms$size %||% 3.88
+    color <- pms$color %||% pms$colour %||% "black"
     # Forward the font family to the bracket labels; without this it was dropped
     # in the comparisons path while it worked in the default path (#592, #624).
-    family <- ifelse(is.null(pms$family), "", pms$family)
+    family <- pms$family %||% ""
+    pms[c("size", "color", "colour", "family", "tip.length.ref")] <- NULL
 
     if (is.null(label)) {
       mapped_label <- .get_stat_compare_means_label_from_mapping(mapping)
@@ -293,18 +294,27 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
       p.min.threshold = p.min.threshold,
       p.decimal.mark = p.decimal.mark
     )
-
+    signif.mapping <- mapping
+    if (!is.null(signif.mapping)) {
+      # The label mapping has already been translated into map_signif_level.
+      # GeomSignif's stat does not expose ggpubr's p.signif/p.format columns,
+      # so forwarding the same after_stat() expression makes plot building fail.
+      signif.mapping$label <- NULL
+    }
     if (missing(step.increase)) {
       step.increase <- ifelse(is.null(label.y), 0.12, 0)
     }
-    ggsignif::geom_signif(
+    signif.args <- c(list(
+      mapping = signif.mapping, data = data, position = position,
+      na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes,
       comparisons = comparisons, y_position = label.y,
       test = method, test.args = method.args,
       step_increase = step.increase, size = bracket.size, textsize = size, color = color,
       family = family,
       map_signif_level = map_signif_level, tip_length = tip.length,
-      data = data, vjust = vjust
-    )
+      vjust = vjust
+    ), pms)
+    do.call(ggsignif::geom_signif, signif.args)
   } else {
     mapping <- .update_mapping(mapping, label)
     # #560: for a paired test, carry the subject `id` column into the stat's
