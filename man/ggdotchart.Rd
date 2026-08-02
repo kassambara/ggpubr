@@ -16,7 +16,7 @@ ggdotchart(
   shape = 19,
   size = NULL,
   dot.size = size,
-  sorting = c("ascending", "descending", "none"),
+  sorting = c("descending", "ascending", "none"),
   add = c("none", "segment"),
   add.params = list(),
   x.text.col = TRUE,
@@ -71,15 +71,11 @@ order. Allowed values are one of "descending", "ascending" and "none". Partial
 match are allowed (e.g. sorting = "desc" or "asc"). Default is
 "descending".}
 
-\item{add}{character vector for adding another plot element (e.g.: dot plot or
-error bars). Allowed values are one or the combination of: "none",
-"dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
-"mean_ci", "mean_range", "median", "median_iqr", "median_hilow",
-"median_q1q3", "median_mad", "median_range"; see ?desc_statby for more
-details.}
+\item{add}{character scalar. Use \code{"segment"} to draw a line from zero
+to each point, or \code{"none"} to draw no line.}
 
-\item{add.params}{parameters (color, shape, size, fill, linetype) for the
-argument 'add'; e.g.: add.params = list(color = "red").}
+\item{add.params}{parameters for the optional segment, including
+\code{color}, \code{linewidth}, and \code{linetype}.}
 
 \item{x.text.col}{logical. If TRUE (default), x axis texts are colored by
 groups.}
