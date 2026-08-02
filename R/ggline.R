@@ -314,11 +314,12 @@ ggline_core <- function(data, x, y, group = 1,
     if (!is.null(explicit.group)) {
       group <- explicit.group
     } else {
-      data_sum[[".ggpubr.group"]] <- do.call(
+      internal.group <- .new_col_name(".ggpubr.group", names(data_sum))
+      data_sum[[internal.group]] <- do.call(
         interaction,
         c(data_sum[group], list(drop = TRUE, lex.order = TRUE))
       )
-      group <- ".ggpubr.group"
+      group <- internal.group
     }
   }
 

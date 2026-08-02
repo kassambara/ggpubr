@@ -69,3 +69,30 @@ test_that("ggline() single grouping variable is unchanged (no regression, #616)"
   expect_no_error(ggplot2::ggplot_gtable(b))
   expect_equal(.n_line_groups(p), 2L)
 })
+
+test_that("ggline() preserves a facet named like its interaction group", {
+  d <- expand.grid(
+    x = factor(c("x1", "x2")),
+    colour_group = c("C1", "C2"),
+    line_group = c("L1", "L2"),
+    .ggpubr.group = c("F1", "F2"),
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = FALSE
+  )
+  d$y <- seq_len(nrow(d))
+  p <- ggline(
+    d, x = "x", y = "y", color = "colour_group", linetype = "line_group",
+    facet.by = ".ggpubr.group"
+  )
+  built <- ggplot2::ggplot_build(p)
+  line <- p$layers[[which(vapply(p$layers, function(z) inherits(z$geom, "GeomLine"), logical(1)))]]
+
+  expect_identical(
+    list(
+      facets = sort(unique(as.character(built$layout$layout$.ggpubr.group))),
+      values = sort(unique(as.character(line$data$.ggpubr.group))),
+      group = rlang::as_label(line$mapping$group)
+    ),
+    list(facets = c("F1", "F2"), values = c("F1", "F2"), group = ".ggpubr.group1")
+  )
+})
