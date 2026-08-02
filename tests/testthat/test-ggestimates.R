@@ -1,5 +1,19 @@
 context("test-ggestimates")
 
+test_that("ggestimates honors a documented legend override", {
+  d <- data.frame(
+    term = c("a", "b"), estimate = c(1, 2),
+    conf.low = c(0.5, 1.5), conf.high = c(1.5, 2.5)
+  )
+  expect_identical(
+    list(
+      default = ggestimates(d, label = "term")$theme$legend.position,
+      requested = ggestimates(d, label = "term", legend = "right")$theme$legend.position
+    ),
+    list(default = "none", requested = "right")
+  )
+})
+
 or_data <- function() {
   data.frame(
     term = c("Age", "Sex", "BMI", "Smoker", "Trt"),
