@@ -534,11 +534,11 @@ ggbarplot_core <- function(data, x, y,
   add.params <- add.params %>% .add_item(p = p, error.plot = error.plot)
   is.stacked.position <- inherits(position, "PositionStack")
   stack.groups <- unique(c(x, facet.by))
-  nb.bars.by.xposition <- data_sum %>%
+  bars.by.xposition <- data_sum %>%
     group_by(!!!syms(stack.groups)) %>%
     dplyr::count() %>%
-    dplyr::pull(.data$n) %>%
-    max()
+    dplyr::pull(.data$n)
+  nb.bars.by.xposition <- if (length(bars.by.xposition)) max(bars.by.xposition) else 0L
   if (is.stacked.position) {
     add.position <- "identity"
   } else {
