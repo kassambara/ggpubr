@@ -109,11 +109,12 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+\item{inherit.aes}{If \code{FALSE},
 overrides the default aesthetics, rather than combining with them. This is
 most useful for helper functions that define both data and aesthetics and
 shouldn't inherit behaviour from the default plot specification. Set to
-\code{TRUE} to inherit aesthetics from the parent ggplot layer.}
+\code{TRUE} to inherit aesthetics from the parent ggplot layer. The
+function usage states the default for each layer.}
 
 \item{...}{other arguments passed to \code{\link[ggplot2]{geom_text}()}, such
 as \code{size}, \code{color} or \code{hjust}.}

@@ -172,6 +172,24 @@
 
 - The minimum required `rstatix` version is now `>= 1.1.0` (#753).
 
+- The minimum required `scales` version is now `>= 1.3.0`, and `grDevices` and
+  `gtable` moved from `Suggests` to `Imports`. Both were already called
+  unconditionally throughout the package; `grDevices` ships with R and `gtable`
+  arrives with `ggplot2`, so no installation changes in practice.
+
+- Transformations are now passed to `scale_x_continuous()` /
+  `scale_y_continuous()` as `transform =` rather than the `trans =` that
+  `ggplot2` deprecated in 3.5.0. The rendered axes are unchanged.
+
+- Superseded `scales` labellers are replaced by their current equivalents:
+  `label_percent()`, `label_currency()` and `label_scientific()` in place of
+  `percent`, `dollar` and `scientific`. Axis labels are unchanged. Note that
+  `label_dollar()` is itself superseded, so `label_currency()` is used.
+
+- `ggplot2::ggtitle()`, `dplyr::transmute()` and `scales::pvalue()` are replaced
+  by `labs(title=)`, `mutate(.keep = "none")` and `label_pvalue()`. Output is
+  unchanged in each case.
+
 ## Minor changes
 
 - The pkgdown reference index now lists the plot functions and helpers added in
@@ -255,18 +273,18 @@
   shuffled input rows; `facet.by =` of one or two variables, including panels in
   which a level is absent and `scales = "free_x"` (or `"free"`), where a panel
   missing an x level renumbers the levels it does draw and the error bars were
-  placed at the un-renumbered positions, sometimes past the edge of the panel
+  placed at the original positions, sometimes past the edge of the panel
   (`scales = "fixed"` and `"free_y"` are unaffected); `sort.val =`,
   `sort.by.groups = FALSE`, `orientation = "horizontal"`; the `error.plot =`
   variants; `preserve = "single"`; cells that share a mean; unbalanced, singleton
   and zero-variance cells; an `add.params$color` naming the `alpha` column; and a
   user-set `add.params$group` naming a column unrelated to the legend, which
-  summarised the error layer by that column so every interval carried another
+  summarized the error layer by that column so every interval carried another
   cell's statistic. This changes the appearance of such a plot, which was
   previously drawn with the error bars permuted.
 
-  With `error.plot = "crossbar"` the crossbars were drawn off-centre and wider
-  than their bars, and are now centred on the bar at the bar's own width and
+  With `error.plot = "crossbar"` the crossbars were drawn off-center and wider
+  than their bars, and are now centered on the bar at the bar's own width and
   still drawn as crossbars; their fill still follows the mapped `fill`. With
   `error.plot = "crossbar"` and an `add.params$color` naming a data column whose
   name is also a colour (a column called `"red"`, say), the argument used to be
@@ -308,8 +326,8 @@
 - `ggbarplot(position = position_dodge2(reverse = TRUE))` now draws each error
   bar on its own bar when the bars are grouped by a single discrete
   `color`/`fill` column — the ordinary case, with no `alpha` mapping involved
-  (#783). Every interval was drawn on the neighbouring bar, carrying that
-  neighbour's mean and error; the values were right, the pairing was not, and
+  (#783). Every interval was drawn on the neighboring bar, carrying that
+  neighbor's mean and error; the values were right, the pairing was not, and
   nothing in the figure showed it. `position_dodge2()` lays each x out in
   descending group order when `reverse` is set — or any value it treats as true,
   such as `1` — while the error layer was ordered ascending, so each row was
@@ -361,6 +379,67 @@
   figure with the wrong group missing (#788).
 
 ### Other fixes
+
+- `xscale("sqrt")` and `yscale("sqrt")` now apply a square-root transformation.
+  Both helpers document `"sqrt"` as an allowed value, but it fell through their
+  internal `switch()`, which returned `NULL`, and adding `NULL` to a plot does
+  nothing — so the transformation was silently skipped. **This changes the
+  output of any plot that called them with `"sqrt"`**: the axis is now
+  transformed, matching `scale_x_sqrt()` / `scale_y_sqrt()`. The
+  `ggscatter(xscale = "sqrt")` style arguments were never affected; they take a
+  different path.
+
+- `create_aes()` no longer errors on a value of length other than one. Its
+  internal test combined conditions with the elementwise `&`, producing a
+  length > 1 condition that `if()` has rejected since R 4.2, so
+  `create_aes(list(x = c("a", "b")))` failed. Values of length one behave
+  exactly as before.
+
+- `gghistogram()` and `ggdensity()` no longer read the label height from a data
+  column that happens to be named `count` or `density`. The bars are always the
+  computed distribution, so labels taken from such a column floated away from the
+  bars they annotate. `ggtext()` called directly still plots a column of that name
+  as `y` and labels it at its own values.
+
+- `gghistogram(label = ...)` labels are placed on the bar that contains each
+  observation. The height was found by cutting on bar *centers*, so any value
+  falling between two centers was annotated at the neighboring bar's height; on
+  twelve observations across four bins, five were wrong. `ggdensity()` labels are
+  read off the density curve at the observation's x rather than snapped to a
+  sampled point.
+
+- `gghistogram()` and `ggdensity()` labels follow their own facet panel's
+  distribution. Annotation groups were paired to panels by position, and the two
+  orders disagree whenever a facet variable's factor levels are not in the order
+  the values first appear: every label then took another panel's heights, without
+  any error.
+
+- `gghistogram(label = ...)` and `ggdensity(label = ...)` no longer render every
+  annotation as the literal text `label.xx` when `label` is given as a vector
+  rather than a column name. Both forms are documented; the vector was stored as
+  an extra column that the label-height calculation then read past.
+
+- `gghistogram(label = ...)` and `ggdensity(label = ...)` accept the
+  `after_stat(count)` / `after_stat(density)` spelling for `y`, which both
+  functions already accepted for drawing, and accept it with any spacing.
+  Adding a label to such a plot previously errored.
+
+- `gghistogram(label = ...)` and `ggdensity(label = ...)` now work on the
+  functions' own default `y`. Both default to `y = "count"` / `"density"`, but
+  the label layer only recognized the older `"..count.."` / `"..density.."`
+  spelling, so it treated the default as an ordinary column name and failed with
+  `object 'count' not found`.
+
+- `gghistogram()` and `ggdensity()` label layers no longer break when `facet.by`
+  names a column that the label machinery also uses internally. Two internal
+  working columns had fixed names, so faceting by a column of the same name
+  overwrote the grouping key. Their names are now derived at run time to be
+  absent from the data in hand, so no choice of `facet.by` column name can
+  collide with them.
+
+- The internal call to `tidyr::unnest()` behind histogram and density labels now
+  passes the `cols` argument that `tidyr` requires, removing a warning that
+  became an error under `options(warn = 2)`.
 
 - `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,
   labeller = "label_both")` no longer errors. A `facet.by` that resolves to no

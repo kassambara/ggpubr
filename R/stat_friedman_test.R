@@ -79,12 +79,15 @@ NULL
 #' bxp <- ggboxplot(df, x = "dose", y = "len", color = "supp", palette = "jco")
 #'
 #' # For each legend group, computes tests within x variable groups
-#' bxp + stat_friedman_test(aes(wid = id, group = supp, color = supp), within = "x")
+#' bxp + stat_friedman_test(
+#'   aes(wid = id, group = supp, color = supp),
+#'   group.by = "legend.var"
+#' )
 #'
 #' # For each x-position, computes tests within legend variable groups
 #' bxp + stat_friedman_test(
 #'   aes(wid = id, group = supp, color = supp),
-#'   within = "group", label = "p = {p.format}"
+#'   group.by = "x.var", label = "p = {p.format}"
 #' )
 #'
 #' @export

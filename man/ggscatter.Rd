@@ -122,8 +122,11 @@ e.g.: add.params = list(color = "red").}
 \item{conf.int.level}{Level controlling confidence region. Default is 95\%.
 Used only when add != "none" and conf.int = TRUE.}
 
-\item{fullrange}{should the fit span the full range of the plot, or just the
-data. Used only when add != "none".}
+\item{fullrange}{should the fit span the full x scale, or just the data.
+Used only when add != "none". Note that \code{xlim} sets the displayed
+coordinate range rather than the scale, so widening a plot with
+\code{xlim} does not extend the fit; use \code{scale_x_continuous(limits =)}
+to widen the scale itself.}
 
 \item{ellipse}{logical value. If TRUE, draws ellipses around points.}
 

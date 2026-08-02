@@ -193,8 +193,51 @@ ggcompare <- function(data, x, y,
       "(map a second factor via `color`/`fill`); ignoring it.", call. = FALSE)
   }
 
+  .check_reserved_args <- function(args, reserved, arg_name) {
+    overlap <- intersect(names(args), reserved)
+    if (length(overlap) == 0L) {
+      return(invisible(NULL))
+    }
+    overlap <- paste0("`", sort(unique(overlap)), "`", collapse = ", ")
+    stop(
+      arg_name, " must not redefine ", overlap, ". ",
+      "Use the dedicated ggcompare() argument instead.",
+      call. = FALSE
+    )
+  }
+
+  .check_reserved_args(
+    pwc.args,
+    reserved = c(
+      "data", "method", "method.args", "ref.group", "label",
+      "p.adjust.method", "hide.ns", "pack"
+    ),
+    arg_name = "`pwc.args`"
+  )
+  .check_reserved_args(
+    omnibus.args,
+    reserved = c("p", "method", "group.by"),
+    arg_name = "`omnibus.args`"
+  )
+
   if (missing(ggtheme) && !is.null(facet.by)) {
     ggtheme <- theme_pubr(border = TRUE)
+  }
+
+  # Pairwise/omnibus result frames use fixed statistic names. When a faceting
+  # column has one of those names, facet on a private copy so the user column
+  # and the statistic can coexist throughout positioning and annotation.
+  statistic.names <- c(".label", ".x", "p.adj", "x", "p", "group1", "group2", "y.position")
+  if (two.way && !is.null(facet.by)) {
+    for (i in seq_along(facet.by)) {
+      if (facet.by[[i]] %in% statistic.names) {
+        facet.copy <- .new_col_name(
+          paste0(".ggpubr.facet.", make.names(facet.by[[i]]), "."), names(data)
+        )
+        data[[facet.copy]] <- data[[facet.by[[i]]]]
+        facet.by[[i]] <- facet.copy
+      }
+    }
   }
 
   builder <- switch(base,
@@ -207,6 +250,25 @@ ggcompare <- function(data, x, y,
     ggtheme = ggtheme, facet.by = facet.by, labeller = labeller,
     add = add, add.params = add.params, ...
   )
+
+  # (1b) Adopt the frame the plot actually drew, before ANY test is computed or
+  # bracket positioned. `select`, `remove` and `order` are not formals here: they
+  # travel through `...` to the builder, which filters and reorders the plot
+  # while this function's `data` stays raw. Every statistic below was therefore
+  # computed on groups the reader cannot see, and positioned by level index onto
+  # an axis built from different levels. The brackets came out byte-identical
+  # whether or not the plot was filtered -- so a p-value sat above a pair it did
+  # not describe, with nothing visibly wrong. `order` was the worst case: a
+  # non-significant group could display "**".
+  #
+  # The builder's `$data` carries the filtering and the reordering and keeps
+  # every column, so facet.by still resolves. Unused levels must be dropped as
+  # well: `select`/`remove` remove the ROWS but leave the level in place, and it
+  # is the level index that positions a bracket, while the drawn axis omits the
+  # empty level. Dropping realigns the two.
+  data <- p$data
+  data[[x]] <- droplevels(data[[x]])
+  if (two.way) data[[group.var]] <- droplevels(data[[group.var]])
 
   # Resolve the pairwise method to a canonical rstatix name (used for the
   # effect-size symbol) and its test function (used for the comparisons guard).
@@ -295,13 +357,13 @@ ggcompare <- function(data, x, y,
       comp.var <- x
     }
     test.fun2 <- get(method.name, envir = asNamespace("rstatix"))
-    test.formula <- stats::as.formula(paste(y, "~", comp.var))
+    test.formula <- .formula_from_names(y, comp.var)
     # Group by the faceting variable(s) as well, so the pairwise test is run
     # per panel; facet.by is NULL for a single (non-faceted) panel.
     grouped.data <- dplyr::group_by(
       data, dplyr::across(dplyr::all_of(c(facet.by, grp.var)))
     )
-    call.args <- c(list(grouped.data, test.formula), method.args)
+    call.args <- method.args
     if ("p.adjust.method" %in% names(formals(test.fun2))) {
       call.args$p.adjust.method <- p.adjust.method
     }
@@ -312,7 +374,46 @@ ggcompare <- function(data, x, y,
       }
       call.args$ref.group <- as.character(ref.group)
     }
-    pwc <- do.call(test.fun2, call.args)
+    run.pwc <- function(test.data) {
+      do.call(test.fun2, c(list(test.data, test.formula), call.args))
+    }
+    if (is.null(facet.by)) {
+      pwc <- run.pwc(grouped.data)
+    } else {
+      # Running a grouped emmeans model directly can infer nesting when one
+      # facet contains only one x level (for example, x %in% facet), after
+      # which emmeans refuses its pairwise contrast. Fit each already-defined
+      # panel/x group on its own data and restore the keys explicitly. Avoid
+      # dplyr::group_modify(), whose lifecycle is experimental.
+      pwc.template <- NULL
+      group.rows <- dplyr::group_rows(grouped.data)
+      group.keys <- dplyr::group_keys(grouped.data)
+      pwc.parts <- lapply(seq_along(group.rows), function(i) {
+        test.data <- dplyr::ungroup(
+          grouped.data[group.rows[[i]], , drop = FALSE]
+        )
+        test.data <- test.data[
+          , setdiff(names(test.data), c(facet.by, grp.var)), drop = FALSE
+        ]
+        result <- run.pwc(test.data)
+        if (is.null(pwc.template)) pwc.template <<- result
+        for (key in names(group.keys)) result[[key]] <- group.keys[[key]][i]
+        result <- result[
+          , c(names(group.keys), setdiff(names(result), names(group.keys))),
+          drop = FALSE
+        ]
+        result
+      })
+      pwc <- dplyr::bind_rows(pwc.parts)
+      class(pwc) <- class(pwc.template)
+      test.attrs <- attr(pwc.template, "args")
+      test.attrs$data <- grouped.data
+      test.attrs$formula <- test.formula
+      attr(pwc, "args") <- test.attrs
+    }
+    if ("p" %in% names(pwc) && !("p.signif" %in% names(pwc))) {
+      pwc <- rstatix::add_significance(pwc, p.col = "p")
+    }
     # Position the brackets against the plotted layout: x is always the plot's
     # x axis and the second factor is the dodge group -- regardless of the
     # comparison direction. (Positioning on `grp.var` would place legend.var
@@ -340,7 +441,10 @@ ggcompare <- function(data, x, y,
         warning("`simple.effects = TRUE` is only supported with ",
           "`pwc.group.by = \"x.var\"`; ignoring it.", call. = FALSE)
       } else {
-        p <- .add_simple_effect_labels(p, data, x, y, group.var, grp.var, comp.var, pwc)
+        visible.pwc <- rstatix::remove_ns(pwc, col = hide.ns)
+        p <- .add_simple_effect_labels(
+          p, data, x, y, group.var, grp.var, comp.var, visible.pwc
+        )
       }
     }
 
@@ -427,8 +531,11 @@ ggcompare <- function(data, x, y,
     if (pv < 0.001) "p < 0.001" else paste0("p = ", formatC(pv, format = "fg", digits = 2))
   }
   one <- function(df) {
+    if (length(unique(df[[x]])) < 2L || length(unique(df[[group.var]])) < 2L) {
+      return(NA_character_)
+    }
     at <- rstatix::get_anova_table(rstatix::anova_test(
-      df, stats::as.formula(paste(y, "~", x, "*", group.var))
+      df, .formula_from_names(y, x, group.var)
     ))
     ir <- which(grepl(":", at$Effect))[1]
     # A degenerate panel (aliased/empty design) has no estimable interaction:
@@ -437,10 +544,8 @@ ggcompare <- function(data, x, y,
     sprintf("Interaction: F(%g,%g) = %.2f, %s",
       at$DFn[ir], at$DFd[ir], at$F[ir], fmt.p(at$p[ir]))
   }
-  groups <- do.call(paste, c(data[, facet.by, drop = FALSE], sep = "\r"))
-  parts <- split(seq_len(nrow(data)), groups)
-  labs <- lapply(parts, function(idx) {
-    d <- data[idx, , drop = FALSE]
+  parts <- .split_by_columns(data, facet.by)
+  labs <- lapply(parts, function(d) {
     lab <- d[1, facet.by, drop = FALSE]
     lab$.label <- one(d)
     lab
@@ -475,12 +580,15 @@ ggcompare <- function(data, x, y,
 # effect is skipped rather than labelled "F(NA,NA)".
 .add_simple_effect_labels <- function(p, data, x, y, group.var, grp.var, comp.var, pwc) {
   model <- stats::lm(
-    stats::as.formula(paste(y, "~", x, "*", group.var)), data = data
+    .formula_from_names(y, x, group.var), data = data
   )
-  grouped <- dplyr::group_by(data, dplyr::across(dplyr::all_of(grp.var)))
+  grp.key <- .new_col_name(".ggpubr.simple.group.", names(data))
+  grouped.data <- data
+  grouped.data[[grp.key]] <- grouped.data[[grp.var]]
+  grouped <- dplyr::group_by(grouped.data, dplyr::across(dplyr::all_of(grp.key)))
   sme <- tryCatch(
     rstatix::get_anova_table(rstatix::anova_test(
-      grouped, stats::as.formula(paste(y, "~", comp.var)), error = model
+      grouped, .formula_from_names(y, comp.var), error = model
     )),
     error = function(e) NULL
   )
@@ -501,7 +609,7 @@ ggcompare <- function(data, x, y,
   x.idx <- round((pwc$xmin + pwc$xmax) / 2)
   tops <- tapply(pwc$y.position, x.idx, max)
   gap <- 0.06 * diff(range(data[[y]], na.rm = TRUE))
-  sme$.x <- match(as.character(sme[[grp.var]]), lv)
+  sme$.x <- match(as.character(sme[[grp.key]]), lv)
   sme$.y <- as.numeric(tops[as.character(sme$.x)]) + gap
   sme$.label <- sprintf(
     "F(%g,%g) = %.3g, %s", sme$DFn, sme$DFd, sme$F, fmt.p(sme$p)

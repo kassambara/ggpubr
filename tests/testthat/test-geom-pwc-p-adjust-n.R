@@ -60,4 +60,6 @@ test_that("p.adjust.n validates its input type", {
                "single positive number")
   expect_error(ggpubr:::.pwc_adjust_pvalue(st, "holm", -1),
                "single positive number")
+  expect_error(ggpubr:::.pwc_adjust_pvalue(st, "holm", 3.5),
+               "whole number")
 })

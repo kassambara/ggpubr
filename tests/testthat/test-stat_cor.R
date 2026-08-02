@@ -11,6 +11,18 @@ set.seed(1)
 .df$y <- .df$x * 0.4 + rnorm(20)
 .sp <- ggscatter(.df, "x", "y")
 
+test_that("stat_cor rejects invalid accuracies before computation", {
+  invalid <- list(0, -0.1, 1, NA_real_, Inf, c(0.1, 0.01))
+  rejected <- function(name) vapply(invalid, function(value) {
+    args <- setNames(list(value), name)
+    inherits(try(do.call(stat_cor, args), silent = TRUE), "try-error")
+  }, logical(1))
+  expect_identical(
+    list(r = rejected("r.accuracy"), p = rejected("p.accuracy")),
+    list(r = rep(TRUE, 6), p = rep(TRUE, 6))
+  )
+})
+
 test_that("stat_cor default label is unchanged (no regression, #540/#541)", {
   lab <- .cor_label(.sp + stat_cor(p.accuracy = 0.001, r.accuracy = 0.01))
   expect_equal(lab, "italic(R)~`=`~0.20*`,`~italic(p)~`=`~0.392")

@@ -102,6 +102,19 @@ test_that("brackets stay on the panel in both comparison directions", {
   expect_gt(brk_x(p_leg)[2], 2)
 })
 
+test_that("facets may contain a single x level", {
+  d <- ToothGrowth
+  d$dose <- factor(d$dose)
+  d$facet <- ifelse(d$dose == "2", "single", "multi")
+  expect_silent(
+    p <- ggcompare(
+      d, "dose", "len", color = "supp", facet.by = "facet",
+      order = c("2", "1", "0.5"), hide.ns = FALSE
+    )
+  )
+  expect_equal(n_brackets(p), 3)
+})
+
 test_that("faceted two-way draws per-panel brackets and interaction labels", {
   js <- get_js()
   js$region <- factor(rep(c("north", "south"), length.out = nrow(js)))
@@ -292,6 +305,69 @@ test_that("simple.effects is robust to an x column named like add_xy_position's 
   expect_equal(length(labs), 2)
   expect_true(any(grepl("132", labs)))
   expect_true(any(grepl("62.8", labs)))
+})
+
+test_that("simple-effect labels sit above visible rather than hidden brackets", {
+  d <- expand.grid(
+    outer = factor(c("A", "B")),
+    inner = factor(c("u", "v", "w")),
+    rep = seq_len(10)
+  )
+  eps <- rep(seq(-1, 1, length.out = 10), 6)
+  means <- with(d, ifelse(
+    outer == "A", ifelse(inner == "u", 10, 0),
+    ifelse(inner == "u", 10, ifelse(inner == "v", 5, 0))
+  ))
+  d$score <- means + eps
+  p <- ggcompare(d, "outer", "score", color = "inner", simple.effects = TRUE)
+  bracket.index <- which(vapply(
+    p$layers, function(layer) inherits(layer$geom, "GeomBracket"), logical(1)
+  ))[1]
+  text.index <- which(vapply(
+    p$layers, function(layer) inherits(layer$geom, "GeomText"), logical(1)
+  ))[1]
+  brackets <- ggplot2::layer_data(p, bracket.index)
+  bracket.x <- round((brackets$xmin + brackets$xmax) / 2)
+  visible.tops <- tapply(pmax(brackets$y, brackets$yend), bracket.x, max)
+  labels <- ggplot2::layer_data(p, text.index)
+  gap <- 0.06 * diff(range(d$score))
+  label.x <- as.numeric(labels$x)
+  expect_equal(label.x, c(1, 2))
+  expect_equal(labels$y, as.numeric(visible.tops[as.character(label.x)]) + gap)
+})
+
+test_that("two-way labels support the documented {p.signif} token", {
+  js <- get_js()
+  p <- ggcompare(js, x = "gender", y = "score", color = "education_level",
+    label = "{p.signif}", hide.ns = FALSE)
+  brk <- ggplot2::layer_data(p, which(vapply(p$layers, function(l) inherits(l$geom, "GeomBracket"), logical(1)))[1])
+  labels <- unique(as.character(brk$label))
+  expect_true(all(labels %in% c("****", "***", "**", "*", "ns")))
+  expect_false(any(is.na(labels)))
+})
+
+test_that("argument lists reject names owned by dedicated ggcompare arguments", {
+  js <- get_js()
+  expect_error(
+    ggcompare(js, "gender", "score", color = "education_level",
+      pwc.args = list(label = "p")),
+    "`pwc.args` must not redefine `label`", fixed = TRUE
+  )
+  expect_error(
+    ggcompare(js, "gender", "score", color = "education_level",
+      pwc.args = list(hide.ns = TRUE)),
+    "`pwc.args` must not redefine `hide.ns`", fixed = TRUE
+  )
+  expect_error(
+    ggcompare(js, "gender", "score", color = "education_level",
+      omnibus.args = list(method = "kruskal")),
+    "`omnibus.args` must not redefine `method`", fixed = TRUE
+  )
+  expect_silent(
+    ggcompare(js, "gender", "score", color = "education_level",
+      pwc.args = list(step.increase = 0.08),
+      omnibus.args = list(type = "text"))
+  )
 })
 
 # ---- two-way interaction subtitle wraps to two lines ------------------------

@@ -73,7 +73,7 @@ Should be unique per individual. Required only for repeated measure tests
 \item{group.by}{(optional) character vector specifying the grouping variable;
 it should be used only for grouped plots. Possible values are : \itemize{
 \item \code{"x.var"}: Group by the x-axis variable and perform the test
-between legend groups. In other words, the p-value is compute between legend
+between legend groups. In other words, the p-value is computed between legend
 groups at each x position \item \code{"legend.var"}: Group by the legend
 variable and perform the test between x-axis groups. In other words, the
 test is performed between the x-groups for each legend level. }}
@@ -231,11 +231,12 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+\item{inherit.aes}{If \code{FALSE},
 overrides the default aesthetics, rather than combining with them. This is
 most useful for helper functions that define both data and aesthetics and
 shouldn't inherit behaviour from the default plot specification. Set to
-\code{TRUE} to inherit aesthetics from the parent ggplot layer.}
+\code{TRUE} to inherit aesthetics from the parent ggplot layer. The
+function usage states the default for each layer.}
 
 \item{parse}{If TRUE, the labels will be parsed into expressions and displayed
 as described in \code{?plotmath}.}

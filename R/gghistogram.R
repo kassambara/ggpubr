@@ -125,6 +125,7 @@ gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
   }
 
   .opts$fun <- gghistogram_core
+  .opts$fun_name <- "histogram"
   if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
   }

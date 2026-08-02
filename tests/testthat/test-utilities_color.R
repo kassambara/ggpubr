@@ -19,3 +19,9 @@ test_that(".get_pal routes YlOrBr to brewer palettes", {
   expect_length(cols, 5)
   expect_type(cols, "character")
 })
+
+test_that(".get_ggplot_ncolors counts mapped fills", {
+  d <- data.frame(x = letters[1:3], y = 1:3)
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, fill = x)) + ggplot2::geom_col()
+  expect_identical(.get_ggplot_ncolors(p), 3L)
+})

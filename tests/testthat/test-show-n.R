@@ -107,3 +107,50 @@ test_that("show.n counts each group correctly on an unbalanced dataset", {
   p <- ggboxplot(d, "g", "y", show.n = TRUE)
   expect_equal(sort(.n_labels(p)), c("n = 2", "n = 3"))
 })
+
+test_that("show.n preserves a facet named like its dodge group", {
+  d <- expand.grid(
+    x = c("x1", "x2"), g = c("A", "B"),
+    .ggpubr_show_n_grp. = c("F1", "F2"),
+    KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE
+  )
+  d$y <- seq_len(nrow(d))
+  p <- ggboxplot(
+    d, "x", "y", color = "g", facet.by = ".ggpubr_show_n_grp.",
+    show.n = TRUE
+  )
+  built <- ggplot2::ggplot_build(p)
+  label <- p$layers[[length(p$layers)]]
+
+  expect_identical(
+    list(
+      panels = sort(unique(as.character(built$layout$layout$.ggpubr_show_n_grp.))),
+      labels = sort(unique(as.character(label$data$.ggpubr_show_n_grp.))),
+      group = rlang::as_label(label$mapping$group)
+    ),
+    list(panels = c("F1", "F2"), labels = c("F1", "F2"), group = ".ggpubr_show_n_grp.1")
+  )
+})
+
+test_that("show.n preserves grouping columns named like its count coordinates", {
+  check_name <- function(x) {
+    d <- data.frame(value = rep(c("a", "b"), each = 2), y = seq_len(4))
+    names(d)[1] <- x
+    p <- ggboxplot(d, x, "y", show.n = TRUE)
+    built <- ggplot2::ggplot_build(p)
+    label <- p$layers[[length(p$layers)]]
+    list(
+      ticks = built$layout$panel_params[[1]]$x$get_labels(),
+      xvalues = sort(unique(as.character(label$data[[x]]))),
+      labels = sort(as.character(label$data[[rlang::as_label(label$mapping$label)]]))
+    )
+  }
+
+  expect_identical(
+    list(dot_n = check_name(".n"), dot_n_dot = check_name(".n.")),
+    list(
+      dot_n = list(ticks = c("a", "b"), xvalues = c("a", "b"), labels = c("n = 2", "n = 2")),
+      dot_n_dot = list(ticks = c("a", "b"), xvalues = c("a", "b"), labels = c("n = 2", "n = 2"))
+    )
+  )
+})

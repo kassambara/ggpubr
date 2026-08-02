@@ -53,7 +53,7 @@ NULL
 #' @param group.by (optional) character vector specifying the grouping variable;
 #'  it should be used only for grouped plots. Possible values are : \itemize{
 #'  \item \code{"x.var"}: Group by the x-axis variable and perform the test
-#'  between legend groups. In other words, the p-value is compute between legend
+#'  between legend groups. In other words, the p-value is computed between legend
 #'  groups at each x position \item \code{"legend.var"}: Group by the legend
 #'  variable and perform the test between x-axis groups. In other words, the
 #'  test is performed between the x-groups for each legend level. }
@@ -101,7 +101,7 @@ NULL
 #'  performed, then the p-values are adjusted for each group level
 #'  independently. P-values are adjusted by panel when \code{p.adjust.by =
 #'  "panel"}.
-#' @param p.adjust.n optional single number giving the number of comparisons to
+#' @param p.adjust.n optional positive whole number giving the number of comparisons to
 #'  use for the p-value adjustment, passed as \code{n} to
 #'  \code{\link[stats]{p.adjust}}. Default is \code{NULL}, which uses the number
 #'  of p-values actually computed (the standard behavior). Set it when the
@@ -488,6 +488,10 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
           # path, so panels whose batched test succeeds are unaffected.
           comparisons <- method.args$comparisons
           if (is.null(comparisons)) {
+            message(
+              "geom_pwc(): no pairwise comparison could be tested in this panel: ",
+              conditionMessage(e)
+            )
             return(data.frame())
           }
           run_one_comparison <- function(pair) {
@@ -498,6 +502,16 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
           per.comparison <- lapply(comparisons, run_one_comparison)
           kept <- !vapply(per.comparison, is.null, logical(1))
           if (!any(kept)) {
+            skipped.desc <- vapply(
+              comparisons,
+              function(p) paste(as.character(p), collapse = " vs "),
+              character(1)
+            )
+            message(
+              "geom_pwc(): skipped ", length(comparisons),
+              " untestable comparison(s): ",
+              paste(skipped.desc, collapse = ", ")
+            )
             return(data.frame())
           }
           if (any(!kept)) {
@@ -647,7 +661,7 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
         warning(
           "p-values can't be adjusted by panel for the specified stat method.\n",
           "The result of the method doesn't contain the p column.\n",
-          "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustement ",
+          "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustment ",
           "internally; they only return the p.adj.",
           call. = FALSE
         )
@@ -706,6 +720,19 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       add_stat_n() %>%
       keep_only_tbl_df_classes() %>%
       add_stat_label(label = stat.label)
+
+    position.col <- NULL
+    if (!is.null(y.position) && length(y.position) > 1L) {
+      if (length(y.position) < nrow(stat.test)) {
+        stop(
+          "`y.position` must have length 1 or at least the number of displayed comparisons (",
+          nrow(stat.test), ").",
+          call. = FALSE
+        )
+      }
+      position.col <- .new_col_name(".ggpubr.y.position.", names(stat.test))
+      stat.test[[position.col]] <- y.position[seq_len(nrow(stat.test))]
+    }
 
     if (!is.null(ref.group)) {
       if (!(ref.group %in% c(".all.", "all"))) {
@@ -782,6 +809,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
       y.position <- yrange[2] + y.scale.range * bracket.nudge.y + y.scale.range * step.increase * (bracket.group - 1)
     } else if (length(y.position) == 1) {
       y.position <- y.position + y.scale.range * bracket.nudge.y + y.scale.range * step.increase * (bracket.group - 1)
+    } else if (!is.null(position.col)) {
+      y.position <- stat.test[[position.col]]
     } else if (length(y.position) >= length(stat.test$group)) {
       y.position <- y.position[stat.test$group]
     }
@@ -795,7 +824,10 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
     stat.test$xend <- c(xmin, xmax, xmax)
     stat.test$y <- c(y.position - y.scale.range * tip.length[seq_along(tip.length) %% 2 == 1], y.position, y.position)
     stat.test$yend <- c(y.position, y.position, y.position - y.scale.range * tip.length[seq_along(tip.length) %% 2 == 0])
-    stat.test %>% select(-step.increase, -bracket.nudge.y, -bracket.shorten)
+    stat.test %>% select(
+      -step.increase, -bracket.nudge.y, -bracket.shorten,
+      -dplyr::any_of(position.col)
+    )
   }
 )
 
@@ -811,8 +843,8 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
   if (is.null(n)) {
     return(rstatix::adjust_pvalue(stat.test, method = method))
   }
-  if (!is.numeric(n) || length(n) != 1L || is.na(n) || n < 1) {
-    stop("`p.adjust.n` must be a single positive number or NULL.", call. = FALSE)
+  if (!is.numeric(n) || length(n) != 1L || is.na(n) || n < 1 || n != floor(n)) {
+    stop("`p.adjust.n` must be a single positive number (a whole number) or NULL.", call. = FALSE)
   }
   n.pvalues <- sum(!is.na(stat.test$p))
   if (n < n.pvalues) {
@@ -985,7 +1017,16 @@ GeomPwc <- ggplot2::ggproto("GeomPwc", ggplot2::Geom,
 
 # Text grob ------------------------------
 get_text_grob <- function(data, coords, coord.flip = FALSE, parse = FALSE) {
-  lab <- as.character(data$label)
+  label_keys <- intersect(c("group", "bracket.group"), colnames(data))
+  label_data <- data
+  if (length(label_keys) > 0L) {
+    label_data <- dplyr::distinct(
+      label_data,
+      !!!rlang::syms(label_keys),
+      .keep_all = TRUE
+    )
+  }
+  lab <- as.character(label_data$label)
   if (parse) lab <- parse_as_expression(lab)
   label_coords <- get_pwc_label_coords(coords, coord.flip = coord.flip)
   grid::textGrob(
@@ -993,14 +1034,14 @@ get_text_grob <- function(data, coords, coord.flip = FALSE, parse = FALSE) {
     x = label_coords$x,
     y = label_coords$y,
     default.units = "native",
-    hjust = coords$hjust, vjust = coords$vjust,
+    hjust = label_data$hjust, vjust = label_data$vjust,
     rot = label_coords$angle,
     gp = grid::gpar(
-      col = scales::alpha(coords$colour, coords$alpha),
-      fontsize = coords$label.size * ggplot2::.pt,
-      fontfamily = coords$family,
-      fontface = coords$fontface,
-      lineheight = coords$lineheight
+      col = scales::alpha(label_data$colour, label_data$alpha),
+      fontsize = label_data$label.size * ggplot2::.pt,
+      fontfamily = label_data$family,
+      fontface = label_data$fontface,
+      lineheight = label_data$lineheight
     )
   )
 }
@@ -1046,10 +1087,11 @@ get_pwc_label_coords <- function(coords, coord.flip = FALSE) {
   data <- NULL
   coords %>%
     rstatix::df_nest_by(vars = c("group", "bracket.group")) %>%
-    dplyr::transmute(
+    dplyr::mutate(
       x = unlist(map(data, get_label_x)),
       y = unlist(map(data, get_label_y)),
-      angle = unlist(map(data, get_label_angle, coord.flip = coord.flip))
+      angle = unlist(map(data, get_label_angle, coord.flip = coord.flip)),
+      .keep = "none"
     )
 }
 
@@ -1120,8 +1162,9 @@ get_ref_group_id <- function(scales, data, ref.group = NULL, is.comparisons.betw
   if (is.comparisons.between.legend.grps) {
     if (is.character(ref.group)) {
       if ("legend.var" %in% colnames(data)) {
+        requested.ref.group <- ref.group
         ref.group <- get_group_id(data$legend.var, ref.group)
-        if (is.na(ref.group)) stop("The ref.group ('", ref.group, "') doesn't exist.", call. = FALSE)
+        if (is.na(ref.group)) stop("The ref.group ('", requested.ref.group, "') doesn't exist.", call. = FALSE)
       } else {
         stop(
           "ref.group should be a numeric value indicating the rank of the ",

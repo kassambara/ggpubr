@@ -197,3 +197,19 @@ test_that("compare_means skips grouped subsets with <2 levels without error", {
   expect_equal(as.character(results$group1), "M")
   expect_equal(as.character(results$group2), "F")
 })
+
+test_that("compare_means preserves a .group. grouping key with ref.group all", {
+  d <- expand.grid(
+    .group. = c("F1", "F2"), treatment = c("A", "B"), replicate = seq_len(5),
+    KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE
+  )
+  d$value <- seq_len(nrow(d)) + ifelse(d$treatment == "B", 2, 0)
+  result <- compare_means(
+    value ~ treatment, d, group.by = ".group.", ref.group = ".all."
+  )
+
+  expect_identical(
+    list(rows = nrow(result), facets = sort(unique(as.character(result$.group.))), groups = sort(unique(result$group2))),
+    list(rows = 4L, facets = c("F1", "F2"), groups = c("A", "B"))
+  )
+})

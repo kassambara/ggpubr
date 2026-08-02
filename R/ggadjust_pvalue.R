@@ -114,7 +114,7 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
     warning(
       "p-values can't be adjusted for the specified stat method.\n",
       "The result of the method doesn't contain the p column.\n",
-      "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustement ",
+      "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustment ",
       "internally; they only return the p.adj.",
       call. = FALSE
     )
@@ -159,7 +159,15 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
     .build$data[[layer]] <- stat_test
   }
   if (output == "stat_test") {
-    return(stat_test)
+    comparison.keys <- intersect(
+      c("PANEL", "group", "group1", "group2"),
+      names(stat_test)
+    )
+    return(dplyr::distinct(
+      stat_test,
+      dplyr::across(dplyr::all_of(comparison.keys)),
+      .keep_all = TRUE
+    ))
   }
   as_ggplot(ggplot_gtable(.build))
 }

@@ -125,7 +125,7 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
   }
 
   .data <- p$data
-  .formula <- stats::as.formula(paste(y, "~", x))
+  .formula <- .formula_from_names(y, x)
 
   # Omnibus test -> subtitle
   if (two.way) {
@@ -167,9 +167,17 @@ add_test_label <- function(p, method = c("anova", "kruskal"),
 # Build the subtitle label for a two-way ANOVA y ~ x * group.by, naming the
 # selected effect. `effect` is "interaction" (default), "all", a term name, or a
 # numeric row index. Returns a text/expression label from get_test_label().
+.formula_from_names <- function(response, term, interaction = NULL) {
+  rhs <- rlang::sym(term)
+  if (!is.null(interaction)) {
+    rhs <- rlang::call2("*", rhs, rlang::sym(interaction))
+  }
+  rlang::new_formula(rlang::sym(response), rhs, env = rlang::caller_env())
+}
+
 .two_way_test_label <- function(.data, x, y, group.by, effect = NULL,
                                 detailed = TRUE, type = "expression", ...) {
-  .formula <- stats::as.formula(paste(y, "~", x, "*", group.by))
+  .formula <- .formula_from_names(y, x, group.by)
   res.aov <- rstatix::anova_test(.data, .formula)
   atab <- rstatix::get_anova_table(res.aov)
   terms <- as.character(atab$Effect)

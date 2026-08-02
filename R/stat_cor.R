@@ -54,11 +54,11 @@ NULL
 #'  the displayed p-value keeps the legacy raw value unless \code{p.accuracy} is
 #'  set; \code{p.digits} is used by non-default \code{p.format.style} outputs and
 #'  the computed \code{p} variable.
-#' @param r.accuracy a real value specifying the number of decimal places of
+#' @param r.accuracy a single finite real value strictly between 0 and 1 specifying the number of decimal places of
 #'  precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01
 #'  to show 2 decimal places of precision. If specified, then \code{r.digits} is
 #'  ignored.
-#' @param p.accuracy a real value specifying the number of decimal places of
+#' @param p.accuracy a single finite real value strictly between 0 and 1 specifying the number of decimal places of
 #'  precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
 #'  decimal places of precision. If specified, then \code{p.digits} is ignored.
 #' @param r.leading.zero logical. Whether to include the leading zero before the
@@ -185,6 +185,8 @@ stat_cor <- function(mapping = NULL, data = NULL,
   parse <- ifelse(output.type == "expression", TRUE, FALSE)
   cor.coef.name <- cor.coef.name[1]
   label.anchor <- match.arg(label.anchor)
+  .validate_cor_accuracy(r.accuracy, "r.accuracy")
+  .validate_cor_accuracy(p.accuracy, "p.accuracy")
   if (!is.numeric(conf.level) || length(conf.level) != 1L || is.na(conf.level) ||
       conf.level <= 0 || conf.level >= 1) {
     stop("`conf.level` must be a single number between 0 and 1.", call. = FALSE)
@@ -207,6 +209,17 @@ stat_cor <- function(mapping = NULL, data = NULL,
       parse = parse, na.rm = na.rm, ...
     )
   )
+}
+
+.validate_cor_accuracy <- function(value, name) {
+  if (is.null(value)) return(invisible(value))
+  if (!is.numeric(value) || length(value) != 1L || is.na(value) ||
+      !is.finite(value) || value <= 0 || value >= 1) {
+    stop("`", name, "` must be a single finite number strictly between 0 and 1.",
+      call. = FALSE
+    )
+  }
+  invisible(value)
 }
 
 
@@ -386,7 +399,7 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
     }, character(1))
     label <- create_p_label(p_formatted)
   } else {
-    # Backward compatible behavior (scales::pvalue + accuracy)
+    # Backward compatible behavior (scales::label_pvalue + accuracy)
     if (is.null(accuracy)) {
       label <- ifelse(x < 2.2e-16, "p < 2.2e-16", paste0("p = ", x))
     } else if (!(accuracy < 1)) {
@@ -395,7 +408,7 @@ get_p_label <- function(x, p.digits = 2, accuracy = 0.0001, type = "expression",
         call. = FALSE
       )
     } else {
-      label <- scales::pvalue(x, accuracy = accuracy, add_p = TRUE)
+      label <- scales::label_pvalue(accuracy = accuracy, add_p = TRUE)(x)
       # Add space before and after: = or <
       label <- gsub(pattern = "(=|<)", replacement = " \\1 ", x = label)
     }

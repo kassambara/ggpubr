@@ -1,5 +1,21 @@
 context("test-stat_anova_test")
 
+test_that("stat_anova_test computes and labels both documented effect sizes", {
+  d <- ToothGrowth
+  d$dose <- factor(d$dose)
+  p <- ggboxplot(d, "dose", "len") +
+    stat_anova_test(effect.size = c("ges", "pes"), label = "as_detailed")
+  stat <- ggplot2::ggplot_build(p)$data[[2]]
+  expect_identical(
+    list(
+      columns = c("ges", "pes") %in% names(stat),
+      labelled = grepl("eta2[g]", stat$label, fixed = TRUE) &&
+        grepl("eta2[p]", stat$label, fixed = TRUE)
+    ),
+    list(columns = c(TRUE, TRUE), labelled = TRUE)
+  )
+})
+
 # Data preparation
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)
