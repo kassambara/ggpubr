@@ -133,11 +133,13 @@ add_summary <- function(p, fun = "mean_se", error.plot = "pointrange",
     geomfunc = "stat_summary", fun.data = fun.data, fun = fun.y,
     fun.min = fun.ymin, fun.max = fun.ymax,
     color = color, geom = geom, size = size, linewidth = linewidth, linetype = linetype,
+    shape = shape,
     show.legend = show.legend, data = data, position = position,
     fun.args = list(error.limit = error.limit), group = group
   )
   if (error.plot %in% line_geoms) {
-    opts <- opts %>% .remove_item("size")
+    # These geoms draw no point, so neither size nor shape applies to them.
+    opts <- opts %>% .remove_item("size") %>% .remove_item("shape")
   }
   if (fun %in% c("mean_ci", "median_hilow_")) {
     opts$fun.args$ci <- ci

@@ -62,6 +62,7 @@ ggqqplot <- function(data, x, combine = FALSE, merge = FALSE,
     combine = combine, merge = merge,
     color = color, palette = palette,
     size = size, shape = shape,
+    add = add, add.params = add.params,
     title = title, xlab = xlab, ylab = ylab,
     facet.by = facet.by, panel.labs = panel.labs, short.panel.labs = short.panel.labs,
     conf.int = conf.int, conf.int.level = conf.int.level,
@@ -84,7 +85,9 @@ ggqqplot <- function(data, x, combine = FALSE, merge = FALSE,
   .opts$y <- "..qq.."
   if (is.null(.opts$xlab)) .opts$xlab <- "Theoretical"
   if (is.null(.opts$ylab)) .opts$ylab <- "Sample"
-  if (is.null(.opts$add)) .opts$add <- "qqline"
+  # Use exact lookup: after the missing-argument filter removes `add`, `$add`
+  # partially matches `add.params` and would otherwise suppress this default.
+  if (is.null(.opts[["add"]])) .opts$add <- "qqline"
   if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
   }
