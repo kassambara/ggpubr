@@ -89,7 +89,8 @@ ggraincloud <- function(data, x, y,
   # The rain points are placed at the numeric group position, offset to the side
   # opposite the cloud. A discrete x scale maps the factor to 1, 2, 3, ..., so the
   # offset numeric positions sit alongside each group.
-  data[[".ggpubr.rain.x."]] <- as.numeric(data[[x]]) + rain.offset
+  rain.x <- .new_col_name(".ggpubr.rain.x.", names(data))
+  data[[rain.x]] <- as.numeric(data[[x]]) + rain.offset
 
   fill.by.group <- fill %in% colnames(data)
   color.by.group <- color %in% colnames(data)
@@ -117,7 +118,7 @@ ggraincloud <- function(data, x, y,
   p <- p + do.call(geom_boxplot, box.args)
 
   # Rain: raw points offset to the opposite side, coloured by `color`.
-  aes.rain <- create_aes(list(x = ".ggpubr.rain.x.", y = y))
+  aes.rain <- create_aes(list(x = rain.x, y = y))
   if (color.by.group) aes.rain$colour <- as.name(color)
   rain.args <- list(
     mapping = aes.rain,
