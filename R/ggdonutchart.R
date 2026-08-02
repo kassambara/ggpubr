@@ -93,6 +93,15 @@ ggdonutchart <- function(
   lab.font <- .parse_font(lab.font) %>%
     .check_pie_labfont()
 
+  if (length(label) > 1 & length(label) != nrow(data)) {
+    stop("label should be of the same length as data")
+  } else if (length(label) > 1) {
+    # Bind vector labels to their source rows before any grouping sort.
+    label.col <- .new_col_name(".label.", names(data))
+    data[[label.col]] <- label
+    label <- label.col
+  }
+
   # We should order the data in desc order. Because,
   # in stacked bar plot the order of factor levels are reversed
   # Very important to have the label in the right place
@@ -104,19 +113,8 @@ ggdonutchart <- function(
 
   # Label y coordinates when placed inside slices
   .x <- dplyr::pull(data, x)
-  data <- data %>%
-    dplyr::mutate(
-      .lab.ypos. = cumsum(.x) - 0.5 * .x - lab.adjust
-    )
-
-  if (length(label) > 1 & length(label) != nrow(data)) {
-    stop("label should be of the same length as data")
-  } else if (length(label) > 1) {
-    # 1. Add label column
-    data <- data %>%
-      dplyr::mutate(.label. = label)
-    label <- ".label."
-  }
+  lab.ypos <- .new_col_name(".lab.ypos.", names(data))
+  data[[lab.ypos]] <- cumsum(.x) - 0.5 * .x - lab.adjust
 
   p <- ggplot(data, create_aes(list(x = 2, y = x))) +
     geom_exec(
@@ -157,7 +155,7 @@ ggdonutchart <- function(
     } else if (lab.pos == "in") {
       # Compute the cumulative sum as label ypos
       p <- p + geom_text(
-        create_aes(list(y = ".lab.ypos.", label = label)),
+        create_aes(list(y = lab.ypos, label = label)),
         size = lab.font$size, fontface = lab.font$face,
         colour = lab.font$color, family = font.family
       ) +
