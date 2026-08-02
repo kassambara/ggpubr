@@ -264,7 +264,7 @@ print.ggscatterhist <- function(x, margin.space = FALSE, main.plot.size = 2,
       )
     }
   } else {
-    if (!is.null(title)) sp <- sp + ggtitle(title)
+    if (!is.null(title)) sp <- sp + labs(title = title)
     fig <- .insert_xaxis_grob(sp, xplot, grid::unit(margin.plot.size / 5, "null"), position = "top")
     fig <- .insert_yaxis_grob(fig, yplot, grid::unit(margin.plot.size / 5, "null"), position = "right")
     fig <- cowplot::ggdraw(fig)
