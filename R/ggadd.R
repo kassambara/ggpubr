@@ -67,6 +67,8 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
                   data = NULL, position = position_dodge(0.8),
                   p_geom = "") {
   . <- NULL
+  width.supplied <- !missing(width)
+  base.geom <- .geom(p)
   if (missing(group)) group <- NULL
   # Checkpoints
   # :::::::::::::::::::::::::::::::::::::::::::
@@ -127,17 +129,16 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   )
 
   if ("boxplot" %in% add) {
-    if (.geom(p) == "violin" & missing(width)) {
-      width <- 0.2
-    } else if (missing(width)) width <- 0.7
+    box.width <- width
+    if (!width.supplied) box.width <- if (base.geom == "violin") 0.2 else 0.7
     p <- common.opts %>%
-      .add_item(geomfunc = geom_boxplot, width = width, outliers = outliers, outlier.shape = outlier.shape) %>%
+      .add_item(geomfunc = geom_boxplot, width = box.width, outliers = outliers, outlier.shape = outlier.shape) %>%
       .update_plot(p)
   }
   if ("violin" %in% add) {
-    if (missing(width)) width <- 1
+    violin.width <- if (width.supplied) width else 1
     p <- common.opts %>%
-      .add_item(geomfunc = geom_violin, width = width, trim = FALSE) %>%
+      .add_item(geomfunc = geom_violin, width = violin.width, trim = FALSE) %>%
       .update_plot(p)
   }
   if ("dotplot" %in% add) {
@@ -181,14 +182,15 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   # Add erors
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   if (!.is_empty(errors)) {
-    if (missing(width)) {
+    error.width <- width
+    if (!width.supplied) {
       if (error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar")) {
-        width <- 0.1
-      } else if (error.plot == "crossbar" & .geom(p) == "violin") width <- 0.2
+        error.width <- 0.1
+      } else if (error.plot == "crossbar" & base.geom == "violin") error.width <- 0.2
     }
     p <- p %>% add_summary(errors,
       error.plot = error.plot, color = color, shape = shape,
-      position = position, size = size, linewidth = linewidth, width = width, ci = ci, group = group,
+      position = position, size = size, linewidth = linewidth, width = error.width, ci = ci, group = group,
       linetype = linetype, show.legend = show.legend
     )
   }
