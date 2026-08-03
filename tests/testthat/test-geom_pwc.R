@@ -47,6 +47,65 @@ test_that("geom_pwc works for pairwise comparisons", {
   expect_equal(label_coords, label_coords_expected)
 })
 
+test_that("geom_pwc keeps labels aligned when bracket keys are nonascending", {
+  # Keep label selection and coordinate reduction under the same first-seen
+  # bracket order; sorting either side independently would swap A and B here.
+  label_data <- data.frame(
+    group = rep(c(2L, 1L), each = 3),
+    bracket.group = rep(c(20L, 10L), each = 3),
+    label = rep(c("B", "A"), each = 3),
+    hjust = 0.5,
+    vjust = 0,
+    colour = "black",
+    alpha = 1,
+    label.size = 3.88,
+    family = "",
+    fontface = 1,
+    lineheight = 1.2
+  )
+  coords <- data.frame(
+    group = label_data$group,
+    bracket.group = label_data$bracket.group,
+    x = c(2, 2, 2, 1, 1, 1),
+    xend = c(2, 2, 2.4, 1, 1, 1.4),
+    y = c(1, 1.1, 1.1, 1, 1.1, 1.1),
+    yend = c(1.1, 1.1, 1, 1.1, 1.1, 1),
+    angle = NA_real_
+  )
+
+  grob <- get_text_grob(label_data, coords)
+
+  expect_identical(grob$label, c("B", "A"))
+  expect_equal(as.numeric(grob$x), c(2.2, 1.2))
+})
+
+test_that("geom_pwc rejects an incomplete y.position vector explicitly", {
+  expect_warning(
+    built <- ggplot2::ggplot_build(
+      ggboxplot(df, x = "dose", y = "len") +
+        geom_pwc(method = "wilcox_test", y.position = c(30, 35))
+    ),
+    "y.position.*number of computed comparisons", perl = TRUE
+  )
+  expect_equal(nrow(built$data[[2]]), 0)
+})
+
+test_that("hide.ns preserves full-length y.position assignments", {
+  pos_data <- data.frame(
+    grp = factor(rep(c("a", "b", "c"), each = 20)),
+    value = c(seq_len(20), seq_len(20), seq_len(20) + 100)
+  )
+  built <- ggplot2::ggplot_build(
+    ggboxplot(pos_data, "grp", "value") +
+      geom_pwc(method = "t_test", hide.ns = "p", y.position = c(30, 35, 40))
+  )
+  brackets <- built$data[[2]] %>%
+    dplyr::group_by(.data$group1, .data$group2) %>%
+    dplyr::summarise(top = max(c(.data$y, .data$yend)), .groups = "drop")
+  expect_equal(paste(brackets$group1, brackets$group2), c("1 3", "2 3"))
+  expect_equal(brackets$top, c(35, 40))
+})
+
 
 test_that("geom_pwc works for pairwise comparisons against a reference group", {
   bxp <- ggboxplot(df, x = "dose", y = "len") +
@@ -193,6 +252,20 @@ test_that("Grouped plots: 3 groups at x position. All Pairwise comparisons.", {
   expect_equal(stat.test$y, c(34.49, 38.06, 41.62, 34.49, 38.06, 41.62, 35.38, 38.95, 42.51, 35.38, 38.95, 42.51, 35.38, 38.95, 42.51, 35.38, 38.95, 42.51))
   expect_equal(stat.test$yend, c(35.38, 38.95, 42.51, 35.38, 38.95, 42.51, 35.38, 38.95, 42.51, 35.38, 38.95, 42.51, 34.49, 38.06, 41.62, 34.49, 38.06, 41.62))
   expect_equal(label_coords, label_coords_expected)
+})
+
+
+test_that("invalid grouped ref.group diagnostic preserves the supplied value", {
+  expect_error(
+    get_ref_group_id(
+      scales = NULL,
+      data = data.frame(legend.var = factor(c("OJ", "VC"))),
+      ref.group = "NOT_A_LEVEL",
+      is.comparisons.between.legend.grps = TRUE
+    ),
+    "The ref.group ('NOT_A_LEVEL') doesn't exist.",
+    fixed = TRUE
+  )
 })
 
 

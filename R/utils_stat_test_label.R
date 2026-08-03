@@ -31,12 +31,16 @@ fortify_signif_symbols_encoding <- function(symnum.args = list()) {
 #'   (e.g., \code{c(0.10, 0.05, 0.01)} or \code{c(0.10, 0.05, 0.01, 0.001)}).
 #'   Values smaller than each cutoff receive the corresponding symbol.
 #' @param signif.symbols Character vector of symbols matching signif.cutoffs.
-#'   If NULL, auto-generated based on length: 3 cutoffs -> c("*", "**", "***"),
+#'   It is used when \code{signif.cutoffs} is supplied; without custom cutoffs,
+#'   the package-default encoding is used. If NULL, symbols are auto-generated
+#'   from the number of custom cutoffs: 3 cutoffs -> c("*", "**", "***"),
 #'   4 cutoffs -> c("*", "**", "***", "****").
 #' @param ns.symbol Character string for non-significant results. Default is "ns".
 #'   Use "" (empty string) to show nothing for non-significant results.
-#' @param use.four.stars Logical. If TRUE and signif.symbols is NULL, include
-#'   four stars (****) for the most significant level. Default is FALSE.
+#' @param use.four.stars Logical. With custom \code{signif.cutoffs} and
+#'   \code{signif.symbols = NULL}, TRUE permits an automatically generated
+#'   fourth star level. The legacy package-default encoding already contains
+#'   \code{"****"} when custom cutoffs are not supplied. Default is FALSE.
 #' @param symnum.args Existing symnum.args list. If provided and non-empty,
 #'   it takes precedence over other parameters (for backward compatibility).
 #'
@@ -169,7 +173,7 @@ escape_psignif_asteriks <- function(label) {
 # stat.test: statistical test output
 # description: the description of the stat test, for example: "Anova"
 # label: can be p, p.signif, p.adj or glue expression
-add_stat_label <- function(stat.test, label = NULL) {
+add_stat_label <- function(stat.test, label = NULL, label.env = parent.frame()) {
   is_plotmath <- FALSE
   stat.test <- add_p_format_signif(stat.test)
   if (is.null(label)) {
@@ -180,7 +184,9 @@ add_stat_label <- function(stat.test, label = NULL) {
       label <- fortify_plotmath(label)
     }
     if (is_glue_expression(label)) {
-      stat.test <- stat.test %>% mutate(label = glue(label))
+      stat.test$label <- as.character(
+        glue::glue_data(stat.test, label, .envir = label.env)
+      )
     } else {
       if (!(label %in% colnames(stat.test))) {
         stop(

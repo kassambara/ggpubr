@@ -117,3 +117,19 @@ test_that("ggraincloud coerces a non-factor x", {
   d2$dose <- as.character(d2$dose)
   expect_silent(ggplot2::ggplotGrob(ggraincloud(d2, "dose", "len")))
 })
+
+test_that("ggraincloud preserves a mapped rain-position column", {
+  d <- df
+  d$.ggpubr.rain.x. <- rep(c("G1", "G2"), length.out = nrow(d))
+  p <- ggraincloud(d, "dose", "len", color = ".ggpubr.rain.x.", flip = FALSE)
+  rain <- p$layers[[3]]
+
+  expect_identical(
+    list(
+      mapped = sort(unique(as.character(p$data$.ggpubr.rain.x.))),
+      colour = rlang::as_label(rain$mapping$colour),
+      x = rlang::as_label(rain$mapping$x)
+    ),
+    list(mapped = c("G1", "G2"), colour = ".ggpubr.rain.x.", x = ".ggpubr.rain.x.1")
+  )
+})

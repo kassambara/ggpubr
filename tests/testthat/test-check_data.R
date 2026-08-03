@@ -77,3 +77,39 @@ test_that("check_data works when combine=TRUE and length(x) > 1", {
   expect_equal(observed$x, expected_x)
   expect_equal(observed$data, expected_data)
 })
+
+test_that("combined distribution plots accept their current default y", {
+  d <- data.frame(a = 1:6, b = 7:12)
+  expect_silent({
+    ggplot2::ggplot_build(gghistogram(d, x = c("a", "b"), combine = TRUE))
+    ggplot2::ggplot_build(ggdensity(d, x = c("a", "b"), merge = TRUE))
+  })
+})
+
+test_that("combined plots preserve user columns named like pivot internals", {
+  d <- data.frame(
+    group = rep(c("A", "B"), each = 2),
+    a = 1:4, b = 5:8,
+    .y. = rep(c("user-y-1", "user-y-2"), 2),
+    .value. = paste0("user-value-", 1:4),
+    check.names = FALSE
+  )
+  p <- ggboxplot(d, "group", c("a", "b"), combine = TRUE)
+  built <- ggplot2::ggplot_build(p)
+
+  expect_identical(
+    list(
+      facets = as.character(built$layout$layout$.y.1),
+      user_y = sort(unique(as.character(p$data$.y.))),
+      user_value = sort(unique(as.character(p$data$.value.))),
+      x = rlang::as_label(p$mapping$x),
+      y = rlang::as_label(p$mapping$y)
+    ),
+    list(
+      facets = c("a", "b"),
+      user_y = c("user-y-1", "user-y-2"),
+      user_value = paste0("user-value-", 1:4),
+      x = "group", y = ".value.1"
+    )
+  )
+})

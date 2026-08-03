@@ -4,11 +4,12 @@
 \alias{ggpubr-common-params}
 \title{Common parameters for ggpubr stat and geom functions}
 \arguments{
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+\item{inherit.aes}{If \code{FALSE},
 overrides the default aesthetics, rather than combining with them. This is
 most useful for helper functions that define both data and aesthetics and
 shouldn't inherit behaviour from the default plot specification. Set to
-\code{TRUE} to inherit aesthetics from the parent ggplot layer.}
+\code{TRUE} to inherit aesthetics from the parent ggplot layer. The
+function usage states the default for each layer.}
 }
 \description{
 Common parameters for ggpubr stat and geom functions

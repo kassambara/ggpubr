@@ -84,11 +84,11 @@ for example panel.labs = list(sex = c("Male", "Female"), rx = c("Obs",
 labels for panels by omitting variable names; in other words panels will be
 labelled only by variable grouping levels.}
 
-\item{size}{Numeric value (e.g.: size = 1). change the size of points and
-outlines.}
+\item{size}{numeric value controlling the relative diameter of dots in the
+dot stack. It does not set an outline linewidth.}
 
-\item{binwidth}{numeric value specifying bin width. use value between 0 and 1
-when you have a strong dense dotplot. For example binwidth = 0.2.}
+\item{binwidth}{numeric value specifying the dot-stack bin width. Smaller
+values create denser stacks; for example, use \code{binwidth = 0.2}.}
 
 \item{select}{character vector specifying which items to display. Can be
 combined with \code{remove}.}

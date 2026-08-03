@@ -137,12 +137,13 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
 
 
   # Add paired sample ids
+  pair_id_col <- .new_col_name(".ggpubr.pair.id.", names(data))
   if (!is.null(id)) {
-    id <- .select_vec(data, id)
+    pair_id <- .select_vec(data, id)
   } else {
-    id <- rep(seq_len(nrow(data) / 2), 2)
+    pair_id <- rep(seq_len(nrow(data) / 2), 2)
   }
-  data$id <- id
+  data[[pair_id_col]] <- pair_id
 
   # Optional horizontal jitter of the paired points (#407). Spreads the points
   # to reduce overlap while keeping each pair's connecting line intact: one
@@ -154,7 +155,7 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
   jitter.x <- NULL
   if (!is.null(jitter) && length(jitter) == 1 && is.numeric(jitter) &&
       !is.na(jitter) && jitter > 0) {
-    ids <- unique(data$id)
+    ids <- unique(data[[pair_id_col]])
     if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) {
       old.seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
       on.exit(assign(".Random.seed", old.seed, envir = .GlobalEnv), add = TRUE)
@@ -166,8 +167,8 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
     set.seed(123)
     offsets <- stats::runif(length(ids), -jitter, jitter)
     names(offsets) <- as.character(ids)
-    data$.ggpubr.x.jitter. <- as.integer(data[[x]]) + offsets[as.character(data$id)]
-    jitter.x <- ".ggpubr.x.jitter."
+    jitter.x <- .new_col_name(".ggpubr.x.jitter.", names(data))
+    data[[jitter.x]] <- as.integer(data[[x]]) + offsets[as.character(data[[pair_id_col]])]
   }
 
   position <- "identity"
@@ -181,7 +182,7 @@ ggpaired_core <- function(data, x = NULL, y = NULL, id = NULL,
       position = position
     ) +
     geom_exec(geom_line,
-      data = data, x = jitter.x, group = "id",
+      data = data, x = jitter.x, group = pair_id_col,
       color = line.color, linewidth = line.size, linetype = linetype,
       position = position
     ) +

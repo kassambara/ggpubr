@@ -123,6 +123,21 @@ test_that("a plain horizontal geom_bracket() draws without warning", {
   txt
 }
 
+.panel_text_grobs <- function(p) {
+  g <- ggplot2::ggplotGrob(p)
+  txt <- list()
+  find_txt <- function(gr) {
+    if (inherits(gr, "text")) {
+      txt[[length(txt) + 1L]] <<- gr
+      return(invisible())
+    }
+    if (!is.null(gr$children)) for (ch in gr$children) find_txt(ch)
+    if (inherits(gr, "gTree") && !is.null(gr$grobs)) for (ch in gr$grobs) find_txt(ch)
+  }
+  for (pi in which(grepl("panel", g$layout$name))) find_txt(g$grobs[[pi]])
+  txt
+}
+
 test_that("horizontal label is centered above the bracket, not rotated", {
   t <- .label_grob(ggboxplot(df, "dose", "len") +
     geom_bracket(xmin = "0.5", xmax = "1", y.position = 30, label = "H"))
@@ -140,4 +155,29 @@ test_that("coord.flip label sits to the side and is rotated -90", {
   expect_equal(t$rot, -90)
   expect_equal(as.numeric(t$x), 0.845, tolerance = 0.03)
   expect_equal(as.numeric(t$y), 0.344, tolerance = 0.03)
+})
+
+test_that("pairwise bracket labels are drawn once per comparison", {
+  stat <- compare_means(len ~ dose, df)
+  stat$y.position <- c(30, 35, 40)
+  txt <- .panel_text_grobs(
+    ggboxplot(df, "dose", "len") +
+      stat_pvalue_manual(stat, label = "p.signif", alpha = 0.25)
+  )
+  expect_equal(sum(vapply(txt, function(gr) length(gr$label), integer(1))), nrow(stat))
+  expect_equal(unlist(lapply(txt, function(gr) as.character(gr$label))), stat$p.signif)
+})
+
+test_that("geom_pwc draws one text label per comparison", {
+  txt <- .panel_text_grobs(
+    ggboxplot(df, "dose", "len") + geom_pwc(label = "p.signif")
+  )
+  labels <- unlist(lapply(txt, function(gr) as.character(gr$label)))
+  expect_length(labels, 3)
+  # Compare against the symbols the test itself computes. Hard-coding them ties
+  # the assertion to one platform's arithmetic: a p-value sitting near a
+  # significance cutoff renders "***" on one R release and "****" on another,
+  # which says nothing about whether each comparison got its own label.
+  expected <- compare_means(len ~ dose, df)$p.signif
+  expect_identical(labels, expected)
 })

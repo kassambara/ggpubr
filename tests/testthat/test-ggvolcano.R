@@ -79,3 +79,20 @@ test_that("ggvolcano supports faceting", {
 test_that("ggvolcano errors when the required columns are missing", {
   expect_error(ggvolcano(data.frame(a = 1, b = 2)), "must contain")
 })
+
+test_that("a facet named fdr does not replace the ggvolcano threshold", {
+  collision <- d
+  collision$fdr <- factor("0.9")
+  expect_no_warning(
+    p <- ggvolcano(
+      collision, fdr = 0.05, fc = 2, genenames = collision$name,
+      top = 4, facet.by = "fdr"
+    )
+  )
+  repel.idx <- which(vapply(p$layers, function(layer) {
+    grepl("Repel", class(layer$geom)[1])
+  }, logical(1)))
+  labels <- p$layers[[repel.idx[[1]]]]$data$name
+
+  expect_setequal(labels, c("up", "down"))
+})

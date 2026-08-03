@@ -19,8 +19,11 @@ NULL
 #' @param conf.int logical value. If TRUE, adds confidence interval.
 #' @param conf.int.level Level controlling confidence region. Default is 95\%.
 #'   Used only when add != "none" and conf.int = TRUE.
-#' @param fullrange should the fit span the full range of the plot, or just the
-#'   data. Used only when add != "none".
+#' @param fullrange should the fit span the full x scale, or just the data.
+#'   Used only when add != "none". Note that \code{xlim} sets the displayed
+#'   coordinate range rather than the scale, so widening a plot with
+#'   \code{xlim} does not extend the fit; use \code{scale_x_continuous(limits =)}
+#'   to widen the scale itself.
 #' @param ellipse logical value. If TRUE, draws ellipses around points.
 #' @param ellipse.level the size of the concentration ellipse in normal
 #'   probability.
@@ -283,16 +286,18 @@ ggscatter_core <- function(data, x, y,
 
   # Adjust shape when ngroups > 6, to avoid ggplot warnings
   if (shape %in% colnames(data)) {
-    ngroups <- length(levels(data[[shape]]))
-    if (ngroups > 6) p <- p + scale_shape_manual(values = seq_len(ngroups), labels = levels(data[[shape]]))
+    shape.groups <- as.factor(data[[shape]])
+    ngroups <- length(levels(shape.groups))
+    if (ngroups > 6) p <- p + scale_shape_manual(values = seq_len(ngroups), labels = levels(shape.groups))
   }
 
   # Add marginal rug
   # +++++++++++
   if (rug) {
+    rug.linewidth <- if (is.numeric(size) && length(size) == 1L) size / 2 else NULL
     p <- p + .geom_exec(geom_rug,
       data = data,
-      color = color, linewidth = size / 2
+      color = color, linewidth = rug.linewidth
     )
   }
 
@@ -385,9 +390,9 @@ ggscatter_core <- function(data, x, y,
     lab_data <- data
     # Select some labels to show
     if (!is.null(label.select)) {
-      lab_data <- subset(lab_data, lab_data[[label]] %in% label.select,
-        drop = FALSE
-      )
+      # Keep the selector outside the data mask so a column named `label` cannot
+      # replace the local column-name variable.
+      lab_data <- lab_data[lab_data[[label]] %in% label.select, , drop = FALSE]
     }
 
     if (repel) {

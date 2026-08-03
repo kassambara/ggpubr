@@ -3,8 +3,10 @@ NULL
 #' Dot plot
 #' @description Create a dot plot.
 #' @inheritParams ggboxplot
-#' @param binwidth numeric value specifying bin width. use value between 0 and 1
-#'   when you have a strong dense dotplot. For example binwidth = 0.2.
+#' @param size numeric value controlling the relative diameter of dots in the
+#'   dot stack. It does not set an outline linewidth.
+#' @param binwidth numeric value specifying the dot-stack bin width. Smaller
+#'   values create denser stacks; for example, use \code{binwidth = 0.2}.
 #' @param ... other arguments to be passed to
 #'   \code{\link[ggplot2]{geom_dotplot}}, \code{\link{ggpar}} and
 #'   \code{\link{facet}}.
@@ -168,6 +170,14 @@ ggdotplot_core <- function(data, x, y,
       position = position, stackratio = 1,
       dotsize = dotsize, binwidth = binwidth, ...
     )
+
+  # `jitter` is a documented add value. Draw it as its own point layer after
+  # the dot stack instead of removing it with the summary exclusions below.
+  if ("jitter" %in% add) {
+    p <- add.params %>%
+      .add_item(p = p, add = "jitter") %>%
+      do.call(ggadd, .)
+  }
 
   # Add errors
   if (error.plot == "crossbar") {} else {

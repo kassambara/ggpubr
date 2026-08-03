@@ -70,7 +70,9 @@ NULL
 #'  groups are dodged (a \code{color}/\code{fill} grouping with a dodging
 #'  \code{position}), one count is shown per group; otherwise a single count is
 #'  shown per x-axis tick. Counts respect \code{select}/\code{remove} and are
-#'  computed per facet.
+#'  computed per facet. They count rows in the filtered plot data, including
+#'  rows with a missing \code{y} value that do not reach the drawn layer. Whether
+#'  to count only contributing values is tracked in issue #790.
 #' @param ggtheme function, ggplot2 theme name. Default value is theme_pubr(). Set ggtheme = NULL to skip applying a ggpubr theme, so the plot keeps ggplot2 default theme or the theme set globally via theme_set().
 #'  Allowed values include ggplot2 official themes: theme_gray(), theme_bw(),
 #'  theme_minimal(), theme_classic(), theme_void(), ....

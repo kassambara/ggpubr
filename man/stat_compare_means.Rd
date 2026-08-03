@@ -185,18 +185,24 @@ If \code{use.four.stars = TRUE}, can include a fourth level.
 Default is NULL, which uses the package defaults.}
 
 \item{signif.symbols}{character vector of symbols corresponding to
-\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
-(and "****" if \code{use.four.stars = TRUE}).}
+\code{signif.cutoffs}. It is used when custom cutoffs are supplied. If NULL,
+symbols are auto-generated as "*", "**", "***" (and "****" if
+\code{use.four.stars = TRUE}). Without custom cutoffs, the legacy package
+encoding is used.}
 
 \item{ns.symbol}{character string for non-significant results. Default is "ns".
 Use "" (empty string) to show nothing.}
 
-\item{use.four.stars}{logical. If TRUE, allows four stars (****) for the most
-significant level. Default is FALSE.}
+\item{use.four.stars}{logical. With custom \code{signif.cutoffs}, TRUE allows
+four stars (****) for the most significant level. Without custom cutoffs,
+the legacy package-default encoding already includes ****. Default is FALSE.}
 
 \item{show.signif}{logical. If TRUE (default), shows significance symbols when
 using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
-the p-value (equivalent to \code{label = "p.format"}) with a warning.}
+the p-value (equivalent to \code{label = "p.format"}) with a warning. This
+rewrite applies to the literal \code{label} argument; an explicit mapped
+label aesthetic such as \code{aes(label = after_stat(p.format.signif))} is
+evaluated later and is not rewritten.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
@@ -235,11 +241,12 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+\item{inherit.aes}{If \code{FALSE},
 overrides the default aesthetics, rather than combining with them. This is
 most useful for helper functions that define both data and aesthetics and
 shouldn't inherit behaviour from the default plot specification. Set to
-\code{TRUE} to inherit aesthetics from the parent ggplot layer.}
+\code{TRUE} to inherit aesthetics from the parent ggplot layer. The
+function usage states the default for each layer.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 \code{\link[ggplot2:geom_text]{geom_label}}.}

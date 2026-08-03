@@ -7,15 +7,20 @@ NULL
 #' @inheritParams ggpar
 #' @param data a data frame
 #' @param x,y x and y variables for drawing.
-#' @param color,size points color and size.
+#' @param color,size point color and size.
 #' @param dot.size numeric value specifying the dot size.
 #' @param shape point shape. See \code{\link{show_point_shapes}}.
 #' @param label the name of the column containing point labels.
+#' @param add character scalar. Use \code{"segment"} to draw a line from zero
+#'   to each point, or \code{"none"} to draw no line. The historical spelling
+#'   \code{"segments"} is also accepted as an alias for \code{"segment"}.
+#' @param add.params parameters for the optional segment, including
+#'   \code{color}, \code{linewidth}, and \code{linetype}.
 #' @param group an optional column name indicating how the elements of x are
 #'   grouped.
 #' @param sorting a character vector for sorting into ascending or descending
 #'   order. Allowed values are one of "descending", "ascending" and "none". Partial
-#'   match are allowed (e.g. sorting = "desc" or "asc"). Default is
+#'   matches are allowed (e.g. sorting = "desc" or "asc"). Default is
 #'   "descending".
 #' @param x.text.col logical. If TRUE (default), x axis texts are colored by
 #'   groups.
@@ -83,7 +88,7 @@ ggdotchart <- function(data, x, y, group = NULL,
                        combine = FALSE,
                        color = "black", palette = NULL,
                        shape = 19, size = NULL, dot.size = size,
-                       sorting = c("ascending", "descending", "none"),
+                       sorting = c("descending", "ascending", "none"),
                        add = c("none", "segment"), add.params = list(),
                        x.text.col = TRUE,
                        rotate = FALSE,
@@ -145,15 +150,23 @@ ggdotchart <- function(data, x, y, group = NULL,
 ggdotchart_core <- function(data, x, y, group = NULL,
                             color = "black", palette = NULL,
                             shape = 19, size = NULL, dot.size = size,
-                            sorting = c("ascending", "descending", "none"),
-                            add = c("none", "segments"), add.params = list(),
-                            x.text.col = FALSE,
+                            sorting = c("descending", "ascending", "none"),
+                            add = c("none", "segment"), add.params = list(),
+                            x.text.col = TRUE,
                             rotate = FALSE,
                             title = NULL, xlab = NULL, ylab = NULL,
                             ggtheme = theme_bw(),
                             position = "identity",
                             ...) {
-  add <- match.arg(add)
+  if (length(add) != 1L || !add %in% c("none", "segment", "segments")) {
+    stop(
+      "`add` must be exactly one of \"none\", \"segment\", or the historical alias \"segments\".",
+      call. = FALSE
+    )
+  }
+  # Preserve the historical plural spelling while keeping the documented
+  # canonical value singular.
+  if (identical(add, "segments")) add <- "segment"
   if (!is.null(group)) {
     if (group == 1) {
       group <- NULL
@@ -200,7 +213,7 @@ ggdotchart_core <- function(data, x, y, group = NULL,
 
   p <- ggplot(data, create_aes(list(x = x, y = y)))
 
-  if (add == "segments") {
+  if (add == "segment") {
     seg.opts <- geom_exec(
       data = data, color = color,
       size = size, position = position
@@ -232,6 +245,13 @@ ggdotchart_core <- function(data, x, y, group = NULL,
       option$linewidth <- add.params$linewidth
     } else if (!is.null(add.params$size)) {
       option$linewidth <- add.params$size
+    }
+    if (!is.null(add.params$linetype)) {
+      if (add.params$linetype %in% names(data)) {
+        mapping$linetype <- add.params$linetype
+      } else {
+        option$linetype <- add.params$linetype
+      }
     }
 
     # geom_linerange takes `linewidth`, not the deprecated `size` (ggplot2 >= 3.4.0).
@@ -283,7 +303,13 @@ ggdotchart_core <- function(data, x, y, group = NULL,
 # but this is a deliberate feature for Cleveland dot plots. We suppress the warning.
 .set_x_text_col <- function(p, label, angle) {
   g <- ggplot2::ggplot_build(p)
-  cols <- unlist(g$data[[1]]["colour"])
+  point.layer <- which(vapply(
+    p$layers,
+    function(layer) inherits(layer$geom, "GeomPoint"),
+    logical(1)
+  ))[1]
+  if (is.na(point.layer)) point.layer <- 1L
+  cols <- unlist(g$data[[point.layer]]["colour"])
   names(cols) <- as.vector(label) # Give every color an appropriate name
   suppressWarnings(
     p + theme(axis.text.x = element_text(colour = cols, angle = angle, hjust = 1))
@@ -295,7 +321,13 @@ ggdotchart_core <- function(data, x, y, group = NULL,
 # but this is a deliberate feature for Cleveland dot plots. We suppress the warning.
 .set_y_text_col <- function(p, label, angle) {
   g <- ggplot2::ggplot_build(p)
-  cols <- unlist(g$data[[1]]["colour"])
+  point.layer <- which(vapply(
+    p$layers,
+    function(layer) inherits(layer$geom, "GeomPoint"),
+    logical(1)
+  ))[1]
+  if (is.na(point.layer)) point.layer <- 1L
+  cols <- unlist(g$data[[point.layer]]["colour"])
   names(cols) <- as.vector(label) # Give every color an appropriate name
   suppressWarnings(
     p + theme(axis.text.y = element_text(colour = cols))

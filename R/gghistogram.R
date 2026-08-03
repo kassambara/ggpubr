@@ -13,8 +13,8 @@ NULL
 #' @param alpha numeric value specifying fill color transparency. Value should
 #'   be in [0, 1], where 0 is full transparency and 1 is no transparency.
 #' @param bins Number of bins. Defaults to 30.
-#' @param binwidth numeric value specifying bin width. use value between 0 and 1
-#'   when you have a strong dense dotplot. For example binwidth = 0.2.
+#' @param binwidth numeric value specifying the histogram bin width in x-axis
+#'   units.
 #' @param add allowed values are one of "mean" or "median" (for adding mean or
 #'   median line, respectively).
 #' @param add.params parameters (color, size, linetype) for the argument 'add';
@@ -125,6 +125,7 @@ gghistogram <- function(data, x, y = "count", combine = FALSE, merge = FALSE,
   }
 
   .opts$fun <- gghistogram_core
+  .opts$fun_name <- "histogram"
   if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
   }

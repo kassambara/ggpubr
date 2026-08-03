@@ -116,6 +116,7 @@ ggdensity <- function(data, x, y = "density", combine = FALSE, merge = FALSE,
   }
 
   .opts$fun <- ggdensity_core
+  .opts$fun_name <- "density"
   if (missing(ggtheme) & (!is.null(facet.by) | combine)) {
     .opts$ggtheme <- theme_pubr(border = TRUE)
   }

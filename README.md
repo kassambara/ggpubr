@@ -8,15 +8,15 @@ Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggpubr?color=orange)](h
 
 # ggpubr: ‘ggplot2’ Based Publication Ready Plots <img src="man/figures/logo.png" align="right" height="139" alt="ggpubr hex logo" />
 
-[ggplot2, by Hadley Wickham,](https://ggplot2.tidyverse.org/) is an
+[ggplot2, by Hadley Wickham](https://ggplot2.tidyverse.org/) is an
 excellent and flexible package for elegant data visualization in R.
-However the default generated plots require some formatting before we
-can send them for publication. Furthermore, to customize a ggplot, the
-syntax is opaque and this raises the level of difficulty for researchers
-with no advanced R programming skills.
+However, the default plots require some formatting before they are ready
+for publication. Furthermore, the syntax for customizing a ggplot can be
+opaque, which raises the level of difficulty for researchers without
+advanced R programming skills.
 
-The ‘ggpubr’ package provides some easy-to-use functions for creating
-and customizing ‘ggplot2’-based publication ready plots.
+The ‘ggpubr’ package provides easy-to-use functions for creating and
+customizing ‘ggplot2’-based, publication-ready plots.
 
 Find out more at <https://rpkgs.datanovia.com/ggpubr/>.
 
@@ -103,7 +103,7 @@ ggdensity(wdata, x = "weight",
    palette = c("#00AFBB", "#E7B800"))
 ```
 
-![](man/figures/README-ggpubr-1.png)<!-- -->
+<img src="man/figures/README-ggpubr-1.png" alt="Density plot of weight by sex, with group means and marginal rugs."  />
 
 ``` r
 # Histogram plot with mean lines and marginal rug
@@ -116,7 +116,7 @@ gghistogram(wdata, x = "weight",
    palette = c("#00AFBB", "#E7B800"))
 ```
 
-![](man/figures/README-ggpubr-2.png)<!-- -->
+<img src="man/figures/README-ggpubr-2.png" alt="Histogram of weight by sex, with group means and marginal rugs."  />
 
 ## Box plots and violin plots
 
@@ -145,7 +145,7 @@ head(df, 4)
  p
 ```
 
-![](man/figures/README-ggpubr-box-plot-dot-plots-strip-charts-1.png)<!-- -->
+<img src="man/figures/README-ggpubr-box-plot-dot-plots-strip-charts-1.png" alt="Box plot of tooth length by dose with jittered observations."  />
 
 ``` r
 
@@ -159,7 +159,7 @@ p + stat_compare_means(comparisons = my_comparisons)+ # Add pairwise comparisons
 #> This message is displayed once per session.
 ```
 
-![](man/figures/README-ggpubr-box-plot-dot-plots-strip-charts-2.png)<!-- -->
+<img src="man/figures/README-ggpubr-box-plot-dot-plots-strip-charts-2.png" alt="Box plot of tooth length by dose with pairwise and global p-values."  />
 
 ``` r
 
@@ -172,10 +172,10 @@ ggviolin(df, x = "dose", y = "len", fill = "dose",
          palette = c("#00AFBB", "#E7B800", "#FC4E07"),
          add = "boxplot", add.params = list(fill = "white"))+
   stat_compare_means(comparisons = my_comparisons, label = "p.signif")+ # Add significance levels
-  stat_compare_means(label.y = 50)                                      # Add global the p-value
+  stat_compare_means(label.y = 50)                                      # Add the global p-value
 ```
 
-![](man/figures/README-ggpubr-box-plot-dot-plots-strip-charts-3.png)<!-- -->
+<img src="man/figures/README-ggpubr-box-plot-dot-plots-strip-charts-3.png" alt="Violin plot of tooth length by dose with embedded box plots and p-value annotations."  />
 
 ## Bar plots
 
@@ -192,7 +192,7 @@ data("mtcars")
 dfm <- mtcars
 # Convert the cyl variable to a factor
 dfm$cyl <- as.factor(dfm$cyl)
-# Add the name colums
+# Add the name column
 dfm$name <- rownames(dfm)
 # Inspect the data
 head(dfm[, c("name", "wt", "mpg", "cyl")])
@@ -221,7 +221,7 @@ ggbarplot(dfm, x = "name", y = "mpg",
           )
 ```
 
-![](man/figures/README-ordered-bar-plots-1.png)<!-- -->
+<img src="man/figures/README-ordered-bar-plots-1.png" alt="Globally ordered bar plot of miles per gallon by car, colored by cylinder count."  />
 
 Sort bars inside each group. Use the argument **sort.by.groups = TRUE**.
 
@@ -236,7 +236,7 @@ ggbarplot(dfm, x = "name", y = "mpg",
           )
 ```
 
-![](man/figures/README-ordered-bar-plots-by-groups-1.png)<!-- -->
+<img src="man/figures/README-ordered-bar-plots-by-groups-1.png" alt="Bar plot of miles per gallon by car, ordered within each cylinder group."  />
 
 ### Deviation graphs
 
@@ -278,7 +278,7 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
           )
 ```
 
-![](man/figures/README-deviation-graphs-1.png)<!-- -->
+<img src="man/figures/README-deviation-graphs-1.png" alt="Ordered vertical bars showing each car's miles-per-gallon z-score above or below the mean."  />
 
 Rotate the plot: use rotate = TRUE and sort.val = “desc”
 
@@ -297,7 +297,7 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
           )
 ```
 
-![](man/figures/README-deviation-graphs-horizontal-1.png)<!-- -->
+<img src="man/figures/README-deviation-graphs-horizontal-1.png" alt="Ordered horizontal bars showing each car's miles-per-gallon z-score above or below the mean."  />
 
 ## Dot charts
 
@@ -315,13 +315,13 @@ Lollipop chart colored by the grouping variable “cyl”:
 ggdotchart(dfm, x = "name", y = "mpg",
            color = "cyl",                                # Color by groups
            palette = c("#00AFBB", "#E7B800", "#FC4E07"), # Custom color palette
-           sorting = "ascending",                        # Sort value in descending order
-           add = "segments",                             # Add segments from y = 0 to dots
+           sorting = "ascending",                        # Sort values in ascending order
+           add = "segment",                              # Add segments from y = 0 to dots
            ggtheme = theme_pubr()                        # ggplot2 theme
            )
 ```
 
-![](man/figures/README-lollipop-chart-1.png)<!-- -->
+<img src="man/figures/README-lollipop-chart-1.png" alt="Ascending lollipop chart of miles per gallon by car, colored by cylinder count."  />
 
 - Sort in descending order. **sorting = “descending”**.
 - Rotate the plot vertically, using **rotate = TRUE**.
@@ -335,7 +335,7 @@ ggdotchart(dfm, x = "name", y = "mpg",
            color = "cyl",                                # Color by groups
            palette = c("#00AFBB", "#E7B800", "#FC4E07"), # Custom color palette
            sorting = "descending",                       # Sort value in descending order
-           add = "segments",                             # Add segments from y = 0 to dots
+           add = "segment",                              # Add segments from y = 0 to dots
            rotate = TRUE,                                # Rotate vertically
            group = "cyl",                                # Order by groups
            dot.size = 6,                                 # Large dot size
@@ -346,21 +346,21 @@ ggdotchart(dfm, x = "name", y = "mpg",
            )
 ```
 
-![](man/figures/README-lollipop-chart-rotate-1.png)<!-- -->
+<img src="man/figures/README-lollipop-chart-rotate-1.png" alt="Vertical lollipop chart of miles per gallon by car, grouped and colored by cylinder count, with value labels."  />
 
 Deviation graph:
 
 - Use y = “mpg_z”
-- Change segment color and size: add.params = list(color = “lightgray”,
-  size = 2)
+- Change segment color and linewidth:
+  `add.params = list(color = "lightgray", linewidth = 2)`.
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg_z",
            color = "cyl",                                # Color by groups
            palette = c("#00AFBB", "#E7B800", "#FC4E07"), # Custom color palette
            sorting = "descending",                       # Sort value in descending order
-           add = "segments",                             # Add segments from y = 0 to dots
-           add.params = list(color = "lightgray", size = 2), # Change segment color and size
+           add = "segment",                              # Add segments from y = 0 to dots
+           add.params = list(color = "lightgray", linewidth = 2), # Change segment color and linewidth
            group = "cyl",                                # Order by groups
            dot.size = 6,                                 # Large dot size
            label = round(dfm$mpg_z,1),                        # Add mpg values as dot labels
@@ -371,11 +371,11 @@ ggdotchart(dfm, x = "name", y = "mpg_z",
   geom_hline(yintercept = 0, linetype = 2, color = "lightgray")
 ```
 
-![](man/figures/README-lollipop-chart-deviation-1.png)<!-- -->
+<img src="man/figures/README-lollipop-chart-deviation-1.png" alt="Lollipop chart showing each car's miles-per-gallon z-score above or below the mean."  />
 
 ### Cleveland’s dot plot
 
-Color y text by groups. Use y.text.col = TRUE.
+Color y-axis labels by group with `y.text.col = TRUE`.
 
 ``` r
 ggdotchart(dfm, x = "name", y = "mpg",
@@ -390,7 +390,7 @@ ggdotchart(dfm, x = "name", y = "mpg",
   theme_cleveland()                                      # Add dashed grids
 ```
 
-![](man/figures/README-cleveland-dot-plots-1.png)<!-- -->
+<img src="man/figures/README-cleveland-dot-plots-1.png" alt="Cleveland dot plot of miles per gallon by car, with y-axis labels colored by cylinder count."  />
 
 ## More
 

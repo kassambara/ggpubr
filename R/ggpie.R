@@ -98,9 +98,9 @@ ggpie <- function(
     stop("label should be of the same length as data")
   } else if (length(label) > 1) {
     # 1. Add label column
-    data <- data %>%
-      dplyr::mutate(.label. = label)
-    label <- ".label."
+    label.col <- .new_col_name(".label.", names(data))
+    data[[label.col]] <- label
+    label <- label.col
   }
 
   # We should order the data in desc order. Because,
@@ -114,10 +114,8 @@ ggpie <- function(
 
   # Label y coordinates when placed inside slices
   .x <- dplyr::pull(data, x)
-  data <- data %>%
-    dplyr::mutate(
-      .lab.ypos. = cumsum(.x) - 0.5 * .x - lab.adjust
-    )
+  lab.ypos <- .new_col_name(".lab.ypos.", names(data))
+  data[[lab.ypos]] <- cumsum(.x) - 0.5 * .x - lab.adjust
 
   p <- ggplot(data, create_aes(list(x = "1", y = x))) +
     geom_exec(
@@ -154,7 +152,7 @@ ggpie <- function(
     # Compute the cumulative sum as label ypos
     if (lab.pos == "in") {
       p <- p + geom_text(
-        create_aes(list(y = ".lab.ypos.", label = label)),
+        create_aes(list(y = lab.ypos, label = label)),
         size = lab.font$size, fontface = lab.font$face,
         colour = lab.font$color, family = font.family
       ) +

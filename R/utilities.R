@@ -358,13 +358,13 @@ keep_only_tbl_df_classes <- function(x) {
 
     if (yscale == "log2") {
       p <- p + scale_y_continuous(
-        trans = scales::log2_trans(),
+        transform = scales::log2_trans(),
         breaks = scales::trans_breaks("log2", function(x) 2^x),
         labels = scales::trans_format("log2", scales::math_format(2^.x))
       )
     } else if (yscale == "log10") {
       p <- p + scale_y_continuous(
-        trans = scales::log10_trans(),
+        transform = scales::log10_trans(),
         breaks = scales::trans_breaks("log10", function(x) 10^x),
         labels = scales::trans_format("log10", scales::math_format(10^.x))
       )
@@ -372,20 +372,20 @@ keep_only_tbl_df_classes <- function(x) {
 
     if (xscale == "log2") {
       p <- p + scale_x_continuous(
-        trans = scales::log2_trans(),
+        transform = scales::log2_trans(),
         breaks = scales::trans_breaks("log2", function(x) 2^x),
         labels = scales::trans_format("log2", scales::math_format(2^.x))
       )
     } else if (xscale == "log10") {
       p <- p + scale_x_continuous(
-        trans = scales::log10_trans(),
+        transform = scales::log10_trans(),
         breaks = scales::trans_breaks("log10", function(x) 10^x),
         labels = scales::trans_format("log10", scales::math_format(10^.x))
       )
     }
   } else {
-    if (xscale != "none") p <- p + scale_x_continuous(trans = xscale)
-    if (yscale != "none") p <- p + scale_y_continuous(trans = yscale)
+    if (xscale != "none") p <- p + scale_x_continuous(transform = xscale)
+    if (yscale != "none") p <- p + scale_y_continuous(transform = yscale)
   }
   p
 }
@@ -583,6 +583,13 @@ keep_only_tbl_df_classes <- function(x) {
 # :::::::::::::::::::::::::::::::::::::::::
 # combine: if TRUE, gather y variables
 # return a list(data, x, y)
+.is_computed_distribution_y <- function(y) {
+  txt <- gsub("[[:space:]]", "", as.character(y)[1])
+  txt %in% c("count", "density", "ecdf", "qq",
+             "..count..", "..density..", "..ecdf..", "..qq..") ||
+    grepl("(^|[^[:alnum:]_.])(ggplot2::)?(after_stat|stat)\\(", txt)
+}
+
 .check_data <- function(data, x, y, combine = FALSE) {
   if (missing(x) & missing(y)) {
     if (!is.numeric(data)) {
@@ -625,18 +632,22 @@ keep_only_tbl_df_classes <- function(x) {
   # ......................................................
   if (is.null(y)) y <- ""
   if (combine & length(y) > 1) {
+    combine.var <- .new_col_name(".y.", names(data))
+    value.var <- .new_col_name(".value.", c(names(data), combine.var))
     data <- data %>%
-      df_gather(cols = y, names_to = ".y.", values_to = ".value.") %>%
-      dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
-    y <- ".value."
+      df_gather(cols = y, names_to = combine.var, values_to = value.var)
+    data[[combine.var]] <- factor(data[[combine.var]], levels = unique(data[[combine.var]]))
+    y <- value.var
   }
   # Combining x variables: Case of density plot or histograms
   # ......................................................
-  else if (combine & length(x) > 1 & y[1] %in% c("..density..", "..count..", "..ecdf..", "..qq..")) {
+  else if (combine & length(x) > 1 & .is_computed_distribution_y(y[1])) {
+    combine.var <- .new_col_name(".y.", names(data))
+    value.var <- .new_col_name(".value.", c(names(data), combine.var))
     data <- data %>%
-      df_gather(cols = x, names_to = ".y.", values_to = ".value.") %>%
-      dplyr::mutate(.y. = factor(.data$.y., levels = unique(.data$.y.)))
-    x <- ".value."
+      df_gather(cols = x, names_to = combine.var, values_to = value.var)
+    data[[combine.var]] <- factor(data[[combine.var]], levels = unique(data[[combine.var]]))
+    x <- value.var
   }
 
   # If not factor, x elements on the plot should
@@ -650,12 +661,16 @@ keep_only_tbl_df_classes <- function(x) {
   x <- unique(x)
   names(x) <- x
 
-  if (y[1] %in% c("..density..", "..count..", "..ecdf..", "..qq..")) {
-    list(x = x, data = data, y = y)
+  if (.is_computed_distribution_y(y[1])) {
+    result <- list(x = x, data = data, y = y)
   } # The name of plots are x variables
   else {
-    list(y = y, data = data, x = x)
+    result <- list(y = y, data = data, x = x)
   } # The name of plots will be y variables
+  if (exists("combine.var", inherits = FALSE) && combine.var != ".y.") {
+    result$.combine.var <- combine.var
+  }
+  result
 }
 
 
@@ -664,8 +679,8 @@ keep_only_tbl_df_classes <- function(x) {
   if (shape %in% colnames(data)) {
     grp <- data[[shape]]
     if (!inherits(grp, "factor")) grp <- as.factor(grp)
-    ngroups <- length(levels(data[[shape]]))
-    if (ngroups > 6) p <- p + scale_shape_manual(values = seq_len(ngroups), labels = levels(data[[shape]]))
+    ngroups <- length(levels(grp))
+    if (ngroups > 6) p <- p + scale_shape_manual(values = seq_len(ngroups), labels = levels(grp))
   }
   p
 }
@@ -688,7 +703,7 @@ keep_only_tbl_df_classes <- function(x) {
   gdata <- g$data[[1]]
   cols <- fills <- 1
   if ("colour" %in% names(gdata)) cols <- unique(unlist(gdata["colour"]))
-  if ("fills" %in% names(gdata)) fills <- unique(unlist(gdata["fill"]))
+  if ("fill" %in% names(gdata)) fills <- unique(unlist(gdata["fill"]))
   max(length(cols), length(fills))
 }
 
@@ -851,8 +866,7 @@ keep_only_tbl_df_classes <- function(x) {
   if (is.null(facet.by)) {
     return(pick(df))
   }
-  groups <- do.call(paste, c(df[, facet.by, drop = FALSE], sep = "\r"))
-  parts <- lapply(split(df, groups), pick)
+  parts <- lapply(.split_by_columns(df, facet.by), pick)
   do.call(rbind, parts)
 }
 
@@ -912,14 +926,16 @@ keep_only_tbl_df_classes <- function(x) {
   # - returns a list of updated main options:
   #       list(y, data,  x)
   opts <- .check_data(data, x, y, combine = combine | merge != "none")
+  combine.var <- opts$.combine.var %||% ".y."
+  opts$.combine.var <- NULL
   data <- opts$data
   x <- opts$x
   y <- opts$y
 
 
-  is_density_plot <- y[1] %in% c("..count..", "..density..", "..ecdf..", "..qq..")
+  is_density_plot <- .is_computed_distribution_y(y[1])
 
-  if (combine) facet.by <- ".y." # Faceting by y variables
+  if (combine) facet.by <- combine.var # Faceting by y variables
   if (merge != "none") {
     if (!is_density_plot) facet.by <- NULL
     if (is.null(legend.title)) legend.title <- "" # remove .y. in the legend
@@ -939,17 +955,17 @@ keep_only_tbl_df_classes <- function(x) {
   geom.text.position <- "identity"
 
   if (merge == "asis") {
-    .grouping.var <- ".y." # y variables become grouping variable
+    .grouping.var <- combine.var # y variables become grouping variable
   } else if (merge == "flip") {
     .grouping.var <- opts$x # x variable becomes grouping variable
-    opts$x <- ".y." # y variables become x tick labels
+    opts$x <- combine.var # y variables become x tick labels
     if (is.null(xlab)) xlab <- FALSE
   }
 
   if (merge == "asis" | merge == "flip") {
     if (is_density_plot) {
-      color <- ifelse(color == ".x.", ".y.", color)
-      fill <- ifelse(fill == ".x.", ".y.", fill)
+      color <- ifelse(color == ".x.", combine.var, color)
+      fill <- ifelse(fill == ".x.", combine.var, fill)
     }
 
     if (any(c(color, fill) %in% names(data))) {
@@ -982,11 +998,6 @@ keep_only_tbl_df_classes <- function(x) {
   # remaining rows with the wrong mask entries. Indexing with `[` rather than
   # subset() also keeps the arguments from being shadowed by a data column of the
   # same name (a column called "select" would otherwise be used in their place).
-  #
-  # as.vector() is deliberate: it strips a Date x to its day number, so a date
-  # string matches nothing while the day number matches. That is a pre-existing
-  # defect, but correcting it here would change single-argument calls, so the
-  # released semantics are kept and pinned in test-select-remove.R.
   if (!is.null(select) && !is.null(remove)) {
     both <- intersect(select, remove)
     if (length(both) > 0) {
@@ -998,11 +1009,11 @@ keep_only_tbl_df_classes <- function(x) {
     }
   }
   if (!is.null(select)) {
-    keep <- as.vector(opts$data[[opts$x]]) %in% select
+    keep <- opts$data[[opts$x]] %in% select
     opts$data <- opts$data[keep, , drop = FALSE]
   }
   if (!is.null(remove)) {
-    keep <- !(as.vector(opts$data[[opts$x]]) %in% remove)
+    keep <- !(opts$data[[opts$x]] %in% remove)
     opts$data <- opts$data[keep, , drop = FALSE]
   }
   if (!is.null(order)) opts$data[[opts$x]] <- factor(opts$data[[opts$x]], levels = order)
@@ -1045,9 +1056,18 @@ keep_only_tbl_df_classes <- function(x) {
 
     grouping.vars <- intersect(c(facet.by, color, fill), colnames(data))
 
+    # Tell the label layer whether y names a computed height. Only the calling
+    # function knows: gghistogram(y = "count") means the bar height, while
+    # ggtext(y = "count") over that same plot means the caller's own column, and
+    # the two calls are otherwise indistinguishable -- same data, same y, same
+    # plot -- so this cannot be inferred downstream.
+    .computed.y <- fun_name %in% c("histogram", "density") &&
+      gsub("[[:space:]]", "", as.character(opts$y)[1]) %in%
+        c("count", "density", "..count..", "..density..")
+
     label.opts <- font.label %>%
       .add_item(
-        data = data, x = opts$x, y = opts$y,
+        data = data, x = opts$x, y = opts$y, .computed.y = .computed.y,
         label = label, label.select = label.select,
         repel = repel, label.rectangle = label.rectangle,
         family = font.family, parse = parse,
@@ -1267,25 +1287,26 @@ keep_only_tbl_df_classes <- function(x) {
   dodged <- length(group) > 0 && !is.null(dodge.w)
   keys <- if (dodged) unique(c(facet.vars, x, group)) else unique(c(facet.vars, x))
   keys <- intersect(keys, colnames(d))
-  cnt <- d %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(keys))) %>%
-    dplyr::summarise(.n = dplyr::n(), .groups = "drop") %>%
-    as.data.frame()
+  count.col <- .new_col_name(".n", names(d))
+  label.col <- .new_col_name(".n.", c(names(d), count.col))
+  grouped <- dplyr::group_by(d, dplyr::across(dplyr::all_of(keys)))
+  cnt <- as.data.frame(dplyr::group_keys(grouped))
+  cnt[[count.col]] <- dplyr::group_size(grouped)
   if (nrow(cnt) == 0) return(p)
-  cnt$.n. <- paste0("n = ", cnt$.n)
+  cnt[[label.col]] <- paste0("n = ", cnt[[count.col]])
   # y = Inf pins the label to the top of each panel (facet-robust); the .data
   # pronoun keeps non-syntactic column names (spaces/hyphens) working.
   if (dodged) {
     # dodge by the interaction of all grouping columns, matching the boxes.
     # Use a collision-proof temp column name (never a real data column).
-    grp.col <- ".ggpubr_show_n_grp."
+    grp.col <- .new_col_name(".ggpubr_show_n_grp.", names(cnt))
     cnt[[grp.col]] <- interaction(cnt[group], drop = TRUE, lex.order = TRUE)
     mapping <- ggplot2::aes(
-      x = .data[[x]], y = Inf, label = .data$.n., group = .data[[grp.col]]
+      x = .data[[x]], y = Inf, label = .data[[label.col]], group = .data[[grp.col]]
     )
     pos <- ggplot2::position_dodge(width = dodge.w)
   } else {
-    mapping <- ggplot2::aes(x = .data[[x]], y = Inf, label = .data$.n.)
+    mapping <- ggplot2::aes(x = .data[[x]], y = Inf, label = .data[[label.col]])
     pos <- "identity"
   }
   p + ggplot2::geom_text(

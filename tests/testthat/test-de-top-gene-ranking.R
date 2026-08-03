@@ -66,6 +66,21 @@ test_that(".select_top_de_labels selects within each facet group", {
   expect_setequal(out$grp, c("A", "B"))
 })
 
+test_that(".select_top_de_labels keeps facet tuples containing carriage returns distinct", {
+  d <- data.frame(
+    name = c("g1_best", "g1_other", "g2_best", "g2_other"),
+    lfc = c(4, 1, 3, 1), padj = c(0.001, 0.2, 0.002, 0.3),
+    facet1 = c("a\rb", "a\rb", "a", "a"),
+    facet2 = c("c", "c", "b\rc", "b\rc"),
+    stringsAsFactors = FALSE
+  )
+  result <- ggpubr:::.select_top_de_labels(
+    d, top = 1, method = "padj", facet.by = c("facet1", "facet2")
+  )
+
+  expect_identical(sort(result$name), c("g1_best", "g2_best"))
+})
+
 # ---- integration in ggmaplot / ggvolcano -----------------------------------
 de <- data.frame(
   name = paste0("g", 1:6),

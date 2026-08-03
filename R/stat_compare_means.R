@@ -55,15 +55,21 @@ NULL
 #'  If \code{use.four.stars = TRUE}, can include a fourth level.
 #'  Default is NULL, which uses the package defaults.
 #' @param signif.symbols character vector of symbols corresponding to
-#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
-#'  (and "****" if \code{use.four.stars = TRUE}).
+#'  \code{signif.cutoffs}. It is used when custom cutoffs are supplied. If NULL,
+#'  symbols are auto-generated as "*", "**", "***" (and "****" if
+#'  \code{use.four.stars = TRUE}). Without custom cutoffs, the legacy package
+#'  encoding is used.
 #' @param ns.symbol character string for non-significant results. Default is "ns".
 #'  Use "" (empty string) to show nothing.
-#' @param use.four.stars logical. If TRUE, allows four stars (****) for the most
-#'  significant level. Default is FALSE.
+#' @param use.four.stars logical. With custom \code{signif.cutoffs}, TRUE allows
+#'  four stars (****) for the most significant level. Without custom cutoffs,
+#'  the legacy package-default encoding already includes ****. Default is FALSE.
 #' @param show.signif logical. If TRUE (default), shows significance symbols when
 #'  using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
-#'  the p-value (equivalent to \code{label = "p.format"}) with a warning.
+#'  the p-value (equivalent to \code{label = "p.format"}) with a warning. This
+#'  rewrite applies to the literal \code{label} argument; an explicit mapped
+#'  label aesthetic such as \code{aes(label = after_stat(p.format.signif))} is
+#'  evaluated later and is not rewritten.
 #' @param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the test method name and the p-value.
 #' @param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -273,11 +279,12 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     method.args <- .add_item(method.args, paired = paired)
 
     pms <- list(...)
-    size <- ifelse(is.null(pms$size), 3.88, pms$size)
-    color <- ifelse(is.null(pms$color), "black", pms$color)
+    size <- pms$size %||% 3.88
+    color <- pms$color %||% pms$colour %||% "black"
     # Forward the font family to the bracket labels; without this it was dropped
     # in the comparisons path while it worked in the default path (#592, #624).
-    family <- ifelse(is.null(pms$family), "", pms$family)
+    family <- pms$family %||% ""
+    pms[c("size", "color", "colour", "family", "tip.length.ref")] <- NULL
 
     if (is.null(label)) {
       mapped_label <- .get_stat_compare_means_label_from_mapping(mapping)
@@ -293,18 +300,32 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
       p.min.threshold = p.min.threshold,
       p.decimal.mark = p.decimal.mark
     )
-
+    signif.mapping <- mapping
+    if (!is.null(signif.mapping)) {
+      # The label mapping has already been translated into map_signif_level.
+      # GeomSignif's stat does not expose ggpubr's p.signif/p.format columns,
+      # so forwarding the same after_stat() expression makes plot building fail.
+      signif.mapping$label <- NULL
+    }
     if (missing(step.increase)) {
       step.increase <- ifelse(is.null(label.y), 0.12, 0)
     }
-    ggsignif::geom_signif(
+    signif.args <- list(
+      mapping = signif.mapping, data = data, position = position,
+      na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes,
       comparisons = comparisons, y_position = label.y,
       test = method, test.args = method.args,
       step_increase = step.increase, size = bracket.size, textsize = size, color = color,
       family = family,
       map_signif_level = map_signif_level, tip_length = tip.length,
-      data = data, vjust = vjust
+      vjust = vjust
     )
+    # Preserve the released behavior for lower-level ggsignif spellings that
+    # duplicate values already derived from public ggpubr arguments. Forwarding
+    # both copies makes do.call() fail before a layer can be constructed.
+    pms[intersect(names(pms), names(signif.args))] <- NULL
+    signif.args <- c(signif.args, pms)
+    do.call(ggsignif::geom_signif, signif.args)
   } else {
     mapping <- .update_mapping(mapping, label)
     # #560: for a paired test, carry the subject `id` column into the stat's

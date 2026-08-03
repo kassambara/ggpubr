@@ -14,9 +14,11 @@ NULL
 #' @param group grouping variable. Allowed values are 1 (for one group) or a
 #'  character vector specifying the name of the grouping variable. Used only for
 #'  adding statistical summary per group.
-#' @param width numeric value between 0 and 1 specifying bar or box width.
-#'  Example width = 0.8. Used only when \code{error.plot} is one of
-#'  c("crossbar", "errorbar").
+#' @param width numeric value between 0 and 1 specifying the width of added
+#'  boxplots, violins, crossbars, or error bars. When omitted, the effective
+#'  width is 0.2 for a boxplot added to a violin, 0.7 for other added boxplots,
+#'  1 for an added violin, 0.1 for an error bar, and for a crossbar 0.2 on a
+#'  violin or 1 otherwise.
 #' @param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #' @param size numeric value in [0-1] specifying point and line size.
@@ -37,9 +39,9 @@ NULL
 #'  seed is initialized with a random value; this makes sure that two subsequent
 #'  calls start with a different seed. Use NULL to use the current random seed
 #'  and also avoid resetting (the behaviour of ggplot 2.2.1 and earlier).
-#' @param binwidth numeric value specifying bin width. use value between 0 and 1
-#'  when you have a strong dense dotplot. For example binwidth = 0.2. Used only
-#'  when \code{add} contains "dotplot".
+#' @param binwidth numeric value specifying the bin width for an added dot plot;
+#'  for example, use \code{binwidth = 0.2}. Used only when \code{add} contains
+#'  "dotplot".
 #' @param dotsize as \code{size} but applied only to dotplot.
 #' @param outliers logical. If TRUE (default), outliers are displayed in boxplots.
 #'  If FALSE, outliers are not displayed.
@@ -67,6 +69,8 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
                   data = NULL, position = position_dodge(0.8),
                   p_geom = "") {
   . <- NULL
+  width.supplied <- !missing(width)
+  base.geom <- .geom(p)
   if (missing(group)) group <- NULL
   # Checkpoints
   # :::::::::::::::::::::::::::::::::::::::::::
@@ -74,7 +78,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   # Adding mean or median point
   center <- intersect(c("mean", "median"), add)
   if (length(center) == 2) {
-    stop("Use mean or mdedian, but not both at the same time.")
+    stop("Use mean or median, but not both at the same time.")
   }
   # Adding error bars
   errors <- intersect(.errorbar_functions(), add)
@@ -127,17 +131,16 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   )
 
   if ("boxplot" %in% add) {
-    if (.geom(p) == "violin" & missing(width)) {
-      width <- 0.2
-    } else if (missing(width)) width <- 0.7
+    box.width <- width
+    if (!width.supplied) box.width <- if (base.geom == "violin") 0.2 else 0.7
     p <- common.opts %>%
-      .add_item(geomfunc = geom_boxplot, width = width, outliers = outliers, outlier.shape = outlier.shape) %>%
+      .add_item(geomfunc = geom_boxplot, width = box.width, outliers = outliers, outlier.shape = outlier.shape) %>%
       .update_plot(p)
   }
   if ("violin" %in% add) {
-    if (missing(width)) width <- 1
+    violin.width <- if (width.supplied) width else 1
     p <- common.opts %>%
-      .add_item(geomfunc = geom_violin, width = width, trim = FALSE) %>%
+      .add_item(geomfunc = geom_violin, width = violin.width, trim = FALSE) %>%
       .update_plot(p)
   }
   if ("dotplot" %in% add) {
@@ -178,17 +181,18 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
       position = position, size = size, group = group
     )
   }
-  # Add erors
+  # Add errors
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   if (!.is_empty(errors)) {
-    if (missing(width)) {
+    error.width <- width
+    if (!width.supplied) {
       if (error.plot %in% c("errorbar", "lower_errorbar", "upper_errorbar")) {
-        width <- 0.1
-      } else if (error.plot == "crossbar" & .geom(p) == "violin") width <- 0.2
+        error.width <- 0.1
+      } else if (error.plot == "crossbar" & base.geom == "violin") error.width <- 0.2
     }
     p <- p %>% add_summary(errors,
       error.plot = error.plot, color = color, shape = shape,
-      position = position, size = size, linewidth = linewidth, width = width, ci = ci, group = group,
+      position = position, size = size, linewidth = linewidth, width = error.width, ci = ci, group = group,
       linetype = linetype, show.legend = show.legend
     )
   }

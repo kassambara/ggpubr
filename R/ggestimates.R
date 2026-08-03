@@ -262,11 +262,14 @@ ggestimates <- function(data, estimate = "estimate",
     )
   }
 
+  # Exact indexing is required because `$legend` also matches `legend.title`.
+  caller.legend <- list(...)[["legend"]]
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
+  legend.position <- if (is.null(caller.legend)) "none" else p$theme$legend.position
   # Forest-plot convention: no vertical (categorical) axis line or ticks - the
   # rows are labelled, and the reference line is the only meaningful vertical.
   p <- p + ggplot2::theme(
-    legend.position = "none",
+    legend.position = legend.position,
     axis.text.y = ggplot2::element_text(hjust = label.hjust, face = "bold"),
     axis.line.y = ggplot2::element_blank(),
     axis.ticks.y = ggplot2::element_blank(),

@@ -344,6 +344,7 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
     if (type == "expression") {
       lab <- parse_as_expression(lab)
     }
+    lab <- lab[1]
     coords <- coord$transform(data, panel_params)
     # #631: rescue tips that collapsed because the position axis trained to a
     # zero-width data range (StatBracket flagged it via .bracket.tip.zero.). Here,
@@ -385,14 +386,14 @@ GeomBracket <- ggplot2::ggproto("GeomBracket", ggplot2::Geom,
         x = label.x,
         y = label.y,
         default.units = "native",
-        hjust = coords$hjust, vjust = coords$vjust,
-        rot = label.angle,
+        hjust = coords$hjust[1], vjust = coords$vjust[1],
+        rot = label.angle[1],
         gp = grid::gpar(
-          col = scales::alpha(coords$colour, coords$alpha),
-          fontsize = coords$label.size * ggplot2::.pt,
-          fontfamily = coords$family,
-          fontface = coords$fontface,
-          lineheight = coords$lineheight
+          col = scales::alpha(coords$colour[1], coords$alpha[1]),
+          fontsize = coords$label.size[1] * ggplot2::.pt,
+          fontfamily = coords$family[1],
+          fontface = coords$fontface[1],
+          lineheight = coords$lineheight[1]
         )
       ),
       grid::segmentsGrob(

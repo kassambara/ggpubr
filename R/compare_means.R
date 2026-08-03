@@ -297,18 +297,17 @@ compare_means <- function(formula, data, method = "wilcox.test",
     }
 
     if (ref.group == ".all.") {
-      data <- data %>%
-        mutate(
-          .group. = as.character(group.vals),
-          .all. = ".all."
-        ) # Add 'all' column
+      comparison.group <- .new_col_name(".group.", names(data))
+      all.group <- .new_col_name(".all.", c(names(data), comparison.group))
+      group.name <- .new_col_name(".group.name.", c(names(data), comparison.group, all.group))
+      data[[comparison.group]] <- as.character(group.vals)
+      data[[all.group]] <- ".all."
       # Create a new grouping column gathering group and the .all. columns
-      .group.name. <- NULL
       data <- data %>%
-        df_gather(cols = c(".group.", ".all."), names_to = ".group.name.", values_to = ".group.") %>%
-        dplyr::select(-.group.name.)
-      data[[".group."]] <- factor(data[[".group."]], levels = c(".all.", group.levs))
-      group <- ".group."
+        df_gather(cols = c(comparison.group, all.group), names_to = group.name, values_to = comparison.group) %>%
+        dplyr::select(-dplyr::all_of(group.name))
+      data[[comparison.group]] <- factor(data[[comparison.group]], levels = c(".all.", group.levs))
+      group <- comparison.group
       formula <- .collapse(glue::backtick(response.var), glue::backtick(group), sep = " ~ ") %>%
         stats::as.formula()
     } else if (!(ref.group %in% group.levs)) {

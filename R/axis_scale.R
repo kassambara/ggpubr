@@ -35,24 +35,25 @@ xscale <- function(.scale, .format = FALSE) {
   if (.format) {
     if (.scale == "log2") {
       scale_x_continuous(
-        trans = scales::log2_trans(),
+        transform = scales::log2_trans(),
         breaks = scales::trans_breaks("log2", function(x) 2^x),
         labels = scales::trans_format("log2", scales::math_format(2^.x))
       )
     } else if (.scale == "log10") {
       scale_x_continuous(
-        trans = scales::log10_trans(),
+        transform = scales::log10_trans(),
         breaks = scales::trans_breaks("log10", function(x) 10^x),
         labels = scales::trans_format("log10", scales::math_format(10^.x))
       )
-    }
+    } else if (.scale == "sqrt") scale_x_sqrt()
   } else if (.scale %in% c("log2", "log10")) {
-    scale_x_continuous(trans = .scale)
+    scale_x_continuous(transform = .scale)
   } else {
     switch(.scale,
-      percent = scale_x_continuous(labels = scales::percent),
-      dollar = scale_x_continuous(labels = scales::dollar),
-      scientific = scale_x_continuous(labels = scales::scientific)
+      sqrt = scale_x_sqrt(),
+      percent = scale_x_continuous(labels = scales::label_percent()),
+      dollar = scale_x_continuous(labels = scales::label_currency()),
+      scientific = scale_x_continuous(labels = scales::label_scientific())
     )
   }
 }
@@ -69,24 +70,25 @@ yscale <- function(.scale, .format = FALSE) {
   if (.format) {
     if (.scale == "log2") {
       scale_y_continuous(
-        trans = scales::log2_trans(),
+        transform = scales::log2_trans(),
         breaks = scales::trans_breaks("log2", function(x) 2^x),
         labels = scales::trans_format("log2", scales::math_format(2^.x))
       )
     } else if (.scale == "log10") {
       scale_y_continuous(
-        trans = scales::log10_trans(),
+        transform = scales::log10_trans(),
         breaks = scales::trans_breaks("log10", function(x) 10^x),
         labels = scales::trans_format("log10", scales::math_format(10^.x))
       )
-    }
+    } else if (.scale == "sqrt") scale_y_sqrt()
   } else if (.scale %in% c("log2", "log10")) {
-    scale_y_continuous(trans = .scale)
+    scale_y_continuous(transform = .scale)
   } else {
     switch(.scale,
-      percent = scale_y_continuous(labels = scales::percent),
-      dollar = scale_y_continuous(labels = scales::dollar),
-      scientific = scale_y_continuous(labels = scales::scientific)
+      sqrt = scale_y_sqrt(),
+      percent = scale_y_continuous(labels = scales::label_percent()),
+      dollar = scale_y_continuous(labels = scales::label_currency()),
+      scientific = scale_y_continuous(labels = scales::label_scientific())
     )
   }
 }

@@ -68,7 +68,12 @@ to_name <- function(x) {
 
 # Check if parsable aesthetic
 is_parsable_aes <- function(x) {
-  is.character(x) & (!is_numeric_char(x)) & (length(x) == 1)
+  # Cardinality first, and && rather than &: the result feeds an if(), so an
+  # elementwise & over a length > 1 value produced a length > 1 condition, which
+  # is an error from R 4.2. Reachable from the exported create_aes(), e.g.
+  # create_aes(list(x = c("a", "b"))). Short-circuiting also keeps
+  # is_numeric_char() from being called on a vector.
+  length(x) == 1L && is.character(x) && !is_numeric_char(x)
 }
 
 # Check if x is a numeric string "1", "2"

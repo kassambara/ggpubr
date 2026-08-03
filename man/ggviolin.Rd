@@ -201,7 +201,9 @@ theme_minimal(), theme_classic(), theme_void(), ....}
 groups are dodged (a \code{color}/\code{fill} grouping with a dodging
 \code{position}), one count is shown per group; otherwise a single count is
 shown per x-axis tick. Counts respect \code{select}/\code{remove} and are
-computed per facet.}
+computed per facet. They count rows in the filtered plot data, including
+rows with a missing \code{y} value that do not reach the drawn layer. Whether
+to count only contributing values is tracked in issue #790.}
 
 \item{...}{other arguments to be passed to
 \code{\link[ggplot2]{geom_violin}}, \code{\link{ggpar}} and

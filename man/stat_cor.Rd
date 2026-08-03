@@ -115,14 +115,15 @@ the displayed p-value keeps the legacy raw value unless \code{p.accuracy} is
 set; \code{p.digits} is used by non-default \code{p.format.style} outputs and
 the computed \code{p} variable.}
 
-\item{r.accuracy}{a real value specifying the number of decimal places of
-precision for the correlation coefficient. Default is NULL. Use (e.g.) 0.01
-to show 2 decimal places of precision. If specified, then \code{r.digits} is
-ignored.}
+\item{r.accuracy}{a single finite real value strictly between 0 and 1 specifying
+the rounding accuracy for the correlation coefficient. Default is NULL. For
+example, use 0.01 to round to 2 decimal places. If specified, then
+\code{r.digits} is ignored.}
 
-\item{p.accuracy}{a real value specifying the number of decimal places of
-precision for the p-value. Default is NULL. Use (e.g.) 0.0001 to show 4
-decimal places of precision. If specified, then \code{p.digits} is ignored.}
+\item{p.accuracy}{a single finite real value strictly between 0 and 1 specifying
+the rounding accuracy for the p-value. Default is NULL. For example, use
+0.0001 to round to 4 decimal places. If specified, then \code{p.digits} is
+ignored.}
 
 \item{r.leading.zero}{logical. Whether to include the leading zero before the
 decimal point in the correlation coefficient (e.g., \code{"0.73"} vs
@@ -189,11 +190,12 @@ display. To include legend keys for all levels, even
 when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
 but unobserved levels are omitted.}
 
-\item{inherit.aes}{If \code{FALSE} (the default for most ggpubr functions),
+\item{inherit.aes}{If \code{FALSE},
 overrides the default aesthetics, rather than combining with them. This is
 most useful for helper functions that define both data and aesthetics and
 shouldn't inherit behaviour from the default plot specification. Set to
-\code{TRUE} to inherit aesthetics from the parent ggplot layer.}
+\code{TRUE} to inherit aesthetics from the parent ggplot layer. The
+function usage states the default for each layer.}
 
 \item{...}{other arguments to pass to \code{\link[ggplot2]{geom_text}} or
 \code{\link[ggplot2:geom_text]{geom_label}}.}

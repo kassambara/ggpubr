@@ -83,6 +83,30 @@
 }
 
 
+# Return a deterministic temporary column name that cannot overwrite caller
+# data. Internal names are still readable in built layers, but a legal user
+# column with the preferred name always wins.
+.new_col_name <- function(base, taken) {
+  name <- base
+  suffix <- 0L
+  while (name %in% taken) {
+    suffix <- suffix + 1L
+    name <- paste0(base, suffix)
+  }
+  name
+}
+
+# Split a data frame by an exact tuple of columns without serializing values.
+# Encoding each column independently prevents separator collisions while
+# keeping carriage returns and other legal values untouched.
+.split_by_columns <- function(data, columns) {
+  if (!length(columns)) return(list(data))
+  encoded <- lapply(data[columns], function(x) match(x, unique(x)))
+  key <- do.call(interaction, c(encoded, list(drop = TRUE, lex.order = TRUE)))
+  unname(split(data, key, drop = TRUE))
+}
+
+
 # Setting seed with possibility to restore initial random state
 # :::::::::::::::::::::::::::::::::::::::::::::::
 # Ref: https://github.com/florianhartig/DHARMa/blob/master/DHARMa/R/random.R
