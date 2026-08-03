@@ -96,3 +96,58 @@ test_that("ggline() preserves a facet named like its interaction group", {
     list(facets = c("F1", "F2"), values = c("F1", "F2"), group = ".ggpubr.group1")
   )
 })
+
+test_that("ggline endpoint labels ignore xval and last.xval column names", {
+  d <- expand.grid(
+    xval = factor(c("t1", "t2"), levels = c("t1", "t2")),
+    last.xval = c("A", "B"),
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = FALSE
+  )
+  d$y <- c(1, 2, 3, 4)
+  p <- ggline(
+    d, x = "xval", y = "y", color = "last.xval", group = "last.xval",
+    show.line.label = TRUE
+  )
+  text_layers <- which(vapply(p$layers, function(layer) {
+    inherits(layer$geom, "GeomText") || inherits(layer$geom, "GeomTextRepel")
+  }, logical(1)))
+  drawn <- ggplot2::ggplot_build(p)$data[[text_layers[[1]]]]$label
+
+  expect_setequal(as.character(drawn), c("A", "B"))
+})
+
+test_that("ggline endpoint labels exclude missing x rows", {
+  d <- data.frame(
+    x = factor(c("t1", "t2", NA), levels = c("t1", "t2")),
+    grp = c("A", "A", "A"),
+    y = c(1, 2, 3)
+  )
+  p <- ggline(
+    d, x = "x", y = "y", color = "grp", group = "grp",
+    show.line.label = TRUE
+  )
+  text.layer <- p$layers[[which(vapply(p$layers, function(layer) {
+    inherits(layer$geom, "GeomText") || inherits(layer$geom, "GeomTextRepel")
+  }, logical(1)))[[1]]]]
+
+  expect_equal(nrow(text.layer$data), 1L)
+  expect_identical(as.character(text.layer$data$x), "t2")
+  expect_identical(as.character(text.layer$data$grp), "A")
+})
+
+test_that("ggline keeps labels for a seven-group character shape scale", {
+  d <- expand.grid(
+    x = factor(c("t1", "t2"), levels = c("t1", "t2")),
+    grp = paste0("g", 1:7),
+    KEEP.OUT.ATTRS = FALSE,
+    stringsAsFactors = FALSE
+  )
+  d$y <- seq_len(nrow(d))
+  built <- ggplot2::ggplot_build(
+    ggline(d, x = "x", y = "y", color = "grp", shape = "grp")
+  )
+  shape_scale <- built$plot$scales$get_scales("shape")
+
+  expect_identical(as.character(shape_scale$get_labels()), paste0("g", 1:7))
+})

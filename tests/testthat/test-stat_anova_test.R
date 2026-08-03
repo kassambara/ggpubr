@@ -16,6 +16,31 @@ test_that("stat_anova_test computes and labels both documented effect sizes", {
   )
 })
 
+test_that("custom label functions retain every statistic call environment", {
+  make_plot <- function(test) {
+    custom_p_format <- function(p) rep("0.12345", length(p))
+    d <- ToothGrowth
+    d$dose <- factor(d$dose)
+    d$id <- factor(c(rep(1:10, 3), rep(11:20, 3)))
+    label <- "italic(p) = {custom_p_format(p)}"
+    stat.layer <- switch(test,
+      anova = stat_anova_test(label = label),
+      kruskal = stat_kruskal_test(label = label),
+      friedman = stat_friedman_test(aes(wid = id), label = label),
+      welch = stat_welch_anova_test(label = label)
+    )
+    ggboxplot(d, "dose", "len") + stat.layer
+  }
+
+  for (test in c("anova", "kruskal", "friedman", "welch")) {
+    p <- make_plot(test)
+    built <- expect_no_error(ggplot2::ggplot_build(p))
+    stat.data <- tail(built$data, 1)[[1]]
+    expect_match(stat.data$label, "italic(p)", fixed = TRUE, info = test)
+    expect_match(stat.data$label, "0.12345", fixed = TRUE, info = test)
+  }
+})
+
 # Data preparation
 df <- ToothGrowth
 df$dose <- as.factor(df$dose)

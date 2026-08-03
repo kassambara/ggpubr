@@ -14,6 +14,17 @@ test_that("comparison labels preserve per-segment aesthetics", {
   )
 })
 
+
+test_that("comparisons ignore duplicate lower-level ggsignif spellings", {
+  p <- ggplot(ToothGrowth, aes(factor(dose), len)) +
+    geom_boxplot() +
+    stat_compare_means(
+      comparisons = list(c("0.5", "1")),
+      textsize = 9, y_position = 40
+    )
+
+  expect_no_error(ggplot2::ggplot_build(p))
+})
 test_that("comparison path forwards documented geometry and layer controls", {
   d <- ToothGrowth
   d$dose <- factor(d$dose)

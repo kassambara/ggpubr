@@ -55,15 +55,21 @@ NULL
 #'  If \code{use.four.stars = TRUE}, can include a fourth level.
 #'  Default is NULL, which uses the package defaults.
 #' @param signif.symbols character vector of symbols corresponding to
-#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
-#'  (and "****" if \code{use.four.stars = TRUE}).
+#'  \code{signif.cutoffs}. It is used when custom cutoffs are supplied. If NULL,
+#'  symbols are auto-generated as "*", "**", "***" (and "****" if
+#'  \code{use.four.stars = TRUE}). Without custom cutoffs, the legacy package
+#'  encoding is used.
 #' @param ns.symbol character string for non-significant results. Default is "ns".
 #'  Use "" (empty string) to show nothing.
-#' @param use.four.stars logical. If TRUE, allows four stars (****) for the most
-#'  significant level. Default is FALSE.
+#' @param use.four.stars logical. With custom \code{signif.cutoffs}, TRUE allows
+#'  four stars (****) for the most significant level. Without custom cutoffs,
+#'  the legacy package-default encoding already includes ****. Default is FALSE.
 #' @param show.signif logical. If TRUE (default), shows significance symbols when
 #'  using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
-#'  the p-value (equivalent to \code{label = "p.format"}) with a warning.
+#'  the p-value (equivalent to \code{label = "p.format"}) with a warning. This
+#'  rewrite applies to the literal \code{label} argument; an explicit mapped
+#'  label aesthetic such as \code{aes(label = after_stat(p.format.signif))} is
+#'  evaluated later and is not rewritten.
 #' @param label.sep a character string to separate the terms. Default is ", ", to
 #'  separate the test method name and the p-value.
 #' @param label.x.npc,label.y.npc can be \code{numeric} or \code{character}
@@ -304,7 +310,7 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
     if (missing(step.increase)) {
       step.increase <- ifelse(is.null(label.y), 0.12, 0)
     }
-    signif.args <- c(list(
+    signif.args <- list(
       mapping = signif.mapping, data = data, position = position,
       na.rm = na.rm, show.legend = show.legend, inherit.aes = inherit.aes,
       comparisons = comparisons, y_position = label.y,
@@ -313,7 +319,12 @@ stat_compare_means <- function(mapping = NULL, data = NULL,
       family = family,
       map_signif_level = map_signif_level, tip_length = tip.length,
       vjust = vjust
-    ), pms)
+    )
+    # Preserve the released behavior for lower-level ggsignif spellings that
+    # duplicate values already derived from public ggpubr arguments. Forwarding
+    # both copies makes do.call() fail before a layer can be constructed.
+    pms[intersect(names(pms), names(signif.args))] <- NULL
+    signif.args <- c(signif.args, pms)
     do.call(ggsignif::geom_signif, signif.args)
   } else {
     mapping <- .update_mapping(mapping, label)

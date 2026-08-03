@@ -61,3 +61,51 @@ test_that("a documented stat aesthetic maps through its column", {
     passed.as.parameter = FALSE
   ))
 })
+
+test_that("group stays an aesthetic for both constants and columns", {
+  d <- data.frame(
+    x = seq_len(4), y = seq_len(4),
+    g = rep(c("a", "b"), each = 2)
+  )
+  constant <- geom_exec(
+    ggplot2::geom_point, data = d, x = "x", y = "y", group = 1
+  )
+  column <- geom_exec(
+    ggplot2::geom_point, data = d, x = "x", y = "y", group = "g"
+  )
+
+  observed <- list(
+    constant = rlang::as_label(constant$mapping$group),
+    constant.parameter = "group" %in% names(constant$aes_params),
+    column = rlang::as_label(column$mapping$group)
+  )
+  expect_identical(observed, list(
+    constant = "1", constant.parameter = FALSE, column = "g"
+  ))
+})
+
+test_that("layer selectors determine target-specific aesthetic routing", {
+  d <- data.frame(
+    x = rep(1:2, each = 3), y = seq_len(6),
+    w = rep(c(0.2, 0.4), each = 3)
+  )
+  layer <- geom_exec(
+    geomfunc = ggplot2::stat_summary,
+    data = d, x = "x", y = "y", geom = "errorbar", width = "w",
+    fun.data = ggplot2::mean_se
+  )
+  built <- ggplot2::ggplot_build(ggplot2::ggplot() + layer)$data[[1]]
+
+  observed <- list(
+    width = rlang::as_label(layer$mapping$width),
+    width.parameter = "width" %in% names(layer$aes_params),
+    fun.data = layer$stat_params$fun.data,
+    built.rows = nrow(built),
+    built.limits.finite = all(is.finite(built$xmin), is.finite(built$xmax))
+  )
+  expect_identical(observed$width, "w")
+  expect_false(observed$width.parameter)
+  expect_identical(observed$fun.data, ggplot2::mean_se)
+  expect_identical(observed$built.rows, 2L)
+  expect_true(observed$built.limits.finite)
+})

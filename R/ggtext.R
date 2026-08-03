@@ -288,9 +288,9 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
       lab_data <- dplyr::filter(lab_data, !!rlang::parse_expr(criteria))
     }
   } else {
-    lab_data <- subset(data, data[[label]] %in% label.select,
-      drop = FALSE
-    )
+    # Evaluate the selector outside the data mask. A user column named `label`
+    # must not replace the local column-name variable used here.
+    lab_data <- data[data[[label]] %in% label.select, , drop = FALSE]
   }
 
   return(lab_data)
@@ -303,16 +303,34 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
 .hist_label_data <- function(p, grouping.vars = NULL, x = NULL, data = NULL) {
   . <- NULL
   # x <- .mapping(p) %>%.$x
-  hist.data <- ggplot_build(p)$data[[1]]
+  built <- ggplot_build(p)
+  hist.data <- built$data[[1]]
   # Take the caller's frame when it supplies one. A vector `label` is stored as
   # an extra column on ggtext()'s local copy, but the plot arrives already built
   # from the caller's own data, so reading p$data here dropped that column and
   # every annotation rendered as the literal column name.
   if (is.null(data)) data <- p$data
   label_y_col <- .new_col_name("lab.y", names(data))
+  layout <- built$layout$layout
+  closed <- p$layers[[1]]$stat_params$closed %||% "right"
+  pad <- isTRUE(p$layers[[1]]$stat_params$pad)
+
+  # Distribution coordinates have already passed through the panel scale. Apply
+  # the same panel-specific transformation to each observation before lookup.
+  panel_x_transform <- function(panel) {
+    layout_row <- match(as.character(panel), as.character(layout$PANEL))
+    if (is.na(layout_row) || !"SCALE_X" %in% names(layout)) return(base::identity)
+    scale_id <- layout$SCALE_X[[layout_row]]
+    scale <- built$layout$panel_scales_x[[scale_id]]
+    if (is.null(scale)) base::identity else scale$transform
+  }
 
   if (is.null(grouping.vars)) {
-    data <- .hist_label_y(hist.data, data, x, label_y_col)
+    panel <- if ("PANEL" %in% names(hist.data)) hist.data$PANEL[[1]] else layout$PANEL[[1]]
+    data <- .hist_label_y(
+      hist.data, data, x, label_y_col,
+      x.transform = panel_x_transform(panel), closed = closed, pad = pad
+    )
     attr(data, "ggpubr.label.y") <- label_y_col
     return(data)
   }
@@ -337,7 +355,6 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   # Walk out from the nested distributions rather than from the layout. A sparse
   # two-way grid has layout rows for combinations that carry no data, so a mask
   # built over the layout does not line up with this list.
-  layout <- ggplot_build(p)$layout$layout
   panel.facets <- layout[match(
     as.character(hist.nested$PANEL), as.character(layout$PANEL)
   ), , drop = FALSE]
@@ -365,6 +382,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   keep <- !is.na(matched)
   data <- data[matched[keep], , drop = FALSE]
   hist.data <- hist.nested$data[keep]
+  panels <- hist.nested$PANEL[keep]
 
   # Derive names that are provably absent from this frame rather than picking
   # ones that seem unlikely. `facet.by` is user-controlled, so any FIXED name is
@@ -375,9 +393,14 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
   lab_col  <- .new_col_name(".lab.data.",  c(names(data), hist_col))
 
   data[[hist_col]] <- hist.data
-  lab.data <- purrr::map2(
-    data[[hist_col]], data[[nested_col]],
-    ~ .hist_label_y(.x, .y, x, label_y_col)
+  lab.data <- Map(
+    function(hist, labels, transform) {
+      .hist_label_y(
+        hist, labels, x, label_y_col,
+        x.transform = transform, closed = closed, pad = pad
+      )
+    },
+    data[[hist_col]], data[[nested_col]], lapply(panels, panel_x_transform)
   )
 
   data[[lab_col]] <- lab.data
@@ -393,13 +416,35 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
 # hist.data: histogram data. ggplot_build(p)$data[[1]]
 # data: data frame
 # x: x variable name
-.hist_label_y <- function(hist.data, data, x, label_y_col = "lab.y") {
+.hist_label_y <- function(hist.data, data, x, label_y_col = "lab.y",
+                          x.transform = base::identity, closed = "right",
+                          pad = FALSE) {
   . <- NULL
-  xv <- .select_vec(data, x)
+  xv <- x.transform(.select_vec(data, x))
 
   if (all(c("xmin", "xmax") %in% names(hist.data))) {
-    # A histogram bar covers [xmin, xmax], so an observation belongs to the bar
-    # whose interval contains it. This previously cut on the bar CENTRES, which
+    # stat_bin(pad = TRUE) adds one display-only empty bin to each end of every
+    # panel/group. Those bins must not receive labels at a shared boundary: the
+    # adjacent real bin is the one whose count includes the observation.
+    pad.row <- rep(FALSE, nrow(hist.data))
+    if (isTRUE(pad) && nrow(hist.data)) {
+      group.cols <- intersect(c("PANEL", "group"), names(hist.data))
+      bin.group <- if (length(group.cols)) {
+        interaction(hist.data[group.cols], drop = TRUE, lex.order = TRUE)
+      } else {
+        rep.int(1L, nrow(hist.data))
+      }
+      for (rows in split(seq_len(nrow(hist.data)), bin.group)) {
+        rows <- rows[order(hist.data$xmin[rows], hist.data$xmax[rows])]
+        if (length(rows) >= 3L) pad.row[c(rows[[1]], rows[[length(rows)]])] <- TRUE
+      }
+    }
+    eligible <- !pad.row
+    endpoint.equal <- function(a, b) isTRUE(all.equal(a, b))
+
+    # Match stat_bin()'s half-open interval convention. Its outermost endpoint is
+    # included so an observation at the scale boundary is never dropped. This
+    # previously cut on the bar CENTRES, which
     # puts every value between two centres into the wrong bar: with bins
     # [-0.85, 1.65] and [1.65, 4.15], an observation at 1.5 was given the second
     # bar's height. Measured on twelve observations spread across four bins,
@@ -408,7 +453,20 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
       if (is.na(v)) {
         return(NA_integer_)
       }
-      j <- which(v >= hist.data$xmin & v <= hist.data$xmax)
+      if (identical(closed, "left")) {
+        in_bin <- eligible & v >= hist.data$xmin & v < hist.data$xmax
+        endpoint <- max(hist.data$xmax[eligible], na.rm = TRUE)
+        if (!any(in_bin) && endpoint.equal(v, endpoint)) {
+          in_bin <- eligible & hist.data$xmax == endpoint
+        }
+      } else {
+        in_bin <- eligible & v > hist.data$xmin & v <= hist.data$xmax
+        endpoint <- min(hist.data$xmin[eligible], na.rm = TRUE)
+        if (!any(in_bin) && endpoint.equal(v, endpoint)) {
+          in_bin <- eligible & hist.data$xmin == endpoint
+        }
+      }
+      j <- which(in_bin)
       if (length(j)) j[[1]] else NA_integer_
     }, integer(1))
     lab.y <- hist.data$y[idx]
@@ -418,11 +476,7 @@ ggtext <- function(data, x = NULL, y = NULL, label = NULL,
     #
     # `rule = 1` leaves observations outside the curve's range as NA, and they
     # are dropped below. Clamping them to the nearest end instead would place
-    # them at a height the curve never has: under a transformed x scale the
-    # built curve is in transformed space while these observations are raw, so
-    # every one of them falls outside and clamping drew eight labels at wrong
-    # heights where three had been dropped. The underlying space mismatch is
-    # recorded separately; this at least does not multiply it.
+    # them at a height the curve never has.
     lab.y <- stats::approx(hist.data$x, hist.data$y, xout = xv, rule = 1)$y
   }
 

@@ -219,7 +219,11 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   } else if (select.top.method == "fc") data <- data[order(abs(data$lfc), decreasing = TRUE), ]
   # select data for top genes
   complete_data <- stats::na.omit(data)
-  labs_data <- subset(complete_data, padj <= fdr & name != "" & abs(lfc) >= log2(fc))
+  # Thresholds are function arguments, not columns in the optional facet data.
+  # Explicit indexing prevents facets named `fdr` or `fc` from masking them.
+  keep_labels <- complete_data[["padj"]] <= fdr & complete_data[["name"]] != "" &
+    abs(complete_data[["lfc"]]) >= log2(fc)
+  labs_data <- complete_data[keep_labels, , drop = FALSE]
   if (select.top.method == "rank.sum" || isTRUE(top.balanced)) {
     # Opt-in ranking: rank-sum of |log2FC| and adjusted-p ranks and/or a
     # direction-balanced pick. The default path below is left unchanged.
@@ -241,8 +245,9 @@ ggmaplot <- function(data, fdr = 0.05, fc = 1.5, genenames = NULL,
   }
   # Select some specific labels to show
   if (!is.null(label.select)) {
-    selected_labels <- complete_data %>%
-      subset(complete_data$name %in% label.select, drop = FALSE)
+    selected_labels <- complete_data[
+      complete_data[["name"]] %in% label.select, , drop = FALSE
+    ]
     labs_data <- dplyr::bind_rows(labs_data, selected_labels) %>%
       dplyr::distinct(.data$name, .keep_all = TRUE)
   }

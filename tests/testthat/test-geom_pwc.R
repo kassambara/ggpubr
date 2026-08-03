@@ -47,13 +47,45 @@ test_that("geom_pwc works for pairwise comparisons", {
   expect_equal(label_coords, label_coords_expected)
 })
 
+test_that("geom_pwc keeps labels aligned when bracket keys are nonascending", {
+  # Keep label selection and coordinate reduction under the same first-seen
+  # bracket order; sorting either side independently would swap A and B here.
+  label_data <- data.frame(
+    group = rep(c(2L, 1L), each = 3),
+    bracket.group = rep(c(20L, 10L), each = 3),
+    label = rep(c("B", "A"), each = 3),
+    hjust = 0.5,
+    vjust = 0,
+    colour = "black",
+    alpha = 1,
+    label.size = 3.88,
+    family = "",
+    fontface = 1,
+    lineheight = 1.2
+  )
+  coords <- data.frame(
+    group = label_data$group,
+    bracket.group = label_data$bracket.group,
+    x = c(2, 2, 2, 1, 1, 1),
+    xend = c(2, 2, 2.4, 1, 1, 1.4),
+    y = c(1, 1.1, 1.1, 1, 1.1, 1.1),
+    yend = c(1.1, 1.1, 1, 1.1, 1.1, 1),
+    angle = NA_real_
+  )
+
+  grob <- get_text_grob(label_data, coords)
+
+  expect_identical(grob$label, c("B", "A"))
+  expect_equal(as.numeric(grob$x), c(2.2, 1.2))
+})
+
 test_that("geom_pwc rejects an incomplete y.position vector explicitly", {
   expect_warning(
     built <- ggplot2::ggplot_build(
       ggboxplot(df, x = "dose", y = "len") +
         geom_pwc(method = "wilcox_test", y.position = c(30, 35))
     ),
-    "y.position.*length 1 or at least", perl = TRUE
+    "y.position.*number of computed comparisons", perl = TRUE
   )
   expect_equal(nrow(built$data[[2]]), 0)
 })

@@ -6,6 +6,8 @@
 \alias{ggpubr-package}
 \title{ggpubr: 'ggplot2' Based Publication Ready Plots}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 The 'ggplot2' package is excellent and flexible for elegant data visualization in R. However the default generated plots require some formatting before we can send them for publication. Furthermore, to customize a 'ggplot', the syntax is opaque and this raises the level of difficulty for researchers with no advanced R programming skills. 'ggpubr' provides some easy-to-use functions for creating and customizing 'ggplot2'-based publication ready plots. This version adds publication-ready figures for common analysis workflows: ROC curves with the area under the curve and its confidence interval ('ggrocplot()'), one- and two-way group comparison figures with brackets and an omnibus label ('ggcompare()'), volcano plots ('ggvolcano()'), forest and estimation plots ('ggestimates()'), raincloud plots ('ggraincloud()'), compact letter displays ('stat_cld()') and test labels ('add_test_label()'), together with automatic bracket packing for pairwise comparisons ('geom_pwc()').
 }
 \details{

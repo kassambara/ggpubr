@@ -78,6 +78,7 @@ WebR
 Welch
 Wellcome
 Wickham
+Wilk
 XBP
 YlGn
 YlGnBu
@@ -106,6 +107,7 @@ bw
 centre
 chull
 ci
+cld
 coef
 colour
 conf
@@ -131,6 +133,7 @@ errored
 et
 fc
 fdr
+formatter
 futurama
 geom's
 geomfunc
@@ -158,6 +161,7 @@ ggpmisc
 ggproto
 ggpubr's
 ggqqplot
+ggraincloud
 ggrepel
 ggrocplot
 ggscatter
@@ -169,6 +173,7 @@ ggsummarystats
 ggtexttable
 ggtheme
 ggviolin
+ggvolcano
 graphpad
 grey
 grp
@@ -194,6 +199,8 @@ jpeg
 jpg
 kendall
 labelled
+labeller
+labellers
 labelling
 laszlo
 len

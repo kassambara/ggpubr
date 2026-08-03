@@ -185,18 +185,24 @@ If \code{use.four.stars = TRUE}, can include a fourth level.
 Default is NULL, which uses the package defaults.}
 
 \item{signif.symbols}{character vector of symbols corresponding to
-\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
-(and "****" if \code{use.four.stars = TRUE}).}
+\code{signif.cutoffs}. It is used when custom cutoffs are supplied. If NULL,
+symbols are auto-generated as "*", "**", "***" (and "****" if
+\code{use.four.stars = TRUE}). Without custom cutoffs, the legacy package
+encoding is used.}
 
 \item{ns.symbol}{character string for non-significant results. Default is "ns".
 Use "" (empty string) to show nothing.}
 
-\item{use.four.stars}{logical. If TRUE, allows four stars (****) for the most
-significant level. Default is FALSE.}
+\item{use.four.stars}{logical. With custom \code{signif.cutoffs}, TRUE allows
+four stars (****) for the most significant level. Without custom cutoffs,
+the legacy package-default encoding already includes ****. Default is FALSE.}
 
 \item{show.signif}{logical. If TRUE (default), shows significance symbols when
 using \code{label = "p.format.signif"}. If FALSE, falls back to showing only
-the p-value (equivalent to \code{label = "p.format"}) with a warning.}
+the p-value (equivalent to \code{label = "p.format"}) with a warning. This
+rewrite applies to the literal \code{label} argument; an explicit mapped
+label aesthetic such as \code{aes(label = after_stat(p.format.signif))} is
+evaluated later and is not rewritten.}
 
 \item{geom}{The geometric object to use to display the data for this layer.
 When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument

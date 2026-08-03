@@ -14,9 +14,11 @@ NULL
 #' @param group grouping variable. Allowed values are 1 (for one group) or a
 #'  character vector specifying the name of the grouping variable. Used only for
 #'  adding statistical summary per group.
-#' @param width numeric value between 0 and 1 specifying bar or box width.
-#'  Example width = 0.8. Used only when \code{error.plot} is one of
-#'  c("crossbar", "errorbar").
+#' @param width numeric value between 0 and 1 specifying the width of added
+#'  boxplots, violins, crossbars, or error bars. When omitted, the effective
+#'  width is 0.2 for a boxplot added to a violin, 0.7 for other added boxplots,
+#'  1 for an added violin, 0.1 for an error bar, and for a crossbar 0.2 on a
+#'  violin or 1 otherwise.
 #' @param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #' @param size numeric value in [0-1] specifying point and line size.
@@ -37,9 +39,9 @@ NULL
 #'  seed is initialized with a random value; this makes sure that two subsequent
 #'  calls start with a different seed. Use NULL to use the current random seed
 #'  and also avoid resetting (the behaviour of ggplot 2.2.1 and earlier).
-#' @param binwidth numeric value specifying bin width. use value between 0 and 1
-#'  when you have a strong dense dotplot. For example binwidth = 0.2. Used only
-#'  when \code{add} contains "dotplot".
+#' @param binwidth numeric value specifying the bin width for an added dot plot;
+#'  for example, use \code{binwidth = 0.2}. Used only when \code{add} contains
+#'  "dotplot".
 #' @param dotsize as \code{size} but applied only to dotplot.
 #' @param outliers logical. If TRUE (default), outliers are displayed in boxplots.
 #'  If FALSE, outliers are not displayed.
@@ -76,7 +78,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
   # Adding mean or median point
   center <- intersect(c("mean", "median"), add)
   if (length(center) == 2) {
-    stop("Use mean or mdedian, but not both at the same time.")
+    stop("Use mean or median, but not both at the same time.")
   }
   # Adding error bars
   errors <- intersect(.errorbar_functions(), add)
@@ -179,7 +181,7 @@ ggadd <- function(p, add = NULL, color = "black", fill = "white", group = 1,
       position = position, size = size, group = group
     )
   }
-  # Add erors
+  # Add errors
   # :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   if (!.is_empty(errors)) {
     error.width <- width

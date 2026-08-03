@@ -78,3 +78,19 @@ test_that("faceted legend uses plain Up/Down/NS labels (no global counts) (#498)
   expect_true(all(labs %in% c("Up", "Down", "NS")))
   expect_false(any(grepl(":", labs)))   # no "Up: 123" counts under faceting
 })
+
+test_that("a facet named fdr does not replace the ggmaplot threshold", {
+  d <- data.frame(
+    baseMean = c(10, 20, 30),
+    log2FoldChange = c(2, -2, 0.1),
+    padj = c(0.001, 0.001, 0.5),
+    gene = c("up", "down", "ns"),
+    fdr = factor("0.9")
+  )
+  expect_no_warning(
+    p <- ggmaplot(d, fdr = 0.05, fc = 2, genenames = d$gene, top = 3, facet.by = "fdr")
+  )
+  labels <- p$layers[[.label_layer_index(p)]]$data$name
+
+  expect_setequal(labels, c("up", "down"))
+})

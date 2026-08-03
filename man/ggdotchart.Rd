@@ -54,7 +54,7 @@ grouped.}
 containing multiple variables to plot. If TRUE, create a multi-panel plot by
 combining the plot of y variables.}
 
-\item{color, size}{points color and size.}
+\item{color, size}{point color and size.}
 
 \item{palette}{the color palette to be used for coloring or filling by groups.
 Allowed values include "grey" for grey color palettes; brewer palettes e.g.
@@ -68,11 +68,12 @@ scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 
 \item{sorting}{a character vector for sorting into ascending or descending
 order. Allowed values are one of "descending", "ascending" and "none". Partial
-match are allowed (e.g. sorting = "desc" or "asc"). Default is
+matches are allowed (e.g. sorting = "desc" or "asc"). Default is
 "descending".}
 
 \item{add}{character scalar. Use \code{"segment"} to draw a line from zero
-to each point, or \code{"none"} to draw no line.}
+to each point, or \code{"none"} to draw no line. The historical spelling
+\code{"segments"} is also accepted as an alias for \code{"segment"}.}
 
 \item{add.params}{parameters for the optional segment, including
 \code{color}, \code{linewidth}, and \code{linetype}.}

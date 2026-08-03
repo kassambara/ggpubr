@@ -49,7 +49,10 @@ NULL
 #'  \code{"games_howell_test"}, Cliff's delta for \code{"wilcox_test"}, and the r
 #'  effect size for \code{"dunn_test"}), rounded to two decimals; it is available
 #'  only for those four methods.
-#' @param y.position numeric vector with the y positions of the brackets
+#' @param y.position numeric vector with the y positions of the brackets. Supply
+#'  one value to be recycled, or at least one value for every comparison the
+#'  test computes, in computed order. Positions for comparisons hidden by
+#'  \code{hide.ns} are consumed but not drawn; shorter vectors are rejected.
 #' @param group.by (optional) character vector specifying the grouping variable;
 #'  it should be used only for grouped plots. Possible values are : \itemize{
 #'  \item \code{"x.var"}: Group by the x-axis variable and perform the test
@@ -81,8 +84,10 @@ NULL
 #'  guarantees that no two brackets on the same level overlap within a panel;
 #'  the vertical spacing between levels is still controlled by
 #'  \code{step.increase} and \code{bracket.nudge.y}. }
-#' @param tip.length numeric vector with the fraction of total height that the
-#'  bar goes down to indicate the precise column/
+#' @param tip.length numeric value giving the fraction of the total height by
+#'  which bracket tips extend downward. A single value applies to both tips of
+#'  every bracket. The meaning of vectors longer than one is not yet defined;
+#'  the current recycling behavior is tracked in issue #790.
 #' @param size change the width of the lines of the bracket
 #' @param label.size change the size of the label text
 #' @param family change the font used for the text
@@ -131,12 +136,15 @@ NULL
 #'  means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
 #'  Default is NULL, which uses the package defaults.
 #' @param signif.symbols character vector of symbols corresponding to
-#'  \code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
-#'  (and "****" if \code{use.four.stars = TRUE}).
+#'  \code{signif.cutoffs}. It is used when custom cutoffs are supplied. If NULL,
+#'  symbols are auto-generated as "*", "**", "***" (and "****" if
+#'  \code{use.four.stars = TRUE}). Without custom cutoffs, the legacy package
+#'  encoding is used.
 #' @param ns.symbol character string for non-significant results. Default is "ns".
 #'  Use "" (empty string) to show nothing.
-#' @param use.four.stars logical. If TRUE, allows four stars (****) for the most
-#'  significant level. Default is FALSE.
+#' @param use.four.stars logical. With custom \code{signif.cutoffs}, TRUE allows
+#'  four stars (****) for the most significant level. Without custom cutoffs,
+#'  the legacy package-default encoding already includes ****. Default is FALSE.
 #' @param hide.ns can be logical value (\code{TRUE} or \code{FALSE}) or a character vector (\code{"p.adj"} or \code{"p"}).
 #' @param p.format.style character string specifying the p-value formatting style.
 #'  One of: \code{"default"} (backward compatible, uses scientific notation),
@@ -723,9 +731,11 @@ StatPwc <- ggplot2::ggproto("StatPwc", ggplot2::Stat,
 
     position.col <- NULL
     if (!is.null(y.position) && length(y.position) > 1L) {
+      # Validate against computed comparisons because hide.ns is applied below;
+      # hidden comparisons still consume their positions in computed order.
       if (length(y.position) < nrow(stat.test)) {
         stop(
-          "`y.position` must have length 1 or at least the number of displayed comparisons (",
+          "`y.position` must have length 1 or at least the number of computed comparisons (",
           nrow(stat.test), ").",
           call. = FALSE
         )

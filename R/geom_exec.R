@@ -76,8 +76,12 @@ geom_exec <- function(geomfunc = NULL, data = NULL,
   # silently discarded. If a custom target cannot be instantiated without
   # arguments, retain the established fallback list.
   if (!is.null(geomfunc)) {
+    # A stat wrapper can select a different concrete geom (and a geom wrapper a
+    # different stat). Include those selectors in the probe so target-specific
+    # aesthetics such as stat_summary(geom = "errorbar") width are discoverable.
+    probe.args <- params[intersect(names(params), c("geom", "stat"))]
     target.layer <- tryCatch(
-      suppressWarnings(do.call(geomfunc, list())),
+      suppressWarnings(do.call(geomfunc, probe.args)),
       error = function(e) NULL
     )
     if (!is.null(target.layer) &&
@@ -142,17 +146,23 @@ geom_exec <- function(geomfunc = NULL, data = NULL,
   for (key in names(params)) {
     value <- params[[key]]
     aesthetic.key <- if (key == "color") "colour" else key
+    value.names.column <- is.character(value) && length(value) > 0 &&
+      value[[1]] %in% columns
     can.map <- if (is.null(target.aesthetics)) {
       key %in% allowed_options
     } else {
       aesthetic.key %in% target.aesthetics
     }
-    if (is.null(value)) {} else if (unlist(value)[1] %in% columns && can.map) {
+    if (is.null(value)) {} else if (value.names.column && can.map) {
+      mapping[[key]] <- value
+    } else if (key == "group") {
+      # Layer discovery includes `group` among a geom's aesthetics. Keep a
+      # constant such as add_summary(group = 1) in aes(), just as a group
+      # column is kept there above; passing the constant as a layer parameter
+      # would let other inherited discrete aesthetics split the statistic.
       mapping[[key]] <- value
     } else if (key %in% allowed_options) {
       option[[key]] <- value
-    } else if (key == "group") {
-      mapping[[key]] <- value # for line plot
     } else if (key == "step.group.by") {
       # for geom_bracket, value are variable name.
       # but this parameter is an option not an aes

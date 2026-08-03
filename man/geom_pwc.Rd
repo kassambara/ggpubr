@@ -164,7 +164,10 @@ for wilcoxon test.}
  effect size for \code{"dunn_test"}), rounded to two decimals; it is available
  only for those four methods.}
 
-\item{y.position}{numeric vector with the y positions of the brackets}
+\item{y.position}{numeric vector with the y positions of the brackets. Supply
+one value to be recycled, or at least one value for every comparison the
+test computes, in computed order. Positions for comparisons hidden by
+\code{hide.ns} are consumed but not drawn; shorter vectors are rejected.}
 
 \item{group.by}{(optional) character vector specifying the grouping variable;
 it should be used only for grouped plots. Possible values are : \itemize{
@@ -192,8 +195,10 @@ include \code{"x.var"} and \code{"legend.var"}.}
 \item{step.increase}{numeric vector with the increase in fraction of total
 height for every additional comparison to minimize overlap.}
 
-\item{tip.length}{numeric vector with the fraction of total height that the
-bar goes down to indicate the precise column/}
+\item{tip.length}{numeric value giving the fraction of the total height by
+which bracket tips extend downward. A single value applies to both tips of
+every bracket. The meaning of vectors longer than one is not yet defined;
+the current recycling behavior is tracked in issue #790.}
 
 \item{size}{change the width of the lines of the bracket}
 
@@ -282,14 +287,17 @@ means p < 0.10 gets "*", p < 0.05 gets "**", p < 0.01 gets "***".
 Default is NULL, which uses the package defaults.}
 
 \item{signif.symbols}{character vector of symbols corresponding to
-\code{signif.cutoffs}. If NULL, auto-generated as "*", "**", "***"
-(and "****" if \code{use.four.stars = TRUE}).}
+\code{signif.cutoffs}. It is used when custom cutoffs are supplied. If NULL,
+symbols are auto-generated as "*", "**", "***" (and "****" if
+\code{use.four.stars = TRUE}). Without custom cutoffs, the legacy package
+encoding is used.}
 
 \item{ns.symbol}{character string for non-significant results. Default is "ns".
 Use "" (empty string) to show nothing.}
 
-\item{use.four.stars}{logical. If TRUE, allows four stars (****) for the most
-significant level. Default is FALSE.}
+\item{use.four.stars}{logical. With custom \code{signif.cutoffs}, TRUE allows
+four stars (****) for the most significant level. Without custom cutoffs,
+the legacy package-default encoding already includes ****. Default is FALSE.}
 
 \item{position}{A position adjustment to use on the data for this layer. This
 can be used in various ways, including to prevent overplotting and

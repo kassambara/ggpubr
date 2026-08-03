@@ -388,7 +388,12 @@ ggline_core <- function(data, x, y, group = 1,
     xval <- .select_vec(data_sum, x)
     last.xval <- .levels(xval) %>% utils::tail(1)
     groupval <- .select_vec(data_sum, group)
-    label.data <- subset(data_sum, xval == last.xval)
+    # Evaluate local values directly; columns named `xval` or `last.xval` must
+    # not participate in selecting the line endpoints. Explicitly exclude a
+    # missing x value because data-frame indexing retains an all-NA row for an
+    # NA logical index, whereas that row is not a drawable endpoint.
+    keep.endpoint <- !is.na(xval) & xval == last.xval
+    label.data <- data_sum[keep.endpoint, , drop = FALSE]
 
     font.label <- .parse_font(font.label)
     p <- font.label %>%

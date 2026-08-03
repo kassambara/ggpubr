@@ -262,7 +262,8 @@ ggestimates <- function(data, estimate = "estimate",
     )
   }
 
-  caller.legend <- list(...)$legend
+  # Exact indexing is required because `$legend` also matches `legend.title`.
+  caller.legend <- list(...)[["legend"]]
   p <- ggpar(p, palette = palette, ggtheme = ggtheme, ...)
   legend.position <- if (is.null(caller.legend)) "none" else p$theme$legend.position
   # Forest-plot convention: no vertical (categorical) axis line or ticks - the

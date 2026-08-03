@@ -18,7 +18,9 @@ NULL
 #'  adding statistical summary per group.
 #' @param width numeric value between 0 and 1 specifying bar or box width.
 #'  Example width = 0.8. Used only when \code{error.plot} is one of
-#'  c("crossbar", "errorbar").
+#'  c("crossbar", "errorbar"). When omitted, both currently use 0.8; a later
+#'  narrower error-bar branch is unreachable, and the intended default is tracked
+#'  in issue #790.
 #' @param shape point shape. Allowed values can be displayed using the function
 #'  \code{\link{show_point_shapes}()}.
 #' @param size numeric value in [0-1] specifying point and line size.

@@ -86,3 +86,24 @@ test_that("add_summary still honours the arguments it always forwarded", {
   expect_true("red" %in% cols(
     add_summary(ggboxplot(df, x = "dose", y = "len"), fun = "mean_se", color = "red")))
 })
+
+test_that("add_summary(group = 1) keeps one summary per x", {
+  df <- ToothGrowth
+  df$dose <- factor(df$dose)
+  base <- ggboxplot(df, x = "dose", y = "len", color = "supp")
+
+  overall <- ggplot2::ggplot_build(
+    add_summary(base, fun = "mean_se")
+  )$data[[2]]
+  by_supp <- ggplot2::ggplot_build(
+    add_summary(base, fun = "mean_se", group = "supp", color = "supp")
+  )$data[[2]]
+
+  # A constant group must override the inherited color grouping before the
+  # statistic runs. A named group column must continue to produce groupwise
+  # summaries, so the two public contracts are pinned together.
+  expect_identical(nrow(overall), 3L)
+  expect_equal(as.numeric(overall$x), 1:3)
+  expect_equal(overall$y, as.numeric(tapply(df$len, df$dose, mean)))
+  expect_identical(nrow(by_supp), 6L)
+})

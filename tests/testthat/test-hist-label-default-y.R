@@ -99,6 +99,78 @@ test_that("each label takes the height of the bar that contains it", {
   }
 })
 
+test_that("distribution labels use transformed coordinates and stat_bin endpoints", {
+  # These expectations are hand-computed in log2 space. They do not reuse the
+  # production interval expression, and the unequal bin counts make a boundary
+  # assignment to the neighboring bin visible.
+  d <- data.frame(
+    v = c(1, 2, 4, 4, 8, 8, 8),
+    lab = letters[1:7]
+  )
+  expected <- list(
+    right = c(2, 2, 2, 2, 3, 3, 3),
+    left = c(1, 1, 5, 5, 5, 5, 5)
+  )
+
+  for (closed in names(expected)) {
+    p <- gghistogram(
+      d, x = "v", label = "lab", xscale = "log2",
+      binwidth = 1, boundary = 0, closed = closed
+    )
+    lab <- labelled_layer(p)
+    row <- match(d$lab, lab$label)
+
+    expect_false(anyNA(row))
+    expect_equal(lab$x[row], log2(d$v))
+    expect_equal(lab$y[row], expected[[closed]])
+  }
+})
+
+test_that("integer boundary labels ignore display-only padding bins", {
+  # These are exact, hand-counted heights for integer observations at both
+  # outer boundaries. With `pad = TRUE`, ggplot2 adds empty display bins at the
+  # two ends; those bins must never receive a label at height zero.
+  d <- data.frame(v = 1:8, lab = letters[1:8])
+  expected <- list(
+    right = c(2, 2, 1, 1, 1, 1, 1, 1),
+    left = c(1, 1, 1, 1, 1, 1, 2, 2)
+  )
+
+  for (closed in names(expected)) {
+    for (pad in c(FALSE, TRUE)) {
+      p <- gghistogram(
+        d, x = "v", label = "lab", binwidth = 1, boundary = 1,
+        closed = closed, pad = pad
+      )
+      lab <- labelled_layer(p)
+      row <- match(d$lab, lab$label)
+
+      expect_false(anyNA(row), info = paste("closed =", closed, "pad =", pad))
+      expect_equal(
+        lab$y[row], expected[[closed]],
+        info = paste("closed =", closed, "pad =", pad)
+      )
+    }
+  }
+})
+
+test_that("density labels use the transformed panel coordinate", {
+  d <- data.frame(v = c(1, 2, 4, 8, 16, 32), lab = letters[1:6])
+  p <- ggdensity(d, x = "v", label = "lab", xscale = "log2")
+  built <- ggplot2::ggplot_build(p)
+  curve <- built$data[[1]]
+  lab <- labelled_layer(p)
+  row <- match(d$lab, lab$label)
+
+  expect_false(anyNA(row))
+  expect_equal(lab$x[row], log2(d$v))
+  expect_equal(
+    lab$y[row],
+    stats::approx(curve$x, curve$y, xout = log2(d$v), rule = 1)$y,
+    tolerance = 1e-8
+  )
+})
+
 test_that("density labels sit on the drawn curve", {
   # A density layer has no bar interval to fall inside, so the height is read
   # off the curve at the observation's x.
@@ -202,9 +274,9 @@ test_that("a data column named count does not capture the histogram labels", {
 })
 
 test_that("ggtext() called directly still plots a real column as y", {
-  # The same word means different things by caller, which is why the decision is
-  # taken from the built mapping rather than the argument string: here y really
-  # is a column and the labels belong at its values.
+  # The same word means different things by caller, so the calling function
+  # states computed-y intent through .computed.y. Here ggtext() is called
+  # directly, so y really is a column and the labels belong at its values.
   d <- data.frame(
     v = c(1, 2, 3, 4, 5, 6, 7, 8),
     count = c(5, 3, 8, 1, 9, 2, 7, 4),

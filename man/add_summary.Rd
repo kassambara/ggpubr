@@ -72,7 +72,9 @@ adding statistical summary per group.}
 
 \item{width}{numeric value between 0 and 1 specifying bar or box width.
 Example width = 0.8. Used only when \code{error.plot} is one of
-c("crossbar", "errorbar").}
+c("crossbar", "errorbar"). When omitted, both currently use 0.8; a later
+narrower error-bar branch is unreachable, and the intended default is tracked
+in issue #790.}
 
 \item{shape}{point shape. Allowed values can be displayed using the function
 \code{\link{show_point_shapes}()}.}

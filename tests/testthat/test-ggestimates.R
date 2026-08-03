@@ -14,6 +14,17 @@ test_that("ggestimates honors a documented legend override", {
   )
 })
 
+test_that("ggestimates does not treat legend.title as a legend request", {
+  d <- data.frame(
+    term = c("a", "b"), estimate = c(1, 2),
+    conf.low = c(0.5, 1.5), conf.high = c(1.5, 2.5)
+  )
+  expect_identical(
+    ggestimates(d, label = "term", legend.title = "Group")$theme$legend.position,
+    "none"
+  )
+})
+
 or_data <- function() {
   data.frame(
     term = c("Age", "Sex", "BMI", "Smoker", "Trt"),

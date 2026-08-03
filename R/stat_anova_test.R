@@ -132,9 +132,9 @@ NULL
 #' @section Computed variables: \itemize{ \item{DFn}: Degrees of Freedom in the
 #'  numerator (i.e. DF effect). \item{DFd}:	Degrees of Freedom in the
 #'  denominator (i.e., DF error). \item{ges}:	Generalized Eta-Squared measure of
-#'  effect size. Computed only when the option \code{effect.size = "ges"}.
-#'  \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when
-#'  the option \code{effect.size = "pes"}. \item{F}:	F-value. \item{p}:	p-value.
+#'  effect size. Computed when \code{effect.size} includes "ges".
+#'  \item{pes}:	Partial Eta-Squared measure of effect size. Computed when
+#'  \code{effect.size} includes "pes". \item{F}:	F-value. \item{p}:	p-value.
 #'  \item{p.adj}: Adjusted p-values. \item{p.signif}: P-value significance.
 #'  \item{p.adj.signif}: Adjusted p-value significance. \item{p.format}:
 #'  Formatted p-value. \item{p.format.signif}: Formatted p-value with significance symbols.
@@ -285,7 +285,7 @@ stat_anova_test <- function(mapping = NULL, data = NULL,
       method.args = list(type = type, effect.size = effect.size, error = error),
       group.by = group.by,
       correction = correction,
-      na.rm = na.rm, stat.label = label,
+      na.rm = na.rm, stat.label = label, stat.label.env = parent.frame(),
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),
@@ -327,7 +327,8 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
   },
   compute_panel = function(data, scales, method, method.args, group.by,
                            correction, p.adjust.method,
-                           stat.label, label.x.npc, label.y.npc, label.x, label.y,
+                           stat.label, stat.label.env,
+                           label.x.npc, label.y.npc, label.x, label.y,
                            significance, is.group.specified, step.increase,
                            p.format.style, p.digits, p.leading.zero, p.min.threshold,
                            p.decimal.mark) {
@@ -444,7 +445,7 @@ StatCompareMultipleMeans <- ggproto("StatCompareMultipleMeans", Stat,
       add_stat_n() %>%
       keep_only_tbl_df_classes() %>%
       mutate(method = method.name) %>%
-      add_stat_label(label = stat.label)
+      add_stat_label(label = stat.label, label.env = stat.label.env)
 
 
     stat.test$x <- get_coord(

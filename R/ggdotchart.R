@@ -7,19 +7,20 @@ NULL
 #' @inheritParams ggpar
 #' @param data a data frame
 #' @param x,y x and y variables for drawing.
-#' @param color,size points color and size.
+#' @param color,size point color and size.
 #' @param dot.size numeric value specifying the dot size.
 #' @param shape point shape. See \code{\link{show_point_shapes}}.
 #' @param label the name of the column containing point labels.
 #' @param add character scalar. Use \code{"segment"} to draw a line from zero
-#'   to each point, or \code{"none"} to draw no line.
+#'   to each point, or \code{"none"} to draw no line. The historical spelling
+#'   \code{"segments"} is also accepted as an alias for \code{"segment"}.
 #' @param add.params parameters for the optional segment, including
 #'   \code{color}, \code{linewidth}, and \code{linetype}.
 #' @param group an optional column name indicating how the elements of x are
 #'   grouped.
 #' @param sorting a character vector for sorting into ascending or descending
 #'   order. Allowed values are one of "descending", "ascending" and "none". Partial
-#'   match are allowed (e.g. sorting = "desc" or "asc"). Default is
+#'   matches are allowed (e.g. sorting = "desc" or "asc"). Default is
 #'   "descending".
 #' @param x.text.col logical. If TRUE (default), x axis texts are colored by
 #'   groups.
@@ -157,9 +158,15 @@ ggdotchart_core <- function(data, x, y, group = NULL,
                             ggtheme = theme_bw(),
                             position = "identity",
                             ...) {
-  if (length(add) != 1L || !add %in% c("none", "segment")) {
-    stop("`add` must be exactly one of \"none\" or \"segment\".", call. = FALSE)
+  if (length(add) != 1L || !add %in% c("none", "segment", "segments")) {
+    stop(
+      "`add` must be exactly one of \"none\", \"segment\", or the historical alias \"segments\".",
+      call. = FALSE
+    )
   }
+  # Preserve the historical plural spelling while keeping the documented
+  # canonical value singular.
+  if (identical(add, "segments")) add <- "segment"
   if (!is.null(group)) {
     if (group == 1) {
       group <- NULL
@@ -238,6 +245,13 @@ ggdotchart_core <- function(data, x, y, group = NULL,
       option$linewidth <- add.params$linewidth
     } else if (!is.null(add.params$size)) {
       option$linewidth <- add.params$size
+    }
+    if (!is.null(add.params$linetype)) {
+      if (add.params$linetype %in% names(data)) {
+        mapping$linetype <- add.params$linetype
+      } else {
+        option$linetype <- add.params$linetype
+      }
     }
 
     # geom_linerange takes `linewidth`, not the deprecated `size` (ggplot2 >= 3.4.0).

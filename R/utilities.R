@@ -680,7 +680,7 @@ keep_only_tbl_df_classes <- function(x) {
     grp <- data[[shape]]
     if (!inherits(grp, "factor")) grp <- as.factor(grp)
     ngroups <- length(levels(grp))
-    if (ngroups > 6) p <- p + scale_shape_manual(values = seq_len(ngroups), labels = levels(data[[shape]]))
+    if (ngroups > 6) p <- p + scale_shape_manual(values = seq_len(ngroups), labels = levels(grp))
   }
   p
 }

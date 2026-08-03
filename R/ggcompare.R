@@ -21,13 +21,18 @@ NULL
 #' @inheritParams ggboxplot
 #' @param data a data frame.
 #' @param x,y x and y variables for drawing.
-#' @param color,fill outline and fill colors.
+#' @param color,fill outline and fill colors. In two-way mode, when both are
+#'   explicitly mapped to different data columns, \code{color} currently defines
+#'   the statistical grouping while both mappings remain visible in the plot;
+#'   the intended joint-grouping contract is tracked in issue #790.
 #' @param palette the color palette to be used for coloring or filling by
 #'   groups. Passed to the base builder.
 #' @param ggtheme a ggplot theme. Default is \code{\link{theme_pubr}()}.
 #' @param facet.by character vector, of length 1 or 2, specifying grouping
 #'   variables for faceting the plot. When set, pairwise comparisons and the
-#'   omnibus test are computed within each panel.
+#'   supported omnibus test are computed within each panel. In two-way grouped
+#'   mode, a faceted omnibus label is currently available only for
+#'   \code{omnibus = "anova"}; \code{omnibus = "kruskal"} adds no omnibus label.
 #' @param labeller passed to \code{\link{facet}()}.
 #' @param base the base plot geometry. One of \code{"boxplot"} (default),
 #'   \code{"violin"} or \code{"stripchart"}.
@@ -76,10 +81,18 @@ NULL
 #'   \code{\link{geom_pwc}()}.
 #' @param pack how the brackets are stacked; \code{"auto"} (default) packs them
 #'   compactly, \code{"none"} keeps one per level. See \code{\link{geom_pwc}()}.
-#' @param pwc.args additional arguments passed to \code{\link{geom_pwc}()}
-#'   (e.g. \code{step.increase}, \code{tip.length}, \code{bracket.nudge.y}).
+#'   In two-way mode the comparisons are precomputed and drawn by
+#'   \code{\link{stat_pvalue_manual}()}, so \code{pack} currently has no effect.
+#' @param pwc.args in one-way mode, additional arguments passed to
+#'   \code{\link{geom_pwc}()} (e.g. \code{step.increase}, \code{tip.length},
+#'   \code{bracket.nudge.y}). In two-way mode the precomputed comparisons are
+#'   drawn by \code{\link{stat_pvalue_manual}()}, so the list is passed to that
+#'   layer instead; names can therefore have a different meaning or no effect.
+#'   A unified two-way contract is tracked in issue #790.
 #' @param omnibus the omnibus test shown as the plot subtitle. One of
-#'   \code{"anova"} (default), \code{"kruskal"} or \code{"none"}.
+#'   \code{"anova"} (default), \code{"kruskal"} or \code{"none"}. In faceted
+#'   two-way grouped mode, only \code{"anova"} adds an omnibus label; the intended
+#'   non-parametric contract for that design remains to be defined.
 #' @param omnibus.args additional arguments passed to
 #'   \code{\link{add_test_label}()} (non-faceted plots) or the corresponding stat
 #'   layer (faceted plots).

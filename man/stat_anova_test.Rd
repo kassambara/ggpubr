@@ -256,9 +256,9 @@ Adds automatically one-way and two-way ANOVA test p-values to a
  \itemize{ \item{DFn}: Degrees of Freedom in the
  numerator (i.e. DF effect). \item{DFd}:	Degrees of Freedom in the
  denominator (i.e., DF error). \item{ges}:	Generalized Eta-Squared measure of
- effect size. Computed only when the option \code{effect.size = "ges"}.
- \item{pes}:	Partial Eta-Squared measure of effect size. Computed only when
- the option \code{effect.size = "pes"}. \item{F}:	F-value. \item{p}:	p-value.
+ effect size. Computed when \code{effect.size} includes "ges".
+ \item{pes}:	Partial Eta-Squared measure of effect size. Computed when
+ \code{effect.size} includes "pes". \item{F}:	F-value. \item{p}:	p-value.
  \item{p.adj}: Adjusted p-values. \item{p.signif}: P-value significance.
  \item{p.adj.signif}: Adjusted p-value significance. \item{p.format}:
  Formatted p-value. \item{p.format.signif}: Formatted p-value with significance symbols.

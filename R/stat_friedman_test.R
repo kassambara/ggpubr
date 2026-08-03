@@ -122,7 +122,7 @@ stat_friedman_test <- function(mapping = NULL, data = NULL, wid = NULL, group.by
       method.args = list(),
       group.by = group.by,
       correction = "none",
-      na.rm = na.rm, stat.label = label,
+      na.rm = na.rm, stat.label = label, stat.label.env = parent.frame(),
       label.x.npc = label.x.npc, label.y.npc = label.y.npc,
       label.x = label.x, label.y = label.y, parse = parse,
       is.group.specified = is_group_aes_specified(mapping),

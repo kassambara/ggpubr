@@ -390,9 +390,9 @@ ggscatter_core <- function(data, x, y,
     lab_data <- data
     # Select some labels to show
     if (!is.null(label.select)) {
-      lab_data <- subset(lab_data, lab_data[[label]] %in% label.select,
-        drop = FALSE
-      )
+      # Keep the selector outside the data mask so a column named `label` cannot
+      # replace the local column-name variable.
+      lab_data <- lab_data[lab_data[[label]] %in% label.select, , drop = FALSE]
     }
 
     if (repel) {

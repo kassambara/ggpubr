@@ -44,6 +44,18 @@
   denominator degrees of freedom are the full-model residual df
   (#759, #763, #769, #772).
 
+  In faceted two-way mode, an omnibus label is currently available only for
+  `omnibus = "anova"`. `omnibus = "kruskal"` adds no omnibus label because its
+  intended non-parametric meaning for a two-factor design remains to be defined
+  (#790).
+
+  The manual also states the current boundaries of the other two-way paths while
+  their intended contracts are considered in #790: `pack` does not alter
+  precomputed two-way brackets; two-way `pwc.args` is passed to
+  `stat_pvalue_manual()` rather than `geom_pwc()`; and, if `color` and `fill` map
+  different columns, `color` defines the statistical grouping although both
+  mappings remain visible.
+
 - New `ggvolcano()` draws a publication-ready volcano plot of differential
   expression results: log2 fold change versus `-log10` of the (adjusted)
   p-value, with points colored as up/down/non-significant by fold-change and
@@ -144,6 +156,13 @@
 - Function help pages and the README now link to the corresponding Datanovia
   tutorials.
 
+- The statistical-annotation manuals now state the existing boundaries under
+  consideration in #790: `show.n` counts filtered input rows even when a row has
+  a missing outcome; standalone significance symbols and the four-star switch do
+  not replace the legacy encoding without custom cutoffs; omitted summary
+  error-bar width is currently 0.8; and `show.signif` rewrites the literal label
+  argument but not an explicit mapped label aesthetic.
+
 ### Validation and messaging
 
 - `ggsummarystats(free.panels = TRUE)` now rejects an invalid `labeller` with a
@@ -201,6 +220,37 @@
 ## Bug fixes
 
 ### Changes to default output
+
+- `ggdotchart()` now resolves two conflicting defaults in favor of the behavior
+  described in its manual: values are sorted in descending order, whereas the
+  exported function previously defaulted to ascending order; grouped x-axis
+  labels use the point colors, whereas the exported `x.text.col = TRUE` default
+  was previously overridden by the internal plotter. The
+  documented `add = "segment"` spelling is now canonical; the historical
+  `add = "segments"` spelling remains accepted for compatibility. Segment
+  `color`, `linewidth`, and `linetype` settings in `add.params` are all applied.
+
+- `ggcompare()` now computes pairwise and omnibus statistics from the filtered
+  and ordered data that the base plot actually draws. Previously, `select`,
+  `remove`, and `order` changed the visible groups but not the data used for the
+  tests, so a bracket could report a different comparison from the one shown.
+  Faceted two-way tests are now evaluated within their own panels, including
+  panels with sparse combinations, and non-syntactic variable names are handled
+  without constructing formulas from pasted text.
+
+- `ggdotplot(add = "jitter")` now draws the requested jittered point layer. The
+  documented value was previously removed with the summary-layer exclusions.
+
+- `ggadjust_pvalue(output = "stat_test")` now returns one row per comparison
+  rather than the three drawing-segment rows used internally for each bracket.
+
+- Pairwise bracket labels are drawn once per comparison instead of once per
+  bracket segment. This removes overprinted labels while retaining vectorized
+  color, font, angle, and justification values.
+
+- A vector supplied as the `ggdonutchart()` label now remains attached to its
+  source row when grouping sorts the data. Labels could previously move to a
+  different slice even when no internal column name collided.
 
 - `ggsummarystats()` now draws its summary table on the categories the plot
   was drawn on, so each column sits under the box it describes. The table
@@ -371,12 +421,15 @@
 
   The filter also no longer goes through `subset()`, which evaluated its
   expression inside the data frame, so a column named `select`, `remove` or `x`
-  took the place of the argument. This is the one way a single-argument call
-  changes. What was drawn then depended on that column's contents rather than on
-  what was asked for, so the call could drop nothing, drop everything, or drop
-  the wrong group — a frame with a column named `remove` holding `"a"` answered
-  `remove = "c"` by dropping `a` and keeping `c`, which looks like an ordinary
-  figure with the wrong group missing (#788).
+  took the place of the argument. What was drawn then depended on that column's
+  contents rather than on what was asked for, so the call could drop nothing,
+  drop everything, or drop the wrong group — a frame with a column named
+  `remove` holding `"a"` answered `remove = "c"` by dropping `a` and keeping `c`,
+  which looks like an ordinary figure with the wrong group missing (#788).
+
+  A single `select` or `remove` call on a `Date` x now compares the documented
+  character date labels directly. The old conversion stripped the `Date` class
+  to day numbers, so character dates selected no rows and could not be removed.
 
 ### Other fixes
 
@@ -406,7 +459,12 @@
   falling between two centers was annotated at the neighboring bar's height; on
   twelve observations across four bins, five were wrong. `ggdensity()` labels are
   read off the density curve at the observation's x rather than snapped to a
-  sampled point.
+  sampled point. Both lookups now use the panel's transformed coordinate system,
+  so labels remain on the correct bar or curve under log and other continuous
+  scales. Histogram labels also follow the `closed = "left"` or `"right"`
+  endpoint rule used to count observations on bin boundaries. Integer-valued
+  outer endpoints are retained, and the empty display bins added by `pad = TRUE`
+  no longer receive labels at height zero.
 
 - `gghistogram()` and `ggdensity()` labels follow their own facet panel's
   distribution. Annotation groups were paired to panels by position, and the two
@@ -440,6 +498,69 @@
 - The internal call to `tidyr::unnest()` behind histogram and density labels now
   passes the `cols` argument that `tidyr` requires, removing a warning that
   became an error under `options(warn = 2)`.
+
+- Label selection in `ggtext()` and `ggscatter()`, end labels in `ggline()`, and
+  top-gene labels in `ggmaplot()` and `ggvolcano()` no longer use data-masked
+  `subset()` expressions. User columns named `label`, `xval`, `last.xval`, `fdr`,
+  `fc`, or `label.select` can therefore no longer replace the function arguments
+  that control which labels are drawn. The replacement indexing continues to
+  exclude rows with a missing x value from `ggline()` endpoint labels.
+
+- `ggline()` now assigns a distinct shape and its own legend label to each group
+  of a character `shape` column with more than six groups. Previously, the
+  manual shape scale was skipped for character columns, so ggplot2's default
+  palette dropped the seventh and later groups.
+
+- `geom_exec()` now derives supported options from the target ggplot2 layer
+  instead of a fixed shared list. Documented layer-specific arguments such as
+  histogram `boundary`, `closed`, and `pad` now reach the intended layer without
+  forwarding unrelated arguments to other geoms. Constant `group` values remain
+  mapped as aesthetics, preserving overall summaries and lines when the base
+  plot maps another discrete aesthetic. Layer selectors such as
+  `stat_summary(geom = "errorbar")` now inform option discovery, so
+  target-specific aesthetics are mapped correctly; function-valued options are
+  passed through unchanged.
+
+- Internal working columns in `ggpaired()`, `ggline()`, `ggraincloud()`,
+  `ggpie()`, and `ggdonutchart()` now receive names that are absent from the user
+  data. Legal user columns with the former internal names are preserved.
+
+- `ggestimates()` now honors an explicit `legend` setting while keeping its
+  default hidden legend. A `legend.title` setting alone is no longer partially
+  matched as a request to display the legend.
+
+- Bar builders now return a valid empty plot when filtering leaves no rows,
+  instead of warning while calculating a stack maximum.
+
+- `ggadd()` keeps added boxplot or violin widths separate from summary error-bar
+  widths. Its `width` argument now reaches each relevant layer, with effective
+  omitted values of 0.2 for a boxplot on a violin, 0.7 for other boxplots, 1 for
+  violins, 0.1 for error bars, and for a crossbar 0.2 on a violin or 1 otherwise.
+
+- The `comparisons` path in `stat_compare_means()` now forwards documented
+  geometry, mapping, position, visibility, missing-value, inheritance, font, and
+  vector-aesthetic controls to `ggsignif::geom_signif()`. Lower-level spellings
+  that duplicate values already derived from ggpubr arguments remain ignored
+  instead of causing duplicate-argument errors.
+
+- `ggqqplot(add = ...)` now forwards the documented choice of reference line,
+  and `add_summary(shape = ...)` now forwards point shapes to summary geoms that
+  draw points without sending them to line-only geoms.
+
+- `geom_pwc()` now rejects a `y.position` vector that is shorter than the number
+  of comparisons computed by the test; comparisons hidden by `hide.ns` still
+  consume positions in computed order. It also rejects a non-whole `p.adjust.n`.
+  When a panel or requested pair cannot be tested, its diagnostic now states what
+  was skipped.
+  `ggcompare()` also rejects names in `pwc.args` or `omnibus.args` that would
+  redefine its dedicated arguments, and `stat_anova_test()` validates
+  `effect.size` as `"ges"`, `"pes"`, or both.
+
+- Custom functions referenced in a label for `stat_anova_test()`,
+  `stat_kruskal_test()`, `stat_friedman_test()`, or `stat_welch_anova_test()` are
+  now found in the environment where the statistic layer was created. Such a
+  label therefore still works when the plot is built later, including in the
+  documented examples that use a local p-value formatter.
 
 - `ggsummarystats(facet.by = character(0) or "", free.panels = TRUE,
   labeller = "label_both")` no longer errors. A `facet.by` that resolves to no
@@ -1150,7 +1271,7 @@
 ## Minor changes
 
 - New arguments:
-    - `vjsut` in `stat_compare_means()` to move the text up or down relative to the bracket.
+    - `vjust` in `stat_compare_means()` to move the text up or down relative to the bracket.
     - `type` in `geom_bracket()` to specify label type. Can be "text" or "expression" (for parsing plotmath expression); [#253](https://github.com/kassambara/ggpubr/issues/253).
     - `labeller` to the function `facet()`
     - `position` in `get_legend()` to specify legend position
@@ -1336,7 +1457,8 @@
 
 ## Bug fixes
 
-- Now data argument are supported in  `stat_compare_means()` when the option comparisons are specified ([@emcnerny, #48](https://github.com/kassambara/ggpubr/issues/48))
+- The `data` argument is now supported in `stat_compare_means()` when the
+  `comparisons` option is specified ([@emcnerny, #48](https://github.com/kassambara/ggpubr/issues/48)).
 
 - Now `compare_means()` returns the same p-values as `stat_compare_means()` ([@wydty, #15](https://github.com/kassambara/ggpubr/issues/34)).
 - `stat_compare_means()` now reacts to label = "p.format" when comparisons specified ([#28](https://github.com/kassambara/ggpubr/issues/28)).
@@ -1362,7 +1484,8 @@ ggscatter(mtcars, x = "mpg", y = "wt",
 
 - The function `ggpie()` can now display japanese texts. New argument `font.family` in `ggpie`() and in `ggpar()` ([@tomochan001, #15](https://github.com/kassambara/ggpubr/issues/15)).
 
-- Using time on x axis works know with `ggline()` and `ggbarplot()` ([@jcpsantiago, #15](https://github.com/kassambara/ggpubr/issues/17)).
+- Using time on the x axis now works with `ggline()` and `ggbarplot()`
+  ([@jcpsantiago, #15](https://github.com/kassambara/ggpubr/issues/17)).
 
 
 
