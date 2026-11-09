@@ -180,7 +180,7 @@ NULL
 #'
 #' # pairwise comparisons
 #' # ::::::::::::::::::::::::::::::::::::::::
-#' # As dose contains more thant two levels ==>
+#' # As dose contains more than two levels ==>
 #' # pairwise test is automatically performed.
 #' compare_means(len ~ dose, df)
 #'

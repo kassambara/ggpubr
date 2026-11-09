@@ -114,7 +114,7 @@ ggadjust_pvalue <- function(p, layer = NULL, p.adjust.method = "holm", label = "
     warning(
       "p-values can't be adjusted for the specified stat method.\n",
       "The result of the method doesn't contain the p column.\n",
-      "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustement ",
+      "Note that, tests such as tukey_hsd or games_howell_test handle p-value adjustment ",
       "internally; they only return the p.adj.",
       call. = FALSE
     )
