@@ -164,7 +164,7 @@ data("mtcars")
 dfm <- mtcars
 # Convert the cyl variable to a factor
 dfm$cyl <- as.factor(dfm$cyl)
-# Add the name colums
+# Add the name columns
 dfm$name <- rownames(dfm)
 # Inspect the data
 head(dfm[, c("name", "wt", "mpg", "cyl")])

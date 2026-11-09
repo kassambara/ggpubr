@@ -48,7 +48,7 @@ NULL
 #' )
 #' print(df)
 #'
-#' # Basic plot with label outsite
+#' # Basic plot with label outside
 #' # +++++++++++++++++++++++++++
 #' ggbarplot(df,
 #'   x = "dose", y = "len",

@@ -75,7 +75,7 @@ NULL
 #'   stat_regline_equation(label.x = 3, label.y = 32)
 #'
 #'
-#' # Groupped scatter plot
+#' # Grouped scatter plot
 #' # ::::::::::::::::::::::::::::::::::::::::::::::::::::
 #' ggscatter(
 #'   iris,

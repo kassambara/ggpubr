@@ -154,7 +154,7 @@ NULL
 #' tab
 #'
 #' # Change table cells background and font for column 3,
-#' # Spaning from row 2 to the last row in the data
+#' # Spanning from row 2 to the last row in the data
 #' tab <- ggtexttable(df, rows = NULL, theme = ttheme("classic"))
 #' tab %>%
 #'   table_cell_bg(row = 2:tab_nrow(tab), column = 3, fill = "darkblue") %>%
